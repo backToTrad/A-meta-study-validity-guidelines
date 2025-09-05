@@ -11,7 +11,8 @@ def get_session_dict(year):
     urls = {2021: "https://dl.acm.org/doi/proceedings/10.1145/3411764",
             2022: "https://dl.acm.org/doi/proceedings/10.1145/3491102",
             2023: "https://dl.acm.org/doi/proceedings/10.1145/3544548",
-            2024: "https://dl.acm.org/doi/proceedings/10.1145/3613904"}
+            2024: "https://dl.acm.org/doi/proceedings/10.1145/3613904",
+            2025: "https://dl.acm.org/doi/proceedings/10.1145/3706598"}
     # Send GET request
     response = requests.get(urls[year])
     session_dict = {}
@@ -73,11 +74,7 @@ def create_csv(filename, year):
 
 # dictionary of the files and their associated year
 bibfile_dict = {
-    '../../Data/Bibliography-Files/2019.bib': 2019,
-    '../../Data/Bibliography-Files/2020.bib': 2020,
-    '../../Data/Bibliography-Files/2021.bib': 2021,
-    '../../Data/Bibliography-Files/2022.bib': 2022,
-    '../../Data/Bibliography-Files/2023.bib': 2023,
+    '../../Data/Bibliography-Files/2025.bib': 2025,
 }
 for filename, year in bibfile_dict.items():
     create_csv(filename, year)

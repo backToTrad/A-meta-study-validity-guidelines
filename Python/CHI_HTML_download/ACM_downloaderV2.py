@@ -104,11 +104,7 @@ def start_download(csvfile, year_int):
 
 
 bibfile_dict = {
-    '../../Data/Bibliography-Files/2019.csv': 2019,
-    '../../Data/Bibliography-Files/2020.csv': 2020,
-    '../../Data/Bibliography-Files/2021.csv': 2021,
-    '../../Data/Bibliography-Files/2022.csv': 2022,
-    '../../Data/Bibliography-Files/2023.csv': 2023,
+    '../../Data/Bibliography-Files/2025.csv': 2025,
 }
 for filename, year_int in bibfile_dict.items():
     start_download(filename, year_int)
