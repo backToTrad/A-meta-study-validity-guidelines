@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Falcon: Balancing Interactive Latency and Resolution Sensitivity for Scalable Linked Visualizations
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300924_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300924_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300924_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300924_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300924_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300924_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300924_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300924_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Falcon: Balancing Interactive Latency and Resolution Sensitivity for Scalable Linked Visualizations
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Dominik
+      </span>
+      <span class="surName">
+       Moritz
+      </span>
+      , University of Washington, USA,
+      <a href="mailto:domoritz@cs.washington.edu">
+       domoritz@cs.washington.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Bill
+      </span>
+      <span class="surName">
+       Howe
+      </span>
+      , University of Washington, USA,
+      <a href="mailto:billhowe@uw.edu">
+       billhowe@uw.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Jeffrey
+      </span>
+      <span class="surName">
+       Heer
+      </span>
+      , University of Washington, USA,
+      <a href="mailto:jheer@uw.edu">
+       jheer@uw.edu
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300924" target="_blank">
+       https://doi.org/10.1145/3290605.3300924
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       We contribute user-centered prefetching and indexing methods that provide low-latency interactions across linked visualizations, enabling cold-start exploration of billion-record datasets. We implement our methods in Falcon, a web-based system that makes principled trade-offs between latency and resolution to optimize brushing and view switching times. To optimize latency-sensitive brushing actions, Falcon reindexes data upon changes to the active view a user is brushing in. To limit view switching times, Falcon initially loads reduced interactive resolutions, then progressively improves them. Benchmarks show that Falcon sustains real-time interactivity of 50fps for pixel-level brushing and linking across multiple visualizations with no costly precomputation. We show constant brushing performance regardless of data size on datasets ranging from millions of records in the browser to billions when connected to a backing database system.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Visualization systems and tools
+       </strong>
+       ;
+       <em>
+        Interactive systems and tools;
+       </em>
+       •
+       <strong>
+        Information systems → Online analytical processing engines
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        data visualization
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        scalability
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        latency
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        brushing and linking
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Dominik Moritz, Bill Howe, and Jeffrey Heer. 2019. Falcon: Balancing Interactive Latency and Resolution Sensitivity for Scalable Linked Visualizations. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 12 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300924" target="_blank">
+         https://doi.org/10.1145/3290605.3300924
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <figure id="fig1">
+    <img alt="" class="img-responsive" longdesc="Teaser figure with the Falcon UI. Seven charts. One shows the count, 5 show histograms of various dimensions, one shows a circle matrix. There are brushes in three charts." src="3300924_files\chi2019694fig1.jpg"/>
+    <div class="figure-caption">
+     <span class="figure-number">
+      Figure 1:
+     </span>
+     <span class="figure-title">
+      Falcon visualizing binned aggregated for 180 million flights [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ] in a web browser. The brushes select short afternoon flights with no more than a 10 minute arrival delay. The views update instantly when the user draws, moves, or resizes a brush.
+     </span>
+    </div>
+   </figure>
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     To support effective exploration, interactive visualization systems must provide rapid response times for latency-sensitive operations. Further, delays between user actions and corresponding updates may break the perceived correspondence between action and response, reducing the user's engagement with the system and leading to fewer observations made [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+      41
+     </a>
+     ]. As the scale and heterogeneity of available data continue to increase, greater emphasis is being placed on efficient exploration. However, large datasets incur delays that negatively affect user's exploration. Poor support for interactive exploration can skew analyst attention toward “convenient” and familiar datasets, causing selection biases. This work seeks to reduce the friction of using new data by enabling
+     <em>
+      cold-start analytics
+     </em>
+     : exploration without time-consuming precomputation.
+    </p>
+    <p>
+     Traditionally, the different stages of the data processing pipeline—query processing, data transfer, and rendering—have been optimized as independent modules. For example, many efforts to reduce latency have centered on query processing, paying scant attention to the corresponding interface design. Recent GPU databases [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ] can achieve query times of seconds or hundreds of milliseconds over billions of records; however, interactivity is still difficult to achieve due to factors outside the scope of database optimizations, including network latency and sub-optimal client-side application design. Even short query times accumulate when a UI generates thousands of queries. And network-induced delays remain unpredictable, especially in low-connectivity or mobile networks.
+    </p>
+    <p>
+     In Falcon, we take a holistic approach to system design by optimizing the interface and query systems together. We prioritize the allocation of compute resources to interactions for which users are more latency-sensitive, in particular
+     <em>
+      brushing and linking
+     </em>
+     . For example, in Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     a user can resize the brush in the view of the arrival time, which immediately updates all other views.
+    </p>
+    <p>
+     To eliminate latency for brushing interactions, we contribute prefetching and indexing techniques. Rather than treating every query as an independent request, we model and optimize a user's session with client-side state. In a session, we leverage the fact that a user typically interacts with only a single view at a time—the
+     <em>
+      active view
+     </em>
+     . When the user moves the brush at pixel resolution, the aggregated data for all other views—the
+     <em>
+      passive views
+     </em>
+     —are computed in constant time using Falcon's indexes. Brushing interactions are decoupled from computations over the raw data; the interactive resolution of the brushes is decoupled from the bin resolution. As a result, both index size and interactive latency depend only on bin size and available pixel resolution and are independent of the raw data.
+    </p>
+    <p>
+     When the active view changes, Falcon reindexes the data to support interactions with the new active view. For datasets of up to millions of records, the client can perform the necessary aggregations. For larger datasets, aggregation can be offloaded to a backing database system. Switching the active view in Falcon incurs processing delays. Such switches usually occur with a shift in a user's attentional focus, a less latency-sensitive action [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ]. To limit view switching times, Falcon initially lowers the resolution of the index data so brush boundaries “snap-to” units larger than individual pixels. Analogous to progressive rendering or query processing (e.g.,
+     <em>
+      online aggregation
+     </em>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ]), this reduced interaction resolution can then progressively improve.
+    </p>
+    <figure id="fig2">
+     <img alt="" class="img-responsive" longdesc="Brushing Latency over View Switching Latency over Brushing Resolution" src="3300924_files\chi2019694fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 2:
+      </span>
+      <span class="figure-title">
+       The Falcon system uses indexes to optimize brushing latencies and progressively improves interactive resolution to reduce switching times.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     In summary, Falcon prioritizes brushing latency over view switching delay, and it prioritizes view switching delay over initial interactive resolution (Figure
+     <a class="fig" href="#fig2">
+      2
+     </a>
+     ). Our prototype implements methods to support coordinated brushing and filtering for cross-filter and aggregation applications (i.e.,ensembles of visualization of 1D and 2D bin counts). The system avoids expensive precomputation by prefetching only the data necessary for interactions with a single active view, enabling
+     <em>
+      cold-start
+     </em>
+     analytics. In Falcon, charts update in response to brush changes at 50 fps. We demonstrate that this performance is invariant on data sets ranging from thousands to billions of records. Because the system progressively improves interactive resolution, we use interpolation to approximate higher-resolution interactions. We make Falcon available as open source software with supporting documentation and demos at
+     <a class="link-inline force-break" href="https://github.com/uwdata/falcon">
+      www.github.com/uwdata/falcon
+     </a>
+     .
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       BACKGROUND AND RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Falcon is a visualization system for interactive brushing and linking across coordinated views of
+     <em>
+      binned aggregates
+     </em>
+     . Binned aggregates summarize data by dividing the domain of variables into discrete units (bins), and then by aggregating the data records in each bin [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+      40
+     </a>
+     ]. For example,
+     <em>
+      histograms
+     </em>
+     are visualizations of
+     <em>
+      bin counts
+     </em>
+     . Each graphical mark in a visualization of binned aggregates summarizes a large subset of records in the original dataset. Falcon uses binned aggregates because they convey both global patterns (e.g., densities) and local features (e.g., outliers) and enable multiple levels of resolution via the choice of bin size. To focus on relevant subsets of the data, analysts select ranges of data in one view using an interactive brush, which then updates all linked views. Commercial data visual analysis systems such as Tableau [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+      37
+     </a>
+     ], PowerBI [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ], and Immerse [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+      32
+     </a>
+     ] use coordinated views with visual querying.
+    </p>
+    <p>
+     Falcon extends prior work on scalable interactive analysis systems, incorporating findings from experimental studies of the effect of latency on exploratory visual analysis.
+    </p>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Latency in Interactive Analysis
+       </h3>
+      </div>
+     </header>
+     <p>
+      Informed by prior accounts of latency in psychology and HCI [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ], Liu and Heer [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ] conducted controlled experiments (later replicated by Zgraggen et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ]) to understand how latency affects user behavior in exploratory visual analysis. Comparing different operations under two latency conditions, they found that additional delays of 500ms over the low-latency condition (20ms for both brush and link and select, 100ms for pan, and 1s for zoom) negatively impact user behavior. They also found that initial exposure to delays negatively affects subsequent performance even when the delays were removed in later sessions.
+     </p>
+     <p>
+      In recent years, system designers have reduced latency by optimizing the different stages of the visualization pipeline: data management, scenegraph construction, and rendering [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. Their efforts have largely addressed each stage separately. Many system designers have adopted 500ms as a uniform latency threshold goal (e.g., [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ]); however, experimental results indicate that some operations (e.g.,zooming) are less sensitive to delays than others. Liu and Heer [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ] found that panning, brushing, and range selection are the most latency-sensitive of the studied operations.
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Scalable Visual Analysis Systems
+       </h3>
+      </div>
+     </header>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Comparison of different approaches to scalable linked views. Not shown: PowerBI [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+         28
+        </a>
+        ] and Tableau Public [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+         38
+        </a>
+        ] use a similar approach to Immerse; Hashedcubes [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+         33
+        </a>
+        ] builds on Nanocubes [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+         24
+        </a>
+        ] and shares similar properties.
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr>
+         <td>
+          <img alt="" class="img-responsive" src="3300924_files\chi2019694img1.svg"/>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      Interactive analysis systems with coordinated views run in a client application. The data being analyzed can either be loaded into this client or offloaded to a dedicated server. Figure
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      compares the characteristics of different visual analysis systems for coordinated brushing and linking. For a dataset small enough to be loaded client-side, visual analytics tools support real-time interactivity using local indexes. Square's Crossfilter [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ] uses bitmap indexes to support brushing and linking of hundreds of thousands of records entirely in the browser. Liu et al.’s imMens [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ] uses precomputed summaries to enable real-time interactions in the browser, but their interactions are limited to the binning resolution and a single interactive brush.
+     </p>
+     <p>
+      For greater scalability, many systems adopt a client-server architecture. In this approach, all components of the information visualization reference model [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ] are not necessarily on the same machine. Instead, the server stores the data, processes incoming queries, and sends reduced aggregates to the client. In the client-server model, changes to the client-side UI state require a request to the server; this incurs a delay between the user action and the corresponding update, a delay dominated by the network round-trip and query execution times. Since network bandwidth and latency are often beyond the control of the tool designer, optimizations aim to increase query performance. We discuss these techniques in the next subsection.
+     </p>
+     <p>
+      Falcon supports both client-only and client-server setups. For data sizes up to tens of millions of records, Falcon can load the full dataset in the browser and index it there. For larger datasets, costly computations can be offloaded to a scalable server-side database system.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Scalable Data Processing for Visualization
+       </h3>
+      </div>
+     </header>
+     <p>
+      Three main approaches can speed up query evaluation:
+      <em>
+       parallel evaluation
+      </em>
+      ,
+      <em>
+       indexing
+      </em>
+      , and
+      <em>
+       approximation
+      </em>
+      .
+     </p>
+     <section id="sec-7">
+      <p>
+       <em>
+        Parallel evaluation.
+       </em>
+       To reduce query latency in large-scale online analytical processing (OLAP) systems [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+        9
+       </a>
+       ], we can distribute work across multiple machines. However, the additional communication overhead typically exceeds the query times necessary for interactive data exploration.
+      </p>
+     </section>
+     <section id="sec-8">
+      <p>
+       <em>
+        Indexing.
+       </em>
+       Indexes and data cubes [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+        20
+       </a>
+       ] significantly speed up query evaluation by precomputing aggregates along some dimensions. Specialized hierarchical data structures for visualization, like Nanocubes [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ], are compact indexes of spatiotemporal data that can fit in the main memory of a single machine. The Nanocube structure leverages sparsity to more efficiently build a specialized tree index that consists of quadtrees (for spatial dimensions) or flat trees (for categorical attributes). The trees organize and aggregate data records for each dimension, which are then combined into a larger index. Hashedcubes [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+        33
+       </a>
+       ] further improves this design with a more compact index. Profiler [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+        23
+       </a>
+       ] also builds in-memory data cubes for query processing. The size of the data cube depends on the resolution and number of dimensions, not on the data size. Thus, data cube approaches enable scalable data processing on a single machine and support low latency responses to aggregation queries over billions of records. However, they can impose lengthy index building times, e.g., Nanocubes takes up to 6 hours to build an index for a dataset with 210M objects [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ].
+      </p>
+      <p>
+       Liu et al.’s imMens [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ] uses a dense data cube structure with precomputed aggregations. The size of the full data cube is ∏
+       <sub>
+        <em>
+         i
+        </em>
+       </sub>
+       <em>
+        b
+        <sub>
+         i
+        </sub>
+       </em>
+       , where
+       <em>
+        b
+        <sub>
+         i
+        </sub>
+       </em>
+       is the bin count for dimension
+       <em>
+        i
+       </em>
+       ; it is polynomial in the bin count and exponential in the number of dimensions. To overcome the exponential growth with more dimensions, Liu et al.decompose the full cube into a set of overlapping 3- and 4-dimensional projections, or “data tiles.” This approach enables real-time brushing and linking but limits interactions to a single brush. Moreover, since the resolution of the imMens data cube is the resolution of the visible bins, brushes snap to these bins. For large datasets, the tiles must be precomputed since they are costly to calculate.
+      </p>
+      <p>
+       Falcon makes a critically different trade-off: it decomposes a data cube so that it supports interactions with a single active view only. The size of its full index is linear in the number of views, which avoids a combinatorial explosion. An index is loaded when the user interacts with a particular view. Falcon supports multiple brushes by conditioning it on the brushes in the passive views. Further, each view can be filtered by all brushes except the brush in the view itself instead of only the union of all filters. Querying and transferring the smaller index for a single view is less costly than doing so with a full data cube (e.g.,imMens) that supports interactions with all views. The smaller index can be computed and loaded on demand. We can also increase its resolution to support brushing at pixel resolution rather than snapping brushes to visible bins. Falcon supports cold-start exploration of new datasets and is more flexible about zoom levels (as both imMens and Falcon require a new index when the user zooms).
+      </p>
+     </section>
+     <section id="sec-9">
+      <p>
+       <em>
+        Approximation.
+       </em>
+       Approximate query processing systems [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+        10
+       </a>
+       ] estimate result values and their uncertainty using a data sample. SampleAction [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+        17
+       </a>
+       ], Vizdom [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+        13
+       </a>
+       ], and Pangloss [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ] demonstrate that progressively refined approximate results are often sufficient for exploratory analysis. However, these systems do not support interactive brushing and linking. Although the current version of Falcon does not use progressively growing samples to approximate aggregates, we apply an analog of these techniques in the interaction domain: we initially load an index that supports interactions at a granularity larger than single pixels, then we progressively refine the granularity to one pixel.
+      </p>
+     </section>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Prefetching
+       </h3>
+      </div>
+     </header>
+     <p>
+      To mitigate query and network latency, a system can try to predict queries that the UI will likely issue, then precompute and cache results [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ]. Chan et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ] show this approach for time series data. Battle et al.developed a series of systems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ] that prefetch data tiles for a panning and zooming interface. Falcon combines ideas, such as projected data cubes in imMens [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ], with prefetching methods. It prefetches an index that supports all interactions with the current view, and is conditioned on the brushes in all other views.
+     </p>
+    </section>
+   </section>
+   <section id="sec-11">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       THE FALCON INTERFACE DESIGN
+      </h2>
+     </div>
+    </header>
+    <p>
+     We now describe the Falcon interface, how users can interact with its charts, and how it prefetches data to rapidly update charts. Here, we highlight how Falcon works. The following section provides a more detailed discussion of its implementation.
+    </p>
+    <p>
+     Falcon provides a dashboard of views that visualize the number of records, grouped by zero, one, or two binned dimensions. Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     shows Falcon loaded with a U.S. flight delays dataset [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+      31
+     </a>
+     ]. Using application constructor parameters, developers can configure the dataset, configure the chart layout, and customize the chart design.
+    </p>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Charts for Zero-, One-, and Two-Dimensional Data
+       </h3>
+      </div>
+     </header>
+     <p>
+      Falcon's views show aggregates grouped by zero, one, or two binned dimensions. We implement all visualizations in Vega [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ]. For zero-dimensional data, a view simply shows the record count. Developers can choose among a vertical or horizontal bar chart (e.g., Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      , top left) or a text view. Blue bars show the number of records that match all filters, while gray bars show unfiltered counts for comparison.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="Two histograms. The top one has gray bars that show the unfiltered data behind the histogram of blue bars. The bottom one has only the blue bars. Both histograms show the same data." src="3300924_files\chi2019694fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        The top histogram plots filtered counts (blue bars) relative to the unfiltered data (gray bars). A user can toggle to show the filtered distribution only (bottom).
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      For views that are grouped by a single binned dimension, Falcon uses bar charts (e.g., Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      , top center). Again, Falcon shows the total unfiltered counts as gray bars. Unfiltered counts provide context and keep the domain of the Y-scale constant as a user filters data. To see the filtered distribution only, users can toggle the gray bars (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ).
+     </p>
+     <p>
+      For bivariate views, we must use additional visual channels, such as size (e.g., Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      , right) or color. Size (e.g., circular area) is known to be more perceptually effective for numerical comparison [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ], though it requires significantly more pixels compared to color encoding. Most importantly, by encoding counts as the size of circles, Falcon can show unfiltered counts as gray circles behind blue circles, establishing a consistent visual language across all three chart types. Nonetheless, developers can switch to color encoding [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ], but they can no longer see unfiltered counts.
+     </p>
+     <p>
+      Applying consistent binning schemes over 1D and 2D views ensures compatibility of linked selections between plots. Falcon uses Vega's [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ] binning algorithm to compute bin width and offset from the scale range. The algorithm may extend the scale range to find “nice” bin thresholds (e.g., using only multiples of 5 and 10).
+     </p>
+    </section>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Brushing in the Active View
+       </h3>
+      </div>
+     </header>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="Progression of three states of the Falcon UI. The first one has no brush. The second one has a brush in the arrival time view. The third one has an additional brush in the distance view." src="3300924_files\chi2019694fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        View switching in Falcon. (a) When the user initially loads Falcon, it shows unfiltered histograms. (b) The user can draw a brush in the histogram of the arrival time (active view), and all other passive views will be updated. (c) After a view switch the distance histogram is active, and the user can draw a brush there.
+       </span>
+      </div>
+     </figure>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="Figure with possible actions in Falcon. Shows a histogram with overlaid cursors." src="3300924_files\chi2019694fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        Brush interactions in Falcon. Users can draw a new brush or move and resize an existing one.
+       </span>
+      </div>
+     </figure>
+     <p>
+      Upon initialization, Falcon shows unfiltered counts (Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      , a). A user can then filter the data—for example, to show only flights that arrive in the afternoon—by drawing a brush in any view (Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      , b). We call the view with which the users interacts the
+      <em>
+       active view
+      </em>
+      . Falcon aims to show the counts of the selected subset and update the data for all other views—
+      <em>
+       the passive views
+      </em>
+      —as the user changes the brush. The active view does not change.
+     </p>
+     <p>
+      Because re-aggregating counts from the raw data for every brush movement can be too costly, Falcon uses an index, which is a compact summary that contains the details needed to update passive views for any possible brush in the active view. Falcon decouples rapid brush updates (using any of the actions in Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      ) from costly computations over the full dataset. To limit its size, the index contains binned aggregates for passive views at their bin resolution and supports brushes in the active view at pixel resolution. Falcon achieves a much smaller index than one that supports interactions with all views [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ] by focusing on a single active view.
+     </p>
+    </section>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Switching Active Views
+       </h3>
+      </div>
+     </header>
+     <p>
+      For a user to draw a brush in a different view, Falcon must switch the active view, requiring it to make a new index. For example, to change from brushing over arrival time to distance (Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      , c), the index for the arrival view must be replaced with an index that supports brushing in the distance view. The new index must be conditioned on any existing brushes (here, for arrival time), which means the counts in the new index must be filtered according to the selected ranges. The only exception is for the arrival time view itself, since the bin counts should not be filtered by its own brush. This rule generalizes to any number of brushes: the index for each passive view must always be conditioned on the brushes in all other passive views.
+     </p>
+    </section>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Zooming the Active View
+       </h3>
+      </div>
+     </header>
+     <p>
+      When a user zooms in a binned chart, the visualized range changes. Since scale changes require no new data, Falcon can immediately give visual feedback and zoom the chart. When the zoom interaction ends, Falcon computes a new bin width and offset. If the computed parameters differ from the current ones, Falcon computes updated bin counts for the active view as well as a new index. The latter is needed to support interactions at the new resolution. Recomputing the index may impose delay. However, as discussed earlier, research has shown that zooming is less latency-sensitive than brushing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ].
+     </p>
+    </section>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Prefetching
+       </h3>
+      </div>
+     </header>
+     <figure id="fig6">
+      <img alt="" class="img-responsive" longdesc="Chart with time on the x-axis and brush location on y. Shows two trails for the two brushes." src="3300924_files\chi2019694fig6.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 6:
+       </span>
+       <span class="figure-title">
+        Visualization of the timing for the brushing interactions in Figure
+        <a class="fig" href="#fig4">
+         4
+        </a>
+        . The user first draws and then moves a brush in the arrival time histogram before drawing and resizing a brush in the distance view. Finally, the user deletes the arrival time brush. Between interactions, the app is idle, waiting user inputs.
+       </span>
+      </div>
+     </figure>
+     <p>
+      Instead of waiting for the first interaction with a new active view to create a new index, Falcon can prefetch indexes before a user starts brushing. Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      shows example timings for the brushing interactions shown in Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      . After modifying the arrival time brush, an analyst might move the cursor to hover over the distance view when preparing to draw a new brush. In this case, Falcon would not yet perform a view switch (i.e.,change the index), but it would prefetch the index. When the analyst starts brushing (around second 20), Falcon switches to the prefetched index. Hovering over a chart is only one signal that we could use to predict what chart the user will interact with next. Techniques from previous work on prefetching [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ] could also be used, but we found that mouse hover is a strong indicator of user attention [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ]. In addition to prefetching on mouse hover, Falcon can use long idle times between interactions to precompute additional indexes.
+     </p>
+    </section>
+   </section>
+   <section id="sec-17">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       FALCON SYSTEM IMPLEMENTATION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We now discuss how Falcon implements the interactions just described in section
+     <a class="sec" href="#sec-11">
+      3
+     </a>
+     .
+    </p>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        An Index of Data Tiles
+       </h3>
+      </div>
+     </header>
+     <p>
+      A Falcon index contains data needed to render passive views for every possible brush in the active view. The data for binned aggregate views with zero, one, or two grouping dimensions can be stored in a zero-, one-, or two-dimensional array; this projection of the data cube [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ] is called a
+      <em>
+       cube slice
+      </em>
+      . For example, the histogram in Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      needs an array with 24 entries for the flights for each hour of the day.
+     </p>
+     <figure id="fig7">
+      <img alt="" class="img-responsive" longdesc="Colored matrix of cumulative counts with a histogram on the right. Two columns highlight brush start and end." src="3300924_files\chi2019694fig7.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        A visualization of a data tile with departure time as the active view and distance as the passive view. A lighter color indicates larger cumulative counts. A histogram for the passive view conditioned on a brush can be computed as the difference between the cumulative bin counts at the end of the brush and the start of the brush.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      The user can draw brushes in one-dimensional histograms or two-dimensional visualization of bin counts. For a 1D histogram, there are in theory an infinite number of possible brush configurations. However, in a pixel display a histogram that is
+      <em>
+       p
+      </em>
+      pixels wide has only
+      <em>
+       p
+      </em>
+      <sup>
+       2
+      </sup>
+      distinct brushes, with a brush start and end at two pixel locations. Storing
+      <em>
+       p
+      </em>
+      <sup>
+       2
+      </sup>
+      cube slices for each passive view remains prohibitively large. Falcon therefore encodes these
+      <em>
+       p
+      </em>
+      <sup>
+       2
+      </sup>
+      slices as
+      <em>
+       p cumulative
+      </em>
+      slices and stores these cumulative counts in a single multidimensional array, which (following imMens) we call a
+      <em>
+       data tile
+      </em>
+      .
+     </p>
+     <p>
+      Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      shows a data tile with airtime as the active view and arrival delay as the passive view. Since each column stores the sum of all counts from the start, a specific cube slice is the difference between the cumulative slices for the start and end of the brush. For a fixed number of bins, this difference is computed in constant time (
+      <span class="inline-equation">
+       <span class="tex">
+        $\mathcal {O}(1)$
+       </span>
+      </span>
+      ).
+     </p>
+     <p>
+      Computing a sum (e.g., of counts) as the difference of cumulative sums is often used in computer graphics and is known as
+      <em>
+       summed area tables
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ] or
+      <em>
+       integral images
+      </em>
+      . Summed area tables generalize to many dimensions; in Falcon, we use the same approach for brushing in 2D views. Here, a cube slice for a passive view is computed from the four corners of the brush in the active view. A data tile stores the cumulative sums along the dimensions of the active view.
+     </p>
+     <p>
+      In addition to a data tile for each passive view, the index must also store the cube slice for the case where there is no brush. This is necessary because a brush that spans the full extent of the active view does not contain all records in the raw data when a user has zoomed in on a view.
+     </p>
+     <p>
+      In the general case, a data tile is an array whose dimensionality is the sum of the dimensionalities of its corresponding active and passive views. In Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      , the active and passive dimensions are each grouped by a single dimension, so the data tile has two dimensions. This concept generalizes: to support brushing in a 2D active view and filter a 2D passive view, we need a four-dimensional array.
+     </p>
+     <p>
+      The size of a data tile is the product of the bin counts for each dimension of both the active and passive views. The number of data tile bins corresponding to the active view depends on the active view's pixel screen size. The ratio of active view pixels to corresponding data tile bins determines the interactive resolution, which is at most 1 pixel per bin.
+     </p>
+    </section>
+    <section id="sec-19">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Computing Data Tiles
+       </h3>
+      </div>
+     </header>
+     <p>
+      We implemented two query systems to compute data tiles for Falcon. The first is a query engine that runs in the user's browser alongside the Falcon UI. This engine supports queries over tens of millions of records (as Apache Arrow files [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ]), above which latency becomes unacceptably large. The second system generates SQL queries for a database server. The scalability of this approach depends on the database system.
+     </p>
+     <p>
+      Both engines use a similar approach to compute data tiles. For each passive view, they aggregate the records that are not filtered out by any brush in other passive views. From these counts, the engines build the cumulative data tile.
+     </p>
+     <section id="sec-20">
+      <p>
+       <em>
+        In-Browser Engine.
+       </em>
+       The engine in the browser computes a data tile by first creating an empty multidimensional array of the binned dimensions. In a single pass over the filtered data, it then counts how many records fall into each cell of the array. In a final step, it computes the cumulative sums along the dimensions of the active view. While the engine iterates over the records, it counts how many records match the filters in the other passive views but fall outside the extent of the active view; it uses these values to determine unfiltered counts. Since the size of the data tile is independent of the size of the data, the running time of the last step is bounded only by the number of bins in the dimensions of the active and passive views. We implemented the engine in JavaScript; thus, it is single-threaded and blocking.
+      </p>
+     </section>
+     <section id="sec-21">
+      <p>
+       <em>
+        Engine for Database Server.
+       </em>
+       The database engine issues queries that perform binning and aggregation in a scalable database system, such as OmniSci Core [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ] (formerly known as MapD). Falcon generates aggregate queries that filter by the brushes in the other passive views and group by the bins in the dimensions of the active and passive views (Figure
+       <a class="fig" href="#fig8">
+        8
+       </a>
+       ). The same query counts the records that fall outside the extent of the active view. Because the queries for each passive view use different filters and group-by clauses, they cannot be naturally expressed as a single query. Query results are received client-side and written into a multidimensional array. Falcon computes the cumulative counts in the client, since some databases (including OmniSci Core) do not support window aggregates, which are necessary to compute cumulative counts efficiently. Queries execute asynchronously without blocking the UI.
+      </p>
+      <figure id="fig8">
+       <img alt="" class="img-responsive" longdesc="" src="3300924_files\chi2019694fig8.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 8:
+        </span>
+        <span class="figure-title">
+         The SQL query to compute the counts for Figure
+         <a class="fig" href="#fig7">
+          7
+         </a>
+         and a special bin (
+         <tt>
+          -1
+         </tt>
+         ) for the unfiltered counts. The cumulative counts are computed on the aggregated data.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+    </section>
+    <section id="sec-22">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Progressive Interaction
+       </h3>
+      </div>
+     </header>
+     <p>
+      Switching the active dimension and zooming are not as latency-sensitive as brushing. Nonetheless, delays may be frustrating to users. To address this issue, we propose
+      <em>
+       progressive interaction
+      </em>
+      , an analog of progressive refinement of approximate aggregate queries [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ] or progressive loading of images [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ] and data [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ], but in the interaction space. It works as follows: initially, Falcon loads small data tiles, where the bin count of the dimensions of the active view is lower than the pixel count. The user can interact with the active view, but the brush will snap to the closest available data tile bin boundaries. Falcon then loads data tiles for interactions at the pixel resolution in the background. Our current prototype implements progressive interactions in two steps: (1) Falcon loads data at the resolution of the visible histogram bins, and (2) Falcon loads the full pixel resolution.
+     </p>
+    </section>
+    <section id="sec-23">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Interpolation
+       </h3>
+      </div>
+     </header>
+     <p>
+      When brushes snap to the closest bins, users cannot set brushes at the pixel resolution. Continuous brushes have two advantages. First, users can set brushes between bin boundaries. Second, histograms in the passive views change smoothly as users brush. When Falcon starts with low-resolution data in progressive interaction, it approximates brushing at pixel resolution using interpolation. We interpolate between bin counts for the passive view at the bin boundaries closest to the current brush ends. Though interpolation errors are usually small and resolved as soon as high-resolution data arrives, interpolation remains an approximation with unknown error bounds. To make users aware of this, we decrease the opacity of passive views while users interact with an active view with low-resolution data tiles. Interpolated bin counts for smooth brushing at pixel resolution let users place brushes at a precise location; this helps users place multiple brushes without waiting for a full resolution version to load. Falcon uses linear interpolation for 1D brushes and bilinear interpolation for 2D brushes.
+     </p>
+    </section>
+   </section>
+   <section id="sec-24">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       BENCHMARK EVALUATIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We now present a benchmark evaluation of Falcon's brushing performance and the cost of indexing datasets of different sizes. Falcon reduces latency by progressively computing indexes with increasing resolution. We measure the time to compute an initial low-resolution index and the errors of interpolating pixel-level interactions from this data. We then discuss our results and their implications.
+    </p>
+    <section id="sec-25">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Brushing Performance
+       </h3>
+      </div>
+     </header>
+     <figure id="fig9">
+      <img alt="" class="img-responsive" longdesc="Chart with two lines. X-axis is trials, y-axis is frames per second. Falcon always stays above the 30fps threshold. The Square crossfilter dips as low as 0.2fps." src="3300924_files\chi2019694fig9.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 9:
+       </span>
+       <span class="figure-title">
+        Latency between brush interactions with one chart and updates to 5 passive views, averaged across 5 trials. We compare Falcon to Square's Crossfilter with 3 million records. Falcon's performance is constant, close to the browser's maximum frame rate of 60fps regardless of the full dataset size. Crossfilter reacts slowly when many records are added to or removed from the brush.
+       </span>
+      </div>
+     </figure>
+     <p>
+      Figure
+      <a class="fig" href="#fig9">
+       9
+      </a>
+      compares Falcon's brushing performance to Square's Crossfilter. For this benchmark, we programmatically update the brush by iteratively changing its start and end. We run experiments on a 13” 2014 MacBook Pro using the Chrome 70 browser, with Falcon performing all indexing on the client. Using a chart configuration of 6 histograms for flight delays [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ], Falcon consistently updates the 5 passive views at more than 50 frames per second. Due to its incremental processing of original data records, Crossfilter's query update times spike when the brush moves over parts of the view where many records are either added to or removed from the filter. In addition, Crossfilter needs ~10s to parse the CSV file and ~30s to initialize internal data structures for 3M records. Falcon works on binary data [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ]—there is no parsing or initialization cost—and for up to 10M records requires less than one second to switch views.
+     </p>
+    </section>
+    <section id="sec-26">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        View Indexing Cost
+       </h3>
+      </div>
+     </header>
+     <div class="table-responsive" id="tab2">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 2:
+       </span>
+       <span class="table-title">
+        Mean, median, and 95th percentile time in seconds to compute data tiles for all views for different dataset sizes across 5 runs and for pixel resolutions (500 for 1D and 200 × 200 for 2D) and bin resolutions (25 and 25 × 25 bins). Times for OmniSci's Core include network roundtrip on a university network when accessing a cloud-based instance.
+        <font color="gray">
+         Gray
+        </font>
+        colors show the time until the data tile for the first view is computed (applies only to non-blocking requests).
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr>
+         <td>
+          <img alt="" class="img-responsive" src="3300924_files\chi2019694img2.svg"/>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      Before a user switches views, Falcon prefetches data tiles for all passive views. Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      shows the mean, median, and 95th percentile of the time it takes to prefetch data for all passive views for different configurations and data sizes. We measure indexing times for high resolution (500 pixels for 1D and 200 × 200 pixels for 2D) and bin resolution (25 and 25 × 25 bins). We use three datasets:
+      <em>
+       flights
+      </em>
+      ,
+      <em>
+       weather
+      </em>
+      , and
+      <em>
+       GAIA
+      </em>
+      . The
+      <em>
+       flights
+      </em>
+      dataset [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ] contains information about flight time, length, distance, and delays for all 180M commercial flights in the U.S. since 1987. The
+      <em>
+       weather
+      </em>
+      dataset [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ] contains NOAA weather statistics for different locations in the U.S.
+      <em>
+       GAIA
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ] is a sky survey from the European Space Agency with records for more than a billion stars.
+     </p>
+     <p>
+      We find that indexing time unsurprisingly increases with data size. In the browser, view switching times stay below 5s even for datasets with 10 million records. Computing a low-resolution index does not reduce indexing time in the browser but can reduce average time by up to 6 × with a backing database server (here, OmniSci's Core). The time to load the first data tile in an index from Core is up to 24 × faster than the time to finish loading all data tiles in an index.
+     </p>
+    </section>
+    <section id="sec-27">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Approximation Error of Interpolated Brushes
+       </h3>
+      </div>
+     </header>
+     <figure id="fig10">
+      <img alt="" class="img-responsive" longdesc="Number of instances for various distances with counts on a log scale. The color indicates the number of tuples in the brush." src="3300924_files\chi2019694fig10.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 10:
+       </span>
+       <span class="figure-title">
+        Wasserstein distance between the true and interpolated bin counts for various brushes in the flight dataset. Most instances have small distances. Some instances with high selectivity (few tuples remain) have distances over 0.04.
+       </span>
+      </div>
+     </figure>
+     <p>
+      To support brushing at pixel resolution even with low-resolution data tiles, users can enable interpolation. In this experiment, we measure interpolation error using the Wasserstein metric (i.e.,earth mover's distance) between interpolated and true bin counts. The metric is 1 when the complete mass of a distribution must be moved from one end to the other. We compare interpolated bin counts (from data tiles with 25 bins in the active dimension) in the flight dataset to true bin counts for a various systematically enumerated brushes. As Figure
+      <a class="fig" href="#fig10">
+       10
+      </a>
+      shows, the majority of the cases show small errors (&lt; &lt; 0.01). The error is largest (&gt; 0.04) for highly selective filters (
+      <span class="inline-equation">
+       <span class="tex">
+        ${\lt}0.2\%$
+       </span>
+      </span>
+      ) since bin counts with few records are more susceptible to noise, and the Wasserstein metric compares two distributions.
+     </p>
+    </section>
+    <section id="sec-28">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Discussion
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our benchmarks show that Falcon delivers constant brushing performance regardless of how many records match the filter defined by a brush. Its update rates are comparable to those of imMens and outperform those for Square's Crossfilter. Unlike imMens, Falcon supports higher interactive resolutions and multiple brushes. This demonstrates that even though our prefetching methods were designed for client-server applications with massive datasets, precomputing a fixed-size index also benefits client-only applications.
+     </p>
+     <p>
+      In addition to low latency, constant and predictable performance are important. When a system behaves inconsistently, users may adapt by only performing those interactions that are fast [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. For the Square Crossfilter application, users might begin to explore only histograms showing few changes. Falcon decouples brushing actions from the full dataset, and all computations have constant complexity with respect to data and brush sizes. Future systems might consider not just the average or worst performance but also the degree to which performance varies for different interactions.
+     </p>
+     <section id="sec-29">
+      <p>
+       <em>
+        In-Browser Engine Performance.
+       </em>
+       Indexing times for small datasets (≤ 1M records) in Table
+       <a class="tbl" href="#tab2">
+        2
+       </a>
+       are at most a few hundred milliseconds, about the time needed to hover over a view and begin to brush, so users may not even notice a delay. For datasets up to 10M records, indexing times in our browser engine are at most a few seconds, as shown in Table
+       <a class="tbl" href="#tab2">
+        2
+       </a>
+       . After these few seconds, users can brush without delays, a trade-off not available in previous systems [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ].
+      </p>
+      <p>
+       Since computing a low-resolution index in the browser is not significantly faster than computing a high-resolution one, we do not use progressive interaction here. Although a high-resolution index has more bins, the vast majority of time is spent iterating over the full dataset. The index has the same size regardless of the full dataset's size.
+      </p>
+     </section>
+     <section id="sec-30">
+      <p>
+       <em>
+        Database Engine Performance.
+       </em>
+       For datasets that are too large to be loaded and processed in the browser, Falcon can issue queries to a database system. Our prototype uses OmniSci Core, one of the fastest analytics database systems available [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ]. Our benchmark evaluation shows that the time to compute an index for the dataset of all commercial flights in the U.S. (180M records) never exceeds a few seconds. However, for the GAIA dataset, computing a high-resolution index can take more than a minute.
+      </p>
+      <p>
+       A significant amount of time is spent receiving and deserializing database query results. Some of this overhead results from limitations in the OmniSci API. For instance, aggregated counts must be sent as a relational table instead of as a dense multidimensional array. Nevertheless, while the index is loading, users can already be drawing a brush in the active view.
+      </p>
+      <p>
+       To further improve the user experience, Falcon leverages two observations from the benchmark. First, loading the initial data tiles takes about a second. Thus, Falcon's UI can update individual passive views as soon as their data tiles have been loaded and provide visual feedback. Second, low-resolution indexes load much faster using the database-backed engine. Our progressive interaction method leverages these faster query times to update passive views faster—improving average initial load times by 5 × , from ~30s to ~6s—and then progressively improves them as high-resolution indexes are loaded. Our experience shows that view switching times are reasonable, but more careful assessment of how these delays affect people's behavior remains as future work.
+      </p>
+      <p>
+       Falcon's interpolation of high-resolution interactions from low-resolution data tiles enables progressive interactions without snapping brushes to the low resolution. Our measurements in Figure
+       <a class="fig" href="#fig10">
+        10
+       </a>
+       show that the interpolation error is negligible in most cases. The largest errors occur when brush filters are highly selective. Since Falcon visualized bin counts by default on the scale of unfiltered data (Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       ), the filtered bin counts and any visual differences in the chart are small. Moreover, when filters are highly selective and visualizations of aggregates are based on few records, the visual gestalt of the chart is susceptible to noise in the data. In general, analysts should make judgments about distributions based only on large samples.
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-31">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       LIMITATIONS AND FUTURE WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Falcon's index is significantly smaller than that in previous approaches (e.g., [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ]), allowing it to be computed on the fly from a single scan by the backing database under appropriate latency assumptions. To support datasets that are too large to be scanned within a given latency threshold, Falcon uses existing databases to compute the necessary aggregates; it can take advantage of approximation and sampling techniques from the database literature. However, our prototype does not yet apply these approximation techniques.
+    </p>
+    <p>
+     For binned aggregate plots, the data necessary to render visualizations depends only on pixel resolution and not data size. This common assumption enables visualizations whose visual complexity is invariant to the size of the full dataset. Thus, Falcon does not support non-aggregated views where each record is rendered as a separate mark. Future work might involve separate marks for outliers. Our prototype system implements aggregate visualizations of the counts with zero-, one-, and two-dimensional grouping by bins. We have not yet implemented grouping by categorical dimensions, but we plan to add them.
+    </p>
+    <p>
+     Falcon assumes that a user interacts with a single view at a time. On a desktop computer with a mouse, this assumption is trivially met. However, on touch-enabled devices, a user could use both hands to modify multiple brushes simultaneously. We believe that this scenario is rare. We conducted informal user observations with an iPad, and none of the participants attempted to use simultaneous brushes. Nonetheless, a future version of Falcon could support simultaneous brushes by combining the dimensions of multiple active views, though at the cost of much larger data tiles.
+    </p>
+    <p>
+     While Falcon prioritizes brushing and linking as the most latency-sensitive interactions [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ], future systems should use techniques presented here to prioritize zooming or other interactions. By prefetching data at different zoom levels, a system could support continuous zooming and re-binning. Battle et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ] demonstrate prefetching techniques for panning interactions and show that prediction models can help prioritize which data to prefetch. This was not necessary in Falcon since the computation of data for one brush or for all brushes both require one pass over the data. However, future systems could use prediction models and prefetch in multiple interaction vectors: e.g.,linked brushing, linked selection, zooming, and panning.
+    </p>
+    <p>
+     The Falcon system does not take advantage of concurrent queries: the in-browser engine is written in JavaScript and thus single threaded, while OmniSci Core executes queries sequentially. Future system iterations could speculatively precompute indexes for interactions with a non-active view. The cost of such aggressive prefetching could be offset by caching results in a middleware layer, possibly even for other users. The middleware could also leverage structure in the data tiles to compress them. Neighboring cells in a data tile often have similar values (see Figure
+     <a class="fig" href="#fig7">
+      7
+     </a>
+     , section
+     <a class="sec" href="#sec-27">
+      5
+     </a>
+     ), which is similar to images or videos. The large body of work on perception-aware image and video compression could be applied to compressing data tiles between the server and client. Compression could significantly reduce the time needed to transfer a Falcon index from server to client.
+    </p>
+    <p>
+     To support constant latency for brushing interactions, we limit Falcon to summable aggregate functions (e.g., sum and count). Our prototype only implements count. Some aggregate functions are algebraic, meaning they can be constructed as a combination of summable functions; this includes the mean (sum, count) and variance (sum, count, sum of squares). Distributive functions (e.g., min and max) can be computed by iterating over matching bins, which results in a linear (or, with extra data structures, logarithmic) lookup time with respect to brush size. Future iterations of Falcon could implement these aggregate functions.
+    </p>
+   </section>
+   <section id="sec-32">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this paper we contribute the idea of prioritizing brushing latency over view switching latency, as suggested by prior work on the impact of latency on analysts’ behavior. We also show that it is possible to lower the initial resolution of interactions to improve view switching times. We implement these methods in Falcon, our prototype system. Falcon supports brushing and linking across views over datasets of tens of millions of records in the browser and billions of records when connected to a backing database system, without the need for costly precomputations or significant limitations to supported interactions.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-33">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Matthew Conlen helped to develop an earlier prototype system. We thank Leilani Battle for technical feedback and Sandy Kaplan for writing feedback. Daniela Huppenkothen helped us understand the GAIA data. Jennifer Rogers supported us with her knowledge about distance metrics. Brian Hulette and the Arrow team helped implement the in-browser engine. The OmniSci team, and in particular Venkat Krishnamurthy, Todd Mostak, and Randy Zwitch, helped us with the Core database. This work was supported by a Moore Foundation Data-Driven Discovery Investigator Award, NSF Award #1740996, and by Microsoft.
+    </p>
+   </section>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Dana H Ballard, Mary M Hayhoe, Polly K Pook, and Rajesh PN Rao. 1997. Deictic codes for the embodiment of cognition.
+      <em>
+       <em>
+        Behavioral and Brain Sciences
+       </em>
+      </em>
+      (1997).
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Leilani Battle, Remco Chang, and Michael Stonebraker. 2016. Dynamic Prefetching of Data Tiles for Interactive Visualization. In
+      <em>
+       International Conference on Management of Data
+      </em>
+      (
+      <em>
+       SIGMOD ’16
+      </em>
+      ). ACM.
+      <a class="link-inline force-break" href="https://doi.org/10/gd7hg9" target="_blank">
+       https://doi.org/10/gd7hg9
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Leilani Battle, Michael Stonebraker, and Remco Chang. 2013. Dynamic reduction of query result sets for interactive visualizaton. In Conference on Big Data. IEEE.
+      <a class="link-inline force-break" href="https://doi.org/10/gd7hgw">
+       https://doi.org/10/gd7hgw
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Thomas Boutell. 1997.
+      <em>
+       PNG (portable network graphics) specification version 1.0
+      </em>
+      . Technical Report.
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      A G A Brown, A Vallenari, T Prusti, J H J de Bruijne, C Babusiaux, C A L Bailer-Jones, Gaia Collaboration, and Others. 2018. Gaia Data Release 2. Summary of the contents and survey properties.
+      <em>
+       <em>
+        arXiv preprint arXiv:1804.09365
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Stuart K. Card, Jock D. Mackinlay, and Ben Shneiderman (Eds.). 1999.
+      <em>
+       Readings in Information Visualization: Using Vision to Think
+      </em>
+      . Morgan Kaufmann Publishers Inc.
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Stuart K. Card, Allen Newell, and Thomas P. Moran. 1983.
+      <em>
+       The Psychology of Human-Computer Interaction
+      </em>
+      . L. Erlbaum Associates Inc.
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Sye-Min Chan, Ling Xiao, J. Gerth, and P. Hanrahan. 2008. Maintaining interactivity while exploring massive time series. In
+      <em>
+       IEEE Symposium on Visual Analytics Science and Technology
+      </em>
+      .
+      <a class="link-inline force-break" href="https://doi.org/10/fbqvj9" target="_blank">
+       https://doi.org/10/fbqvj9
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Surajit Chaudhuri and Umeshwar Dayal. 1997. An Overview of Data Warehousing and OLAP Technology.
+      <em>
+       <em>
+        SIGMOD Record
+       </em>
+      </em>
+      (1997).
+      <a class="link-inline force-break" href="https://doi.org/10/bst468" target="_blank">
+       https://doi.org/10/bst468
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Surajit Chaudhuri, Bolin Ding, and Srikanth Kandula. 2017. Approximate Query Processing: No Silver Bullet. In
+      <em>
+       International Conference on Management of Data
+      </em>
+      (
+      <em>
+       SIGMOD ’17
+      </em>
+      ).
+      <a class="link-inline force-break" href="https://doi.org/10/ct5p" target="_blank">
+       https://doi.org/10/ct5p
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Mon-Chu Chen, John R. Anderson, and Myeong-Ho Sohn. 2001. What can a mouse cursor tell us more?: correlation of eye/mouse movements on web browsing. In
+      <em>
+       CHI Extended Abstracts
+      </em>
+      .
+      <a class="link-inline force-break" href="https://doi.org/10/d7rvs2" target="_blank">
+       https://doi.org/10/d7rvs2
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      William S. Cleveland and Robert McGill. 1984. Graphical Perception: Theory, Experimentation, and Application to the Development of Graphical Methods.
+      <em>
+       <em>
+        J. Amer. Statist. Assoc.
+       </em>
+      </em>
+      (1984).
+      <a class="link-inline force-break" href="https://doi.org/10/gdvmwd" target="_blank">
+       https://doi.org/10/gdvmwd
+      </a>
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Andrew Crotty, Alex Galakatos, Emanuel Zgraggen, Carsten Binnig, and Tim Kraska. 2015. Vizdom: Interactive Analytics Through Pen and Touch.
+      <em>
+       <em>
+        VLDB Endowment
+       </em>
+      </em>
+      (2015).
+      <a class="link-inline force-break" href="https://doi.org/10/gd7hg3" target="_blank">
+       https://doi.org/10/gd7hg3
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Franklin C. Crow. 1984. Summed-area Tables for Texture Mapping. In
+      <em>
+       Conference on Computer Graphics and Interactive Techniques
+      </em>
+      (
+      <em>
+       SIGGRAPH ’84
+      </em>
+      ).
+      <a class="link-inline force-break" href="https://doi.org/10/bbrtvf" target="_blank">
+       https://doi.org/10/bbrtvf
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Punit R. Doshi, Elke A. Rundensteiner, and Matthew O. Ward. 2003. Prefetching for Visual Data Exploration. In
+      <em>
+       Conference on Database Systems for Advanced Applications
+      </em>
+      (
+      <em>
+       DASFAA ’03
+      </em>
+      ). IEEE.
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Philipp Eichmann, Carsten Binnig, Tim Kraska, and Emanuel Zgraggen. 2018. IDEBench: A Benchmark for Interactive Data Exploration.
+      <em>
+       <em>
+        CoRR
+       </em>
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Danyel Fisher, Igor Popov, Steven Drucker, and m.c. schraefel. 2012. Trust Me, I'm Partially Right: Incremental Visualization Lets Analysts Explore Large Datasets Faster. In
+      <em>
+       Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’12
+      </em>
+      ).
+      <a class="link-inline force-break" href="https://doi.org/10/f3tvr5" target="_blank">
+       https://doi.org/10/f3tvr5
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Apache Software Foundation. 2017. Arrow.
+      <a class="link-inline force-break" href="https://arrow.apache.org/">
+       https://arrow.apache.org/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Michael Glueck, Azam Khan, and Daniel J. Wigdor. 2014. Dive in!: Enabling Progressive Loading for Real-time Navigation of Data Visualizations. In
+      <em>
+       Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’14
+      </em>
+      ). ACM.
+      <a class="link-inline force-break" href="https://doi.org/10/cx3f" target="_blank">
+       https://doi.org/10/cx3f
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Jim Gray, Adam Bosworth, Andrew Layman, and Hamid Pirahesh. 1996. Data Cube: A Relational Aggregation Operator Generalizing Group-By, Cross-Tab, and Sub-Total. In
+      <em>
+       Conference on Data Engineering
+      </em>
+      .
+      <a class="link-inline force-break" href="https://doi.org/10/c6dskg" target="_blank">
+       https://doi.org/10/c6dskg
+      </a>
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Joseph M. Hellerstein, Peter J. Haas, and Helen J. Wang. 1997. Online Aggregation. In
+      <em>
+       International Conference on Management of Data
+      </em>
+      (
+      <em>
+       SIGMOD ’97
+      </em>
+      ). ACM.
+      <a class="link-inline force-break" href="https://doi.org/10/dqxgnm" target="_blank">
+       https://doi.org/10/dqxgnm
+      </a>
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Ricardo Jota, Albert Ng, Paul Dietz, and Daniel Wigdor. 2013. How Fast is Fast Enough?: A Study of the Effects of Latency in Direct-touch Pointing Tasks. In
+      <em>
+       Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’13
+      </em>
+      ). ACM.
+      <a class="link-inline force-break" href="https://doi.org/10/gd7hgz" target="_blank">
+       https://doi.org/10/gd7hgz
+      </a>
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Sean Kandel, Ravi Parikh, Andreas Paepcke, Joseph M. Hellerstein, and Jeffrey Heer. 2012. Profiler: Integrated Statistical Analysis and Visualization for Data Quality Assessment. In
+      <em>
+       International Working Conference on Advanced Visual Interfaces
+      </em>
+      (
+      <em>
+       AVI ’12
+      </em>
+      ). ACM.
+      <a class="link-inline force-break" href="https://doi.org/10/gd7hg2" target="_blank">
+       https://doi.org/10/gd7hg2
+      </a>
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Lauro Lins, James T. Klosowski, and Carlos Scheidegger. 2013. Nanocubes for real-time exploration of spatiotemporal datasets.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      12 (2013).
+      <a class="link-inline force-break" href="https://doi.org/10/bwrc" target="_blank">
+       https://doi.org/10/bwrc
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Mark Litwintschik. 2017. Summary of the 1.1 Billion Taxi Rides Benchmarks.
+      <a class="link-inline force-break" href="http://tech.marksblogg.com/benchmarks.html">
+       http://tech.marksblogg.com/benchmarks.html
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Zhicheng Liu and Jeffrey Heer. 2014. The effects of interactive latency on exploratory visual analysis.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      12 (2014).
+      <a class="link-inline force-break" href="https://doi.org/10/f3tvrw" target="_blank">
+       https://doi.org/10/f3tvrw
+      </a>
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Zhicheng Liu, Biye Jiang, and Jeffrey Heer. 2013. ImMens: Real-time visual querying of big data.
+      <em>
+       <em>
+        Computer Graphics Forum
+       </em>
+      </em>
+      (2013).
+      <a class="link-inline force-break" href="https://doi.org/10/f3tvr4" target="_blank">
+       https://doi.org/10/f3tvr4
+      </a>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Microsoft. [n. d.]. PowerBI.
+      <a class="link-inline force-break" href="https://powerbi.microsoft.com/">
+       https://powerbi.microsoft.com/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Dominik Moritz, Danyel Fisher, Bolin Ding, and Chi Wang. 2017. Trust, but verify: Optimistic visualizations of approximate queries for exploring big data. In
+      <em>
+       Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM.
+      <a class="link-inline force-break" href="https://doi.org/10/b7jt" target="_blank">
+       https://doi.org/10/b7jt
+      </a>
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      NOAA. [n. d.]. Climate Data Online.
+      <a class="link-inline force-break" href="https://ncdc.noaa.gov/cdo-web/datasets">
+       https://ncdc.noaa.gov/cdo-web/datasets
+      </a>
+      . Accessed: 2018-09-12.
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Bureau of Transportation Statistics. [n. d.]. On-Time Performance.
+      <a class="link-inline force-break" href="https://www.bts.gov/">
+       https://www.bts.gov/
+      </a>
+      . Accessed: 2018-09-12.
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      OmniSci. [n. d.]. Immerse, Interactive Visual Analytics for Big Data.
+      <a class="link-inline force-break" href="https://www.omnisci.com/platform/immerse/">
+       https://www.omnisci.com/platform/immerse/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Cicero A. L. Pahins, Sean A. Stephens, Carlos Scheidegger, and Joao L. D. Comba. 2017. Hashedcubes: Simple, Low Memory, Real-Time Visual Exploration of Big Data.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      (2017).
+      <a class="link-inline force-break" href="https://doi.org/10/gdrbsx" target="_blank">
+       https://doi.org/10/gdrbsx
+      </a>
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Y. Park, M. Cafarella, and B. Mozafari. 2016. Visualization-aware sampling for very large databases. In
+      <em>
+       Conference on Data Engineering
+      </em>
+      .
+      <a class="link-inline force-break" href="https://doi.org/10/gd7hg4" target="_blank">
+       https://doi.org/10/gd7hg4
+      </a>
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Christopher Root and Todd Mostak. 2016. MapD: A GPU-powered Big Data Analytics and Visualization Platform(
+      <em>
+       SIGGRAPH ’16
+      </em>
+      ). ACM.
+      <a class="link-inline force-break" href="https://doi.org/10/gd7hg8" target="_blank">
+       https://doi.org/10/gd7hg8
+      </a>
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Arvind Satyanarayan, Ryan Russell, Jane Hoffswell, and Jeffrey Heer. 2015. Reactive Vega: A Streaming Dataflow Architecture for Declarative Interactive Visualization.
+      <em>
+       <em>
+        IEEE Trans. Visualization &amp; Comp. Graphics (InfoVis)
+       </em>
+      </em>
+      (2015).
+      <a class="link-inline force-break" href="https://doi.org/10/gdqd7v" target="_blank">
+       https://doi.org/10/gdqd7v
+      </a>
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Tableau Software. [n. d.]. Tableau Desktop.
+      <a class="link-inline force-break" href="https://tableau.com/products/desktop">
+       https://tableau.com/products/desktop
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Tableau Software. [n. d.]. Tableau Public.
+      <a class="link-inline force-break" href="https://public.tableau.com/">
+       https://public.tableau.com/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Square. [n. d.]. Crossfilter: Fast Multidimensional Filtering for Coordinated Views.
+      <a class="link-inline force-break" href="https://square.github.io/crossfilter/">
+       https://square.github.io/crossfilter/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Hadley Wickham. 2013. Bin-summarise-smooth : A framework for visualising large data.
+      <em>
+       <em>
+        InfoVis
+       </em>
+      </em>
+      (2013).
+      <a class="link-inline force-break" href="http://vita.had.co.nz/papers/bigvis.html">
+       http://vita.had.co.nz/papers/bigvis.html
+      </a>
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      E. Zgraggen, A. Galakatos, A. Crotty, J. Fekete, and T. Kraska. 2017. How Progressive Visualizations Affect Exploratory Analysis.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      (2017).
+      <a class="link-inline force-break" href="https://doi.org/10/gbns23" target="_blank">
+       https://doi.org/10/gbns23
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Association for Computing Machinery.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300924" target="_blank">
+      https://doi.org/10.1145/3290605.3300924
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'875800e17def65b4',t:'MTcxMzMxMDY0OC45MDMwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

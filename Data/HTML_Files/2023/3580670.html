@@ -1,0 +1,4016 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   A Field Test of Bandit Algorithms for Recommendations: Understanding the Validity of Assumptions on Human Preferences in Multi-armed Bandits
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3580670_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3580670_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3580670_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3580670_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3580670_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3580670_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3580670_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3580670_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <main>
+   <section class="front-matter">
+    <section>
+     <header class="title-info">
+      <div class="journal-title">
+       <h1>
+        <span class="title">
+         A Field Test of Bandit Algorithms for Recommendations: Understanding the Validity of Assumptions on Human Preferences in Multi-armed Bandits
+        </span>
+        <br/>
+        <span class="subTitle">
+        </span>
+       </h1>
+      </div>
+     </header>
+     <div class="authorGroup">
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-9707-4529" ref="author">
+        <span class="givenName">
+         Liu
+        </span>
+        <span class="surName">
+         Leqi
+        </span>
+       </a>
+       , Carnegie Mellon University, United States,
+       <a href="mailto:leqil@cs.cmu.edu">
+        leqil@cs.cmu.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-9802-0741" ref="author">
+        <span class="givenName">
+         Giulio
+        </span>
+        <span class="surName">
+         Zhou
+        </span>
+       </a>
+       , Carnegie Mellon University, United States,
+       <a href="mailto:gzz@andrew.cmu.edu">
+        gzz@andrew.cmu.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-5939-4575" ref="author">
+        <span class="givenName">
+         Fatma
+        </span>
+        <span class="surName">
+         Kilinc-Karzan
+        </span>
+       </a>
+       , Carnegie Mellon University, United States,
+       <a href="mailto:fkilinc@andrew.cmu.edu">
+        fkilinc@andrew.cmu.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-3824-4241" ref="author">
+        <span class="givenName">
+         Zachary
+        </span>
+        <span class="surName">
+         Lipton
+        </span>
+       </a>
+       , Machine Learning Department and Tepper School of Business, Carnegie Mellon University, United States,
+       <a href="mailto:zlipton@cmu.edu">
+        zlipton@cmu.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-8375-3785" ref="author">
+        <span class="givenName">
+         Alan
+        </span>
+        <span class="surName">
+         Montgomery
+        </span>
+       </a>
+       , Carnegie Mellon University, United States,
+       <a href="mailto:alanmontgomery@cmu.edu">
+        alanmontgomery@cmu.edu
+       </a>
+      </div>
+     </div>
+     <br/>
+     <div class="pubInfo">
+      <p>
+       DOI:
+       <a href="https://doi.org/10.1145/3544548.3580670" target="_blank">
+        https://doi.org/10.1145/3544548.3580670
+       </a>
+       <br/>
+       CHI '23:
+       <a href="https://doi.org/10.1145/3544548" target="_blank">
+        Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems
+       </a>
+       , Hamburg, Germany, April 2023
+      </p>
+     </div>
+     <div class="abstract">
+      <p>
+       <small>
+        Personalized recommender systems suffuse modern life, shaping what media we read and what products we consume. Algorithms powering such systems tend to consist of supervised-learning-based heuristics, such as latent factor models with a variety of heuristically chosen prediction targets. Meanwhile, theoretical treatments of recommendation frequently address the decision-theoretic nature of the problem, including the need to balance exploration and exploitation, via the multi-armed bandits (MABs) framework. However, MAB-based approaches rely heavily on assumptions about human preferences. These preference assumptions are seldom tested using human subject studies, partly due to the lack of publicly available toolkits to conduct such studies. In this work, we conduct a study with crowdworkers in a comics recommendation MABs setting. Each arm represents a comic category, and users provide feedback after each recommendation. We check the validity of core MABs assumptions—that human preferences (reward distributions) are fixed over time—and find that they do not hold. This finding suggests that any MAB algorithm used for recommender systems should account for human preference dynamics. While answering these questions, we provide a flexible experimental framework for understanding human preference dynamics and testing MABs algorithms with human users. The code for our experimental framework and the collected data can be found at
+        <a class="link-inline force-break" href="https://github.com/HumainLab/human-bandit-evaluation">
+         https://github.com/HumainLab/human-bandit-evaluation
+        </a>
+        .
+       </small>
+      </p>
+     </div>
+     <div class="CCSconcepts">
+      <ccs2012>
+       <small>
+        <span style="font-weight:bold;">
+         CCS Concepts:
+        </span>
+        •
+        <strong>
+         Human-centered computing → Empirical studies in HCI
+        </strong>
+        ; •
+        <strong>
+         Computing methodologies → Sequential decision making
+        </strong>
+        ;
+       </small>
+      </ccs2012>
+     </div>
+     <br/>
+     <div class="classifications">
+      <div class="author">
+       <span style="font-weight:bold;">
+        <small>
+         Keywords:
+        </small>
+       </span>
+       <span class="keyword">
+        <small>
+         preference dynamics
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         recommender systems
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         multi-armed bandits
+        </small>
+       </span>
+      </div>
+      <br/>
+      <div class="AcmReferenceFormat">
+       <p>
+        <small>
+         <span style="font-weight:bold;">
+          ACM Reference Format:
+         </span>
+         <br/>
+         Liu Leqi, Giulio Zhou, Fatma Kilinc-Karzan, Zachary Lipton, and Alan Montgomery. 2023. A Field Test of Bandit Algorithms for Recommendations: Understanding the Validity of Assumptions on Human Preferences in Multi-armed Bandits. In
+         <em>
+          Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems (CHI '23), April 23–28, 2023, Hamburg, Germany.
+         </em>
+         ACM, New York, NY, USA 16 Pages.
+         <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3580670" target="_blank">
+          https://doi.org/10.1145/3544548.3580670
+         </a>
+        </small>
+       </p>
+      </div>
+     </div>
+    </section>
+   </section>
+   <section class="body">
+    <section id="sec-2">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         1
+        </span>
+        INTRODUCTION
+       </h2>
+      </div>
+     </header>
+     <p>
+      As online services have become inescapable fixtures of modern life, recommender systems have become ubiquitous, influencing the music curated into our playlists, the movies pumped into the carousels of streaming services, the news that we read, and the products suggested whenever we visit e-commerce sites. These systems are commonly data-driven and algorithmic, built upon the intuition that historical interactions might be informative of users’ preferences, and thus could be leveraged to make better recommendations [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ]. While these systems are prevalent in real-world applications, we often observe misalignment between their behavior and human preferences [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]. In many cases, such divergence comes from the fact that the underlying assumptions powering the learning algorithms are questionable.
+     </p>
+     <p>
+      Recommendation algorithms for these systems mostly rely on supervised learning heuristics [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ], including latent factor models such as matrix factorization [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ] and deep learning approaches that are designed to predict various heuristically chosen targets [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ] (e.g., purchases, ratings, reviews, watch time, or clicks [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ]). Typically they rely on the naive assumption that these behavioral signals straightforwardly indicate the users’ preferences. However, this assumption may not hold true in general for a variety of reasons, including exposure bias (users are only able to provide behavioral signals for items they have been recommended) and censoring (e.g., reviews tend to be written by users with strong opinions) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+       57
+      </a>
+      ].
+     </p>
+     <p>
+      On the other hand, to study the decision-theoretic nature of recommender systems, the online decision-making framework—multi-armed bandits (MABs)—has commonly been used [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ]. In MABs, at any given time, the decision-maker chooses an arm to pull (a recommendation to make in the recommender system setting) among a set of arms and receives a reward, with the goal of obtaining high expected cumulative reward over time. Theoretical research on MABs centers on algorithms that balance between the exploration and exploitation tradeoff and analyses capturing the performance
+      <a class="fn" href="#fn2" id="foot-fn2">
+       <sup>
+        1
+       </sup>
+      </a>
+      of these algorithms [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ]. There is a long line of work on developing MAB-based approaches for recommender systems in settings including traditional
+      <em>
+       K
+      </em>
+      -armed bandits [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      , and references therein], contextual bandits [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      , and references therein], and Markov decision processes [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      , and references therein]. To guide such research on applying MAB-based algorithms in recommender systems, it is of importance to
+      <em>
+       test
+      </em>
+      whether the assumptions that these algorithms are built upon are valid in real-world recommendation settings.
+     </p>
+     <p>
+      In this work, we focus on the assumption of temporal stability that underlies both practical supervised learning methods and algorithms for classical MAB settings where the reward distribution is assumed to be fixed over time. In a recommendation setting, the reward distribution of an arm corresponds to the user's preference towards that recommendation item. Although the assumption that the reward distribution is fixed may be appropriate to applications driving early MABs research (e.g., sequential experimental design in medical domains) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ], one may find it to be unreasonable in recommender systems given that the interactants are humans and the reward distributions represent human preferences. For example, consider the task of restaurant recommendations, though a user may be happy with a recommended restaurant for the first time, such enjoyment may decline as the same recommendation is made over and over again. This particular form of evolving preference is known as satiation, and results from repeated consumption [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ]. One may also think of cases where a user's enjoyment increases as the same item being recommended multiple times, due to reasons including sensitization [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. In both settings, the assumption that reward distributions are fixed is violated and the recommendation algorithms may influence the preferences of their users.
+     </p>
+     <p>
+      We test the assumption on fixed reward distributions through randomized controlled trials conducted on Amazon Mechanical Turk. In the experiment, we simulate a
+      <em>
+       K
+      </em>
+      -armed bandit setting (a MAB setup where the arm set is the same set of
+      <em>
+       K
+      </em>
+      arms over time) and recommend comics from
+      <em>
+       K
+      </em>
+      comic series to the study participants. After reading a comic, the participants provide an enjoyment score on a 9-point Likert scale [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ], which serves as the reward received by the algorithm for the recommendation (for pulling the corresponding arm). Each comic series belongs to a different genre and represents an arm. Our analyses on the collected dataset reveal that in a bandit recommendation setup, human preferences can evolve, even within a short period of time (less than 30 minutes) (Section
+      <a class="sec" href="#sec-9">
+       4
+      </a>
+      ). In particular, between two predefined sequences that result in the same number of pulls of each arm in different order, the mean reward for one arm has a significant difference of 0.57 (
+      <span class="inline-equation">
+       <span class="tex">
+        $95\%$
+       </span>
+      </span>
+      CI = [0.30, 0.84],
+      <em>
+       p
+      </em>
+      -value &lt; 0.001). This suggests that any MAB algorithms that are applied to recommendation settings should account for the dynamical aspects of human preferences and the fact that the recommendations made by these algorithms may influence users’ preferences.
+     </p>
+     <p>
+      The line of work that develops contextual bandits and reinforcement learning algorithms for recommender systems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ] hinges upon the assumption that users’ preferences depend on the past recommendations they receive. The proposed algorithms have been deployed to interact with users on large-scale industry platforms (e.g., Youtube). These prior works differ from ours in multiple ways. Among them, the most significant distinction is that our work aims to understand and identify assumptions on reward distributions that better represent user preference characteristics. On the other hand, this line of work asks the question that
+      <em>
+       once an assumption on the reward distribution has been made
+      </em>
+      , how to design the recommendation algorithms so that they have better performance. For example, in settings where recommender systems are modeled as contextual bandits [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ], the reward distributions are assumed to take a certain functional form (often linear) in terms of the observable states. When treating recommender systems as reinforcement learning agents in a Markov decision process [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ], one has made the core assumption that the reward is Markovian and depends only on the
+      <em>
+       observable
+      </em>
+      user states (e.g., user history) and recommendations. In other words, the reward (and user preference) does not depend on
+      <em>
+       unobservable
+      </em>
+      states (e.g., user emotions) as in partially observable Markov decision processes. Under this assumption, the proposed algorithms deal with difficulties (e.g., large action spaces) in the reinforcement learning problem. It is worth noting that in these prior works, the proposed algorithms have been evaluated on industry platforms. For academics who want to evaluate their recommendation algorithms with human interactants, such infrastructure is not easily accessible. We take an initial step to address this need by developing our experimental framework.
+     </p>
+     <p>
+      The experimental framework we developed is flexible. It allows one to conduct field tests of MAB algorithms, use pre-defined recommendation sequences to analyze human preferences, and ask users to choose an arm to pull on their own. These functionalities can be used to identify assumptions on user preference dynamics and reward distributions that better capture user characteristics. As an illustration of the flexibility of our experimental framework, we have collected data while the participants interact with some traditional MAB algorithms and analyze their experience with these algorithms. Interestingly, we observe that interactants (of a particular algorithm) who have experienced the lowest level of satisfaction are the ones to have the poorest performance in recalling their past ratings for previously seen items.
+     </p>
+     <p>
+      In summary, we provide a flexible experimental framework that can be used to run field tests with humans for any
+      <em>
+       K
+      </em>
+      -armed bandit algorithms (Section
+      <a class="sec" href="#sec-7">
+       3.3
+      </a>
+      ). Using this experimental framework, we have tested the validity of the fixed-reward-distribution (fixed-user-preference) assumption for applying MAB algorithms to recommendation settings (Section
+      <a class="sec" href="#sec-9">
+       4
+      </a>
+      ). As an illustration of the flexibility of our experimental framework, we have inspected different bandit algorithms in terms of user enjoyment and attentiveness (Section
+      <a class="sec" href="#sec-10">
+       5
+      </a>
+      ). We discuss the limitation of our study in Section
+      <a class="sec" href="#sec-13">
+       6
+      </a>
+      .
+     </p>
+     <figure id="fig1">
+      <img alt="Figure 1" class="img-responsive" src="3580670_files\chi2334fig1.jpg"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        Overview of the experimental protocol. Participants first complete a background survey and then register their MTurk ID on our platform to get randomly assigned (without their direct knowledge) one of the following types of experimental setups: Self-selected, one of the fixed sequences, or one of the MAB algorithms. Study participants who are assigned to a fixed sequence and an MAB algorithm only provide ratings (enjoyment scores to the comics). Self-selected study participants provide both a rating as well as the next genre to view. Once the comic rating portion of the study is complete, participants move onto the post-study survey, where they are asked questions related to their experience in the study, e.g., how well they remember the consumed content. Participants must complete all parts of the study and answer attention checks sufficiently correctly to receive full compensation, and therefore be included in the final study data.
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-3">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         2
+        </span>
+        RELATED WORK
+       </h2>
+      </div>
+     </header>
+     <p>
+      The study of evolving preferences has a long history, addressed by such diverse areas as psychology [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ], economics [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ], marketing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ], operations research [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ], philosophy [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ], and recommender systems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ]. In the bandits literature, there is a recent line of work, motivated by recommender systems, that aims to incorporate the dynamic nature of human preference into the design of algorithms. These papers have different models on human preferences, expressed as specific forms of how the reward of an arm depends on the arm's past pulls. Levine et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ], Seznec et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ] model rewards as monotonic functions of the number of pulls. By contrast, Basu et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ], Cella and Cesa-Bianchi [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ], Kleinberg and Immorlica [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ] consider the reward to be a function of the time elapsed since the last pull of the corresponding arm. In Mintz et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ], rewards are context-dependent, where the contexts are updated based on known deterministic dynamics. Finally, Leqi et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ] consider the reward dynamics to be unknown stochastic linear dynamical systems. These prior works model the reward (user preferences) in distinct ways, and lack (i) empirical evidence on whether user preferences evolve in the short period of time in a bandit setup; and (ii) datasets and experimental toolkits that can be used to verify the proposed theoretical models and to explore more realistic ways of modeling user preferences. On the other hand, there is a line of work on developing contextual bandits and reinforcement learning algorithms to account for user preference dynamics in recommender systems. The evaluations of these algorithms against human users rely on accessibility to large-scale industry platforms [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ].
+     </p>
+     <p>
+      Datasets that are publicly available and can be used to evaluate bandit algorithms in recommendation settings often contain ratings or other types of user feedback of recommendations [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ]. These datasets do not contain trajectories of recommendations and the associated feedback signal for a particular user, making it hard to understand the dynamical aspects of user preferences and to identify effects of past recommendations on the preferences. In addition, existing MAB libraries (e.g., [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ]) only consist of implementations of bandit algorithms, but lack the appropriate tools and infrastructure to conduct field tests of these algorithms when interacting with humans. The toolkit we have developed closes this gap and allows one to use these libraries while conducting human experiments on bandit algorithms. Another relevant stream of research that considers human experiments in bandits settings are the ones that ask human participants to make decisions in a bandit task and collect data for modeling their decision-making  [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ]. In other words, in those experiments, human participants take the role of the algorithm that selects the arm to pull instead of the role of providing reward signals. In one of our experimental setups, the study participants are asked to select comics to read on their own. However, in contrast to reward distributions that are defined by the experiment designers of those experiments, in our setting, the rewards are provided by the human participants, indicating their preferences.
+     </p>
+    </section>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         3
+        </span>
+        EXPERIMENTAL SETUP
+       </h2>
+      </div>
+     </header>
+     <figure id="fig2">
+      <img alt="Figure 2" class="img-responsive" src="3580670_files\chi2334fig2.jpg"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        The user interface of our experimental platform when the participants read and rate a comic. For each comic, the participants have up to three action items to complete. First, they must provide the comic an enjoyment score (a rating) between 1 and 9 using the Likert scale slider bar, indicating how they like the comic. Second, if the participants are under the Self-selected setting, they must select the genre of comic they would like to view next. For other participants, this step does not exist. Finally, the participants are asked to answer one or more customized attention check questions.
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+      In this section, we first describe a classical MABs setting—stochastic
+      <em>
+       K
+      </em>
+      -armed bandits—and discuss the algorithms we have used in our experiments (Section
+      <a class="sec" href="#sec-5">
+       3.1
+      </a>
+      ). We then provide reasoning on why we choose comics as the reommendation domain and selection criteria for the comics used for recommendations (Section
+      <a class="sec" href="#sec-6">
+       3.2
+      </a>
+      ). Finally, we discuss our experimental framework (Section
+      <a class="sec" href="#sec-7">
+       3.3
+      </a>
+      ).
+     </p>
+     <section id="sec-5">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.1
+         </span>
+         Stochastic
+         <em>
+          K
+         </em>
+         -armed bandits
+        </h3>
+       </div>
+      </header>
+      <p>
+       In stochastic
+       <em>
+        K
+       </em>
+       -armed bandits, at any time
+       <em>
+        t
+       </em>
+       , the learner (the recommender in our case) chooses an arm
+       <em>
+        a
+       </em>
+       (
+       <em>
+        t
+       </em>
+       ) ∈ [
+       <em>
+        K
+       </em>
+       ] to pull (a recommendation to present in our case) and receives a reward
+       <em>
+        R
+       </em>
+       (
+       <em>
+        t
+       </em>
+       ). For any horizon
+       <em>
+        T
+       </em>
+       , the goal for the learner is to attain the highest expected cumulative reward
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathbb {E}[\sum _{t=1}^T R(t)]$
+        </span>
+       </span>
+       . In this setup, the reward distribution of each arm
+       <em>
+        k
+       </em>
+       ∈ [
+       <em>
+        K
+       </em>
+       ] is assumed to be fixed over time and the rewards received by pulling the same arm are independently and identically distributed. An oracle (the best policy), in this case, would always play the arm with the highest mean reward. The difference between the expected cumulative reward obtained by the oracle and the one obtained by the learner is known to be the “regret.” As is shown in existing literature [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ], the regret lower bound for stochastic
+       <em>
+        K
+       </em>
+       -armed bandits is
+       <span class="inline-equation">
+        <span class="tex">
+         $\Omega (\sqrt {T})$
+        </span>
+       </span>
+       . Many existing algorithms achieve the regret at the optimal rate
+       <span class="inline-equation">
+        <span class="tex">
+         $O(\sqrt {T})$
+        </span>
+       </span>
+       , including the Upper Confidence Bound (UCB) algorithm and the Thompson Sampling (TS) algorithm. We also include a traditional algorithm Explore-then-Commit (ETC) and a greedy heuristic (ɛ-Greedy) in our study. These algorithms along with their regret guarantees are built upon the key assumption that the reward distributions are fixed. In Section
+       <a class="sec" href="#sec-9">
+        4
+       </a>
+       , we test the validity of this assumption in a recommendation setting where the interactants are humans and the rewards represent their preferences.
+      </p>
+      <p>
+       <em>
+        Algorithms
+       </em>
+       . We give a brief summary and a high-level intuition for each algorithm. More detailed descriptions of these algorithms can be found in Appendix
+       <a class="sec" href="#sec-16">
+        A
+       </a>
+       in the supplementary material. We use the term “algorithm” in a broad sense and the following items (e.g., Self-selected and Fixed sequence) may not all be traditional MAB algorithms.
+      </p>
+      <ul class="list-no-style">
+       <li id="list1" label="•">
+        Self-selected: The participants who are assigned to the Self-selected algorithm will choose which arm to interact with by themselves. In other words, at each time
+        <em>
+         t
+        </em>
+        , instead of a prescribed learning policy determining the arm
+        <em>
+         a
+        </em>
+        (
+        <em>
+         t
+        </em>
+        ), the participants themselves will choose the arm.
+        <br/>
+       </li>
+       <li id="list2" label="•">
+        UCB: At time
+        <em>
+         t
+        </em>
+        , UCB deterministically pulls the arm with the highest upper confidence bound, a value that for each arm, combines the empirical mean reward with an uncertainty estimate of the mean reward. An arm with high upper confidence bound can have high empirical mean and/or high uncertainty on the mean estimate.
+        <br/>
+       </li>
+       <li id="list3" label="•">
+        TS: In Thompson Sampling, a belief distribution is maintained over the possible reward values for each arm. At time
+        <em>
+         t
+        </em>
+        , the algorithm samples a reward from each arm's belief distribution and pulls the arm with the highest sampled reward. When a reward is received after pulling the arm, TS updates the corresponding arm's prior belief distribution to obtain a posterior.
+        <br/>
+       </li>
+       <li id="list4" label="•">
+        ETC: Unlike UCB and TS, the Explore-then-Commit algorithm has two separate stages—the exploration stage and the exploitation stage. It starts with an exploration period where the algorithm pulls the arms in a cyclic order and then switches to an exploitation stage where only the arm with the highest empirical mean in the exploration stage will be pulled. Given that the ETC algorithm achieves a regret of
+        <em>
+         O
+        </em>
+        (
+        <em>
+         T
+        </em>
+        <sup>
+         2/3
+        </sup>
+        ) when the exploration time is on the order of
+        <em>
+         T
+        </em>
+        <sup>
+         2/3
+        </sup>
+        , we have set the exploration period to be
+        <em>
+         c
+        </em>
+        ·
+        <em>
+         T
+        </em>
+        <sup>
+         2/3
+        </sup>
+        for a positive constant
+        <em>
+         c
+        </em>
+        .
+        <br/>
+       </li>
+       <li id="list5" label="•">
+        ɛ-Greedy: This greedy heuristic pulls the arm with the highest empirical mean with probability 1 − ɛ where 0 &lt; ɛ &lt; 1, and pulls an arm uniformly at random with probability ɛ. In a setting with long interaction period, one way of setting ɛ is to have it decreasing over time, e.g., setting ɛ to be on the order of
+        <span class="inline-equation">
+         <span class="tex">
+          $\frac{1}{t}$
+         </span>
+        </span>
+        [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+         3
+        </a>
+        ]. Given the short interaction period in our setting, we have used a fixed ɛ = 0.1 (which may result in linear regret).
+        <br/>
+       </li>
+       <li id="list6" label="•">
+        Fixed sequence (CYCLE, REPEAT): The fixed sequence algorithms pull arms by following a predefined sequence. That is, the arm pulled at time
+        <em>
+         t
+        </em>
+        only depends on the current time step and does not rely on the received rewards so far. We have used two fixed sequences CYCLE and REPEAT for testing whether the reward distributions (that represent participants’ preferences) are fixed over time. We provide more details on these two fixed sequences in Section
+        <a class="sec" href="#sec-9">
+         4
+        </a>
+        .
+        <br/>
+       </li>
+      </ul>
+      <p>
+       Next, we present how we have selected the comics used for recommendations.
+      </p>
+     </section>
+     <section id="sec-6">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.2
+         </span>
+         Comics data
+        </h3>
+       </div>
+      </header>
+      <p>
+       In our experiment, we choose comics as our recommendation domain for the following reasons: (i) Fast consumption time: Given the nature of our experiment where study participants are recommended a sequence of items to consume in a limited amount of time, we require the time for consuming each of the recommendations to be short. For example, recommending movie clips to watch may not be appropriate in our setting given that each clip may take a couple of minutes to finish. (ii) No strong pre-existing preferences: Another important feature of the chosen recommendation domain is that the majority of the study participants should have no strong preference on that subject prior to the experiment. For example, unlike comics, music is a subject that most people tend to already have strong preferences towards [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ]. In such cases, the effects of recommendations towards the participants’ preferences may be minimal.
+      </p>
+      <p>
+       We collected comics from 5 comic series on GoComics [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ]. Each comic series belongs to a genre and represents an arm for pulling. The 5 comic series along with their genre are Lisa Benson (political, conservative), Nick Anderson (political, liberal), Baldo (family), The Born Loser (office), and The Argyle Sweater (gag). The genres of these comics are assigned by GoComics. For each series, we take the following steps to select the set of comics:
+      </p>
+      <ol class="list-no-style">
+       <li id="list7" label="(1)">
+        We first collect all comics belonging to the comic series from the year 2018. We select this time period to be not too recent so that the results of the study are not heavily influenced by ongoing events. It is also not too distant so that the content is still relevant to all subjects.
+        <br/>
+       </li>
+       <li id="list8" label="(2)">
+        For each individual comic, we obtain its number of likes on GoComics. Then, we choose the top 60 comics from each comic genre/series in terms of the number of likes. This selection criteria is designed to ensure the quality of the chosen comics.
+        <br/>
+       </li>
+       <li id="list9" label="(3)">
+        Finally, we randomly assign an ordering to the comics. We keep this ordering fixed throughout the study such that if an arm is pulled (a genre is chosen) at its
+        <em>
+         j
+        </em>
+        -th time, the presented comics will always be the same.
+        <br/>
+       </li>
+      </ol>
+      <p>
+       The comics within the same comic series are independent, in the sense that they can generally be read in any order, without requiring much context from previous comics from the same series. For these collected comics, we have labeled the number of unique characters in them, and use it for the attention check questions to ensure that the study participants have read the comics. Although we have adopted the above selection criteria to ensure the quality of comics from the same comic series to be similar, there is heterogeneity among individual comics and thus may influence the interpretation of our results. We provide more discussion on this in Section
+       <a class="sec" href="#sec-13">
+        6
+       </a>
+       . In Section
+       <a class="sec" href="#sec-7">
+        3.3
+       </a>
+       , we discuss our experimental protocol and platform.
+      </p>
+     </section>
+     <section id="sec-7">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.3
+         </span>
+         Experimental protocol and platform
+        </h3>
+       </div>
+      </header>
+      <p>
+       We first outline our experimental protocol, which consists of the following steps (Figure
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       ):
+      </p>
+      <ol class="list-no-style">
+       <li id="list10" label="(1)">
+        <em>
+         Background survey (initial filtering)
+        </em>
+        : We ask the study participants to complete a brief background survey (Appendix
+        <a class="sec" href="#sec-19">
+         D
+        </a>
+        in the supplementary material). The participants will only be given a code to continue to the next step if an arithmetic question is answered correctly. The goal for the first step is to set up an initial filtering for participants.
+        <br/>
+       </li>
+       <li id="list11" label="(2)">
+        <em>
+         Registration
+        </em>
+        : After completing the background survey, participants are then asked to register on our platform using their completion code. Each participant in our study is assigned an algorithm in the following fixed probabilities—0.25 for Self-selected, 0.125 for UCB, 0.125 for TS, 0.125 for ETC, 0.125 for ɛ-Greedy and 0.125 for each of the two fixed sequences.
+        <br/>
+       </li>
+       <li id="list12" label="(3)">
+        <em>
+         Comic rating
+        </em>
+        : In this step, participants will read a sequence of 50 comics and provide an enjoyment score (a rating) after reading each comic. The sequence of comics can be generated by any of the algorithms discussed in Section
+        <a class="sec" href="#sec-5">
+         3.1
+        </a>
+        . After reading each comic and providing a rating, the participants are also asked to answer an attention check question.
+        <br/>
+       </li>
+       <li id="list13" label="(4)">
+        <em>
+         Post-study survey
+        </em>
+        : Once the participants are finished with the comics rating step of the study, they are asked to complete a post-study survey about their reading experience. They are asked if they remember reading certain comics and if they have rated them positively, as well as how they perceive the recommendations they are provided. An example of the post-study survey questions can be found in Figure
+        <a class="fig" href="#fig6">
+         6
+        </a>
+        (Appendix
+        <a class="sec" href="#sec-20">
+         E
+        </a>
+        in the supplementary material).
+        <br/>
+       </li>
+      </ol>
+      <p>
+       Our experimental platform is built as a toolkit for running field tests for any MAB algorithms with human users. It consists of (a) the participant-facing web interface, and (b) the server backend that stores and processes incoming data from the web interface. When designing the experimental protocol and platform, we consider the following questions:
+      </p>
+      <ol class="list-no-style">
+       <li id="list14" label="(1)">
+        Given that we are asking users to give subjective feedback, how do we have more user responses that are reflective to the user's true preference?
+        <br/>
+       </li>
+       <li id="list15" label="(2)">
+        How do we design an experimental interface that impose less bias to the users?
+        <br/>
+       </li>
+       <li id="list16" label="(3)">
+        Since our study requires users to complete a long (up to 30-minute) sequence of non-independent tasks, how do we have the study to be less interrupted?
+        <br/>
+       </li>
+       <li id="list17" label="(4)">
+        How do we build the system flexible enough to conduct studies for different MAB algorithms and test different assumptions of MAB setups, including ones that we do not cover in this work?
+        <br/>
+       </li>
+      </ol>
+      <p>
+       For (1), we adopt a 9-point Likert scale so that the numbers are sufficiently distinguishable to the participants [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+        17
+       </a>
+       ] and check whether users are paying sufficient attention during the study. In particular, we test the participants on objective properties of the comics they have read, e.g. the number of unique characters (with a face and/or body) in them. We also set a minimum time threshold of 10 seconds before each user response can be submitted so that users spend adequate time on each comic.
+      </p>
+      <p>
+       For (2), to ensure that the participant's rating is not biased towards (e.g., anchored on) the Likert scale slider's initial value, we set the slider to be transparent before the participant clicks on the scale. In addition, in the Self-selected setting where the participants choose the genre of comics to read next, we minimize the color- and ordering-based biases by setting the category selection buttons to be the same color and in random order.
+      </p>
+      <p>
+       As stated in design question (3), because we are interested in studying evolving preferences over a sequence of non-independent tasks, we would like to have
+       <em>
+        continuous and uninterrupted
+       </em>
+       user attention over a period of time. To do so, we design the system to be stateful so that participants can resume the study where they left off in the event of brief network disconnection and browser issues.
+      </p>
+      <p>
+       Finally, we discuss the flexibility of our system and address design question (4). Our experimental platform allows the experimenter to specify any recommendation domains and MAB algorithms for interacting with the human interactant. This flexibility allows the experimenter to not only test the performance of different MAB algorithms but also design pull sequences to understand user preference dynamics and test existing assumptions on user preferences. For example, one may design pull sequences to study the correlation between rewards obtained at different time steps and rewards obtained from pulling different but related arms. It is worth noting that the attention checks in our system are also customizable, allowing for diverse attention checks for each recommendation domain.
+      </p>
+      <p>
+       We plan to open source our code and data. For more details about the experimental platform and MTurk-related implementation details, we refer the readers to Appendix
+       <a class="sec" href="#sec-20">
+        E
+       </a>
+       in the supplementary material.
+      </p>
+     </section>
+     <section id="sec-8">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.4
+         </span>
+         Recruitment and compensation
+        </h3>
+       </div>
+      </header>
+      <p>
+       To ensure the quality of our collected data, we only allow MTurk workers to participate in the study if they are U.S. residents and have completed at least 500 Human Intelligence Tasks (HITs) with an above
+       <span class="inline-equation">
+        <span class="tex">
+         $97\%$
+        </span>
+       </span>
+       HIT approval rate. The anticipated (and actual) time to complete the study is less than 30 minutes. For participants who have successfully completed the study and answered the attention check questions correctly
+       <span class="inline-equation">
+        <span class="tex">
+         $70\%$
+        </span>
+       </span>
+       of time, we have paid
+       <font style="normal">
+        $
+       </font>
+       7.5 (the equivalent hourly salary is above
+       <font style="normal">
+        $
+       </font>
+       15/hr). In Appendix
+       <a class="sec" href="#sec-19">
+        D
+       </a>
+       , we provide more details on the participants’ demographics and backgrounds. Out of the 360 participants who have successfully completed the study, 316 passed the attention check (acceptance rate
+       <span class="inline-equation">
+        <span class="tex">
+         $87.8 \%$
+        </span>
+       </span>
+       ). Our analyses are only conducted on the data collected from these participants. Table
+       <a class="tbl" href="#tab1">
+        1
+       </a>
+       shows the number of participants for each experimental setup.
+      </p>
+     </section>
+    </section>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         4
+        </span>
+        Evolving Preferences in
+        <em>
+         K
+        </em>
+        -armed bandits
+       </h2>
+      </div>
+     </header>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Number of participants for each algorithm. The description for Self-selected, UCB, TS, ETC and ɛ-Greedy are in Section
+        <a class="sec" href="#sec-5">
+         3.1
+        </a>
+        . CYCLE and REPEAT are defined in Section
+        <a class="sec" href="#sec-9">
+         4
+        </a>
+        .
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;">
+         </th>
+         <th style="text-align:center;">
+          Self-selected
+         </th>
+         <th style="text-align:center;">
+          UCB
+         </th>
+         <th style="text-align:center;">
+          TS
+         </th>
+         <th style="text-align:center;">
+          ETC
+         </th>
+         <th style="text-align:center;">
+          ɛ-Greedy
+         </th>
+         <th style="text-align:center;">
+          CYCLE
+         </th>
+         <th style="text-align:center;">
+          REPEAT
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;">
+          # of Participants
+         </td>
+         <td style="text-align:center;">
+          74
+         </td>
+         <td style="text-align:center;">
+          40
+         </td>
+         <td style="text-align:center;">
+          44
+         </td>
+         <td style="text-align:center;">
+          39
+         </td>
+         <td style="text-align:center;">
+          41
+         </td>
+         <td style="text-align:center;">
+          40
+         </td>
+         <td style="text-align:center;">
+          38
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      As we have previously discussed, in
+      <em>
+       K
+      </em>
+      -armed bandits, the reward distribution of each arm is assumed to be fixed over time [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ], which implies that the mean reward of each arm remains the same. It is unclear whether such an assumption is reasonable in recommender system settings where the reward distributions represent human preferences. Our first aim is to test for the existence of evolving preference in the
+      <em>
+       K
+      </em>
+      -armed bandits setup. In other words, using randomized controlled trials, we want to test the following hypothesis:
+      <em>
+       In a
+       <em>
+        K
+       </em>
+       -armed bandit recommendation setting, the reward distribution of each arm (i.e., the user preference towards each item) is not fixed over time.
+      </em>
+     </p>
+     <p>
+      To answer this, we collect enjoyment scores for two fixed recommendation sequences, where each sequence is of length
+      <em>
+       T
+      </em>
+      = 50. The sequence consists of recommendations from
+      <em>
+       K
+      </em>
+      = 5 genre of comics. In other words, the total number of arms is 5. The first sequence pulls the arms in a cyclic fashion which we denote by CYCLE, while the second sequence pulls each arm repeatedly for
+      <em>
+       m
+      </em>
+      =
+      <em>
+       T
+      </em>
+      /
+      <em>
+       K
+      </em>
+      times which we denote by REPEAT:
+     </p>
+     <div class="table-responsive">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{align*} &amp;\text{CYCLE}: \; (\underbrace{12 \ldots K 12 \ldots K \ldots 12 \ldots K}_{12\ldots K \text{ for }m \text{ times}}), \\ &amp;\text{REPEAT}: \; (\underbrace{22 \ldots 2}_{m \text{ times }} \underbrace{1 \ldots 1}_{m \text{ times}} 3 \ldots 3 \ldots K \ldots K). \end{align*}
+       </span>
+       <br/>
+      </div>
+     </div>
+     We note that for both sequences, the number of arm pulls of each arm is the same (
+     <em>
+      m
+     </em>
+     times). Since the order of the comics is fixed for each arm (e.g., pulling an arm for
+     <em>
+      m
+     </em>
+     times will always result in the same sequence of
+     <em>
+      m
+     </em>
+     comics from that genre), the set of comics recommended by the two sequences are the same. The only difference between the two sequences is the order of the presented comics. Intuitively, if the mean reward of each arm is fixed over time (and does not depend on the past pulls of that arm), then the (empirical) mean reward of each arm should be very similar under the two pull sequences.
+     <p>
+     </p>
+     <p>
+      In this work, we utilize a modification of the two-sample permutation test [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ] to deal with the different numbers of participants under the two recommendation sequences. We let
+      <span class="inline-equation">
+       <span class="tex">
+        $\mathcal {P}^{\text{CYCLE}}$
+       </span>
+      </span>
+      and
+      <span class="inline-equation">
+       <span class="tex">
+        $\mathcal {P}^{\text{REPEAT}}$
+       </span>
+      </span>
+      denote the set of participants assigned to the CYCLE and REPEAT recommendation sequence, respectively. For each participant
+      <span class="inline-equation">
+       <span class="tex">
+        $i \in \mathcal {P}^{\text{CYCLE}}$
+       </span>
+      </span>
+      , we use
+      <em>
+       a
+       <sub>
+        i
+       </sub>
+      </em>
+      (
+      <em>
+       t
+      </em>
+      ) to denote the pulled arm (the recommended comic genre) at time
+      <em>
+       t
+      </em>
+      and
+      <em>
+       X
+       <sub>
+        i
+       </sub>
+      </em>
+      (
+      <em>
+       t
+      </em>
+      ) to denote the corresponding enjoyment score (the reward) that the participant has provided. Similarly, for each participant
+      <span class="inline-equation">
+       <span class="tex">
+        $j \in \mathcal {P}^{\text{REPEAT}}$
+       </span>
+      </span>
+      , we use
+      <em>
+       a
+       <sub>
+        j
+       </sub>
+      </em>
+      (
+      <em>
+       t
+      </em>
+      ) and
+      <em>
+       Y
+       <sub>
+        j
+       </sub>
+      </em>
+      (
+      <em>
+       t
+      </em>
+      ) to denote the arm pulled at time
+      <em>
+       t
+      </em>
+      and the enjoyment score collected from participant
+      <em>
+       j
+      </em>
+      at time
+      <em>
+       t
+      </em>
+      . Using these notations, for each arm
+      <em>
+       k
+      </em>
+      ∈ [
+      <em>
+       K
+      </em>
+      ], we define the test statistic as follows:
+     </p>
+     <div class="table-responsive">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{align*} \tau _k &amp;= \underbrace{\frac{1}{|\mathcal {P}^{\text{CYCLE}}|} \sum _{i \in \mathcal {P}^{\text{CYCLE}}} \left(\frac{1}{m} \sum _{t\in [T]: a_i(t) = k} X_i(t) \right)}_{M_k^\text{CYCLE}} \\ &amp;\; - \underbrace{\frac{1}{|\mathcal {P}^{\text{REPEAT}}|} \sum _{j \in \mathcal {P}^{\text{REPEAT}}} \left(\frac{1}{m} \sum _{t\in [T]: a_j(t) = k} Y_j(t) \right)}_{M_k^\text{REPEAT}}. \end{align*}
+       </span>
+       <br/>
+      </div>
+     </div>
+     The test statistic
+     <em>
+      τ
+      <sub>
+       k
+      </sub>
+     </em>
+     is the difference between the mean reward (enjoyment score)
+     <span class="inline-equation">
+      <span class="tex">
+       $M_k^\text{CYCLE}$
+      </span>
+     </span>
+     under the CYCLE recommendation sequence and the mean reward
+     <span class="inline-equation">
+      <span class="tex">
+       $M_k^\text{REPEAT}$
+      </span>
+     </span>
+     under the REPEAT recommendation sequence for arm
+     <em>
+      k
+     </em>
+     . A non-zero
+     <em>
+      τ
+      <sub>
+       k
+      </sub>
+     </em>
+     suggests that the mean reward of arm
+     <em>
+      k
+     </em>
+     is different under CYCLE and REPEATand that the reward distribution is evolving. The higher the absolute value of
+     <em>
+      τ
+      <sub>
+       k
+      </sub>
+     </em>
+     is, the bigger the difference between the two mean rewards is. A positive test statistic value indicates that the participants prefer the arm under CYCLE over REPEAT on average.
+     <p>
+     </p>
+     <p>
+      To quantify the significance of the value of the test statistic, we use a two-sample permutation test to obtain the
+      <em>
+       p
+      </em>
+      -value of the test [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ]: First, we permute participants between
+      <span class="inline-equation">
+       <img alt="Math 17" class="img-responsive" src="3580670_files\chi2334inline15.svg"/>
+      </span>
+      and
+      <span class="inline-equation">
+       <img alt="Math 18" class="img-responsive" src="3580670_files\chi2334inline16.svg"/>
+      </span>
+      uniformly at random for 10,000 times and ensure that the size of each group remains the same after each permutation. Then, we recompute the test statistic
+      <em>
+       τ
+       <sub>
+        k
+       </sub>
+      </em>
+      for each permutation to obtain a distribution of the test statistic. Finally, we use the original value of our test statistic along with this distribution to determine the
+      <em>
+       p
+      </em>
+      -value.
+     </p>
+     <p>
+      To report the
+      <span class="inline-equation">
+       <span class="tex">
+        $95\%$
+       </span>
+      </span>
+      confidence interval of the test statistic for each arm, we use bootstrap and re-sample the data for 5,000 times at the level of arm pulls. That is, for each arm pull at time
+      <em>
+       t
+      </em>
+      , we obtain its bootstrapped rewards under CYCLE and REPEAT by resampling from the actual rewards obtained by pulling that arm under CYCLE and REPEAT at time
+      <em>
+       t
+      </em>
+      , respectively. Given that we have conducted 5 tests simultaneously (one for each arm), in order to control the family-wise error rate, we need to correct the level
+      <em>
+       α
+       <sub>
+        k
+       </sub>
+      </em>
+      (
+      <em>
+       k
+      </em>
+      ∈ [
+      <em>
+       K
+      </em>
+      ]) for each test. More formally, to ensure the probability that we falsely reject
+      <em>
+       any
+      </em>
+      null hypothesis to be at most
+      <em>
+       α
+      </em>
+      , for each test, the
+      <em>
+       p
+      </em>
+      -value of a test should be at most its corresponding corrected
+      <em>
+       α
+       <sub>
+        k
+       </sub>
+      </em>
+      . We adopt the Holm's Sequential Bonferroni Procedure (details presented in Appendix
+      <a class="sec" href="#sec-17">
+       B
+      </a>
+      ) to perform this correction [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ].
+     </p>
+     <div class="table-responsive" id="tab2">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 2:
+       </span>
+       <span class="table-title">
+        The difference between the mean reward under CYCLE and the mean reward under REPEAT for each arm. All results are rounded to 3 digits. The
+        <em>
+         p
+        </em>
+        -values are obtained through permutation tests with 10,000 permutations. We use asterisk to indicate that the test is significant at the level
+        <em>
+         α
+        </em>
+        = 0.1. The
+        <span class="inline-equation">
+         <span class="tex">
+          $95\%$
+         </span>
+        </span>
+        confidence intervals are obtained using bootstrap with 5,000 bootstrapped samples.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;">
+         </th>
+         <th style="text-align:center;">
+         </th>
+         <th style="text-align:center;">
+          family
+         </th>
+         <th style="text-align:center;">
+          gag
+         </th>
+         <th style="text-align:center;">
+          political (conservative)
+         </th>
+         <th style="text-align:center;">
+          office
+         </th>
+         <th style="text-align:center;">
+          political (liberal)
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+          Overall
+         </td>
+         <td style="text-align:center;">
+          <em>
+           τ
+           <sub>
+            k
+           </sub>
+          </em>
+          value
+         </td>
+         <td style="text-align:center;">
+          0.290
+         </td>
+         <td style="text-align:center;">
+          0.132
+         </td>
+         <td style="text-align:center;">
+          0.445
+         </td>
+         <td style="text-align:center;">
+          0.047
+         </td>
+         <td style="text-align:center;">
+          0.573
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $95\%$
+           </span>
+          </span>
+          CI
+         </td>
+         <td style="text-align:center;">
+          [0.042, 0.549]
+         </td>
+         <td style="text-align:center;">
+          [ − 0.096, 0.371]
+         </td>
+         <td style="text-align:center;">
+          [0.158, 0.744]
+         </td>
+         <td style="text-align:center;">
+          [ − 0.196, 0.290]
+         </td>
+         <td style="text-align:center;">
+          [0.301, 0.837]
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          <em>
+           p
+          </em>
+          -value
+         </td>
+         <td style="text-align:center;">
+          0.025
+          <sup>
+           *
+          </sup>
+         </td>
+         <td style="text-align:center;">
+          0.275
+         </td>
+         <td style="text-align:center;">
+          0.004
+          <sup>
+           *
+          </sup>
+         </td>
+         <td style="text-align:center;">
+          0.694
+         </td>
+         <td style="text-align:center;">
+          &lt; 0.001
+          <sup>
+           *
+          </sup>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          Heavy
+         </td>
+         <td style="text-align:center;">
+          <em>
+           τ
+           <sub>
+            k
+           </sub>
+          </em>
+          value
+         </td>
+         <td style="text-align:center;">
+          − 0.394
+         </td>
+         <td style="text-align:center;">
+          − 0.556
+         </td>
+         <td style="text-align:center;">
+          − 0.694
+         </td>
+         <td style="text-align:center;">
+          − 0.647
+         </td>
+         <td style="text-align:center;">
+          − 0.664
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $95\%$
+           </span>
+          </span>
+          CI
+         </td>
+         <td style="text-align:center;">
+          [ − 0.678, −0.114]
+         </td>
+         <td style="text-align:center;">
+          [ − 0.864, −0.243]
+         </td>
+         <td style="text-align:center;">
+          [ − 1.056, −0.325]
+         </td>
+         <td style="text-align:center;">
+          [ − 0.944, −0.350]
+         </td>
+         <td style="text-align:center;">
+          [ − 1.021, −0.302]
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          <em>
+           p
+          </em>
+          -value
+         </td>
+         <td style="text-align:center;">
+          0.007
+          <sup>
+           *
+          </sup>
+         </td>
+         <td style="text-align:center;">
+          &lt; 0.001
+          <sup>
+           *
+          </sup>
+         </td>
+         <td style="text-align:center;">
+          &lt; 0.001
+          <sup>
+           *
+          </sup>
+         </td>
+         <td style="text-align:center;">
+          &lt; 0.001
+          <sup>
+           *
+          </sup>
+         </td>
+         <td style="text-align:center;">
+          &lt; 0.001
+          <sup>
+           *
+          </sup>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          Light
+         </td>
+         <td style="text-align:center;">
+          <em>
+           τ
+           <sub>
+            k
+           </sub>
+          </em>
+          value
+         </td>
+         <td style="text-align:center;">
+          0.784
+         </td>
+         <td style="text-align:center;">
+          0.635
+         </td>
+         <td style="text-align:center;">
+          1.274
+         </td>
+         <td style="text-align:center;">
+          0.552
+         </td>
+         <td style="text-align:center;">
+          1.475
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $95\%$
+           </span>
+          </span>
+          CI
+         </td>
+         <td style="text-align:center;">
+          [0.421, 1.150]
+         </td>
+         <td style="text-align:center;">
+          [0.298, 0.977]
+         </td>
+         <td style="text-align:center;">
+          [0.860, 1.681]
+         </td>
+         <td style="text-align:center;">
+          [0.198, 0.905]
+         </td>
+         <td style="text-align:center;">
+          [1.120, 1.827]
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          <em>
+           p
+          </em>
+          -value
+         </td>
+         <td style="text-align:center;">
+          &lt; 0.001
+          <sup>
+           *
+          </sup>
+         </td>
+         <td style="text-align:center;">
+          &lt; 0.001
+          <sup>
+           *
+          </sup>
+         </td>
+         <td style="text-align:center;">
+          &lt; 0.001
+          <sup>
+           *
+          </sup>
+         </td>
+         <td style="text-align:center;">
+          0.001
+          <sup>
+           *
+          </sup>
+         </td>
+         <td style="text-align:center;">
+          &lt; 0.001
+          <sup>
+           *
+          </sup>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      Our results show that for three arms—family, political (conservative) and political (liberal)—the non-zero difference between the mean reward under the two recommendation sequences are significant at level
+      <em>
+       α
+      </em>
+      = 0.1 (Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      ). These findings confirm our research hypothesis that user preferences are not fixed (even in a short amount of time) in a
+      <em>
+       K
+      </em>
+      -armed bandit recommendation setting. There may be many causes of the evolving reward distributions (preferences). One possibility, among many others, is that the reward of an arm depends on its past pulls. In other words, people's preference towards an item depends on their past consumption of it. For example, existing marketing and psychology literature has suggested that people may experience hedonic decline upon repeated exposures to the same item [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ]. On the other hand, in music play-listing, one may expect the expected reward of an arm (a genre) to increase due to the taste that the listener has developed for that genre of music [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ]. For a more comprehensive discussion on preference formation, we refer the readers to Becker [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ].
+     </p>
+     <p>
+      Finally, to better understand the nature of our findings, we divide the participants into heavy comic readers who read comics daily and light comic readers who read comics at a lower frequency. Among participants who are assigned the CYCLE sequence, there are 17 heavy readers and 23 light readers. For REPEAT, there are 16 heavy readers and 22 light readers. We perform the same analysis as noted above for each of the two groups. Similar to the overall findings, among both heavy and light readers, evolving preferences (evolving mean reward) have been observed (Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      ), confirming our research hypothesis. Interestingly, we find that for each genre, the heavy readers tend to prefer the recommendations from the REPEAT sequence over the CYCLE sequence. On the contrary, for each genre, light readers prefer recommendations from the CYCLE sequence over the REPEAT sequence. As an initial step towards understanding this phenomenon, we present descriptive data analysis on how rewards (user preferences) evolve for heavy and light readers under the two recommendation sequences. Similar to our results in Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      , for light readers, at most time steps, the reward trajectory of CYCLE has a higher value than the reward trajectory of REPEAT; while for heavy readers, this is the opposite (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ). By looking at the reward trajectories (and the lines fitted through the reward trajectories) over the entire recommendation sequence (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ), we find additional trends: for light readers, the differences between the rewards collected under CYCLE and REPEAT are increasing over time; while for heavy readers, such differences are relatively stable. This trend is also observed in the reward trajectory (and the line fitted through the reward trajectory) of each arm under CYCLE and REPEAT (Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      ). In particular, for light readers, among all arms (comic genres) except family, we find that the lines fitted through the rewards collected under CYCLE and REPEAT become further apart as the number of arm pulls increases. This distinction between heavy and light users may be due to various reasons. For example, light readers may prefer variety in their recommendations because they are exploring their interests or the light readers and heavy readers share different satiation rates. On a related note, a recent study has shown that the satiation rates of people may depend on their personality traits [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ]. Precisely understanding the causes of this distinction between heavy and light readers is of future interest.
+     </p>
+     <figure id="fig3">
+      <img alt="Figure 3" class="img-responsive" src="3580670_files\chi2334fig3.jpg"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        The reward at each time step of the CYCLE and REPEAT recommendation sequence averaged across heavy and light readers, respectively. The error bars indicate one standard deviation from the mean. For the REPEAT sequence, we highlight when the arm switches using the vertical lines and add the arm name (comic genre) corresponding to the time period in between the switches using the black texts. The blue and orange dotted lines are fitted through the rewards collected under CYCLE and REPEAT, respectively.
+       </span>
+      </figcaption>
+     </figure>
+     <figure id="fig4">
+      <img alt="Figure 4" class="img-responsive" src="3580670_files\chi2334fig4.jpg"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Each plot shows the reward collected for a particular arm at each arm pull under the CYCLE and REPEAT recommendation sequences. The error bars indicate one standard deviation from the mean. The reward trajectories are averaged across heavy and light readers, respectively. The blue and orange dotted lines are fitted through the reward trajectories for each arm under CYCLE and REPEAT, respectively.
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         5
+        </span>
+        USAGE EXAMPLE OF THE EXPERIMENTAL FRAMEWORK
+       </h2>
+      </div>
+     </header>
+     <p>
+      As an illustration of the usage of our experimental framework, we compare the performance of different algorithms, in terms of both the cumulative rewards, and the users’ own reflection on their interactions with these algorithms. Though we are in a simulated and simplified recommender system setup, we aim to provide some understanding on (i) whether people prefer to be recommended by an algorithm over deciding on their own, and (ii) whether more autonomy (choosing the next comic genre on their own) results in a more attentive and mindful experience. We note that, compared to our findings in Section
+      <a class="sec" href="#sec-9">
+       4
+      </a>
+      that are obtained through a rigorous hypothesis testing framework, the results in this section are exploratory in nature and should not be interpreted as definitive answers to the above questions.
+     </p>
+     <div class="table-responsive" id="tab3">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 3:
+       </span>
+       <span class="table-title">
+        Performances of each algorithm in terms of different enjoyment characterizations. The first row gives the cumulative rewards for each algorithm, averaged over participants who have interacted with it. We also report the
+        <span class="inline-equation">
+         <span class="tex">
+          $95\%$
+         </span>
+        </span>
+        confidence intervals for the cumulative rewards. The hindsight-satisfaction row shows the percentage of participants who believe the sequence of comics they have read captures their preference well. The last row provides the percentage of participants who prefer to select comics to read on their own in hindsight.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;">
+         </th>
+         <th style="text-align:center;">
+          Self-selected
+         </th>
+         <th style="text-align:center;">
+          UCB
+         </th>
+         <th style="text-align:center;">
+          TS
+         </th>
+         <th style="text-align:center;">
+          ETC
+         </th>
+         <th style="text-align:center;">
+          ɛ-Greedy
+         </th>
+         <th style="text-align:center;">
+          CYCLE
+         </th>
+         <th style="text-align:center;">
+          REPEAT
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+          Cumulative reward
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\begin{matrix} 319.36 \\ [205, 434] \end{matrix}$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\begin{matrix} 323.70 \\ [223, 424] \end{matrix}$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\begin{matrix} 312.37 \\ [204, 420] \end{matrix}$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\begin{matrix} 324.49 \\ [209, 440] \end{matrix}$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\begin{matrix} 307.59 \\ [205, 411] \end{matrix}$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\begin{matrix} 316.5 \\ [216, 417] \end{matrix}$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\begin{matrix} 301.63 \\ [201, 427] \end{matrix}$
+           </span>
+          </span>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          Hindsight satisfaction
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $81.08 \%$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $75.00 \%$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $72.73 \%$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $76.92 \%$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $80.49 \%$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $77.50 \%$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $63.16 \%$
+           </span>
+          </span>
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;">
+          Preference towards autonomy
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $71.62 \%$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $50.00 \%$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $68.18 \%$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $58.97 \%$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $58.54 \%$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $62.50 \%$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $65.79 \%$
+           </span>
+          </span>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <section id="sec-11">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.1
+         </span>
+         Enjoyment
+        </h3>
+       </div>
+      </header>
+      <p>
+       We first compare different algorithms (Self-selected, UCB, TS, ETC, ɛ-Greedy, CYCLE and REPEAT) in terms of the participants’ enjoyment. More specifically, we want to compare the participants who are provided recommended comics to read with the ones who choose on their own. In general, enjoyment is hard to measure [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+        47
+       </a>
+       ]. To this end, we look at participants’ enjoyment and preference towards these algorithms through the following three aspects:
+      </p>
+      <ul class="list-no-style">
+       <li id="list18" label="•">
+        Cumulative rewards: This metric is closely related to the notion of “regret” that is commonly used to compare the performance of bandit algorithms [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+         35
+        </a>
+        ]. More formally, for any participant
+        <em>
+         i
+        </em>
+        , the cumulative reward of an algorithm that interacts with participant
+        <em>
+         i
+        </em>
+        is given by
+        <span class="inline-equation">
+         <span class="tex">
+          $\sum _{t=1}^T R_i(t)$
+         </span>
+        </span>
+        where
+        <em>
+         R
+         <sub>
+          i
+         </sub>
+        </em>
+        (
+        <em>
+         t
+        </em>
+        ) is the reward provided by participant
+        <em>
+         i
+        </em>
+        at time
+        <em>
+         t
+        </em>
+        . In Table
+        <a class="tbl" href="#tab3">
+         3
+        </a>
+        , for each algorithm, we show their cumulative rewards averaged over participants who have interacted with the algorithm.
+        <br/>
+       </li>
+       <li id="list19" label="•">
+        Hindsight satisfaction: After the participants interact with the algorithm, in the post-study survey, we ask them the following question: “Do you feel that the sequence of recommendations
+        <a class="fn" href="#fn3" id="foot-fn3">
+         <sup>
+          2
+         </sup>
+        </a>
+        captured your preferences well?” Participants’ answers to this question provide their hindsight reflections towards how well the algorithm performed and whether they are satisfied with it. The second row of Table
+        <a class="tbl" href="#tab3">
+         3
+        </a>
+        shows the percentage of participants who believe the sequence of comics they read has captured their preference well.
+        <br/>
+       </li>
+       <li id="list20" label="•">
+        Preference towards autonomy: In addition to the previous two metrics, we have explicitly asked the participants to indicate whether they prefer to choose comics to read on their own. In the post-study survey, we ask: “Do you prefer being recommended comics to read or selecting comics to read on your own?” The third row of Table
+        <a class="tbl" href="#tab3">
+         3
+        </a>
+        provides the percentage of participants who prefer to select comics on their own for each algorithm.
+        <br/>
+       </li>
+      </ul>
+      <p>
+       In our collected data, the participants who have given more autonomy (the Self-selected participants) prefer more autonomy in hindsight, compared to other participants. Though Self-selected does not have the highest mean cumulative reward, it has the highest percent of participants who believe that the comics they read have captured their preferences well in hindsight (Table
+       <a class="tbl" href="#tab3">
+        3
+       </a>
+       ). This misalignment between mean cumulative reward and hindsight satisfaction also shows in other algorithms (i.e., higher mean cumulative reward may not indicate higher hindsight satisfaction), including ɛ-Greedy and ETC. On the other hand, UCB performs well in terms of the mean cumulative reward, while having the lowest percentage of participants wanting to have more autonomy. We provide additional analyses on comparing these algorithms in terms of participant's enjoyment in Appendix
+       <a class="sec" href="#sec-18">
+        C
+       </a>
+       .
+      </p>
+      <div class="table-responsive" id="tab4">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 4:
+        </span>
+        <span class="table-title">
+         Average correctness of the two types of memory questions for each algorithm.
+        </span>
+       </div>
+       <table class="table">
+        <thead>
+         <tr>
+          <th style="text-align:center;">
+          </th>
+          <th style="text-align:center;">
+           Self-selected
+          </th>
+          <th style="text-align:center;">
+           UCB
+          </th>
+          <th style="text-align:center;">
+           TS
+          </th>
+          <th style="text-align:center;">
+           ETC
+          </th>
+          <th style="text-align:center;">
+           ɛ-Greedy
+          </th>
+          <th style="text-align:center;">
+           CYCLE
+          </th>
+          <th style="text-align:center;">
+           REPEAT
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+          <td style="text-align:center;">
+           Reading Memory
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $91.89\%$
+            </span>
+           </span>
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $90.00\%$
+            </span>
+           </span>
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $92.42\%$
+            </span>
+           </span>
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $93.16\%$
+            </span>
+           </span>
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $90.24\%$
+            </span>
+           </span>
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $90.00\%$
+            </span>
+           </span>
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $90.35\%$
+            </span>
+           </span>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           Rating Memory
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $71.17\%$
+            </span>
+           </span>
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $70.00\%$
+            </span>
+           </span>
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $70.45\%$
+            </span>
+           </span>
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $76.92\%$
+            </span>
+           </span>
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $69.92\%$
+            </span>
+           </span>
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $69.16\%$
+            </span>
+           </span>
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $57.89\%$
+            </span>
+           </span>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </section>
+     <section id="sec-12">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.2
+         </span>
+         Attentiveness
+        </h3>
+       </div>
+      </header>
+      <p>
+       We want to understand whether participants who are asked to choose on their own have a more mindful experience, in which the participants are more attentive to what they have read through [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+        18
+       </a>
+       ]. There is no consensus on defining and measuring mindfulness of an experience [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ]. Some of the existing research uses self-reported mindfulness as a measurement [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ]. In our case, we look at how attentive the participants are to their own experience, though the lens of memory—for each participant, in the post-study survey, we ask them two types of memory questions:
+      </p>
+      <ul class="list-no-style">
+       <li id="list21" label="•">
+        Reading memory: In the post-study survey, we present the participants three randomly selected comics and ask them to indicate whether they have read the comics before. This question aims to measure the participants’ memory of
+        <em>
+         what they have read
+        </em>
+        . The first row of Table
+        <a class="tbl" href="#tab4">
+         4
+        </a>
+        shows the average correctness percentage for the reading memory questions for each algorithm.
+        <br/>
+       </li>
+       <li id="list22" label="•">
+        Rating memory: We also look at the participants’ memory on
+        <em>
+         how they have liked
+        </em>
+        certain comics. To this end, in the post-study survey, we present three randomly selected comics among the ones the participants have read and ask them to indicate whether they have rated the comic with a score of five or above. The second row of Table
+        <a class="tbl" href="#tab4">
+         4
+        </a>
+        shows the average correctness percentage.
+        <br/>
+       </li>
+      </ul>
+      <p>
+       We note that these questions differ from the attention check questions after each comic and are not directly related to the compensation that the participants get. However, the high correctness percentage shown in Table
+       <a class="tbl" href="#tab4">
+        4
+       </a>
+       on the reading memory questions suggest that the participants have attempted to answer the questions from their memory instead of providing random answers.
+      </p>
+      <p>
+       In general, the participants have performed much better on the reading memory questions than the rating memory questions, suggesting that they may be more aware of what they have consumed than how they have liked them. In addition, all participants perform similarly in terms of the reading memory correctness percentage with those whose algorithm is ETC or Self-selected performing slightly better. Though it is hard to say which algorithm provides the most attentive experience to the participants and whether Self-selected participants have a more mindful experience, it is relatively clear that participants whose algorithm is REPEAT perform the worst in terms of rating memory. Our data does not provide strong evidence on believing that more autonomy results in more attentive experience, but may suggest that less enjoyable experience (e.g., for participants whose algorithm are REPEAT) correlates to less attentiveness. We provide additional analyses on comparing these algorithms in terms of participant's attentiveness in Appendix
+       <a class="sec" href="#sec-18">
+        C
+       </a>
+       .
+      </p>
+     </section>
+    </section>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         6
+        </span>
+        CONCLUSIONS AND FUTURE WORK
+       </h2>
+      </div>
+     </header>
+     <p>
+      Our work provides a general experimental framework and toolkit to understand assumptions on human preferences in a bandit setup. It also allows one to perform field tests of different bandit algorithms that interact with humans. Using these tools, we build a publicly available dataset that contains trajectories of recommendations and ratings of them given by multiple users in a bandit setting. The collected data has been used to check the validity of a core assumption on human preference in MABs literature—that the reward distributions (corresponding to user preferences) are fixed. We show that even in a short time period like our bandit recommendation setup, such dynamical preference exists. Further, our observations on the difference between the light and heavy user in their preference dynamics suggest the need of having a more granular understanding of human preferences. As an illustrative usage of our experimental framework, we have explored the study participants’ preferences towards selecting content to read on their own and being recommended content to read. As we have discussed above, these findings are exploratory in nature with the goal of showcasing different usages of our experimental framework; thus, they should not be interpreted as definitive answers. In our exploratory analysis, we observe that an algorithm achieving the highest cumulative reward does not necessarily imply that it will achieve the highest hindsight satisfaction.
+     </p>
+     <p>
+      At a higher level, our work fits in the broader picture of understanding the validity of assumptions that machine learning systems (and in our case, recommender systems) rely on. Although all machine learning models are built upon some simplifying assumptions of the world, some of these assumptions oversimplify the world to the extent that they lose the core characterizations of the problem we are interested in. In our case, the assumptions we want to understand are centered around user preferences. We have identified that assumptions on the temporal stability of preferences used in traditional MABs literature are oversimplifications. The balance between identifying simplifications that are helpful for building learning systems and avoiding oversimplifications that discard core characteristics of the problem is difficult. As put by the famous statistician George Box, “all models are wrong, but some are useful” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ]. Our goal for developing the experimental toolkit and conducting the human subjects study is to provide ways for identifying assumptions on user preferences that are useful for developing MABs algorithms in recommender systems. Below we discuss the limitations and future directions of our work.
+     </p>
+     <section id="sec-14">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.1
+         </span>
+         Limitations
+        </h3>
+       </div>
+      </header>
+      <p>
+       We discuss several limitations of our study. First, the sizes of the mean reward differences of each arm reported in Section
+       <a class="sec" href="#sec-9">
+        4
+       </a>
+       are within 1.5 point on the 9-point Likert scale, which may be considered small. This is due to many reasons. For one, the enjoyment score (the reward) provided by each participant is subjective and may have high variance due to this subjectivity. Though a difference may be considered to be strong in a within-subjective study, it may be thought of as small in a between-subject study (the type of study in our case). However, we note that our results obtained using the permutation test show that reward distributions are indeed not fixed over time for multiple arms in the
+       <em>
+        K
+       </em>
+       -armed bandit recommendation setup. Second, each arm represents a comic series. Though we have selected the comics from each series in terms of their quality (the number of likes that the comics receive), there may still be heterogeneity among the selected comics belonging to the same series, and it is up to discussion on whether one should consider these comics to belong to the same arm. Thirdly, many quantities (e.g., enjoyment/satisfaction, mindfulness/attentiveness) we want to measure are less well-defined. Our way of measuring them is from a particular angle, and may not be widely applicable. Fourthly, the study domain is chosen to be comics due to reasons including the short consumption time of a comic and the study requires the participants to read 50 comics. Although all of our experiments are completed within 30 minutes, it is uncommon in real-world settings for people to read 50 comics at a time and thus may introduce uncontrolled boredom effects. Fifthly, in our experiments, we compare the user preferences towards each arm using two fixed sequences. One may also utilize a purely randomized sequence as a baseline to better understand user preferences. Finally, due to resource constraints (e.g., funding limits for conducting the study and computational limits on the number of simultaneous experiment instances we can host on our server), we recruited 360 participants (with 316 of them passing the attention checks) for our study. Compared to industry-scale experiments, the number of participants in our study is on the lower end. It is also worth mentioning that our implementations of the bandit algorithms ensure that the comic recommendations only depend on the user's own history, which is not a common practice for recommender systems on existing platforms. In practice, one may utilize other users’ interaction histories to warm start these bandit algorithms. Though there are these limitations, we would like to emphasize that our work makes a substantive step towards understanding the applicability of traditional assumptions on user preferences in MABs literature.
+      </p>
+     </section>
+     <section id="sec-15">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.2
+         </span>
+         Future Work
+        </h3>
+       </div>
+      </header>
+      <p>
+       There are multiple future directions for our work. Our findings on the existence of evolving preferences in a
+       <em>
+        K
+       </em>
+       -armed bandits recommendation setting suggest that in order to study the decision-theoretic nature of recommender systems using the MAB framework, one must account for such preference dynamics. The need for learning algorithms (oftentimes reinforcement learning algorithms) that deal with the impact of recommendations on user preferences have also been proposed in recent works [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+        12
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+        13
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+        14
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+        15
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+        44
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+        45
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+        55
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+        61
+       </a>
+       ]. An important building block for this line of research is to have better modeling of human preference dynamics. Our experimental framework and toolkit can provide more grounding and accessibility for research on it. As an example, our observation that heavy and light comic readers have different preference dynamics can be further investigated using our experimental framework, advancing our understanding on evolving preferences in a more granular way. More broadly, our toolkit can be used for: (i) collecting data using fixed or randomized recommendation sequences or bandit algorithms to identify and estimate preference dynamics; and (ii) conducting field tests of bandit algorithms designed to address evolving preferences.
+      </p>
+      <p>
+       Our exploratory data analysis on the performance of different algorithms suggests that the human interactants of the bandit algorithms may care about other aspects of their experience in addition to cumulative rewards. For example, Self-selected has a higher percentage of satisfied participants in hindsight compared to UCB, though UCB has a higher average cumulative reward. This suggests that besides traditional performance metrics used to analyze and develop these bandit algorithms, we should consider a broader set of objectives and metrics when studying these problems. On a related note, given that we want our algorithm to account for evolving preferences, when regret (the difference between the expected cumulative reward obtained by a proposed policy and an oracle) is used as the performance metric, the oracle should be chosen to be adaptive instead of the best-fixed arm considered in many MABs (including contextual bandits) literature.
+      </p>
+     </section>
+    </section>
+   </section>
+   <section class="back-matter">
+    <appendix>
+     <section id="sec-16">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          A
+         </span>
+         ALGORITHMS
+        </h2>
+       </div>
+      </header>
+      <p>
+       We provide additional details on algorithms presented in Section
+       <a class="sec" href="#sec-5">
+        3.1
+       </a>
+       . Recall that
+       <em>
+        R
+       </em>
+       (
+       <em>
+        t
+       </em>
+       ) denote the reward obtained at time
+       <em>
+        t
+       </em>
+       and
+       <em>
+        a
+       </em>
+       (
+       <em>
+        t
+       </em>
+       ) denote the arm pulled at time
+       <em>
+        t
+       </em>
+       . Denote
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {T}_{k,t} = \lbrace t^{\prime } \in [t-1]: a(t^{\prime }) = k\rbrace$
+        </span>
+       </span>
+       . As we discussed in our main paper, the reward
+       <em>
+        R
+       </em>
+       (
+       <em>
+        t
+       </em>
+       ) obtained by pulling arm
+       <em>
+        a
+       </em>
+       (
+       <em>
+        t
+       </em>
+       ) is given by the enjoyment score the user provides after reading the recommended comic. Thus, for each arm (i.e., each comic genre), the reward distribution corresponds to user's enjoyment score distribution (or in other words, user's preference) towards that genre.
+      </p>
+      <ul class="list-no-style">
+       <li id="list23" label="•">
+        UCB: For
+        <em>
+         t
+        </em>
+        ∈ {1, …,
+        <em>
+         K
+        </em>
+        }, we have
+        <em>
+         a
+        </em>
+        (
+        <em>
+         t
+        </em>
+        ) =
+        <em>
+         t
+        </em>
+        . For
+        <em>
+         t
+        </em>
+        ∈ {
+        <em>
+         K
+        </em>
+        + 1, …,
+        <em>
+         T
+        </em>
+        }, we have
+        <div class="table-responsive">
+         <div class="display-equation">
+          <img alt="Math 62" class="img-responsive" src="3580670_files\chi2334display3.svg"/>
+          <br/>
+         </div>
+        </div>
+        <br/>
+       </li>
+       <li id="list24" label="•">
+        TS: For each arm
+        <em>
+         k
+        </em>
+        ∈ [
+        <em>
+         K
+        </em>
+        ], their prior distribution is set to be a Dirichlet distribution with parameters being (1, 1, 1, 1, 1, 1, 1, 1, 1), given that the rewards are categorical with 9 values. At time
+        <em>
+         t
+        </em>
+        , for each arm
+        <em>
+         k
+        </em>
+        , we obtain a virtual reward
+        <span class="inline-equation">
+         <span class="tex">
+          $\tilde{R}(k,t)$
+         </span>
+        </span>
+        by sampling from the corresponding Dirichlet distribution first and then use that sample to sample from a multinomial distribution. Then,
+        <span class="inline-equation">
+         <span class="tex">
+          $a(t) \in \arg \max _{k \in [K]} \tilde{R}(k,t)$
+         </span>
+        </span>
+        . Upon a reward
+        <em>
+         R
+        </em>
+        (
+        <em>
+         t
+        </em>
+        ) is received by pulling arm
+        <em>
+         k
+        </em>
+        , the parameter of arm
+        <em>
+         k
+        </em>
+        ’s Dirichlet distribution is updated: the
+        <em>
+         R
+        </em>
+        (
+        <em>
+         t
+        </em>
+        )-th entry of the parameter is increased by 1. We have chosen the Dirichlet and multinomial distribution as the prior distribution and likelihood function because of their conjugacy, which ensures that the posterior distribution is tractable. This choice of the prior distribution and likelihood function has not utilized the fact that the reward is ordinal. One can potentially use a likelihood function that captures the ordinal structure of the rewards, but it may result in difficulties in obtaining the posterior distribution since there may not be a conjugate prior for this new likelihood function.
+        <br/>
+       </li>
+       <li id="list25" label="•">
+        ETC: For
+        <em>
+         t
+        </em>
+        ∈ {1, …, ⌊0.5 · (
+        <em>
+         T
+        </em>
+        <sup>
+         2/3
+        </sup>
+        )⌋},
+        <em>
+         a
+        </em>
+        (
+        <em>
+         t
+        </em>
+        ) =
+        <em>
+         t
+        </em>
+        mod
+        <em>
+         K
+        </em>
+        . For
+        <em>
+         t
+        </em>
+        ∈ {⌈0.5 · (
+        <em>
+         T
+        </em>
+        <sup>
+         2/3
+        </sup>
+        )⌉, …,
+        <em>
+         T
+        </em>
+        },
+        <div class="table-responsive">
+         <div class="display-equation">
+          <img alt="Math 65" class="img-responsive" src="3580670_files\chi2334display4.svg"/>
+          <br/>
+         </div>
+        </div>
+        <br/>
+       </li>
+       <li id="list26" label="•">
+        ɛ-Greedy: For
+        <em>
+         t
+        </em>
+        ∈ {1, …,
+        <em>
+         K
+        </em>
+        },
+        <em>
+         a
+        </em>
+        (
+        <em>
+         t
+        </em>
+        ) =
+        <em>
+         t
+        </em>
+        . For
+        <em>
+         t
+        </em>
+        ∈ {
+        <em>
+         K
+        </em>
+        + 1, …,
+        <em>
+         T
+        </em>
+        }, with probability 0.9,
+        <div class="table-responsive">
+         <div class="display-equation">
+          <img alt="Math 66" class="img-responsive" src="3580670_files\chi2334display5.svg"/>
+          <br/>
+         </div>
+        </div>
+        With probability 0.1,
+        <em>
+         a
+        </em>
+        (
+        <em>
+         t
+        </em>
+        ) is randomly selected from the
+        <em>
+         K
+        </em>
+        arms.
+        <br/>
+       </li>
+      </ul>
+     </section>
+     <section id="sec-17">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          B
+         </span>
+         HOLM'S SEQUENTIAL BONFERRONI PROCEDURE
+        </h2>
+       </div>
+      </header>
+      <p>
+       When testing
+       <em>
+        K
+       </em>
+       hypotheses (in our case, we have one hypothesis for each arm), we adopt Holm's Sequential Bonferroni Procedure to control the family-wise error rate. To ensure that the probability of falsely rejecting
+       <em>
+        any
+       </em>
+       null hypothesis to be at most
+       <em>
+        α
+       </em>
+       , we perform the following procedure: Suppose that we are given
+       <em>
+        m
+       </em>
+       sorted
+       <em>
+        p
+       </em>
+       -values
+       <em>
+        p
+       </em>
+       <sub>
+        1
+       </sub>
+       , …,
+       <em>
+        p
+        <sub>
+         m
+        </sub>
+       </em>
+       from the lowest to the highest for hypothesis
+       <em>
+        H
+       </em>
+       <sub>
+        1
+       </sub>
+       , …,
+       <em>
+        H
+        <sub>
+         m
+        </sub>
+       </em>
+       . For
+       <em>
+        i
+       </em>
+       ∈ [
+       <em>
+        m
+       </em>
+       ], if
+       <em>
+        p
+        <sub>
+         i
+        </sub>
+       </em>
+       &lt;
+       <em>
+        α
+       </em>
+       /(
+       <em>
+        m
+       </em>
+       + 1 −
+       <em>
+        i
+       </em>
+       ), then reject
+       <em>
+        H
+        <sub>
+         i
+        </sub>
+       </em>
+       and move on to the next hypothesis; otherwise, exit the process (and we cannot reject the rest of the hypotheses). As an illustration, in Table
+       <a class="tbl" href="#tab2">
+        2
+       </a>
+       , since we are testing 5 hypothesis (one for each arm) at the same time and we have set the overall
+       <em>
+        α
+       </em>
+       level to be 0.1, to reject all null hypotheses, we require the lowest to the highest
+       <em>
+        p
+       </em>
+       -values to be no bigger than 0.02, 0.04, 0.06, 0.08, 0.1. In other words, setting
+       <em>
+        α
+       </em>
+       at level 0.1 suggests that the probability of falsely rejecting
+       <em>
+        any
+       </em>
+       null hypothesis is at most 0.1. Under Bonferroni's correction, when rejecting the null hypothesis with the lowest
+       <em>
+        p
+       </em>
+       -value, the corrected alpha level is
+       <em>
+        α
+       </em>
+       /
+       <em>
+        K
+       </em>
+       = 0.02.
+      </p>
+     </section>
+     <section id="sec-18">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          C
+         </span>
+         Additional analyses for Section
+         <a class="sec" href="#sec-10">
+          5
+         </a>
+        </h2>
+       </div>
+      </header>
+      <p>
+       We present additional analyses comparing the performance of different MABs algorithms in terms of user enjoyment and attentiveness. As discussed in the main paper, these analyses are meant to showcase potential use cases of our experimental framework instead of claiming that certain algorithms outperform others. For user enjoyment, we focus on users’ hindsight satisfaction (Section
+       <a class="sec" href="#sec-11">
+        5.1
+       </a>
+       ) for different algorithms and use the two-sample permutation test to check whether the algorithms’ performances differ much from Self-selected's. More specifically, for each algorithm (UCB, TS, ETC, ϵ-Greedy, CYCLE and REPEAT), we compare its hindsight satisfaction rate with the rate for Self-selected. The test statistic is defined as follows:
+      </p>
+      <div class="table-responsive">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{align*} \beta _\text{Algo} &amp;= \text{Hindsight Satisfaction under Algo} \\ &amp;- \text{Hindsight Satisfaction under Self-selected}. \end{align*}
+        </span>
+        <br/>
+       </div>
+      </div>
+      Under the null hypothesis,
+      <span class="inline-equation">
+       <span class="tex">
+        $\beta _\text{Algo} = 0$
+       </span>
+      </span>
+      , which indicates that the algorithm and Self-selected share similar performances in terms of the hindsight satisfaction rate. The results shown in Table
+      <a class="tbl" href="#tab5">
+       5
+      </a>
+      suggest that in our experiment, although on average Self-selected performs better than other algorithms in terms of hindsight satisfaction, we cannot reject the null hypotheses that these algorithms’ hindsight satisfaction is similar to Self-selected's in general. The only null hypothesis we can reject is the one for REPEAT. That is, we can claim that in terms of hindsight satisfaction rate, Self-selected outperforms REPEAT. In general, collecting more data may help us increase the power of our tests. In terms of attentiveness, we study the rating memory of the participants (Section
+      <a class="sec" href="#sec-12">
+       5.2
+      </a>
+      ) under different algorithms. Similarly, we adopt the two-sample permutation test to check whether other algorithms’ performances differ much from that of Self-selected, in terms of the the percentage of questions that the participants answer correctly regarding the ratings they provided for comics they read. The specific test statistic we used is as follows:
+      <div class="table-responsive">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{align*} \omega _\text{Algo} &amp;= \text{Correctness Percentage under Algo} \\ &amp;- \text{Correctness Percentage under Self-selected}. \end{align*}
+        </span>
+        <br/>
+       </div>
+      </div>
+      The null hypothesis states that the correctness percentage on these rating-memory-related questions should not differ much between other algorithms and Self-selected. Using the data from our experiments, we cannot reject this null hypothesis. However, as demonstrated here, our experimental framework equips researchers with tools to answer these types of questions.
+      <p>
+      </p>
+      <div class="table-responsive" id="tab5">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 5:
+        </span>
+        <span class="table-title">
+         The difference between the hindsight satisfaction rate under Algo (UCB, TS, Greedy, CYCLE and REPEAT) and the hindsight satisfaction rate under Self-selected. All results are rounded to 2 digits. The
+         <em>
+          p
+         </em>
+         -values are obtained through permutation tests with 10,000 permutations. We use asterisk to indicate that the test is significant at the level
+         <em>
+          α
+         </em>
+         = 0.1.
+        </span>
+       </div>
+       <table class="table">
+        <thead>
+         <tr>
+          <th style="text-align:center;">
+          </th>
+          <th style="text-align:center;">
+           UCB
+          </th>
+          <th style="text-align:center;">
+           TS
+          </th>
+          <th style="text-align:center;">
+           ETC
+          </th>
+          <th style="text-align:center;">
+           Greedy
+          </th>
+          <th style="text-align:center;">
+           CYCLE
+          </th>
+          <th style="text-align:center;">
+           REPEAT
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $\beta _\text{Algo}$
+            </span>
+           </span>
+           value
+          </td>
+          <td style="text-align:center;">
+           -6.08%
+          </td>
+          <td style="text-align:center;">
+           -8.35%
+          </td>
+          <td style="text-align:center;">
+           -4.16%
+          </td>
+          <td style="text-align:center;">
+           -0.59%
+          </td>
+          <td style="text-align:center;">
+           -3.59%
+          </td>
+          <td style="text-align:center;">
+           -17.9%
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $95\%$
+            </span>
+           </span>
+           CI
+          </td>
+          <td style="text-align:center;">
+           [-9.53%, 22.64%]
+          </td>
+          <td style="text-align:center;">
+           [-7.06%, 24.26%]
+          </td>
+          <td style="text-align:center;">
+           [-11.50%, 20.76%]
+          </td>
+          <td style="text-align:center;">
+           [-14.30%, 16.02%]
+          </td>
+          <td style="text-align:center;">
+           [-11.82%, 19.40%]
+          </td>
+          <td style="text-align:center;">
+           [0.57%, 35.28%]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           <em>
+            p
+           </em>
+           -value
+          </td>
+          <td style="text-align:center;">
+           0.15
+          </td>
+          <td style="text-align:center;">
+           0.095
+          </td>
+          <td style="text-align:center;">
+           0.22
+          </td>
+          <td style="text-align:center;">
+           0.36
+          </td>
+          <td style="text-align:center;">
+           0.24
+          </td>
+          <td style="text-align:center;">
+           &lt; 0.01
+           <sup>
+            *
+           </sup>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <div class="table-responsive" id="tab6">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 6:
+        </span>
+        <span class="table-title">
+         The difference between the correctness percentage on rating-memory questions under Algo (UCB, TS, Greedy, CYCLE and REPEAT) and the correctness percentage under Self-selected. All results are rounded to 2 digits. The
+         <em>
+          p
+         </em>
+         -values are obtained through permutation tests with 10,000 permutations.
+        </span>
+       </div>
+       <table class="table">
+        <thead>
+         <tr>
+          <th style="text-align:center;">
+          </th>
+          <th style="text-align:center;">
+           UCB
+          </th>
+          <th style="text-align:center;">
+           TS
+          </th>
+          <th style="text-align:center;">
+           ETC
+          </th>
+          <th style="text-align:center;">
+           Greedy
+          </th>
+          <th style="text-align:center;">
+           CYCLE
+          </th>
+          <th style="text-align:center;">
+           REPEAT
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $\omega _\text{Algo}$
+            </span>
+           </span>
+           value
+          </td>
+          <td style="text-align:center;">
+           1.17%
+          </td>
+          <td style="text-align:center;">
+           0.72%
+          </td>
+          <td style="text-align:center;">
+           -5.75%
+          </td>
+          <td style="text-align:center;">
+           1.25%
+          </td>
+          <td style="text-align:center;">
+           2.00%
+          </td>
+          <td style="text-align:center;">
+           13.28%
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <span class="tex">
+             $95\%$
+            </span>
+           </span>
+           CI
+          </td>
+          <td style="text-align:center;">
+           [-12.70%, 15.43%]
+          </td>
+          <td style="text-align:center;">
+           [-13.62%, 15.34%]
+          </td>
+          <td style="text-align:center;">
+           [-18.31%, 7.21%]
+          </td>
+          <td style="text-align:center;">
+           [-11.72%, 14.34%]
+          </td>
+          <td style="text-align:center;">
+           [-10.77%, 14.71%]
+          </td>
+          <td style="text-align:center;">
+           [-1.42%, 28.02%]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           <em>
+            p
+           </em>
+           -value
+          </td>
+          <td style="text-align:center;">
+           0.42
+          </td>
+          <td style="text-align:center;">
+           0.46
+          </td>
+          <td style="text-align:center;">
+           0.18
+          </td>
+          <td style="text-align:center;">
+           0.44
+          </td>
+          <td style="text-align:center;">
+           0.37
+          </td>
+          <td style="text-align:center;">
+           0.04
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </section>
+     <section id="sec-19">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          D
+         </span>
+         BACKGROUND SURVEY
+        </h2>
+       </div>
+      </header>
+      <p>
+       We asked the study participants the following four questions:
+      </p>
+      <ul class="list-no-style">
+       <li id="list27" label="•">
+        What is your age?
+        <br/>
+       </li>
+       <li id="list28" label="•">
+        How often do you read comic strips (e.g. newspaper comics, Sunday comics,...)? Please pick an option that best describes you.
+        <br/>
+       </li>
+       <li id="list29" label="•">
+        Out of the following genres of comic strips, which genre do you find to be the most familiar?
+        <br/>
+       </li>
+       <li id="list30" label="•">
+        Out of the below genres of comic strips, which genre do you like the most?
+        <br/>
+       </li>
+      </ul>
+      <p>
+       The provided data are plotted as histograms in Figure
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       .
+      </p>
+     </section>
+     <section id="sec-20">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          E
+         </span>
+         IMPLEMENTATION DETAILS
+        </h2>
+       </div>
+      </header>
+      <section id="sec-21">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           E.1
+          </span>
+          Platform implementation
+         </h3>
+        </div>
+       </header>
+       <p>
+        As described in Section
+        <a class="sec" href="#sec-7">
+         3.3
+        </a>
+        , our platform consists of two main components: the participant-facing web interface and server backend. In this section, we provide more in-depth implementation details about both platform components.
+       </p>
+       <p>
+        <em>
+         Web interface.
+        </em>
+        The participant-facing web interface is written using standard web development tools (HTML/CSS/Javascript) as well as the Flask web framework. When participants are performing the comic rating portion of the study, their responses are submitted in the background. Once the response is successfully recorded by the server, the images, rating slider bar, and button orderings are updated in-place so that users are not distracted by full page refreshes after each comic. The web interface also has a experimenter-defined variable to enforce a minimum time that must elapse between submissions. This ensures that participants spend an adequate amount of time on each comic; there is also a server-side mechanism to handle duplicate submissions if the button is clicked multiple times in quick succession. Once the comic reading portion is complete, the web interface will automatically transition to the post-study survey after users have read the end-of-study message.
+       </p>
+       <p>
+        <em>
+         Server.
+        </em>
+        We use the Flask web framework to implement the server and MongoDB for the database backend. The MAB algorithms are implemented in Python with a common interface that defines
+        <tt>
+         get_arm()
+        </tt>
+        and
+        <tt>
+         update_arm()
+        </tt>
+        functions, which can easily be extended to include other MAB algorithms that share this interface. The user accounts used by participants, the comic rating responses, post-study survey responses, and attention check answers are each stored in a separate database. All experiment configurations are prepared prior to launching the study. Experiments are configured using JSON files that enable both local and global control over experiment parameters, such as the number of comics to read, or the post-study survey and attention check questions asked. Participants can only access their assigned experiment, using credentials that are given when they register on the website. As participants are completing tasks in the study, each submitted task response is recorded in the database. The server can use the stored data to reload the session where it left off if the browser is closed or refreshed. This state includes that required for the algorithms, which are all executed on the server and require up-to-date parameters at each timestep of the study. Lastly, we host the server on Amazon Elastic Compute Cloud (EC2) using a
+        <tt>
+         t2.xlarge
+        </tt>
+        instance with 4 vCPUs and 16GB of memory.
+       </p>
+      </section>
+      <section id="sec-22">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           E.2
+          </span>
+          MTurk implementation
+         </h3>
+        </div>
+       </header>
+       <p>
+        The study is split into two separate tasks on the MTurk platform. Participants must sign up for both tasks in order to proceed with the study. Once they have completed the initial background survey with a valid completion code, they must register their MTurk ID on our website. If their MTurk ID is found among the completed Qualtrics survey entries (retrieved through the MTurk query API), they are then assigned an account with a pre-loaded configuration. We also assign a unique survey code to each participant in the event to ensure that all parts of the study are properly completed. Submissions that contain reused survey codes from other participants are considered invalid, and therefore not included in the final dataset.
+       </p>
+       <figure id="fig5">
+        <img alt="Figure 5" class="img-responsive" src="3580670_files\chi2334fig5.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 5:
+         </span>
+         <span class="figure-title">
+          Histograms of demographic information collected from the background survey.
+         </span>
+        </figcaption>
+       </figure>
+       <figure id="fig6">
+        <img alt="Figure 6" class="img-responsive" src="3580670_files\chi2334fig6.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 6:
+         </span>
+         <span class="figure-title">
+          An example of questions contained in the post-study survey.
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+      </section>
+     </section>
+    </appendix>
+    <section id="ref-001">
+     <header>
+      <div class="title-info">
+       <h2 class="page-brake-head">
+        REFERENCES
+       </h2>
+      </div>
+     </header>
+     <ul class="bibUl">
+      <li id="BibPLXBIB0001" label="[1]">
+       Hervé Abdi. 2010. Holm's sequential Bonferroni procedure.
+       <em>
+        <em>
+         Encyclopedia of research design
+        </em>
+       </em>
+       1, 8 (2010), 1–8.
+      </li>
+      <li id="BibPLXBIB0002" label="[2]">
+       Daniel Acuna and Paul Schrater. 2008. Bayesian modeling of human sequential decision-making on the multi-armed bandit problem. In
+       <em>
+        Proceedings of the 30th annual conference of the cognitive science society
+       </em>
+       , Vol. 100. Washington, DC: Cognitive Science Society, 200–300.
+      </li>
+      <li id="BibPLXBIB0003" label="[3]">
+       Peter Auer, Nicolo Cesa-Bianchi, and Paul Fischer. 2002. Finite-time analysis of the multiarmed bandit problem.
+       <em>
+        <em>
+         Machine learning
+        </em>
+       </em>
+       47, 2 (2002), 235–256.
+      </li>
+      <li id="BibPLXBIB0004" label="[4]">
+       Harriet E Baber. 2007. Adaptive preference.
+       <em>
+        <em>
+         Social Theory and Practice
+        </em>
+       </em>
+       33, 1 (2007), 105–126.
+      </li>
+      <li id="BibPLXBIB0005" label="[5]">
+       Andrea Barraza-Urbina and Dorota Glowacka. 2020. Introduction to bandits in recommender systems. In
+       <em>
+        Fourteenth ACM Conference on Recommender Systems
+       </em>
+       . 748–750.
+      </li>
+      <li id="BibPLXBIB0006" label="[6]">
+       Soumya Basu, Rajat Sen, Sujay Sanghavi, and Sanjay Shakkottai. 2019. Blocking Bandits. In
+       <em>
+        Advances in Neural Information Processing Systems
+       </em>
+       . 4785–4794.
+      </li>
+      <li id="BibPLXBIB0007" label="[7]">
+       Manel Baucells and Rakesh K Sarin. 2007. Satiation in discounted utility.
+       <em>
+        <em>
+         Operations research
+        </em>
+       </em>
+       55, 1 (2007), 170–181.
+      </li>
+      <li id="BibPLXBIB0008" label="[8]">
+       Gary S Becker. 1996.
+       <em>
+        Accounting for tastes
+       </em>
+       . Harvard University Press.
+      </li>
+      <li id="BibPLXBIB0009" label="[9]">
+       James Bennett, Stan Lanning,
+       <em>
+        et al.
+       </em>
+       2007. The netflix prize. In
+       <em>
+        Proceedings of KDD cup and workshop
+       </em>
+       , Vol. 2007. New York, 35.
+      </li>
+      <li id="BibPLXBIB0010" label="[10]">
+       GE Box. 1979. All models are wrong, but some are useful.
+       <em>
+        <em>
+         Robustness in Statistics
+        </em>
+       </em>
+       202, 1979 (1979), 549.
+      </li>
+      <li id="BibPLXBIB0011" label="[11]">
+       Leonardo Cella and Nicolò Cesa-Bianchi. 2020. Stochastic bandits with delay-dependent payoffs. In
+       <em>
+        International Conference on Artificial Intelligence and Statistics
+       </em>
+       . 1168–1177.
+      </li>
+      <li id="BibPLXBIB0012" label="[12]">
+       Minmin Chen, Alex Beutel, Paul Covington, Sagar Jain, Francois Belletti, and Ed H Chi. 2019. Top-k off-policy correction for a REINFORCE recommender system. In
+       <em>
+        Proceedings of the Twelfth ACM International Conference on Web Search and Data Mining
+       </em>
+       . 456–464.
+      </li>
+      <li id="BibPLXBIB0013" label="[13]">
+       Minmin Chen, Bo Chang, Can Xu, and Ed H Chi. 2021. User response models to improve a reinforce recommender system. In
+       <em>
+        Proceedings of the 14th ACM International Conference on Web Search and Data Mining
+       </em>
+       . 121–129.
+      </li>
+      <li id="BibPLXBIB0014" label="[14]">
+       Minmin Chen, Yuyan Wang, Can Xu, Ya Le, Mohit Sharma, Lee Richardson, Su-Lin Wu, and Ed Chi. 2021. Values of User Exploration in Recommender Systems. In
+       <em>
+        Fifteenth ACM Conference on Recommender Systems
+       </em>
+       . 85–95.
+      </li>
+      <li id="BibPLXBIB0015" label="[15]">
+       Minmin Chen, Can Xu, Vince Gatto, Devanshu Jain, Aviral Kumar, and Ed Chi. 2022. Off-Policy Actor-critic for Recommender Systems. In
+       <em>
+        Proceedings of the 16th ACM Conference on Recommender Systems
+       </em>
+       . 338–349.
+      </li>
+      <li id="BibPLXBIB0016" label="[16]">
+       Larry Christensen and Alisa Brooks. 2006. Changing food preference as a function of mood.
+       <em>
+        <em>
+         The journal of psychology
+        </em>
+       </em>
+       140, 4 (2006), 293–306.
+      </li>
+      <li id="BibPLXBIB0017" label="[17]">
+       Eli P Cox III. 1980. The optimal number of response alternatives for a scale: A review.
+       <em>
+        <em>
+         Journal of marketing research
+        </em>
+       </em>
+       17, 4 (1980), 407–422.
+      </li>
+      <li id="BibPLXBIB0018" label="[18]">
+       Ronald M Epstein. 1999. Mindful practice.
+       <em>
+        <em>
+         Jama
+        </em>
+       </em>
+       282, 9 (1999), 833–839.
+      </li>
+      <li id="BibPLXBIB0019" label="[19]">
+       Ronald Aylmer Fisher. 1936. Design of experiments.
+       <em>
+        <em>
+         Br Med J
+        </em>
+       </em>
+       1, 3923 (1936), 554–554.
+      </li>
+      <li id="BibPLXBIB0020" label="[20]">
+       Jeff Galak, Jinwoo Kim, and Joseph P Redden. 2022. Identifying the temporal profiles of hedonic decline.
+       <em>
+        <em>
+         Organizational Behavior and Human Decision Processes
+        </em>
+       </em>
+       169 (2022), 104128.
+      </li>
+      <li id="BibPLXBIB0021" label="[21]">
+       Jeff Galak and Joseph P Redden. 2018. The properties and antecedents of hedonic decline.
+       <em>
+        <em>
+         Annual review of psychology
+        </em>
+       </em>
+       69 (2018), 1–25.
+      </li>
+      <li id="BibPLXBIB0022" label="[22]">
+       GoComics. 2021. GoComics.
+       <a class="link-inline force-break" href="https://www.gocomics.com">
+        https://www.gocomics.com
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0023" label="[23]">
+       Carlos A Gomez-Uribe and Neil Hunt. 2015. The netflix recommender system: Algorithms, business value, and innovation.
+       <em>
+        <em>
+         ACM Transactions on Management Information Systems (TMIS)
+        </em>
+       </em>
+       6, 4(2015), 1–19.
+      </li>
+      <li id="BibPLXBIB0024" label="[24]">
+       Laurie A Greco, Ruth A Baer, and Gregory T Smith. 2011. Assessing mindfulness in children and adolescents: development and validation of the Child and Adolescent Mindfulness Measure (CAMM).
+       <em>
+        <em>
+         Psychological assessment
+        </em>
+       </em>
+       23, 3 (2011), 606.
+      </li>
+      <li id="BibPLXBIB0025" label="[25]">
+       Paul Grossman. 2008. On measuring mindfulness in psychosomatic and psychological research.(2008).
+      </li>
+      <li id="BibPLXBIB0026" label="[26]">
+       Philip M Groves and Richard F Thompson. 1970. Habituation: a dual-process theory.
+       <em>
+        <em>
+         Psychological review
+        </em>
+       </em>
+       77, 5 (1970), 419.
+      </li>
+      <li id="BibPLXBIB0027" label="[27]">
+       Faruk Gul and Wolfgang Pesendorfer. 2005. The revealed preference theory of changing tastes.
+       <em>
+        <em>
+         The Review of Economic Studies
+        </em>
+       </em>
+       72, 2 (2005), 429–448.
+      </li>
+      <li id="BibPLXBIB0028" label="[28]">
+       Chester Holtz, Chao Tao, and Guangyu Xi. 2020. BanditPyLib: a lightweight python library for bandit algorithms. Online at:
+       <a class="link-inline force-break" href="https://github.com/Alanthink/banditpylib">
+        https://github.com/Alanthink/banditpylib
+       </a>
+       .
+       <a class="link-inline force-break" href="https://github.com/Alanthink/banditpylib">
+        https://github.com/Alanthink/banditpylib
+       </a>
+       Documentation at
+       <a class="link-inline force-break" href="https://alanthink.github.io/banditpylib-doc">
+        https://alanthink.github.io/banditpylib-doc
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0029" label="[29]">
+       Eugene Ie, Chih-wei Hsu, Martin Mladenov, Vihan Jain, Sanmit Narvekar, Jing Wang, Rui Wu, and Craig Boutilier. 2019. Recsim: A configurable simulation platform for recommender systems.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1909.04847">
+          1909.04847
+         </a>
+        </em>
+       </em>
+       (2019).
+      </li>
+      <li id="BibPLXBIB0030" label="[30]">
+       Sarika Jain, Anjali Grover, Praveen Singh Thakur, and Sourabh Kumar Choudhary. 2015. Trends, problems and solutions of recommender system. In
+       <em>
+        International conference on computing, communication &amp; automation
+       </em>
+       . IEEE, 955–958.
+      </li>
+      <li id="BibPLXBIB0031" label="[31]">
+       Thorsten Joachims, Adith Swaminathan, and Tobias Schnabel. 2017. Unbiased learning-to-rank with biased feedback. In
+       <em>
+        Proceedings of the Tenth ACM International Conference on Web Search and Data Mining
+       </em>
+       . 781–789.
+      </li>
+      <li id="BibPLXBIB0032" label="[32]">
+       Komal Kapoor, Karthik Subbian, Jaideep Srivastava, and Paul Schrater. 2015. Just in time recommendations: Modeling the dynamics of boredom in activity streams. In
+       <em>
+        Proceedings of the eighth ACM international conference on web search and data mining
+       </em>
+       . 233–242.
+      </li>
+      <li id="BibPLXBIB0033" label="[33]">
+       Robert Kleinberg and Nicole Immorlica. 2018. Recharging bandits. In
+       <em>
+        2018 IEEE 59th Annual Symposium on Foundations of Computer Science (FOCS)
+       </em>
+       . IEEE, 309–319.
+      </li>
+      <li id="BibPLXBIB0034" label="[34]">
+       Yehuda Koren, Robert Bell, and Chris Volinsky. 2009. Matrix factorization techniques for recommender systems.
+       <em>
+        <em>
+         Computer
+        </em>
+       </em>
+       42, 8 (2009), 30–37.
+      </li>
+      <li id="BibPLXBIB0035" label="[35]">
+       Tor Lattimore and Csaba Szepesvári. 2020.
+       <em>
+        Bandit algorithms
+       </em>
+       . Cambridge University Press.
+      </li>
+      <li id="BibPLXBIB0036" label="[36]">
+       Michael D Lee, Shunan Zhang, Miles Munro, and Mark Steyvers. 2011. Psychological models of human and optimal performance in bandit problems.
+       <em>
+        <em>
+         Cognitive Systems Research
+        </em>
+       </em>
+       12, 2 (2011), 164–174.
+      </li>
+      <li id="BibPLXBIB0037" label="[37]">
+       Pei Lee, Laks VS Lakshmanan, Mitul Tiwari, and Sam Shah. 2014. Modeling impression discounting in large-scale recommender systems. In
+       <em>
+        Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining
+       </em>
+       . 1837–1846.
+      </li>
+      <li id="BibPLXBIB0038" label="[38]">
+       Damien Lefortier, Adith Swaminathan, Xiaotao Gu, Thorsten Joachims, and Maarten de Rijke. 2016. Large-scale validation of counterfactual learning methods: A test-bed.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1612.00367">
+          1612.00367
+         </a>
+        </em>
+       </em>
+       (2016).
+      </li>
+      <li id="BibPLXBIB0039" label="[39]">
+       Liu Leqi, Fatma Kilinc-Karzan, Zachary C Lipton, and Alan L Montgomery. 2021. Rebounding Bandits for Modeling Satiation Effects. (2021).
+      </li>
+      <li id="BibPLXBIB0040" label="[40]">
+       Nir Levine, Koby Crammer, and Shie Mannor. 2017. Rotting bandits. In
+       <em>
+        Advances in neural information processing systems
+       </em>
+       . 3074–3083.
+      </li>
+      <li id="BibPLXBIB0041" label="[41]">
+       Lihong Li, Wei Chu, John Langford, and Robert E Schapire. 2010. A contextual-bandit approach to personalized news article recommendation. In
+       <em>
+        Proceedings of the 19th international conference on World wide web
+       </em>
+       . 661–670.
+      </li>
+      <li id="BibPLXBIB0042" label="[42]">
+       Fenrong Liu
+       <em>
+        et al.
+       </em>
+       2007.
+       <em>
+        Changing for the better: Preference dynamics and agent diversity
+       </em>
+       . Institute for Logic, Language and Computation.
+      </li>
+      <li id="BibPLXBIB0043" label="[43]">
+       Julian John McAuley and Jure Leskovec. 2013. From amateurs to connoisseurs: modeling the evolution of user expertise through online reviews. In
+       <em>
+        Proceedings of the 22nd international conference on World Wide Web
+       </em>
+       . ACM, 897–908.
+      </li>
+      <li id="BibPLXBIB0044" label="[44]">
+       James McInerney, Benjamin Lacker, Samantha Hansen, Karl Higley, Hugues Bouchard, Alois Gruson, and Rishabh Mehrotra. 2018. Explore, exploit, and explain: personalizing explainable recommendations with bandits. In
+       <em>
+        Proceedings of the 12th ACM conference on recommender systems
+       </em>
+       . 31–39.
+      </li>
+      <li id="BibPLXBIB0045" label="[45]">
+       Rishabh Mehrotra, Niannan Xue, and Mounia Lalmas. 2020. Bandit based optimization of multiple objectives on a music streaming platform. In
+       <em>
+        Proceedings of the 26th ACM SIGKDD international conference on knowledge discovery &amp; data mining
+       </em>
+       . 3224–3233.
+      </li>
+      <li id="BibPLXBIB0046" label="[46]">
+       Yonatan Mintz, Anil Aswani, Philip Kaminsky, Elena Flowers, and Yoshimi Fukuoka. 2020. Nonstationary bandits with habituation and recovery dynamics.
+       <em>
+        <em>
+         Operations Research
+        </em>
+       </em>
+       68, 5 (2020), 1493–1516.
+      </li>
+      <li id="BibPLXBIB0047" label="[47]">
+       John W Payne, James R Bettman, David A Schkade, Norbert Schwarz, and Robin Gregory. 1999. Measuring constructed preferences: Towards a building code. In
+       <em>
+        Elicitation of preferences
+       </em>
+       . Springer, 243–275.
+      </li>
+      <li id="BibPLXBIB0048" label="[48]">
+       Drazen Prelec. 2004. Decreasing impatience: a criterion for Non-stationary time preference and “hyperbolic” discounting.
+       <em>
+        <em>
+         Scandinavian Journal of Economics
+        </em>
+       </em>
+       106, 3 (2004), 511–532.
+      </li>
+      <li id="BibPLXBIB0049" label="[49]">
+       Dimitrios Rafailidis and Alexandros Nanopoulos. 2015. Modeling users preference dynamics and side information in recommender systems.
+       <em>
+        <em>
+         IEEE Transactions on Systems, Man, and Cybernetics: Systems
+        </em>
+       </em>
+       46, 6(2015), 782–792.
+      </li>
+      <li id="BibPLXBIB0050" label="[50]">
+       Paul B Reverdy, Vaibhav Srivastava, and Naomi Ehrich Leonard. 2014. Modeling human decision making in generalized Gaussian multiarmed bandits.
+       <em>
+        <em>
+         Proc. IEEE
+        </em>
+       </em>
+       102, 4 (2014), 544–571.
+      </li>
+      <li id="BibPLXBIB0051" label="[51]">
+       Herbert Robbins. 1952. Some aspects of the sequential design of experiments.
+       <em>
+        <em>
+         Bull. Amer. Math. Soc.
+        </em>
+       </em>
+       58, 5 (1952), 527–535.
+      </li>
+      <li id="BibPLXBIB0052" label="[52]">
+       Yuta Saito, Aihara Shunsuke, Matsutani Megumi, and Narita Yusuke. 2020. Open Bandit Dataset and Pipeline: Towards Realistic and Reproducible Off-Policy Evaluation.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2008.07146">
+          2008.07146
+         </a>
+        </em>
+       </em>
+       (2020).
+      </li>
+      <li id="BibPLXBIB0053" label="[53]">
+       Thomas Schäfer and Peter Sedlmeier. 2010. What makes us like music? Determinants of music preference.
+       <em>
+        <em>
+         Psychology of Aesthetics, Creativity, and the Arts
+        </em>
+       </em>
+       4, 4 (2010), 223.
+      </li>
+      <li id="BibPLXBIB0054" label="[54]">
+       Julien Seznec, Andrea Locatelli, Alexandra Carpentier, Alessandro Lazaric, and Michal Valko. 2019. Rotting bandits are no harder than stochastic ones. In
+       <em>
+        The 22nd International Conference on Artificial Intelligence and Statistics
+       </em>
+       . 2564–2572.
+      </li>
+      <li id="BibPLXBIB0055" label="[55]">
+       Guy Shani, David Heckerman, and Ronen I Brafman. 2005. An MDP-based recommender system.
+       <em>
+        <em>
+         Journal of Machine Learning Research
+        </em>
+       </em>
+       6, Sep (2005), 1265–1295.
+      </li>
+      <li id="BibPLXBIB0056" label="[56]">
+       Aleksandrs Slivkins
+       <em>
+        et al.
+       </em>
+       2019. Introduction to multi-armed bandits.
+       <em>
+        <em>
+         Foundations and Trends® in Machine Learning
+        </em>
+       </em>
+       12, 1-2(2019), 1–286.
+      </li>
+      <li id="BibPLXBIB0057" label="[57]">
+       Adith Swaminathan and Thorsten Joachims. 2015. Counterfactual risk minimization: Learning from logged bandit feedback. In
+       <em>
+        International Conference on Machine Learning
+       </em>
+       . 814–823.
+      </li>
+      <li id="BibPLXBIB0058" label="[58]">
+       William T Tucker. 1964. The development of brand loyalty.
+       <em>
+        <em>
+         Journal of Marketing research
+        </em>
+       </em>
+       1, 3 (1964), 32–35.
+      </li>
+      <li id="BibPLXBIB0059" label="[59]">
+       Yuyan Wang, Mohit Sharma, Can Xu, Sriraj Badam, Qian Sun, Lee Richardson, Lisa Chung, Ed H Chi, and Minmin Chen. 2022. Surrogate for Long-Term User Experience in Recommender Systems. In
+       <em>
+        Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining
+       </em>
+       . 4100–4109.
+      </li>
+      <li id="BibPLXBIB0060" label="[60]">
+       Jian Wei, Jianhua He, Kai Chen, Yi Zhou, and Zuoyin Tang. 2017. Collaborative filtering and deep learning based recommendation system for cold start items.
+       <em>
+        <em>
+         Expert Systems with Applications
+        </em>
+       </em>
+       69 (2017), 29–39.
+      </li>
+      <li id="BibPLXBIB0061" label="[61]">
+       Guanjie Zheng, Fuzheng Zhang, Zihan Zheng, Yang Xiang, Nicholas Jing Yuan, Xing Xie, and Zhenhui Li. 2018. DRN: A deep reinforcement learning framework for news recommendation. In
+       <em>
+        Proceedings of the 2018 World Wide Web Conference
+       </em>
+       . 167–176.
+      </li>
+     </ul>
+    </section>
+   </section>
+   <section class="footnote" id="foot-001">
+    <header>
+     <div class="title-info">
+      <h2>
+       FOOTNOTE
+      </h2>
+     </div>
+    </header>
+    <p id="fn1">
+     <a href="#foot-fn1">
+      <sup>
+       ⁎
+      </sup>
+     </a>
+     Both authors contributed equally to this research.
+    </p>
+    <p id="fn2">
+     <a href="#foot-fn2">
+      <sup>
+       1
+      </sup>
+     </a>
+     We provide more details on how performances are defined in MABs in Section
+     <a class="sec" href="#sec-5">
+      3.1
+     </a>
+     .
+    </p>
+    <p id="fn3">
+     <a href="#foot-fn3">
+      <sup>
+       2
+      </sup>
+     </a>
+     For Self-selected participants, this should be interpreted as comics they have read/self-selected.
+    </p>
+    <div class="bibStrip">
+     <p>
+      <img alt="CC-BY license image" class="img-responsive" src="3580670_files\ccby.jpg"/>
+      <br/>
+      This work is licensed under a
+      <a href="https://creativecommons.org/licenses/by/4.0/">
+       Creative Commons Attribution International 4.0 License
+      </a>
+      .
+     </p>
+     <p>
+      <em>
+       CHI '23, April 23–28, 2023, Hamburg, Germany
+      </em>
+     </p>
+     <p>
+      © 2023 Copyright held by the owner/author(s).
+      <br/>
+      ACM ISBN 978-1-4503-9421-5/23/04.
+      <br/>
+      DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3580670" target="_blank">
+       https://doi.org/10.1145/3544548.3580670
+      </a>
+     </p>
+    </div>
+   </section>
+  </main>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'869e50de3b012c36',t:'MTcxMTM2MzU3NC4yODcwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

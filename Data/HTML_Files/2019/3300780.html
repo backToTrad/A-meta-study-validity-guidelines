@@ -1,0 +1,2588 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   NVGaze: An Anatomically-Informed Dataset for Low-Latency, Near-Eye Gaze Estimation
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300780_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300780_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300780_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300780_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300780_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300780_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300780_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300780_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        NVGaze: An Anatomically-Informed Dataset for Low-Latency, Near-Eye Gaze Estimation
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Joohwan
+      </span>
+      <span class="surName">
+       Kim
+      </span>
+      , NVIDIA CORPORATION, USA,
+      <a href="mailto:imjoohwankim@gmail.com">
+       imjoohwankim@gmail.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Michael
+      </span>
+      <span class="surName">
+       Stengel
+      </span>
+      , NVIDIA CORPORATION, USA,
+      <a href="mailto:virtuellerealitaet@gmail.com">
+       virtuellerealitaet@gmail.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Alexander
+      </span>
+      <span class="surName">
+       Majercik
+      </span>
+      , NVIDIA CORPORATION, USA,
+      <a href="mailto:amajercik@nvidia.com">
+       amajercik@nvidia.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Shalini
+      </span>
+      <span class="surName">
+       De Mello
+      </span>
+      , NVIDIA CORPORATION, USA,
+      <a href="mailto:shalinig@nvidia.com">
+       shalinig@nvidia.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Samuli
+      </span>
+      <span class="surName">
+       Laine
+      </span>
+      , NVIDIA CORPORATION, USA,
+      <a href="mailto:slaine@nvidia.com">
+       slaine@nvidia.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       David
+      </span>
+      <span class="surName">
+       Dunn
+      </span>
+      , UNC-Chapel Hill, USA,
+      <a href="mailto:qenops@cs.unc.edu">
+       qenops@cs.unc.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Morgan
+      </span>
+      <span class="surName">
+       McGuire
+      </span>
+      , NVIDIA CORPORATION, USA,
+      <a href="mailto:mcguire@nvidia.com">
+       mcguire@nvidia.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       David
+      </span>
+      <span class="surName">
+       Luebke
+      </span>
+      , NVIDIA CORPORATION, USA,
+      <a href="mailto:dluebke@nvidia.com">
+       dluebke@nvidia.com
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300780" target="_blank">
+       https://doi.org/10.1145/3290605.3300780
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Quality, diversity, and size of training data are critical factors for learning-based gaze estimators. We create two datasets satisfying these criteria for near-eye gaze estimation under infrared illumination: a synthetic dataset using anatomically-informed eye and face models with variations in face shape, gaze direction, pupil and iris, skin tone, and external conditions (2M images at 1280x960), and a real-world dataset collected with 35 subjects (2.5M images at 640x480). Using these datasets we train neural networks performing with sub-millisecond latency. Our gaze estimation network achieves 2.06(± 0.44)° of accuracy across a wide 30° × 40° field of view on real subjects excluded from training and 0.5° best-case accuracy (across the same FOV) when explicitly trained for one real subject. We also train a pupil localization network which achieves higher robustness than previous methods.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Computing methodologies → Tracking
+       </strong>
+       ; •
+       <strong>
+        Human-centered computing
+       </strong>
+       ;
+       <em>
+        Rendering; Neural networks;
+       </em>
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        eye tracking
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        machine learning
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        dataset
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        virtual reality
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Joohwan Kim, Michael Stengel, Alexander Majercik, Shalini De Mello, Samuli Laine, David Dunn, Morgan McGuire, and David Luebke. 2019. NVGaze: An Anatomically-Informed Dataset for Low-Latency, Near-Eye Gaze Estimation. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 12 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300780" target="_blank">
+         https://doi.org/10.1145/3290605.3300780
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Computer interaction has expanded to include microphone, camera, body tracking-based input and hand-held, windshield, or head-mounted displays–or even systems with no visual display at all. Richer interaction scenarios demand richer input, including a better comprehension of the user through real-time tracking of the user's visual attention for such input and for creating context-aware output.
+    </p>
+    <p>
+     <a class="fn" href="#fn1" id="foot-fn1">
+      <sup>
+       1
+      </sup>
+     </a>
+     <a class="fn" href="#fn2" id="foot-fn2">
+      <sup>
+       2
+      </sup>
+     </a>
+     This new context for interactive computing requires robust gaze estimation and gaze tracking in real time to power applications such as gaze selection [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+      31
+     </a>
+     ], attention monitoring [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+      47
+     </a>
+     ], gaze communication cues on desktop and in VR [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+      46
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+      48
+     </a>
+     ], active foveated rendering [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+      41
+     </a>
+     ], gaze-contingent displays [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ], saccadic redirected walking [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+      51
+     </a>
+     ], as well as traditional gaze tracking applications for perception research and usability tests in our own human factors community.
+    </p>
+    <p>
+     <em>
+      Gaze estimation
+     </em>
+     is the process of identifying the line of sight for each eye of a human user at a single instant whereas
+     <em>
+      gaze tracking
+     </em>
+     defines the continuous process for following the user's line of sight over time, which typically involves filtering results from individual frames. This paper describes a neural network for gaze estimation that outperforms previous approaches, and presents two novel datasets for training other such networks.
+    </p>
+    <p>
+     Gaze estimation must run at extremely low latency, in the order of milliseconds, to be useful for real-time interaction [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ]. For example, foveated displays and accurate motion blur rendering require the tracking system to return a result faster than the frame duration, or the image can be displayed incorrectly. Ideally, the results should also exhibit less than one degree of error across a wide field of view while being robust to variation in appearance [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ]. Commercially available gaze trackers and research systems have recently begun to approach this goal. This work extends previous methods to surpass state-of-the-art results.
+    </p>
+    <p>
+     As shown by former work, the quality of a neural network-based gaze estimator depends on the combined quality of the training data, training regime, and network structure. We enhance the previous state of the art [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+      50
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+      60
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+      62
+     </a>
+     ] for producing training data by incorporating many additional anatomical features such as pupil constriction shift and line of sight axis correction. We generate a new public dataset of synthetic images that is larger and more realistic than any of the previously available ones. It is also substantially higher in resolution; previous datasets feature images that are typically on the order of 200 × 200 pixels, whereas ours are 1280 × 960. We then leverage our dataset under an improved network and training regime to produce an effective gaze estimator when evaluated against real data.
+    </p>
+    <p>
+     There are two common camera scenarios for gaze estimators:
+     <em>
+      remote
+     </em>
+     images captured from a monitor or dashboard-mounted camera, and
+     <em>
+      near-eye
+     </em>
+     cameras, which are often intended for use with head-mounted displays. We focus on near-eye image data, an increasingly important use case for augmented and virtual reality headsets. However, we demonstrate the flexibility of our method by successfully training our network on remote image data in a supplemental experiment. Cameras are further divided into
+     <em>
+      on-axis
+     </em>
+     and
+     <em>
+      off-axis
+     </em>
+     configurations as shown in Fig.
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     . We exclusively use on-axis camera configurations in this paper because they are known to provide higher quality data. However, our approach is applicable to any camera configuration. We assume the common head-mounted case of monochrome infrared images under active LED illumination that produces
+     <em>
+      glints
+     </em>
+     (corneal reflections) but are not explicitly using the glints for tracking.
+    </p>
+    <p>
+     We present the following contributions:
+    </p>
+    <ul class="list-no-style">
+     <li id="list1" label="•">
+      A large, novel dataset of synthetic eye images based on a parametric, anatomically-informed model with variations on face shape, gaze direction, pupil and iris, skin tone, and external conditions. (Sec.
+      <a class="sec" href="#sec-9">
+       3
+      </a>
+      );
+      <br/>
+     </li>
+     <li id="list2" label="•">
+      A large, novel dataset of real eye images matching the on-axis setup of the synthetic ones (Sec.
+      <a class="sec" href="#sec-13">
+       4
+      </a>
+      );
+      <br/>
+     </li>
+     <li id="list3" label="•">
+      An optimized neural network and training regime for gaze and pupil estimation (Sec.
+      <a class="sec" href="#sec-17">
+       5
+      </a>
+      );
+      <br/>
+     </li>
+     <li id="list4" label="•">
+      A careful evaluation showing that our estimator achieves higher accuracy and lower latency under real conditions than previous methods (Sec.
+      <a class="sec" href="#sec-17">
+       5
+      </a>
+      ).
+      <br/>
+     </li>
+    </ul>
+    <p>
+     Both our real and synthetic images for near-eye gaze tracking with active infrared illumination capture the challenging case of a camera that can slip, transform, or misfocus.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     We focus on recent work directly related to synthetic data and machine learning for gaze estimation. Curious readers can read a detailed up-to-date survey of gaze tracking systems and gaze estimations algorithms found in the work of Kar and Corcoran [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ]. Relevant anatomy work with respect to human eyes is covered in Sec.
+     <a class="sec" href="#sec-9">
+      3
+     </a>
+     .
+    </p>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Eye Rendering and Anatomical Models
+       </h3>
+      </div>
+     </header>
+     <p>
+      Adamo-Villani et al. describe an early simulator for eye motion including eye ball motion and pupil size change [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ]. Świrski and Dodgson [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ] were the first to apply realistic eye appearance rendering to gaze tracking. They proposed synthetic images for evaluating traditional gaze trackers, whereas the typical approach is to train on synthetic images and validate on real ones. Shrivastava et al. improve the quality of synthetic eye images using a generative adversarial network (GAN) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ]. Our work builds directly on Wood et al.’s SynthesEyes dataset [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ], which used a realistic eye model and rendering system for neural network training. We extend their model with additional anatomical detail informed by research on eye glass rendering [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ], pupil center shift due to pupil constriction and dilation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+       63
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ], camera slip/miscalibration, and more sophisticated shading and higher resolution rendering enabled by a modern multi-GPU supercomputer.
+     </p>
+     <figure id="fig1">
+      <img alt="" class="img-responsive" longdesc="" src="3300780_files\chi2019550fig1.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        <strong>
+         Near-eye display camera configurations.
+        </strong>
+        Off- and on-axis placements of gaze tracking cameras inside near-eye displays. (a) The off-axis strategy occupies less space at the cost of accuracy in gaze estimation. (b) The on-axis configuration requires more space but provides frontal view of the eye, which is better for an accurate gaze estimation. Typical locations for display panels in head-mounted displays are denoted by dashed lines.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Feature-Based Gaze Estimation
+       </h3>
+      </div>
+     </header>
+     <p>
+      Feature-based gaze estimation methods locate the pupil and then map the pupil location to a screen location using user-specific calibration. There are many approaches for locating the pupil. A sampling is discussed in this section.
+     </p>
+     <p>
+      The Starburst algorithm [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ] iteratively locates the pupil center as the mean of points which exceed a differential luminance threshold along the rays extending from the last best guess. In the SET method [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ], the convex hull segments of thresholded regions are fit to sinusoidal components. Swirski et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ] and Pupil Labs [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ] both start with coarse positioning using Haar features. Swirski et al. then refine by k-means clustering the intensity histogram and a modified RANSAC ellipse fit, while Pupil Labs use ellipse fitting on connected edges. ExCuSe [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ], ElSe [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ] all use morphological edge filtering followed by ellipse fitting. ExCuSe and ElSe provide alternative approaches for cases when edge detection is not applicable. Fuhl et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ] use circular binary features (CBF) to learn conditional distributions of pupil positions for the datasets on which they test. These distributions are indexed by binary feature vectors and looked up at inference time. This approach is further discussed in Sec.
+      <a class="sec" href="#sec-17">
+       5
+      </a>
+      .
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Machine Learning Gaze Estimation
+       </h3>
+      </div>
+     </header>
+     <p>
+      Balujal et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ] and Tew et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ] were among the first to research combining near-eye images, neural networks, and synthetic images for gaze tracking. Our work also uses machine learning for gaze estimation as it has been shown to be the most promising approach. The state of the art are mostly based on convolutional neural networks, and include results validated on real images as accurate as 10°  [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ], 9.44° in seconds
+      <a class="fn" href="#fn3" id="foot-fn3">
+       <sup>
+        3
+       </sup>
+      </a>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+       61
+      </a>
+      ], 7.9°  [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ], 4.5° in 38 ms [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ], 2.6° in 45 ms for remote images with continuous training and calibration [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ], 4.8 ± 0.8° [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+       67
+      </a>
+      ], and 6.5 ± 1.5° [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ]. The lower error rates tend to be after per-subject calibration during validation, training with a mixture of real and synthetic images that contain the subject, or fine-tuning on real data.
+     </p>
+     <p>
+      Work on pupil tracking using remote-camera systems is often reported in the metrics of percent-correct inferences within a fixed pixel radius with respect to the screen size or the eye tracking camera frame size instead of angular accuracy. Hence, it is not directly comparable, but it is on roughly the same order: 74% accuracy at 5 pixels in 7 ms [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ], 89.2%–98.2% accuracy at pupil diameter radius [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ], 1.7–2.5 cm on a mobile phone screen (66 ms) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ], and 0.20 mm median error on a mobile phone screen (2 ms) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ].
+     </p>
+     <p>
+      Our gaze estimation network is an optimization of previous methods as we operate at lower weight precision, without max pooling, and with fewer layers. These types of networks are derived from the VGG16 network topology [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ].
+     </p>
+     <p>
+      Several broad trends appear from the previous work. More realistic synthetic datasets (both in model and rendering) with more images, as well as higher-resolution data in many cases, appear to improve quality [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ]. Improved training quality allows to use simpler and thus faster networks. Near-eye input avoids the problems of head pose and eye-region estimation, and allows use of high-resolution images of the eye. Networks with more layers generally outperform shallower ones, and VGG16 is emerging as consensus topology to be wrapped with preprocessing or context-aware layers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+       68
+      </a>
+      ]. Our datasets and estimation method were designed under these considerations. Our results demonstrate that the improved dataset, network, and training we describe can contribute 2–5x better angular accuracy than the state of the art at throughput that is 10–100x faster, even on an embedded processor.
+     </p>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Remote Gaze Estimation and Multi-Camera Systems
+       </h3>
+      </div>
+     </header>
+     <p>
+      We perform a supplemental experiment on remote images, but otherwise focus exclusively on near-eye images in this paper. The most recent related work on remote images covers training across multiple cameras [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ], using the screen as a glint source [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ], and machine learning for calibrating trackers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ].
+     </p>
+     <p>
+      Another interesting multi-camera approach is by Tonsen et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ], which employs multiple 25-pixel cameras near the eye and trains a tracker for which they report 1.79° accuracy.
+     </p>
+     <p>
+      Feit et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ] describe strategies for accommodating the error in previous trackers, and sources of error for them; the lighting and camera slip variation in our dataset help address this problem by increasing robustness and accuracy of gaze estimation.
+     </p>
+     <p>
+      Zhang et al. use full-face images and provide a convolutional network architecture that leverages additional information from different facial regions for gaze estimation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+       67
+      </a>
+      ]. Wood et al. use a morphable eye region model with an analysis-by-synthesis approach to extract facial expression and gaze direction simultaneously [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+       61
+      </a>
+      ].
+     </p>
+    </section>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Gaze Datasets
+       </h3>
+      </div>
+     </header>
+     <p>
+      Some key publicly-available labelled gaze datasets are:
+      <em>
+       Eye-Chimera
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ] RGB images of 40 subjects at 1920 × 1080 with manual markers;
+      <em>
+       Columbia Gaze
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ] 5,880 head images of 56 subjects with 320 × 240 eye regions;
+      <em>
+       Świrski and Dodgson
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ] 158 synthetic, near-eye IR passive illumination images at 640 × 480;
+      <em>
+       EYEDIAP
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ] 16 subjects with eye images 192 × 168;
+      <em>
+       UT Multi-view
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ] 64k near-eye images of 50 subjects and 1.1M synthetic images, both at 60 × 36;
+      <em>
+       SynthesEyes
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ] 11.4k synthetic near-eye RGB images with passive illumination at 120 × 80;
+      <em>
+       GazeCapture
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ] crowd-sourced 2.5M mobile phone images from 1474 subjects;
+      <em>
+       LPW
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ] 131k near-eye IR images with active illumination of 22 subjects at 640 × 480;
+      <em>
+       MPIIGaze
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+       68
+      </a>
+      ] 214k webcam images of 15 subjects with 60 × 36 eyes;
+      <em>
+       PupilNet 2.0
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ] 135k IR near-eye images with 384 × 288 eyes in varying lighting conditions;
+      <em>
+       BioID
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ] 1521 images of 23 subjects with 32 × 20 eyes;
+      <em>
+       InvisibleEye
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ] 280k images of 17 subjects from four 5 × 5 pixel cameras;
+      <em>
+       WebGazer
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ] webcam video of 51 subjects with eye images at 640 × 480.
+     </p>
+     <p>
+      We contribute two novel datasets with millions of near-eye, IR, active illumination synthetic (2M images at 1280 × 960) and real (2.5M images at 640 × 480) images, with continuous variation in gaze direction, region maps, and gaze labels. This greatly expands the available quantity and quality of public gaze data. We also use the PupilNet 2.0 and MPIIGaze data sets in evaluating our estimators.
+     </p>
+    </section>
+   </section>
+   <section id="sec-9">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       SYNTHETIC DATASET
+      </h2>
+     </div>
+    </header>
+    <p>
+     We rendered 2M infrared images of eyes at 1280 × 960 resolution under active illumination (with 4 simulated IR LEDs) from the view of a virtual, axis-aligned, near-eye gaze tracking camera. Each image is labeled with the exact 2D gaze vector, 3D eye location, 2D pupil location, and a segmentation of pupil, iris, and sclera, skin and glints (corneal reflections) allowing novel training strategies. This is the highest resolution and most diverse such dataset available. Publishing it is one of our main contributions.
+    </p>
+    <p>
+     Wood et al.
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+      60
+     </a>
+     previously developed a good synthetic model for pupil tracking under daylight conditions, which includes face shape variation, eye lashes, pupil diameter animation, eyelid motion, and eyeball rotation. To produce even more realistic images with further variation (e.g., Fig.
+     <a class="fig" href="#fig3">
+      3
+     </a>
+     ), we extended their parametric model with additional anatomical accuracy and detail for infrared lighting conditions as described in this section. Our results of higher accuracy than Wood et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+      62
+     </a>
+     ] give evidence that these improvements reduce error during training, as described in Sec.
+     <a class="sec" href="#sec-17">
+      5
+     </a>
+     .
+    </p>
+    <p>
+     Due to the level of detail of the model and resolution of the images, each image took about 30 seconds to ray trace on a single GPU with shadows, subsurface scattering, reflection, refraction, and anti-aliasing. It took the equivalent of 3.8 years of single-machine processing time to produce the dataset, using a supercomputer continuously for a week.
+    </p>
+    <figure id="fig2">
+     <img alt="" class="img-responsive" longdesc="" src="3300780_files\chi2019550fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 2:
+      </span>
+      <span class="figure-title">
+       (a) Elements of the eye and axis disparity. (b) Nasal-superior shift under pupil constriction. Red cross-hairs mark iris center; green cross-hairs mark pupil center.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Geometry and Animation
+       </h3>
+      </div>
+     </header>
+     <p>
+      We begin with ten geometric models of real human faces (5 females and 5 males of various ages and ethnic groups) generated by 3D scans
+      <a class="fn" href="#fn4" id="foot-fn4">
+       <sup>
+        4
+       </sup>
+      </a>
+      with manual retouching by Wood et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ] to represent a variety of face shapes. We rescaled each head to accommodate a human-average 24 mm-diameter eyeball, giving a more realistic fit than the original work. We inserted the average eyeball, modeling a 7.8 mm radius of curvature at the apex of cornea and approximately 10 mm radius at the boundary with the sclera [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ].
+     </p>
+     <p>
+      For each sample in our synthetic dataset, we displaced the head including the eye by a small, random offset to model the slippage of a head-mounted camera during use. This kind of shift after calibration is a significant and common source of error in gaze trackers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+       63
+      </a>
+      ]. We then chose a randomly selected point of regard on a fixed screen at 1 m from the virtual head. This defined the
+      <em>
+       line of sight
+      </em>
+      , which passes through the geometrical center of the eye.
+     </p>
+     <p>
+      For the selected gaze direction, we modeled the ∼ 5° disparity between the line of sight and pupillary axis of the eye [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      , p.74] by rotating the virtual eyeball in the temporal direction (side of the head). We randomly selected eyelid positions ranging from fully open to roughly two-thirds closed [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ]. For each position, the top lid covers approximately 4x more eye surface area than the lower lid in order to simulate physically correct eye appearance during a blink [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ].
+     </p>
+     <p>
+      We selected the pupil size from the useful range of 2 mm to 8 mm and modeled the nasal-superior (i.e., towards the forehead above the nose) shift of the pupil under constriction due to illumination [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      , p.511]. We used key frames of about 0.1 mm, nasal and superior, for a dilated 8 mm pupil in dim light, about 0.2 mm nasal, 0.1 mm superior for a typical 4 mm pupil, and 0.25 mm nasal, 0.1 mm superior for a constricted 2 mm pupil in bright light (Fig.
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      ). We allowed the iris texture to randomly rotate around the center of the pupil to provide additional variation of the eye appearance.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="" src="3300780_files\chi2019550fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        <strong>
+         Samples from our synthetic image dataset.
+        </strong>
+        The bottom-right image is a composite of the two region maps corresponding to the image on its left, illustrating skin, sclera, visible sclera, iris, pupil, and corneal glints. We augment them in training to vary skin tone, exposure, and environment.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Materials
+       </h3>
+      </div>
+     </header>
+     <p>
+      The original textures were designed for visible light. We modified the skin and iris textures in both pattern and intensity to match the observed properties of those surfaces under monochromatic (
+      <em>
+       λ
+      </em>
+      = 950 nm) infrared imaging. Accordingly, we modeled air with a unit refractive index and the cornea with an index of refraction
+      <em>
+       n
+      </em>
+      = 1.38 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ], yielding the realistic highly-reflective corneal surface on which LED glints appear.
+     </p>
+     <p>
+      The ten face models provide different skin textures. Although there is much less tonal and pigment variation between individuals in near-infrared wavelengths than in visible light [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+       69
+      </a>
+      ], we recommend varying the skin tone using our provided skin region masks to amplify the effective data size as commonly done for neural network training.
+     </p>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Region Maps and Labels
+       </h3>
+      </div>
+     </header>
+     <p>
+      We provide the 2D gaze vector (point of regard on a screen, described as horizontal and vertical gaze angle from a constant reference eye position), head position, eye lid states, and pupil size used to generate each image and the 2D iris center and pupil center (for comparison to older work) in the image. For each sample we produce two exact region maps. The first one identifies skin, pupil, iris, sclera, and LED glints on the cornea. In the second region map, we render the non-skin structures with the face geometry removed, so that pixel-accurate data is provided for the remaining features even when parts of the eye are occluded by eyelids or rest of the face (see Fig.
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      , bottom right).
+     </p>
+    </section>
+   </section>
+   <section id="sec-13">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       REAL-WORLD DATASET
+      </h2>
+     </div>
+    </header>
+    <p>
+     We captured a novel binocular dataset consisting of 1M labelled frames from two high-speed (120 Hz) on-axis near-eye infrared cameras of the eyes of real humans at 640 × 480 resolution per eye (Fig.
+     <a class="fig" href="#fig4">
+      4
+     </a>
+     ). The resolution is lower than in our synthetic data due to the limitations of near-eye gaze tracking cameras. This is still a significantly higher resolution than the eye images of previous pupil estimation datasets [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ] and two orders of magnitude more pixels per image than previous gaze estimation datasets [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+      68
+     </a>
+     ]. This is also the first binocular gaze dataset captured during an acuity task to increase precision.
+    </p>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Environment and Subjects
+       </h3>
+      </div>
+     </header>
+     <p>
+      We captured images from 30 subjects with variation in gender, ethnicity, age, eye shape, and face shape. We induced incidental factors of eyeliner, eyeshadow, mascara, eyeglasses, and contact lenses. These data have comparable active infrared LED characteristics and camera parameters to the synthetic set. For each subject, the data includes varying gaze direction, pupil size (due to ambient visible illumination changes), and infrared illumination (Fig.
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      ).
+     </p>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="" src="3300780_files\chi2019550fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        <strong>
+         Samples from our real image dataset containing varying pupil size and lighting.
+        </strong>
+        The pupil locations estimated by our pupil estimation network are red pixels. The soft dots present in the upper regions of each frame are camera aberrations.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      Two hardware setups were used. The first setup emulates the use case of virtual reality headsets with a constant infrared illumination, where we gathered data from 10 subjects. The second setup emulates a more general use case such as augmented reality with changing infrared illumination to cover uncalibrated lighting conditions, where we gathered data from 20 subjects. We randomly decide for constant lighting or vary the infrared LED intensity by using pulse-width modulation and oscillating the intensity between defined min/max values with a sine wave of 1 Hz frequency.
+     </p>
+    </section>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Task and Stimulus
+       </h3>
+      </div>
+     </header>
+     <p>
+      To ensure precise gaze direction labels for the captured images, subjects performed an acuity task during capture, which requires accurate fixation and can reduce occurrence of microsaccades [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ]. We placed the subject in a quiet and dimmed office environment, wearing a VR headset with integrated infrared cameras or looking at a computer monitor (27” inches at 53cm distance) with a face stabilizer and mounted cameras.
+     </p>
+     <p>
+      For each trial, we displayed at a random location on screen a capital letter ‘E’ that subtended 5 arcmin on its long axis, which by definition is the smallest size discernible to a viewer with 20/20 vision, and rotated it to a random multiple of 90° orientation. The subject attempted to identify the orientation, which requires looking directly at the target, and then (without looking) selected an appropriate button. When the subject gave an incorrect response, we rejected the image and ran an additional randomized trial.
+     </p>
+     <p>
+      When the subject responded correctly, a video recording of 2 seconds duration window began and we instructed the subject to remain fixated until the target disappeared, providing frames that differ in blink and micro-saccades. Three hundred milliseconds after the video began, we induced further variation in pupil center shift and diameter by ramping screen background intensity (including ambient reflection) from 400 lumens (“white”) to 2 lumens (“black”).
+     </p>
+    </section>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Labels
+       </h3>
+      </div>
+     </header>
+     <p>
+      Gaze direction was labeled as defined in Sec.
+      <a class="sec" href="#sec-12">
+       3
+      </a>
+      . For the benefit of future work, we also computed the pupil position and blink labels using the pupil estimator described in Sec.
+      <a class="sec" href="#sec-24">
+       5
+      </a>
+      and provide those as additional labels.
+     </p>
+    </section>
+   </section>
+   <section id="sec-17">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       EXPERIMENTAL RESULTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We trained neural networks with the proposed dataset and evaluated their performance for practical applications such as gaze estimation and pupil detection. The network architecture that we used was a convolutional neural network motivated by Laine et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+      32
+     </a>
+     ], which was optimized for speed and accuracy in performing gaze estimation (see details in the supplemental material).
+    </p>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Evaluation of Proposed Synthetic Dataset
+       </h3>
+      </div>
+     </header>
+     <p>
+      We conducted an ablation study to assess the contribution of our extensions to the original SynthesEyes model of Wood et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ] for the case of near-eye gaze estimation under IR lighting. We created 5 synthetic datasets as below. The first two datasets directly compared our dataset and the original SynthesEyes model. For the additional three datasets, we individually removed one of the following features from our model: geometrical correction of eye model, texture adjustment for infrared lighting, and pupil center shift. To evaluate how well a trained network generalizes on a novel subject, we defined
+      <em>
+       generalization error
+      </em>
+      as the absolute error between the test labels and inferred values transformed according to a per-subject affine calibration transform, computed between the set of inferred values and the set of test labels. We rendered 16K images across 10 synthetic subjects for each condition, trained gaze networks for them and evaluated them on real data from 9 subjects. We repeated training for each condition 10 times and performed a two-way ANOVA to identify the statistically significant effects.
+     </p>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        <strong>
+         Ablation study to assess benefit of proposed synthetic dataset.
+        </strong>
+        When trained with our synthetic dataset, the neural network could estimate gaze of unseen, real subjects more accurately. The ablation study suggests that most of the advantage of our synthetic model comes from geometrical correction of the eye model and texture adjustment for the IR lighting condition.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:right;">
+         </th>
+         <th style="text-align:left;">
+          Dataset
+         </th>
+         <th style="text-align:center;">
+          Generalization Error (°)
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:right;">
+          1
+         </td>
+         <td style="text-align:left;">
+          Our model
+         </td>
+         <td style="text-align:center;">
+          3.51
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:right;">
+          2
+         </td>
+         <td style="text-align:left;">
+          SynthesEyes model
+         </td>
+         <td style="text-align:center;">
+          3.87
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:right;">
+          3
+         </td>
+         <td style="text-align:left;">
+          Our model without geometrical correction of eye
+         </td>
+         <td style="text-align:center;">
+          3.62
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:right;">
+          4
+         </td>
+         <td style="text-align:left;">
+          Our model without texture adjustment for IR
+         </td>
+         <td style="text-align:center;">
+          3.82
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:right;">
+          5
+         </td>
+         <td style="text-align:left;">
+          Our model without pupil-center shift
+         </td>
+         <td style="text-align:center;">
+          3.50
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      For the main effects, we observed statistically significant differences between the various training data sets (p&lt;0.05), but not between the testing subjects. No interaction between training data sets and testing subjects was found. Furthermore, pairwise comparisons between the different training sets (after Bonferroni correction) revealed that our proposed dataset (with and without the pupil constriction shift, rows 1 and 5 in Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      ) resulted in a significant improvement (p&lt;0.05) over the original SynthesEyes model (row 2). Additionally, both our eye model and infrared textures (rows 3 and 4 in Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      vs. 1) showed a trend towards improving accuracy with the latter being more significant (p&lt;0.1). While further experimentation with more data would help to understand the individual effects more clearly, it is clear that all factors together lead to the improved gaze performance of our synthetic model versus the existing SynthesEyes model in the near-eye infrared setting.
+     </p>
+    </section>
+    <section id="sec-19">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Near-Eye Gaze Estimation
+       </h3>
+      </div>
+     </header>
+     <p>
+      Using our synthetic and real-world VR headset datasets, we evaluated the gaze estimation accuracy of our neural network architecture with 6 convolutional layers, input resolution of 127x127, and 8 channels in the first layer. We chose this network architecture as it resulted in a reasonable compromise between accuracy and computational cost (see supplemental material for more details). We evaluated three training methods: 1) training specifically on data from one real subject and testing on the same subject, 2) training exclusively on data consisting of synthetic images and testing on real subjects, and 3) training on data consisting of both synthetic and real images and testing on real subjects. We achieve remarkable accuracy in all three scenarios.
+     </p>
+     <section id="sec-20">
+      <p>
+       <em>
+        Training and Testing on One Real Subject.
+       </em>
+       For each subject, a training set consisted of about 5,000 to 7,400 images collected for 45 to 50 gaze directions and varying pupil sizes. The test set consisted of about 1,400 to 1,900 images taken for 11 to 13 gaze directions, which were not present in the training set. The details of the training procedure are in the supplemental material. On average, across all subjects, our network achieved an absolute estimation error of 0.84° with the best-case accuracy being 0.50°.
+      </p>
+     </section>
+     <section id="sec-21">
+      <p>
+       <em>
+        Training on Synthetic Data and Testing on Real Subjects.
+       </em>
+       The training set consisted of 240k images rendered using 10 synthetic subjects. To effectively increase the size of data, we augmented the training inputs by using region maps; we applied random amounts of blur, intensity modulation, and contrast modulation to the iris, sclera, and skin regions independently. The test set was all the images acquired from 7 real subjects. We achieved 3.1° generalization error on average across all subjects with the best-case accuracy being 2.3°.
+      </p>
+     </section>
+     <section id="sec-22">
+      <p>
+       <em>
+        Training on Synthetic and Real Data and Testing on Real Subjects.
+       </em>
+       The training set consisted of all previously used synthetic images and real images from 3 real subjects. We tested on the remaining 7 real subjects (same as in the previous test). We achieved 2.1° generalization error on average, the best accuracy being 1.7°.
+      </p>
+     </section>
+    </section>
+    <section id="sec-23">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Remote Gaze Estimation
+       </h3>
+      </div>
+     </header>
+     <p>
+      We also evaluated the efficacy of our proposed neural network architecture for remote gaze tracking. Note that this is a harder task than near-eye gaze estimation, as low-resolution eye images are captured with a remote camera placed 0.5–1 meters away from the subject, under highly variable ambient lighting conditions and with the presence of the full range of motion of the subject's head. Recently, Park et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ] proposed a top-performing method, containing several hourglass networks, for unconstrained eye landmark detection and gaze estimation. They used millions of synthetic eye images generated by the UnityEyes model [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ], of size 90 × 150, to train their network and reported an error of 8.3° on the real-world benchmark MPIIGaze dataset [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+       66
+      </a>
+      ] when no images from the MPIIGaze data were used for training or calibration (confirmed via personal communication with the author).
+     </p>
+     <p>
+      To directly compare the performance of our CNN against their approach, we trained it with one million synthetic images generated from the UnityEyes model and evaluated its performance on all the 45K images from the MPIIGaze dataset. Our network, for this task, was identical to the one that we used in the previous experiment for near-eye gaze estimation, with the exception that we normalized the activations of the first four convolutional layers via instance normalization [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+       57
+      </a>
+      ] and used leaky ReLU [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ] with
+      <em>
+       α
+      </em>
+      = 0.1 instead of ReLU as the non-linearity. We empirically determined these to be useful for stabilizing training and convergence. For training, we used the Adam optimizer with a learning rate of 10
+      <sup>
+       − 4
+      </sup>
+      ,
+      <em>
+       β
+      </em>
+      <sub>
+       1
+      </sub>
+      = 0.9,
+      <em>
+       β
+      </em>
+      <sub>
+       2
+      </sub>
+      = 0.999, ϵ = 10
+      <sup>
+       − 8
+      </sup>
+      , batch size of 64, and trained for 300 epochs. We also used all the data augmentation steps employed previously by Park et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ], except for random image rotations during training. Our network resulted in an error of 8.4°, which is equivalent to that of Park et al., but our network was  100x faster (2000Hz vs. 26Hz theirs’). Considering accuracy and latency together, our network is superior for remote gaze tracking.
+     </p>
+    </section>
+    <section id="sec-24">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Pupil Location Estimation
+       </h3>
+      </div>
+     </header>
+     <p>
+      Most existing high-quality video-based gaze tracking systems initially perform pupil estimation in the eye tracking camera frame followed by mapping the pupil position to a screen location with a polynomial calibration function [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ]. To compare against such approaches, we trained our network to estimate the pupil center from infrared eye images.
+     </p>
+     <p>
+      As input we use a subset of 16,000 images of our synthetic dataset containing 1,600 of each head model (Fig.
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ) combined with 7,128 images from 3 real subjects from our second real-world dataset (Fig.
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      ), yielding a synthetic to real image ratio of approximately 2:1. Labels for pupil location are given for our synthetic images whereas initial labels for the real-world data set are computed using the PupilLabs pupil tracker [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ] and validated by manual inspection.
+     </p>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="" src="3300780_files\chi2019550fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        <strong>
+         Samples for pupil estimation network.
+        </strong>
+        The first row shows augmented images during training. Our network performs well even for challenging samples including bad lighting conditions, dark eye lashes and reflections (second row). Unsuccessful cases due to strong pupil occlusion are shown in the third row.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <section id="sec-25">
+      <p>
+       <em>
+        Network Architecture and Training.
+       </em>
+       The network architecture is equivalent to the previous experiment, except that we use 7 convolutional layers. To compensate for significant noise in the tested images representing challenging augmented reality conditions, we increased the kernel sizes of the first 4 convolutional layers to 9,7,5,5 and added one additional layer with respect to our baseline architecture in order to increase robustness against image noise, such as reflections and bad lighting conditions. This slightly enlarged network can be still evaluated very quickly on the GPU (see next section). In comparison to the 6-layer network used for gaze estimation, the slightly bigger 7-layer network performs more robust, particularly in the case of strong reflections covering the eye.
+      </p>
+      <p>
+       We again use 2 × 2 stride at each convolutional layer, add dropout layers after each convolutional layer, and apply no padding or pooling. The input image size is 293 × 293 pixels. Because we are not estimating the line of sight with this network, no per-subject post-process transformation is applied after the fully-connected final layer. During training we always rescale the image to the network input resolution using bicubic filtering. We then perform various augmentation steps during training as we did for the gaze estimation network, making a subset of our synthetic data sufficient for convergence in training of the network. Specifically, we randomize image samples using affine image transformation, pixel-wise intensity noise, global intensity offset, Gaussian filtering, image shrinking followed by upscaling, histogram equalization, and normalization with mean shift. We also simulate environment reflections in the eye by randomly overlaying the image with images out of a dataset of 326 natural photographs [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ]. For details about the training procedure we refer the reader to the supplementary material. Augmented images are shown in Fig.
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       (first row).
+      </p>
+      <figure id="fig6">
+       <img alt="" class="img-responsive" longdesc="" src="3300780_files\chi2019550fig6.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 6:
+        </span>
+        <span class="figure-title">
+         <strong>
+          Average pupil estimation error on PupilNet datasets.
+         </strong>
+         Top: We compare the average detection rate of our pupil estimation network against Starburst [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+          33
+         </a>
+         ], Set [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+          21
+         </a>
+         ], Swirski et al. [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+          52
+         </a>
+         ], ExCuSe [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+          12
+         </a>
+         ], ElSe [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+          14
+         </a>
+         ], PupilNet [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+          13
+         </a>
+         ], Park et al. [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+          40
+         </a>
+         ] and CBF [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+          11
+         </a>
+         ]. Bottom: The 5-pixel error is averaged across individual PupilNet datasets (bold marker) and bounded by best and worst error values for all datasets (upper and lower markers). Our approach reaches highest robustness. Note that for CBF only the average detection rates over all datasets were published, not the detection rate for individual datsets  [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+          11
+         </a>
+         ].
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-26">
+      <p>
+       <em>
+        Pupil Estimation Accuracy.
+       </em>
+       Accuracy of pupil estimation is usually given in form of a probability of estimating the pupil location with a maximum distance of 5 pixels from the ground truth pupil location (”5-pixel error” or ”detection rate”) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+        13
+       </a>
+       ]. When training on 10 synthetic and 3 real subjects we reach very high pupil estimation accuracy across all remaining subjects of our second real-world dataset. Fig.
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       shows that our network is able to estimate the pupil center even for very challenging cases such as bad lighting conditions, dark eye lashes, partly occluded pupils, and reflections. Pupil estimation during blinks and in case of other strong occlusions are ill-posed problems and typically result in higher estimation error. However, since we include pupil labels even for occluded pupils in our synthetic data we effectively limit the offset from the ground truth pupil location during a blink (Fig.
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       , third row). Note that our pupil localization network is trained on on-axis images and performs well for this camera configuration (Fig.
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       , on-axis). For other camera configuration, respective images must be included in training or the network will perform suboptimal.
+      </p>
+      <p>
+       Recent pupil estimation methods [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+        12
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+        13
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+        14
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+        33
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+        40
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+        52
+       </a>
+       ] have been evaluated on the PupilNet dataset containing 29 individual datasets with 135,000 frames each with different challenges such as different geometric configurations, strong environment reflections, camera noise, difficult lighting, and even incomplete frames [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+        13
+       </a>
+       ]. Following Fuhl et al., we trained with images from the PupilNet datasets in addition to our synthetic dataset excluding images from the PupilNet dataset that we use for validation. For a fair comparison to values given in previous papers we compute results with respect to the native dataset resolution of 384x288. This means our 293x293 network has to deliver sub-5-pixel accuracy. For Park et al. we test on 180x108 cropped images centered on the pupil location given by the label, allowing their network to effectively work on the full native resolution while making sure that the pupil is still contained.
+      </p>
+      <p>
+       We reach a 5-pixel error of 83.1% which is significantly superior to other CNN-based approaches such as PupilNet.v2 with 76.7% and Park et al. 43.7% and higher than ExCuse 67.1%, ElSe 54.2% (see Fig.
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       , top). We reason that our network architecture in combination with image augmentation helps significantly to increase robustness against noise visible in challenging real-world images. In Fig.
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       (bottom) we plot the best case and worst case value over all individual datasets of PupilNet. The graph shows that our network reaches consistently high robustness with low variance from dataset to dataset (69.1% worst case, 96.3% best case). Using the network of Park et al. overall shows a much higher variance and lower performance across the PupilNet dataset. These results are worse in comparison to numbers reported in their paper when testing on the MPIIGaze real-world dataset [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+        40
+       </a>
+       ]. We reason that Park et al. do not augment with random reflections during training which significantly lowers the detection rate on the PupilNet dataset.
+      </p>
+      <p>
+       CBF-20 exceeds our performance on the PupilNet dataset below 8 pixels of error and CBF-15 below 3 pixels. However, our trained model requires only 8 MB of memory whereas the CBF models consumes 3 orders of magnitude more (3 GB and 9.5 GB respectively). Therefore, CBF may be used in the case where best case accuracy with high memory consumption is an acceptable tradeoff over robust worst-case performance and low memory footprint.
+      </p>
+     </section>
+    </section>
+    <section id="sec-27">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Real-Time Performance
+       </h3>
+      </div>
+     </header>
+     <p>
+      We implemented our trained network in cuDNN [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ], a framework of optimized GPU kernels for deep learning built on NVIDIA CUDA. We tested inference times for different networks on desktop and mobile class GPUs as shown in Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      . The Near-Eye Gaze Estimation and Pupil Localization networks refer to the networks described earlier in this section. The times reported are averages for a single frame over 100,000 inferences using 16 bit floating point (half) precision.
+      <a class="fn" href="#fn5" id="foot-fn5">
+       <sup>
+        5
+       </sup>
+      </a>
+     </p>
+     <p>
+      On NVIDIA Titan V, our networks run at well over 1,000 Hz. On Jetson TX2, our Gaze Estimation network again runs at over 1,000 Hz, while our slightly larger Pupil Location network achieves over 260 Hz.
+     </p>
+     <div class="table-responsive" id="tab2">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 2:
+       </span>
+       <span class="table-title">
+        Inference performance on tested hardware.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;">
+          Network
+         </th>
+         <th style="text-align:right;">
+          Titan V
+         </th>
+         <th style="text-align:right;">
+          Jetson TX2
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;">
+          <font style="font-variant: small-caps">
+           Gaze Estimation
+          </font>
+         </td>
+         <td style="text-align:right;">
+          0.496 ms
+         </td>
+         <td style="text-align:right;">
+          0.659 ms
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          <font style="font-variant: small-caps">
+           Pupil Localization
+          </font>
+         </td>
+         <td style="text-align:right;">
+          0.914 ms
+         </td>
+         <td style="text-align:right;">
+          3.781 ms
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </section>
+   </section>
+   <section id="sec-28">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Accurate synthetic data is essential for training machine learning systems within practical resource limits. Our novel synthetic dataset is accurate and comprehensive for the implemented model components. It enables training for information which is hard to obtain and control in the real world, and our novel real image dataset improves accuracy and provides real-world validation. We demonstrated the effectiveness of these datasets in contributing to one of the best-performing gaze estimation networks, and have shown that adaptation to new hardware configurations is simple, fast, and robust.
+    </p>
+    <p>
+     Our eye model does not include eyeball elongation common in myopic eyes, the complicated optical elements behind the pupil such as the crystalline lens, rotational movements of the eyeball according to Listing's Law, or the movement of fluid within the eye during gaze changes. We did not model these because we hypothesized that they have milder impact on gaze and pupil estimation compared to what we incorporated in our dataset. Having addressed the challenging larger sources of error by our improved anatomical model and rendering shaders, the previously mentioned smaller sources of error are now good candidates for follow-up study.
+    </p>
+    <p>
+     We include the region maps to promote future research with region-wise augmentation of our synthetic dataset. For example, extended iris texture, eye lash variation, alternative environment reflections, additional physiological structures in the sclera, alternative camera lens distortion and vignetting properties, and more diverse makeup application can now be explored as 2D imaging operations during training without the immense computing power required to path trace millions of high-resolution images from 3D models.
+    </p>
+    <p>
+     Including head slippage in training data is essential for robust and accurate gaze estimation. Our approach was to randomize head positions, thereby covering a space encompassing typical head positions encountered when using a headset. This strategy is simple to implement but can possibly include head positions never encountered in real use cases. While this approach may generalize better for unseen subjects, a more realistic slippage modeling based on measurements could enhance accuracy even further for specific real-world scenarios. We hope to explore this approach in future work.
+    </p>
+    <p>
+     Robust, accurate gaze tracking enables novel gaze-based HCI methodologies, particularly in VR. The methodologies that have been explored for VR are limited by the accuracy of gaze trackers, leading to approximations of both the VR headset[2][3] and the gaze tracker[4]. Even those setups using a real VR headset with a real gaze tracker cite the accuracy of the tracker as a confounding factor in their experiments[6][7]. Methods that overcome gaze tracker inaccuracy by “snapping to locations” or other approximations are confounded by nearly-overlapping objects, limiting test scene complexity, and requiring heuristics to separate items[5]. Clearly, gaze tracker accuracy and robustness is a limitation in HCI research on gaze-based interaction.
+    </p>
+    <p>
+     Our presented network, training technique, and datasets compose a method for training a robust, accurate gaze tracker for arbitrary head-mounted setups. Previously, experiments were limited to the accuracy achievable by off-the-shelf trackers which, though capable of high accuracy in the ideal case, do not achieve robust accuracy for all experimental setups, let alone all experiment participants. Our result provides the best of both worlds: experimenters can use our robust, pre-trained gaze tracking network, or follow our method to train their own using the datasets and eye model that we publish with the paper. Based on our experience constructing our network and dataset, we make the following recommendations to experimenters in the HCI community seeking to implement our technique:
+    </p>
+    <ul class="list-no-style">
+     <li id="list5" label="•">
+      Despite their simplicity, stacked convolutional network architectures are very accurate once trained to convergence, provide low-latency inference on modern GPUs, and are easy to implement. They should be preferred models for VR gaze tracking setups. We provide analysis of training parameters (number of convolutional layers, feature counts, etc.) in the supplementary material to assist researchers in creating stacked convolutional networks that fit their experimental setups.
+      <br/>
+     </li>
+     <li id="list6" label="•">
+      The most important physical properties of synthetic eye models are accurate representation of anatomical structure and reflectance in the given lighting condition, affecting size and brightness of features in images. Experimenters should take this into account both when using synthetic data and when using real data/training on live participants.
+      <br/>
+     </li>
+     <li id="list7" label="•">
+      The most important hardware setup properties to simulate are lighting condition and camera parameters (view, sensor properties, exposure, noise). Experimenters should take this into account when synthesizing images and when designing experiments.
+      <br/>
+     </li>
+    </ul>
+    <p>
+     Finally, though many gaze-based interaction methodologies are enabled by our approach, we find blink-based interactions to be of particular interest  [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ]. A robust blink detection technique combined with our gaze tracking network would enable robust and precise blink interaction, allowing researchers to differentiate blink events (e.g. voluntary vs. involutary blinks), thus enlarging the space of possible interaction techniques.
+    </p>
+   </section>
+   <section id="sec-29">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We have presented 1) a robust, accurate gaze estimation network, 2) a general method for training image-based gaze estimators from custom hardware setups, and 3) the NVGaze datasets containing millions of real and synthetic images of high quality augmented with an eye model and rendering pipeline to create highly realistic eye images. Our network achieves state-of-the-art accuracy for gaze estimation and pupil detection and is more robust (in terms of worst case performance) than all previous methods. Our approach is easily adaptable to arbitrary hardware configurations, and we include recommendations for training based on our experience implementing our presented network. We share dataset, our eye model, and rendering and animation code with the community to allow researchers to easily render synthetic data specific to their hardware setup. Our network, method, and datasets constitute a significant advance in the state of the art for image-based head-mounted gaze tracking, enabling numerous opportunities for research in gaze-based rendering and HCI. With this work we hope to make an impetus for novel research topics covering gaze interaction, visual perception, gaze-contingent displays and gaze-based rendering.
+    </p>
+   </section>
+   <section id="sec-30">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       ACKNOWLEDGEMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We thank all reviewers for their valuable feedback. We also thank Eric Whitmire for improving the animation scripts of our models. We thank Peter Shirley and Pavlo Molchanov for their insightful comments and suggestions. We thank Erroll Wood for providing the Blender eye model from the SynthesEyes dataset
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+      60
+     </a>
+     .
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Nicoletta Adamo-Villani, Gerardo Beni, and Jeremy White. 2005. EMOES: Eye Motion and Ocular Expression Simulator.
+      <em>
+       <em>
+        International Journal of Information Technology
+       </em>
+      </em>
+      2, 3 (2005), 170–176.
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Rachel Albert, Anjul Patney, David Luebke, and Joohwan Kim. 2017. Latency Requirements for Foveated Rendering in Virtual Reality.
+      <em>
+       <em>
+        ACM Trans. Appl. Percept.
+       </em>
+      </em>
+      14, 4, Article 25 (Sept. 2017), 13 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3127589" target="_blank">
+       https://doi.org/10.1145/3127589
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Elli Angelopoulou. 1999. The Reflectance Spectrum of Human Skin. Technical Report MS-CIS-99-29. University of Pennsylvania. 16 pages.
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Shumeet Baluja and Dean Pomerleau. 1994. Non-Intrusive Gaze Tracking Using Artificial Neural Networks. In Advances in Neural Information Processing Systems 6, J. D. Cowan, G. Tesauro, and J. Alspector (Eds.). Morgan-Kaufmann, San Francisco, CA, USA, 753–760.
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Bruce Bridgeman and Joseph Palca. 1980. The role of microsaccades in high acuity observational tasks.
+      <em>
+       <em>
+        Vision Research
+       </em>
+      </em>
+      20, 9 (1980), 813–817.
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Sharan Chetlur, Cliff Woolley, Philippe Vandermersch, Jonathan Cohen, John Tran, Bryan Catanzaro, and Evan Shelhamer. 2014. cuDNN: Efficient primitives for deep learning.
+      <em>
+       <em>
+        CoRR
+       </em>
+      </em>
+      abs/1410.0759(2014).
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Kyoung Whan Choe, Randolph Blake, and Sang-Hun Lee. 2016. Pupil size dynamics during fixation impact the accuracy and precision of video-based gaze estimation.
+      <em>
+       <em>
+        Vision Research
+       </em>
+      </em>
+      118(2016), 48–59.
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Vincent Dumoulin, Jonathon Shlens, and Manjunath Kudlur. 2016. A Learned Representation For Artistic Style.
+      <em>
+       <em>
+        CoRR
+       </em>
+      </em>
+      abs/1610.07629. arxiv:1610.07629
+      <a class="link-inline force-break" href="http://arxiv.org/abs/1610.07629">
+       http://arxiv.org/abs/1610.07629
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Anna Maria Feit, Shane Williams, Arturo Toledo, Ann Paradiso, Harish Kulkarni, Shaun Kane, and Meredith Ringel Morris. 2017. Toward Everyday Gaze Input: Accuracy and Precision of Eye Tracking and Implications for Design. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 1118–1130.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025599" target="_blank">
+       https://doi.org/10.1145/3025453.3025599
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Laura Florea, Corneliu Florea, Ruxandra Vranceanu, and Constantin Vertan. 2013. Can Your Eyes Tell Me How You Think? A Gaze Directed Estimation of the Mental Activity. In
+      <em>
+       BMVC 2013 - Electronic Proceedings of the British Machine Vision Conference 2013
+      </em>
+      . BMVA Press, 60.1–60.11.
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Wolfgang Fuhl, David Geisler, Thiago Santini, Tobias Appel, Wolfgang Rosenstiel, and Enkelejda Kasneci. 2018. CBF: Circular Binary Features for Robust and Real-time Pupil Center Detection. In
+      <em>
+       Proceedings of the 2018 ACM Symposium on Eye Tracking Research &amp; Applications
+      </em>
+      (
+      <em>
+       ETRA ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 8, 6 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3204493.3204559" target="_blank">
+       https://doi.org/10.1145/3204493.3204559
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Wolfgang Fuhl, Thomas Kübler, Katrin Sippel, Wolfgang Rosenstiel, and Enkelejda Kasneci. 2015. ExCuSe: Robust Pupil Detection in Real-World Scenarios. In Computer Analysis of Images and Patterns, George Azzopardi and Nicolai Petkov (Eds.). Springer International Publishing, Cham, 39–51.
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Wolfgang Fuhl, Thiago Santini, Gjergji Kasneci, Wolfgang Rosenstiel, and Enkelejda Kasneci. 2017. PupilNet v2.0: Convolutional Neural Networks for CPU based real time Robust Pupil Detection.
+      <em>
+       <em>
+        CoRR
+       </em>
+      </em>
+      abs/1711.00112(2017).
+      <a class="link-inline force-break" href="http://arxiv.org/abs/1711.00112">
+       http://arxiv.org/abs/1711.00112
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Wolfgang Fuhl, Thiago C. Santini, Thomas Kübler, and Enkelejda Kasneci. 2016. ElSe: Ellipse Selection for Robust Pupil Detection in Real-world Environments. In
+      <em>
+       Proceedings of the Ninth Biennial ACM Symposium on Eye Tracking Research &amp; Applications
+      </em>
+      (
+      <em>
+       ETRA ’16
+      </em>
+      ). ACM, New York, NY, USA, 123–130.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2857491.2857505" target="_blank">
+       https://doi.org/10.1145/2857491.2857505
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Kenneth Alberto Funes Mora, Florent Monay, and Jean-Marc Odobez. 2014. EYEDIAP: A Database for the Development and Evaluation of Gaze Estimation Algorithms from RGB and RGB-D Cameras. In
+      <em>
+       Proceedings of the Symposium on Eye Tracking Research and Applications
+      </em>
+      (
+      <em>
+       ETRA ’14
+      </em>
+      ). ACM, New York, NY, USA, 255–258.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2578153.2578190" target="_blank">
+       https://doi.org/10.1145/2578153.2578190
+      </a>
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Chao Gou, Y. Wu, Kang Wang, Fei-Yue Wang, and Q. Ji. 2016. Learning-by-synthesis for accurate eye detection.
+      <em>
+       <em>
+        2016 23rd International Conference on Pattern Recognition (ICPR)
+       </em>
+      </em>
+      1, 1 (Dec 2016), 3362–3367.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/ICPR.2016.7900153" target="_blank">
+       https://doi.org/10.1109/ICPR.2016.7900153
+      </a>
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Brian Guenter, Mark Finch, Steven Drucker, Desney Tan, and John Snyder. 2012. Foveated 3D Graphics.
+      <em>
+       <em>
+        ACM Trans. Graph.
+       </em>
+      </em>
+      31, 6, Article 164 (Nov. 2012), 10 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2366145.2366183" target="_blank">
+       https://doi.org/10.1145/2366145.2366183
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Michael J Hawes and Richard K Dortzbach. 1982. The microscopic anatomy of the lower eyelid retractors.
+      <em>
+       <em>
+        Archives of ophthalmology
+       </em>
+      </em>
+      100, 8 (1982), 1313–1318.
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Michael Xuelin Huang, Tiffany C.K. Kwok, Grace Ngai, Stephen C.F. Chan, and Hong Va Leong. 2016. Building a Personalized, Auto-Calibrating Eye Tracker from User Interactions. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 5169–5179.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858404" target="_blank">
+       https://doi.org/10.1145/2858036.2858404
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Michael Xuelin Huang, Jiajia Li, Grace Ngai, and Hong Va Leong. 2017. ScreenGlint: Practical, In-situ Gaze Estimation on Smartphones. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 2546–2557.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025794" target="_blank">
+       https://doi.org/10.1145/3025453.3025794
+      </a>
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Amir-Homayoun Javadi, Zahra Hakimi, Morteza Barati, Vincent Walsh, and Lili Tcheang. 2015. SET: A Pupil Detection Method using Sinusoidal Approximation.
+      <em>
+       <em>
+        Frontiers in Neuroengineering
+       </em>
+      </em>
+      8 (2015), 4.
+      <a class="link-inline force-break" href="https://doi.org/10.3389/fneng.2015.00004" target="_blank">
+       https://doi.org/10.3389/fneng.2015.00004
+      </a>
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Herve Jegou, Matthijs Douze, and Cordelia Schmid. 2008. Hamming embedding and weak geometric consistency for large scale image search. In European Conference on Computer Vision (ECCV). Springer, Springer International Publishing, 304–317.
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Oliver Jesorsky, Klaus J. Kirchberg, and Robert Frischholz. 2001. Robust Face Detection Using the Hausdorff Distance. In
+      <em>
+       Proceedings of the Third International Conference on Audio- and Video-Based Biometric Person Authentication
+      </em>
+      (
+      <em>
+       AVBPA ’01
+      </em>
+      ). Springer International Publishing, Berlin, Heidelberg, 90–95.
+      <a class="link-inline force-break" href="https://www.bioid.com/facedb/">
+       https://www.bioid.com/facedb/
+      </a>
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Anuradha Kar and Peter Corcoran. 2017. A Review and Analysis of Eye-Gaze Estimation Systems, Algorithms and Performance Evaluation Methods in Consumer Platforms.
+      <em>
+       <em>
+        CoRR
+       </em>
+      </em>
+      abs/1708.01817(2017). arxiv:1708.01817
+      <a class="link-inline force-break" href="http://arxiv.org/abs/1708.01817">
+       http://arxiv.org/abs/1708.01817
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Moritz Kassner, William Patera, and Andreas Bulling. 2014. Pupil: An Open Source Platform for Pervasive Eye Tracking and Mobile Gaze-based Interaction. In
+      <em>
+       Proceedings of the 2014 ACM International Joint Conference on Pervasive and Ubiquitous Computing: Adjunct Publication
+      </em>
+      (
+      <em>
+       UbiComp ’14 Adjunct
+      </em>
+      ). ACM, New York, NY, USA, 1151–1160.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2638728.2641695" target="_blank">
+       https://doi.org/10.1145/2638728.2641695
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Paul L Kaufman, Leonard A Levin, Francis Heed Adler, and Albert Alm. 2011.
+      <em>
+       Adler's Physiology of the Eye
+      </em>
+      . Elsevier Health Sciences, St. Louis, MO.
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Robert Konrad, Nitish Padmanaban, Keenan Molner, Emily A. Cooper, and Gordon Wetzstein. 2017. Accommodation-invariant Computational Near-eye Displays.
+      <em>
+       <em>
+        ACM Trans. Graph.
+       </em>
+      </em>
+      36, 4, Article 88 (July 2017), 12 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3072959.3073594" target="_blank">
+       https://doi.org/10.1145/3072959.3073594
+      </a>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Elleen Kowler and Robert M Steinman. 1979. Miniature saccades: eye movements that do not count.
+      <em>
+       <em>
+        Vision Research
+       </em>
+      </em>
+      19, 1 (1979), 105–108.
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      K. Krafka, A. Khosla, P. Kellnhofer, H. Kannan, S. Bhandarkar, W. Matusik, and A. Torralba. 2016. Eye Tracking for Everyone. In
+      <em>
+       2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)
+      </em>
+      , Vol. 1. 2176–2184.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2016.239" target="_blank">
+       https://doi.org/10.1109/CVPR.2016.239
+      </a>
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Thomas C. Kübler, Tobias Rittig, Enkelejda Kasneci, Judith Ungewiss, and Christina Krauss. 2016. Rendering Refraction and Reflection of Eyeglasses for Synthetic Eye Tracker Images. In
+      <em>
+       Proceedings of the Ninth Biennial ACM Symposium on Eye Tracking Research &amp; Applications
+      </em>
+      (
+      <em>
+       ETRA ’16
+      </em>
+      ). ACM, New York, NY, USA, 143–146.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2857491.2857494" target="_blank">
+       https://doi.org/10.1145/2857491.2857494
+      </a>
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Mikko Kytö, Barrett Ens, Thammathip Piumsomboon, Gun A. Lee, and Mark Billinghurst. 2018. Pinpointing: Precise Head- and Eye-Based Target Selection for Augmented Reality. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 81, 14 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3173655" target="_blank">
+       https://doi.org/10.1145/3173574.3173655
+      </a>
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Samuli Laine, Tero Karras, Timo Aila, Antti Herva, Shunsuke Saito, Ronald Yu, Hao Li, and Jaakko Lehtinen. 2017. Production-Level Facial Performance Capture Using Deep Convolutional Neural Networks.
+      <em>
+       <em>
+        Proc. Symposium on Computer Animation (SCA)
+       </em>
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Dongheng Li, D. Winfield, and D. J. Parkhurst. 2005. Starburst: A hybrid algorithm for video-based eye tracking combining feature-based and model-based approaches. In
+      <em>
+       2005 IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR’05) - Workshops
+      </em>
+      , Vol. 1. 79–79.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2005.531" target="_blank">
+       https://doi.org/10.1109/CVPR.2005.531
+      </a>
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Hwey-Lan Liou and Noel A Brennan. 1997. Anatomically accurate, finite model eye for optical modeling.
+      <em>
+       <em>
+        Journal of the Optical Society of America
+       </em>
+      </em>
+      14, 8 (1997), 1684–1695.
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Lester C Loschky and George W McConkie. 2002. Investigating spatial vision and dynamic attentional selection using a gaze-contingent multiresolutional display.
+      <em>
+       <em>
+        Journal of Experimental Psychology: Applied
+       </em>
+      </em>
+      8, 2 (2002), 99.
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Andrew L Maas, Awni Y Hannun, and Andrew Ng. 2013. Rectifier nonlinearities improve neural network acoustic models. In
+      <em>
+       Proc. International Conference on Machine Learning (ICML)
+      </em>
+      , Vol. 30.
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Alex Mariakakis, Jacob Baudin, Eric Whitmire, Vardhman Mehta, Megan A Banks, Anthony Law, Lynn Mcgrath, and Shwetak N Patel. 2017. PupilScreen: Using Smartphones to Assess Traumatic Brain Injury.
+      <em>
+       <em>
+        Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies
+       </em>
+      </em>
+      1, 3 (2017), 81.
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Alexandra Papoutsaki, Aaron Gokaslan, James Tompkin, Yuze He, and Jeff Huang. 2018. The Eye of the Typer: A Benchmark and Analysis of Gaze Behavior During Typing. In
+      <em>
+       Proceedings of the 2018 ACM Symposium on Eye Tracking Research &amp; Applications
+      </em>
+      (
+      <em>
+       ETRA ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 16, 9 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3204493.3204552" target="_blank">
+       https://doi.org/10.1145/3204493.3204552
+      </a>
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Seonwook Park, Adrian Spurr, and Otmar Hilliges. 2018. Deep Pictorial Gaze Estimation.
+      <em>
+       <em>
+        European Conference on Computer Vision (ECCV)
+       </em>
+      </em>
+      16, 1 (2018), 741–757.
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Seonwook Park, Xucong Zhang, Andreas Bulling, and Otmar Hilliges. 2018. Learning to Find Eye Region Landmarks for Remote Gaze Estimation in Unconstrained Settings.
+      <em>
+       <em>
+        ACM Symposium on Eye Tracking Research and Applications (ETRA)
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      Anjul Patney, Marco Salvi, Joohwan Kim, Anton Kaplanyan, Chris Wyman, Nir Benty, David Luebke, and Aaron Lefohn. 2016. Towards Foveated Rendering for Gaze-tracked Virtual Reality.
+      <em>
+       <em>
+        ACM Trans. Graph.
+       </em>
+      </em>
+      35, 6, Article 179 (Nov. 2016), 12 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2980179.2980246" target="_blank">
+       https://doi.org/10.1145/2980179.2980246
+      </a>
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      Thiago Santini, Wolfgang Fuhl, and Enkelejda Kasneci. 2017. CalibMe: Fast and Unsupervised Eye Tracker Calibration for Gaze-Based Pervasive Human-Computer Interaction. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 2594–2605.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025950" target="_blank">
+       https://doi.org/10.1145/3025453.3025950
+      </a>
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Dhiraj K Sardar, Guang-Yin Swanland, Raylon M Yow, Robert J Thomas, and Andrew TC Tsin. 2007. Optical properties of ocular tissues in the near infrared region.
+      <em>
+       <em>
+        Lasers in medical science
+       </em>
+      </em>
+      22, 1 (2007), 46–52.
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      A. Shrivastava, T. Pfister, O. Tuzel, J. Susskind, W. Wang, and R. Webb. 2017. Learning from Simulated and Unsupervised Images through Adversarial Training. In
+      <em>
+       2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)
+      </em>
+      , Vol. 2. 2242–2251.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2017.241" target="_blank">
+       https://doi.org/10.1109/CVPR.2017.241
+      </a>
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      Karen Simonyan and Andrew Zisserman. 2014. Very Deep Convolutional Networks for Large-Scale Image Recognition.
+      <em>
+       <em>
+        CoRR
+       </em>
+      </em>
+      abs/1409.1556(2014). arxiv:1409.1556
+      <a class="link-inline force-break" href="http://arxiv.org/abs/1409.1556">
+       http://arxiv.org/abs/1409.1556
+      </a>
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      Brian A. Smith, Qi Yin, Steven K. Feiner, and Shree K. Nayar. 2013. Gaze Locking: Passive Eye Contact Detection for Human-object Interaction. In
+      <em>
+       Proceedings of the 26th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’13
+      </em>
+      ). ACM, New York, NY, USA, 271–280.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2501988.2501994" target="_blank">
+       https://doi.org/10.1145/2501988.2501994
+      </a>
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      P. Smith, M. Shah, and N. da Vitoria Lobo. 2003. Determining Driver Visual Attention with One Camera.
+      <em>
+       <em>
+        Trans. Intell. Transport. Sys.
+       </em>
+      </em>
+      4, 4 (Dec. 2003), 205–218.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TITS.2003.821342" target="_blank">
+       https://doi.org/10.1109/TITS.2003.821342
+      </a>
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      Michael Stengel, Steve Grogorick, Martin Eisemann, Elmar Eisemann, and Marcus A. Magnor. 2015. An Affordable Solution for Binocular Eye Tracking and Calibration in Head-mounted Displays. In
+      <em>
+       Proceedings of the 23rd ACM International Conference on Multimedia
+      </em>
+      (
+      <em>
+       MM ’15
+      </em>
+      ). ACM, New York, NY, USA, 15–24.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2733373.2806265" target="_blank">
+       https://doi.org/10.1145/2733373.2806265
+      </a>
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      William Steptoe, Oyewole Oyekoya, and Anthony Steed. 2010. Eyelid Kinematics for Virtual Characters.
+      <em>
+       <em>
+        Computer Animation and Virtual Worlds
+       </em>
+      </em>
+      21, 3-4 (2010), 161–171.
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      Y. Sugano, Y. Matsushita, and Y. Sato. 2014. Learning-by-Synthesis for Appearance-Based 3D Gaze Estimation.
+      <em>
+       <em>
+        2014 IEEE Conference on Computer Vision and Pattern Recognition
+       </em>
+      </em>
+      1, 1 (June 2014), 1821–1828.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2014.235" target="_blank">
+       https://doi.org/10.1109/CVPR.2014.235
+      </a>
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      Qi Sun, Anjul Patney, Li-Yi Wei, Omer Shapira, Jingwan Lu, Paul Asente, Suwen Zhu, Morgan Mcguire, David Luebke, and Arie Kaufman. 2018. Towards Virtual Reality Infinite Walking: Dynamic Saccadic Redirection.
+      <em>
+       <em>
+        ACM Trans. Graph.
+       </em>
+      </em>
+      37, 4, Article 67 (July 2018), 13 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3197517.3201294" target="_blank">
+       https://doi.org/10.1145/3197517.3201294
+      </a>
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Lech Świrski and Neil Dodgson. 2014. Rendering Synthetic Ground Truth Images for Eye Tracker Evaluation. In
+      <em>
+       Proceedings of the Symposium on Eye Tracking Research and Applications
+      </em>
+      (
+      <em>
+       ETRA ’14
+      </em>
+      ). ACM, New York, NY, USA, 219–222.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2578153.2578188" target="_blank">
+       https://doi.org/10.1145/2578153.2578188
+      </a>
+     </li>
+     <li id="BibPLXBIB0053" label="[53]">
+      Lech Świrski and Neil A. Dodgson. 2013. A fully-automatic, temporal approach to single camera, glint-free 3D eye model fitting. In
+      <em>
+       Proceedings of ECEM 2013
+      </em>
+      .
+      <a class="link-inline force-break" href="http://www.cl.cam.ac.uk/research/rainbow/projects/eyemodelfit/">
+       http://www.cl.cam.ac.uk/research/rainbow/projects/eyemodelfit/
+      </a>
+     </li>
+     <li id="BibPLXBIB0054" label="[54]">
+      A. I. Tew. 1997. Simulation results for an innovative point-of-regard sensor using neural networks.
+      <em>
+       <em>
+        Neural Computing &amp; Applications
+       </em>
+      </em>
+      5, 4 (01 Dec 1997), 230–237.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/BF01424228" target="_blank">
+       https://doi.org/10.1007/BF01424228
+      </a>
+     </li>
+     <li id="BibPLXBIB0055" label="[55]">
+      Marc Tonsen, Julian Steil, Yusuke Sugano, and Andreas Bulling. 2017. InvisibleEye: Mobile Eye Tracking Using Multiple Low-Resolution Cameras and Learning-Based Gaze Estimation.
+      <em>
+       <em>
+        Proc. ACM Interact. Mob. Wearable Ubiquitous Technol.
+       </em>
+      </em>
+      1, 3, Article 106 (Sept. 2017), 21 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3130971" target="_blank">
+       https://doi.org/10.1145/3130971
+      </a>
+     </li>
+     <li id="BibPLXBIB0056" label="[56]">
+      Marc Tonsen, Xucong Zhang, Yusuke Sugano, and Andreas Bulling. 2016. Labelled Pupils in the Wild: A Dataset for Studying Pupil Detection in Unconstrained Environments. In
+      <em>
+       Proceedings of the Ninth Biennial ACM Symposium on Eye Tracking Research &amp; Applications
+      </em>
+      (
+      <em>
+       ETRA ’16
+      </em>
+      ). ACM, New York, NY, USA, 139–142.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2857491.2857520" target="_blank">
+       https://doi.org/10.1145/2857491.2857520
+      </a>
+     </li>
+     <li id="BibPLXBIB0057" label="[57]">
+      Dmitry Ulyanov, Andrea Vedaldi, and Victor S. Lempitsky. 2017. Improved Texture Networks: Maximizing Quality and Diversity in Feed-Forward Stylization and Texture Synthesis.
+      <em>
+       <em>
+        2017 IEEE Conference on Computer Vision and Pattern Recognition, CVPR 2017
+       </em>
+      </em>
+      , 4105–4113.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2017.437" target="_blank">
+       https://doi.org/10.1109/CVPR.2017.437
+      </a>
+     </li>
+     <li id="BibPLXBIB0058" label="[58]">
+      Glyn Walsh. 1988. The effect of mydriasis on pupillary centration of the human eye.
+      <em>
+       <em>
+        Ophthalmic Physiol Opt.
+       </em>
+      </em>
+      8 (02 1988), 178–82.
+     </li>
+     <li id="BibPLXBIB0059" label="[59]">
+      Ulrich Wildenmann and Frank Schaeffel. 2013. Variations of pupil centration and their effects on video eye tracking.
+      <em>
+       <em>
+        Ophthalmic and Physiological Optics
+       </em>
+      </em>
+      34, 1 (09 2013).
+      <a class="link-inline force-break" href="https://doi.org/10.1111/opo.12102" target="_blank">
+       https://doi.org/10.1111/opo.12102
+      </a>
+     </li>
+     <li id="BibPLXBIB0060" label="[60]">
+      Erroll Wood, Tadas Baltruaitis, Xucong Zhang, Yusuke Sugano, Peter Robinson, and Andreas Bulling. 2015. Rendering of Eyes for Eye-Shape Registration and Gaze Estimation. In
+      <em>
+       Proceedings of the 2015 IEEE International Conference on Computer Vision (ICCV)
+      </em>
+      (
+      <em>
+       ICCV ’15
+      </em>
+      ). IEEE Computer Society, Washington, DC, USA, 3756–3764.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/ICCV.2015.428" target="_blank">
+       https://doi.org/10.1109/ICCV.2015.428
+      </a>
+     </li>
+     <li id="BibPLXBIB0061" label="[61]">
+      Erroll Wood, Tadas Baltrušaitis, Louis-Philippe Morency, Peter Robinson, and Andreas Bulling. 2016. A 3D Morphable Eye Region Model for Gaze Estimation. In Computer Vision – ECCV 2016, Bastian Leibe, Jiri Matas, Nicu Sebe, and Max Welling(Eds.). Springer International Publishing, Cham, 297–313.
+     </li>
+     <li id="BibPLXBIB0062" label="[62]">
+      Erroll Wood, Tadas Baltrušaitis, Louis-Philippe Morency, Peter Robinson, and Andreas Bulling. 2016. Learning an Appearance-based Gaze Estimator from One Million Synthesised Images. In
+      <em>
+       Proceedings of the Ninth Biennial ACM Symposium on Eye Tracking Research &amp; Applications
+      </em>
+      (
+      <em>
+       ETRA ’16
+      </em>
+      ). ACM, New York, NY, USA, 131–138.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2857491.2857492" target="_blank">
+       https://doi.org/10.1145/2857491.2857492
+      </a>
+     </li>
+     <li id="BibPLXBIB0063" label="[63]">
+      Harry J. Wyatt. 2010. The human pupil and the use of video-based eyetrackers.
+      <em>
+       <em>
+        Vision Research
+       </em>
+      </em>
+      50, 10 (2010), 1982–1988.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.visres.2010.07.008" target="_blank">
+       https://doi.org/10.1016/j.visres.2010.07.008
+      </a>
+     </li>
+     <li id="BibPLXBIB0064" label="[64]">
+      Yabo Yang, Keith Thompson, and Stephen Burns. 2002. Pupil Location under Mesopic, Photopic, and Pharmacologically Dilated Conditions.
+      <em>
+       <em>
+        Invest Ophthalmol Vis Sci.
+       </em>
+      </em>
+      43 (08 2002), 2508–12.
+     </li>
+     <li id="BibPLXBIB0065" label="[65]">
+      Xucong Zhang, Michael Xuelin Huang, Yusuke Sugano, and Andreas Bulling. 2018. Training Person-Specific Gaze Estimators from User Interactions with Multiple Devices. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 624, 12 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174198" target="_blank">
+       https://doi.org/10.1145/3173574.3174198
+      </a>
+     </li>
+     <li id="BibPLXBIB0066" label="[66]">
+      Xucong Zhang, Yusuke Sugano, Mario Fritz, and Andreas Bulling. 2015. Appearance-based gaze estimation in the wild. 1, 1 (June 2015), 4511–4520.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2015.7299081" target="_blank">
+       https://doi.org/10.1109/CVPR.2015.7299081
+      </a>
+     </li>
+     <li id="BibPLXBIB0067" label="[67]">
+      Xucong Zhang, Yusuke Sugano, Mario Fritz, and Andreas Bulling. 2016. It's Written All Over Your Face: Full-Face Appearance-Based Gaze Estimation.
+      <em>
+       <em>
+        CoRR
+       </em>
+      </em>
+      abs/1611.08860. arxiv:1611.08860
+      <a class="link-inline force-break" href="http://arxiv.org/abs/1611.08860">
+       http://arxiv.org/abs/1611.08860
+      </a>
+     </li>
+     <li id="BibPLXBIB0068" label="[68]">
+      Xucong Zhang, Yusuke Sugano, Mario Fritz, and Andreas Bulling. 2017. MPIIGaze: Real-World Dataset and Deep Appearance-Based Gaze Estimation.
+      <em>
+       <em>
+        CoRR
+       </em>
+      </em>
+      abs/1711.09017(2017). arxiv:1711.09017
+      <a class="link-inline force-break" href="http://arxiv.org/abs/1711.09017">
+       http://arxiv.org/abs/1711.09017
+      </a>
+     </li>
+     <li id="BibPLXBIB0069" label="[69]">
+      George Zonios and Aikaterini Dimou. 2009. Light scattering spectroscopy of human skin in vivo.
+      <em>
+       <em>
+        Opt. Express
+       </em>
+      </em>
+      17, 3 (Feb 2009), 1256–1267.
+      <a class="link-inline force-break" href="https://doi.org/10.1364/OE.17.001256" target="_blank">
+       https://doi.org/10.1364/OE.17.001256
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    <sup>
+     *
+    </sup>
+    Joint first authors.
+   </p>
+   <p id="fn2">
+    <a href="#foot-fn2">
+     <sup>
+      2
+     </sup>
+    </a>
+    The project page is available at
+    <a class="link-inline force-break" href="https://sites.google.com/nvidia.com/nvgaze">
+     https://sites.google.com/nvidia.com/nvgaze
+    </a>
+   </p>
+   <p id="fn3">
+    <a href="#foot-fn3">
+     <sup>
+      3
+     </sup>
+    </a>
+    For all cited methods, we provide runtimes where available.
+   </p>
+   <p id="fn4">
+    <a href="#foot-fn4">
+     <sup>
+      4
+     </sup>
+    </a>
+    Purchased from
+    <a class="link-inline force-break" href="http://www.3dscanstore.com/">
+     http://www.3dscanstore.com/
+    </a>
+    .
+   </p>
+   <p id="fn5">
+    <a href="#foot-fn5">
+     <sup>
+      5
+     </sup>
+    </a>
+    For both networks, we verified that inference accuracy is identical (to 1/1,000th of a degree/pixel) for 32 and 16 bit floating point precision.
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Association for Computing Machinery.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300780" target="_blank">
+      https://doi.org/10.1145/3290605.3300780
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8757d331db8765b9',t:'MTcxMzMwODc3OC4wMjAwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

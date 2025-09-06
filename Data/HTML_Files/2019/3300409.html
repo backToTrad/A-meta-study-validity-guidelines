@@ -1,0 +1,2998 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Comparing Apples and Oranges
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300409_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300409_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300409_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300409_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300409_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300409_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300409_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300409_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Comparing Apples and Oranges
+       </span>
+       <br/>
+       <span class="subTitle">
+        Taxonomy and Design of Pairwise Comparisons within Tabular Data
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Po-Ming
+      </span>
+      <span class="surName">
+       Law
+      </span>
+      , Georgia Institute of Technology, USA,
+      <a href="mailto:pmlaw@gatech.edu">
+       pmlaw@gatech.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Subhajit
+      </span>
+      <span class="surName">
+       Das
+      </span>
+      , Georgia Institute of Technology, USA,
+      <a href="mailto:das@gatech.edu">
+       das@gatech.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Rahul
+      </span>
+      <span class="surName">
+       C. Basole
+      </span>
+      , Georgia Institute of Technology, USA,
+      <a href="mailto:basole@gatech.edu">
+       basole@gatech.edu
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300409" target="_blank">
+       https://doi.org/10.1145/3290605.3300409
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Asking pairwise comparison questions is common. Yet, we often find ourselves comparing apples and oranges — the two entities of interest are not readily comparable. To understand how technologies can extend our capabilities to conduct pairwise comparisons during data analysis, we analyzed pairwise comparison questions collected from crowd workers and propose a taxonomy of pairwise comparisons. We demonstrate how the taxonomy can be adopted by incorporating pairwise comparison capabilities into Duo, a spreadsheet application that supports comparing two groups of records in a data table. Duo decomposes a pairwise comparison question into rules and showcases sloppy rules, a query technique for specifying pairwise comparisons. We conducted a user study comparing sloppy rules and natural language. The findings suggest that for easier pairwise comparison tasks, the two techniques are comparable in efficiency and preference and that for more difficult pairwise comparison tasks, sloppy rules allow faster specification and are more preferable.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Interactive systems and tools
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Comparison; spreadsheet; query specification; natural language; data analysis
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Po-Ming Law, Subhajit Das, and Rahul C. Basole. 2019. Comparing Apples and Oranges: Taxonomy and Design of Pairwise Comparisons within Tabular Data. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 12 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300409" target="_blank">
+         https://doi.org/10.1145/3290605.3300409
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Pairwise comparisons penetrate many aspects of our lives. Consider a colleague who shares her experience of visiting Stockholm by drawing an analogy between the busiest areas there and New York. The comparison may conjure up an image of the big city bustle in Stockholm even you are not familiar with the city. We all may recall moments when we compare ourselves with our peers to strive for improvement. Marathoners, for example, compare themselves to similar runners on finishing time to gain accurate self-assessments.
+    </p>
+    <figure id="fig1">
+     <img alt="" class="img-responsive" longdesc="The sloppy rule menu with the sloppy rules ”regio southe;50000 20000 avg cost” in the input box" src="3300409_files\chi2019179fig1.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       A user is entering sloppy rules to specify a group of colleges where
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        Southeast
+       </em>
+       <strong>
+        AND
+       </strong>
+       <em>
+        20000
+       </em>
+       ≤
+       <tt>
+        Average Cost
+       </tt>
+       ≤
+       <em>
+        50000
+       </em>
+       . The sloppy rule menu has AND, ADD, and REMOVE tabs for entering base, inclusion, and exclusion rules respectively.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     More broadly, pairwise comparisons have fundamental influence on societal development. In a world where resources are limited, decision makers often need to understand trade-offs between two options to make a well-informed decision about which one to choose. Through pairwise comparisons, important questions can be answered, our inquisitive nature is satisfied, and human knowledge is advanced. Behavioural scientists, for instance, are studying the suicide crisis in the US Army by comparing military personnel to the general public [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+      32
+     </a>
+     ]. Such research can provide better understanding of humans and save millions of lives.
+    </p>
+    <p>
+     The comparisons we just described share a commonality: the entities being compared are apples and oranges: Stockholm and New York, albeit similarly prosperous, are distinct in many ways; a single marathoner is clearly different from the thousands of others; military service members and the general public are substantially different in their geographical distributions and populations. While many statistical techniques (e.g., Tukey's HSD test [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+      39
+     </a>
+     ]) exist to facilitate pairwise comparisons, the learning curve is prohibitively high for laypeople. Interactive systems reduce the barriers to pairwise comparisons. Yet, most are limited to comparing particular kinds of objects (e.g., [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ]) and have restricted comparison capabilities (e.g., [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+      19
+     </a>
+     ]).
+    </p>
+    <p>
+     In this paper, we inquire into how technology can extend our cognitive and analytic capabilities so that comparing apples and oranges is more surmountable. First, we solicited pairwise comparison questions from 398 crowd workers. We report a qualitative analysis of the questions that culminates in a taxonomy of pairwise comparisons. The taxonomy uncovers new possibilities for interactive data analysis systems by showing what pairwise comparisons they could support.
+    </p>
+    <p>
+     Second, grounded in the taxonomy, we demonstrate how the most widely used data analysis tool — spreadsheets — can be augmented by incorporating pairwise comparison capabilities into a spreadsheet application called Duo. Duo considers a pairwise comparison question as a set of rules: base rules, inclusion rules, exclusion rules and attributes. To help users articulate complex comparisons, we explored sloppy rules, a query technique for specifying pairwise comparison rules. Inspired by research in linguistic commands [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+      23
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+      33
+     </a>
+     ], sloppy rules support variations, forgive spelling errors, are order-independent, and offer rich visual feedback.
+    </p>
+    <p>
+     Finally, we conducted a within-subject study during which 16 participants used both the sloppy rule interface and a natural language interface to perform pairwise comparison tasks of varying levels of difficulty. The results indicate that the two interfaces are comparable for simple pairwise comparisons but that the sloppy rule interface is more efficient and preferable for more difficult pairwise comparisons. Based on the study results, we discuss considerations in designing query interfaces for pairwise comparisons.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Besides a prior framework of comparison [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ], we surveyed the literature on functions of pairwise comparisons when developing our taxonomy. We built on other pairwise comparison tools, and linguistic commands when designing Duo.
+    </p>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Functions of Pairwise Comparison
+       </h3>
+      </div>
+     </header>
+     <p>
+      Pairwise comparison serves as an important mental tool in four motivations and objectives: analogical reasoning, social comparison, decision making, and knowledge discovery.
+     </p>
+     <p>
+      Analogical reasoning is a process of understanding a novel situation in terms of familiar ones [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ]. It involves a base (a familiar entity) and a target (an unfamiliar entity) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ]. Through a mapping process, we align the representations of the base and the target, and project inference from the base to the target [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ]. Pairwise comparison is an essential tool during the process of alignment.
+     </p>
+     <p>
+      Social comparison theory [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ] states that we are driven to determine our own worth by comparing ourselves against people who are better or worse off than us. Interactive systems have been developed to help us compare ourselves with similar people to predict our futures and devise actions [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ].
+     </p>
+     <p>
+      Pairwise comparisons shape many of our decisions (e.g., [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ]). In operations research, multi-criteria analysis techniques, such as the analytic hierarchy process, use pairwise comparison for decision making [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ].
+     </p>
+     <p>
+      We also conduct pairwise comparisons for pure pursuit of knowledge that may not have an immediate purpose, and is often driven by our curiosity [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ] and intrinsic motivation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ]. Knowledge distilled from pairwise comparisons is often used for deriving action plans (e.g., [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ]).
+     </p>
+     <p>
+      Based on the above pairwise comparison functions, we designed scenarios to collect pairwise comparison questions from crowd workers. The analysis of these questions provides the basis for a taxonomy of pairwise comparisons.
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Pairwise Comparison Tools for Tabular Data
+       </h3>
+      </div>
+     </header>
+     <p>
+      Statistical tools such as R [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ] are used by researchers to conduct pairwise comparisons (e.g., Tukey's HSD test [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ]). However, laypeople can struggle to use these techniques due to a lack of statistics background. One of our goals is to empower a non-expert audience to conduct pairwise comparisons on tabular data. We do so by bringing pairwise comparison capabilities to the widely-used spreadsheets.
+     </p>
+     <p>
+      Research in information visualization has been conducted to explore different ways of comparing tabular data. TACO [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ] visualizes how a table changes over time. Kehrer et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ] proposed a model that formalizes comparison of cells within a small-multiple display. Duet [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ] employs the minimal specification technique to enable pairwise comparisons of records in a data table. Our work furthers this line of research by offering a systematic crowdsourced study of what pairwise comparisons are possible and proposing the sloppy rule technique for specifying pairwise comparisons.
+     </p>
+     <p>
+      Some online tools seek to support head-to-head comparisons of certain objects. For instance, US News allows web users to choose a pair of colleges, and juxtaposes them for comparison [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ]. Many spreadsheet applications are also endowed with some pairwise comparison capabilities. Excel, for example, provides pivot tables for data grouping and aggregation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ]. The “Explore” button in Google Sheets allows users to enter simple comparison questions using natural language [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ]. However, these tools do not support some commonly-performed pairwise comparisons revealed by our taxonomy (e.g., one-to-multiple comparisons).
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Linguistic Commands
+       </h3>
+      </div>
+     </header>
+     <p>
+      When it comes to asking pairwise comparison questions, we would immediately think of using natural language due to its intuitiveness. For in-depth pairwise comparisons, however, questions can become verbose. Prior work showed that natural language-only interfaces are inferior to multi-modal interfaces due to high cognitive load in articulating queries [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]. Based on their findings, we hypothesize that high cognitive load could make it difficult to articulate long pairwise comparison queries using natural language.
+     </p>
+     <p>
+      To deal with complex queries, a reversal to command lines was proposed. Linguistic commands [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ] are queries that exhibit touches of natural language and are tolerant of variations. Inky [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ] and Chickenfoot [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ] showcased the power of linguistic commands. Inky adopts sloppy syntax to offer quick access to common web tasks such as reserving conference rooms. Different from conventional command lines, sloppy syntax was designed to be order-independent and robust, shielding users from memorizing syntax. For example,
+      <em>
+       “reserve Room123 3pm”
+      </em>
+      and
+      <em>
+       “3pm Room123 reserve”
+      </em>
+      will produce the same interpretation. Ubiquity [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ] and Quicksilver [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ] similarly provide linguistic commands for retrieving information and requesting actions. To tackle complex pairwise comparison queries, we explore sloppy rules, a robust linguistic commands for specifying pairwise comparisons.
+     </p>
+    </section>
+   </section>
+   <section id="sec-7">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       A TAXONOMY OF PAIRWISE COMPARISONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Informed by the functions of pairwise comparisons in the literature, we designed common daily life scenarios in which pairwise comparisons are instrumental. Using the scenarios, we solicited pairwise comparison questions through Amazon Mechanical Turk (AMT) and coded the resulting corpus of questions. Grounded in the analysis, we propose a taxonomy of pairwise comparisons. This taxonomy provides insights into what pairwise comparison capability interactive data analysis systems could support.
+    </p>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Method
+       </h3>
+      </div>
+     </header>
+     <p>
+      To understand the kinds of pairwise comparison questions people might ask, we considered gathering questions from data analysts through interviews. However, this approach limits the number of people from which the data are collected. The questions collected through interviews will also be restricted in scope and highly specific to a few domains.
+     </p>
+     <p>
+      To ensure diversity in the questions, we collected pairwise comparison questions from workers on AMT. Based on the four types of pairwise comparison functions (i.e. analogical reasoning, social comparison, decision making, and knowledge discovery), we designed eight daily life scenarios (two for each type). To make these scenarios more realistic, we drew inspirations from scenarios we observed from popular sites (e.g., reddit.com). The eight scenarios are included as supplemental material
+      <a class="fn" href="#fn1" id="foot-fn1">
+       <sup>
+        1
+       </sup>
+      </a>
+      . As an example, here is one of the two scenarios that involve social comparison:
+      <em>
+       Imagine that you plan to run a marathon next year and want to finish the marathon in 3 hours. You are curious about how your fitness level compares with those who were able to finish the marathon in 3 hours so you obtain a dataset of the runners who participated in last year's marathon. Your data contains 200 runners who finished last year's marathon in 3 hours. You know the runners’ body mass index (BMI), resting heart rate, diet, how many miles they ran daily for training, how long they had trained before the race, and so on. If you want to compare your fitness level with these runners, what question would you ask?
+      </em>
+     </p>
+     <p>
+      Given a scenario, workers were required to provide a question they would ask. We limited the tasks to workers who had completed at least 50 HITs and had an acceptance rate of 95% or above. The workers were compensated
+      <font style="normal">
+       $
+      </font>
+      0.19 for each question they provide (hourly wage =
+      <font style="normal">
+       $
+      </font>
+      7.25) to align with the Ethical Guidelines for AMT Research [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ].
+     </p>
+     <section id="sec-9">
+      <p>
+       <em>
+        Analysis.
+       </em>
+       In total, we collected 1150 questions from 398 unique workers. The first author open-coded the collected questions before paring down to four dimensions of codes and developing the codebook. Two researchers independently coded the entire corpus along the four dimensions. During the coding process, the coders independently coded some questions, discussed inconsistencies, refined the definitions of codes, and recoded some questions independently based on the new definitions. The analysis codebook, the questions, and the detailed statistics are included as supplemental material.
+      </p>
+      <p>
+       The first dimension has three categories:
+       <em>
+        irrelevant
+       </em>
+       ,
+       <em>
+        implicit
+       </em>
+       and
+       <em>
+        explicit
+       </em>
+       (Cohen's
+       <em>
+        κ
+       </em>
+       = .72). We coded a question as
+       <em>
+        explicit
+       </em>
+       if it is an obvious pairwise comparison question, and as
+       <em>
+        irrelevant
+       </em>
+       if it is not a pairwise comparison. We introduce a category,
+       <em>
+        implicit
+       </em>
+       , to deal with questions that seems to be a step in a pairwise comparison task but do not explicitly compare two entities. For the above scenario, an example is
+       <em>
+        “What is the average number of hours they slept per day?”
+       </em>
+       While this question does not seem to involve comparison, knowing other runners’ sleep duration is a necessary step before one can compare herself to other runners on sleep duration.
+      </p>
+      <p>
+       To avoid over-interpreting people's intent, we omitted the questions coded as
+       <em>
+        irrelevant
+       </em>
+       and
+       <em>
+        implicit
+       </em>
+       . 549 pairwise comparison questions coded as
+       <em>
+        explicit
+       </em>
+       remained. These questions were further coded along three dimensions: repetition, group, and attribute. The repetition dimension has two categories:
+       <em>
+        single
+       </em>
+       , and
+       <em>
+        repeated
+       </em>
+       (
+       <em>
+        κ
+       </em>
+       = .67); the group dimension has three:
+       <em>
+        one to one
+       </em>
+       ,
+       <em>
+        one to multiple
+       </em>
+       , and
+       <em>
+        multiple to multiple
+       </em>
+       (
+       <em>
+        κ
+       </em>
+       = .76); the attribute dimension has two:
+       <em>
+        attribute present
+       </em>
+       , and
+       <em>
+        attribute absent
+       </em>
+       (
+       <em>
+        κ
+       </em>
+       = .86). These three dimensions form the skeleton of our taxonomy of pairwise comparisons.
+      </p>
+     </section>
+     <section id="sec-10">
+      <p>
+       <em>
+        Limitations.
+       </em>
+       Our study is limited in that the frequency of a category does not reflect the frequency that a particular kind of pairwise comparison appears in our daily lives or in data analysis. This is because our study relied on designed scenarios to elicit pairwise comparison questions from crowd workers rather than observing pairwise comparison questions in the wild which is arguably impossible to do at scale. This implies that some types of pairwise comparison questions revealed by our analysis might be observed less frequently than people would actually ask about their data.
+      </p>
+      <p>
+       Nevertheless, our study provides evidence for the
+       <em>
+        presence
+       </em>
+       of various pairwise comparison questions. The wide coverage our taxonomy serves as the foundation for tools that aim to support a wide range of questions.
+      </p>
+     </section>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        The Taxonomy
+       </h3>
+      </div>
+     </header>
+     <p>
+      Underpinning our taxonomy are three components of pairwise comparisons: repetition, group and attribute, each corresponding to a dimension of codes. The three dimensions form 12 types of pairwise comparisons (2 categories from the repetition dimension × 3 from group × 2 from attribute).
+     </p>
+     <section id="sec-12">
+      <p>
+       <em>
+        Repetition.
+       </em>
+       Conventionally, pairwise comparisons have the form “compare A to B” (category =
+       <em>
+        single
+       </em>
+       ). Yet, we also identified questions in which multiple pairwise comparisons are embedded. These pairwise comparison questions share the form “compare A to B, C, D, etc.” (category =
+       <em>
+        repeated
+       </em>
+       ). In such questions, people repeatedly perform pairwise comparisons using A as an anchoring point: A is compared to B, to C, then to D and so on. Here are two examples:
+       <strong>
+        Q1)
+       </strong>
+       <em>
+        Which US city is Rovaniemi most similar to?
+       </em>
+       <strong>
+        Q2)
+       </strong>
+       <em>
+        Is Rovaniemi spread out like Los Angeles or is it more compact like New York?
+       </em>
+      </p>
+      <p>
+       Both questions follow the “compare A to B, C, D, etc.” pattern:
+       <strong>
+        Q1
+       </strong>
+       compares Rovaniemi (A) to different US cities (B, C, D, etc.);
+       <strong>
+        Q2
+       </strong>
+       compares Rovaniemi (A) to Los Angeles (B) and to New York (C). People often ask this type of questions when they are not familiar with entity A and want to gain an understanding of it by comparing entity A to some familiar entities. For example, in
+       <strong>
+        Q2
+       </strong>
+       , the asker wants to get a sense of how sprawling is the unfamiliar Rovaniemi by comparing it to the more familiar Los Angeles and New York. An answer to a repeated comparison can be an entity that is the most similar to or the most different from entity A among entities B, C, D, etc. An answer to
+       <strong>
+        Q1
+       </strong>
+       , for example, is a US city that shares many similar characteristics with Rovaniemi.
+      </p>
+     </section>
+     <section id="sec-13">
+      <p>
+       <em>
+        Group.
+       </em>
+       A pairwise comparison involves two groups for comparison. The two groups can both be single-object groups (category =
+       <em>
+        one to one
+       </em>
+       ). For example,
+       <em>
+        “What are the major differences between Mars and Earth”
+       </em>
+       involves comparing a single-object group to another single-object group (Mars vs Earth). Sometimes, a pairwise comparison question consists of a single-object group and a group that contains multiple objects (category =
+       <em>
+        one to multiple
+       </em>
+       ). This is common in social comparison in which we compare ourselves to our peers (e.g.,
+       <em>
+        “Is the amount I run every day for training the same or higher than the average of the other runners”
+       </em>
+       ). Comparing a multiple-object group to another multiple-object group can also be found in our corpus (category =
+       <em>
+        multiple to multiple
+       </em>
+       ). An example is
+       <em>
+        “In the three largest US cities, is there a higher or lower crime rate than the three largest UK cities?”
+       </em>
+       The asker attempts to compare a group of three UK cities to another group of three US cities.
+      </p>
+     </section>
+     <section id="sec-14">
+      <p>
+       <em>
+        Attribute.
+       </em>
+       It is common to ask a pairwise comparison question by specifying an attribute of interest (category =
+       <em>
+        attribute present
+       </em>
+       ). For instance, when people ask,
+       <em>
+        “What are the temperature differences between Mars and Earth”
+       </em>
+       , temperatures of the two planets are being compared. We also observed questions where people do not state an attribute (category =
+       <em>
+        attribute absent
+       </em>
+       ). Examples are
+       <em>
+        “What are some similarities and obvious differences between monkeys and humans”
+       </em>
+       and
+       <em>
+        “How much difference is it between my phone and the Galaxy Note 5”
+       </em>
+       . People often ask these questions when they want to understand similarities and differences of two entities broadly and do not have a good sense of what attributes are important.
+      </p>
+      <p>
+       Gleicher proposed a related framework that comprises considerations for designing comparison tools [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+        13
+       </a>
+       ]. Using his terminology, our taxonomy serves to
+       <em>
+        identify the comparative elements
+       </em>
+       in pairwise comparisons: the group dimension depicts the characteristics of the comparison
+       <em>
+        targets
+       </em>
+       whereas the attribute and repetition dimensions provide details about the
+       <em>
+        actions
+       </em>
+       people do on these comparison
+       <em>
+        targets
+       </em>
+       .
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-15">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       DUO: A SPREADSHEET APPLICATION FOR PAIRWISE COMPARISONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     While the previous section elucidates the what of pairwise comparisons, this section describes the how: how can users specify pairwise comparison questions and how should these questions be answered? We demonstrate how techniques for conducting pairwise comparisons can be embodied in spreadsheets, arguably the most widely-used data analysis application for non-experts. To this aim, we developed a spreadsheet application called Duo, which supports the 12 types of pairwise comparisons on wide-format tables.
+    </p>
+    <p>
+     To explain various techniques, we use a US college dataset [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ] as a running example. This dataset contains 1214 US colleges, each consisting of 4 categorical attributes (e.g.,
+     <tt>
+      Region
+     </tt>
+     ) and 20 numerical attributes (e.g.,
+     <tt>
+      Admission Rate
+     </tt>
+     ).
+    </p>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Specifying Pairwise Comparison Questions
+       </h3>
+      </div>
+     </header>
+     <p>
+      Natural language is a compelling technique for specifying pairwise comparison questions. Yet, vicissitudes of natural language parsing can hamper user experience. Leveraging the insight that pairwise comparison questions can be decomposed in a standard way, we introduce a query technique for pairwise comparisons without natural language.
+     </p>
+     <section id="sec-17">
+      <p>
+       <em>
+        Unpacking Groups in Pairwise Comparisons.
+       </em>
+       Groups are core components in a pairwise comparison question. They can be formulated using the logical operators
+       <strong>
+        AND
+       </strong>
+       ,
+       <strong>
+        OR
+       </strong>
+       , and
+       <strong>
+        NOT
+       </strong>
+       .
+      </p>
+      <p>
+       An example question that involves
+       <strong>
+        AND
+       </strong>
+       is
+       <em>
+        “Of cities with greater than 100,000 residence, does the UK or US have more crime?”
+       </em>
+       In the example, cities that have more than 100,000 people
+       <strong>
+        AND
+       </strong>
+       in the UK are compared to cities that have more than 100,000 people
+       <strong>
+        AND
+       </strong>
+       in the US.
+       <strong>
+        OR
+       </strong>
+       can be used for composing custom groups. For instance, people may want to compare the Eastern and the Western worlds and have a city dataset. Each city may have a
+       <tt>
+        Continent
+       </tt>
+       attribute but not an attribute that indicates whether it is in the Eastern or the Western hemisphere. Using
+       <strong>
+        OR
+       </strong>
+       , people can compare cities in Asia (the Eastern world) to cities in Europe
+       <strong>
+        OR
+       </strong>
+       North America
+       <strong>
+        OR
+       </strong>
+       Australia (the Western world). Removing objects from a group before conducting pairwise comparisons can be achieved using
+       <strong>
+        NOT
+       </strong>
+       . This is common in research studies in which researchers drop outliers before hypothesis testing.
+      </p>
+      <p>
+       While groups can be fully described by these logical operators, non-experts can find it challenging to understand concepts such as operator precedence. We also observed that
+       <strong>
+        AND
+       </strong>
+       is more common than
+       <strong>
+        NOT
+       </strong>
+       and
+       <strong>
+        OR
+       </strong>
+       for defining groups. To simplify the mental model in defining groups and prioritize
+       <strong>
+        AND
+       </strong>
+       , we propose base, inclusion and exclusion rules for group definition that are described in the next section.
+      </p>
+     </section>
+     <section id="sec-18">
+      <p>
+       <em>
+        Decomposing Pairwise Comparisons into Rules.
+       </em>
+       Rules constitute the skeleton of a pairwise comparison. There are two kinds of rules:
+       <strong>
+        1)
+       </strong>
+       rules for group definition and
+       <strong>
+        2)
+       </strong>
+       attributes under comparison. For example,
+       <em>
+        “compare the completion rates of the colleges in the Southeastern US with a low admission rate to those in New England with a low admission rate”
+       </em>
+       can be restated as
+       <em>
+        “compare the colleges where
+        <tt>
+         Region
+        </tt>
+        =Southeast and
+        <tt>
+         Admission Rate
+        </tt>
+        &lt;0.2 to colleges where
+        <tt>
+         Region
+        </tt>
+        =New England and
+        <tt>
+         Admission Rate
+        </tt>
+        &lt;0.2 on
+        <tt>
+         Completion Rate
+        </tt>
+        ”
+       </em>
+       . The query has five rules:
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        Southeast
+       </em>
+       and
+       <tt>
+        Admission Rate
+       </tt>
+       &lt;
+       <em>
+        0.2
+       </em>
+       are rules for defining the first group;
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        New England
+       </em>
+       and
+       <tt>
+        Admission Rate
+       </tt>
+       &lt;
+       <em>
+        0.2
+       </em>
+       are rules for defining the second group;
+       <tt>
+        Completion Rate
+       </tt>
+       is the attribute under comparison.
+      </p>
+      <p>
+       Duo further decomposes rules for group definition into base, inclusion, and exclusion rules, which roughly correspond to
+       <strong>
+        AND
+       </strong>
+       ,
+       <strong>
+        OR
+       </strong>
+       , and
+       <strong>
+        NOT
+       </strong>
+       respectively (see Table
+       <a class="tbl" href="#tab1">
+        1
+       </a>
+       a-c). Base rules describe the basic characteristics of a group. For example,
+       <em>
+        “colleges in New England with admission rate ≤ 0.2”
+       </em>
+       consists of the colleges where
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        New England
+       </em>
+       (base rule) and
+       <tt>
+        Admission Rate
+       </tt>
+       ≤
+       <em>
+        0.2
+       </em>
+       (base rule). Inclusion rules modify a group by adding objects to the group.
+       <em>
+        “Fringe, distant and remote rural colleges”
+       </em>
+       contains the colleges where
+       <tt>
+        Locale
+       </tt>
+       =
+       <em>
+        Fringe Rural
+       </em>
+       (base rule), together with the colleges where
+       <tt>
+        Locale
+       </tt>
+       =
+       <em>
+        Distant Rural
+       </em>
+       (inclusion rule) and those where
+       <tt>
+        Locale
+       </tt>
+       =
+       <em>
+        Remote Rural
+       </em>
+       (inclusion rule). Finally, exclusion rules remove objects from a group.
+       <em>
+        “New England colleges except Harvard”
+       </em>
+       , for instance, comprises the colleges where
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        New England
+       </em>
+       (base rule) but not
+       <tt>
+        Name
+       </tt>
+       =
+       <em>
+        Harvard College
+       </em>
+       (exclusion rule). In freeing users from learning concepts such as operator precedence, expressivity is sacrificed as some complex logical expressions cannot be directly converted to the three kinds of rules.
+      </p>
+     </section>
+     <section id="sec-19">
+      <p>
+       <em>
+        Using Sloppy Rules for Rule Specification.
+       </em>
+       In an informal usability study, we asked participants to perform pairwise comparison tasks using both a graphical user interface (GUI) and a natural language interface (NLUI). The participants specified pairwise comparison rules by point and click using the GUI and entered pairwise comparison sentences using the NLUI. They commented that it was harder to use the NLUI to
+       <em>
+        “think about”
+       </em>
+       and
+       <em>
+        “articulate”
+       </em>
+       long queries. While they found the GUI easier for articulating long queries, the interface complexity counteracted with its ease of articulation. Our pursuit of a technique with both ease of articulation and simplicity in operation resulted in the sloppy rules.
+      </p>
+      <div class="table-responsive" id="tab1">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 1:
+        </span>
+        <span class="table-title">
+         Correspondence between AND, OR and NOT logical operators, and base, inclusion and exclusion rules.
+        </span>
+       </div>
+       <table class="table">
+        <thead>
+         <tr>
+          <th style="text-align:left;">
+          </th>
+          <th style="text-align:center;">
+           Group
+          </th>
+          <th style="text-align:center;">
+           Rules
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+          <td style="text-align:left;">
+           (a)
+          </td>
+          <td style="text-align:center;">
+           Colleges where
+           <tt>
+            Region
+           </tt>
+           =
+           <em>
+            New England
+           </em>
+           <span style="text-decoration: underline;">
+            AND
+           </span>
+           <tt>
+            Admission Rate
+           </tt>
+           ≤
+           <em>
+            0.2
+           </em>
+          </td>
+          <td style="text-align:center;">
+           <tt>
+            Region
+           </tt>
+           =
+           <em>
+            New England
+           </em>
+           (base)
+           <tt>
+            Admission Rate
+           </tt>
+           ≤
+           <em>
+            0.2
+           </em>
+           (
+           <span style="text-decoration: underline;">
+            base
+           </span>
+           )
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;">
+           (b)
+          </td>
+          <td style="text-align:center;">
+           Colleges where
+           <tt>
+            Locale
+           </tt>
+           =
+           <em>
+            Fringe Rural
+           </em>
+           <span style="text-decoration: underline;">
+            OR
+           </span>
+           <tt>
+            Locale
+           </tt>
+           =
+           <em>
+            Distant Rural
+           </em>
+           <span style="text-decoration: underline;">
+            OR
+           </span>
+           <tt>
+            Locale
+           </tt>
+           =
+           <em>
+            Remote Rural
+           </em>
+          </td>
+          <td style="text-align:center;">
+           <tt>
+            Locale
+           </tt>
+           =
+           <em>
+            Fringe Rural
+           </em>
+           (base)
+           <tt>
+            Locale
+           </tt>
+           =
+           <em>
+            Distant Rural
+           </em>
+           (
+           <span style="text-decoration: underline;">
+            inclusion
+           </span>
+           )
+           <tt>
+            Locale
+           </tt>
+           =
+           <em>
+            Remote Rural
+           </em>
+           (
+           <span style="text-decoration: underline;">
+            inclusion
+           </span>
+           )
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:left;">
+           (c)
+          </td>
+          <td style="text-align:center;">
+           Colleges where
+           <tt>
+            Region
+           </tt>
+           =
+           <em>
+            New England
+           </em>
+           and
+           <span style="text-decoration: underline;">
+            NOT
+           </span>
+           <tt>
+            Name
+           </tt>
+           =
+           <em>
+            Harvard College
+           </em>
+          </td>
+          <td style="text-align:center;">
+           <tt>
+            Region
+           </tt>
+           =
+           <em>
+            New England
+           </em>
+           (base)
+           <tt>
+            Name
+           </tt>
+           =
+           <em>
+            Harvard College
+           </em>
+           (
+           <span style="text-decoration: underline;">
+            exclusion
+           </span>
+           )
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:left;">
+          </td>
+          <td>
+          </td>
+          <td>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <figure id="fig2">
+       <img alt="" class="img-responsive" longdesc="The Duo interface" src="3300409_files\chi2019179fig2.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 2:
+        </span>
+        <span class="figure-title">
+         (a) Duo has three shelves for specifying pairwise comparison rules, and (b) displays the comparisons being performed in text. (c) For comparisons with the form
+         <em>
+          “compare A to B”
+         </em>
+         , it computes the similar and different attributes between the two groups. (d–f) When users hover over an attribute, the distributions are visualized. (g) When users partially specify an attribute but not a value using the sloppy rule menu, multiples groups are created to facilitate
+         <em>
+          repeated
+         </em>
+         pairwise comparison.
+        </span>
+       </div>
+      </figure>
+      <p>
+       There are two group shelves and an attribute shelf in the sloppy rule interface (Fig.
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       a). To define a group being compared, users click on a group shelf and a menu is shown (Fig.
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       ). There are three tabs in the menu. Users enter the base rules in the
+       <strong>
+        AND
+       </strong>
+       tab, the inclusion rules in the
+       <strong>
+        ADD
+       </strong>
+       tab and the exclusion rules in the
+       <strong>
+        REMOVE
+       </strong>
+       tab. Multiple rules of the same kind are separated by semi-colons. Users can navigate through the tab by pressing the up and down arrow keys and confirm rule specification by pressing enter. To define attributes for comparison, users click on the attribute shelf and enter attributes separated by semi-colons.
+      </p>
+      <p>
+       Rules entered between semi-colons can be highly sloppy. Instead of complete rules (e.g.,
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        Southeast
+       </em>
+       <strong>
+        ;
+       </strong>
+       Completion Rate ≥
+       <em>
+        0.8
+       </em>
+       ), users can enter partial rules (e.g.,
+       <tt>
+        rg
+       </tt>
+       =
+       <em>
+        s-east
+       </em>
+       <strong>
+        ;
+       </strong>
+       <tt>
+        complete
+       </tt>
+       ≥
+       <em>
+        0.8
+       </em>
+       ) to define a group. This saves users the frustration especially when rules are long (e.g.,
+       <tt>
+        Name
+       </tt>
+       =
+       <em>
+        Georgia Institute of Technology
+       </em>
+       ). Following the sloppy syntax [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+        23
+       </a>
+       ], four characteristics endow sloppy rules with their sloppiness and robustness:
+      </p>
+      <p>
+       <em>
+        <span style="text-decoration: underline;">
+         Support for variations.
+        </span>
+       </em>
+       Duo recognizes multiple variations of the same rules. For categorical attribute-value pairs such as
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        Southeast
+       </em>
+       , Duo accepts
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        Southeast
+       </em>
+       ,
+       <tt>
+        Region
+       </tt>
+       is
+       <em>
+        Southeast
+       </em>
+       , and
+       <tt>
+        Region
+       </tt>
+       <em>
+        Southeast
+       </em>
+       . For numerical attribute-value pairs such as
+       <tt>
+        Completion Rate
+       </tt>
+       ≥
+       <em>
+        0.8
+       </em>
+       , Duo interprets
+       <tt>
+        Completion Rate
+       </tt>
+       greater than or equal to
+       <em>
+        0.8
+       </em>
+       , and
+       <tt>
+        Completion Rate
+       </tt>
+       <em>
+        0.8
+       </em>
+       or above as the same rule.
+      </p>
+      <p>
+       <em>
+        <span style="text-decoration: underline;">
+         Tolerance for spelling errors.
+        </span>
+       </em>
+       Under the hood, Duo computes the edit distances between a user input and attribute names and values. Hence,
+       <tt>
+        rg
+       </tt>
+       =
+       <em>
+        s-east
+       </em>
+       and
+       <tt>
+        reg
+       </tt>
+       =
+       <em>
+        southe
+       </em>
+       are both interpreted as the rule
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        Southeast
+       </em>
+       .
+      </p>
+      <p>
+       <em>
+        <span style="text-decoration: underline;">
+         Order independence.
+        </span>
+       </em>
+       The order of attribute names and values does not matter. As an example for numerical attributes,
+       <em>
+        20000
+       </em>
+       <tt>
+        Average Cost
+       </tt>
+       <em>
+        50000
+       </em>
+       ,
+       <tt>
+        Average Cost
+       </tt>
+       <em>
+        50000 20000
+       </em>
+       , and
+       <em>
+        50000
+       </em>
+       <tt>
+        Average Cost
+       </tt>
+       <em>
+        20000
+       </em>
+       are all recognised as the rule
+       <em>
+        20000
+       </em>
+       ≤
+       <tt>
+        Average Cost
+       </tt>
+       ≤
+       <em>
+        50000
+       </em>
+       . For categorical attributes, users can directly enter the attribute value (e.g.,
+       <em>
+        Public
+       </em>
+       ) rather than specifying the complete rule (e.g.,
+       <tt>
+        Control
+       </tt>
+       =
+       <em>
+        Public
+       </em>
+       ).
+      </p>
+      <p>
+       <em>
+        <span style="text-decoration: underline;">
+         Rich visual feedback.
+        </span>
+       </em>
+       An overarching challenge in making sloppy rules usable lies in reducing the gulf of evaluation: how do users know if Duo successfully interprets their inputs when they enter a partial rule (e.g.,
+       <tt>
+        con
+       </tt>
+       is
+       <em>
+        pri
+       </em>
+       ) in place of a complete rule (e.g.,
+       <tt>
+        Control
+       </tt>
+       =
+       <em>
+        Private
+       </em>
+       )? Without any feedback, users are more likely to resort to complete rules to ensure the system understands their inputs correctly, nullifying the benefits of sloppy rules. To reduce the gulf of evaluation, Duo provides rich visual feedback. While users are typing, Duo highlights its interpretation of what attributes and values are being entered (Fig.
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       left). For numerical attributes, Duo shows a slider with an embedded density plot (Fig.
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       right) and adjusts the slider range based on the current input.
+      </p>
+      <p>
+       Duo further supports multiple ways for entering a rule. Aside from typing a rule in the textbox and clicking on attribute names and values from the sloppy rule menu, Duo takes advantage of the data table to reduce the effort in entering rules. When users select a group shelf to open the sloppy rule menu, and click on a cell (e.g., a cell with the value
+       <em>
+        Southeast
+       </em>
+       ), Duo adds the corresponding attribute-value pair (e.g.,
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        Southeast
+       </em>
+       ) to the input box; when users select an attribute shelf and then a column header (e.g., a column header with the attribute
+       <tt>
+        Average Cost
+       </tt>
+       ), Duo adds the attribute (e.g.,
+       <tt>
+        Average Cost
+       </tt>
+       ) to the input box.
+      </p>
+      <p>
+       After entering the rules that define a group, users press enter to confirm the rules. A tag that represents the created group is added to a group shelf. Users can click on
+       <span class="inline-equation">
+        <img alt="" class="img-responsive" longdesc="" src="3300409_files\chi2019179fig3.jpg"/>
+       </span>
+       to edit the rules. They can also click on
+       <span class="inline-equation">
+        <img alt="" class="img-responsive" longdesc="" src="3300409_files\chi2019179fig4.jpg"/>
+       </span>
+       to view what records are included in or excluded from the group. This allows users to double-check if the intended group is correctly created.
+      </p>
+     </section>
+     <section id="sec-20">
+      <p>
+       <em>
+        Specifying Comparisons Using Sloppy Rule Interface.
+       </em>
+       Duo supports both forms of pairwise comparisons: “compare A to B” (
+       <em>
+        single
+       </em>
+       ) and “compare A to B, C, D, etc” (
+       <em>
+        repeated
+       </em>
+       ).
+      </p>
+      <p>
+       An example of “compare A to B” is
+       <em>
+        “compare colleges in the Southeast to colleges in New England”
+       </em>
+       . To specify the comparison, users first add a group with
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        Southeast
+       </em>
+       as a base rule to the top group shelf and then add a group with
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        New England
+       </em>
+       as a base rule to the bottom group shelf.
+      </p>
+      <p>
+       For comparisons with the form “compare A to B, C, D, etc”, users create group A (the anchoring point) using the top group shelf and adds groups B, C, D, etc to the bottom group shelf. Duo allows partial specification to facilitate the specification of repeated pairwise comparisons. For example, a user might compare Southeast colleges (A) to colleges in each of the other regions (B, C, D, etc). She first adds Southeast colleges to the top group shelf. She then clicks on the bottom group shelf to open the sloppy rule menu and enter “Region” to specify the attribute but not the values (Fig.
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       g). Multiple groups, each corresponding to the colleges in a region, will be automatically added to the bottom group shelf.
+      </p>
+     </section>
+    </section>
+    <section id="sec-21">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Answering Pairwise Comparison Questions
+       </h3>
+      </div>
+     </header>
+     <p>
+      Here, we provide examples for the seven categories of pairwise comparisons and describe how they are answered.
+     </p>
+     <section id="sec-22">
+      <header>
+       <div class="title-info">
+        <h4>
+         <span class="section-number">
+         </span>
+         Repetition — Single (
+         <em>
+          e.g., Compare private to public colleges
+         </em>
+         ).
+        </h4>
+       </div>
+      </header>
+      <p>
+       As users specify a comparison in the form “compare A to B”, Duo classifies the attributes into highly similar and highly different attributes (Fig.
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       c). When there are many attributes in a data table, the classification saves effort by removing the need to inspect attributes one by one to determine which of them is similar or different between the two groups. Grounded in Duet [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+        19
+       </a>
+       ], attributes are classified using a logistic regression model. We adjusted the model to increase cross validation accuracies. The detailed equations and the improvements are provided as supplemental material.
+      </p>
+      <p>
+       Besides attribute classification, Duo generates a sentence that describes the specified comparison (Fig.
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       b) to help users spot mistakes in the specification. As users hover over an attribute, a visualization is shown along with a short textual description (Fig.
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       d-f). The type of visualization shown is determined by the type of comparison (i.e. one to one, one to multiple and multiple to multiple) being conducted.
+      </p>
+     </section>
+     <section id="sec-23">
+      <header>
+       <div class="title-info">
+        <h4>
+         <span class="section-number">
+         </span>
+         Repetition — Repeated (
+         <em>
+          e.g., Compare Southeast colleges to colleges in each of the other regions
+         </em>
+         ).
+        </h4>
+       </div>
+      </header>
+      <p>
+       For repeated comparisons, Duo displays a list of groups similar to the anchoring point (in this case, Southeast colleges) and a list of groups different from the anchoring point. Similar (different) groups are ranked by number of similar (different) attributes. Clicking on a group shows the list of similar or different attributes.
+      </p>
+     </section>
+     <section id="sec-24">
+      <header>
+       <div class="title-info">
+        <h4>
+         <span class="section-number">
+         </span>
+         Group — One to One (
+         <em>
+          e.g., Compare MIT to Harvard
+         </em>
+         ).
+        </h4>
+       </div>
+      </header>
+      <p>
+       A list of similar and different attributes is shown as users specify the comparison. When users hover over an attribute, a visualization along with a textual description is shown (Fig.
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       f). For one-to-one comparisons, the visualization displays the values of the selected attribute for the two groups while the text describes how different the two values are.
+      </p>
+     </section>
+     <section id="sec-25">
+      <header>
+       <div class="title-info">
+        <h4>
+         <span class="section-number">
+         </span>
+         Group — One to Multiple (
+         <em>
+          e.g., Compare Emory to other colleges in the Southeast
+         </em>
+         ).
+        </h4>
+       </div>
+      </header>
+      <p>
+       To specify this query, users add
+       <tt>
+        Name
+       </tt>
+       =
+       <em>
+        Emory University
+       </em>
+       (base rule) using the top group shelf, and add
+       <tt>
+        Region
+       </tt>
+       =
+       <em>
+        Southeast
+       </em>
+       (base rule) and
+       <tt>
+        Name
+       </tt>
+       =
+       <em>
+        Emory University
+       </em>
+       (exclusion rule) using the bottom group shelf. For one-to-multiple comparisons, the visualization that pops up upon hovering over an attribute contains a density plot (Fig.
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       e) that shows the distribution of multi-object groups (in this case, colleges in the Southeast). By clicking on the density plot, it is converted to a histogram.
+      </p>
+     </section>
+     <section id="sec-26">
+      <header>
+       <div class="title-info">
+        <h4>
+         <span class="section-number">
+         </span>
+         Group — Multiple to Multiple (
+         <em>
+          e.g., Compare private to public colleges
+         </em>
+         ).
+        </h4>
+       </div>
+      </header>
+      <p>
+       For multiple-to-multiple comparisons, the visualization contains two density plots (Fig.
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       d), each showing a group's distribution. Users can convert the density plots to a grouped bar graph by clicking on the them.
+      </p>
+     </section>
+     <section id="sec-27">
+      <header>
+       <div class="title-info">
+        <h4>
+         <span class="section-number">
+         </span>
+         Attribute — Attribute Absent (
+         <em>
+          e.g., Compare MIT to Stanford
+         </em>
+         ).
+        </h4>
+       </div>
+      </header>
+      <p>
+       When no attributes are specified, Duo considers all attributes in the data table. In other words, Duo deems
+       <em>
+        “compare MIT to Stanford”
+       </em>
+       and
+       <em>
+        “compare MIT to Stanford on all attributes in the table”
+       </em>
+       the same. This allows users to compare MIT and Stanford broadly when they have no specific attributes of interest.
+      </p>
+     </section>
+     <section id="sec-28">
+      <header>
+       <div class="title-info">
+        <h4>
+         <span class="section-number">
+         </span>
+         Attribute — Attribute Present (
+         <em>
+          e.g., Compare MIT and Harvard on graduate earnings
+         </em>
+         ).
+        </h4>
+       </div>
+      </header>
+      <p>
+       When users specify some attributes, Duo operates on a truncated data table that contains only the columns corresponding to the specified attributes. Everything else is the same as when no attributes are specified.
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-29">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       USER STUDY
+      </h2>
+     </div>
+    </header>
+    <p>
+     Natural language is a clear alternative to specifying pairwise comparison questions due to a short semantic distance [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ]: users can directly express their goals in words rather than learning to perform low-level operations as in GUI. Indeed, much research has been devoted to bringing natural language to data analysis systems such as spreadsheets (e.g., [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ]). How natural is natural language when it comes to pairwise comparisons? Does its intuitiveness break at some point? To investigate how sloppy rules stack up against natural language, we conducted a within-subject study during which participants perform pairwise comparison tasks of varying levels of difficulty using the two techniques.
+    </p>
+    <section id="sec-30">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Participants and Apparatus
+       </h3>
+      </div>
+     </header>
+     <p>
+      We recruited 16 graduate students (7 females, ages 22 - 33) through university mailing lists. The inclusion criteria were
+      <strong>
+       1)
+      </strong>
+      native English speakers or
+      <strong>
+       2)
+      </strong>
+      non-native speakers who stayed in the US for at least 2 years. We required participants to be reasonably good at articulating ideas in English so that our results can better generalize to populations with lower English proficiency: if people who are fluent in English perform worse using the natural language interface, people who lack fluency might perform even worse. Of the 16 participants, 11 are native speakers. All participants rated themselves as fully fluent in English. On a 7-point scale ranging from novice (1) to expert (7), the average self-rated level of data analysis experience was 4.875. None of the participants had used any of the interfaces prior to the study. We compensated the participants with a
+      <font style="normal">
+       $
+      </font>
+      25 gift card.
+     </p>
+     <p>
+      The study was conducted in a quiet lab environment using a Macbook Pro with a 13-inch display and a trackpad. During the study, the trackpad rather than a mouse was used for text selection to reduce variability. Non-Mac users were given a short tutorial of basic trackpad operations.
+     </p>
+    </section>
+    <section id="sec-31">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Study Design
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our study was a 2 × 4 within-subjects design in which participants used two interfaces (natural language and sloppy rules) to perform pairwise comparison tasks of four levels of difficulty: easy, moderate, difficult, and very difficult. Participants perform 3 (practice) + 4 (test) tasks using interface A and then 3 (practice) + 4 (test) tasks using interface B. The three practice tasks were the same for both interfaces to give participants an idea that both interfaces could do the same pairwise comparisons. To reduce learning effects, the presentation order of the interfaces was counterbalanced, the tasks were presented in increasing level of difficulty within an interface condition, and two different task sets of four were used across the two interface conditions (but the presentation order of task sets remained the same across participants).
+     </p>
+     <section id="sec-32">
+      <p>
+       <em>
+        Tasks.
+       </em>
+       We designed a set of three practice tasks and two sets of four test tasks. The attributes and values in the practice tasks and the test tasks come from a car dataset and the college dataset [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ] respectively. The two datasets were used as the subject matters were accessible to general audience.
+      </p>
+      <p>
+       The pairwise comparison tasks are illustrated by a visual language (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       a). The rules for group definition are connected by three operators:
+       <strong>
+        AND
+       </strong>
+       ,
+       <strong>
+        +
+       </strong>
+       and
+       <strong>
+        −
+       </strong>
+       that correspond respectively to logical conjunction, adding objects to a group and removing objects from a group (the three common operations for group definition). We considered using English sentences to present the pairwise comparison tasks but were aware of its lack of ecological validity: during data analysis, we often form an idea of what to compare before phrasing a pairwise comparison sentence, rather than being told to type a sentence directly to a text box.
+      </p>
+      <p>
+       Level of difficulty is determined by number of rules: easy, moderate, difficult and, very difficult tasks have 3, 5, 8, and 10 rules respectively. The easy, moderate, and difficult tasks were designed with realism in mind. For instance, the tasks with a moderate level of difficulty (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       a) only has the
+       <strong>
+        AND
+       </strong>
+       operator, which appears more frequently than
+       <strong>
+        +
+       </strong>
+       and
+       <strong>
+        −
+       </strong>
+       in pairwise comparison questions.
+      </p>
+      <figure id="fig3">
+       <img alt="" class="img-responsive" longdesc="A task of moderate difficulty presented to the user study participants and the natural language interface used in the user study" src="3300409_files\chi2019179fig5.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 3:
+        </span>
+        <span class="figure-title">
+         (a) A task of moderate difficulty has 5 rules. The natural language interface (b) rejects nonsense queries, (c) outputs
+         <em>
+          “YOU GOT IT RIGHT!”
+         </em>
+         for a correct query, and (d) presents its interpretation for an incorrect query.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-33">
+      <p>
+       <em>
+        Interfaces.
+       </em>
+       A natural language interface was implemented for the study. Following “Explore” in Google Sheets [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+        14
+       </a>
+       ], the interface has a data table on the left and provides a text box in the sidebar for entering a question in a single query (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       b-d). To reduce typing effort, it offers autocomplete suggestions of attribute names and values while users are typing. We originally planned to implement a fully-functioning natural language interface that supports asking any pairwise comparison questions but were concerned about potential inaccuracy in inferring a parse tree from more complex queries. We concluded that the natural language interface for our study should be able to
+       <strong>
+        1)
+       </strong>
+       recognize a pairwise comparison query if it is correct and
+       <strong>
+        2)
+       </strong>
+       reject a query if it is incorrect.
+      </p>
+      <p>
+       To achieve
+       <strong>
+        1)
+       </strong>
+       , we crowdsourced pairwise comparison questions by presenting the pairwise comparison tasks in our study to AMT workers. 30 questions were collected for each task, yielding a total of 30 × 3 (practice) + 30 × 8 (test) questions. The workers were paid
+       <font style="normal">
+        $
+       </font>
+       0.53 for each question (hourly wage =
+       <font style="normal">
+        $
+       </font>
+       7.25). We then built a logistic regression model using the collected questions. Using the model, the natural language interface classifies participants’ queries into one of the pairwise comparison tasks in our study.
+      </p>
+      <p>
+       For each query, the logistic regression model assigns a probability for each task. To achieve
+       <strong>
+        2)
+       </strong>
+       , the interface rejects queries that are unlikely to be one of the study tasks (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       b). For a query with a high probability to be one of the study tasks, the interface checks if all rules in the task exist. If there are no missing rules, the interface responds with
+       <em>
+        “YOU GOT IT RIGHT!”
+       </em>
+       (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       c); if some rules are missing, it presents the interpretation of the query so that the participants can correct themselves during the study (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       d).
+      </p>
+      <p>
+       The sloppy rule interface was also modified to show
+       <em>
+        “YOU GOT IT RIGHT!”
+       </em>
+       for correct queries, and present its interpretation of a query as users specify pairwise comparison rules.
+      </p>
+      <figure id="fig4">
+       <img alt="" class="img-responsive" longdesc="Charts showing the user study results. The results suggest that the two interfaces are comparable in efficiency and preference for easier pairwise comparison tasks, and that the sloppy rule interface enables faster specification and are more preferable for more difficult pairwise comparison tasks." src="3300409_files\chi2019179fig6.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 4:
+        </span>
+        <span class="figure-title">
+         (a) Distributions of completion time at different difficulty levels. (b) Mean completion times for each interface at different difficulty levels. (c) Results of the Likert-scale question (Q1 of the questionnaire). (d) Participants’ preference at each difficulty level (Q2 of the questionnaire).
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-34">
+      <p>
+       <em>
+        Dependent Variables.
+       </em>
+       There are three dependent measures for our study, the first being the completion time for each task. An end-of-study questionnaire (see the supplemental materials) also collected participants’ preferences of interfaces. In particular, two questions were asked for each level of difficulty:
+       <strong>
+        Q1)
+       </strong>
+       <em>
+        Which interface made it easier to specify the pairwise comparison questions (1=interface A much easier, 4=neutral, 7=interface B much easier)?
+       </em>
+       <strong>
+        Q2)
+       </strong>
+       <em>
+        Which interface would you prefer to perform the pairwise comparison tasks (interface A or interface B)?
+       </em>
+      </p>
+     </section>
+    </section>
+    <section id="sec-35">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Procedure
+       </h3>
+      </div>
+     </header>
+     <p>
+      Each session lasted approximately 60 minutes. The participants first watched a 5-minute video that introduced the visual language. For the first interface, they watched a tutorial video introducing the interface (\raise.17ex
+      <span class="inline-equation">
+       <span class="tex">
+        $\scriptstyle \sim$
+       </span>
+      </span>
+      3 minutes) and were instructed to perform the three practice tasks before performing the four test tasks. The participants were told to complete the tasks as fast as possible. During the practices, the experimenter helped the participants overcome difficulties. The participants followed the same sequence for the second interface. For a fair comparison, when the participants used the sloppy rule interface, they were asked to disambiguate an intended rule by typing rather than clicking on an attribute or value from the sloppy rule menu. Their interactions with the interfaces were screen-captured and the completion times were inferred from the videos. After the tests, the participants completed the questionnaire concerning their preferences of interfaces for each level of difficulty. During an end-of-study interview, they were asked about the relative pros and cons of the two interfaces.
+     </p>
+    </section>
+    <section id="sec-36">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Hypotheses
+       </h3>
+      </div>
+     </header>
+     <p>
+      We considered two hypotheses:
+     </p>
+     <p>
+      <strong>
+       H1.
+      </strong>
+      Interface interacts with level of difficulty in predicting completion time. In particular, sloppy rules are comparable to natural language for easy tasks and tasks of moderate difficulty, and are more efficient than natural language for difficult and very difficult tasks.
+     </p>
+     <p>
+      <strong>
+       H2.
+      </strong>
+      The participants find it easier to specify difficult and very difficult pairwise comparison tasks using the sloppy rule interface but are indifferent between the two interfaces for easy tasks and tasks of moderate difficulty.
+     </p>
+    </section>
+    <section id="sec-37">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Results
+       </h3>
+      </div>
+     </header>
+     <section id="sec-38">
+      <p>
+       <em>
+        Completion Time.
+       </em>
+       The task completion times were log-trans- formed to approximate normality before the analysis. Using a two-way repeated measures ANOVA, we found a significant interaction between interface and level of difficulty on completion time (
+       <em>
+        <em>
+         F
+        </em>
+        <sub>
+         3, 45
+        </sub>
+       </em>
+       = 2.95,
+       <em>
+        p
+       </em>
+       = .043). Post-hoc Wilcoxon signed-rank tests with Bonferroni correction indicated that only the time differences for easy (
+       <em>
+        Z
+       </em>
+       = -2.43,
+       <em>
+        p
+       </em>
+       = .015), difficult (
+       <em>
+        Z
+       </em>
+       = -2.46,
+       <em>
+        p
+       </em>
+       = .014) and very difficult (
+       <em>
+        Z
+       </em>
+       = -3.02,
+       <em>
+        p
+       </em>
+       = .002) tasks are significant (Fig.
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       b). The results partially align with
+       <strong>
+        H1
+       </strong>
+       . The participants finished the pairwise comparison tasks more efficiently at least for the more difficult tasks.
+      </p>
+     </section>
+     <section id="sec-39">
+      <p>
+       <em>
+        Ease of Specification.
+       </em>
+       For Q1, we found a significant Spearman's correlation (
+       <em>
+        <em>
+         r
+         <sub>
+          s
+         </sub>
+        </em>
+       </em>
+       = 0.51,
+       <em>
+        p
+       </em>
+       &lt; .001) between level of difficulty and preference (Fig.
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       c). The median preference for easy, moderate, difficult and very difficult tasks, were 3.5, 5, 6, and 6.5 respectively (Fig.
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       c). Sign tests with Bonferroni correction found that only the median for difficult (
+       <em>
+        Z
+       </em>
+       = -3.12,
+       <em>
+        p
+       </em>
+       = .002) and very difficult (
+       <em>
+        Z
+       </em>
+       = -3.30,
+       <em>
+        p
+       </em>
+       &lt; .001) tasks were significant different from 4 (neutral). For Q2, binomial tests indicated that the number of participants who preferred sloppy rules is significantly different from the number of participants who preferred natural language only for the difficult (
+       <em>
+        p
+       </em>
+       = .004) and very difficult (
+       <em>
+        p
+       </em>
+       &lt; .001) tasks (Fig.
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       d). The results support
+       <strong>
+        H2
+       </strong>
+       , indicating a stronger preference for the sloppy rule interface for more difficult tasks.
+      </p>
+     </section>
+     <section id="sec-40">
+      <p>
+       <em>
+        Pros and Cons of the Two Interfaces.
+       </em>
+       At the end of the sessions, we asked the participants to comment on the relative pros and cons of the two interfaces.
+      </p>
+      <p>
+       Many participants commented that it was
+       <strong>
+        difficult to articulate long queries
+       </strong>
+       using natural language:
+       <em>
+        “You have to say things that you wouldn't say in English ... not necessarily you wouldn't say but like it's clunky”
+       </em>
+       (P10) and
+       <em>
+        “it became a little bit wordy as they [the pairwise comparison questions] got a little bit longer”
+       </em>
+       (P7). P8 also expressed the confusion of word choice:
+       <em>
+        “In natural language, do you use ‘and’ between two groups [compare A and B] or do you use ‘to’ [compare A to B] or do you use ‘with’ [compare A with B]?”
+       </em>
+       Also, natural language can be
+       <strong>
+        ambiguous
+       </strong>
+       even to humans. P10 commented:
+       <em>
+        “If I am saying USA cars and Japanese cars with a horsepower greater than 1000 ... Where's the parenthesis?”
+       </em>
+       His example has two valid interpretations, differing in where to place the parenthesis: 1) cars where (
+       <tt>
+        Origin
+       </tt>
+       =
+       <em>
+        USA
+       </em>
+       OR
+       <tt>
+        Origin
+       </tt>
+       =
+       <em>
+        Japanese
+       </em>
+       ) AND
+       <tt>
+        Horsepower
+       </tt>
+       &gt;
+       <em>
+        1000
+       </em>
+       , and 2) cars where
+       <tt>
+        Origin
+       </tt>
+       =
+       <em>
+        USA
+       </em>
+       OR (
+       <tt>
+        Origin
+       </tt>
+       =
+       <em>
+        Japanese
+       </em>
+       AND
+       <tt>
+        Horsepower
+       </tt>
+       &gt;
+       <em>
+        1000
+       </em>
+       ).
+      </p>
+      <p>
+       Despite these challenges, most participants appreciated the
+       <strong>
+        intuitiveness and ease of learning
+       </strong>
+       of the natural language interface:
+       <em>
+        “If it is a simple task, the second system [the natural language interface] is much more intuitive ... you don't need to learn ... just type it in”
+       </em>
+       (P5), and
+       <em>
+        “Interface B [the natural language interface] is nice in a way that it was how you think of the problem”
+       </em>
+       (P6).
+      </p>
+      <p>
+       On the other hand, the sloppy rule interface
+       <strong>
+        helps articulate complex pairwise comparison queries
+       </strong>
+       . P6 liked the capability to enter partial rules:
+       <em>
+        “You just need to type a little bit of what you are thinking and have it complete for you so you don't have to think about how to structure it.”
+       </em>
+       P10 liked how the tabs provide structure for the rules:
+       <em>
+        “It [the sloppy rule menu] specifies if you are doing ‘and’ [base rules] or ‘plus’ [inclusion rules] or ‘minus’ [exclusion rules] ... you can visually see those in the tabs.”
+       </em>
+      </p>
+      <p>
+       However, the participants found sloppy rules
+       <strong>
+        harder to learn
+       </strong>
+       :
+       <em>
+        “I think in interface A [sloppy rules], it wasn't intuitive ... it's not generally how we work in computers ... so it takes some time to get used to that”
+       </em>
+       (P7),
+       <em>
+        “There was a bit of a learning curve”
+       </em>
+       (P8), and
+       <em>
+        “Navigating between the tabs [using arrow keys] was not intuitive”
+       </em>
+       (P15). Furthermore, unlike natural language interfaces that can accept different queries (e.g., correlation, and ranking), the sloppy rule interface
+       <strong>
+        only supports pairwise comparisons
+       </strong>
+       and is
+       <em>
+        “very task-specific”
+       </em>
+       (P7).
+      </p>
+     </section>
+    </section>
+    <section id="sec-41">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Discussion
+       </h3>
+      </div>
+     </header>
+     <p>
+      The results suggest that the two interfaces are comparable in efficiency and preference for easier pairwise comparison tasks and that the sloppy rule interface is faster and more preferable for more difficult tasks. The qualitative feedback shed lights on two dimensions along which query techniques can be compared: query complexity and learnability. In this section, we discuss implications of query complexity and learnability on designing query techniques for pairwise comparisons and reflect on the limitations of our study.
+     </p>
+     <section id="sec-42">
+      <p>
+       <em>
+        Query Complexity.
+       </em>
+       The participants’ comments reveal two challenges of natural language for more complex queries: articulation difficulty and ambiguity. While the search for more efficient and accurate algorithms to parse natural language reigns supreme in conventional NLP research, these challenges are outside its purview — faster and more accurate natural language parsing do not make complex concepts easier to articulate, neither do they fix the ambiguity in human language. By offering human-centered UI technologies, HCI research is uniquely positioned to tackle these challenges.
+      </p>
+      <p>
+       Prior research endeavors enhanced our capability to communicate with data via long natural language queries. For example, to showcase DataTone [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+        10
+       </a>
+       ], Gao et al. presented a sample query:
+       <em>
+        “What is the relationship between unemployment and family income for those families earning more than 2000 and less than 150000 between 2007 and 2010 for California and Michigan?”
+       </em>
+       Conversely, our findings indicate that long complex queries like this should be avoided due to the inherent articulation difficulty. To keep queries short, natural language interfaces could enable nested conversations [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+        7
+       </a>
+       ]. For pairwise comparisons, such interfaces could allow users to say
+       <em>
+        “create a group of Southeast colleges with admission rate below 0.2”
+       </em>
+       ,
+       <em>
+        “create a group of New England colleges with admission rate below 0.2”
+       </em>
+       , and
+       <em>
+        “compare the first group with the second”
+       </em>
+       . For spreadsheets, a solution is to provide a button in the toolbar that opens the sloppy rule interface for specifying complex pairwise comparisons.
+      </p>
+      <p>
+       Although human language is ambiguous, natural language systems could ensure they share a common ground with users by offering an ambiguity widget [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+        10
+       </a>
+       ]. For complex pairwise comparisons, the sloppy rule interface could be modified for disambiguation. For instance, after parsing a pairwise comparison question, a system could display the pairwise comparison rules extracted from the question and let users fix the rules using the sloppy syntax if needed.
+      </p>
+     </section>
+     <section id="sec-43">
+      <p>
+       <em>
+        Learnability.
+       </em>
+       From our study, we have learnt that many participants did not prefer the sloppy rule interface for easier tasks because it is harder to learn. What causes its lower learnability? Lessons from history of user interface design tell us that interfaces that exploit skills and knowledge users already have are more learnable [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ]. This is why natural language interfaces are acclaimed: we can express our intent using the language we use in our daily communication, reducing the effort to learn an interface. In contrast, the sloppy rule interface is less effective in leveraging users’ prior skills and knowledge. For instance, a participant reported that using the up and down arrow keys to navigate between the
+       <strong>
+        AND
+       </strong>
+       ,
+       <strong>
+        ADD
+       </strong>
+       , and
+       <strong>
+        REMOVE
+       </strong>
+       tabs was unintuitive because it did not align with his habit of using shortcuts. He suggested to use the tab key for navigating between the three tabs.
+      </p>
+      <p>
+       Are natural language interfaces really easy to learn? Existing natural language interfaces are limited by a set of pre-defined commands. It means that like conventional command lines, users often have difficulty discovering and learning what commands are supported by a natural language interface. This learnability issue was not investigated in our user study because participants were told to ask pairwise comparison questions and hence did not need to discover on their own what types of questions they could ask. To improve learnability, techniques that facilitate learning natural language commands (e.g., a help menu) could be incorporated into natural language interfaces.
+      </p>
+     </section>
+     <section id="sec-44">
+      <p>
+       <em>
+        Limitations.
+       </em>
+       Aside from not being able to investigate discoverability of natural language commands, our study is limited by using a visual language to present the pairwise comparison tasks (Fig
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       a). The visual language, although carefully designed, might favor the sloppy rule interface because of a more direct mapping to the sloppy rule menu. Replication studies would be required to understand how task presentation method moderates the relationship between task performance and query interface.
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-45">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       CONCLUSIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Many of us share the dream of a world where people can freely communicate with data. Albeit just a tiny step, our work contributes to this vision in three critical ways. We have provided an investigation into the make-up of pairwise comparisons. We have demonstrated how the widely-used spreadsheets can adopt our findings and be endowed with pairwise comparison capabilities. Finally, our comparative study of the sloppy rule interface and the natural language interface provides design implications for data analysis tools that aim to support a wide range of pairwise comparisons.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-46">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We thank Richard Catrambone, Jordan Sparks and Bahador Saket for their feedback on the experimental design, Nicoleta Serban for early discussions, and the reviewers for the invaluable comments. Special thanks to the turkers and the user study participants who contributed to this project.
+    </p>
+   </section>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Michael Bolin, Matthew Webber, Philip Rha, Tom Wilson, and Robert C Miller. 2005. Automation and customization of rendered web pages. In
+      <em>
+       Proceedings of the 18th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      . ACM, 163–172.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1095034.1095062" target="_blank">
+       https://doi.org/10.1145/1095034.1095062
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      John M Carroll, Robert L Mack, and Wendy A Kellogg. 1988. Interface metaphors and user interface design. In
+      <em>
+       Handbook of Human-Computer Interaction
+      </em>
+      . Elsevier, 67–85.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/B978-0-444-70536-5.50008-7" target="_blank">
+       https://doi.org/10.1016/B978-0-444-70536-5.50008-7
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Kedar Dhamdhere, Kevin S McCurley, Ralfi Nahmias, Mukund Sundararajan, and Qiqi Yan. 2017. Analyza: Exploring data with conversation. In
+      <em>
+       Proceedings of the 22nd International Conference on Intelligent User Interfaces
+      </em>
+      . ACM, 493–504.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025171.3025227" target="_blank">
+       https://doi.org/10.1145/3025171.3025227
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Fan Du, Catherine Plaisant, Neil Spring, and Ben Shneiderman. 2016. EventAction: Visual analytics for temporal event sequence recommendation. In
+      <em>
+       2016 IEEE Conference on Visual Analytics Science and Technology (VAST)
+      </em>
+      . IEEE, 61–70.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/VAST.2016.7883512" target="_blank">
+       https://doi.org/10.1109/VAST.2016.7883512
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Fan Du, Catherine Plaisant, Neil Spring, and Ben Shneiderman. 2017. Finding similar people to guide life choices: Challenge, design, and evaluation. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 5498–5544.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025777" target="_blank">
+       https://doi.org/10.1145/3025453.3025777
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Michael Yoshitaka Erlewine. 2009. Ubiquity: Designing a multilingual natural language interface. In
+      <em>
+       Proceedings of SIGIR Workshop on Information Access in a Multilingual World
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Ethan Fast, Binbin Chen, Julia Mendelsohn, Jonathan Bassen, and Michael S Bernstein. 2018. Iris: A Conversational Agent for Complex Tasks. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 473.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174047" target="_blank">
+       https://doi.org/10.1145/3173574.3174047
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Leon Festinger. 1954. A theory of social comparison processes.
+      <em>
+       <em>
+        Human Relations
+       </em>
+      </em>
+      7, 2 (1954), 117–140.
+      <a class="link-inline force-break" href="https://doi.org/10.1177/001872675400700202" target="_blank">
+       https://doi.org/10.1177/001872675400700202
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      The R Foundation. 2018. The R Project for Statistical Computing. Retrieved from
+      <a class="link-inline force-break" href="https://www.r-project.org">
+       https://www.r-project.org
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Tong Gao, Mira Dontcheva, Eytan Adar, Zhicheng Liu, and Karrie G Karahalios. 2015. Datatone: Managing ambiguity in natural language interfaces for data visualization. In
+      <em>
+       Proceedings of the 28th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      . ACM, 489–500.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2807442.2807478" target="_blank">
+       https://doi.org/10.1145/2807442.2807478
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Dedre Gentner and Keith J Holyoak. 1997. Reasoning and learning by analogy: Introduction.
+      <em>
+       <em>
+        American Psychologist
+       </em>
+      </em>
+      52, 1 (1997), 32.
+      <a class="link-inline force-break" href="https://doi.org/10.1037/0003-066x.52.1.32" target="_blank">
+       https://doi.org/10.1037/0003-066x.52.1.32
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Dedre Gentner and Linsey A Smith. 2012. Analogical Reasoning. In
+      <em>
+       Encyclopedia of Human Behavior
+      </em>
+      . Academic Press.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/B978-0-12-375000-6.00022-7" target="_blank">
+       https://doi.org/10.1016/B978-0-12-375000-6.00022-7
+      </a>
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Michael Gleicher. 2018. Considerations for Visualizing Comparison.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      24, 1(2018), 413–423.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TVCG.2017.2744199" target="_blank">
+       https://doi.org/10.1109/TVCG.2017.2744199
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Google. 2018. Google Sheets - create and edit spreadsheets online, for free. Retrieved from
+      <a class="link-inline force-break" href="https://www.google.com/sheets/about/">
+       https://www.google.com/sheets/about/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Matthias J Gruber, Bernard D Gelman, and Charan Ranganath. 2014. States of curiosity modulate hippocampus-dependent learning via the dopaminergic circuit.
+      <em>
+       <em>
+        Neuron
+       </em>
+      </em>
+      84, 2 (2014), 486–496.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.neuron.2014.08.060" target="_blank">
+       https://doi.org/10.1016/j.neuron.2014.08.060
+      </a>
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Marti A Hearst. 2011. ’Natural’ search user interfaces.
+      <em>
+       <em>
+        Commun. ACM
+       </em>
+      </em>
+      54, 11 (2011), 60–67.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2018396.2018414" target="_blank">
+       https://doi.org/10.1145/2018396.2018414
+      </a>
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Edwin L. Hutchins, James D. Hollan, and Donald A. Norman. 1985. Direct Manipulation Interfaces.
+      <em>
+       <em>
+        Human-Computer Interaction
+       </em>
+      </em>
+      1, 4 (Dec. 1985), 311–338.
+      <a class="link-inline force-break" href="https://doi.org/10.1207/s15327051hci0104_2" target="_blank">
+       https://doi.org/10.1207/s15327051hci0104_2
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Johannes Kehrer, Harald Piringer, Wolfgang Berger, and M Eduard Gröller. 2013. A Model for Structure-based Comparison of Many Categories in Small-Multiple Displays.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      19, 12(2013), 2287–2296.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TVCG.2013.122" target="_blank">
+       https://doi.org/10.1109/TVCG.2013.122
+      </a>
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Po-Ming Law, Rahul C Basole, and Yanhong Wu. 2019. Duet: Helping Data Analysis Novices Conduct Pairwise Comparisons by Minimal Specification.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      25, 1(2019), 427–437.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TVCG.2018.2864526" target="_blank">
+       https://doi.org/10.1109/TVCG.2018.2864526
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Greg Little and Robert C Miller. 2006. Translating keyword commands into executable code. In
+      <em>
+       Proceedings of the 19th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      . ACM, 135–144.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1166253.1166275" target="_blank">
+       https://doi.org/10.1145/1166253.1166275
+      </a>
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      U.S. News &amp; World Report L.P.2018. Compare Colleges and Universities. Retrieved from
+      <a class="link-inline force-break" href="https://www.usnews.com/best-colleges/compare">
+       https://www.usnews.com/best-colleges/compare
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Microsoft. 2018. Create a PivotTable to Analyze worksheet data - Office Support. Retrieved from
+      <a class="link-inline force-break" href="https://support.office.com/en-us/article/create- a-pivottable-to-analyze-worksheet-data...">
+       <tt>
+        https://support.office.com/en-us/article/create- a-pivottable-to-analyze-worksheet-data...
+       </tt>
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Robert C Miller, Victoria H Chou, Michael Bernstein, Greg Little, Max Van Kleek, David Karger,
+      <em>
+       et al.
+      </em>
+      2008. Inky: a sloppy command line for the web with rich visual feedback. In
+      <em>
+       Proceedings of the 21st Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      . ACM, 131–140.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1449715.1449737" target="_blank">
+       https://doi.org/10.1145/1449715.1449737
+      </a>
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Christina Niederer, Holger Stitz, Reem Hourieh, Florian Grassinger, Wolfgang Aigner, and Marc Streit. 2018. TACO: Visualizing Changes in Tables over Time.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      24, 1(2018), 677–686.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TVCG.2017.2745298" target="_blank">
+       https://doi.org/10.1109/TVCG.2017.2745298
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Don Norman. 2007. The next UI breakthrough: command lines.
+      <em>
+       <em>
+        Interactions
+       </em>
+      </em>
+      14, 3 (2007), 44–45.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1242421.1242449" target="_blank">
+       https://doi.org/10.1145/1242421.1242449
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Numbeo. 2018. Compare Cities. Retrieved from
+      <a class="link-inline force-break" href="https://www.numbeo.com/cost-of-living/comparison.jsp">
+       https://www.numbeo.com/cost-of-living/comparison.jsp
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      U.S. Department of Education. 2018. College Scorecard Data. Retrieved from
+      <a class="link-inline force-break" href="https://collegescorecard.ed.gov/data/">
+       https://collegescorecard.ed.gov/data/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Sharon Oviatt. 1995. Predicting spoken disfluencies during human-computer interaction.
+      <em>
+       <em>
+        Computer Speech and Language
+       </em>
+      </em>
+      9, 1 (1995), 19–36.
+      <a class="link-inline force-break" href="https://doi.org/10.1006/csla.1995.0002" target="_blank">
+       https://doi.org/10.1006/csla.1995.0002
+      </a>
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Sharon Oviatt. 1996. Multimodal interfaces for dynamic interactive maps. In
+      <em>
+       Proceedings of the 1996 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 95–102.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/238386.238438" target="_blank">
+       https://doi.org/10.1145/238386.238438
+      </a>
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Sharon Oviatt. 1997. Multimodal interactive maps: Designing for human performance.
+      <em>
+       <em>
+        Human-Computer Interaction
+       </em>
+      </em>
+      12, 1 (1997), 93–129.
+      <a class="link-inline force-break" href="https://doi.org/10.1207/s15327051hci1201&amp;2_4" target="_blank">
+       https://doi.org/10.1207/s15327051hci1201&amp;2_4
+      </a>
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Quicksilver. 2018. Quicksilver — Mac OS X at your Fingertips. Retrieved from
+      <a class="link-inline force-break" href="https://qsapp.com/index.php">
+       https://qsapp.com/index.php
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Rajeev Ramchand. 2018. Comparing Suicide Rates: Making an Apples to Apples Comparison. (April 2018). Retrieved from
+      <a class="link-inline force-break" href="https://www.rand.org/blog/2018/04/comparing-suicide...">
+       <tt>
+        https://www.rand.org/blog/2018/04/comparing-suicide...
+       </tt>
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Aza Raskin. 2008. The linguistic command line.
+      <em>
+       <em>
+        Interactions
+       </em>
+      </em>
+      15, 1 (2008), 19–22.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1330526.1330535" target="_blank">
+       https://doi.org/10.1145/1330526.1330535
+      </a>
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Greg Ridgeway. 2007.
+      <em>
+       Analysis of racial disparities in the New York Police Department's stop, question, and frisk practices
+      </em>
+      . Technical Report. Santa Monica, CA, USA.
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Richard M Ryan and Edward L Deci. 2000. Intrinsic and extrinsic motivations: Classic definitions and new directions.
+      <em>
+       <em>
+        Contemporary Educational Psychology
+       </em>
+      </em>
+      25, 1 (2000), 54–67.
+      <a class="link-inline force-break" href="https://doi.org/10.1006/ceps.1999.1020" target="_blank">
+       https://doi.org/10.1006/ceps.1999.1020
+      </a>
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Thomas L Saaty. 2008. Decision making with the analytic hierarchy process.
+      <em>
+       <em>
+        International Journal of Services Sciences
+       </em>
+      </em>
+      1, 1 (2008), 83–98.
+      <a class="link-inline force-break" href="https://doi.org/10.1504/IJSSci.2008.01759" target="_blank">
+       https://doi.org/10.1504/IJSSci.2008.01759
+      </a>
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Niloufar Salehi, Lilly C Irani, Michael S Bernstein, Ali Alkhatib, Eva Ogbe, Kristy Milland,
+      <em>
+       et al.
+      </em>
+      2015. We are dynamo: Overcoming stalling and friction in collective action for crowd workers. In
+      <em>
+       Proceedings of the 2015 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 1621–1630.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702508" target="_blank">
+       https://doi.org/10.1145/2702123.2702508
+      </a>
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Peggy Sito and Zhang Shidong. 2018. Hong Kong seen winning mega-IPO from Xiaomi after reforming listing rules. (Jan 2018). Retrieved September 1, 2018 from
+      <a class="link-inline force-break" href="https://www.scmp.com/business/companies/article/2131348/ chinese-smartphone-maker-xiaomi-said...">
+       <tt>
+        https://www.scmp.com/business/companies/article/2131348/ chinese-smartphone-maker-xiaomi-said...
+       </tt>
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      John W Tukey. 1949. Comparing individual means in the analysis of variance.
+      <em>
+       <em>
+        Biometrics
+       </em>
+      </em>
+      (1949), 99–114.
+      <a class="link-inline force-break" href="https://doi.org/10.2307/3001913" target="_blank">
+       https://doi.org/10.2307/3001913
+      </a>
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Paul Vegas. 2018. Barcelona defender Mina to decide between Man Utd, Everton today. (Aug 2018). Retrieved September 1, 2018 from
+      <a class="link-inline force-break" href="http://www.tribalfootball.com/articles/barcelona- defender-mina-to-decide-between-man-utd...">
+       <tt>
+        http://www.tribalfootball.com/articles/barcelona- defender-mina-to-decide-between-man-utd...
+       </tt>
+      </a>
+      .
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    Supplemental materials including data, working prototypes, demo videos, and all materials for the user study in Section 5 can be found here:
+    <a class="link-inline force-break" href="https://github.com/duospreadsheet/supplemental">
+     https://github.com/duospreadsheet/supplemental
+    </a>
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Association for Computing Machinery.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300409" target="_blank">
+      https://doi.org/10.1145/3290605.3300409
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8757e453f8e58f3f',t:'MTcxMzMwOTQ3OS4zOTAwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

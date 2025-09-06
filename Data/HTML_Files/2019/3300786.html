@@ -1,0 +1,2985 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Evaluating Pan and Zoom Timelines and Sliders
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300786_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300786_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300786_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300786_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300786_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300786_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300786_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300786_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Evaluating Pan and Zoom Timelines and Sliders
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Michail
+      </span>
+      <span class="surName">
+       Schwab
+      </span>
+      , Northeastern University, USA,
+      <a href="mailto:me@michailschwab.com">
+       me@michailschwab.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Sicheng
+      </span>
+      <span class="surName">
+       Hao
+      </span>
+      , Northeastern University, USA,
+      <a href="mailto:hao.sic@husky.neu.edu">
+       hao.sic@husky.neu.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Olga
+      </span>
+      <span class="surName">
+       Vitek
+      </span>
+      , Northeastern University, USA,
+      <a href="mailto:o.vitek@northeastern.edu">
+       o.vitek@northeastern.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       James
+      </span>
+      <span class="surName">
+       Tompkin
+      </span>
+      , Brown University, USA,
+      <a href="mailto:james_tompkin@brown.edu">
+       james_tompkin@brown.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Jeff
+      </span>
+      <span class="surName">
+       Huang
+      </span>
+      , Brown University, USA,
+      <a href="mailto:jeff_huang@brown.edu">
+       jeff_huang@brown.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Michelle
+      </span>
+      <span class="surName">
+       A. Borkin
+      </span>
+      , Northeastern University, USA,
+      <a href="mailto:m.borkin@neu.edu">
+       m.borkin@neu.edu
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300786" target="_blank">
+       https://doi.org/10.1145/3290605.3300786
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Pan and zoom timelines and sliders help us navigate large time series data. However, designing efficient interactions can be difficult. We study pan and zoom methods via crowd-sourced experiments on mobile and computer devices, asking which designs and interactions provide faster target acquisition. We find that visual context should be limited for low-distance navigation, but added for far-distance navigation; that timelines should be oriented along the longer axis, especially on mobile; and that, as compared to default techniques,
+       <em>
+        double click
+       </em>
+       ,
+       <em>
+        hold
+       </em>
+       , and
+       <em>
+        rub
+       </em>
+       zoom appear to scale worse with task difficulty, whereas
+       <em>
+        brush
+       </em>
+       and especially
+       <em>
+        ortho
+       </em>
+       zoom seem to scale better. Software and data used in this research are available as open source.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Empirical studies in visualization
+       </strong>
+       ; •
+       <strong>
+        Human-centered computing → Empirical studies in interaction design
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Pan
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        zoom
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        visualization
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        timeline
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        interaction
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        evaluation.
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Michail Schwab, Sicheng Hao, Olga Vitek, James Tompkin, Jeff Huang, and Michelle A. Borkin. 2019. Evaluating Pan and Zoom Timelines and Sliders. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 12 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300786" target="_blank">
+         https://doi.org/10.1145/3290605.3300786
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Pan and zoom interactions allow us to explore multi-scale timeline data with 10
+     <sup>
+      6 +
+     </sup>
+     spans on fixed-size displays [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ]. As large-span datasets increase in prevalence, visualization creators will increasingly ask how best to maximize usability in their applications. Navigation efficiency is integral to usability: it can be dramatically affected by timeline design and interaction technique; being able to turn an interface from one that frustrates users to one that supports their goals. Brehmer et al. recently reviewed timeline appearance, and identified many different layouts, shapes, and scale types [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ]. However, little is known about the effectiveness of these timeline designs for multi-scale navigation across the many options for pan and zoom interaction techniques. To provide timeline creators with useful guidance, studies must be run which are applicable to the Web—a highly uncontrolled environment accessed through a multitude of devices.
+    </p>
+    <p>
+     We present a systematic study of multi-scale timeline and interaction designs in an experiment with 318 participants across
+     <strong>
+      mobile and desktop
+     </strong>
+     devices. With this study, we answer the following three questions:
+    </p>
+    <ol class="list-no-style">
+     <li id="list1" label="Q1:">
+      <strong>
+       Do participants navigate a date-based timeline faster than a pure numberline?
+      </strong>
+      We find that visual context from dates can be helpful for far-distance navigation, but decreases short-distance navigation speed.
+      <br/>
+     </li>
+     <li id="list2" label="Q2:">
+      <strong>
+       Do participants navigate timelines faster with a horizontal or a vertical layout?
+      </strong>
+      We find that orienting timelines along the longer axis of devices improves navigation efficiency, and an orientation which maps intuitively to hardware also improves performance, e.g.,
+      <em>
+       scroll wheel
+      </em>
+      pan is faster vertically than horizontally.
+      <br/>
+     </li>
+     <li id="list3" label="Q3:">
+      <strong>
+       From a set of eight different pan and zoom interaction pairings from the literature, which is fastest for timelines?
+      </strong>
+      We find the default
+      <em>
+       pinch
+      </em>
+      zoom on mobile and scroll
+      <em>
+       wheel
+      </em>
+      zoom on computer are fastest overall, as might be expected. We find that the pan technique is important for overall navigation speed, and that compared to default techniques,
+      <em>
+       2x click
+      </em>
+      ,
+      <em>
+       hold
+      </em>
+      , and
+      <em>
+       rub
+      </em>
+      zoom seem to scale worse with task difficulty. In contrast,
+      <em>
+       brush
+      </em>
+      and especially
+      <em>
+       ortho
+      </em>
+      zoom seem to scale better than default techniques. Given users’ unfamiliarity with these techniques, this is a strong indicator that brush and especially ortho zoom may outperform the default technique with more practice, especially for high task difficulties.
+      <br/>
+     </li>
+    </ol>
+    <p>
+     We interpret our study outcomes and discuss their impact on multi-scale timeline design. In our supplemental material, we review 10 different pan and zoom methods considered for the study, including a matrix of method compatibility and all parameters used. To maximize reproducibility, we publish all technique implementations as open source software.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Much work addresses multi-scale navigation, e.g., space-scale diagrams [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ], map visualization choice [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ], smooth animation [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+      39
+     </a>
+     ], visual aids for multi-scale navigation [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+      9
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+      34
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+      40
+     </a>
+     ], and topology-based interaction techniques [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ]. We focus on timelines and general-purpose interaction techniques.
+    </p>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Timeline Visualization
+       </h3>
+      </div>
+     </header>
+     <p>
+      Timelines are an essential and historic visual encoding of events in chronological order and a basic building block of many visualizations [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ]. Brehmer et al. review the design space of timeline shapes (e.g., linear, radial, grid), scales (e.g., chronological, relative, logarithmic) and layouts (e.g., unified, faceted, segmented) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ]. This helps us comprehend visual choices, but little is known about the consequences of these choices: which is easiest to understand or to interact with. While Brehmer et al. published an evaluation of understandability of two timeline designs [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ], performance in most of the design space is still unknown. In particular, no study reports the influence of interaction on design, which is a critical component of any multi-scale timeline.
+     </p>
+     <p>
+      We contribute an evaluation of two timeline design questions about visual context and timeline orientation, and so provide design recommendations from our navigation study.
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Multi-scale Interaction
+       </h3>
+      </div>
+     </header>
+     <p>
+      <strong>
+       Existing Interactions
+      </strong>
+      : A large body of work exists on interaction techniques for pan and zoom in multi-scale spaces, and new techniques are frequently proposed. Early multi-scale or zoomable interfaces, such as Pad, Pad++, and MuSE [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ] defined zoom based on holding a mouse button down or dragging a slider. The interaction design space has been explored through brush or marquee zoom, anchor or ortho zoom [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ], pinch to zoom [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ], elastic interaction for precise manipulation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ], pan-speed-dependent zooming [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ], flick pan or zoom [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ], and cyclic gestures based on rubbing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ] or circles [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ]. Moving beyond 2D pointing devices, the literature explores mid-air gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ], Webcam-based zooms for desktop [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ] and mobile [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ], plus mobile-specific tilt sensors [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ] and camera-based device spatial positioning [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ]. This dense network of techniques is difficult to grasp.
+     </p>
+     <p>
+      <strong>
+       New Interactions
+      </strong>
+      : When new interaction techniques are proposed, they are typically compared against only a few related techniques. This makes it difficult to gain an overview of technique performance across the field. Further, these are often implemented in isolation and closed source, which makes reproduction and comparison difficult, with researchers even going so far as to reverse engineer interaction techniques to understand their mechanics [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ]. This is also true of parameter selection, which can be critical to performance.
+     </p>
+     <p>
+      We contribute 32 open-source implementations to aid reproducibility, and provide a systematic evaluation of seven of these combined techniques (Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      ).
+     </p>
+     <p>
+      <strong>
+       Motor Control Theory
+      </strong>
+      : Design and technique comparisons are possible thanks to human motor control theory [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ]. Guiard and Beaudouin-Lafon empirically showed that Fitts’ Law [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ] can apply to multi-scale pointing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ]. Across indices of difficulty (
+      <em>
+       ID
+      </em>
+      ) from 5–30 bits, target pointing measurement time
+      <em>
+       T
+      </em>
+      varied linearly with target ID, or logarithmically with target distance, with performance variation represented by the slope of the line. This models different multi-scale interaction technique performance, where intercept and slope parameters
+      <em>
+       a
+      </em>
+      and
+      <em>
+       b
+      </em>
+      vary per technique:
+     </p>
+     <div class="table-responsive" id="Xeq1">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} T = a + b \cdot \text{ID} = a + b \cdot \log _2 \Bigl (\frac{\text{Distance}}{\text{Target Size}} + 1 \Bigr) \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (1)
+       </span>
+      </div>
+     </div>
+     <p>
+     </p>
+     <p>
+      We observe that Fitts’ law holds for our data obtained in the wild, which helps us compare visualization and interaction techniques for this uncontrolled environment.
+     </p>
+     <p>
+      Guiard and Beaudouin-Lafon continue to describe how the user must decide how to use the pan, zoom in, and zoom out functions during multi-scale interaction. Below ~8 bit IDs, the user may pan only, but high-bit ID targets require 10+ seconds of interaction with a combination of zoom out, zoom in, and pan [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ]. Interaction time is affected by timeline appearance, as the user must orient the data view to their mental map of the data, e.g., higher cognitive load can increase ‘idle’ time. Both the interaction difficulty and the human data processing can cause ‘desert fog’ [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ], where a user becomes lost in multi-scale space, e.g., by zooming in to an incorrect target.
+     </p>
+     <figure id="fig1">
+      <img alt="" class="img-responsive" longdesc="(Top) Horizontal timeline showing decades and years. Two diverging circles illustrate pinch zoom in, a single moving circle illustrates brush zoom in. (Bottom) Zoomed-in horizontal timeline showing the date 1981 May 7, and minutes 12:43am to 12:46am." src="3300786_files\chi2019556fig1.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        The study setup as seen by participants: Pinch zooming (left) and brush zooming (right) on a horizontal timeline. Top: Timeline as seen when zoomed out. Bottom: Timeline as seen when zoomed in all the way to a time span of four minutes.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Summary
+       </h3>
+      </div>
+     </header>
+     <p>
+      Little guidance exists for multi-scale timeline visualization and interaction design, in part because technique details are not available and so systematic and reproducible pan and zoom evaluation is difficult. To address this, we implement and evaluate multiple timeline designs and interactions to provide actionable design recommendations to timeline creators, and open source our software and data.
+     </p>
+     <figure id="fig2">
+      <img alt="" class="img-responsive" longdesc="Default (pinch, wheel) and alternative (2x click, brush, ortho, hold, rub) zoom in techniques for mobile and desktop." src="3300786_files\chi2019556fig2.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        Schematic overview of zoom in interactions used in this study.
+        <em>
+         Ortho
+        </em>
+        zoom is dragging perpendicularly to the axis of the timeline,
+        <em>
+         rub
+        </em>
+        zoom is dragging back and forth.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+   </section>
+   <section id="sec-7">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       OPEN-SOURCING INTERACTION TECHNIQUES
+      </h2>
+     </div>
+    </header>
+    <p>
+     To enable systematic and fair evaluation of techniques, we implemented 32 pan and zoom techniques, including variations, and contributed them to EasyPZ [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+      37
+     </a>
+     ], an open-source pan and zoom JavaScript library which works across mobile and desktop computers. EasyPZ enables easy use and tuning of these techniques on any data visualization. Contribution of these techniques to this open-source platform allows future research and evaluations to build on this work.
+    </p>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Implemented Interactions
+       </h3>
+      </div>
+     </header>
+     <p>
+      The implemented interactions are largely from existing literature, although some have received improvements from their original design, such as a continuous zoom on rub zoom as opposed to the original step-wise implementation.
+     </p>
+     <p>
+      We chose these techniques based on their popularity in existing software, availability in the literature, and compatibility with both computers and mobile phones, and added some simple variations such as quadratic scaling to pinch zoom.
+     </p>
+     <p>
+      <strong>
+       Pan
+      </strong>
+      : We implement default desktop dragging with a linear transfer function (
+      <em>
+       drag pan
+      </em>
+      ), default mobile dragging with flick momentum (
+      <em>
+       flick pan
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ]), scroll wheel on a desktop mouse or a scroll gesture on a touchpad (
+      <em>
+       scroll pan
+      </em>
+      ), and using the touchscreen with a two-finger motion (
+      <em>
+       two-finger pan
+      </em>
+      ).
+     </p>
+     <p>
+      <strong>
+       Zoom
+      </strong>
+      : The zoom techniques are shown in Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      . We implement double click or tap (
+      <em>
+       2x click zoom
+      </em>
+      ), holding down a button or pressing a touchscreen without releasing the finger (
+      <em>
+       hold zoom
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ]), using the scroll wheel on a desktop mouse or a scroll gesture on a touchpad (
+      <em>
+       scroll zoom
+      </em>
+      ), two-finger pinch to zoom (
+      <em>
+       pinch zoom
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ]), drag-selecting a rectangular zoom region, often called marquee zoom or brushing (
+      <em>
+       brush zoom
+      </em>
+      ), dragging along the orthogonal axis for continuous zoom granularity control (
+      <em>
+       ortho zoom
+      </em>
+      or
+      <em>
+       dynamic zoom
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ]), and the cyclic gesture of bi-directional rubbing to zoom in and out (
+      <em>
+       rub zoom
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ]), e.g., where rubbing horizontally zooms in and rubbing vertically zooms out.
+     </p>
+     <p>
+      <strong>
+       Compatibility
+      </strong>
+      : Given a pointing device, only some interaction combinations are compatible. This design space includes parameters like zoom speed, minimum interaction time, or pointer speed bounds during the beginning of an interaction. We tabulate these compatibilities in our supplemental material as a reference to visualization creators.
+     </p>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Our four participant sets, their chosen fixed study settings and compared factor levels, and to which questions their data were applied. Each
+        <span class="inline-equation">
+         <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic9.jpg"/>
+        </span>
+        and
+        <span class="inline-equation">
+         <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic10.jpg"/>
+        </span>
+        symbolizes that the data was used for question 1-3 for mobile or desktop, and represents one of six analysis models. Each column is one set of ≈ 40 people who all underwent the same conditions. For Q1 and Q2, the study design is balanced, whereas for Q3 the study design is unbalanced.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          <strong>
+           Participant Set
+          </strong>
+         </th>
+         <th colspan="2" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          <strong>
+           Participant Set 1
+          </strong>
+         </th>
+         <th colspan="2" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          <strong>
+           Participant Set 2
+          </strong>
+         </th>
+         <th colspan="2" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          <strong>
+           Participant Set 3
+          </strong>
+         </th>
+         <th colspan="2" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          <strong>
+           Participant Set 4
+          </strong>
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Question
+         </td>
+         <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+          Q1: Representation
+         </td>
+         <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+          Q2 &amp; Q3: Orientation &amp; Method
+         </td>
+         <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+          Q3: Method
+         </td>
+         <td colspan="2" style="text-align:center;">
+          Q3: Method
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Representation
+         </td>
+         <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+          (Varied)
+         </td>
+         <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+          Dates
+         </td>
+         <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+          Dates
+         </td>
+         <td colspan="2" style="text-align:center;">
+          Dates
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;border-bottom: 2pt solid #000000;">
+          Orientation
+         </td>
+         <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          Horizontal
+         </td>
+         <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          (Varied)
+         </td>
+         <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          Vertical
+         </td>
+         <td colspan="2" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          Vertical
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Platform
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Mobile
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Computer
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Mobile
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Computer
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Mobile
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Computer
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Mobile
+         </td>
+         <td>
+          Computer
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          # Participants
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          40
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          43
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          38
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          42
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          35
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          40
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          41
+         </td>
+         <td>
+          39
+         </td>
+        </tr>
+        <tr>
+         <td colspan="9" style="text-align:center;;border-bottom: 2pt solid #000000;border-top: 2pt solid #000000;">
+          <strong>
+           Orientation Setting: Horizontal
+          </strong>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Dates
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic1.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic2.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Numbers
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic1.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic2.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td colspan="9" style="text-align:center;;border-bottom: 2pt solid #000000;border-top: 2pt solid #000000;">
+          <strong>
+           Representation Setting: Dates, Orientation Setting: Horizontal
+          </strong>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Default
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic3.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic4.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Ortho
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic3.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Brush
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic4.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td colspan="9" style="text-align:center;;border-bottom: 2pt solid #000000;border-top: 2pt solid #000000;">
+          <strong>
+           Representation Setting: Dates, Orientation Setting: Vertical
+          </strong>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Default
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic3.jpg"/>
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic5.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic4.jpg"/>
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic6.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic5.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic6.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic5.jpg"/>
+         </td>
+         <td>
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic6.jpg"/>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Ortho
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic3.jpg"/>
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic5.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td>
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic6.jpg"/>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Hold
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic6.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic5.jpg"/>
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2x Click
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic6.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic5.jpg"/>
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Brush
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic4.jpg"/>
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic6.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic5.jpg"/>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Rub
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic5.jpg"/>
+         </td>
+         <td>
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic6.jpg"/>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </section>
+   </section>
+   <section id="sec-9">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       USER STUDY DESIGN AND PROCEDURE
+      </h2>
+     </div>
+    </header>
+    <p>
+     Next, we describe the experimental procedure, the gathered data, the data analysis and results of the user study designed for this task. We use 1D timelines as in Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     .
+    </p>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Motivation and Design Rationale
+       </h3>
+      </div>
+     </header>
+     <p>
+      <strong>
+       In-the-wild Study
+      </strong>
+      : We wish to find practical insights into which timeline visualizations and interactions perform best given the wide range of screens and input devices in use, in contrast to well-defined laboratory settings which may or may not be applicable in the real world, as online studies include more user errors than lab data [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ]. For this reason, our study does not control user nor input devices, and is run instead as an
+      <em>
+       in situ
+      </em>
+      study on Amazon Mechanical Turk. This approach conserves the unknown real-world variability which faces Web application designers today.
+     </p>
+     <p>
+      <strong>
+       Mobile Phones and Orientation
+      </strong>
+      : The growing use of smart phones, and increased use of visualizations on mobile phones, motivated us to find interaction design insights for both laptops/PCs (called “computers” here), as well as mobile smart phones (called “mobile” here, excluding tablets). Given varying aspect ratios across different devices, we decided that evaluation of impact of timeline orientation was essential.
+     </p>
+     <p>
+      <strong>
+       Simulated “Locate” Task
+      </strong>
+      : In a real pan and zoom timeline navigation application, the target location is not precisely known in a “locate” task (target known, location unknown [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ]). If the target were known (“lookup”), then a text or other direct input option would be more efficient for navigation than navigating a timeline. To simulate a “locate” task, participants were instructed to navigate to specific targets on the timeline without visually showing the target location on the timeline. This is a difference to traditional Fitts’ law experiments, where targets are typically shown. We believe a design that visually displays the target on the timeline would simplify the navigation task too much to be applicable to a
+      <em>
+       locate
+      </em>
+      task, where maintaining context by visually parsing the scene is important. This design accounts better for target acquisition issues such as
+      <em>
+       desert fog
+      </em>
+      (see Section
+      <a class="sec" href="#sec-5">
+       2
+      </a>
+      ).
+     </p>
+     <p>
+      <strong>
+       Number Challenges
+      </strong>
+      : In a pilot study with a numbers-based pan and zoom timeline, we observed navigation difficulties and errors among our participants: As the length of the target numbers was very long—8 digits—pilot participants commonly forgot the exact target number and struggled to find it. As years, months, and dates provide a natural hierarchical grouping (e.g., Miller's “magical number 7” memory capacity maxim [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ]), we hypothesized an increased recall and improved target acquisition when using dates over numbers. This can be a visualization choice: application examples include ‘friendly dates’ where recent events are described in relative terms (“last week”) but distant events are absolute (“Jan 2012”), and video editor time encoding as hours, minutes, and seconds, or as absolute number of frames (e.g., Adobe Premiere Pro). Thus, we study the effect of this additional context on navigation speed. We chose a minimal timeline layout to reduce the influence of any particular design, but balanced this goal with the observation that far-distance navigation can be difficult without visual context.
+     </p>
+     <p>
+      <strong>
+       Tasks for Range of Difficulties
+      </strong>
+      : From pilot lab studies, we concluded that method combinations may be more or less suited for a task depending on the task difficulty. For example, scroll wheel panning on a vertical timeline may allow to pan quickly to nearby targets, but may not scale well for navigating to far targets, depending on the paired technique for zooming. Different applications have different typical navigation distances, such as subway maps typically not requiring pan and zoom between targets very far apart, whereas navigating a global map can involve pan and zoom between points much farther apart. We decided in our study to cover a set of tasks which show these different strengths so that applications with a particular need could choose the most appropriate techniques. Since our target size was fixed, the task difficulty is a function of only the target distance.
+     </p>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Procedure: Data Collection and Cleaning
+       </h3>
+      </div>
+     </header>
+     <p>
+      An overview of the study design is presented in Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      and includes participant sets, compared factor levels, fixed settings, and questions answered. Below, we describe the experiment procedure, data collection, and data cleaning.
+     </p>
+     <p>
+      <strong>
+       Participant Requirements
+      </strong>
+      : Participants were required to be located in the United States, have a HIT Approval Rate greater than or equal to 98%, and have more than 500 approved HITs. Participants were monetarily compensated for their participation following approved IRB protocol.
+     </p>
+     <p>
+      <strong>
+       Pay and Restrictions
+      </strong>
+      : Pay was fixed per task, which provided a soft incentive to perform the task quickly to increase wage per hour. The average pay per hour was
+      <font style="normal">
+       $
+      </font>
+      8.24. Participants were allowed to participate once per study to minimize learning effects of the methods. This included restricting participants from taking the mobile version of a study after completing the computer version, and vice versa. As each study had its own settings and methods, we did allow participants to participate in multiple studies, e.g. they could participate up to once per “participant set” in Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      .
+     </p>
+     <p>
+      <strong>
+       Participant Statistics
+      </strong>
+      : A total of 318 participants (225 unique) successfully completed the studies. Of those, 135 identified as female, 178 as male, 4 as other gender, and one participant did not wish to disclose their gender. Participants in our study ranged from age 18 to over 55, with the majority of participants between the ages of 18–24 (147 participants). More details about participants, such as average computer use, are available in our supplemental material.
+     </p>
+     <p>
+      <strong>
+       Study Process
+      </strong>
+      : Each study was split into a mobile and a desktop version, and participants chose their input devices freely. This reflects the study goal of real-world applicability, as visualization creators can not practically force specific input devices to be used. All participants were asked to perform the study in the Chrome web browser for practical considerations such as ensuring consistent appearance. Each participant was informed of the duration, pay, procedure, and goal of the study, informed of their rights, and asked for their informed consent through our institution-approved IRB protocol. The order of the compared factors was randomized, such as representation, orientation and technique. For each compared factor, there was a short description of the current timeline design and interaction method, plus free time to test the interaction before the start of the experiment. Then, three sets of task ‘runs’ proceeded: first, a test run with four multi-scale pointing tasks in a random order (this data was not used for analysis); then, two study runs one after the other, each with the full set of eight multi-scale pointing task distances in a random order. On average, participants spent about 8 minutes per experimental factor on desktop, and 13 minutes on mobile. In total, participants took between 20 and 60 minutes to complete the study, depending on whether they were in participant set 1, 2, 3 or 4.
+     </p>
+     <p>
+      <strong>
+       Task
+      </strong>
+      : In each trial, participants were asked to find a known target time/date on a pan and zoom timeline or number line. To investigate performance over multi-scale data, we used a linear number line spanning from zero to 20 million, which corresponds to all times to the minute over a period of 38 years for the timeline. With this number line, we asked participants to navigate by 10, 20, 40, 100, 1,000, 100,000, and 5,000,000 numbers, or 10, 20, and 40 minutes, 1.66 and 16 hours, 69 days, and ~10 years on the timeline. These represent index of difficulties of 3.3, 4.3, 5.3, 6.6, 10, 16.6, and 22.3 bits.
+     </p>
+     <p>
+      <strong>
+       Study Design
+      </strong>
+      : The study design, with all data collected separated by participant set, is presented in Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      . It shows which data was used for which of the three questions and their respective models, which settings were fixed for each participant set, and which factor was varied and compared. As the goal of this study is not to compare visualizations and interaction techniques on mobile versus desktop, but rather examine them independently for each platform, we did not compare methods across mobile/desktop in our analysis and modeled them separately. Hence, our study design is set up for one model per question and platform, resulting in six models in total. Each of the six models is represented in the table as
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic7.jpg"/>
+      </span>
+      and
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic8.jpg"/>
+      </span>
+      .
+     </p>
+     <p>
+      <strong>
+       Data Collection
+      </strong>
+      : For each task, completion times were collected from the moment a participant started a task until the target was found and selected by clicking. In addition, data was collected about the user behavior during the task. In particular, we detected whether users were zooming in, zooming out, panning, or idling, and created a timeline for each participants’ tasks. Some of this data is shown in the Supplemental Material, along with graphs presenting which type of interaction is prevalent for each distance.
+     </p>
+     <p>
+      <strong>
+       Outlier Removal
+      </strong>
+      : Task times were only removed when users were not paying attention: If a user was not navigating for more than 10 seconds during a task, then we removed that participant's data for that task (task duration typically ranged from 5–50 seconds). In total, this filtered out 7% of the data, in line with other crowdsourced work (cf. 11% [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ]).
+     </p>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Data Validation via Fitts’ Law
+       </h3>
+      </div>
+     </header>
+     <p>
+      This predicts that task time for a pointing task will increase logarithmically with target distance, or linearly with task difficulty (Section
+      <a class="sec" href="#sec-3">
+       2
+      </a>
+      ). Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      presents task times across all studies and study factors in aggregate (representation, orientation and method). Although there is some variation, we see a logarithmic trend of task time to target distance, or a linear trend to task difficulty, on both platforms. The
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      scores for computer and mobile are 0.983 and 0.972, respectively. While not perfect, our data conform quite well to Fitts’ Law in this highly uncontrolled environment, which helps validate this type of real-world study.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="Scatter plot with mean task time in seconds between 5 and 50 seconds by index of difficulty between 3 and 25 bits, along with a linear Fitts’ law model." src="3300786_files\chi2019556fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        All study data aggregated over all representations, orientations, and methods, for computers (orange triangles) and mobile (blue circles). For both platforms, the linear Fitts’ law relationship between task time and task difficulty is visible. Error bars are not shown since this data does not follow a normal distribution and is not used for our analysis.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Analysis Procedure
+       </h3>
+      </div>
+     </header>
+     <p>
+      To test our hypotheses H1–3, we develop a model based on Fitts’ law. This varies slightly from classical Fitts’ to consider the challenges of an in-the-wild study, such as right-skewed user performance distributions. To assess the strength of associations, we fit a linear mixed effects model which includes task difficulty, compared factor level, and participant ID. The model considers:
+     </p>
+     <p>
+      <strong>
+       Fitt's Law
+      </strong>
+      : This [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ] predicts task times to increase linearly with the index of difficulty (denoted
+      <em>
+       α
+      </em>
+      ).
+     </p>
+     <p>
+      <strong>
+       Comparisons
+      </strong>
+      : A change in timeline design or interaction can cause a constant change in task time (denoted
+      <em>
+       β
+      </em>
+      ), such as extra needed time to orient independent of difficulty of task, as well as a change in task time that scales with task difficulty (denoted
+      <em>
+       γ
+      </em>
+      ), such as slower navigation. This corresponds to a factor scaling differently with task difficulty compared to the baseline:
+      <em>
+       γ
+      </em>
+      is the difference in slope in Fitts’ law.
+     </p>
+     <p>
+      <strong>
+       Individual differences
+      </strong>
+      : We find that some participants typically performed tasks faster than other participants, but that there was no significant effect caused by some participants being particularly efficient with some specific methods or tasks. We assume the participant as a random effect to be Normally distributed and uncorrelated with the independent variables such as task difficulty and method (denoted id). This model is able to explain the variation in the data significantly better than a linear model without random effect.
+     </p>
+     <p>
+      <strong>
+       Log transformation
+      </strong>
+      : To test our hypotheses, the model assumes task times to be Normally distributed. However, the measured task times were heavily right-skewed. We apply a log transformation to conform the task times to a Normal distribution, which is the standard approach to right-skewed data in statistics (skewness of residuals is reduced from 2.2 to 0.4; cf. Q–Q plots in supplemental analysis).
+     </p>
+     <p>
+      <strong>
+       Model
+      </strong>
+      : If
+      <em>
+       T
+      </em>
+      denotes task completion time,
+      <em>
+       β
+       <sub>
+        i
+       </sub>
+      </em>
+      and
+      <em>
+       γ
+       <sub>
+        i
+       </sub>
+      </em>
+      the intercept and slope contribution from the representation or orientation or method,
+      <em>
+       j
+      </em>
+      the index of the participant, and
+      <em>
+       r
+      </em>
+      the index of the repeated measurement, then the model is:
+     </p>
+     <div class="table-responsive" id="eq1">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{eqnarray} &amp;log(T)_{ijr} = \mathrm{Intercept} &amp;+ \alpha \cdot \log (\mathrm{difficulty})\\ \nonumber &amp;&amp;+ \mathrm{\beta }_i + \mathrm{\gamma }_i \cdot \log (\mathrm{difficulty})\\ \nonumber &amp;&amp;+ \mathrm{id}_{j}+\epsilon _{ijr},\ \mbox{where}\\ \nonumber &amp; \mathrm{\gamma }_{1} = 0, &amp;\mathrm{\beta }_{1} = 0 \mathrm{\space as\space baseline\space levels}, \\ \nonumber &amp;id_{j} \stackrel{iid}{\sim } \mathcal {N}(0,\tau ^2), &amp; \epsilon _{ijr} \stackrel{iid}{\sim } \mathcal {N}(0,\sigma ^2) \end{eqnarray}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (2)
+       </span>
+      </div>
+     </div>
+     All id
+     <sub>
+      <em>
+       j
+      </em>
+     </sub>
+     and ϵ
+     <sub>
+      <em>
+       ijr
+      </em>
+     </sub>
+     are assumed to be independent. Hypothesis testing on the terms
+     <em>
+      β
+      <sub>
+       i
+      </sub>
+     </em>
+     +
+     <em>
+      γ
+      <sub>
+       i
+      </sub>
+     </em>
+     · log (difficulty) evaluates the contribution of each representation, orientation, and method against the baseline factor level. We compute confidence bands for the expected values, and use these for hypothesis testing: If they do not include 0, this corresponds to a
+     <em>
+      p
+     </em>
+     -value of
+     <span class="inline-equation">
+      <span class="tex">
+       $\alpha =5\%$
+      </span>
+     </span>
+     as family-wise error rate. To arrive at this family-wise error rate, we use an individual test error rate of
+     <span class="inline-equation">
+      <span class="tex">
+       $\alpha / 16 \approx 0.3\%$
+      </span>
+     </span>
+     to account for multiple testing using a Bonferroni correction of 16. We use confidence bands instead of
+     <em>
+      p
+     </em>
+     -values because of their better visual representation of both direction of change and uncertainty, as well as for their taking into account multiple testing within each comparison, as they consist of many confidence intervals. We use R's
+     <font style="font-variant: small-caps">
+      lmer
+     </font>
+     package to fit the linear mixed effects model, and use
+     <font style="font-variant: small-caps">
+      interplot
+     </font>
+     to compute and plot confidence bands.
+     <p>
+     </p>
+    </section>
+   </section>
+   <section id="sec-14">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       USER STUDIES RESULTS
+      </h2>
+     </div>
+    </header>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Q1: Impact of Visual Context and Hierarchy
+       </h3>
+      </div>
+     </header>
+     <p>
+      <strong>
+       Introduction
+      </strong>
+      : Our first study examines basic linear sequential data representations: Q1: “
+      <em>
+       Do participants navigate a date-based timeline faster than a pure numberline?
+      </em>
+      ” This represents a visualization choice, and validates the importance of context when navigating multi-scale data. As hypothesis
+      <strong>
+       H1
+      </strong>
+      , we expect visual context to aid navigation, and hence expect dates to perform faster than numbers.
+     </p>
+     <p>
+      <strong>
+       Design
+      </strong>
+      : This study had two conditions: a timeline with a visual hierarchy denoting decades, years, months and dates, and numbers marked on a horizontal line without a visual hierarchy. To minimize impact from other factors, we kept other settings close to a ‘default’ interaction per platform:
+      <em>
+       pinch zoom
+      </em>
+      and
+      <em>
+       flick pan
+      </em>
+      for mobile, and
+      <em>
+       scroll zoom
+      </em>
+      and
+      <em>
+       drag pan
+      </em>
+      on desktop. Participants performed tasks for all factors in a balanced study design. This can be seen for participant set 1 in Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      , with the models
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic1.jpg"/>
+      </span>
+      and
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic2.jpg"/>
+      </span>
+      .
+     </p>
+     <p>
+      We chose the dates representation as the baseline, i.e.,
+      <em>
+       β
+      </em>
+      <sub>
+       1
+      </sub>
+      =
+      <em>
+       γ
+      </em>
+      <sub>
+       1
+      </sub>
+      = 0, and
+      <em>
+       β
+      </em>
+      <sub>
+       2
+      </sub>
+      and
+      <em>
+       γ
+      </em>
+      <sub>
+       2
+      </sub>
+      represent the variation of the numbers-based representation from the dates-based representation.
+     </p>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="Line charts showing the modeled difference in task time of the numbers representation relative to the dates representation for increasing difficulties." src="3300786_files\chi2019556fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Confidence bands for the expected value of the numbers vs. dates representation for mobile (left) and computer (right). If the slanted black line is below zero, then numbers are faster, else dates are faster. The gray shading indicates the 95% confidence band, and significant results are colored in. On mobile, numbers are faster for low difficulties, whereas there is no significant difference on computer for low difficulties, and numbers are slower for high difficulties. Axes are non-linear due to analyzing the data in log space.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      <strong>
+       Results—Figure
+       <a class="fig" href="#fig4">
+        4
+       </a>
+      </strong>
+      : For mobile, numbers are significantly faster (~11% or 1s) than dates for low difficulty tasks which primarily involve panning. For more difficult tasks which involve zooming, the trend reverses, but is insignificant. For low difficulty tasks on computer, there is no significant difference between dates and numbers, but for difficult tasks, dates are significantly faster than numbers (8–22% or 1.1–9.7s). Compared to numbers-based timelines, timelines with visual context and hierarchy from dates were navigated slower for low-distance targets, but faster for far-distance targets.
+     </p>
+    </section>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Q2: Impact of Timeline Orientation
+       </h3>
+      </div>
+     </header>
+     <p>
+      <strong>
+       Introduction
+      </strong>
+      : Our second study assesses a common interface design decision: Q2: “
+      <em>
+       Do participants navigate pan and zoom timelines faster with horizontal or vertical layout?
+      </em>
+      ” Smart phones were required to be used in portrait mode, so we know that vertical timelines were longer than horizontal ones. This is practical for real-world visualizations on smart phones: at initial Webpage load, smart phones are in portrait mode about 90% of the time [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ]. For hypothesis
+      <strong>
+       H2
+      </strong>
+      , we expect horizontal timelines to perform faster than vertical ones because of user familiarity with the more common format for data visualizations (e.g., in a Google image search for “d3 timeline”, the first 100 linear timelines are all horizontal).
+     </p>
+     <p>
+      <strong>
+       Design
+      </strong>
+      : We compare timelines with horizontal and vertical orientations given common display size constraints: phones are used in portrait mode, and for computers, we limit the width to 1000 pixels (a common maximum width on Websites), and use the maximum height available – 810 pixels on average. Hence for mobile phones, the vertical orientation results in a significantly longer timeline, whereas on computer, the timeline lengths are more comparable between vertical and horizontal.
+     </p>
+     <p>
+      We use the devices’ ‘default’ interactions. However, we also pick an additional interaction combination for each platform where we assume performance to be affected by the orientation change. For mobile, we chose
+      <em>
+       ortho
+      </em>
+      zoom and
+      <em>
+       flick
+      </em>
+      pan. For desktop, we chose
+      <em>
+       brush
+      </em>
+      zoom and
+      <em>
+       scroll
+      </em>
+      pan. These choices are not intended to be equivalent across devices; merely illustrative of a change in interaction performance. Interaction and orientation were varied within-subjects in a balanced study design. The data used for the two models in the analysis is indicated by
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic3.jpg"/>
+      </span>
+      and
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic4.jpg"/>
+      </span>
+      in Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      .
+     </p>
+     <p>
+      The analysis was executed with orientation and method as a combined four-level factor, with the baselines
+      <em>
+       β
+      </em>
+      <sub>
+       1
+      </sub>
+      =
+      <em>
+       γ
+      </em>
+      <sub>
+       1
+      </sub>
+      = 0 chosen to be the horizontal orientation of the techniques.
+     </p>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="Line charts showing the modeled difference in task time of the vertical timeline relative to the horizontal timeline for increasing difficulties." src="3300786_files\chi2019556fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        Confidence bands for the expected value of the vertical vs. horizontal orientation across difficulties for pinch and ortho zoom on mobile (left) and wheel and brush zoom on computer (right). A line below zero means that vertical is faster; above zero means that horizontal is faster.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      <strong>
+       Results—Figure
+       <a class="fig" href="#fig5">
+        5
+       </a>
+      </strong>
+      : On mobile, participants performed significantly faster (8–14% or 1–1.2s) using the longer vertical orientation with pinch zoom compared to the shorter horizontal orientation for low difficulties, whereas there is no significant difference for high difficulties. For
+      <em>
+       ortho
+      </em>
+      zoom on mobile, the vertical orientation is significantly faster for medium difficulties (~10% or 2.7s). For computer,
+      <em>
+       wheel
+      </em>
+      zoom shows no significant impact of orientation.
+      <em>
+       Brush
+      </em>
+      zoom with
+      <em>
+       scroll wheel
+      </em>
+      pan performs significantly better vertically than horizontally (9–18% or 1.1–3s) for low to medium difficulties that primarily involve panning. In summary, we find that timelines oriented along the longer axis of devices are navigated faster, and that
+      <em>
+       scroll wheel
+      </em>
+      pan performs better vertically.
+     </p>
+    </section>
+    <section id="sec-17">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Q3: Impact of interaction techniques
+       </h3>
+      </div>
+     </header>
+     <p>
+      <strong>
+       Introduction
+      </strong>
+      : From Q2 and Q3, we picked the representation which performed best across participants —vertical timelines— for use in our third study on interaction design, Q3: “
+      <em>
+       From a set of eight different pan and zoom interaction pairings from the literature, which is fastest for timelines?
+      </em>
+      ”. As hypothesis
+      <strong>
+       H3
+      </strong>
+      , we expect default techniques to perform better than less familiar techniques (brush, hold zoom) or steeper-learning-curve techniques (ortho and rub zoom).
+     </p>
+     <p>
+      <strong>
+       Design
+      </strong>
+      : For the study, we must pick a subset of technique combinations to test as there are too many combinations to compare in a reasonable amount of participant time. Given many possible technique comparisons and limits on user fatigue, we chose to compare popular techniques (
+      <em>
+       pinch, wheel, 2x click, brush
+      </em>
+      ) along with a sample of less common techniques from recent literature (hold, rub, ortho). We exclude less common smartphone-specific techniques like accelerometer or camera-based interfaces, and focus on techniques for both computer and smartphones. With this constraint, we paired each zoom in technique with the most complementary zoom out and pan methods as assessed by our judgment and in pilot studies. Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      lists our final combinations.
+     </p>
+     <div class="table-responsive" id="tab2">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 2:
+       </span>
+       <span class="table-title">
+        Interaction combinations used in Study 3.
+        <em>
+         Default
+        </em>
+        zoom in refers to the device defaults of pinch zoom on mobile, and wheel zoom on desktop.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th rowspan="2" style="text-align:left;border-right: 2pt solid #000000;vertical-align:middle;">
+          Zoom In
+         </th>
+         <th colspan="2" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          Zoom Out
+         </th>
+         <th colspan="2" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          Pan
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic11.jpg"/>
+          Mobile
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic12.jpg"/>
+          Computer
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic11.jpg"/>
+         </th>
+         <th>
+          <img alt="" class="img-responsive" src="3300786_files\chi2019556graphic12.jpg"/>
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <em>
+           Default
+          </em>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Pinch
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Wheel
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Flick
+         </td>
+         <td>
+          Drag
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <em>
+           2x Click
+          </em>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Hold
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Hold
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Flick
+         </td>
+         <td>
+          Drag
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <em>
+           Brush
+          </em>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2x Click
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2x Click
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2 Finger
+         </td>
+         <td>
+          Wheel
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <em>
+           Ortho
+          </em>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Ortho
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Ortho
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Flick
+         </td>
+         <td>
+          Drag
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <em>
+           Hold
+          </em>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Click + Hold
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Click + Hold
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Flick
+         </td>
+         <td>
+          Drag
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <em>
+           Rub
+          </em>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Rub Y
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Rub Y
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Flick
+         </td>
+         <td>
+          Drag
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      While we wished to maintain a within-subjects design, six combinations per platform would lead to a total study time per participant of 80 minutes or more on mobile. At this length, fatigue effects are likely to affect any differences between interaction designs. As such, we increased the participant pool and split the study for this question into the three participant sets. Each set compared between one and three interaction techniques to the ‘default’ platform method. How each of the participant sets 2–4 contributed to
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic5.jpg"/>
+      </span>
+      and
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic6.jpg"/>
+      </span>
+      can be seen in Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      . Because of this split, Question 3 is investigated in an unbalanced study design.
+     </p>
+     <p>
+      The analysis was completed with a six-level factor as the method. The baseline was chosen as the default set of interaction techniques from each platform. Hence,
+      <em>
+       β
+      </em>
+      <sub>
+       1
+      </sub>
+      =
+      <em>
+       γ
+      </em>
+      <sub>
+       1
+      </sub>
+      = 0 represent the default technique, and
+      <em>
+       β
+      </em>
+      <sub>
+       2...6
+      </sub>
+      and
+      <em>
+       γ
+      </em>
+      <sub>
+       2...6
+      </sub>
+      represent the compared techniques.
+     </p>
+     <figure id="fig6">
+      <img alt="" class="img-responsive" longdesc="One line chart per platform and technique showing the modeled difference in task time relative to the default zoom technique for increasing difficulties." src="3300786_files\chi2019556fig6.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 6:
+       </span>
+       <span class="figure-title">
+        Confidence bands for the expected value of the different methods vs. platform default methods (
+        <span class="inline-equation">
+         <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic11.jpg"/>
+        </span>
+        : pinch zoom;
+        <span class="inline-equation">
+         <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic12.jpg"/>
+        </span>
+        : scroll wheel zoom), across difficulties, for mobile and computer. Lines below zero show that the alternative method is faster; above zero show that the default method is faster.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      <strong>
+       Results—Figure
+       <a class="fig" href="#fig6">
+        6
+       </a>
+      </strong>
+      : As expected, all techniques are significantly slower than the default technique on at least one platform. For high difficulty tasks,
+      <em>
+       2x click
+      </em>
+      and
+      <em>
+       hold
+      </em>
+      are 11% (5.8s) and 19% (10s) slower than
+      <em>
+       pinch
+      </em>
+      zoom on mobile, respectively, and
+      <em>
+       hold
+      </em>
+      is 9% (4s) slower on computer.
+      <em>
+       Rub
+      </em>
+      zoom is significantly slower than the default on both platforms across all difficulties by 9–58% (0.6–25s).
+     </p>
+     <p>
+      Results generally agree between the platforms, except for
+      <em>
+       brush
+      </em>
+      zoom: due to it requiring click/tap and drag, it must pair with an alternative pan technique:
+      <em>
+       two-finger pan
+      </em>
+      for mobile (2.4s slower for short-distance navigation), and
+      <em>
+       scroll wheel pan
+      </em>
+      for computer. The large difference between the two platforms’ results for brush zoom highlights that the pan technique is important for overall performance.
+     </p>
+     <p>
+      Finally, compared to the default technique, 2x click, hold and rub zoom have worse scaling with task difficulty, whereas brush and especially ortho zoom scale better.
+      <em>
+       Ortho
+      </em>
+      zoom is the only technique that is estimated to perform comparably better as difficulty increases across platforms. This indicates it is particularly effective at large scales. However, the slope itself is not hypothesis-tested.
+     </p>
+     <figure id="fig7">
+      <img alt="" class="img-responsive" longdesc="Stacked bar chart showing the relative task time spent for idle, pan, zoom out, and zoom in, across difficulties and techniques." src="3300786_files\chi2019556fig7.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        Proportion of task time per technique and task difficulty, for
+        <span class="inline-equation">
+         <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic11.jpg"/>
+        </span>
+        mobile and
+        <span class="inline-equation">
+         <img alt="" class="img-responsive" longdesc="" src="3300786_files\chi2019556graphic12.jpg"/>
+        </span>
+        computer. Participants idle most for brush zoom (left), and least for default techniques (right).
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      To analyze user behavior, we compare both time spent actively navigating vs. idling. For high difficulty tasks, idle time was about ~30% of task time on mobile and ~40% on computers, with similar trends across platforms. The technique with the highest idle proportion is brush zoom, with ~50%. This is indicative of fast context switches leading to ‘desert fog’. There is less difference among the other techniques, with default techniques having the lowest idle time at ~25% on mobile (Fig.
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      ).
+     </p>
+     <p>
+      Further, to quantify desert fog, we define an error as zooming in for at least 4 seconds before realizing there was a mistake and zooming out for at least 4 seconds. We observe that brush zoom led to fewer errors on computer than on mobile (0.6 vs. 2 tasks with errors per participant), presumably due to the lack of a simple alternative pan technique on mobile. Rub zoom has a low error rate on mobile at 0.2, with a high error rate on computers, presumably because the gesture is intended for touchscreens. Ortho zoom fares best overall, possibly due to the fine control of scale. Pinch fares the worst of all techniques on mobile, with participants making errors on 2.9 of 14 tasks, and we speculate that familiarity with a technique may have the side effect of premature navigation, whereas unfamiliar techniques may lead to more deliberate navigation with fewer errors.
+     </p>
+    </section>
+   </section>
+   <section id="sec-18">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       DESIGN IMPLICATIONS SUMMARY
+      </h2>
+     </div>
+    </header>
+    <section id="sec-19">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Target Visualization
+       </h3>
+      </div>
+     </header>
+     <p>
+      From the number vs. timelines study results (Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      ), we have two recommendations: First, long-distance timeline navigation benefits from visual aids. Whenever possible, designers should display information in groups that can be individually processed, as opposed to long numbers. This agrees with our hypothesis, H1. However, we also found a result counter to our hypothesis: For short distance tasks, we recommend not displaying hierarchical target information as the additional complexity can slow down users. This affects timeline design, e.g., Knightlab's timeline.js [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ] always shows visual context, but this can slow down users.
+     </p>
+    </section>
+    <section id="sec-20">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Timeline Orientation
+       </h3>
+      </div>
+     </header>
+     <p>
+      Drawing on our results in Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      , we realize that vertical timelines outperforming horizontal ones is counter to our hypothesis H2. We make two recommendations: First, we recommend maximizing timeline length by aligning it with the device's long axis, especially on space-limited devices. For instance, we recommend vertical timelines for phones in portrait mode. Second, we recommend using an orientation that allows for an intuitive mapping between hardware and interaction. Specifically, we suggest not using
+      <em>
+       scroll wheel
+      </em>
+      pan for horizontal timelines, as this has a negative effect on the
+      <em>
+       brush
+      </em>
+      zoom navigation. Otherwise, orientation does not need to be a concern for timeline creators for computer.
+     </p>
+    </section>
+    <section id="sec-21">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Techniques
+       </h3>
+      </div>
+     </header>
+     <p>
+      Based on the results of study 3 in Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      , we realize that standard techniques do perform best overall, agreeing with our hypothesis H3, but that
+      <em>
+       brush
+      </em>
+      and
+      <em>
+       ortho
+      </em>
+      zoom scale better than default techniques with increased task difficulty, and that ortho performed better than pinch zoom for high difficulty. We recommend use of
+      <em>
+       brush
+      </em>
+      and
+      <em>
+       ortho
+      </em>
+      zoom for far-distance navigation on both platforms.
+     </p>
+     <p>
+      <strong>
+       Brush Zoom
+      </strong>
+      :
+      <em>
+       Brush
+      </em>
+      zoom's incompatibility with
+      <em>
+       drag
+      </em>
+      pan is challenging, and needs to be paired with an additional technique to zoom out. In our study, we used
+      <em>
+       2x click
+      </em>
+      to zoom out. When the default pan method is replaced with
+      <em>
+       two-finger
+      </em>
+      panning, such as in our mobile study, it has a negative effect on performance. We recommend exploring other options to pair with
+      <em>
+       brush
+      </em>
+      zoom on mobile. For computer, replacing default pan with
+      <em>
+       scroll wheel
+      </em>
+      pan could lead to improved navigation, especially for close by targets. We recommend taking care when selecting the pan method.
+     </p>
+     <p>
+      <strong>
+       Ortho Zoom
+      </strong>
+      :
+      <em>
+       Ortho
+      </em>
+      zoom shows potential and is the only method that has a negative trend on both platforms, meaning that it tends to fare better compared to the default method as the target distance increases. More research is needed to confirm whether this technique can significantly surpass the default methods for far targets, but this scaling, as well as the estimate for high difficulties being about on par with the default technique, are strong indicators that users will likely outperform the default technique with ortho zoom with more practice, especially for high difficulties. Hence, we recommend using
+      <em>
+       ortho
+      </em>
+      zoom for far distance navigation.
+      <em>
+       Ortho
+      </em>
+      zoom requires familiarity, so applications with many short-time users may prefer a default scroll zoom. However, applications with users that stay for at least 15 minutes, and ideally longer, should consider using
+      <em>
+       ortho
+      </em>
+      zoom to enable users with experience to navigate faster.
+     </p>
+     <p>
+      <strong>
+       Context Switching
+      </strong>
+      : The two best methods for high difficulty navigation on both platforms—
+      <em>
+       ortho
+      </em>
+      and
+      <em>
+       brush
+      </em>
+      zoom—both enable the user to make vast scale changes with a single interaction. This enables fast navigation, but can also have drawbacks. For example, fast context switches can create the need for users to spend time to re-orient themselves. We recommend taking care when designing context switches, and using a longer animation time. To further unlock the potential of techniques that require little interaction time, designers must aid users in visual navigation as much as possible, e.g., by providing visual cues to anchor the zoom operation, or by animating at a speed which reduces the need for data reorientation.
+     </p>
+     <p>
+      <strong>
+       Novice Audiences
+      </strong>
+      : Some visualizations have novice users as audiences, and thus tend to use simple or familiar techniques such as
+      <em>
+       pinch
+      </em>
+      zoom. However, care must be taken to use this interaction method in long timelines with extensive manipulations: because it scales linearly with the physical motion of users’ fingers, limited learning can take place for long-time users. To make this interaction more scalable, this core problem needs to be addressed, and options such as a non-linear mapping between finger motion and timeline scale change need to be considered.
+     </p>
+    </section>
+   </section>
+   <section id="sec-22">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       DISCUSSION AND LIMITATIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Until now, there has been no evaluation-based guidance on how to design pan and zoom timelines for effective navigation on either computer or mobile. Given the large design space of visualization and interaction options, it is difficult to make an informed decision as a data visualization creator. Due to the diversity of hardware, contexts, and users to target with interactive timelines on the Web, creators have even less information about navigation effectiveness and efficiency.
+    </p>
+    <p>
+     Our work contributes the first design recommendations for timeline visualizations and interactions, on both mobile and desktop platforms. This was achieved by running a systematic in-the-wild study. Not controlling for input devices or contexts, as opposed to a laboratory setting, improves the applicability of our results as it is closer to how a timeline visualization would be accessed on the Web today. Future shifts in hardware use will limit the applicability of these results, as different input devices have individual characteristics. We believe that our results are applicable to different display sizes, such as tablets. For very large displays, other physiological factors may come into play and again limit applicability.
+    </p>
+    <p>
+     The results of our study most appropriately apply to novice users as our study participants only interacted with each timeline and method for under 15 minutes. This may have negatively impacted our results for uncommon and difficult interaction techniques such as
+     <em>
+      ortho
+     </em>
+     zoom. A preliminary analysis of user behaviors confirms that
+     <em>
+      ortho
+     </em>
+     zoom was primarily used in small steps of zooming which do not fully use the potential of the technique. We anticipate that more experienced users will take effective advantage of this technique.
+    </p>
+    <p>
+     While many questions remain due to the large design space of pan and zoom timelines, we have found practical and useful answers to questions such as the effect of visual context for navigation, the role of orientation of timelines for mobile and computer environments, and have identified promising interaction techniques. We anticipate the results to generalize well to other timeline designs where the target is not clearly visible, and look forward to studies investigating pan and zoom timelines further to validate our results.
+    </p>
+   </section>
+   <section id="sec-23">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We have investigated navigation on pan and zoom timelines on desktop and mobile, and have identified design recommendations for efficient visualization and interaction between selecting dates and numbers, between horizontal and vertical timelines, and between interaction techniques.
+    </p>
+    <p>
+     We found that (1) the visual context from dates can be helpful for far-distance navigation, but harmful to short-distance navigation speed; (2) orienting timelines along the longer axis of devices improves navigation efficiency; (3) an orientation that allows for an intuitive mapping between hardware and interaction improves performance; (4) default techniques have the best navigation speed; (5) the choice of pan technique is important for overall performance; and (6) compared to default techniques,
+     <em>
+      2x click
+     </em>
+     ,
+     <em>
+      hold
+     </em>
+     , and
+     <em>
+      rub
+     </em>
+     zoom seem to scale worse with task difficulty, whereas
+     <em>
+      brush
+     </em>
+     and especially
+     <em>
+      ortho
+     </em>
+     zoom seem to scale better. Given users’ unfamiliarity with these techniques, this is a strong indicator that brush and especially ortho zoom may outperform the default technique with more practice, especially for high difficulties.
+    </p>
+    <p>
+     A large linear and non-linear design space of timeline visualizations and sliders still awaits evaluation. With this work, we aim to provide timeline visualization creators with more guidance for effective navigation. All implementations, data and data analysis routines used in this work are open source (
+     <a class="link-inline force-break" href="http://multiscale-timelines.ccs.neu.edu/">
+      http://multiscale-timelines.ccs.neu.edu/
+     </a>
+     ). Future research can build on this work for repeatable and reproducible user studies to improve navigating multi-scale data visualizations.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-24">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We thank Alex Ahmed, Cody Dunne, Lulu Liu, Aditeya Pandey, Laura South, and Yixuan Zhang for their feedback on this paper. This work was supported in part by the College of Computer and Information Science and a Tier 1 seed grant at Northeastern University.
+    </p>
+   </section>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Christopher Ahlberg and Ben Shneiderman. 1994. The Alphaslider: A Compact and Rapid Selector. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’94
+      </em>
+      ). ACM, New York, NY, USA, 365–371.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/191666.191790" target="_blank">
+       https://doi.org/10.1145/191666.191790
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Caroline Appert and Jean-Daniel Fekete. 2006. OrthoZoom Scroller: 1D Multi-scale Navigation. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’06
+      </em>
+      ). ACM, New York, NY, USA, 21–30.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1124772.1124776" target="_blank">
+       https://doi.org/10.1145/1124772.1124776
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Ravin Balakrishnan. 2004. ”Beating” Fitts’ Law: Virtual Enhancements for Pointing Facilitation.
+      <em>
+       <em>
+        Int. J. Hum.-Comput. Stud.
+       </em>
+      </em>
+      61, 6 (Dec. 2004), 857–874.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.ijhcs.2004.09.002" target="_blank">
+       https://doi.org/10.1016/j.ijhcs.2004.09.002
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Benjamin B. Bederson and James D. Hollan. 1994. Pad++: A Zooming Graphical Interface for Exploring Alternate Interface Physics. In
+      <em>
+       Proceedings of the 7th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’94
+      </em>
+      ). ACM, New York, NY, USA, 17–26.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/192426.192435" target="_blank">
+       https://doi.org/10.1145/192426.192435
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Matthew Brehmer, Bongshin Lee, Benjamin Bach, Nathalie Henry Riche, and Tamara Munzner. 2017. Timelines Revisited: A Design Space and Considerations for Expressive Storytelling.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      23, 9 (Sept 2017), 2151–2164.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TVCG.2016.2614803" target="_blank">
+       https://doi.org/10.1109/TVCG.2016.2614803
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Matthew Brehmer, Bongshin Lee, Petra Isenberg, and Eun K. Choe. 2019. Visualizing Ranges over Time on Mobile Phones: A Task-Based Crowdsourced Evaluation.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      25, 1 (January 2019), 619–629.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TVCG.2018.2865234" target="_blank">
+       https://doi.org/10.1109/TVCG.2018.2865234
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Matthew Brehmer and Tamara Munzner. 2013. A Multi-Level Typology of Abstract Visualization Tasks.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      19, 12 (Dec 2013), 2376–2385.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TVCG.2013.124" target="_blank">
+       https://doi.org/10.1109/TVCG.2013.124
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Andy Cockburn, Amy Karlson, and Benjamin B. Bederson. 2009. A Review of Overview+Detail, Zooming, and Focus+Context Interfaces.
+      <em>
+       <em>
+        ACM Comput. Surv.
+       </em>
+      </em>
+      41, 1, Article 2 (Jan. 2009), 31 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1456650.1456652" target="_blank">
+       https://doi.org/10.1145/1456650.1456652
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Raimund Dachselt and Markus Weiland. 2006. TimeZoom: A Flexible Detail and Context Timeline. In
+      <em>
+       CHI ’06 Extended Abstracts on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI EA ’06
+      </em>
+      ). ACM, New York, NY, USA, 682–687.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1125451.1125590" target="_blank">
+       https://doi.org/10.1145/1125451.1125590
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Leah Findlater, Joan Zhang, Jon E. Froehlich, and Karyn Moffatt. 2017. Differences in Crowdsourced vs. Lab-based Mobile and Desktop Input Performance Data. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 6813–6824.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025820" target="_blank">
+       https://doi.org/10.1145/3025453.3025820
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Paul M. Fitts. 1954. The information capacity of the human motor system in controlling the amplitude of movement.
+      <em>
+       <em>
+        Journal of experimental psychology
+       </em>
+      </em>
+      47, 6 (June 1954), 381–391.
+      <a class="link-inline force-break" href="https://doi.org/10.1037/0096-3445.121.3.262" target="_blank">
+       https://doi.org/10.1037/0096-3445.121.3.262
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      George W. Furnas and Benjamin B. Bederson. 1995. Space-scale Diagrams: Understanding Multiscale Interfaces. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’95
+      </em>
+      ). ACM, New York, NY, USA, 234–241.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/223904.223934" target="_blank">
+       https://doi.org/10.1145/223904.223934
+      </a>
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      George W. Furnas and Xiaolong Zhang. 1998. MuSE: A Multiscale Editor. In
+      <em>
+       Proceedings of the 11th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’98
+      </em>
+      ). ACM, New York, NY, USA, 107–116.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/288392.288579" target="_blank">
+       https://doi.org/10.1145/288392.288579
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Krzysztof Z. Gajos, Katharina Reinecke, and Charles Herrmann. 2012. Accurate Measurements of Pointing Performance from In Situ Observations. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’12
+      </em>
+      ). ACM, New York, NY, USA, 3157–3166.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2207676.2208733" target="_blank">
+       https://doi.org/10.1145/2207676.2208733
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Yves Guiard and Michel Beaudouin-Lafon. 2004. Target acquisition in multiscale electronic worlds.
+      <em>
+       <em>
+        International Journal of Human-Computer Studies
+       </em>
+      </em>
+      61, 6 (2004), 875 – 905.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.ijhcs.2004.09.005" target="_blank">
+       https://doi.org/10.1016/j.ijhcs.2004.09.005
+      </a>
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Chris Harrison and Anind K. Dey. 2008. Lean and Zoom: Proximity-aware User Interface and Content Magnification. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’08
+      </em>
+      ). ACM, New York, NY, USA, 507–510.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1357054.1357135" target="_blank">
+       https://doi.org/10.1145/1357054.1357135
+      </a>
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Ken Hinckley and Hyunyoung Song. 2011. Sensor Synaesthesia: Touch in Motion, and Motion in Touch. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’11
+      </em>
+      ). ACM, New York, NY, USA, 801–810.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1978942.1979059" target="_blank">
+       https://doi.org/10.1145/1978942.1979059
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Kasper Hornbæk, Benjamin B. Bederson, and Catherine Plaisant. 2002. Navigation Patterns and Usability of Zoomable User Interfaces with and Without an Overview.
+      <em>
+       <em>
+        Transactions on Computer-Human Interaction
+       </em>
+      </em>
+      9, 4 (Dec. 2002), 362–389.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/586081.586086" target="_blank">
+       https://doi.org/10.1145/586081.586086
+      </a>
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Takeo Igarashi and Ken Hinckley. 2000. Speed-dependent Automatic Zooming for Browsing Large Documents. In
+      <em>
+       Proceedings of the 13th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’00
+      </em>
+      ). ACM, New York, NY, USA, 139–148.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/354401.354435" target="_blank">
+       https://doi.org/10.1145/354401.354435
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      ScientiaMobile Inc.2017. Smartphone vs Tablet Orientation: Who's Using What?
+      <a class="link-inline force-break" href="https://www.scientiamobile.com/page/smartphone-vs-tablet-orientation-whos-using-what">
+       https://www.scientiamobile.com/page/smartphone-vs-tablet-orientation-whos-using-what
+      </a>
+      . Accessed: March 30, 2018.
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Waqas Javed, Sohaib Ghani, and Niklas Elmqvist. 2012. GravNav: Using a Gravity Model for Multi-scale Navigation. In
+      <em>
+       Proceedings of the International Working Conference on Advanced Visual Interfaces
+      </em>
+      (
+      <em>
+       AVI ’12
+      </em>
+      ). ACM, New York, NY, USA, 217–224.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2254556.2254597" target="_blank">
+       https://doi.org/10.1145/2254556.2254597
+      </a>
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Neel Joshi, Abhishek Kar, and Michael Cohen. 2012. Looking at You: Fused Gyro and Face Tracking for Viewing Large Imagery on Mobile Devices. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’12
+      </em>
+      ). ACM, New York, NY, USA, 2211–2220.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2207676.2208375" target="_blank">
+       https://doi.org/10.1145/2207676.2208375
+      </a>
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Susanne Jul and George W. Furnas. 1998. Critical Zones in Desert Fog: Aids to Multiscale Navigation. In
+      <em>
+       Proceedings of the 11th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’98
+      </em>
+      ). ACM, New York, NY, USA, 97–106.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/288392.288578" target="_blank">
+       https://doi.org/10.1145/288392.288578
+      </a>
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Myron W. Krueger, Thomas Gionfriddo, and Katrin Hinrichsen. 1985. VIDEOPLACE - an Artificial Reality. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’85
+      </em>
+      ). ACM, New York, NY, USA, 35–40.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/317456.317463" target="_blank">
+       https://doi.org/10.1145/317456.317463
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Knight Lab. [n. d.]. TimelineJS.
+      <a class="link-inline force-break" href="http://timeline.knightlab.com/">
+       http://timeline.knightlab.com/
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      I. Scott Mackenzie. 1989. A Note on the Information-Theoretic Basis for Fitts’ Law.
+      <em>
+       <em>
+        Journal of Motor Behavior
+       </em>
+      </em>
+      21, 3 (1989), 323–330.
+      <a class="link-inline force-break" href="https://doi.org/10.1080/00222895.1989.10735486" target="_blank">
+       https://doi.org/10.1080/00222895.1989.10735486
+      </a>
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Sylvain Malacria, Eric Lecolinet, and Yves Guiard. 2010. Clutch-free Panning and Integrated Pan-zoom Control on Touch-sensitive Surfaces: The Cyclostar Approach. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’10
+      </em>
+      ). ACM, New York, NY, USA, 2615–2624.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1753326.1753724" target="_blank">
+       https://doi.org/10.1145/1753326.1753724
+      </a>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Toshiyuki Masui, Kouichi Kashiwagi, and George R. Borden, IV. 1995. Elastic Graphical Interfaces to Precise Data Manipulation. In
+      <em>
+       Conference Companion on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’95
+      </em>
+      ). ACM, New York, NY, USA, 143–144.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/223355.223471" target="_blank">
+       https://doi.org/10.1145/223355.223471
+      </a>
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      George A. Miller. 1956. The magical number seven, plus or minus two: some limits on our capacity for processing information.
+      <em>
+       <em>
+        Psychological review
+       </em>
+      </em>
+      63, 2 (1956), 81–97.
+      <a class="link-inline force-break" href="https://doi.org/10.1037/h0043158" target="_blank">
+       https://doi.org/10.1037/h0043158
+      </a>
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Mathieu Nancel, Julie Wagner, Emmanuel Pietriga, Olivier Chapuis, and Wendy Mackay. 2011. Mid-air Pan-and-zoom on Wall-sized Displays. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’11
+      </em>
+      ). ACM, New York, NY, USA, 177–186.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1978942.1978969" target="_blank">
+       https://doi.org/10.1145/1978942.1978969
+      </a>
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Alex Olwal, Steven Feiner, and Susanna Heyman. 2008. Rubbing and Tapping for Precise and Rapid Selection on Touch-screen Displays. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’08
+      </em>
+      ). ACM, New York, NY, USA, 295–304.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1357054.1357105" target="_blank">
+       https://doi.org/10.1145/1357054.1357105
+      </a>
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Ken Perlin and David Fox. 1993. Pad: An Alternative Approach to the Computer Interface. In
+      <em>
+       Proceedings of the 20th Annual Conference on Computer Graphics and Interactive Techniques
+      </em>
+      (
+      <em>
+       SIGGRAPH ’93
+      </em>
+      ). ACM, New York, NY, USA, 57–64.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/166117.166125" target="_blank">
+       https://doi.org/10.1145/166117.166125
+      </a>
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      William Playfair. 1786.
+      <em>
+       The Commercial and Political Atlas and Statistical Breviary
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Stuart Pook, Eric Lecolinet, Guy Vaysseix, and Emmanuel Barillot. 2000. Context and Interaction in Zoomable User Interfaces. In
+      <em>
+       Proceedings of the Working Conference on Advanced Visual Interfaces
+      </em>
+      (
+      <em>
+       AVI ’00
+      </em>
+      ). ACM, New York, NY, USA, 227–231.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/345513.345323" target="_blank">
+       https://doi.org/10.1145/345513.345323
+      </a>
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Philip Quinn, Sylvain Malacria, and Andy Cockburn. 2013. Touch Scrolling Transfer Functions. In
+      <em>
+       Proceedings of the 26th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’13
+      </em>
+      ). ACM, New York, NY, USA, 61–70.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2501988.2501995" target="_blank">
+       https://doi.org/10.1145/2501988.2501995
+      </a>
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Daniel Rosenberg and Anthony Grafton. 2010.
+      <em>
+       Cartographies of Time: A History of the Timeline
+      </em>
+      . Princeton Architectural Press.
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Michail Schwab, James Tompkin, Jeff Huang, and Michelle A. Borkin. 2018. EasyPZ.js: Simple &amp; Extendable Pan &amp; Zoom JS Library for Mobile &amp; Desktop.
+      <a class="link-inline force-break" href="https://doi.org/10.5281/zenodo.1137780" target="_blank">
+       https://doi.org/10.5281/zenodo.1137780
+      </a>
+      Instructions for use at
+      <a class="link-inline force-break" href="https://easypz.io.">
+       https://easypz.io.
+      </a>
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Martin Spindler, Martin Schuessler, Marcel Martsch, and Raimund Dachselt. 2014. Pinch-drag-flick vs. Spatial Input: Rethinking Zoom &amp; Pan on Mobile Displays. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’14
+      </em>
+      ). ACM, New York, NY, USA, 1113–1122.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2556288.2557028" target="_blank">
+       https://doi.org/10.1145/2556288.2557028
+      </a>
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Jarke J. Van Wijk and Wim A. A. Nuij. 2003. Smooth and Efficient Zooming and Panning. In
+      <em>
+       Proceedings of the Ninth Annual IEEE Conference on Information Visualization
+      </em>
+      (
+      <em>
+       INFOVIS’03
+      </em>
+      ). IEEE Computer Society, Washington, DC, USA, 15–22.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/INFVIS.2003.1249004" target="_blank">
+       https://doi.org/10.1109/INFVIS.2003.1249004
+      </a>
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Colin Ware and Marlon Lewis. 1995. The DragMag Image Magnifier. In
+      <em>
+       Conference Companion on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’95
+      </em>
+      ). ACM, New York, NY, USA, 407–408.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/223355.223749" target="_blank">
+       https://doi.org/10.1145/223355.223749
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300786" target="_blank">
+      https://doi.org/10.1145/3290605.3300786
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'87582751adf13736',t:'MTcxMzMxMjIyMy4zNjcwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

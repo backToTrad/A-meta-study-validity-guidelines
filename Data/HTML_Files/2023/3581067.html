@@ -1,0 +1,4143 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   GVQA: Learning to Answer Questions about Graphs with Visualizations via Knowledge Base
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3581067_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3581067_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3581067_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3581067_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3581067_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3581067_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3581067_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3581067_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <main>
+   <section class="front-matter">
+    <section>
+     <header class="title-info">
+      <div class="journal-title">
+       <h1>
+        <span class="title">
+         GVQA: Learning to Answer Questions about Graphs with Visualizations via Knowledge Base
+        </span>
+        <br/>
+        <span class="subTitle">
+        </span>
+       </h1>
+      </div>
+     </header>
+     <div class="authorGroup">
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-2158-0353" ref="author">
+        <span class="givenName">
+         Sicheng
+        </span>
+        <span class="surName">
+         Song
+        </span>
+       </a>
+       , School of Computer Science and Technology, East China Normal University, China and Shanghai Institute of AI for Education, East China Normal University, China,
+       <a href="mailto:scsong@stu.ecnu.edu.cn">
+        scsong@stu.ecnu.edu.cn
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-9343-4032" ref="author">
+        <span class="givenName">
+         Juntong
+        </span>
+        <span class="surName">
+         Chen
+        </span>
+       </a>
+       , School of Computer Science and Technology, East China Normal University, China,
+       <a href="mailto:jtchen@stu.ecnu.edu.cn">
+        jtchen@stu.ecnu.edu.cn
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-9835-2650" ref="author">
+        <span class="givenName">
+         Chenhui
+        </span>
+        <span class="surName">
+         Li
+        </span>
+       </a>
+       , School of Computer Science and Technology, East China Normal University, China,
+       <a href="mailto:chli@cs.ecnu.edu.cn">
+        chli@cs.ecnu.edu.cn
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-8940-6418" ref="author">
+        <span class="givenName">
+         Changbo
+        </span>
+        <span class="surName">
+         Wang
+        </span>
+       </a>
+       , School of Computer Science and Technology, East China Normal University, China,
+       <a href="mailto:cbwang@cs.ecnu.edu.cn">
+        cbwang@cs.ecnu.edu.cn
+       </a>
+      </div>
+     </div>
+     <br/>
+     <div class="pubInfo">
+      <p>
+       DOI:
+       <a href="https://doi.org/10.1145/3544548.3581067" target="_blank">
+        https://doi.org/10.1145/3544548.3581067
+       </a>
+       <br/>
+       CHI '23:
+       <a href="https://doi.org/10.1145/3544548" target="_blank">
+        Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems
+       </a>
+       , Hamburg, Germany, April 2023
+      </p>
+     </div>
+     <div class="abstract">
+      <p>
+       <small>
+        Graphs are common charts used to represent the topological relationship between nodes. It is a powerful tool for data analysis and information retrieval tasks involve asking questions about graphs. In formative study, we found that questions for graphs are not only about the relationship of nodes but also about the properties of graph elements. We propose a pipeline to answer natural language questions about graph visualizations and generate visual answers. We first extract the data from graphs and convert them into GML format. We design data structures to encode graph information and convert them into an knowledge base. We then extract topic entities from questions. We feed questions, entities and knowledge bases into our question-answer model to obtain the SPARQL queries for textual answers. Finally, we design a module to present the answers visually. A user study demonstrates that these visual and textual answers are useful, credible and and transparent.
+       </small>
+      </p>
+     </div>
+     <div class="CCSconcepts">
+      <ccs2012>
+       <small>
+        <span style="font-weight:bold;">
+         CCS Concepts:
+        </span>
+        •
+        <strong>
+         Human-centered computing → Visualization
+        </strong>
+        ; •
+        <strong>
+         Human-centered computing → Natural language interfaces
+        </strong>
+        ; •
+        <strong>
+         Information systems → Question answering
+        </strong>
+        ; •
+        <strong>
+         Computing methodologies → Machine learning
+        </strong>
+        ;
+       </small>
+      </ccs2012>
+     </div>
+     <br/>
+     <div class="classifications">
+      <div class="author">
+       <span style="font-weight:bold;">
+        <small>
+         Keywords:
+        </small>
+       </span>
+       <span class="keyword">
+        <small>
+         Visualization
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         Network Graph
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         Natural Language Process
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         Reinforcement Learning
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         Knowledge Base
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         Question Answering
+        </small>
+       </span>
+      </div>
+      <br/>
+      <div class="AcmReferenceFormat">
+       <p>
+        <small>
+         <span style="font-weight:bold;">
+          ACM Reference Format:
+         </span>
+         <br/>
+         Sicheng Song, Juntong Chen, Chenhui Li, and Changbo Wang. 2023. GVQA: Learning to Answer Questions about Graphs with Visualizations via Knowledge Base. In
+         <em>
+          Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems (CHI '23), April 23–28, 2023, Hamburg, Germany.
+         </em>
+         ACM, New York, NY, USA 16 Pages.
+         <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3581067" target="_blank">
+          https://doi.org/10.1145/3544548.3581067
+         </a>
+        </small>
+       </p>
+      </div>
+     </div>
+    </section>
+   </section>
+   <section class="body">
+    <section id="sec-2">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         1
+        </span>
+        INTRODUCTION
+       </h2>
+      </div>
+     </header>
+     <p>
+      Graphs are common visualizations to analyze topological data and answer questions when users facing decision-making tasks. However, it is not an easy task for users when there are many complex analytical questions about graphs. First, users need to understand the question before observing graphs. When observing the graph, users also need to understand the legend and textual information, perceive graphical data, analyze the community, calculate the degree values of the data, and other steps according to the different questions.
+     </p>
+     <p>
+      There are already some natural language systems for automatic chart question answering to help users analyze charts and answer questions faster. However, most of the existing work [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ] focuses on simple visualization charts such as scatter charts, line charts, and bar charts. These charts are easy to be converted into tabular data, which adapt to the tabular question answering system [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ]. The graph visualizations are commonly used to represent the topological relationship between nodes, such as the character relationships in novels. People usually analyze data and answer questions through graphs. In formative study, we find that users ask questions with graphs not only about the topological relationships of nodes, but also about graph properties such as node degrees, graph communities, etc. It is difficult to convert graph visualizations into tabular data as bar charts, because graph visualizations include more attributes and graph data are not two-dimensional structures. Besides, most of the existing automatic question-answering systems use textual information to answer [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ], which is dull and deviates from the original intention of visualizing the data of charts vividly. The visual answers are more convincing than textual answers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ]. We design a set of rules to visualize the answers and output graphical explanations.
+     </p>
+     <figure id="fig1">
+      <img alt="Figure 1" class="img-responsive" src="3581067_files\chi23384fig1.jpg"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        GVQA system interface. (a) The metadata of the graph visualization including name, semantics for essential elements and relations of the graph like nodes, edges, and community; (b) The graph visualization question answering panel. We highlight the query answer of the question in the graph visualization with a configurable and exportable force-directed layout; (c) Graph element tooltip. The tooltip will be visible when the user cursor hovered on the nodes or edges, providing users with their detailed properties; (d) The textual answer panel, providing users the readable answer and how our system queried the answers from our knowledge base; (e) The auxiliary answers panel. Providing rankings or entity details for further graph data analysis.
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+     </p>
+     <p>
+      We present a novel pipeline
+      <strong>
+       GVQA
+      </strong>
+      (Graph Visualization Question Answering) to answer the questions about graph visualizations and generate visual answers automatically. We first convert the graph visualizations into standard GML [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ] formats. We then extract the graph data and the visual attributes from the GML. Based on the characteristics of graphs, we design the data structure of graphs and convert them into a KB (knowledge base). We also design an expansion module for the knowledge base to answer the questions with semantics and questions about graph analysis. Our question answering model is based on the BERT module [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ] and a reinforcement learning model proposed by Das et al [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ] in an end-to-end manner. We specifically design the aggregation operations according to the questions about graph visualizations.
+     </p>
+     <p>
+      We conducted evaluation experiments on a real-world corpus with 561 graph-question pairs compared with a knowledge based question answer model for web questions [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ], and the results show that our design improved the ability to answer questions about graph visualizations. We also show three cases of graph visualization analysis and large network analysis. In addition, we conducted a user study to demonstrate that visual answers are more persuasive than textual answers. Our experimental results and user study show that our method has application potential in automatically question answering about graph visualizations. Our contributions include three aspects:
+     </p>
+     <ul class="list-no-style">
+      <li id="uid2" label="(1)">
+       We define a new problem of question answering about graph visualizations.
+       <br/>
+      </li>
+      <li id="uid3" label="(2)">
+       We propose a pipeline to answer diverse questions about graph visualizations and generate visual and textual answers.
+       <br/>
+      </li>
+      <li id="uid4" label="(3)">
+       We build a natural language question answering interface to facilitate user's analysis of graphs.
+       <br/>
+      </li>
+     </ul>
+    </section>
+    <section id="sec-3">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         2
+        </span>
+        RELATED WORK
+       </h2>
+      </div>
+     </header>
+     <p>
+      Our work is mainly related to three aspects: natural language interfaces for visualization, visual question answering, and knowledge base question answering.
+     </p>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        The corpus of our visualization graphs with questions. We provide an example below the number of each question type.
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Question Type
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Lookup
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Compositional
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           Total
+          </strong>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Semantic
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;border-bottom: 2pt solid #000000;">
+          111 (19.79%)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;border-bottom: 2pt solid #000000;">
+          113 (20.14%)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           224 (39.93%)
+          </strong>
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <em>
+           What scientists collaborated with Pildis, RA?
+          </em>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <em>
+           Which scientist has the most collaborators?
+          </em>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Structural
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;border-bottom: 2pt solid #000000;">
+          104 (18.54%)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;border-bottom: 2pt solid #000000;">
+          233 (41.53%)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           337 (60.07%)
+          </strong>
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <em>
+           What are the nodes that link with Pildis, RA?
+          </em>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <em>
+           Which is the node with the highest degree?
+          </em>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           Total
+          </strong>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           215 (38.32%)
+          </strong>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           268 (61.68%)
+          </strong>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           561
+          </strong>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <section id="sec-4">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.1
+         </span>
+         Natural Language Interfaces for Visualization
+        </h3>
+       </div>
+      </header>
+      <p>
+       Natural language interfaces for visualization have gained increasing popularity and attention [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+        5
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+        60
+       </a>
+       ]. These interactive systems usually take natural language as input and visualization as output  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+        47
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+        64
+       </a>
+       ]. Users can input natural language in many ways, such as characters  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ] with a keyboard, audio  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+        64
+       </a>
+       ] with a microphone, text selected in an article  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+        47
+       </a>
+       ], or textual definition  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ]. This system usually outputs results by creating new visualizations  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ] or highlighting parts of existing visualizations  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ]. These interactive systems are useful for annotations  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+        11
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+        12
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+        42
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+        57
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+        61
+       </a>
+       ], telling stories [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+        67
+       </a>
+       ] and generating visual natural language descriptions [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+        43
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ]. NL2VIS is research [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+        45
+       </a>
+       ] in the field of database design visual structured query language similar to database SQL (structured query language) for visual codes in recent. Huang et al. proposed FlowNL [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+        26
+       </a>
+       ], an interface for asking the flow data in natural language. Badam et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ] proposed Elastic Documents to visualize the links between tables and charts. Interactive document readers [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+        33
+       </a>
+       ] focus on the links between tables and texts. Most visual analysis systems focused on charts that can be converted into tabular data, such as pie charts, bar charts, line charts, and scatter plots. Only a few works focus on network graphs, Orko [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+        65
+       </a>
+       ] is a visual system that pioneered the application of NLI to graph exploration, while our research focuses more on automatic question answering of graph analysis, such as some graph properties. According to our formative study in Sec.
+       <a class="sec" href="#sec-7">
+        3
+       </a>
+       , the collected questions have more structural compositional questions than the semantic lookup questions that Orko focused on. For example, the question shown in Fig.
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       is a structural compositional question which usually exist in the graph analysis. Besides, our work also adopts a different approach from Orko, the knowledge base.
+      </p>
+      <figure id="fig2">
+       <img alt="Figure 2" class="img-responsive" src="3581067_files\chi23384fig2.jpg"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 2:
+        </span>
+        <span class="figure-title">
+         The pipeline of GVQA including five modules.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-5">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.2
+         </span>
+         Visual Question Answering
+        </h3>
+       </div>
+      </header>
+      <p>
+       Visual question answering is a semantic understanding task that aims to answer some questions based on given visual charts and legends. This is different from visual question answering in computer vision, which focuses on images that are not natural objects but visual charts. Such tasks require separate coding and mixing of visualizations and questions to generate answers [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+        46
+       </a>
+       ]. Kim et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ] proposed a visual question answering pipeline based on a semantic parsing model named Sempre [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+        54
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0076">
+        76
+       </a>
+       ] to automatically answer questions about charts and generate explanations for why the answer was generated. There are some works  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+        10
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+        46
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+        62
+       </a>
+       ] using the OCR module to extract textual information in infographics for answer generation. These works mainly focus on bar charts, scatter charts, line charts, etc. They are relatively easy to convert into two-dimensional tabular data then graphs. Our work focuses on automatic question answering of topological network graphs, which are difficult to convert into tabular data because of containing many visual attributes. There are also some works focusing on scientific diagrams  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0074">
+        74
+       </a>
+       ], such as the AI2D datasets. This type of data is actually the target of natural images, not visualizations. Questions about scientific diagrams are simple multiple-choice questions that only ask about the relationships between different targets. In contrast, our work focuses more on node relationships. In addition to the relationship between nodes, our questions also contain the community structure, node degree and the others which are unique and usual questions for the visualization graph.
+      </p>
+     </section>
+     <section id="sec-6">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.3
+         </span>
+         Knowledge Base Question Answering
+        </h3>
+       </div>
+      </header>
+      <p>
+       Knowledge base is an emerging application in visualization. Most research used knowledge base in visualization recommendation [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+        17
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+        40
+       </a>
+       ]. KBQA (Knowledge Base Question Answering) aims to answer factual questions from a knowledge base. They have received much attention in recent years [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+        41
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+        56
+       </a>
+       ]. Early knowledge base question answering work mainly focused on some simple questions with a single relationship [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+        8
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+        73
+       </a>
+       ]. In recent years, knowledge base question answering work has developed towards complex question datasets, which is also due to the fact that real problems are often complex. The complexity is mainly reflected in two aspects: The first one is a single relation with constraints [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+        44
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+        72
+       </a>
+       ], such as “
+       <em>
+        where was the first ACM CHI Conference held?
+       </em>
+       ”. There is only one relationship “
+       <em>
+        location
+       </em>
+       ” between the answer entity and the topic entity “
+       <em>
+        ACM CHI Conference
+       </em>
+       ” in this question, but the limitation word “
+       <em>
+        the first
+       </em>
+       ” has been added. Existing methods use staged queries, first identifying single-hop relational paths and then adding constraints to them to form a query graph. Second, in the question with multi-hop relationships, such as “
+       <em>
+        who is the subcommittee chair of the Visualization field of CHI2023?
+       </em>
+       ”, in this question, the answer entity needs to go through the two-hop relationship of “
+       <em>
+        Visualization field
+       </em>
+       ” and “
+       <em>
+        subcommittee chair
+       </em>
+       ” to connect with “
+       <em>
+        CHI2023
+       </em>
+       ”. The major challenge of this type of question is to limit the search space. Some existing work  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+        13
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ] proposes to limit the search space by considering only the best matching relationship instead of all relationships when expanding the relationship path. There are also some studies [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ] that combine both methods to handle more complex questions. Knowledge base question answering is previously applied to question answering of huge relational databases or knowledge graphs in the real world, while our work focuses more on applying it to question answering of network graph visualizations.
+      </p>
+     </section>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         3
+        </span>
+        FORMATIVE STUDY
+       </h2>
+      </div>
+     </header>
+     <p>
+      We conducted a formative study to understand what questions people would ask about graph visualizations and how they ask them. We first built a corpus containing 16 graph visualizations (13 undirected graphs, 3 directed graphs), which came from the network dataset collected by Mark Newman [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ]. We then recruited 40 volunteers (
+      <em>
+       μ
+       <sub>
+        age
+       </sub>
+      </em>
+      = 28.8 years). Each volunteer has more than 2 years of experience researching graph theory or visualization. Before participants were asked questions, we spent 30 minutes explaining what each graph represented to ensure they comprehended these graphs. Each participant was then allowed to ask up to two questions per graph visualization. Since the graphs are mutually independent of each other, the order we presented these graphs to the participants is randomized.
+     </p>
+     <p>
+      We ruled out subjective questions like “
+      <em>
+       Can you output my favorite character in the graph?
+      </em>
+      ” with the help of 3 graph visualization experts (more than 5 years of experience in graph visualization). We finally collected 561 valid question-answer pairs. We found that in terms of the answer type, the questions are primarily divided into two categories: Lookup and Compositional. We define a question to be lookup if its answer can be found directly within the graph data. These are typically simple questions that only require information from the GML files, such as asking for a node's neighbors. Compositional questions, on the other hand, require knowledge base expansion (Sec.
+      <a class="sec" href="#sec-10">
+       4.2
+      </a>
+      ) or aggregation (Sec.
+      <a class="sec" href="#sec-12">
+       4.4
+      </a>
+      ). For example, “
+      <em>
+       What is the node with the lowest degree centrality?
+      </em>
+      ” needs a superlative value aggregation. Compared with other charts, we found that participants usually ask about the properties that are not in the original graph data but are often used in graph analysis. For example,
+      <span class="inline-equation">
+       <span class="tex">
+        $118(21.03\%)$
+       </span>
+      </span>
+      questions are related to the community, and
+      <span class="inline-equation">
+       <span class="tex">
+        $103(18.36\%)$
+       </span>
+      </span>
+      questions are related to the properties of the node. This indicates that there are more properties involved in graph visualizations than in other charts such as bar and line charts.
+     </p>
+     <p>
+      Additionally, inspired by Srinivasan et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ] and Zhao et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0077">
+       77
+      </a>
+      ], we classify questions according to their utterance into two types of questions: Semantic and Structural. A semantic question is one that is related to the meaning and context of the graph, while a structural question focuses on the properties of the graph itself, without regard for the graph's specific meaning or semantics. For example, for the character relationship [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ] in the novel Les Misérables, there are Semantic questions containing the background story of the graph visualization like “
+      <em>
+       How many characters coappeared with Valjin?
+      </em>
+      ”, and Structural questions like “
+      <em>
+       How many nodes does the graph have?
+      </em>
+      ”.
+     </p>
+     <p>
+      Our formative study reveals that participants tend to ask more Structural
+      <span class="inline-equation">
+       <span class="tex">
+        $(60.07\%)$
+       </span>
+      </span>
+      and Compositional
+      <span class="inline-equation">
+       <span class="tex">
+        $(61.68\%)$
+       </span>
+      </span>
+      questions than Semantic
+      <span class="inline-equation">
+       <span class="tex">
+        $(39.93\%)$
+       </span>
+      </span>
+      and Lookup
+      <span class="inline-equation">
+       <span class="tex">
+        $(38.32\%)$
+       </span>
+      </span>
+      questions, respectively. This indicates that people prefer to ask Structural questions that are more concrete and definitive, while we also find that there there is a wide range of utterances asking for graph properties in Semantic questions. In terms of the answer type, we find that Lookup questions were primarily asked about nodes, while Compositional questions were primarily asked about community belongings and properties of nodes with aggregations. This suggests that users are interested in not only the basic properties of the nodes in graph visualizations but also the relationships and patterns of nodes, edges, and communities within the graph. The composition of these questions and some examples are shown in Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      . After verifying that the answers to the questions in our corpus are correct, we use these 561 graph-question pairs as our evaluation dataset. The datasets are included in the supplementary materials for further research.
+     </p>
+    </section>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         4
+        </span>
+        METHODS
+       </h2>
+      </div>
+     </header>
+     <p>
+      Our goal is to answer the questions about graph visualizations and output visual answers. The traditional method [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ] is only appropriate for simple charts, such as bar charts and line charts. Graphs have more visual attributes and relation data than the above charts. It is hard to convert graph visualizations into tabular data. To solve these problems, we design a pipeline to convert graphs into knowledge bases and apply a novel reinforcement model [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ] to adapt it to visualization question answering.
+     </p>
+     <p>
+      We propose a pipeline named GVQA, which automatically answers the question about graph visualizations and generate visual answers. Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      shows our pipeline. The pipeline includes five components:(1) extract primitive triplets and builds knowledge bases, (2) knowledge base expansion, (3) topic entity extraction, (4) automatic question answering, and (5) visual answer generation.
+     </p>
+     <section id="sec-9">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.1
+         </span>
+         Extract Primitive Triplets and Build Knowledge Bases
+        </h3>
+       </div>
+      </header>
+      <p>
+       Graph visualizations generally consist of topological relationships and visual attributes [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+        50
+       </a>
+       ]. The visual attributes of graphs include color, edge width, node area, node position, etc [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+        63
+       </a>
+       ]. GML [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+        20
+       </a>
+       ] (Graph Modelling Language) is a portable file format for graphs with simple syntax and high flexibility. Graph data can be stored in many formats and can be easily converted to GML, and GML can also be easily converted to other formats. A KB (Knowledge Base) represents a repository for storing knowledge [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+        69
+       </a>
+       ]. We typically use a set of triplets to represent a KB. They are written as
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {K}=\lbrace (h, r, t)|h,t\in \mathcal {E},r\in \mathcal {R}\rbrace$
+        </span>
+       </span>
+       , where
+       <em>
+        h
+       </em>
+       represents the head entity,
+       <em>
+        r
+       </em>
+       represents the relation,
+       <em>
+        t
+       </em>
+       represents the tail entity,
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {E}$
+        </span>
+       </span>
+       represents the entity set, and
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {R}$
+        </span>
+       </span>
+       represents the relation set.
+      </p>
+      <p>
+       In the first step, we convert the input graph to GML format and extract topological data and visual attributes. Then, we design a data structure in the form of KB triple for graph visualizations. These data originally existed in GML, so we call the extracted triples as primitive triplets.
+      </p>
+      <p>
+       <em>
+        <strong>
+         Convert Graphs into GML.
+        </strong>
+       </em>
+       There are many formats of graph visualizations. The formats of these graphs are generally divided into two types. The first type is in vector format, such as visualizations designed by D3 [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+        9
+       </a>
+       ], G6 [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+        70
+       </a>
+       ], E-Charts [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+        39
+       </a>
+       ], etc. For this type of graph, we can easily parse and deconstruct their JavaScript code to automatically extract data [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+        18
+       </a>
+       ]. The other type is in bitmap format, which is more commonly seen in real cases. For these graph images, we use VividGraph [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+        63
+       </a>
+       ], a state-of-the-art method for automatically extracting graphs, to extract the original data of graph visualizations. We then convert the data into GML formats.
+      </p>
+      <p>
+       <em>
+        <strong>
+         Extract Graph Data.
+        </strong>
+       </em>
+       Given a visualization graph in GML formats as shown in Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       , the graph category includes two main types of category, node and edge. We first convert all nodes into entities. According to different naming strategies, we assign the id or the label of the nodes to the name of entities. We then convert all edges into relations. For example, the edge in Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       represents that the node “
+       <em>
+        Myriel
+       </em>
+       ” links with the other node “
+       <em>
+        Napoleon
+       </em>
+       ”. We then add a triplet
+       <em>
+        &lt;Myriel&gt;&lt;Relation&gt;&lt;Napoleon&gt;
+       </em>
+       to the KB. In this example, the graph is an undirected graph, so we also add a reversed triplet
+       <em>
+        &lt;Napoleon&gt;&lt;Relation&gt;&lt;Myriel&gt;
+       </em>
+       to our KB.
+      </p>
+      <p>
+       <em>
+        <strong>
+         Extract Visual Attributes.
+        </strong>
+       </em>
+       Graph visualizations have a large number of visual attributes (e.g., color, area, position, shape) of nodes and edges. We convert the attributes into entities and add a relation with the node entities. In addition to the visual attributes of nodes, edges also have visual attributes such as color, width, etc. In most of the designed KBs, edges exist only as relations in triplets. We specifically convert edges into entities into the KB as well. Then we can add the visual attributes of the edges
+       <em>
+        &lt;Edge Entity&gt;&lt;Attribute&gt;&lt;Value&gt;
+       </em>
+       to the edge entities. For example, the weight of edge connecting “
+       <em>
+        Myriel
+       </em>
+       ” and “
+       <em>
+        Napoleon
+       </em>
+       ” is 1, as shown in Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       . The
+       <em>
+        &lt;Edge Entity&gt;
+       </em>
+       is “
+       <em>
+        Myriel and Napoleon
+       </em>
+       ”; the
+       <em>
+        Attribute
+       </em>
+       is “
+       <em>
+        Weight
+       </em>
+       ”; and the
+       <em>
+        &lt;Value&gt;
+       </em>
+       is 1. Since there are some visual attributes (e.g. background color) that are specific to the whole graph, we treat the whole graph as an entity and insert it into our knowledge base. We then establish connections between the graph entity and the graph members by adding the relations (
+       <em>
+        &lt;Graph Entity&gt;&lt;Relation&gt;&lt;Node Entity&gt;
+       </em>
+       and
+       <em>
+        &lt;Graph Entity&gt;&lt;Relation&gt;&lt;Edge Entity&gt;
+       </em>
+       ) from graph entities to all node entities and edge entities. Since not all graph visualizations have complete visual attributes, we only convert the visual attributes it has when building the KB. If semantics are included in the GML, we will further extend our KB by the method introduced in Sec.
+       <a class="sec" href="#sec-10">
+        4.2
+       </a>
+       .
+      </p>
+      <figure id="fig3">
+       <img alt="Figure 3" class="img-responsive" src="3581067_files\chi23384fig3.jpg"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 3:
+        </span>
+        <span class="figure-title">
+         The samples of the graph visualization in GML formats. This format has the greatest keyword
+         <em>
+          graph
+         </em>
+         (red keys) with child objects
+         <em>
+          node
+         </em>
+         and
+         <em>
+          edge
+         </em>
+         (green keys) in no particular order. There are graph data (golden keys) and visual attributes (blue keys including x-position, y-position, width, height, shape, color, etc.) in the formats. This is an example of an undirected graph. A directed graph is stored in the same format but with an additional directed attribute specified in the
+         <em>
+          graph
+         </em>
+         .
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+      <div class="table-responsive" id="tab2">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 2:
+        </span>
+        <span class="table-title">
+         The data structure of the knowledge base. The entities, and primitive triplets are extracted from the GML. The derived triplets are computed and generated by primitive triplets and other derived triplets.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr>
+          <td>
+           <img alt="" class="img-responsive" src="3581067_files\chi23384fig4.jpg"/>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </section>
+     <section id="sec-10">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.2
+         </span>
+         Knowledge Base Expansion
+        </h3>
+       </div>
+      </header>
+      <p>
+       In our formative study, we found that the questions people asked about graph visualizations are diverse and complicated. In order to answer more kinds of questions and improve the generalizability of our system, we designed a KB expansion module in our pipeline. We refer to these triplets computed and generated by primitive triplets and other derived triplets as derived triplets. There are two aspects of extension, one is the semantic extension, and the other is graph analysis extension.
+      </p>
+      <p>
+       <em>
+        <strong>
+         Semantic Extension.
+        </strong>
+       </em>
+       Semantic extension is introduced for two purposes. The first purpose is to handle basic semantic questions caused by synonyms. For example, the question “
+       <em>
+        How many nodes does the graph contain?
+       </em>
+       ” is equivalent to “
+       <em>
+        What is the number of nodes included in the graph?
+       </em>
+       ” in semantics. To address the first issue, we introduce the standard BERT model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+        15
+       </a>
+       ] in the question-answer model to obtain the context information in the question to solve. Our system also utilizes predicate aliases, which is the synonymous utterances for relationships. Specifically, we use WordNet [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+        48
+       </a>
+       ] to first find all synonyms for “
+       <em>
+        include
+       </em>
+       ” and “
+       <em>
+        connect
+       </em>
+       ”, and artificially designated multiple aliases for the relations.
+      </p>
+      <p>
+       The second purpose is to handle questions with domain-related utterances. Given a graph with background stories and concrete meanings, people will ask questions syntactically, but the answer is still derived from the entities and properties of the graph. For example, people will ask “
+       <em>
+        Who coappeared with Myriel?
+       </em>
+       ” for a graph of co-appearance relationship. Its underlying graph analysis question is “
+       <em>
+        What nodes does Myriel link with?
+       </em>
+       ”. To address the second issue, our system utilizes a semantic description file containing configurable semantic information. This description file can be populated beforehand by graph providers, and can also be updated by users with an editor interface (as shown in Fig.
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       a) to expand semantic information. Configurable objects including graphs, nodes, edges, and communities. All
+       <em>
+        &lt;relation&gt;
+       </em>
+       s can be artificially specified with any number of &lt;semantic relation&gt;. For example, graph providers can specify two aliases “
+       <em>
+        coapperance with
+       </em>
+       ” and “
+       <em>
+        knows character
+       </em>
+       ” for “
+       <em>
+        link with
+       </em>
+       ” relationship, and our system will add two triplets using aliases into the KB. With this approach, we can extend the semantic understanding capabilities of our system while delivering high semantic extensibility that can be dynamically updated.
+      </p>
+      <p>
+       <em>
+        <strong>
+         Graph Analysis Extension.
+        </strong>
+       </em>
+       Different from other types of charts, people often use terminologies (e.g., in/out-degree, community) from graph theory to analyze graph visualizations [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0077">
+        77
+       </a>
+       ]. When the original graph data do not include these attributes, we will calculate them and add them to our KB as visual attributes. We use Louvain algorithm [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+        6
+       </a>
+       ] to detect the best community partitions for the graph. The Louvain algorithm is an efficient unsupervised heuristic algorithm based on modularity optimization. The modularity can
+       <em>
+        Q
+       </em>
+       be defined as:
+      </p>
+      <div class="table-responsive" id="Xeq1">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation} Q=\frac{1}{2 m} \sum _{i, j}\left[A_{i j}-\frac{k_i k_j}{2 m}\right] \delta \left(c_i, c_j\right) \end{equation}
+        </span>
+        <br/>
+        <span class="equation-number">
+         (1)
+        </span>
+       </div>
+      </div>
+      where
+      <em>
+       A
+       <sub>
+        ij
+       </sub>
+      </em>
+      indicates the weight of Node
+      <em>
+       i
+      </em>
+      and Node
+      <em>
+       j
+      </em>
+      ;
+      <em>
+       k
+       <sub>
+        i
+       </sub>
+      </em>
+      represents the weight count of the edges linked with Node
+      <em>
+       i
+      </em>
+      ;
+      <em>
+       c
+       <sub>
+        i
+       </sub>
+      </em>
+      denotes the community that Node
+      <em>
+       i
+      </em>
+      belongs to.
+      <em>
+       δ
+      </em>
+      (
+      <em>
+       c
+       <sub>
+        i
+       </sub>
+      </em>
+      ,
+      <em>
+       c
+       <sub>
+        j
+       </sub>
+      </em>
+      ) is set to 1 when Node
+      <em>
+       i
+      </em>
+      and Node
+      <em>
+       j
+      </em>
+      belong to the same community, or 0 when Node
+      <em>
+       i
+      </em>
+      and Node
+      <em>
+       j
+      </em>
+      belong to different communities. The Louvain algorithm repeats the two steps of modularity maximization and node merging until the modularity no longer changes. We convert each community partition into an entity as a child of the graph entity. We also add the relations between the community entities and the member entities (node and edge entities) to the triplets. Similarly, we also calculate the commonly queried properties  [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0077">
+       77
+      </a>
+      ] including degree, degree centrality, clustering, the bridges contained in the entire graph and each community, etc. The rules of all triplets are shown in Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      .
+      <p>
+      </p>
+     </section>
+     <section id="sec-11">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.3
+         </span>
+         Topic Entity Extraction
+        </h3>
+       </div>
+      </header>
+      <p>
+       Topic entities are tokens in the questions that are grounded entities. They will be used to generate query graph in later process. For example, “
+       <em>
+        Courfeyrac
+       </em>
+       ” is a topic entity of the question “
+       <em>
+        What is the number of people that coappeared with Courfeyrac?
+       </em>
+       ”. When receiving user input, the system will search for a query graph starting from the entity “
+       <em>
+        Courfeyrac
+       </em>
+       ” to find candidate query graphs. Topic entity extraction will output the topic entity candidates
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {T} = \lbrace &lt; t_1, c_1&gt;, &lt; t_2, c_2&gt;, \dots \rbrace$
+        </span>
+       </span>
+       where
+       <em>
+        t
+        <sub>
+         i
+        </sub>
+       </em>
+       is the entity name,
+       <em>
+        c
+        <sub>
+         i
+        </sub>
+       </em>
+       is its confidence score. A confidence score is a decimal number between 0 and 1, serving as an indicator of how confident the model is with its prediction. A higher value indicates a more confident prediction for the result. We designed four steps for topic entity extraction to obtain
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {T}$
+        </span>
+       </span>
+       as shown in Figure
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       .
+      </p>
+      <figure id="fig4">
+       <img alt="Figure 4" class="img-responsive" src="3581067_files\chi23384fig5.jpg"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 4:
+        </span>
+        <span class="figure-title">
+         Topic entity extraction procedure. In Step 1, NER model outputs two named entities “
+         <em>
+          Myriel
+         </em>
+         ” and “
+         <em>
+          Napoleon
+         </em>
+         ” with confidence values of 0.9791 and 0.9979. In Step 2, we match the tokens in the questions with the entities in the KB. In Step 3, we use connectives to determine whether there is an edge topic entity in the question. In Step 4, we attach the graph entity to the candidates.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+      <p>
+       <em>
+        <strong>
+         Step 1: Named Entity Recognition.
+        </strong>
+       </em>
+       We utilized NLP framework Flair [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+        1
+       </a>
+       ] and the state-of-the-art 18-class NER model Flert [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+        58
+       </a>
+       ] for named entity recognition. The NER model will output a prediction confidence score
+       <span class="inline-equation">
+        <span class="tex">
+         $\hat{c}$
+        </span>
+       </span>
+       for each token detected as a named entity.
+       <span class="inline-equation">
+        <span class="tex">
+         $\hat{c}$
+        </span>
+       </span>
+       is a probabilistic output value of the last layer of BiLSTM-CRF network used in the model  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+        23
+       </a>
+       ]. We also use shallow parsing (chunking) model of Flair to extract noun phrases. We add them to token candidates to avoid missing some topic entities that are not related to named entities. We match these tokens with the entities in the KB. If entity
+       <em>
+        t
+       </em>
+       is matched, the tuple
+       <span class="inline-equation">
+        <span class="tex">
+         $&lt; t_{\text{NER}}, \hat{c}&gt; $
+        </span>
+       </span>
+       will be added to the topic entity candidates
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {T}$
+        </span>
+       </span>
+       .
+      </p>
+      <p>
+       <em>
+        <strong>
+         Step 2: Token Matching.
+        </strong>
+       </em>
+       To prevent the NER model from missing topic entities, we will first tokenize the question and generate n-grams. N-gram is a contiguous sequence of n tokens from a tokenized sequence. Here we generate 1 to 4 - grams. We match all the n-grams with entities in the KB. If an entity
+       <em>
+        t
+       </em>
+       is matched, &lt;
+       <em>
+        t
+       </em>
+       <sub>
+        token
+       </sub>
+       ,
+       <em>
+        c
+       </em>
+       = 0.5 &gt; will be added to
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {T}$
+        </span>
+       </span>
+       . If the entity already exists in the set of entities generated by NER model with confidence score
+       <span class="inline-equation">
+        <span class="tex">
+         $\hat{c}$
+        </span>
+       </span>
+       , we update the confidence score
+       <span class="inline-equation">
+        <span class="tex">
+         $c := \text{min} (\hat{c} + 0.5, 1)$
+        </span>
+       </span>
+       .
+      </p>
+      <p>
+       <em>
+        <strong>
+         Step 3: Edge Entity Matching.
+        </strong>
+       </em>
+       We have designed a set of rules for edge entity matching. Consider the question “
+       <em>
+        What is the weight of the edge between Myriel and Napoleon?
+       </em>
+       ”, NER model will output two seperated entities “
+       <em>
+        Myriel
+       </em>
+       ” and “
+       <em>
+        Napoleon
+       </em>
+       ” with their confidence score
+       <em>
+        c
+        <sub>
+         a
+        </sub>
+       </em>
+       and
+       <em>
+        c
+        <sub>
+         b
+        </sub>
+       </em>
+       . The question is more concerned with the edge connecting the two nodes than refer to each node separately. To handle this, when connectives such as “
+       <em>
+        and
+       </em>
+       ”, “
+       <em>
+        or
+       </em>
+       ”, “
+       <em>
+        to
+       </em>
+       ” and “
+       <em>
+        &amp;
+       </em>
+       ” are detected in a question, we check whether the tokens before and after the connective are in the set of topic entity candidates. If so, we concatenate them to derive two edge entity names (e.g., “
+       <em>
+        Napoleon and Myriel
+       </em>
+       ” and “
+       <em>
+        Myriel and Napoleon
+       </em>
+       ”) and check whether they exist in the KB. If a candidate exists, the edge entity &lt;
+       <em>
+        t
+       </em>
+       <sub>
+        edge
+       </sub>
+       ,
+       <em>
+        c
+       </em>
+       = max(
+       <em>
+        c
+        <sub>
+         a
+        </sub>
+       </em>
+       ,
+       <em>
+        c
+        <sub>
+         b
+        </sub>
+       </em>
+       ) &gt; will be added to
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {T}$
+        </span>
+       </span>
+       , where
+       <em>
+        c
+        <sub>
+         a
+        </sub>
+       </em>
+       and
+       <em>
+        c
+        <sub>
+         b
+        </sub>
+       </em>
+       represents the confidence of the topic entity before and after the connective respectively, calculated in aforementioned Step 1 and 2.
+      </p>
+      <p>
+       <em>
+        <strong>
+         Step 4: Graph Entity Attachment.
+        </strong>
+       </em>
+       As all the questions are relevant to the graph, if the graph entity is still not present after the above steps, we will add the graph entity &lt;
+       <em>
+        t
+       </em>
+       <sub>
+        graph
+       </sub>
+       ,
+       <em>
+        c
+       </em>
+       = 0.4 &gt; to
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {T}$
+        </span>
+       </span>
+       . This makes questions like “
+       <em>
+        How many people?
+       </em>
+       ” and “
+       <em>
+        How many people in the graph?
+       </em>
+       ” equivalent to our system. Also, if
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {T} = \varnothing$
+        </span>
+       </span>
+       after the above three steps, we add &lt;
+       <em>
+        t
+       </em>
+       <sub>
+        graph
+       </sub>
+       ,
+       <em>
+        c
+       </em>
+       = 1 &gt; to
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {T}$
+        </span>
+       </span>
+       .
+      </p>
+     </section>
+     <section id="sec-12">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.4
+         </span>
+         Automatic Question Answering
+        </h3>
+       </div>
+      </header>
+      <p>
+       To query the correct answer out of the knowledge base, our Q&amp;A model needs to generate a query graph [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+        3
+       </a>
+       ] containing a core relartion path that starts from a topic entity and ends at the answer node. Since we have
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {T}$
+        </span>
+       </span>
+       constructed, we need to construct query graphs starting from each topic entity in
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {T}$
+        </span>
+       </span>
+       and pick one query graph to use its core relation path and generate answers. We define the query graph as
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {G} = \lbrace N, E\rbrace$
+        </span>
+       </span>
+       . Node set
+       <em>
+        N
+       </em>
+       = {
+       <em>
+        n
+       </em>
+       <sub>
+        1
+       </sub>
+       ,
+       <em>
+        n
+       </em>
+       <sub>
+        2
+       </sub>
+       , …} where there are four types of nodes in the graph:
+       <em>
+        n
+        <sub>
+         i
+        </sub>
+       </em>
+       ∈ {
+       <em>
+        n
+       </em>
+       <sub>
+        g
+       </sub>
+       ,
+       <em>
+        n
+       </em>
+       <sub>
+        ug
+       </sub>
+       ,
+       <em>
+        n
+       </em>
+       <sub>
+        ag
+       </sub>
+       ,
+       <em>
+        n
+       </em>
+       <sub>
+        an
+       </sub>
+       }. Grounded nodes are entities existed in the KB. Ungrounded nodes are nodes that do not represent a grounded entity. It can be used to represent multiple entities or an intermediate query result. Aggregation node can be used to perform aggregation operations and the answer node represent the query answer. Edge set
+       <em>
+        E
+       </em>
+       = {
+       <em>
+        e
+       </em>
+       <sub>
+        1
+       </sub>
+       ,
+       <em>
+        e
+       </em>
+       <sub>
+        2
+       </sub>
+       , …} where
+       <em>
+        e
+        <sub>
+         i
+        </sub>
+       </em>
+       is
+       <em>
+        &lt;Relation&gt;
+       </em>
+       s from the KB.
+      </p>
+      <figure id="fig5">
+       <img alt="Figure 5" class="img-responsive" src="3581067_files\chi23384fig6.jpg"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 5:
+        </span>
+        <span class="figure-title">
+         An example query graph for question “
+         <em>
+          Which node that links with Myriel has the highest degree?
+         </em>
+         ”. Shaded rectangles are
+         <em>
+          n
+         </em>
+         <sub>
+          g
+         </sub>
+         , the unshaded rectangle is
+         <em>
+          n
+         </em>
+         <sub>
+          ug
+         </sub>
+         , the diamond-shaped node is the
+         <em>
+          n
+         </em>
+         <sub>
+          ag
+         </sub>
+         and the circle represents
+         <em>
+          n
+         </em>
+         <sub>
+          an
+         </sub>
+         . The core relation path in this graph starts with the graph entity and ends at
+         <em>
+          x
+         </em>
+         .
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+      <p>
+       Our question-answer model is based on a reinforcement learning model proposed by Das et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+        14
+       </a>
+       ]. We trained this model on a large dataset of questions named ComplexWebQuestions [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+        3
+       </a>
+       ] and a large knowledge base named Freebase [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+        7
+       </a>
+       ]. The process of generating query graph is an iterative process, described as follows.
+      </p>
+      <p>
+       <em>
+        <strong>
+         Candidate Query Graph Extension
+        </strong>
+       </em>
+       Let the candidate query graph set at iteration
+       <em>
+        t
+       </em>
+       to be
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {G}_t$
+        </span>
+       </span>
+       . Initially,
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {G}_0 = \lbrace G_1, G_2, \dots, G_{|\mathcal {T}|} | G_i = \lbrace N = t_i, E = \varnothing \rbrace \rbrace$
+        </span>
+       </span>
+       where
+       <em>
+        t
+        <sub>
+         i
+        </sub>
+       </em>
+       is the i-th topic entity in
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {T}$
+        </span>
+       </span>
+       . For each iteration, we try to extend each
+       <span class="inline-equation">
+        <span class="tex">
+         $G \in \mathcal {G}_t$
+        </span>
+       </span>
+       . This can be done by extending a feasible relation to the graph or an aggregation operation (explained below). A feasible relation is all triplets whose head entity is the tail of the current
+       <em>
+        g
+       </em>
+       ’s core relation path. If there is only one topic entity in the graph, we will attach the relation and set the end of the newly attached relation to be
+       <em>
+        n
+       </em>
+       <sub>
+        an
+       </sub>
+       . If
+       <em>
+        n
+       </em>
+       <sub>
+        an
+       </sub>
+       already exists in
+       <em>
+        g
+       </em>
+       , we will change
+       <em>
+        n
+       </em>
+       <sub>
+        an
+       </sub>
+       to
+       <em>
+        n
+       </em>
+       <sub>
+        ug
+       </sub>
+       , execute the current query graph in KB and get all feasible relations according to the query result. These feasible relations will be attached and the end of the relation will be set to
+       <em>
+        n
+       </em>
+       <sub>
+        an
+       </sub>
+       . We used beam search [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+        38
+       </a>
+       ] with beam size of 3 to narrow the search space in the iterative process and obtain
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {G}_{t+1}$
+        </span>
+       </span>
+       , where ranking algorithm explained below.
+      </p>
+      <p>
+       <em>
+        <strong>
+         Aggregation Operation Matching
+        </strong>
+       </em>
+       We designed an aggregation module to make it adapt to graph visualization. We predefined three keyword lists as shown in Table
+       <a class="tbl" href="#tab3">
+        3
+       </a>
+       . If a keyword is detected in the question, an
+       <em>
+        n
+       </em>
+       <sub>
+        ag
+       </sub>
+       can be attached to a
+       <em>
+        n
+       </em>
+       <sub>
+        ug
+       </sub>
+       or the
+       <em>
+        n
+       </em>
+       <sub>
+        an
+       </sub>
+       . For example, for the question “
+       <em>
+        Which node that links with Myriel has the highest degree?
+       </em>
+       ”, one query graph that starts from the graph entity and attached with
+       <em>
+        n
+       </em>
+       <sub>
+        ag
+       </sub>
+       is shown in Figure
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       . We also experimented training a BERT-based classification network [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+        42
+       </a>
+       ] with WikiSQL [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0078">
+        78
+       </a>
+       ] dataset to learn the aggregation intent of the question. However, it fails in terms of accuracy compared with keyword-based methods, whereas it also lacks the explainability and extensibility of keyword-based matching methods since the keyword list can be easily and purposefully expanded.
+      </p>
+      <div class="table-responsive" id="tab3">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 3:
+        </span>
+        <span class="table-title">
+         The procedure of Aggregation operation. If a keyword is detected in the question, our model performs corresponding operations. The query language used for triplets querying is SPARQL [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+          66
+         </a>
+         ]. “
+         <em>
+          &lt;Core Relation Path&gt;
+         </em>
+         ” represents the core path of the current query graph, “
+         <em>
+          &lt;Property&gt;
+         </em>
+         ” represents the operation key for the entities, and “
+         <em>
+          LIMIT 1
+         </em>
+         ” indicates that the system retrieves the top-ranked entity.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr>
+          <td>
+           <img alt="" class="img-responsive" src="3581067_files\chi23384fig7.jpg"/>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <div class="table-responsive" id="tab4">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 4:
+        </span>
+        <span class="table-title">
+         The answer generation rule set of GVQA. AT stands for Answer Type, Agg. stands for Aggregation, Comm. stands for Community, Prop. stands for Property. We designed several rules for generating visual and auxiliary answers based on different types of questions and different types of source and target of the core relation path in their query graphs. The Example Question Pattern shown here is one possible pattern and does not represent any concrete question. Source Info Card can be a Node Info card, Edge Info Card or Community Info Card, depending on the source type of the query graph.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr>
+          <td>
+           <img alt="" class="img-responsive" src="3581067_files\chi23384fig8.jpg"/>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p>
+       <em>
+        <strong>
+         Query Graph Ranking
+        </strong>
+       </em>
+       For the candidate query graphs generated by Step 1 and Step 2, we rank these query graphs by a reinforcement learning model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+        14
+       </a>
+       ]. First, we generated a 6-dimension feature vector.
+      </p>
+      <ul class="list-no-style">
+       <li id="list1" label="•">
+        BERT-based semantic matching: We use the standard BERT model to measure the semantic similarity between the tokenized question sequence
+        <em>
+         s
+         <sub>
+          q
+         </sub>
+        </em>
+        and query graph sequence
+        <em>
+         s
+         <sub>
+          g
+         </sub>
+        </em>
+        .
+        <em>
+         s
+         <sub>
+          g
+         </sub>
+        </em>
+        is generated by concatenating the ground entity names and relation names sequentially along the core relation path. For example, for the question in figure
+        <a class="fig" href="#fig5">
+         5
+        </a>
+        ,
+        <em>
+         s
+         <sub>
+          q
+         </sub>
+        </em>
+        = [which, node, that, links, with, myriel, has, the, highest,degree],
+        <em>
+         s
+         <sub>
+          g
+         </sub>
+        </em>
+        = [graph, includes, node, myriel, connects, with, nodes, degree, highest]. We then feed the sequence “[CLS]
+        <em>
+         s
+         <sub>
+          q
+         </sub>
+        </em>
+        [SEP]
+        <em>
+         s
+         <sub>
+          g
+         </sub>
+        </em>
+        ” to the BERT model to calculate their semantic similarity. We use the pre-trained model [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0071">
+         71
+        </a>
+        ] and then fine-tune it.
+        <br/>
+       </li>
+       <li id="list2" label="•">
+        Entity Confidence: The accumulated confidence score
+        <em>
+         c
+        </em>
+        (derived in Sec.
+        <a class="sec" href="#sec-11">
+         4.3
+        </a>
+        ) of all topic entities.
+        <br/>
+       </li>
+       <li id="list3" label="•">
+        Entity Number: The number of
+        <em>
+         n
+        </em>
+        <sub>
+         g
+        </sub>
+        in the query graph.
+        <br/>
+       </li>
+       <li id="list4" label="•">
+        Entity Type Number: The number of entity types.
+        <br/>
+       </li>
+       <li id="list5" label="•">
+        Answer Entity Number: The number of
+        <span class="inline-equation">
+         <span class="tex">
+          ${n_\text{an}}$
+         </span>
+        </span>
+        in the query graph.
+        <br/>
+       </li>
+       <li id="list6" label="•">
+        Aggregation Number: The number of
+        <span class="inline-equation">
+         <span class="tex">
+          ${n_\text{ag}}$
+         </span>
+        </span>
+        in the query graph.
+        <br/>
+       </li>
+      </ul>
+      <p>
+       We feed the feature vector
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {V}$
+        </span>
+       </span>
+       of each candidate query graph
+       <em>
+        q
+       </em>
+       into a fully connected layer of the reinforcement model to obtain
+       <em>
+        p
+       </em>
+       (
+       <em>
+        q
+       </em>
+       |
+       <em>
+        Q
+       </em>
+       ). The training goal is to learn the policy function
+       <em>
+        p
+        <sub>
+         θ
+        </sub>
+       </em>
+       (
+       <em>
+        q
+       </em>
+       |
+       <em>
+        Q
+       </em>
+       ), where
+       <em>
+        θ
+       </em>
+       represents the parameters in the model. We use the F1 score between the predicted answer and the ground truth as the reward.
+      </p>
+      <p>
+       After the aforementioned process, we obtain an optimal query graph for the question. By generating a SPARQL query from its core relation path and execute the query in the KB, we can obtain the textual answers.
+      </p>
+     </section>
+     <section id="sec-13">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.5
+         </span>
+         Answer Generation
+        </h3>
+       </div>
+      </header>
+      <p>
+       We then design an answer generation module to provide intuitive and insightful answers to the user. GVQA's answer is composed of three components: Textual Answers, Visual Answers, and Auxiliary Answers. Textual answers are generated in Section
+       <a class="sec" href="#sec-12">
+        4.4
+       </a>
+       , while the Visual and Auxiliary Answers are generated by a set of rules determined by the answer type, the aggregation intent of the question, and the type of source and target in the query graph's core query path.
+      </p>
+      <p>
+       In terms of answers presentation, we design Entity Highlighting, Subgraphs and Information Card (hereinafter referred to as Info Card). Entity Highlighting is the most commonly used method, where we render red borders and shadows for the entity, scale up the node size or edge width, and display the label beside it to make it more noticeable. Highlighting a community will highlight all the nodes and edges belonging to it. Subgraphs are also designed for communities. We take the nodes in the community and the connections between them and form a separate subgraph for presentation to the user, providing an exploration of this community. Info Cards (shown in Figure
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       .e) contain commonly-concerned properties, such as labels, degrees, or centralities of the entity, providing more information about the entities of the answer and the query process of the question, since we will also provide Info Cards for the entities traversed along the core relation path.
+      </p>
+      <p>
+       In terms of answer type, we propose three types. The first type is Literal Answers. Literal Answers are responses to lookup questions such as “
+       <em>
+        What is the clustering of Myriel?
+       </em>
+       ”. The target of their core relation paths is a property value, providing a number or a string as the answer. We highlight the source entity for these attributes, and provide an info card as the auxiliary answers. The second type is Entity Answers. The target of their core relation paths represents a topic entity. This includes questions like “
+       <em>
+        What nodes does Myriel link with?
+       </em>
+       ”. We designed different highlight methods for them respectively and also provide info cards for the target and source of the query graph. The third type is statistical Answers. These answers are responses to questions with aggregation intent like “
+       <em>
+        How many communities does the graph have?
+       </em>
+       ” or “
+       <em>
+        Which node has the highest degree?
+       </em>
+       ”. The former includes
+       <em>
+        COUNT
+       </em>
+       , while the latter includes
+       <em>
+        ARGMAX
+       </em>
+       . These answers are in the form of entities or properties for questions with aggregation intent. We will provide highlights and info cards, and draw a bar chart for
+       <em>
+        ARGMAX
+       </em>
+       and
+       <em>
+        ARGMIN
+       </em>
+       questions, containing the ranking of properties in the scope of the question concerned, in corresponding order.
+      </p>
+      <p>
+       The generated answers also varies depending on different types of aggregation intent and core relation paths. Specifically, we consider the types of entities involved in the core relation path, including nodes, edges, communities, graphs, and property values. Based on these factors. Based on these factors, different combinations of visual and auxiliary answers will be presented accordingly. The detailed rule sets are listed in Table
+       <a class="tbl" href="#tab4">
+        4
+       </a>
+       .
+      </p>
+     </section>
+    </section>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         5
+        </span>
+        APPLICATIONS
+       </h2>
+      </div>
+     </header>
+     <p>
+      There are many scenarios where automated question-answering about graph visualizations can be applied. In this section, we introduce three cases with our pipeline: the Les Misérables coappearance character network, the network of purchased political books, and the coauthorship network of scientists. They demonstrate the effectiveness of our pipeline for undirected graphs, directed graphs, and large graphs, respectively. We deploy our system on a PC with Intel Core i7-11850H @ 2.50GhZ, NVIDIA RTX A3000 Laptop GPU 6GB, and 32 GB of memory. The reinforcement learning framework was implemented based on Pytorch [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ]. We set the hidden hidden size as 768, the dropout ratio as 0.1, the initializer range as 0.02, the vocabulary number as 30522, the number of attention heads as 12, the number of layers as 6. The activation function is GELU [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ]. Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      shows a variety of samples generated by our pipeline.
+     </p>
+     <section id="sec-15">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.1
+         </span>
+         Scientific Study of Narratives
+        </h3>
+       </div>
+      </header>
+      <p>
+       Some literary or sociological researchers conduct structured narrative research through the relationships of characters in a novel [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+        49
+       </a>
+       ]. A good story, although often fictional, is tightly coupled with the real environment through the frequent interactions of the characters and going through a series of events. Analyzing the structural relationships of the characters therein can lead to an understanding of the narrative that may lead to new insights into various social phenomena and literature. Les Misérables [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ] is a famous novel published by French writer Victor Hugo in 1862, covering the Napoleonic Wars and the decades that followed. There is a network graph [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ] of the coappearance of the characters in the novel. People can analyze the relationships of characters by analyzing the network of relationships in which the characters appear together.
+      </p>
+      <p>
+       We input the question “
+       <em>
+        Which node has the highest degree in the graph?
+       </em>
+       ” to our pipeline as shown in Figure
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       (Q1). Our model will highlight the node with the highest degree in the graph, and sort all the nodes by degrees in a bar chart visualization output. The node with the highest degree is
+       <em>
+        Valjean
+       </em>
+       , who is the protagonist of the novel. We then input the question “
+       <em>
+        What is the number of characters who co-appeared with Valjean?
+       </em>
+       ” and “
+       <em>
+        What characters coappeared with Valjean?
+       </em>
+       ”. We obtain the answer “
+       <em>
+        36
+       </em>
+       ” and highlights the nodes, which link with the node Valjean. These nodes represent the characters in the novel that are related to Valjean. In the visual answer, we can sort out the characters who are directly related to the protagonist. We find a striking edge that connects the node Valjean and the other node Cosette. Cosette is the heroine of the novel and the adopted daughter of Valjean. We then input a question with semantics “
+       <em>
+        How many times did Valjean and Cosette co-appear?
+       </em>
+       ”. Our pipeline selects the entity on the edge between Valjean and Cosette after topic entity extraction, and then selects the core path leading to the edge weight in the GVQA module. We finally obtain the weight of edge “
+       <em>
+        31
+       </em>
+       ” for the textual answer and the highlight of the edge for visual answers as shown in Figure
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       (Q2). The weight represents the number of coappearance of Valjean and Cosette in the novel, which rationally explains how important their relationship is from the frequency of appearance.
+      </p>
+      <p>
+       Additionally, we asked “
+       <em>
+        What bridges does the graph have?
+       </em>
+       ”. Our pipeline highlights all edges that are bridge edges (The removal of these edges will increase the number of connected components) and show their attributes in the auxiliary panel. We can use these bridge edges to analyze what characters played the marginal supporting roles in the relationship among the characters.
+      </p>
+     </section>
+     <section id="sec-16">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.2
+         </span>
+         Product Sales Analysis
+        </h3>
+       </div>
+      </header>
+      <p>
+       There is a network [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+        34
+       </a>
+       ] that represents books about American politics around the 2004 presidential election sold at Amazon.com. The edge stands for book co-purchasing, specially, an edge from book A to books B indicates that customers tend to purchase book B after purchasing book A. For merchants, analyzing such networks can quickly capture market trends and adjust inventory. For politicians, they can also adjust their political strategy.
+      </p>
+      <p>
+       For this directed graph with sources and targets, we ask the question “
+       <em>
+        Which node has the highest out degree in the graph?
+       </em>
+       ”. The topic entity extraction module extracted the graph entity from the question. The GVQA searches a core path referring the out degree. Eventually, we obtain the answer
+       <em>
+        Arrogance
+       </em>
+       as shown in Figure
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       (Q5). This suggests that the bestseller drove sales for many political books. We then input the question “
+       <em>
+        What is the node with the highest in degree that links with Arrogance?
+       </em>
+       ”. The model output the answer
+       <em>
+        Off wit their heads
+       </em>
+       . We now know that amongst the books that drove people to buy Arrogance, Off with thiermheads is the book that's most likely to be the purchasing destination.
+      </p>
+      <figure id="fig6">
+       <img alt="Figure 6" class="img-responsive" src="3581067_files\chi23384fig9.jpg"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 6:
+        </span>
+        <span class="figure-title">
+         The samples of visual answers generated by our system.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-17">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.3
+         </span>
+         Analysis of scientific research hotspots
+        </h3>
+       </div>
+      </header>
+      <p>
+       With the gradual development of open science, researchers are no longer independent individuals, and their collaboration promotes the basic understanding of scientific research topics. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+        68
+       </a>
+       ]. Analyzing the network of co-authorship can help researchers obtain research hotspots, but such networks are often large. Manually retrieving and sorting data for a large-scale graph will be a tedious task. Newman [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+        51
+       </a>
+       ] has compiled a coauthorship network of scientists who worked on network science with 1589 nodes and 2742 edges. We use this graph to demonstrate our system's ability to handle large graphs.
+      </p>
+      <p>
+       First, we are curious about who is the most important writer in this network. The degree centrality is a direct measure of node importance. The higher the degree centrality, more important the node is in the network. We ask the question “
+       <em>
+        What is the node with the highest centrality in the graph?
+       </em>
+       ” as shown in Figure
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       . Our model applied the aggregation module since a
+       <em>
+        ARGMAX
+       </em>
+       keyword “
+       <em>
+        highest
+       </em>
+       ” was detected in the question. The model queries all the node entities in the graph through the graph entity and sorts the nodes in descending order according to the degree centrality. We finally obtain the answer
+       <em>
+        BARABASI, A
+       </em>
+       , which represents Albert-László Barabási, an American physicist known for his research on network theory. We then want to know the most influential authors of Prof. Barabási's collaborators. We ask “
+       <em>
+        Which node has the highest degree that links with BARABASI, A?
+       </em>
+       ” and obtain the answer
+       <em>
+        JEONG, H
+       </em>
+       , which represents Hawoong Jeong, a scientist who has done a large number of scale-free network research with Prof. Barabási. We also learn that the weight of their cooperation is 4.225 through the question “
+       <em>
+        What is the weight of the edge between JEONG, H and BARABASI, A?
+       </em>
+       ”.
+      </p>
+      <p>
+       By applying the Louvain algorithm for community discovery in our knowledge base expansion module, our pipeline can automatically answer community analysis questions. We can learn that this graph has 405 communities by asking “
+       <em>
+        How many communities does the graph have?
+       </em>
+       ” as shown in Figure
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       (Q8). The nodes in the graph are highlighted according to their community belongings, and the visualization and visual properties of each community can be viewed in the auxiliary panel with an overview. Each community represents a group of scientists who work closely together. We continue to focus on Prof. Barabási and ask what community he belongs to. When we ask the question “
+       <em>
+        Which community does BARABASI, A belong to?
+       </em>
+       ”, our model will output the answer
+       <em>
+        Community 10
+       </em>
+       and highlight all the scientist nodes in this community as the visual answer. We can know the number of scientists in this group via the community attributes in the auxiliary panel or by asking “
+       <em>
+        How many scientists does Community 10 have?
+       </em>
+       ”. We get an answer with a relatively large value 95. By inspecting the average degree centrality of this community, we also gain the insight that the researchers working closely in this community have significant impact to other researchers.
+      </p>
+     </section>
+    </section>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         6
+        </span>
+        USER STUDY
+       </h2>
+      </div>
+     </header>
+     <p>
+      To validate the efficiency of our pipeline and measure the usefulness, and transparency of the generated visual answers, we conducted a user study. We propose two hypotheses:
+     </p>
+     <p>
+      <em>
+       <strong>
+        H1:
+       </strong>
+      </em>
+      It will take users less time and effort to answer graph visualization questions using our automatic question answering system than using traditional network exploration tools [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ], when both methods can find the answers.
+     </p>
+     <p>
+      <em>
+       <strong>
+        H2:
+       </strong>
+      </em>
+      Users will find the combination of textual and visual answers are either better than or at least as good as text-only answers in terms of usefulness and transparency, when GVQA can provide correct answers. Usefulness refers to whether users accept the answer and obtain the information they want. Transparency refers to whether users feel the answers are explainable, reliable, and credible.
+     </p>
+     <p>
+      Different from the usefulness and transparency defined by Kim et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ], our hypotheses is under the condition that GVQA can give the correct answer. In fact, using both a traditional network exporation tool and GVQA may fail to answer the question. In the user study section, we want to access these two aforementioned hypothesis regarding the cost of finding answers and quality of our user interface. Therefore, we ensure that users can complete the QA task itself and provide meaningful feedback, and the answers can be found using both tools. In terms of GVQA's accuracy, we discuss it in Sec.
+      <a class="sec" href="#sec-20">
+       7.1
+      </a>
+      .
+     </p>
+     <div class="table-responsive" id="tab5">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 5:
+       </span>
+       <span class="table-title">
+        The time consumption comparisons of GVQA and Gephi. Each result is represented as mean value
+        <em>
+         μ
+        </em>
+        (± 95% confidence intervals). Metrics show that our NLI automatic question answering system takes less time than traditional network exploration systems.
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Question
+         </td>
+         <td colspan="4" style="text-align:center;border-right: 2pt solid #000000;border-bottom: 2pt solid #000000;">
+          Method
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;border-bottom: 2pt solid #000000;">
+          Gephi
+         </td>
+         <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;border-bottom: 2pt solid #000000;">
+          GVQA
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Time/Second
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Mouse Click
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Time/Second
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Mouse Click
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Set 1 (Q1-Q4)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          63.45 (57.25-69.65, p&lt;0.001)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          57.4 (51.5-63.4, p&lt;0.01)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          13.42 (12.35-14.49, p&lt;0.001)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          8.4 (8.0-8.8, p&lt;0.01)
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Set 2 (Q5-Q8)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          55.69 (50.54-60.84, p&lt;0.001)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          50.9 (46.0-55.8, p&lt;0.01)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          13.36 (12.33-14.38, p&lt;0.001)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          8.6 (8.2-9.1, p&lt;0.01)
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Set 3 (Q9-Q12)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          63.15 (58.14-68.16, p&lt;0.001)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          58.2 (52.7-63.6, p&lt;0.01)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          23.63 (22.62-24.63, p&lt;0.001)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          8.7 (8.3-9.1, p&lt;0.01)
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      <strong>
+       Design:
+      </strong>
+      We first inform our participants with the statement that their answers will be only used for academic purposes. We then introduce question-answering about graph visualizations to ensure that each participant understands the motivation of our work. We then briefly introduced Gephi [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ], an powerful open-source software for exploring and manipulating network graphs to our users. While Gephi has comprehensive graph visualization capabilities, we tell the participants that our main focus is the effort used to find the answer. We picked 12 correctly-answered graph-question pairs from our corpus to ensure that they can finish the answering task and provide meaningful feedback in terms of the cost of efforts and the quality of our user interface. These 12 graph-question pairs came from the three graphs we introduced in Sec.
+      <a class="sec" href="#sec-14">
+       5
+      </a>
+      . These questions are divided into three sets: the first set (Q1-Q4) is about Les Misérables character relationships (
+      <em>
+       V
+      </em>
+      = 77,
+      <em>
+       E
+      </em>
+      = 254); the second set (Q5-Q8) is related to political books (
+      <em>
+       V
+      </em>
+      = 105,
+      <em>
+       E
+      </em>
+      = 441), and the third set (Q9-Q12) is about scientist coauthorship (
+      <em>
+       V
+      </em>
+      = 1589,
+      <em>
+       E
+      </em>
+      = 2742). Each set contains four questions including a lookup structural question, a lookup question with semantics, a compositional structural question, and a compositional question with semantics. These sets of questions will be presented in random order.
+     </p>
+     <p>
+      We divided our user study into two parts. In the first part, we showed participants 12 graph-question pairs without their answers and ask them to answer these questions with two different tools: Gephi and GVQA. They are free to use all Gephi's features including graph layouting, statistic tools, data laboratory and UI to find the answers. Half of the participants used Gephi to answer the questions first, while the other half used GVQA first. We recorded their time consumption and mouse click for each question using both systems separately. In the second part, we present the textual answers and visual answers of these graph-question pairs to participants via a questionnaire. Participants will evaluate the textual answers and visual answers in terms of usefulness and transparency with a 5-point Likert scale, scoring from 1 to 5. Participants were not informed of how the scores were assigned to the options. In the questionnaire, they were asked to indicate to what extent they agreed with the textual and visual answers.
+     </p>
+     <p>
+      <strong>
+       Recruitment:
+      </strong>
+      We recruited 40 participants (
+      <em>
+       μ
+       <sub>
+        age
+       </sub>
+      </em>
+      = 27.9 years) who do not overlap with the participants of our formative study from the campus. 30 participants have previously engaged in data visualization or graph theory research while the remaining participants did not have prior knowledge in these fields but were able to comprehend our work through our explanation. Due to the COVID-19 pandemic, all user study was conducted online in a contactless manner.
+     </p>
+     <p>
+      <em>
+       <strong>
+        Assessing H1:
+       </strong>
+      </em>
+      We recorded the consumed time and number of mouse clicks (including the left and right buttons) while participants answered 12 questions about graph visualizations by Gephi and GVQA. In this stage of the experiment, we pay more attention to the time the participants consumed to deliver the answer, so all answers including the incorrect ones were counted. Time metrics of our GVQA include the initial loading of the network graph and inputting questions by users. The results are shown in Table
+      <a class="tbl" href="#tab5">
+       5
+      </a>
+      . We found that using our system to answer these questions significantly reduced the time consumption (Mann-Whitney
+      <em>
+       U
+      </em>
+      <sub>
+       1
+      </sub>
+      = 889,
+      <em>
+       p
+      </em>
+      &lt; 0.001;
+      <em>
+       U
+      </em>
+      <sub>
+       2
+      </sub>
+      = 1457,
+      <em>
+       p
+      </em>
+      &lt; 0.001;
+      <em>
+       U
+      </em>
+      <sub>
+       3
+      </sub>
+      = 711,
+      <em>
+       p
+      </em>
+      &lt; 0.001) and number of mouse clicks (
+      <em>
+       U
+      </em>
+      <sub>
+       1
+      </sub>
+      = 191.5,
+      <em>
+       p
+      </em>
+      &lt; 0.001;
+      <em>
+       U
+      </em>
+      <sub>
+       2
+      </sub>
+      = 469,
+      <em>
+       p
+      </em>
+      &lt; 0.001;
+      <em>
+       U
+      </em>
+      <sub>
+       3
+      </sub>
+      = 3.5,
+      <em>
+       p
+      </em>
+      &lt; 0.001). As such, we accept H1. We elucidated the time efficiency of our pipeline in more detail in Sec.
+      <a class="sec" href="#sec-21">
+       7.2
+      </a>
+      .
+     </p>
+     <figure id="fig7">
+      <img alt="Figure 7" class="img-responsive" src="3581067_files\chi23384fig10.jpg"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        The results of 5-point Likert scale on usefulness and credibility. Q1-Q4 are questions and answers about undirected graphs, Q5-Q8 are questions and answers about directed graphs, and Q9-Q12 are questions and answers about large graphs. Q1, Q5, Q9 are lookup structural questions. Q2, Q6, Q10 are lookup questions with semantics. Q3, Q7, Q11 are compositional structural questions. Q4, Q8, Q12 are compositional questions with semantics. Circles depict group averages (± 95% confidence intervals).
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+     </p>
+     <p>
+      <em>
+       <strong>
+        Assessing H2:
+       </strong>
+      </em>
+      Participants took an average of 2112.5 (
+      <span class="inline-equation">
+       <span class="tex">
+        $\pm 95\%$
+       </span>
+      </span>
+      CI: 1672.0 − 2552.9,
+      <em>
+       p
+      </em>
+      &lt; 0.001) seconds to complete the questionnaire. The results of our questionnaire are shown in Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      . For text-only answers, we obtain an average of 3.35 (
+      <span class="inline-equation">
+       <span class="tex">
+        $\pm 95\%$
+       </span>
+      </span>
+      CI: 3.26 − 3.44,
+      <em>
+       p
+      </em>
+      &lt; 0.001) on usefulness, and a average of 3.00 (
+      <span class="inline-equation">
+       <span class="tex">
+        $\pm 95\%$
+       </span>
+      </span>
+      CI: 2.90 − 3.10,
+      <em>
+       p
+      </em>
+      &lt; 0.001) on transparency. For the combination of textual and visual answers, we obtain an average of 3.95 (
+      <span class="inline-equation">
+       <span class="tex">
+        $\pm 95\%$
+       </span>
+      </span>
+      CI: 3.84 − 4.05,
+      <em>
+       p
+      </em>
+      &lt; 0.001) on usefulness, and a average of 4.00 (
+      <span class="inline-equation">
+       <span class="tex">
+        $\pm 95\%$
+       </span>
+      </span>
+      CI: 3.89 − 4.10,
+      <em>
+       p
+      </em>
+      &lt; 0.001) on transparency. The mean values ≥ 3 indicates that our final output answers were accepted and believed by users. We also came to the conclusion that introducing visual answers improved the answers in terms of usefulness (
+      <em>
+       U
+      </em>
+      = 7652,
+      <em>
+       p
+      </em>
+      &lt; 0.001) and transparency (
+      <em>
+       U
+      </em>
+      = 8483.5,
+      <em>
+       p
+      </em>
+      &lt; 0.001). Therefore, we accept H2. In interviews after the questionnaire session, participants reported that they believed that the visual answers delivered more intuitive information and sometimes included additional information not found in the textual answers. In terms of concrete analysis, the main advantage of the visual answers is their transparency. This also explains the greater variation in scores assessing transparency compared to those assessing usefulness. For instance, the question Q1 is “
+      <em>
+       What is the degree of Marguerite?
+      </em>
+      ”, a lookup structural question with a literal answer of “
+      <em>
+       12
+      </em>
+      ”. In this case, our module highlights the node
+      <em>
+       Marguerite
+      </em>
+      and show its visual attributes on the auxiliary panel. Many participants felt that textual answers were sufficient as the answer to this question, so visual answers were not as useful for this type of question. However, the users can quickly perceive that the node are linked with two edges, making the answers more persuasive than solely textual answers.
+     </p>
+     <p>
+      We conduct a more specific analysis of the results by question. We found that Q2 and Q6 have a similar result on usefulness (
+      <em>
+       U
+      </em>
+      <sub>
+       2
+      </sub>
+      = 47,
+      <em>
+       p
+      </em>
+      = 0.15;
+      <em>
+       U
+      </em>
+      <sub>
+       6
+      </sub>
+      = 45,
+      <em>
+       p
+      </em>
+      = 0.30) and transparency(
+      <em>
+       U
+      </em>
+      <sub>
+       2
+      </sub>
+      = 49.5,
+      <em>
+       p
+      </em>
+      = 0.05;
+      <em>
+       U
+      </em>
+      <sub>
+       6
+      </sub>
+      = 51,
+      <em>
+       p
+      </em>
+      = 0.03). Q2 and Q6 are both lookup questions with semantics. For this type of questions, the answers are always literal answers. Users feel that textual answers are sufficient for their needs, so the introduction of visual answers do not change much. Q5 is a lookup structural question with small changes in usefulness (
+      <em>
+       U
+      </em>
+      <sub>
+       5
+      </sub>
+      = 48,
+      <em>
+       p
+      </em>
+      = 0.09) and large changes in transparency (
+      <em>
+       U
+      </em>
+      <sub>
+       5
+      </sub>
+      = 63.3,
+      <em>
+       p
+      </em>
+      &lt; 0.001). These lookup structural questions are often related to the properties of graphs. Although textual answers meet the needs of users, visual answers and auxiliary windows can make the answers more credible and understandable. We found that visual answers to Q7, Q8, Q11 and Q12 performed Well, both in terms of usefulness (
+      <em>
+       U
+      </em>
+      <sub>
+       7
+      </sub>
+      = 67,
+      <em>
+       p
+      </em>
+      &lt; 0.001;
+      <em>
+       U
+      </em>
+      <sub>
+       8
+      </sub>
+      = 56,
+      <em>
+       p
+      </em>
+      &lt; 0.001;
+      <em>
+       U
+      </em>
+      <sub>
+       11
+      </sub>
+      = 58,
+      <em>
+       p
+      </em>
+      &lt; 0.001;
+      <em>
+       U
+      </em>
+      <sub>
+       12
+      </sub>
+      = 63,
+      <em>
+       p
+      </em>
+      &lt; 0.001) and transparency (
+      <em>
+       U
+      </em>
+      <sub>
+       7
+      </sub>
+      = 62,
+      <em>
+       p
+      </em>
+      &lt; 0.001;
+      <em>
+       U
+      </em>
+      <sub>
+       8
+      </sub>
+      = 67.5,
+      <em>
+       p
+      </em>
+      &lt; 0.001;
+      <em>
+       U
+      </em>
+      <sub>
+       11
+      </sub>
+      = 66,
+      <em>
+       p
+      </em>
+      &lt; 0.001;
+      <em>
+       U
+      </em>
+      <sub>
+       12
+      </sub>
+      = 60,
+      <em>
+       p
+      </em>
+      &lt; 0.001). They are all compositional questions. This is mainly because compositional questions are more difficult than lookup questions, and textual answers cannot meet the needs of users in most cases. Users also made suggestions for the visual answers of compositional questions in the interview, and we will enrich the form of visual answers in the future open version.
+     </p>
+    </section>
+    <section id="sec-19">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         7
+        </span>
+        EVALUATION
+       </h2>
+      </div>
+     </header>
+     <p>
+      We evaluate our pipeline from two aspects, including the accuracy of question answering and the time performance.
+     </p>
+     <section id="sec-20">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          7.1
+         </span>
+         Question-Answering Accuracy
+        </h3>
+       </div>
+      </header>
+      <p>
+       In formative study, we collected 561 graph-question pairs. Since the questions we collect are all objective questions, the answers are unique. We consider the output textual answer is a correct answer if it is equal to the human answer. The accuracy represents the number of questions answered correctly divided by the total number of questions. We compare our pipeline with two methods. The first method is the GVQA without the reinforcement layer. During the query graph ranking process, we only use BERT-based semantic similarity to rank the candidate query graphs instead of the reinforcement learning-based method. The second method is the KBQA model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ] designed for answering natural questions for general knowledge bases. For the fairness of the comparison, we keep our design of GML extraction module. Additionally, since the aggregation operation is keyword-based, we also considered answers from the baseline models to be correct if they obtained the correct entity without aggregation. For example, if the baseline model outputs all node entities in the graph instead of the number of nodes when faced with the question “
+       <em>
+        How many nodes in the graph?
+       </em>
+       ”, we would consider this to be a correct answer. Besides, all information about graphs was still presented in the form of triplets.
+      </p>
+      <figure id="fig8">
+       <img alt="Figure 8" class="img-responsive" src="3581067_files\chi23384fig11.jpg"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 8:
+        </span>
+        <span class="figure-title">
+         The results of our evaluation experiments. We compared our pipeline (blue bar) with GVQA w\o RL (without Reinforcement Layer, orange bar) and a KBQA model (green bar) on our 561 graph-question pairs. The Y-axis represents the accuracy of question answering. The X-axis represents different types of questions.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+      <p>
+       As shown in Figure
+       <a class="fig" href="#fig8">
+        8
+       </a>
+       , our evaluation results showed that GVQA achieved an overall accuracy of
+       <span class="inline-equation">
+        <span class="tex">
+         $90.73\%$
+        </span>
+       </span>
+       , with high performance in semantic (
+       <span class="inline-equation">
+        <span class="tex">
+         $88.39\%$
+        </span>
+       </span>
+       ), structural (
+       <span class="inline-equation">
+        <span class="tex">
+         $91.9\%$
+        </span>
+       </span>
+       ), lookup(
+       <span class="inline-equation">
+        <span class="tex">
+         $90.23\%$
+        </span>
+       </span>
+       ) and compositional (
+       <span class="inline-equation">
+        <span class="tex">
+         $91.04\%$
+        </span>
+       </span>
+       ) questions. Additionally, GVQA performed well in both lookup and compositional questions that combined semantic and structural information. In comparison, the KBQA model only achieved an overall accuracy of
+       <span class="inline-equation">
+        <span class="tex">
+         $27.09\%$
+        </span>
+       </span>
+       . Questions like “
+       <em>
+        What community does Myriel belong to?
+       </em>
+       ” or “
+       <em>
+        Which node has the highest clustering value?
+       </em>
+       ” are outside KBQA's capability, and KBQA will simply output Myriel's neighbors or a list of all nodes in the graph. The significant difference in accuracy can be attributed to the knowledge base expansion module we designed according to our formative study, which is inspired by the previous work [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+        65
+       </a>
+       ]. It provides the system with availability of more information and enables it to better cope with questions. Among the structural questions, most of them are querying the properties of graph elements, such as community partitions or the degree of nodes. The graph analysis extension module in our pipeline expanded computed properties of graph elements into the knowledge base, enabling GVQA to answer these questions that the KBQA is incapable of. Besides, our question set focuses more on the objective questions of graph analysis, which is where our task differs from Table QA [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ].
+      </p>
+      <p>
+       When compared to GVQA without the reinforcement learning layer (GVQA w/o RL), our pipeline also showed a significant improvement in overall accuracy, as well as in most question types. When the reinforcement layer is not used, GVQA can not find the correct answer for some compositional questions like “
+       <em>
+        What is the node with the maximum centrality that links with Beak?
+       </em>
+       ”, and will output Beak's centrality instead. This demonstrates the contribution of the reinforcement learning layer to GVQA's performance, as it enables the system to make more accurate predictions when trying to find the optimal query graphs. Overall, our results show that GVQA is a highly promising approach for answering natural questions about graph visualizations.
+      </p>
+      <div class="table-responsive" id="tab6">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 6:
+        </span>
+        <span class="table-title">
+         Error analysis for GVQA. For the 52 questions that GVQA failed to answer, we counted the question type and the cause of errors. The last column and the last row are the accumulated number of each cause of error and each question type respectively.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr>
+          <td>
+           <img alt="" class="img-responsive" src="3581067_files\chi23384fig12.jpg"/>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p>
+       We then analyzed the failed
+       <span class="inline-equation">
+        <span class="tex">
+         $9.73\%$
+        </span>
+       </span>
+       (52) questions, the results are shown in Table
+       <a class="tbl" href="#tab6">
+        6
+       </a>
+       . We classify the cause of error into three categories. The first and most common cause is Query Graph Ranking Error (
+       <span class="inline-equation">
+        <span class="tex">
+         $53.85\%$
+        </span>
+       </span>
+       ), where the system uses the wrong query graph as the optimal graph during the query graph ranking phase. For example, GVQA fails to answer question “
+       <em>
+        What bridge edges does the graph contain?
+       </em>
+       “ and outputs all the edges instead of bridges as the answer. The second cause is Failing to Extract Semantics (
+       <span class="inline-equation">
+        <span class="tex">
+         $30.77\%$
+        </span>
+       </span>
+       ), where the system fails to understand the semantics related to the background of the graph. For example, QVQA fails to understand that the question “
+       <em>
+        Which scientist does Andrade Mad collaborate with most frequently?
+       </em>
+       ” is actually asking for the node with the highest edge weight connecting Andrade Mad and just output all of the nodes connecting Andrade Mad as the answer. The third cause is Information Absent in KB, where the user is asking us for information that does not exist in the KB. For instance, users may ask “
+       <em>
+        What is the meaning of these nodes?
+       </em>
+       ”. GVQA will just output all nodes in the graph as the answer. In terms of question types, Semantic Compositional questions have the highest failure rate (
+       <span class="inline-equation">
+        <span class="tex">
+         $36.54\%$
+        </span>
+       </span>
+       ), due to their structural and semantic complexity, while the other three types of questions have failure rates of around
+       <span class="inline-equation">
+        <span class="tex">
+         $20\%$
+        </span>
+       </span>
+       each. Based on our findings, the Q&amp;A accuracy can be potentially improved by either improving the accuracy of query graph ranking process or increasing our KB's information capacity. This could involve implementing more sophisticated ranking algorithms capable of handling complex and multi-hop queries or collecting more relevant and diverse information in the KB.
+      </p>
+     </section>
+     <section id="sec-21">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          7.2
+         </span>
+         Question-Answering Time Performance
+        </h3>
+       </div>
+      </header>
+      <p>
+       To explore the QA time performance of our pipeline, we conducted a series of experiments in which we measured the time it took for our pipeline to provide answers. In our experiments, we used a set of experimental datasets that were derived by downsampling larger graphs at equal intervals, using the number of edges as the downsampling metric. For graphs with more than 2500 edges, we randomly sampled a number of edges at an interval of 250 and preserved the nodes connected to them as members of the subgraph. This allowed us to create a total of 96 graph visualizations for our experiments. We recorded the time consumption for two major phases: (1) Consumption I: the time it takes for the pipeline to answer a question for a graph visualization for the first time, including initializing the graph data and running all modules of the pipeline; (2) Consumption II: the average time it takes for the pipeline to answer a subsequent question for graph visualizations, including all modules of the pipeline except knowledge base construction and system initialization.
+      </p>
+      <figure id="fig9">
+       <img alt="Figure 9" class="img-responsive" src="3581067_files\chi23384fig13.jpg"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 9:
+        </span>
+        <span class="figure-title">
+         The results of evaluation experiments on time performance. The Y-axis represents the number of edges. The X-axis represents the number of nodes. The size of the scatter represents the amount of time the graph visualization spent in the pipeline.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+      <p>
+       The results of our experiments are shown in Figure
+       <a class="fig" href="#fig9">
+        9
+       </a>
+       . We found that the principal time consumption of our system is the knowledge base construction at the first run and graph data initialization. The average time complexity of the entire pipeline is
+       <em>
+        O
+       </em>
+       (
+       <em>
+        n
+       </em>
+       ), where
+       <em>
+        n
+       </em>
+       mainly considerates the scale of the graph. When dealing with large-scale graphs with approximately 2500 edges, the average time cost of Consumption I is 17.15 seconds. We also discovered that subsequent question answering tasks took substantially less time, since the knowledge base data has been loaded into the memory. The time complexity for visual answer generation is
+       <em>
+        O
+       </em>
+       (1), and the time complexity of aggregation is
+       <em>
+        O
+       </em>
+       (
+       <em>
+        n
+       </em>
+       ). Since the time consumption of query graph ranking using reinforcement learning is stably within one second for any graph of this scale, and the process of visual answer generation and aggregation operation using keyword-based method has low time complexity, the time cost of Consumption II only has slight fluctuations. The average time for answering subsequent questions (not the first run) about a graph visualization at the scale of 2500 edges is 2.75 seconds.
+      </p>
+      <p>
+       Overall, our experiments show that our pipeline has an average time complexity of
+       <em>
+        O
+       </em>
+       (
+       <em>
+        n
+       </em>
+       ) where
+       <em>
+        n
+       </em>
+       is most significantly influenced by the scale of the graph associated with the graph visualizations. Our system is able to provide answers within an acceptable amount of time, even for large graphs with up to 2500 edges.
+      </p>
+     </section>
+    </section>
+    <section id="sec-22">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         8
+        </span>
+        DISCUSSION
+       </h2>
+      </div>
+     </header>
+     <section id="sec-23">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          8.1
+         </span>
+         Graph-based QA Versus Relational QA
+        </h3>
+       </div>
+      </header>
+      <p>
+       GVQA is based on a graph-based database querying, while Table QA is based on a relational database. There are several differences between graph and relational querying. One of the main differences is that graph databases store the relationships between data as data, whereas relational databases infer relationships between columns of data tables. This means that in a graph database, it is easier to query and manipulate data that is related in complex ways, because the relationships between data points are explicitly stored in the database. Another difference is that graph databases are often more flexible and scalable than relational databases. Graph databases do not rely on fixed table schemas, so they can handle data that is structured in complex or evolving ways. In contrast, relational databases are typically more structured and rigid. They are based on the relational model, which requires that data be organized into fixed schemas. This makes it easier to query and manipulate data that follows a predictable structure, but can make it difficult to handle data that is complex or unstructured.
+      </p>
+      <p>
+       Our pipeline needs to convert a graph visualization to a database. For the question “
+       <em>
+        who is the subcommittee chair of the Visualization field of CHI2023?
+       </em>
+       ”, a relational query should be used by joining together different tables in the database that contain information about the CHI2023 conference, the different subcommittees within the conference, and the chairs of those subcommittees. However, we only need one graph for a graph-based database. In addition, using a graph-based database is more suitable for real-time updated graph visualization data because of scalability of knowledge bases. Most of the graph visualization questions focus on the complex relationship between nodes, which makes graph-based databases more suitable for graph visualization, while relational databases are better suited to applications that involve more structured data, such as bar charts and line charts.
+      </p>
+     </section>
+     <section id="sec-24">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          8.2
+         </span>
+         Limitation and Future Work
+        </h3>
+       </div>
+      </header>
+      <p>
+       The current pipeline of GVQA system retains some limitations.
+      </p>
+      <p>
+       <em>
+        <strong>
+         The Type of Questions.
+        </strong>
+       </em>
+       Although the corpora we collected through our formative study covered lots of scenarios and aspects of graph analysis, we are aware that we haven't addressed all possible questioning perspectives in real cases. Besides, current version of GVQA cannot answer true or false questions, which is also a limitation of many current question answering pipelines [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+        42
+       </a>
+       ] designed for other types of charts. Additionally, there are some questions with high-level semantics that cannot be answered in our corpus. For example, due to the limitation of our rule definition and knowledge base capability, our pipeline cannot answer the question “
+       <em>
+        Who is the most lonely?
+       </em>
+       ” on the dataset Karate [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+        75
+       </a>
+       ], which is a social network of friendships in a karate club. We plan to make our system publicly available and collect more graph-question pairs from the visualization community and further extend our system's Q&amp;A ability.
+      </p>
+      <p>
+       <em>
+        <strong>
+         The Type of Visual Answers.
+        </strong>
+       </em>
+       Currently, visual answers are intuitive enough but lacks interaction. Most of them are highlights or annotations. Visual answers to complex questions are static subgraph structures and bar charts. Our user study also shows that there is room for improvement on usefulness, especially for literal answers. We plan to enrich the form of our visual answers and enhance their interactivity, such as fisheye focus, more graph layouts, question-answering based on the previous visual answers, etc., in our future research.
+      </p>
+      <p>
+       <em>
+        <strong>
+         The Type of Visualizations.
+        </strong>
+       </em>
+       Our pipeline currently only supports network graph visualizations. However, the ideology of using knowledge bases to accomplish Q&amp;A tasks can be applied to other kinds of visualization charts such as geovisualization as well. We will explore the generalizability of our pipeline in the future.
+      </p>
+     </section>
+    </section>
+    <section id="sec-25">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         9
+        </span>
+        CONCLUSION
+       </h2>
+      </div>
+     </header>
+     <p>
+      We proposed a pipeline to answer questions about graph visualizations and generated visual answers. We built a natural language interface to help users analyze graphs. We further conducted a formative study to learn what questions people would ask and how they ask them. Our evaluation of the corpus collected by formative study demonstrates that GVQA can correctly and efficiently answer diverse questions about graphs with different semantics and scales. Our user study shows the combination of visual answers and textual answers are more informative than textual answer in usefulness and credibility. We also discuss the possible improvements of our work in the future.
+     </p>
+    </section>
+   </section>
+   <section class="back-matter">
+    <section id="sec-26">
+     <header>
+      <div class="title-info">
+       <h2>
+        ACKNOWLEDGMENTS
+       </h2>
+      </div>
+     </header>
+     <p>
+      This work was supported by the NSFC under Grant 62072183 and the Shanghai Committee of Science and Technology, China (Grant No. 22511104600). Chenhui Li and Changbo Wang are the corresponding authors.
+     </p>
+    </section>
+    <section id="ref-001">
+     <header>
+      <div class="title-info">
+       <h2 class="page-brake-head">
+        REFERENCES
+       </h2>
+      </div>
+     </header>
+     <ul class="bibUl">
+      <li id="BibPLXBIB0001" label="[1]">
+       Alan Akbik, Duncan Blythe, and Roland Vollgraf. 2018. Contextual string embeddings for sequence labeling. In
+       <em>
+        Proceedings of the 27th international conference on computational linguistics
+       </em>
+       . 1638–1649.
+      </li>
+      <li id="BibPLXBIB0002" label="[2]">
+       Sriram Karthik Badam, Zhicheng Liu, and Niklas Elmqvist. 2018. Elastic documents: Coupling text and tables through contextual visualizations for enhanced document reading.
+       <em>
+        <em>
+         IEEE transactions on visualization and computer graphics
+        </em>
+       </em>
+       25, 1(2018), 661–671.
+      </li>
+      <li id="BibPLXBIB0003" label="[3]">
+       Junwei Bao, Nan Duan, Zhao Yan, Ming Zhou, and Tiejun Zhao. 2016. Constraint-based question answering with knowledge graph. In
+       <em>
+        Proceedings of COLING 2016, the 26th International Conference on Computational Linguistics: Technical Papers
+       </em>
+       . 2503–2514.
+      </li>
+      <li id="BibPLXBIB0004" label="[4]">
+       Mathieu Bastian, Sebastien Heymann, and Mathieu Jacomy. 2009. Gephi: an open source software for exploring and manipulating networks. In
+       <em>
+        Proceedings of the international AAAI conference on web and social media
+       </em>
+       , Vol. 3. 361–362.
+      </li>
+      <li id="BibPLXBIB0005" label="[5]">
+       Leilani Battle and Carlos Scheidegger. 2020. A structured review of data management technology for interactive visualization and analysis.
+       <em>
+        <em>
+         IEEE Transactions on Visualization and Computer Graphics
+        </em>
+       </em>
+       27, 2(2020), 1128–1138.
+      </li>
+      <li id="BibPLXBIB0006" label="[6]">
+       Vincent D Blondel, Jean-Loup Guillaume, Renaud Lambiotte, and Etienne Lefebvre. 2008. Fast unfolding of communities in large networks.
+       <em>
+        <em>
+         Journal of statistical mechanics: theory and experiment
+        </em>
+       </em>
+       2008, 10(2008), P10008.
+      </li>
+      <li id="BibPLXBIB0007" label="[7]">
+       Kurt Bollacker, Colin Evans, Praveen Paritosh, Tim Sturge, and Jamie Taylor. 2008. Freebase: a collaboratively created graph database for structuring human knowledge. In
+       <em>
+        Proceedings of the 2008 ACM SIGMOD international conference on Management of data
+       </em>
+       . 1247–1250.
+      </li>
+      <li id="BibPLXBIB0008" label="[8]">
+       Antoine Bordes, Nicolas Usunier, Sumit Chopra, and Jason Weston. 2015. Large-scale simple question answering with memory networks.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1506.02075">
+          1506.02075
+         </a>
+        </em>
+       </em>
+       (2015).
+      </li>
+      <li id="BibPLXBIB0009" label="[9]">
+       Michael Bostock, Vadim Ogievetsky, and Jeffrey Heer. 2011. D
+       <sup>
+        3
+       </sup>
+       data-driven documents.
+       <em>
+        <em>
+         IEEE TVCG
+        </em>
+       </em>
+       17, 12 (2011), 2301–2309.
+      </li>
+      <li id="BibPLXBIB0010" label="[10]">
+       Ritwick Chaudhry, Sumit Shekhar, Utkarsh Gupta, Pranav Maneriker, Prann Bansal, and Ajay Joshi. 2020. Leaf-qa: Locate, encode &amp; attend for figure question answering. In
+       <em>
+        Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision
+       </em>
+       . 3512–3521.
+      </li>
+      <li id="BibPLXBIB0011" label="[11]">
+       Yang Chen, Scott Barlowe, and Jing Yang. 2010. Click2annotate: Automated insight externalization with rich semantics. In
+       <em>
+        2010 IEEE symposium on visual analytics science and technology
+       </em>
+       . IEEE, 155–162.
+      </li>
+      <li id="BibPLXBIB0012" label="[12]">
+       Yang Chen, Jing Yang, Scott Barlowe, and Dong H Jeong. 2010. Touch2Annotate: Generating better annotations with less human effort on multi-touch interfaces. In
+       <em>
+        CHI’10 Extended Abstracts on Human Factors in Computing Systems
+       </em>
+       . Association for Computing Machinery, 3703–3708.
+      </li>
+      <li id="BibPLXBIB0013" label="[13]">
+       Zi-Yuan Chen, Chih-Hung Chang, Yi-Pei Chen, Jijnasa Nayak, and Lun-Wei Ku. 2019. UHop: An Unrestricted-Hop Relation Extraction Framework for Knowledge-Based Question Answering. In
+       <em>
+        Proceedings of NAACL-HLT
+       </em>
+       . 345–356.
+      </li>
+      <li id="BibPLXBIB0014" label="[14]">
+       Rajarshi Das, Shehzaad Dhuliawala, Manzil Zaheer, Luke Vilnis, Ishan Durugkar, Akshay Krishnamurthy, Alex Smola, and Andrew McCallum. 2018. Go for a Walk and Arrive at the Answer: Reasoning Over Paths in Knowledge Bases using Reinforcement Learning. In
+       <em>
+        International Conference on Learning Representations
+       </em>
+       .
+      </li>
+      <li id="BibPLXBIB0015" label="[15]">
+       Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2018. Bert: Pre-training of deep bidirectional transformers for language understanding.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1810.04805">
+          1810.04805
+         </a>
+        </em>
+       </em>
+       (2018).
+      </li>
+      <li id="BibPLXBIB0016" label="[16]">
+       Tong Gao, Mira Dontcheva, Eytan Adar, Zhicheng Liu, and Karrie G Karahalios. 2015. Datatone: Managing ambiguity in natural language interfaces for data visualization. In
+       <em>
+        Proceedings of the 28th annual acm symposium on user interface software &amp; technology
+       </em>
+       . 489–500.
+      </li>
+      <li id="BibPLXBIB0017" label="[17]">
+       Qingyu Guo, Fuzhen Zhuang, Chuan Qin, Hengshu Zhu, Xing Xie, Hui Xiong, and Qing He. 2020. A survey on knowledge graph-based recommender systems.
+       <em>
+        <em>
+         IEEE Transactions on Knowledge and Data Engineering
+        </em>
+       </em>
+       (2020).
+      </li>
+      <li id="BibPLXBIB0018" label="[18]">
+       Jonathan Harper and Maneesh Agrawala. 2017. Converting basic D3 charts into reusable style templates.
+       <em>
+        <em>
+         IEEE transactions on visualization and computer graphics
+        </em>
+       </em>
+       24, 3(2017), 1274–1286.
+      </li>
+      <li id="BibPLXBIB0019" label="[19]">
+       Dan Hendrycks and Kevin Gimpel. 2016. Gaussian error linear units (gelus).
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1606.08415">
+          1606.08415
+         </a>
+        </em>
+       </em>
+       (2016).
+      </li>
+      <li id="BibPLXBIB0020" label="[20]">
+       Michael Himsolt. 1997.
+       <em>
+        GML: A portable graph file format
+       </em>
+       . Technical Report. Technical report, Universitat Passau.
+      </li>
+      <li id="BibPLXBIB0021" label="[21]">
+       Enamul Hoque, Vidya Setlur, Melanie Tory, and Isaac Dykeman. 2017. Applying pragmatics principles for interaction with visual analytics.
+       <em>
+        <em>
+         IEEE transactions on visualization and computer graphics
+        </em>
+       </em>
+       24, 1(2017), 309–318.
+      </li>
+      <li id="BibPLXBIB0022" label="[22]">
+       Sen Hu, Lei Zou, and Xinbo Zhang. 2018. A state-transition framework to answer complex questions over knowledge base. In
+       <em>
+        Proceedings of the 2018 conference on empirical methods in natural language processing
+       </em>
+       . 2098–2108.
+      </li>
+      <li id="BibPLXBIB0023" label="[23]">
+       Zhiheng Huang, Wei Xu, and Kai Yu. 2015. Bidirectional LSTM-CRF Models for Sequence Tagging.
+       <em>
+        <em>
+         ArXiv
+        </em>
+       </em>
+       abs/1508.01991(2015).
+      </li>
+      <li id="BibPLXBIB0024" label="[24]">
+       Victor Hugo. 1863.
+       <em>
+        Les misérables...
+       </em>
+       C. Lassalle.
+      </li>
+      <li id="BibPLXBIB0025" label="[25]">
+       Zhengbao Jiang, Yi Mao, Pengcheng He, Graham Neubig, and Weizhu Chen. 2022. OmniTab: Pretraining with Natural and Synthetic Data for Few-shot Table-based Question Answering.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2207.03637">
+          2207.03637
+         </a>
+        </em>
+       </em>
+       (2022).
+      </li>
+      <li id="BibPLXBIB0026" label="[26]">
+       Huang Jieying, Xi Yang, Hu Junnan, and Tao Jun. 2023. FlowNL: Asking the Flow Data in Natural Languages.
+       <em>
+        <em>
+         IEEE Transactions on Visualization and Computer Graphics
+        </em>
+       </em>
+       (2023), 1–11.
+      </li>
+      <li id="BibPLXBIB0027" label="[27]">
+       Kushal Kafle, Brian Price, Scott Cohen, and Christopher Kanan. 2018. Dvqa: Understanding data visualizations via question answering. In
+       <em>
+        Proceedings of the IEEE conference on computer vision and pattern recognition
+       </em>
+       . 5648–5656.
+      </li>
+      <li id="BibPLXBIB0028" label="[28]">
+       Samira Ebrahimi Kahou, Vincent Michalski, Adam Atkinson, and et al. 2018. FigureQA: An Annotated Figure Dataset for Visual Reasoning. In
+       <em>
+        Proc. ICLR’18
+       </em>
+       . arxiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/1710.07300">
+        1710.07300
+       </a>
+       <a class="link-inline force-break" href="http://arxiv.org/abs/1710.07300">
+        http://arxiv.org/abs/1710.07300
+       </a>
+      </li>
+      <li id="BibPLXBIB0029" label="[29]">
+       Aniruddha Kembhavi, Mike Salvato, Eric Kolve, Minjoon Seo, Hannaneh Hajishirzi, and Ali Farhadi. 2016. A diagram is worth a dozen images. In
+       <em>
+        European conference on computer vision
+       </em>
+       . Springer, 235–251.
+      </li>
+      <li id="BibPLXBIB0030" label="[30]">
+       Daesik Kim, YoungJoon Yoo, Jee-Soo Kim, Sangkuk Lee, and Nojun Kwak. 2018. Dynamic graph generation network: Generating relational knowledge from diagrams. In
+       <em>
+        Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition
+       </em>
+       . 4167–4175.
+      </li>
+      <li id="BibPLXBIB0031" label="[31]">
+       Dae Hyun Kim, Enamul Hoque, and Maneesh Agrawala. 2020. Answering questions about charts and generating visual explanations. In
+       <em>
+        Proceedings of the 2020 CHI conference on human factors in computing systems
+       </em>
+       . 1–13.
+      </li>
+      <li id="BibPLXBIB0032" label="[32]">
+       Donald Ervin Knuth. 1993.
+       <em>
+        The Stanford GraphBase: a platform for combinatorial computing
+       </em>
+       . Vol. 1. AcM Press New York.
+      </li>
+      <li id="BibPLXBIB0033" label="[33]">
+       Nicholas Kong, Marti A Hearst, and Maneesh Agrawala. 2014. Extracting references between text and charts via crowdsourcing. In
+       <em>
+        Proceedings of the SIGCHI conference on Human Factors in Computing Systems
+       </em>
+       . 31–40.
+      </li>
+      <li id="BibPLXBIB0034" label="[34]">
+       Valdis Krebs. 2004. Books about us politics.
+       <em>
+        <em>
+         unpublished,
+         <a class="link-inline force-break" href="http://www.">
+          http://www.
+         </a>
+         orgnet. com
+        </em>
+       </em>
+       (2004).
+      </li>
+      <li id="BibPLXBIB0035" label="[35]">
+       Chufan Lai, Zhixian Lin, Ruike Jiang, Yun Han, Can Liu, and Xiaoru Yuan. 2020. Automatic annotation synchronizing with textual description for visualization. In
+       <em>
+        Proceedings of the 2020 CHI Conference on Human Factors in Computing Systems
+       </em>
+       . 1–13.
+      </li>
+      <li id="BibPLXBIB0036" label="[36]">
+       Yunshi Lan and Jing Jiang. 2020. Query Graph Generation for Answering Multi-hop Complex Questions from Knowledge Bases. In
+       <em>
+        Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics
+       </em>
+       . Association for Computational Linguistics, Online, 969–974.
+       <a class="link-inline force-break" href="https://doi.org/10.18653/v1/2020.acl-main.91">
+        https://doi.org/10.18653/v1/2020.acl-main.91
+       </a>
+      </li>
+      <li id="BibPLXBIB0037" label="[37]">
+       Yunshi Lan, Shuohang Wang, and Jing Jiang. 2019. Knowledge Base Question Answering with Topic Units. In
+       <em>
+        IJCAI
+       </em>
+       . 5046–5052.
+       <a class="link-inline force-break" href="https://doi.org/10.24963/ijcai.2019/701">
+        https://doi.org/10.24963/ijcai.2019/701
+       </a>
+      </li>
+      <li id="BibPLXBIB0038" label="[38]">
+       Yunshi Lan, Shuohang Wang, and Jing Jiang. 2019. Multi-hop knowledge base question answering with an iterative sequence matching model. In
+       <em>
+        2019 IEEE International Conference on Data Mining (ICDM)
+       </em>
+       . IEEE, 359–368.
+      </li>
+      <li id="BibPLXBIB0039" label="[39]">
+       Deqing Li, Honghui Mei, Yi Shen, Shuang Su, Wenli Zhang, Junting Wang, Ming Zu, and Wei Chen. 2018. ECharts: a declarative framework for rapid construction of web-based visualization.
+       <em>
+        <em>
+         Visual Informatics
+        </em>
+       </em>
+       2, 2 (2018), 136–146.
+      </li>
+      <li id="BibPLXBIB0040" label="[40]">
+       Haotian Li, Yong Wang, Songheng Zhang, Yangqiu Song, and Huamin Qu. 2021. KG4Vis: A knowledge graph-based approach for visualization recommendation.
+       <em>
+        <em>
+         IEEE Transactions on Visualization and Computer Graphics
+        </em>
+       </em>
+       28, 1(2021), 195–205.
+      </li>
+      <li id="BibPLXBIB0041" label="[41]">
+       Chen Liang, Jonathan Berant, Quoc Le, Kenneth D Forbus, and Ni Lao. 2017. Neural symbolic machines: Learning semantic parsers on freebase with weak supervision. In
+       <em>
+        55th Annual Meeting of the Association for Computational Linguistics, ACL 2017
+       </em>
+       . Association for Computational Linguistics (ACL), 23–33.
+      </li>
+      <li id="BibPLXBIB0042" label="[42]">
+       Can Liu, Yun Han, Ruike Jiang, and Xiaoru Yuan. 2021. Advisor: Automatic visualization answer for natural-language question on tabular data. In
+       <em>
+        2021 IEEE 14th Pacific Visualization Symposium (PacificVis)
+       </em>
+       . IEEE, 11–20.
+      </li>
+      <li id="BibPLXBIB0043" label="[43]">
+       Can Liu, Liwenhan Xie, Yun Han, Datong Wei, and Xiaoru Yuan. 2020. AutoCaption: An approach to generate natural language description from visualization automatically. In
+       <em>
+        2020 IEEE Pacific Visualization Symposium (PacificVis)
+       </em>
+       . IEEE, 191–195.
+      </li>
+      <li id="BibPLXBIB0044" label="[44]">
+       Kangqi Luo, Fengli Lin, Xusheng Luo, and Kenny Zhu. 2018. Knowledge base question answering via encoding of complex query graphs. In
+       <em>
+        Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing
+       </em>
+       . 2185–2194.
+      </li>
+      <li id="BibPLXBIB0045" label="[45]">
+       Yuyu Luo, Nan Tang, Guoliang Li, Chengliang Chai, Wenbo Li, and Xuedi Qin. 2021. Synthesizing natural language to visualization (NL2VIS) benchmarks from NL2SQL benchmarks. In
+       <em>
+        Proceedings of the 2021 International Conference on Management of Data
+       </em>
+       . 1235–1247.
+      </li>
+      <li id="BibPLXBIB0046" label="[46]">
+       Minesh Mathew, Viraj Bagal, Rubèn Tito, Dimosthenis Karatzas, Ernest Valveny, and CV Jawahar. 2022. InfographicVQA. In
+       <em>
+        Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision
+       </em>
+       . 1697–1706.
+      </li>
+      <li id="BibPLXBIB0047" label="[47]">
+       Ronald Metoyer, Qiyu Zhi, Bart Janczuk, and Walter Scheirer. 2018. Coupling story to visualization: Using textual analysis as a bridge between data and interpretation. In
+       <em>
+        23rd International Conference on Intelligent User Interfaces
+       </em>
+       . 503–507.
+      </li>
+      <li id="BibPLXBIB0048" label="[48]">
+       George A Miller. 1995. WordNet: a lexical database for English.
+       <em>
+        <em>
+         Commun. ACM
+        </em>
+       </em>
+       38, 11 (1995), 39–41.
+      </li>
+      <li id="BibPLXBIB0049" label="[49]">
+       Semi Min and Juyong Park. 2016. Narrative as a Complex Network: A Study of Victor Hugo's Les Misérables. In
+       <em>
+        Proceedings of HCI Korea
+       </em>
+       . 100–107.
+      </li>
+      <li id="BibPLXBIB0050" label="[50]">
+       Tamara Munzner. 2014.
+       <em>
+        Visualization analysis and design
+       </em>
+       . CRC press.
+      </li>
+      <li id="BibPLXBIB0051" label="[51]">
+       Mark EJ Newman. 2006. Finding community structure in networks using the eigenvectors of matrices.
+       <em>
+        <em>
+         Physical review E
+        </em>
+       </em>
+       74, 3 (2006), 036104.
+      </li>
+      <li id="BibPLXBIB0052" label="[52]">
+       Mark EJ Newman. 2013. Network data.
+       <em>
+        <em>
+         <a class="link-inline force-break" href="http://www-personal.">
+          http://www-personal.
+         </a>
+         umich. edu/mejn/netdata/
+        </em>
+       </em>
+       (2013).
+      </li>
+      <li id="BibPLXBIB0053" label="[53]">
+       Jason Obeid and Enamul Hoque. 2020. Chart-to-text: Generating natural language descriptions for charts by adapting the transformer model.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2010.09142">
+          2010.09142
+         </a>
+        </em>
+       </em>
+       (2020).
+      </li>
+      <li id="BibPLXBIB0054" label="[54]">
+       Panupong Pasupat and Percy Liang. 2015. Compositional Semantic Parsing on Semi-Structured Tables. In
+       <em>
+        Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing (Volume 1: Long Papers)
+       </em>
+       . 1470–1480.
+      </li>
+      <li id="BibPLXBIB0055" label="[55]">
+       Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga,
+       <em>
+        et al.
+       </em>
+       2019. Pytorch: An imperative style, high-performance deep learning library.
+       <em>
+        <em>
+         Advances in neural information processing systems
+        </em>
+       </em>
+       32 (2019).
+      </li>
+      <li id="BibPLXBIB0056" label="[56]">
+       Michael Petrochuk and Luke Zettlemoyer. 2018. Simplequestions nearly solved: A new upperbound and baseline approach.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1804.08798">
+          1804.08798
+         </a>
+        </em>
+       </em>
+       (2018).
+      </li>
+      <li id="BibPLXBIB0057" label="[57]">
+       Donghao Ren, Matthew Brehmer, Bongshin Lee, Tobias Höllerer, and Eun Kyoung Choe. 2017. Chartaccent: Annotation for data-driven storytelling. In
+       <em>
+        2017 IEEE Pacific Visualization Symposium (PacificVis)
+       </em>
+       . Ieee, 230–239.
+      </li>
+      <li id="BibPLXBIB0058" label="[58]">
+       Stefan Schweter and Alan Akbik. 2020. Flert: Document-level features for named entity recognition.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2011.06993">
+          2011.06993
+         </a>
+        </em>
+       </em>
+       (2020).
+      </li>
+      <li id="BibPLXBIB0059" label="[59]">
+       Vidya Setlur, Sarah E Battersby, Melanie Tory, Rich Gossweiler, and Angel X Chang. 2016. Eviza: A natural language interface for visual analysis. In
+       <em>
+        Proceedings of the 29th annual symposium on user interface software and technology
+       </em>
+       . 365–377.
+      </li>
+      <li id="BibPLXBIB0060" label="[60]">
+       Leixian Shen, Enya Shen, Yuyu Luo, Xiaocong Yang, Xuming Hu, Xiongshuai Zhang, Zhiwei Tai, and Jianmin Wang. 2022. Towards Natural Language Interfaces for Data Visualization: A Survey.
+       <em>
+        <em>
+         IEEE Transactions on Visualization and Computer Graphics
+        </em>
+       </em>
+       (2022), 1–1.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/TVCG.2022.3148007">
+        https://doi.org/10.1109/TVCG.2022.3148007
+       </a>
+      </li>
+      <li id="BibPLXBIB0061" label="[61]">
+       Danqing Shi, Xinyue Xu, Fuling Sun, Yang Shi, and Nan Cao. 2020. Calliope: Automatic visual data story generation from a spreadsheet.
+       <em>
+        <em>
+         IEEE Transactions on Visualization and Computer Graphics
+        </em>
+       </em>
+       27, 2(2020), 453–463.
+      </li>
+      <li id="BibPLXBIB0062" label="[62]">
+       Hrituraj Singh and Sumit Shekhar. 2020. Stl-cqa: Structure-based transformers with localization and encoding for chart question answering. In
+       <em>
+        Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)
+       </em>
+       . 3275–3284.
+      </li>
+      <li id="BibPLXBIB0063" label="[63]">
+       Sicheng Song, Chenhui Li, Yujing Sun, and Changbo Wang. 2022. VividGraph: Learning to Extract and Redesign Network Graphs from Visualization Images.
+       <em>
+        <em>
+         IEEE Transactions on Visualization and Computer Graphics
+        </em>
+       </em>
+       (2022).
+      </li>
+      <li id="BibPLXBIB0064" label="[64]">
+       Arjun Srinivasan, Bongshin Lee, Nathalie Henry Riche, Steven M Drucker, and Ken Hinckley. 2020. InChorus: Designing consistent multimodal interactions for data visualization on tablet devices. In
+       <em>
+        Proceedings of the 2020 CHI conference on human factors in computing systems
+       </em>
+       . 1–13.
+      </li>
+      <li id="BibPLXBIB0065" label="[65]">
+       Arjun Srinivasan and John Stasko. 2017. Orko: Facilitating multimodal interaction for visual exploration and analysis of networks.
+       <em>
+        <em>
+         IEEE transactions on visualization and computer graphics
+        </em>
+       </em>
+       24, 1(2017), 511–521.
+      </li>
+      <li id="BibPLXBIB0066" label="[66]">
+       Harris Steve, Seaborne Andy, and Prud'hommeaux Eric. 2013. SPARQL 1.1 Query Language.
+       <a class="link-inline force-break" href="https://www.w3.org/TR/sparql11-query/">
+        https://www.w3.org/TR/sparql11-query/
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0067" label="[67]">
+       Chao Tong, Richard Roberts, Rita Borgo, Sean Walton, Robert S Laramee, Kodzo Wegba, Aidong Lu, Yun Wang, Huamin Qu, Qiong Luo,
+       <em>
+        et al.
+       </em>
+       2018. Storytelling and visualization: An extended survey.
+       <em>
+        <em>
+         Information
+        </em>
+       </em>
+       9, 3 (2018), 65.
+      </li>
+      <li id="BibPLXBIB0068" label="[68]">
+       Mati Ullah, Abdul Shahid, Muhammad Roman, Muhammad Assam, Muhammad Fayaz, Yazeed Ghadi, Hanan Aljuaid,
+       <em>
+        et al.
+       </em>
+       2022. Analyzing Interdisciplinary Research Using Co-Authorship Networks.
+       <em>
+        <em>
+         Complexity
+        </em>
+       </em>
+       2022(2022).
+      </li>
+      <li id="BibPLXBIB0069" label="[69]">
+       Quan Wang, Zhendong Mao, Bin Wang, and Li Guo. 2017. Knowledge graph embedding: A survey of approaches and applications.
+       <em>
+        <em>
+         IEEE Transactions on Knowledge and Data Engineering
+        </em>
+       </em>
+       29, 12(2017), 2724–2743.
+      </li>
+      <li id="BibPLXBIB0070" label="[70]">
+       Yanyan Wang, Zhanning Bai, Zhifeng Lin, Xiaoqing Dong, Yingchaojie Feng, Jiacheng Pan, and Wei Chen. 2021. G6: A web-based library for graph visualization.
+       <em>
+        <em>
+         Visual Informatics
+        </em>
+       </em>
+       5, 4 (2021), 49–55.
+      </li>
+      <li id="BibPLXBIB0071" label="[71]">
+       Thomas Wolf, Lysandre Debut, Victor Sanh, Julien Chaumond, Clement Delangue, Anthony Moi, Pierric Cistac, Tim Rault, Rémi Louf, Morgan Funtowicz, Joe Davison, Sam Shleifer, Patrick von Platen, Clara Ma, Yacine Jernite, Julien Plu, Canwen Xu, Teven Le Scao, Sylvain Gugger, Mariama Drame, Quentin Lhoest, and Alexander M. Rush. 2020. Transformers: State-of-the-Art Natural Language Processing. In
+       <em>
+        Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations
+       </em>
+       . Association for Computational Linguistics, Online, 38–45.
+       <a class="link-inline force-break" href="https://www.aclweb.org/anthology/2020.emnlp-demos.6">
+        https://www.aclweb.org/anthology/2020.emnlp-demos.6
+       </a>
+      </li>
+      <li id="BibPLXBIB0072" label="[72]">
+       Scott Wen-tau Yih, Ming-Wei Chang, Xiaodong He, and Jianfeng Gao. 2015. Semantic parsing via staged query graph generation: Question answering with knowledge base. In
+       <em>
+        Proceedings of the Joint Conference of the 53rd Annual Meeting of the ACL and the 7th International Joint Conference on Natural Language Processing of the AFNLP
+       </em>
+       .
+      </li>
+      <li id="BibPLXBIB0073" label="[73]">
+       Wen-tau Yih, Xiaodong He, and Christopher Meek. 2014. Semantic parsing for single-relation question answering. In
+       <em>
+        Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)
+       </em>
+       . 643–648.
+      </li>
+      <li id="BibPLXBIB0074" label="[74]">
+       Zhaoquan Yuan, Xiao Peng, Xiao Wu, and Changsheng Xu. 2021. Hierarchical Multi-Task Learning for Diagram Question Answering with Multi-Modal Transformer. In
+       <em>
+        Proceedings of the 29th ACM International Conference on Multimedia
+       </em>
+       . 1313–1321.
+      </li>
+      <li id="BibPLXBIB0075" label="[75]">
+       Wayne W Zachary. 1977. An information flow model for conflict and fission in small groups.
+       <em>
+        <em>
+         Journal of anthropological research
+        </em>
+       </em>
+       33, 4 (1977), 452–473.
+      </li>
+      <li id="BibPLXBIB0076" label="[76]">
+       Yuchen Zhang, Panupong Pasupat, and Percy Liang. 2017. Macro grammars and holistic triggering for efficient semantic parsing.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1707.07806">
+          1707.07806
+         </a>
+        </em>
+       </em>
+       (2017).
+      </li>
+      <li id="BibPLXBIB0077" label="[77]">
+       Ying Zhao, Jingcheng Shi, Jiawei Liu, Jian Zhao, Fangfang Zhou, Wenzhi Zhang, Kangyi Chen, Xin Zhao, Chunyao Zhu, and Wei Chen. 2021. Evaluating effects of background stories on graph perception.
+       <em>
+        <em>
+         IEEE Transactions on Visualization and Computer Graphics
+        </em>
+       </em>
+       (2021).
+      </li>
+      <li id="BibPLXBIB0078" label="[78]">
+       Victor Zhong, Caiming Xiong, and Richard Socher. 2017. Seq2SQL: Generating Structured Queries from Natural Language using Reinforcement Learning.
+       <em>
+        <em>
+         CoRR
+        </em>
+       </em>
+       abs/1709.00103(2017).
+      </li>
+     </ul>
+    </section>
+   </section>
+   <section class="footnote" id="foot-001">
+    <div class="bibStrip">
+     <p>
+      Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+      <a href="mailto:permissions@acm.org">
+       permissions@acm.org
+      </a>
+      .
+     </p>
+     <p>
+      <em>
+       CHI '23, April 23–28, 2023, Hamburg, Germany
+      </em>
+     </p>
+     <p>
+      © 2023 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+      <br/>
+      ACM ISBN 978-1-4503-9421-5/23/04…$15.00.
+      <br/>
+      DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3581067" target="_blank">
+       https://doi.org/10.1145/3544548.3581067
+      </a>
+     </p>
+    </div>
+   </section>
+  </main>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'869df56eec8c65dc',t:'MTcxMTM1OTgzMi42NDQwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

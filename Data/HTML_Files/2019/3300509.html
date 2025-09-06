@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Understanding the Effect of Accuracy on Trust in Machine Learning Models
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300509_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300509_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300509_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300509_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300509_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300509_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300509_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300509_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Understanding the Effect of Accuracy on Trust in Machine Learning Models
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Ming
+      </span>
+      <span class="surName">
+       Yin
+      </span>
+      , Purdue University, USA,
+      <a href="mailto:mingyin@purdue.edu">
+       mingyin@purdue.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Jennifer
+      </span>
+      <span class="surName">
+       Wortman Vaughan
+      </span>
+      , Microsoft Research, USA,
+      <a href="mailto:jenn@microsoft.com">
+       jenn@microsoft.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Hanna
+      </span>
+      <span class="surName">
+       Wallach
+      </span>
+      , Microsoft Research, USA,
+      <a href="mailto:hanna@dirichlet.net">
+       hanna@dirichlet.net
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300509" target="_blank">
+       https://doi.org/10.1145/3290605.3300509
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       We address a relatively under-explored aspect of human–computer interaction: people's abilities to understand the relationship between a machine learning model's stated performance on held-out data and its expected performance post deployment. We conduct large-scale, randomized human-subject experiments to examine whether laypeople's trust in a model, measured in terms of both the frequency with which they revise their predictions to match those of the model and their self-reported levels of trust in the model, varies depending on the model's stated accuracy on held-out data and on its observed accuracy in practice. We find that people's trust in a model is affected by both its stated accuracy and its observed accuracy, and that the effect of stated accuracy can change depending on the observed accuracy. Our work relates to recent research on interpretable machine learning, but moves beyond the typical focus on model internals, exploring a different component of the machine learning pipeline.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Empirical studies in HCI
+       </strong>
+       ; •
+       <strong>
+        Computing methodologies → Machine learning
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Machine learning
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        trust
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        human-subject experiments
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Ming Yin, Jennifer Wortman Vaughan, and Hanna Wallach. 2019. Understanding the Effect of Accuracy on Trust in Machine Learning Models. In
+        <em>
+         CHI Conference on Human Factors in Computing Systems Proceedings (CHI 2019), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 13 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300509" target="_blank">
+         https://doi.org/10.1145/3290605.3300509
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Machine learning (ML) is becoming increasingly ubiquitous as a tool to aid human decision-making in diverse domains ranging from medicine to public policy and law. For example, researchers have trained deep neural networks to help dermatologists identify skin cancer [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ], while political strategists regularly use ML-based forecasts to determine their next move [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ]. Police departments have used ML systems to predict the location of human trafficking hotspots [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ], while child welfare workers have used predictive modeling to strategically target services to the children most at risk [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ].
+    </p>
+    <p>
+     This widespread applicability of ML has led to a movement to “democratize machine learning” [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ] by developing off-the-shelf models and toolkits that make it possible for anyone to incorporate ML into their own system or decision-making pipeline, without the need for any formal training. While this movement opens up endless possibilities for ML to have real-world impact, it also creates new challenges. Decision-makers may not be used to reasoning about the explicit forms of uncertainty that are baked into ML predictions [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ], or, because they do not need to understand the inner workings of an ML model in order to use it, they may misunderstand or mistrust its predictions [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ]. Prompted by these challenges, as well as growing concerns that ML systems may inadvertently reinforce or amplify societal biases [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2
+     </a>
+     ], researchers have turned their attention to the ways that humans interact with ML, typically focusing on people's abilities and willingness to use, understand, and trust ML systems. This body of work often falls under the broad umbrella of interpretable machine learning [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ].
+    </p>
+    <p>
+     To date, most work on interpretability has focused explicitly on ML models, asking questions about people's abilities to understand model internals or the ways that particular models map inputs to outputs [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ], as well as questions about the relationship between these abilities and people's willingness to trust a model. However, the model is just one component of the ML pipeline, which spans data collection, model selection, training algorithms and procedures, model evaluation, and ultimately, deployment. It is therefore important to study people's interactions with each of these components—not just those that relate to model internals.
+    </p>
+    <p>
+     One particularly under-explored aspect of the evaluation and deployment components of the pipeline is the interpretability of performance metrics, such as accuracy, precision, or recall. The democratization of ML means that it is increasingly common for a decision-maker to be presented with a “black-box” model along with some measure of its performance—most often accuracy—on held-out data. However, a model's stated performance may not accurately reflect its performance post deployment because the data on which the model was trained and evaluated may look very different from real-world use cases [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+      15
+     </a>
+     ]. In deciding how much to trust the model, the decision-maker has little to go on besides this stated performance, her own limited observations of the model's predictions in practice, and her domain knowledge.
+    </p>
+    <p>
+     This scenario raises a number of questions. To what extent do laypeople—who are increasingly often the end users of systems built using ML models—understand the relationship between a model's stated performance on held-out data and its expected performance post deployment? How does their understanding influence their willingness to trust the model? For example, do people trust a model more if they are told that its accuracy on held-out data is 90% as compared with 70%? If so, will the model's stated accuracy continue to influence their trust in the model even after they are given the opportunity to observe and interact with the model in practice?
+    </p>
+    <p>
+     In this paper, we describe the results of a sequence of large-scale, randomized, pre-registered human-subject experiments
+     <a class="fn" href="#fn1" id="foot-fn1">
+      <sup>
+       1
+      </sup>
+     </a>
+     designed to investigate whether an ML model's accuracy affects laypeople's willingness to trust the model. Specifically, we focus on the following three main questions:
+    </p>
+    <ul class="list-no-style">
+     <li id="uid2" label="•">
+      Does a model's stated accuracy on held-out data affect people's trust in the model?
+      <br/>
+     </li>
+     <li id="uid3" label="•">
+      If so, does it continue to do so after people have observed the model's accuracy in practice?
+      <br/>
+     </li>
+     <li id="uid4" label="•">
+      How does a model's observed accuracy in practice affect people's trust in the model?
+      <br/>
+     </li>
+    </ul>
+    <p>
+     In each of our experiments, subjects recruited on Amazon Mechanical Turk were asked to make predictions about the outcomes of speed dating events with the help of an ML model. Subjects were first shown information about a speed dating participant and his or her date, and then asked to predict whether or not the participant would want to see his or her date again. Finally, they were shown the model's prediction and given the option of revising their own prediction.
+    </p>
+    <p>
+     In our first experiment, we focus on the first two questions above, investigating whether a model's stated accuracy on held-out data affects laypeople's trust in the model and, if so, whether it continues to do so after they have observed the model's accuracy in practice. Subjects were randomized into one of ten treatments, which differed along two dimensions: stated accuracy on held-out data and amount at stake. Some subjects were given no information about the model's accuracy on held-out data, while others were told that its accuracy was 60%, 70%, 90%, or 95%. Halfway through the experiment, each subject was given feedback on both their own accuracy and the model's accuracy on the first half of the prediction tasks, which was 80% regardless of the treatment. Subjects in all treatments saw exactly the same speed dating events and exactly the same model predictions. This experimental design allows us isolate the effect of stated accuracy on people's trust, both before and after they observe the model's accuracy in practice. As a robustness check, some subjects received a monetary bonus for each correct prediction, while others did not, allowing us to test whether the effect of stated accuracy on trust varies when people have more “skin in the game.”
+    </p>
+    <p>
+     We find that stated accuracy does have a significant effect on people's trust in a model, measured in terms of both the frequency with which subjects adjust their predictions to match those of the model and their self-reported levels of trust in the model. We also find that the effect size is smaller after people observe the model's accuracy in practice. We do not find that the amount at stake has a significant effect.
+    </p>
+    <p>
+     In our second experiment, we test whether these results are robust to different levels of observed accuracy by running two additional variations of our first experiment: one in which the observed accuracy of the model was low and one in which the observed accuracy of the model was high. We find that a model's stated accuracy still has a significant effect on people's trust even after observing a high accuracy (100%) in practice. However, if a model's observed accuracy is low (55%), then after observing this accuracy, the stated accuracy has at most a very small effect on people's trust in the model.
+    </p>
+    <p>
+     In our third experiment, we investigate the final question above—i.e., how does a model's observed accuracy in practice affect people's trust in the model? The experimental design used in our first two experiments does not enable us to directly compare people's trust between treatments with different levels of observed accuracy because the prediction tasks (i.e., speed dating events) and the model predictions differed between these treatments. Our third experiment was therefore carefully designed to enable us to make such comparisons. We find that after observing a model's accuracy in practice, people's trust in the model is significantly affected by its observed accuracy regardless of its stated accuracy.
+    </p>
+    <p>
+     Finally, via an exploratory analysis, we dig more deeply into the question of how people update their trust after receiving feedback on their own accuracy and the model's accuracy in practice. We analyze differences in individual subjects’ trust in the model before and after receiving such feedback. Our experimental data support the conjecture that people compare their own accuracy to the model's observed accuracy, increasing their trust in the model if the model's observed accuracy is higher than their own accuracy—except in the case where the model's observed accuracy is substantially lower than its stated accuracy on held-out data.
+    </p>
+    <p>
+     Taken together, our results show that laypeople's trust in an ML model is affected by both the model's stated accuracy on held-out data and its observed accuracy in practice. These results highlight the need for designers of ML systems to clearly and responsibly communicate their expectations about model performance, as this information shapes the extent to which people trust a model, both before and after they are able to observe and interact with it in practice. Our results also reveal the importance of properly communicating the uncertainty that is baked into every ML prediction. Of course, proper caution should be used when generalizing our results to other settings. For example, although we do not find that the amount at stake has a significant effect, it is possible that there would be an effect when stakes are sufficiently high (e.g., doctors making life-or-death decisions).
+    </p>
+    <section id="sec-3">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Related Work
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our research contributes to a growing body of experimental work on trust in algorithmic systems. As a few examples, Dzindolet et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ] and Dietvorst et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ] found that people stop trusting an algorithm after witnessing it make a mistake, even when the algorithm outperforms human predictions—a phenomenon known as algorithm aversion. Dietvorst et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ] found that people are more willing to rely on an algorithm's predictions when they are given the ability to make minor adjustments to the predictions rather than accepting them as is. Yeomans et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ] found that people distrust automated recommender systems compared with human recommendations in the context of predicting which jokes people will find funny—a highly subjective domain—even when the recommender system outperforms human predictions. In contrast, Logg et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ] found that people trust predictions more when they believe that the predictions come from an algorithm as opposed to a human expert when predicting music popularity, romantic matches, and other outcomes. This effect is diluted when people are given the choice between using an algorithm's prediction and using their own prediction (as opposed to a prediction from another human expert).
+     </p>
+     <p>
+      The relationship between interpretability and trust has been discussed in several recent papers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ]. Most related to our work, and an inspiration for our experimental design, Poursabzi-Sangdeh et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ] ran a sequence of randomized human-subject experiments and found no evidence that either the number of features used in an ML model nor the model's level of transparency (clear or black box) have a significant impact on people's willingness to trust the model's predictions, although these factors do affect people's abilities to detect when the model has made a mistake.
+     </p>
+     <p>
+      Kennedy et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ] touched on the relationship between stated accuracy and trust in the context of criminal recidivism prediction. They ran a conjoint experiment in which they presented subjects with randomly generated pairs of models and asked each subject which model they preferred. The models varied in terms of their stated accuracy, the size of the (fictitious) training data set, the number of features, and several other properties. The authors estimated the effect of each property by fitting a hierarchical linear model and found that people generally focus most on the size of the training data set, the source of the algorithm, and the stated accuracy, while less often taking into account the model's level of transparency or the relevance of the training data.
+     </p>
+     <p>
+      Finally, a few studies from the human–computer interaction community have examined the relationship between system performance and users’ trust in automated systems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ], ubiquitous computing systems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ], recommender systems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ], and robots [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. For example, in a simulated experimental environment in which users interacted with an automated quality monitoring system to identify faulty items in a fictional factory production line, Yu et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ] explored how users’ trust in the system varies with its accuracy. Unlike in our work, system accuracy was not explicitly communicated to users. Instead, users “perceived” the accuracy by receiving feedback after interacting with the system. Yu et al. found that users are able to correctly perceive the accuracy and stabilize their trust to a level correlated with the accuracy [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ], though system failures have a stronger impact on trust than system successes [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ]. In addition, Kay et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ] developed a survey tool through which they revealed that, for classifiers used in four hypothetical applications (e.g., electricity monitoring and location tracking), users tend to put more weight on the classifiers’ recall rather than their precision when deciding whether the classifiers’ performance is acceptable, with the weight varying across applications.
+     </p>
+    </section>
+   </section>
+   <section id="sec-4">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       EXPERIMENT 1: DOES A MODEL'S STATED ACCURACY AFFECT LAYPEOPLE'S TRUST?
+      </h2>
+     </div>
+    </header>
+    <p>
+     Our first experiment was designed to answer our first two main questions—i.e., does a model's stated accuracy on held-out data affect laypeople's trust in the model, and if so, does it continue to do so after they have observed the model's accuracy in practice? In our experiment, each subject observed the model's accuracy in practice via a feedback screen that was presented halfway through the experiment with information about the subject's own accuracy and the model's accuracy thus far, as described below. Before running the experiment, we posited and pre-registered two hypotheses derived from our questions, which we state informally here:
+     <a class="fn" href="#fn2" id="foot-fn2">
+      <sup>
+       2
+      </sup>
+     </a>
+    </p>
+    <ul class="list-no-style">
+     <li id="uid7" label="•">
+      <strong>
+       [H1]
+      </strong>
+      The stated accuracy of a model has a significant effect on people's trust in the model
+      <em>
+       before
+      </em>
+      seeing the feedback screen.
+      <br/>
+     </li>
+     <li id="uid8" label="•">
+      <strong>
+       [H2]
+      </strong>
+      The stated accuracy of a model has a significant effect on people's trust in the model
+      <em>
+       after
+      </em>
+      seeing the feedback screen.
+      <br/>
+     </li>
+    </ul>
+    <p>
+     As a robustness check to guard against the potential criticism that any null results might be due to a lack of performance incentives, we randomly selected some subjects to receive a monetary bonus for each correct prediction. We also posited and pre-registered two additional hypotheses:
+    </p>
+    <ul class="list-no-style">
+     <li id="uid9" label="•">
+      <strong>
+       [H3]
+      </strong>
+      The amount at stake has a significant effect on people's trust in a model
+      <em>
+       before
+      </em>
+      seeing the feedback screen.
+      <br/>
+     </li>
+     <li id="uid10" label="•">
+      <strong>
+       [H4]
+      </strong>
+      The amount at stake has a significant effect on people's trust in a model
+      <em>
+       after
+      </em>
+      seeing the feedback screen.
+      <br/>
+     </li>
+    </ul>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Prediction Tasks
+       </h3>
+      </div>
+     </header>
+     <p>
+      We asked subjects to make predictions about the outcomes of forty speed dating events. The data came from real speed dating participants and their dates via the experimental study of Fisman et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ]. Each speed dating participant indicated whether or not he or she wanted to see his or her date again, thereby giving us ground truth from which to compute accuracy. We chose this application for two reasons: First, predicting romantic interest does not require specialized domain expertise. Second, this setting is plausibly one in which ML might be used given that many dating websites already rely on ML models to predict potential romantic partners [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ].
+     </p>
+     <p>
+      For each prediction task (i.e., speed dating event), each subject was first shown a screen of information about the speed dating participant and his or her date, including:
+     </p>
+     <ul class="list-no-style">
+      <li id="uid12" label="•">
+       <em>
+        The participant's basic information
+       </em>
+       : the gender, age, field of study, race, etc. of the participant.
+       <br/>
+      </li>
+      <li id="uid13" label="•">
+       <em>
+        The date's basic information
+       </em>
+       : the gender, age, and race of the participant's date.
+       <br/>
+      </li>
+      <li id="uid14" label="•">
+       <em>
+        The participant's preferences
+       </em>
+       : the participant's reported distribution of 100 points among six attributes (attractiveness, sincerity, intelligence, fun, ambition, and shared interests), indicating how much he or she values each attribute in a romantic partner.
+       <br/>
+      </li>
+      <li id="uid15" label="•">
+       <em>
+        The participant's impression of the date
+       </em>
+       : the participant's rating of his or her date on the same six attributes using a scale of one to ten, as well as scores (also using a scale of one to ten) indicating how happy the participant expected to be with his or her date and how much the participant liked his or her date.
+       <br/>
+      </li>
+     </ul>
+     <p>
+      The subject was then asked to follow a three step-procedure: First, they were asked to carefully review the information about the participant and his or her date and predict whether or not the participant would want to see his or her date again. Next, they were shown the model's (binary) prediction. Finally, they were given the option of revising their own prediction. A screenshot of the interface is shown in Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      .
+     </p>
+     <figure id="fig1">
+      <img alt="" class="img-responsive" longdesc="" src="3300509_files\chi2019279fig1.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        Screenshot of the prediction task interface.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Experimental Treatments
+       </h3>
+      </div>
+     </header>
+     <p>
+      We randomized subjects into one of ten treatments arranged in a 5 × 2 design. The treatments differed along two dimensions: stated accuracy on held-out data and amount at stake.
+     </p>
+     <p>
+      Subjects were randomly assigned to one of five accuracy levels: none (the baseline), 60%, 70%, 90%, or 95%. Subjects assigned to an accuracy level of none were initially given no information about the model's accuracy on held-out data. Subjects assigned to one of the other accuracy levels saw the following sentence in the instructions: “We previously evaluated this model on a large data set of speed dating participants and its accuracy was
+      <span class="inline-equation">
+       <span class="tex">
+        $x\%$
+       </span>
+      </span>
+      , i.e., the model's predictions were correct on
+      <span class="inline-equation">
+       <span class="tex">
+        $x\%$
+       </span>
+      </span>
+      of the speed dating participants in this data set.” Throughout the experiment, we also reminded these subjects of the model's stated accuracy on held-out data each time they were shown one of the model's predictions.
+     </p>
+     <p>
+      We note that our sentence about accuracy was
+      <em>
+       not
+      </em>
+      a deception. We developed four ML models (a rule-based classifier, a support vector machine, a three-hidden-layer neural network, and a random forest) and evaluated them on a held-out data set of 500 speed dating participants, obtaining accuracies of 60%, 70%, 90%, and 95%. To keep the treatments as similar as possible, the models made exactly the same predictions for the forty speed dating events that were shown to subjects.
+     </p>
+     <p>
+      Subjects were randomly assigned to either low or high stakes. Subjects assigned to low stakes were paid a flat rate of
+      <font style="normal">
+       $
+      </font>
+      1.50 for completing the experiment. Subjects assigned to high stakes also received a monetary bonus of
+      <font style="normal">
+       $
+      </font>
+      0.10 for each correct (final) prediction
+      <a class="fn" href="#fn3" id="foot-fn3">
+       <sup>
+        3
+       </sup>
+      </a>
+      in addition to the flat rate of
+      <font style="normal">
+       $
+      </font>
+      1.50.
+     </p>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Experimental Design
+       </h3>
+      </div>
+     </header>
+     <p>
+      We posted our experiment as a human intelligence task (HIT) on Amazon Mechanical Turk. The experiment was only open to workers in the U.S., and each worker could participate only once. In total, 1,994 subjects completed the experiment.
+     </p>
+     <p>
+      Upon accepting the HIT, each subject was randomized into one of the ten treatments described above. Each HIT consisted of exactly the same forty prediction tasks, grouped into two sets
+      <em>
+       A
+      </em>
+      and
+      <em>
+       B
+      </em>
+      of twenty tasks each. As described above, subjects in all ten treatments saw exactly the same model prediction for each task. The experiment was divided into two phases. To minimize differences between the phases, subjects were randomly assigned to see either the tasks in set
+      <em>
+       A
+      </em>
+      during Phase 1 and the tasks in set
+      <em>
+       B
+      </em>
+      during Phase 2, or vice versa; the order of the tasks was randomized within each phase. We chose the tasks in sets
+      <em>
+       A
+      </em>
+      and
+      <em>
+       B
+      </em>
+      so that the observed accuracy on the first twenty tasks would be 80% regardless of the ordering of sets
+      <em>
+       A
+      </em>
+      and
+      <em>
+       B
+      </em>
+      . This experimental design minimizes differences between treatments and allows us to draw causal conclusions about the effect of stated accuracy on people's trust without worrying about confounding factors.
+     </p>
+     <p>
+      Each subject was asked to make initial and final predictions for each task, following the three-step procedure described above. The subjects were given no feedback on their own prediction or the model's prediction for any individual task; however, after Phase 1, each subject was shown a feedback screen with information about their own accuracy and the model's accuracy (80% by design) on the tasks in Phase 1. A screenshot of the feedback screen is shown in Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      .
+     </p>
+     <figure id="fig2">
+      <img alt="" class="img-responsive" longdesc="" src="3300509_files\chi2019279fig2.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        Screenshot of the feedback screen shown between Phase 1 and Phase 2 (i.e., after the first twenty tasks).
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      At the end of the HIT, each subject completed an exit survey in which they were asked to report their level of trust in the model during each phase using a scale of one (“I didn't trust it at all”) to ten (“I fully trust it”). Specifically, we asked subjects the following question: “How much did you trust our machine learning algorithm's predictions on the first [last] twenty speed dating participants (that is, before [after] you saw any feedback on your performance and the algorithm's performance)?” We also collected basic demographic information (such as age and gender) about each subject.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="" src="3300509_files\chi2019279fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Comparing how often subjects in different experimental treatments follow an ML model's predictions (average agreement fraction and average switch fraction) during each phase of our first experiment. Error bars represent standard errors.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      To quantify a subject's trust in a model, we defined two metrics, calculated separately for each phase, that capture how often the subject “followed” the model's predictions:
+     </p>
+     <ul class="list-no-style">
+      <li id="uid22" label="•">
+       <em>
+        Agreement fraction
+       </em>
+       : the number of tasks for which the subject's final prediction agreed with the model's prediction, divided by the total number of tasks.
+       <br/>
+      </li>
+      <li id="uid23" label="•">
+       <em>
+        Switch fraction
+       </em>
+       : the number of tasks for which the subject's initial prediction disagreed with the model's prediction
+       <em>
+        and
+       </em>
+       the subject's final prediction agreed with the model's prediction, divided by the total number of tasks for which the subject's initial prediction disagreed with the model's prediction.
+       <br/>
+      </li>
+     </ul>
+     <p>
+      We used these two metrics when formally stating all of our pre-registered hypotheses, while additionally pre-registering our intent to analyze subjects’ self-reported trust levels.
+     </p>
+    </section>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Analysis of Trust in Phase 1 (H1 and H3)
+       </h3>
+      </div>
+     </header>
+     <p>
+      We start by analyzing data from Phase 1 to see if subjects’ trust in a model is affected by the model's stated accuracy and the amount at stake
+      <em>
+       before
+      </em>
+      they see the feedback screen. Figures 3a and 3b show subjects’ average agreement fraction and average switch fraction, respectively, in Phase 1, by treatment. Visually, stated accuracy appears to have a substantial effect on how often subjects follow the model's predictions. Subjects’ final predictions agree with the model's predictions more often when the model has a high stated accuracy. However, the effect of the amount at stake is less apparent. To formally compare the treatments, we conduct a two-way ANOVA on subjects’ agreement fractions and, respectively, switch fractions in Phase 1. The results suggest a statistically significant main effect of stated accuracy on how often subjects follow the model's predictions (effect size
+      <em>
+       η
+      </em>
+      <sup>
+       2
+      </sup>
+      = 0.036,
+      <em>
+       p
+      </em>
+      = 4.72 × 10
+      <sup>
+       − 15
+      </sup>
+      for agreement fraction, and
+      <em>
+       η
+      </em>
+      <sup>
+       2
+      </sup>
+      = 0.061,
+      <em>
+       p
+      </em>
+      = 5.62 × 10
+      <sup>
+       − 26
+      </sup>
+      for switch fraction) while the main effect of the amount at stake is insignificant (
+      <em>
+       p
+      </em>
+      = 0.30 and
+      <em>
+       p
+      </em>
+      = 0.11 for agreement fraction and switch fraction, respectively). We do not detect a significant interaction between the two factors (
+      <em>
+       p
+      </em>
+      = 0.77 and
+      <em>
+       p
+      </em>
+      = 0.62 for agreement fraction and switch fraction, respectively). In other words, hypothesis H1 is supported by our experimental data, while H3 is not.
+     </p>
+     <p>
+      An analysis of subjects’ self-reported levels of trust reveals a similar pattern. We detect a statistically significant main effect of stated accuracy on subjects’ self-reported levels of trust during Phase 1 (
+      <em>
+       η
+      </em>
+      <sup>
+       2
+      </sup>
+      = 0.049,
+      <em>
+       p
+      </em>
+      = 1.61 × 10
+      <sup>
+       − 20
+      </sup>
+      ), while the main effect of the amount at stake is insignificant (
+      <em>
+       p
+      </em>
+      = 0.92).
+     </p>
+     <p>
+      We also conduct a post-hoc Tukey's HSD test to identify pairs of treatments in which subjects exhibit distinct differences in how often they follow the model's predictions. We find that treatments can be clustered into two groups—treatments with an accuracy level of none, 60%, or 70%, and treatments with an accuracy level of 90% or 95%—such that almost all statistically significant results are found for across-group treatment pairs.
+      <a class="fn" href="#fn4" id="foot-fn4">
+       <sup>
+        4
+       </sup>
+      </a>
+      These results confirm our visual intuition from Figures 3a and 3b : when subjects have not yet observed the model's accuracy in practice, they tend to follow the predictions of models with a high stated accuracy more often than those of models with a low (or no) stated accuracy, even though the models make exactly the same predictions.
+     </p>
+    </section>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Analysis of Trust in Phase 2 (H2 and H4)
+       </h3>
+      </div>
+     </header>
+     <p>
+      We next analyze data from Phase 2 to examine whether subjects’ trust in a model is affected by the model's stated accuracy and the amount at stake
+      <em>
+       after
+      </em>
+      they see the feedback screen. The feedback screen included information about the subject's own accuracy and the model's accuracy (80% by design) on the tasks in Phase 1, as described above. Figures 3c and 3d show subjects’ average agreement fraction and average switch fraction, respectively, in Phase 2, by treatment. Through a two-way ANOVA, we again find a statistically significant main effect of stated accuracy on how often subjects follow the model's predictions during Phase 2 (
+      <em>
+       p
+      </em>
+      = 0.009 for agreement fraction and
+      <em>
+       p
+      </em>
+      = 1.13 × 10
+      <sup>
+       − 5
+      </sup>
+      for switch fraction), but the effect sizes are smaller than those for Phase 1 (
+      <em>
+       η
+      </em>
+      <sup>
+       2
+      </sup>
+      = 0.007 for agreement fraction and
+      <em>
+       η
+      </em>
+      <sup>
+       2
+      </sup>
+      = 0.014 for switch fraction). Again, neither the main effect of the amount at stake nor the interaction between the two factors are statistically significant. That is, after receiving feedback on the model's accuracy in practice, stated accuracy still has a substantial effect on how often subjects follow the model's predictions, while the amount at stake does not. In other words, hypothesis H2 is supported by our experimental data, while H4 is not.
+     </p>
+     <p>
+      As before, an analysis of subjects’ self-reported levels of trust tells a similar story. We detect a statistically significant main effect of stated accuracy on subjects’ self-reported levels of trust during Phase 2 (
+      <em>
+       η
+      </em>
+      <sup>
+       2
+      </sup>
+      = 0.008,
+      <em>
+       p
+      </em>
+      = 0.005), while the main effect of the amount at stake is insignificant (
+      <em>
+       p
+      </em>
+      = 0.88).
+     </p>
+     <p>
+      Interestingly, when conducting a post-hoc Tukey's HSD test to identify pairs of treatments in which subjects exhibit distinct differences in how often they follow the model's predictions, we find fewer statistically significant results than we did for Phase 1. For agreement fraction,
+      <em>
+       none
+      </em>
+      of the differences across treatment pairs are statistically significant. For switch fraction, we find only five pairs of treatments with statistically significant differences; four of these are between treatments with an accuracy level of 60% and treatments with an accuracy level of 90% or 95%. Unlike in Phase 1, how often subjects follow the predictions of a model with a stated accuracy of 70% is
+      <em>
+       not
+      </em>
+      significantly different from how often subjects follow the predictions of a model with a stated accuracy of 90% or 95%. In other words, in Phase 2, a larger difference between two models’ stated accuracies is needed to detect a statistically significant effect of stated accuracy on trust, as compared with the difference needed in Phase 1.
+     </p>
+     <p>
+      Together, the results from our first experiment suggest that a model's stated accuracy affects laypeople's trust in the model; however, this effect is diluted once they have observed the model's accuracy in practice. In contrast, the amount at stake does not have an effect on laypeople's trust in a model, at least for the limited range of stakes used in our experiment.
+     </p>
+    </section>
+   </section>
+   <section id="sec-10">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       EXPERIMENT 2: DOES THIS EFFECT CHANGE IF THE OBSERVED ACCURACY IS LOW/HIGH?
+      </h2>
+     </div>
+    </header>
+    <figure id="fig4">
+     <img alt="" class="img-responsive" longdesc="" src="3300509_files\chi2019279fig5.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 4:
+      </span>
+      <span class="figure-title">
+       Examining the effect of stated accuracy on trust (average agreement fraction and average switch fraction) for different levels of observed accuracy (low vs. high) during each phase of our second experiment. Error bars represent standard errors.
+      </span>
+     </div>
+    </figure>
+    <p>
+     In our first experiment, we found that a model's stated accuracy on held-out data has a significant effect on laypeople's trust in the model. However, in order to make valid comparisons across treatments, we had to design the experiment such that the models made exactly the same predictions for the forty speed dating events that were shown to subjects. We therefore fixed the observed accuracy to be a single arbitrary value—specifically 80%—for all models. It is natural to ask whether we would obtain the same results if a model's observed accuracy were substantially lower or higher than 80%.
+    </p>
+    <p>
+     Our second experiment consists of two sub-experiments designed to test whether our results are robust to different levels of observed accuracy. In one, the observed accuracy was fixed to a low value (55%), while in the other it was fixed to a high value (100%). Each sub-experiment was a miniature variation of our first experiment with only two treatments: stated accuracy of 60% and stated accuracy of 90%. We developed two ML models, with accuracies of 60% and 90% on held-out data. Before running the experiment, we pre-registered two hypotheses, analogous to H1 and H2:
+     <a class="fn" href="#fn5" id="foot-fn5">
+      <sup>
+       5
+      </sup>
+     </a>
+    </p>
+    <ul class="list-no-style">
+     <li id="uid29" label="•">
+      <strong>
+       [H5]
+      </strong>
+      The stated accuracy of a model has a significant effect on people's trust in the model
+      <em>
+       before
+      </em>
+      seeing the feedback screen,
+      <em>
+       regardless of its observed accuracy
+      </em>
+      .
+      <br/>
+     </li>
+     <li id="uid30" label="•">
+      <strong>
+       [H6]
+      </strong>
+      The stated accuracy of a model has a significant effect on people's trust in the model
+      <em>
+       after
+      </em>
+      seeing the feedback screen,
+      <em>
+       regardless of its observed accuracy
+      </em>
+      .
+      <br/>
+     </li>
+    </ul>
+    <p>
+     Because our first experiment revealed that the amount at stake does not affect people's trust in a model, we did not select any subjects to receive monetary bonuses, nor did we pre-register any hypotheses about the amount at stake.
+    </p>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Experimental Design
+       </h3>
+      </div>
+     </header>
+     <p>
+      We posted our experiment on Amazon Mechanical Turk, with a flat rate of
+      <font style="normal">
+       $
+      </font>
+      1.50 for completing the experiment. Workers who participated in our first experiment were prohibited from participating. We obtained data from 757 subjects.
+     </p>
+     <p>
+      Each subject was first randomized into one of the two sub-experiments and then into one of the two treatments described above. Each sub-experiment was completely analogous to our first experiment. Again, each HIT consisted of forty prediction tasks, grouped into two sets
+      <em>
+       A
+      </em>
+      and
+      <em>
+       B
+      </em>
+      of twenty tasks each. Subjects were randomly assigned to see either the tasks in set
+      <em>
+       A
+      </em>
+      during Phase 1 and the tasks in set
+      <em>
+       B
+      </em>
+      during Phase 2, or vice versa; the order of the tasks was randomized within each phase. For each sub-experiment, we chose the tasks in sets
+      <em>
+       A
+      </em>
+      and
+      <em>
+       B
+      </em>
+      so that subjects in both treatments would see exactly the same model prediction for each task and so that the observed accuracy on the first twenty tasks would be 55% (for the first sub-experiment) or 100% (for the second sub-experiment) regardless of the ordering of sets
+      <em>
+       A
+      </em>
+      and
+      <em>
+       B
+      </em>
+      . This experimental design minimizes differences between treatments
+      <em>
+       within
+      </em>
+      each sub-experiment and allows us to draw causal conclusions about the effect of stated accuracy on people's trust when the observed accuracy is low (alternatively, high) by comparing treatments within the first (alternatively, second) sub-experiment. However, because the two sub-experiments consisted of different tasks, we are not able to compare treatments from different sub-experiments.
+     </p>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Experimental Results
+       </h3>
+      </div>
+     </header>
+     <p>
+      We analyze data from Phase 1 of each sub-experiment separately to see if subjects’ trust in a model is affected by the model's stated accuracy
+      <em>
+       before
+      </em>
+      they see the feedback screen, regardless of its observed accuracy. The left two bars in Figures 4a and 4b show subjects’ average agreement fraction and average switch fraction, respectively, in Phase 1 when the observed accuracy was 55%, by treatment. Using two-sample t-tests to compare different treatments, we find a statistically significant effect of stated accuracy on how often subjects follow the model's predictions (
+      <em>
+       p
+      </em>
+      = 0.033 for agreement fraction, and
+      <em>
+       p
+      </em>
+      = 6.33 × 10
+      <sup>
+       − 4
+      </sup>
+      for switch fraction). Similar, and stronger, results can be seen from the left two bars in Figures 4c and 4d, which correspond to the second sub-experiment. Again, we find a statistically significant effect of stated accuracy on how often subjects follow the model's predictions (
+      <em>
+       p
+      </em>
+      = 4.74 × 10
+      <sup>
+       − 5
+      </sup>
+      for agreement fraction, and
+      <em>
+       p
+      </em>
+      = 1.71 × 10
+      <sup>
+       − 7
+      </sup>
+      for switch fraction). Together, these results show that hypothesis H5 is supported by our experimental data.
+     </p>
+     <p>
+      We next analyze data from Phase 2 of each sub-experiment separately to see whether subjects’ trust in a model is affected by the model's stated accuracy
+      <em>
+       after
+      </em>
+      they see the feedback screen, regardless of its observed accuracy. The right two bars in Figures 4a –4d show subjects’ average agreement fraction and average switch fraction in Phase 2 for both sub-experiments. When the observed accuracy is high (100%), consistent with the results from our first experiment, we find a statistically significant effect of stated accuracy on how often subjects follow the model's predictions after receiving feedback on the model's accuracy in practice (
+      <em>
+       p
+      </em>
+      = 4.33 × 10
+      <sup>
+       − 4
+      </sup>
+      for agreement fraction, and
+      <em>
+       p
+      </em>
+      = 1.61 × 10
+      <sup>
+       − 6
+      </sup>
+      for switch fraction). However, this is not the case when the observed accuracy is low (55%). Specifically, the right two bars in Figures 4a and 4b indicate that, after receiving feedback on the model's accuracy in practice, the effect of stated accuracy on how often subjects follow the model's predictions is not significant (
+      <em>
+       p
+      </em>
+      = 0.506 for agreement fraction, and
+      <em>
+       p
+      </em>
+      = 0.515 for switch fraction) when the observed accuracy is low (55%). Therefore, hypothesis H6 is not supported by our experimental data.
+     </p>
+     <p>
+      As before, an analysis of subjects’ self-reported levels of trust tells a similar story. We detect statistically significant differences in self-reported levels of trust in Phase 1 between between treatments within each sub-experiment, while in Phase 2, we only detect statistically significant differences between treatments when the observed accuracy is high (100%).
+     </p>
+     <p>
+      One possible explanation for the lack of support for hypothesis H6 is that the difference between the models’ stated accuracies (60% and 90%) is simply not large enough to detect a statistically significant effect of stated accuracy on trust in Phase 2 when the models’ observed accuracies are low, at least with our experiment's sample size. Indeed, as we show in our third experiment in the next section, if we keep the higher accuracy level at 90% but decrease the lower accuracy level from 60% to 50%, then we again find a statistically significant effect, even when the observed accuracy is low (55%). Combining these results with the results from our first experiment—i.e., when the observed accuracy is 80%, increasing the stated accuracy from 60% to 90% has a statistically significant effect on subjects’ trust during both phases—we conjecture that the effect of stated accuracy on people's trust
+      <em>
+       before
+      </em>
+      they observe the model's accuracy in practice is not too dependent on observed accuracy, but the effect of stated accuracy on people's trust
+      <em>
+       after
+      </em>
+      they observe the model's accuracy in practice
+      <em>
+       is
+      </em>
+      dependent on observed accuracy.
+     </p>
+    </section>
+   </section>
+   <section id="sec-13">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       EXPERIMENT 3: DOES A MODEL'S OBSERVED ACCURACY AFFECT LAYPEOPLE'S TRUST?
+      </h2>
+     </div>
+    </header>
+    <p>
+     In our first and second experiments, we found that a model's stated accuracy on held-out data has a significant effect on laypeople's trust in the model, though this effect is diluted once they have observed the model's accuracy in practice and can even disappear if the observed accuracy is sufficiently low. Our third and final experiment was designed to answer our third main question—i.e., how does a model's observed accuracy in practice affect laypeople's trust in the model?
+    </p>
+    <p>
+     Answering this question required us to modify our experimental design because the design used in our first two experiments does not enable us to directly compare people's trust between treatments with different levels of observed accuracy. In our third experiment, we therefore randomized subjects into one of six treatments arranged in a 2 × 3 design. The treatments varied along two dimensions: stated accuracy on held-out data (50% or 90%) and observed accuracy
+     <em>
+      on the tasks in Phase 1 only
+     </em>
+     (55%, 80%, or 100%). Before running the experiment, we pre-registered the following hypothesis:
+     <a class="fn" href="#fn6" id="foot-fn6">
+      <sup>
+       6
+      </sup>
+     </a>
+    </p>
+    <ul class="list-no-style">
+     <li id="uid34" label="•">
+      <strong>
+       [H7]
+      </strong>
+      After seeing the feedback screen, the observed accuracy of a model has a significant effect on people's trust in the model,
+      <em>
+       regardless of its stated accuracy
+      </em>
+      .
+      <br/>
+     </li>
+    </ul>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Experimental Design
+       </h3>
+      </div>
+     </header>
+     <p>
+      As with our first two experiments, we posted the experiment on Amazon Mechanical Turk with a flat rate of
+      <font style="normal">
+       $
+      </font>
+      1.50 for completing the experiment. The experiment was only open to U.S. workers who had not participated in our previous experiments. In total, we obtained data from 1,042 subjects.
+     </p>
+     <p>
+      Each subject was randomized into one of the six treatments described above. Each HIT consisted of exactly the same forty prediction tasks. However, models with different observed accuracies made different predictions for the tasks in Phase 1. To allow us to compare treatments with different observed accuracies, subjects in all six treatments saw exactly the same model prediction for each task in Phase 2, corresponding to an observed accuracy of 80%. Because the models’ observed accuracies could differ between the phases, we did not randomize the set of tasks used in each phase, but did randomize the order of the tasks within each phase.
+     </p>
+    </section>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Experimental Results
+       </h3>
+      </div>
+     </header>
+     <p>
+      Figures 5a and 5b show subjects’ average agreement fraction and average switch fraction, respectively, in Phase 2, by treatment. Visually, observed accuracy appears to have a substantial effect on how often subjects follow a model's predictions, regardless of the stated accuracy of the model.
+     </p>
+     <p>
+      To formally compare the treatments, we conduct one-way ANOVAs on subjects’ agreement fractions and switch fractions in Phase 2 across treatments with the same stated accuracy but different observed accuracies. When the stated accuracy is 50%, we find that there is a statistically significant effect of observed accuracy on how often subjects follow the model's predictions (
+      <em>
+       p
+      </em>
+      = 0.032 for agreement fraction, and
+      <em>
+       p
+      </em>
+      = 3.4 × 10
+      <sup>
+       − 9
+      </sup>
+      for switch fraction). We similarly find a statistically significant effect of observed accuracy on trust (
+      <em>
+       p
+      </em>
+      = 0.005 for agreement fraction, and
+      <em>
+       p
+      </em>
+      = 3.57 × 10
+      <sup>
+       − 10
+      </sup>
+      for switch fraction) when the stated accuracy is 90%. In other words, hypothesis H7 is supported by our experimental data.
+     </p>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="" src="3300509_files\chi2019279fig6.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        Examining the effect of observed accuracy on trust (average agreement fraction and average switch fraction) for different levels of stated accuracy during Phase 2 of our third experiment. Error bars represent standard errors.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      As before, analyzing subjects’ self-reported levels of trust tells a similar story. We find a statistically significant effect of observed accuracy on subjects’ self-reported levels of trust in Phase 2 when the stated accuracy is 50% (
+      <em>
+       p
+      </em>
+      = 1.58 × 10
+      <sup>
+       − 6
+      </sup>
+      ) and when the stated accuracy is 90% (
+      <em>
+       p
+      </em>
+      = 5.24 × 10
+      <sup>
+       − 14
+      </sup>
+      ).
+     </p>
+     <p>
+      Given the results from our first two experiments—and, in particular, the lack of support for hypothesis H6—it is natural to ask about the extent to which a model's stated accuracy affects subjects’ trust in the model during Phase 2 of this experiment. If we compare treatments with the same observed accuracy on the tasks in Phase 1 but different stated accuracies, we find that stated accuracy has a substantial effect on trust, regardless of the observed accuracy. As discussed in the previous section, we suspect that this apparent discrepancy with the results from our second experiment when the observed accuracy is low (55%) is due to the fact that the difference between the models’ stated accuracies (50% and 90%) is larger in this experiment than in our second experiment. Indeed, it is possible that that for our range of sample sizes, there could exist a statistically significant difference between treatments with stated accuracies of 50% and 90% without there being any statistically significant difference between treatments with stated accuracies of 50% and 60% or between treatments with stated accuracies of 60% and 90%. Regardless, our results imply that after receiving feedback on a model's accuracy in practice, the model's stated accuracy
+      <em>
+       and
+      </em>
+      its observed accuracy affect people's trust in the model.
+     </p>
+    </section>
+   </section>
+   <section id="sec-16">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       EXPLORATORY ANALYSIS: HOW DOES TRUST CHANGE AFTER RECEIVING FEEDBACK?
+      </h2>
+     </div>
+    </header>
+    <figure id="fig6">
+     <img alt="" class="img-responsive" longdesc="" src="3300509_files\chi2019279fig7.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 6:
+      </span>
+      <span class="figure-title">
+       Comparing agreement fraction and switch fraction between Phase 1 and 2 across treatments in our first experiment.
+      </span>
+     </div>
+    </figure>
+    <p>
+     In our three experiments, we found that both a model's stated accuracy on held-out data and its observed accuracy in practice affect laypeople's trust in the model. In this section, we report the results of an exploratory analysis of the data from our first two experiments, aimed at digging more deeply into the mechanisms behind this finding. We analyze differences in individual subjects’ trust between Phase 1 and Phase 2, and consider three possible mechanisms to explain them.
+    </p>
+    <p>
+     We posit three possible mechanisms by which subjects might update their trust after seeing the feedback screen:
+    </p>
+    <ul class="list-no-style">
+     <li id="uid39" label="•">
+      <em>
+       Stated vs. observed:
+      </em>
+      Subjects increase their trust in the model if its observed accuracy is higher than its stated accuracy, and decrease their trust otherwise.
+      <br/>
+     </li>
+     <li id="uid40" label="•">
+      <em>
+       Self vs. stated:
+      </em>
+      Subjects increase their trust in the model if the model's stated accuracy is higher than their own accuracy in Phase 1, and decrease their trust otherwise.
+      <br/>
+     </li>
+     <li id="uid41" label="•">
+      <em>
+       Self vs. observed:
+      </em>
+      Subjects increase their trust in the model if the model's observed accuracy is higher than their own accuracy in Phase 1, and decrease their trust otherwise.
+      <br/>
+     </li>
+    </ul>
+    <p>
+     We consider the evidence for and against each mechanism. Of course, this list is not exhaustive, and subjects’ behavior may be some combination of the three. Our goal is only to determine which mechanism is most consistent with our data.
+    </p>
+    <section id="sec-17">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Analysis of Differences in Trust Between Phases
+       </h3>
+      </div>
+     </header>
+     <p>
+      We first argue that the experimental design used in our first two experiments allows us to compare subjects’ trust between Phase 1 and Phase 2. This is because for each subject, we randomized the set of tasks (
+      <em>
+       A
+      </em>
+      or
+      <em>
+       B
+      </em>
+      ) used in each phase. Approximately half of the subjects saw the tasks in set
+      <em>
+       A
+      </em>
+      during Phase 1 and the tasks in set
+      <em>
+       B
+      </em>
+      during Phase 2, while the other half saw the reverse. Therefore any inherent differences between the sets of tasks or the models’ predictions for them should be mitigated by averaging trust over subjects. This is not the case for our third experiment. We therefore restrict our analysis to the data from our first two experiments.
+     </p>
+     <p>
+      We start by analyzing data from our first experiment. Figures 6a and 6b show subjects’ average agreement fraction and average switch fraction, respectively, in Phase 1 (solid bars) and Phase 2 (dotted bars), by treatment. For all ten treatments, subjects appear to increase their trust between Phase 1 and Phase 2. To confirm this, we conduct paired t-tests to determine whether the increase for each treatment is statistically significant. We find that subjects in
+      <em>
+       all
+      </em>
+      treatments significantly increase their agreement fractions between Phase 1 and Phase 2 (the largest
+      <em>
+       p
+      </em>
+      -value is 0.019 for the High-95% treatment). Subjects in all treatments also increase their switch fractions, and this increase is statistically significant (
+      <em>
+       p
+      </em>
+      &lt; 0.001) in all but three treatments (the exceptions are High-90%, Low-95%, and High-95%). These results provide evidence against the stated vs. observed mechanism, since we do not see a decrease in subjects’ trust when the stated accuracy is higher than the observed accuracy (80%).
+     </p>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Differences in trust between Phase 1 and Phase 2, by treatment, for subjects in our first experiment whose own accuracy on the tasks in Phase 1 was higher than the model's stated accuracy, but lower than the model's observed accuracy.
+        <em>
+         N
+        </em>
+        denotes the number of such subjects.
+        <em>
+         p
+        </em>
+        -values are reported for paired t-tests; the symbols
+        <sup>
+         *
+        </sup>
+        ,
+        <sup>
+         **
+        </sup>
+        , and
+        <sup>
+         ***
+        </sup>
+        represent significance levels of 0.05, 0.01, and 0.001, respectively.
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr>
+         <td>
+          <img alt="" class="img-responsive" src="3300509_files\chi2019279img1.svg"/>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      Next, we investigate whether and how a subject's own accuracy affects their trust in a model. Among the 1,994 subjects in the first experiment, only 3.4% (68 subjects) were at least as accurate as the model during Phase 1. To differentiate between the self vs. stated and self vs. observed mechanisms, we therefore restrict our analysis to those subjects whose own accuracy on the tasks in Phase 1 was higher than the model's stated accuracy, but lower than its observed accuracy. Tables 1a and 1b show differences in these subjects’ average agreement fraction and average switch fraction, respectively, between Phase 1 and Phase 2, by treatment. These subjects appear to increase their trust between Phase 1 and Phase 2.
+      <a class="fn" href="#fn7" id="foot-fn7">
+       <sup>
+        7
+       </sup>
+      </a>
+      Paired t-tests indicate that these increases are often statistically significant. These results provide evidence against the self vs. stated mechanism; only the self vs. observed mechanism remains consistent with our experimental data.
+     </p>
+     <p>
+      Finally, we analyze the data from our second experiment to consider evidence for and against the self vs. observed mechanism. We find that our data are mostly consistent with this mechanism, although we do find one exception. Specifically, we would expect that for the treatment with a stated accuracy of 90% and an observed accuracy of 55%, subjects whose own accuracy was less than 55% would increase their trust between Phase 1 and Phase 2; however, this was
+      <em>
+       not
+      </em>
+      the case. Although we see an insignificant increase in the average agreement fraction (
+      <em>
+       δ
+      </em>
+      = 0.017,
+      <em>
+       p
+      </em>
+      = 0.137), we also see an insignificant decrease in the average switch fraction (
+      <em>
+       δ
+      </em>
+      = −0.012,
+      <em>
+       p
+      </em>
+      = 0.741) and in subjects’ self-reported levels of trust in the model (
+      <em>
+       δ
+      </em>
+      = −0.3609,
+      <em>
+       p
+      </em>
+      = 0.137). These results suggest that, to the extent that subjects do compare their own accuracy with the model's observed accuracy, the effect of this comparison can be diluted by other factors, such as the difference between the model's stated and observed accuracies.
+     </p>
+    </section>
+   </section>
+   <section id="sec-18">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this paper, we investigate whether the accuracy of an ML model affects laypeople's willingness to trust the model via a sequence of large-scale, randomized, pre-registered human-subject experiments. We find that a model's stated accuracy on held-out data affects people's trust in the model, but that the effect size is smaller after people observe the model's accuracy in practice. Furthermore, if a model's observed accuracy is low, then its stated accuracy has at most a very small effect on people's trust in the model. We also find that after observing a model's accuracy in practice, people's trust in the model is significantly affected by its observed accuracy regardless of its stated accuracy. Via an exploratory analysis, we find that after observing a model's accuracy in practice, people are more likely to increase their trust in the model if the model's observed accuracy is higher than their own accuracy. We do find one exception though: if a model's observed accuracy is substantially lower than its stated accuracy, people do not revise their predictions to match those of the model after observing its accuracy in practice, even when their own accuracy is lower than the model's observed accuracy.
+    </p>
+    <p>
+     At the end of each experiment, we asked each subject for some basic demographic information—specifically their age, gender, and education level—via an exit survey. This information enabled us to investigate whether people's trust in a model varies with their demographics. In general, we did not find any differences between demographic groups. Of course, it is possible that demographic information other than age, gender, and education level might affect trust; we therefore highlight this as a potential avenue for future exploration.
+    </p>
+    <p>
+     Additionally, we acknowledge that trust is notoriously difficult to isolate and measure. In our experiments, we measured people's trust in terms of both behavioral measures (i.e., agreement fraction and switch fraction) and self-reports; these approaches gave consistent results. However, due to our experimental design (in particular, the difference between a model's stated and observed accuracies), it is possible that trust is affected by other factors such as surprise, confusion, and cognitive dissonance, all of which may mediate the effect of accuracy. Further research is needed to carefully determine whether this is the case. It would also be interesting to see whether people trust a model more when there is no difference between its stated and observed accuracies.
+    </p>
+    <p>
+     Our results offer a number of actionable implications for the human–computer interaction and ML communities to improve the trustworthiness of ML. First, our results highlight the need for designers of ML systems to clearly and responsibly communicate their expectations about model performance, as this information shapes the extent to which people trust a model, both before and after they are able to observe and interact with it in practice. Moreover, our experiments also show that people put substantial weight on their own interactions with a model when deciding how much to trust it, even if their interactions are limited to a few prediction tasks. This behavior is likely desirable in settings where there is a substantial mismatch between held-out data and real-world use cases, meaning that a model's stated performance on held-out data does not accurately reflect its performance post deployment. However, a model's observed performance on a small set of prediction tasks is not necessarily a good indicator of its average performance in practice. It is therefore important for designers of ML systems to convey the uncertainty inherent in performance calculations based on a small set of prediction tasks so that people do not mistakenly distrust an accurate model if its performance on the first few prediction tasks they observe in practice is low.
+    </p>
+    <p>
+     More broadly, it is crucial for designers of ML systems to properly communicate the uncertainty that is baked into
+     <em>
+      every
+     </em>
+     ML prediction. How best to achieve this goal is an area for future research, but could mean, for example, accompanying a model with a summary of characteristics of the data on which it was trained and evaluated in order to help end users reason about scenarios in which the model is most likely to achieve its stated performance on held-out data [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+      19
+     </a>
+     ]. This may help end users develop a better sense of how systematic discrepancies between evaluation and deployment environments might affect performance. In particular, we highlight the importance of further human–computer interaction research aimed at helping laypeople understand uncertainty. For example, visualization techniques could help people infer a model's expected performance post deployment from its stated and observed accuracies. Additional studies should be conducted to understand how the ways that accuracy is expressed (e.g., different ways to put accuracy in context/perspective) affect people's trust in a model.
+    </p>
+    <p>
+     Our finding that people are more likely to increase their trust in a model if the model's observed accuracy is higher than their own accuracy suggests a simple real-world intervention that can be used to encourage appropriate levels of trust in a model: ask people to make predictions themselves before using the model so that they can assess how good they are the tasks in question. By doing so, they will be better able to determine how much they should trust the model.
+    </p>
+    <p>
+     We note that proper caution should be used when generalizing our results to other settings. Because we focused on asking laypeople, recruited on Amazon Mechanical Turk, to make predictions about speed dating events, our results may not hold for settings where, for example, significant domain expertise is required or where the stakes are especially high (e.g., doctors making life-or-death decisions). In addition, subjects observe the model's accuracy in practice during a relatively short time window. Investigating how accuracy affects trust over repeated interactions, spanning a much longer time period, is therefore an important direction to explore. For example, how long does it take people to detect that a model's stated accuracy on held-out data is substantially different from its accuracy post deployment?
+    </p>
+    <p>
+     Ultimately, our work highlights a pressing need for more experimental studies aimed at understanding people's interactions with different components of the ML pipeline, thereby expanding the umbrella of interpretable machine learning beyond its current focus on model internals. We hope this paper will inspire more work in this direction.
+    </p>
+   </section>
+   <section id="sec-19">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       ACKNOWLEDGEMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We are grateful to the CHI 2019 anonymous reviewers who provided many helpful comments, and to Miro Dudík, Dan Goldstein, Jake Hofman, Ryan Kennedy, Forough Poursabzi-Sangdeh, and Marco Tulio Ribeiro for valuable discussions. We thank all the Amazon Mechanical Turk workers who participated in our experiments and made this work possible.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Julia Angwin, Jeff Larson, Surya Mattu, and Lauren Kirchner. 2016. Machine bias.
+      <em>
+       <em>
+        ProPublica, May
+       </em>
+      </em>
+      23(2016).
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Aylin Caliskan, Joanna J Bryson, and Arvind Narayanan. 2017. Semantics derived automatically from language corpora contain human-like biases.
+      <em>
+       <em>
+        Science
+       </em>
+      </em>
+      356, 6334 (2017), 183–186.
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Alexandra Chouldechova, Diana Benavides Prado, Oleksandr Fialko, Emily Putnam-Hornstein, and Rhema Vaithianathan. 2018. A case study of algorithm-assisted decision making in child maltreatment hotline screening decisions. In
+      <em>
+       Proceedings of the First Conference on Fairness, Accountability, and Transparency
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Berkeley J. Dietvorst, Joseph P. Simmons, and Cade Massey. 2015. Algorithm aversion: People erroneously avoid algorithms after seeing them err.
+      <em>
+       <em>
+        Journal of Experimental Psychology: General
+       </em>
+      </em>
+      144, 1 (2015), 114.
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Berkeley J. Dietvorst, Joseph P. Simmons, and Cade Massey. 2016. Overcoming Algorithm Aversion: People Will Use Imperfect Algorithms If They Can (Even Slightly) Modify Them.
+      <em>
+       <em>
+        Management Science
+       </em>
+      </em>
+      64, 3 (2016).
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Finale Doshi-Velez and Been Kim. 2017. Towards a rigorous science of interpretable machine learning. CoRR arXiv:1702.08608.
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Mary T. Dzindolet, Linda G. Pierce, Hall P. Beck, and Lloyd A. Dawe. 2002. The perceived utility of human and automated aids in a visual detection task.
+      <em>
+       <em>
+        Human Factors
+       </em>
+      </em>
+      44, 1 (2002), 79–94.
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Andre Esteva, Brett Kuprel, Roberto A Novoa, Justin Ko, Susan M Swetter, Helen M Blau, and Sebastian Thrun. 2017. Dermatologist-level classification of skin cancer with deep neural networks.
+      <em>
+       <em>
+        Nature
+       </em>
+      </em>
+      542, 7639 (2017), 115.
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Raymond Fisman, Sheena S Iyengar, Emir Kamenica, and Itamar Simonson. 2006. Gender differences in mate selection: Evidence from a speed dating experiment.
+      <em>
+       <em>
+        The Quarterly Journal of Economics
+       </em>
+      </em>
+      121, 2 (2006), 673–697.
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Timnit Gebru, Jamie Morgenstern, Briana Vecchione, Jennifer Wortman Vaughan, Hanna Wallach, Hal Daumé III, and Kate Crawford. 2018. Datasheets for Datasets. CoRR arXiv:1803.09010.
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Chien-Ju Ho, Aleksandrs Slivkins, Siddharth Suri, and Jennifer Wortman Vaughan. 2015. Incentivizing High Quality Crowdwork. In
+      <em>
+       Proceedings of the Twenty-Fourth International World Wide Web Conference
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Kartik Hosanagar and Apoorv Saxena. 2017. The Democratization of Machine Learning: What It Means for Tech Innovation. Knowledge@Wharton, retrieved from
+      <a class="link-inline force-break" href="http://knowledge.wharton.upenn.edu/article/democratization-ai-means-tech-innovation/">
+       http://knowledge.wharton.upenn.edu/article/democratization-ai-means-tech-innovation/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Matthew Kay, Shwetak N Patel, and Julie A Kientz. 2015. How Good is 85%?: A Survey Tool to Connect Classifier Evaluation to Acceptability of Accuracy. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      . 347–356.
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Ryan Kennedy, Philip D. Waggoner, and Matthew Ward. 2018. Trust in Public Policy Algorithms. Working paper.
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Himabindu Lakkaraju, Ece Kamar, Rich Caruana, and Eric Horvitz. 2017. Identifying Unknown Unknowns in the Open World: Representations and Policies for Guided Exploration. In
+      <em>
+       Proceedings of the Thirty-First AAAI Conference on Artificial Intelligence
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Zachary C. Lipton. 2016. The mythos of model interpretability. CoRR arXiv:1606.03490.
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Jennifer M. Logg, Julia Minson, and Don A. Moore. 2018. Algorithm Appreciation: People prefer algorithmic to human judgment. Harvard Business School NOM Unit Working Paper No. 17-086.
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Polina Marinova. 2017. How Dating Site eHarmony Uses Machine Learning to Help You Find Love.
+      <a class="link-inline force-break" href="http://fortune.com/2017/02/14/eharmony-dating-machine-learning/">
+       http://fortune.com/2017/02/14/eharmony-dating-machine-learning/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Margaret Mitchell, Simone Wu, Andrew Zaldivar, Parker Barnes, Lucy Vasserman, Ben Hutchinson, Elena Spitzer, Inioluwa Deborah Raji, and Timnit Gebru. 2019. Model Cards for Model Reporting. In
+      <em>
+       Proceedings of the Second Conference on Fairness, Accountability, and Transparency
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Menaka Narayanan, Emily Chen, Jeffrey He, Been Kim, Sam Gershman, and Finale Doshi-Velez. 2018. How do Humans Understand Explanations from Machine Learning Systems? An Evaluation of the Human-Interpretability of Explanation. CoRR arXiv:1802.00682.
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      David W Nickerson and Todd Rogers. 2014. Political campaigns and big data.
+      <em>
+       <em>
+        Journal of Economic Perspectives
+       </em>
+      </em>
+      28, 2 (2014), 51–74.
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Dilek Önkal, Paul Goodwin, Mary Thomson, and Sinan Gönül. 2009. The relative influence of advice from human experts and statistical methods on forecast adjustments.
+      <em>
+       <em>
+        Journal of Behavioral Decision Making
+       </em>
+      </em>
+      22 (2009), 390–409.
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Umberto Panniello, Michele Gorgoglione, and Alexander Tuzhilin. 2016. Research note–In CARSs we trust: How context-aware recommendations affect customers? Trust and other business performance measures of recommender systems.
+      <em>
+       <em>
+        Information Systems Research
+       </em>
+      </em>
+      27, 1 (2016), 182–196.
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Forough Poursabzi-Sangdeh, Daniel G. Goldstein, Jake Hofman, Jennifer Wortman Vaughan, and Hanna Wallach. 2018. Manipulating and Measuring Model Interpretability. CoRR arXiv:1802.07810.
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Marco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. 2016. Why should I trust you?: Explaining the predictions of any classifier. In
+      <em>
+       Proceedings of the ACM SIGKDD Conference on Knowledge Discovery and Data Mining
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Maha Salem, Gabriella Lakatos, Farshid Amirabdollahian, and Kerstin Dautenhahn. 2015. Would you trust a (faulty) robot?: Effects of error, task type and personality on human-robot cooperation and trust. In
+      <em>
+       Proceedings of the Tenth Annual ACM/IEEE International Conference on Human-Robot Interaction
+      </em>
+      . 141–148.
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Jennifer Wortman Vaughan and Hanna Wallach. 2017. The Inescapability of Uncertainty. In
+      <em>
+       CHI Workshop on Designing for Uncertainty in HCI: When Does Uncertainty Help?
+      </em>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Michael Veale, Max Van Kleek, and Reuben Binns. 2018. Fairness and Accountability Design Needs for Algorithmic Support in High-Stakes Public Sector Decision-Making. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Peng Xia, Hua Jiang, Xiaodong Wang, Cindy X Chen, and Benyuan Liu. 2014. Predicting User Replying Behavior on a Large Online Dating Site.. In
+      <em>
+       Proceedings of the International Conference on Web and Social Media
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Michael Yeomans, Anuj K. Shah, Sendhil Mullainathan, and Jon Kleinberg. 2018. Making sense of recommendations. Working paper.
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Kun Yu, Shlomo Berkovsky, Dan Conway, Ronnie Taib, Jianlong Zhou, and Fang Chen. 2016. Trust and reliance based on system accuracy. In
+      <em>
+       Proceedings of the 2016 Conference on User Modeling Adaptation and Personalization
+      </em>
+      . 223–227.
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Kun Yu, Shlomo Berkovsky, Ronnie Taib, Dan Conway, Jianlong Zhou, and Fang Chen. 2017. User trust dynamics: An investigation driven by differences in system performance. In
+      <em>
+       Proceedings of the 22nd International Conference on Intelligent User Interfaces
+      </em>
+      . 307–317.
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    All experiments were approved by the Microsoft Research IRB.
+   </p>
+   <p id="fn2">
+    <a href="#foot-fn2">
+     <sup>
+      2
+     </sup>
+    </a>
+    The pre-registration document is at
+    <a class="link-inline force-break" href="https://aspredicted.org/uq3hi.pdf">
+     https://aspredicted.org/uq3hi.pdf
+    </a>
+    .
+   </p>
+   <p id="fn3">
+    <a href="#foot-fn3">
+     <sup>
+      3
+     </sup>
+    </a>
+    The highest possible bonus was 40 ×
+    <font style="normal">
+     $
+    </font>
+    0.10 =
+    <font style="normal">
+     $
+    </font>
+    4—i.e., substantially more than the flat rate of
+    <font style="normal">
+     $
+    </font>
+    1.50, thereby making the bonus salient [
+    <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+     11
+    </a>
+    ].
+   </p>
+   <p id="fn4">
+    <a href="#foot-fn4">
+     <sup>
+      4
+     </sup>
+    </a>
+    Among thirty-nine statistically significant results, there are two exceptions: switch fraction Low-60% vs. Low-70% and Low-90% vs High-95%.
+   </p>
+   <p id="fn5">
+    <a href="#foot-fn5">
+     <sup>
+      5
+     </sup>
+    </a>
+    The pre-registration document is at
+    <a class="link-inline force-break" href="https://aspredicted.org/w9t8g.pdf">
+     https://aspredicted.org/w9t8g.pdf
+    </a>
+    .
+   </p>
+   <p id="fn6">
+    <a href="#foot-fn6">
+     <sup>
+      6
+     </sup>
+    </a>
+    The pre-registration document is at
+    <a class="link-inline force-break" href="https://aspredicted.org/7yf66.pdf">
+     https://aspredicted.org/7yf66.pdf
+    </a>
+    .
+   </p>
+   <p id="fn7">
+    <a href="#foot-fn7">
+     <sup>
+      7
+     </sup>
+    </a>
+    We note that restricting our analysis to subjects whose own accuracy is in a particular range may inadvertently introduce a bias toward subjects who saw a particular set of tasks (i.e.,
+    <em>
+     A
+    </em>
+    or
+    <em>
+     B
+    </em>
+    ) first. We therefore calculated, for each treatment in Table
+    <a class="tbl" href="#tab1">
+     1
+    </a>
+    , the fraction of subjects whose own accuracy was between the model's stated and observed accuracy and who saw tasks in set
+    <em>
+     A
+    </em>
+    (or
+    <em>
+     B
+    </em>
+    ) first. The only severe imbalance was for the High-60% treatment, where 36.6% of these subjects saw set
+    <em>
+     A
+    </em>
+    first and 63.4% saw set
+    <em>
+     B
+    </em>
+    first. A closer look at the data suggests, though, that both groups of subjects revised their predictions to match those of the model more often during Phase 2 than during Phase 1, which is consistent with the overall results in Table
+    <a class="tbl" href="#tab1">
+     1
+    </a>
+    .
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300509" target="_blank">
+      https://doi.org/10.1145/3290605.3300509
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'87585aa89c731e55',t:'MTcxMzMxNDMyNi4xOTQwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

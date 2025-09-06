@@ -1,0 +1,2468 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Predicting Cognitive Load in Future Code Puzzles
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300487_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300487_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300487_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300487_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300487_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300487_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300487_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300487_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Predicting Cognitive Load in Future Code Puzzles
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Caitlin L.
+      </span>
+      <span class="surName">
+       Kelleher
+      </span>
+      , Washington University in St. Louis, USA,
+      <a href="mailto:ckelleher@cse.wustl.edu">
+       ckelleher@cse.wustl.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Wint Y.
+      </span>
+      <span class="surName">
+       Hnin
+      </span>
+      , Washington University in St. Louis, USA,
+      <a href="mailto:hnin@wustl.edu">
+       hnin@wustl.edu
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300487" target="_blank">
+       https://doi.org/10.1145/3290605.3300487
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Code puzzles are an increasingly popular way to introduce youth to programming. Yet our knowledge about how to maximize learning from puzzles is incomplete. We conducted a data collection study and trained a model that predicts cognitive load, the mental effort necessary to complete a task, on a future puzzle. Controlling cognitive load can lead to more effective learning. Our model suggests that it is possible to predict Cognitive Load on future problems; the model could correctly distinguish the more difficult puzzle within a pair 71%-79% of the time. Further, studying the model itself provides new insights into the sources of puzzle difficulty, the factors that contribute to Cognitive Load, and their inter-relationships. Finally, the ability to predict Cognitive Load on a future puzzle is an important step towards the creation of adaptive code puzzle systems.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Applied computing → Interactive learning environments
+       </strong>
+       ; •
+       <strong>
+        Applied computing → Learning management systems
+       </strong>
+       ; •
+       <strong>
+        Human-centered computing → User models
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Adaptive Learning System
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        Code Puzzles
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        Cognitive Load
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Caitlin L. Kelleher and Wint Y. Hnin. 2019. Predicting Cognitive Load in Future Code Puzzles. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 12 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300487" target="_blank">
+         https://doi.org/10.1145/3290605.3300487
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     A growing number of young people are introduced to programming through online resources including interactive tutorials, web references, MOOCs, educational games, and creative platforms [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+      44
+     </a>
+     ]. Based on a curricular analysis, coding-based educational games provide some of the most promising educational resources for young learners [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+      44
+     </a>
+     ]. Many of these games are based around a series of code puzzles that learners complete. We define a code puzzle as a set of code elements (statements and constructs) that a learner must assemble into a program and execute to achieve a specific end-goal. For example, a code puzzle might challenge a learner to guide a sprite through a maze by assembling a program. Recent research suggests that code puzzles are both more effective [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+      42
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+      50
+     </a>
+     ] and more motivating [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+      40
+     </a>
+     ] than other common types of learning support. Despite the promise of code puzzles, we have sparse direct evidence about the puzzle design factors and learner behaviors that contribute to learning.
+    </p>
+    <p>
+     In this paper, we describe the creation of a predictive model for cognitive load, the amount of mental effort necessary to complete a future code puzzle. Research has shown that controlling cognitive load leads to more efficient learning [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+      55
+     </a>
+     ]. Our cognitive load model is valuable for two reasons: 1) studying what the model has learned can provide new insights into factors that contribute to cognitive load and, 2) the model can enable a new kind of adaptive code puzzle system. Research in other educational domains suggests that adaptive systems can improve learning efficiency [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ].
+    </p>
+    <p>
+     Specifically, this paper poses two questions: 1) Is it possible to build a model that predicts cognitive load on a future problem? And, 2) What does the model reveal about the factors that contribute to cognitive load?
+    </p>
+    <p>
+     We answered these questions by first running a data collection study to gather performance and perceived cognitive load data. Next, we trained developed a predictive model for cognitive load. The model is an ensemble classifier comprised of random forests trained on each distinct code structure (e.g. a nested Repeat loop) in our set of code puzzles. Our results suggest that: 1) It is possible to predict cognitive load on a future problem: our model can correctly identify the more difficult puzzle within a pair 71% to 79% of the time. And, 2) the most predictive feature group focuses on the mental effort participants invested in understanding and solving puzzles, specifically how effectively they responded to feedback.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     We first review work in Cognitive Load Theory (CLT) to ground our work and provide a lens for our results. Next, we review research on learning from code puzzles. Finally, our work relates to research on student modeling and adaptive learning systems.
+    </p>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Cognitive Load Theory
+       </h3>
+      </div>
+     </header>
+     <p>
+      Research in CLT has found that working memory is a bottleneck in learning tasks [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ]. Further, there are three types of working memory loads that can all impact learning: intrinsic load, extraneous load, and germane load [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+       75
+      </a>
+      ].
+     </p>
+     <p>
+      The intrinsic load of a learning task is determined by the nature of that task and the learner's expertise [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+       75
+      </a>
+      ] and is generally considered unalterable. Summing small integers, for example, is likely easy for an adult but may require more mental effort from a young child who must translate digits into countable objects to obtain an answer.
+     </p>
+     <p>
+      Extraneous load comes from tasks unrelated to the specific learning goals [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+       75
+      </a>
+      ]. This load can be imposed by tasks such as unnecessary information searches [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ] or a need to integrate different information sources [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+       73
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+       75
+      </a>
+      ]. One body of work focuses on worked examples, which reduce extraneous load by helping to focus learners’ attention on valid moves within the solution space [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+       75
+      </a>
+      ]. Learners who studied a worked example and then solved a paired practice problem (one with the same underlying structure as the worked example) performed better on near-transfer tasks than learners who learned by completing practice problems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0071">
+       71
+      </a>
+      ].
+     </p>
+     <p>
+      Germane load represents extra effort to support learning. Activities such as identifying and explaining a problem's sub-steps require additional cognitive resources, but can lead to better learning outcomes [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+       75
+      </a>
+      ]. However, the quality of learners’ explanations can vary substantially [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+       63
+      </a>
+      ]. Related support including identifying sub-goals [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ], selecting the motivating principle to justify each problem step [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ] and explaining the reasons behind steps [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+       61
+      </a>
+      ] also improve learning outcomes. Taken together, these studies suggest that learners who attempt to understand the steps of a problem solution may have higher germane load but improved ability to apply these elements in novel situations.
+     </p>
+     <p>
+      Research using CLT to improve learning has primarily explored ways to reduce extraneous load and increase germane load, resulting in increased learning efficiency and transfer. Within computing education, Van Merrienboer and Krammer compared high school students learning programming through program generation and via completion problems in which they were given partial solutions to programming problems to finish [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0074">
+       74
+      </a>
+      ]. Students who learned via completion problems performed better on both near and far transfer tasks [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0074">
+       74
+      </a>
+      ]. Like worked examples, completion problems reduce extraneous load by focusing learner attention on a subset of possible moves [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ]. While they have not been explored through CLT, Parson's programming puzzles [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ] and the Code Restructuring Tool (CORT) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ] provide a set of programming statements learners can re-assemble to achieve a specified behavior, inherently limiting the set of moves learners must consider. In an early classroom study, students found them helpful, particularly for initial learning [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ].
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Code Puzzles
+       </h3>
+      </div>
+     </header>
+     <p>
+      At their core, code puzzle systems provide users with specific problems to solve through writing programs [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ]. Commonly, these problems involve navigating a sprite towards a target, while achieving objectives such as refueling resources [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ], turning on lights [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ], or picking up and moving objects [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ]. Most code puzzle systems use blocks-based programming [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ], but some use textual programming [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ].
+     </p>
+     <p>
+      Despite the widespread use of code puzzles, there is still much to learn about how to maximize their learning effectiveness. Existing research suggests that code puzzles are a promising approach to supporting beginning programmers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ]. Recent studies have found learning gains when comparing learning through code puzzles to learning via tutorials [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ] or open ended creation of code [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ]. Other studies have found no significant differences in learning outcomes when comparing puzzles to an online tutor [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ] or writing and debugging equivalent code [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ]. However, all of these studies have found gains in learning efficiency when comparing learning via puzzles to the use of tutorials [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ], and writing or debugging equivalent code [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ].
+     </p>
+     <p>
+      CLT provides a potentially valuable and underexplored framework for considering the effectiveness of learning via code puzzles. Like Van Merrienboer and Krammer's completion problems, code puzzles may decrease extraneous cognitive load by reducing the space of possible moves, potentially explaining observed increases in learning efficiency [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ]. However, studies that measure cognitive load do not yet form a clear picture. One study comparing learning from puzzles with and without incorrect statements, or distractors, found that distractors increased the reported cognitive load but did not negatively impact learning[
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ]. Another comparing learning when solving the same programming problems by completing Parsons’ problems, fixing broken code, and writing code from scratch found no significant differences in reported cognitive load [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ], but increased learning efficiency with Parsons’ problems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ]. We note that the Parsons’ problems included distractor statements, which may have increased participants’ cognitive load.
+     </p>
+     <p>
+      Predictive models of cognitive load may contribute to research on learning via code puzzles in two ways. First, the predictive models may, themselves, provide insight into how learner behaviors and problem attributes (e.g. distractor statements) influence learning. While we did not explore the impact of distractor statements, we did explore locking the positions of statements and constructs relative to others within the puzzle, further reducing the number of moves learners must consider. Second, nearly all of today's code puzzle systems present learners with an identical series of puzzles to solve. However, adaptive puzzle systems can potentially improve learning. Three recent efforts explore adapting Parsons problems for individual learners: by reducing the number of pieces to place in a current puzzle [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ], by changing the number of distractors in the next puzzle based on number of attempts needed to solve the previous puzzle [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ], and by continuing to offer puzzles on a topic until a learner solves it within a limited number of attempts [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ]. This paper takes the first steps towards a new kind of adaptation: selecting puzzles for a particular learner by predicting cognitive load on future puzzles.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Student Modeling
+       </h3>
+      </div>
+     </header>
+     <p>
+      Student modeling research creates models that predict educationally relevant information in order to 1) make educational decisions or 2) understand learning in different contexts.
+     </p>
+     <p>
+      Models that support educational decision making select appropriate content for a given learner. Some systems do this by estimating learners’ mastery of particular skills and concepts based on their actions [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ]. Correct problem solving steps increase the system's estimate that the learner understands the problem's underlying concept. Other models use learner behaviors to predict performance on future problems. One such system predicts whether a learner will solve a problem and in what period of time based on learner behavior, problem difficulty, and demographic information [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ].
+     </p>
+     <p>
+      Researchers also use models to understand aspects of the learning process including the predictors of strong academic performance [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+       66
+      </a>
+      ], behavioral differences between different groups of learners [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ], the predictors of engagement and disengagement [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0077">
+       77
+      </a>
+      ], and the predictors of different affective states [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ]. Student models incorporate data such as problem solving behavior [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ] and interactions with learning support resources like discussion forums [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0077">
+       77
+      </a>
+      ].
+     </p>
+     <p>
+      Our predictive model of cognitive load can contribute both to making educational decisions and to better understanding the learning process. Studying the ways in which our cognitive load model uses different features to predict cognitive load on future puzzles provides insights into sources of cognitive load and their interactions over time. This information may inform new approaches to supporting student learning.
+     </p>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Adaptive Learning Systems
+       </h3>
+      </div>
+     </header>
+     <p>
+      Adaptive learning systems use information collected about learners in order to customize their educational experiences. These systems fall into two major categories: 1) one-time adaptation systems and 2) task-by-task adaptation systems.
+     </p>
+     <section id="sec-8">
+      <p>
+       <em>
+        One-time Adaptation Systems.
+       </em>
+       One-time adaptation systems ask learners to provide initial information and then select educational tasks based on that information. Systems select materials using a variety of approaches including heuristics (e.g. providing visual information for visual learners [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+        39
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+        51
+       </a>
+       ]) and clustering learners and generating suggestions using the behaviors of high performing clusters [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+        47
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+        70
+       </a>
+       ].
+      </p>
+     </section>
+     <section id="sec-9">
+      <p>
+       <em>
+        Task by Task Adaptation Systems.
+       </em>
+       Instead of a one-time information collection process, task by task systems collect information after each learning task and use it to guide content selection. There are two core challenges for these systems: 1) measuring user performance and 2) selecting content based on user performance.
+      </p>
+      <p>
+       Task by task adaptation systems use a variety of techniques to collect performance information. Some systems measure performance invisibly by looking at a learner's selection of activities within a learning system [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+        43
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+        51
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+        65
+       </a>
+       ]. Other systems select new material based on estimating a learner's knowledge [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ] or identifying similar learners [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+        65
+       </a>
+       ]. Still others ask learners to report their mental effort for completed problems [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+        67
+       </a>
+       ] and use it to determine a learner's pace of progress through sequenced learning content. Predictive models of cognitive load may create the opportunity to optimize learners’ perceived challenge levels.
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-10">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       DATA COLLECTION STUDY
+      </h2>
+     </div>
+    </header>
+    <p>
+     To build our predictive model, we conducted a study to collect data on learner behavior, history, and perceived cognitive load as learners progressed through a series of puzzles.
+    </p>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Data Collection Platform
+       </h3>
+      </div>
+     </header>
+     <p>
+      We conducted our study using Looking Glass [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ], a blocks-based programming environment for creating 3D animations and games with existing support for code puzzles (see Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      ). Looking Glass code puzzles present users with a bin of statements and constructs necessary to create a target animation. Users construct their solution by dragging programming elements from the statement bin to the code editor (see Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      -A). They can view their solution (“play mine”) and the target animation (“play correct” in Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      -B). When users play their program, they also receive basic correctness feedback that uses colored boxes to identify when the first error has occurred, but not the incorrect statement. This vague feedback is intended to discourage brute force solutions [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ]. Learners can quit a puzzle at any time (see Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      -C).
+     </p>
+     <figure id="fig1">
+      <img alt="" class="img-responsive" longdesc="The Looking Glass puzzle interface contains a view of the scene, play correct and mine buttons, a statements bin and an editor area in which to assemble the puzzle." src="3300487_files\chi2019257fig1.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        Looking Glass Puzzle Interface.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      We modified Looking Glass in three ways for this study: First, inspired by prior research suggesting that learner choice supports both effective learning and motivation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ], we modified Looking Glass to offer users a choice of three puzzles each time they begin a new puzzle. Users can preview these animations and choose the puzzle they find most appealing. The three puzzles are selected using a preliminary adaptive model developed through an earlier, unpublished study with 19 adult participants. We hoped the preliminary model could focus our data more tightly around an appropriate level of difficulty. However, we found that the model performs no better than random, perhaps due to the small data set or differences in participants’ backgrounds. Accordingly, we are omitting further discussion of this model.
+     </p>
+     <p>
+      Second, we modified Looking Glass to collect perceived cognitive load for each completed puzzle [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+       57
+      </a>
+      ]. When participants finish a puzzle, they rate their cognitive load using a 9-point Likert scale ranging from extremely easy to extremely difficult (see Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      -D).
+     </p>
+     <p>
+      Finally, we modified Looking Glass to log participants’ actions as they work. This includes capturing the full program state each time a user edits their solution.
+     </p>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Materials
+       </h3>
+      </div>
+     </header>
+     <p>
+      We created five sets of code puzzles (i.e. ”pathways”) to be completed in order and covering three programming constructs and combinations of those constructs:
+     </p>
+     <ol class="list-no-style">
+      <li id="list1" label="(1)">
+       DoTogether: a construct that executes all statements inside it in parallel,
+       <br/>
+      </li>
+      <li id="list2" label="(2)">
+       Repeat: a count loop, and
+       <br/>
+      </li>
+      <li id="list3" label="(3)">
+       DoInOrder: a construct that executes all statements in sequence. A DoInOrder inside a DoTogether allows interleaving of parallel and sequential execution.
+       <br/>
+      </li>
+     </ol>
+     <p>
+      Pathway 1 (10 puzzles) focused on DoTogether and 2 (14 puzzles) focused on Repeat. Pathway 3 (14 puzzles) integrated DoTogether and Repeat. Pathway 4 (20 puzzles) introduced DoInOrder inside DoTogether. And, finally, Pathway 5 (18 puzzles) integrated all three constructs. Each pathway included both simple and more complex programs. All puzzles have a memorable, story based animation, following the best practices in code puzzle design[
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ]. In early pilots, we found that learners sometimes struggle when encountering nested constructs for the first time. This inspired us to design some puzzles with locked elements to moderate difficulty. For example, some nested count loop puzzles locked one count loop inside the other. Users could move the nested count loop within the program and add programming statements to either loop, but could not un-nest the inner loop. We explore the impact of locked elements in our discussion.
+     </p>
+    </section>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Study Methods
+       </h3>
+      </div>
+     </header>
+     <p>
+      We conducted the study via 5 day pseudo-camps. Participants attended for 6 hours per day, but the research only occupied 1.5 hours per day (two 45 minute sessions). Over the 5 days, participants completed 7.5 hours of code puzzles. The remainder of each day was spent on non-coding activities. At the beginning of the first research session, we asked participants to complete a demographic and coding background survey. Next, we demonstrated the user interface for code puzzles. Participants spent the remainder of the research sessions working through the code puzzle pathways in order. Participants had to complete their current pathway before starting the next. After completing each puzzle within a pathway, participants rated their cognitive load (CL) using a one-item Likert scale from 1 to 9 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ]. Research suggests that this scale is the most sensitive measure for assessing cognitive load imposed by educational tasks [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ]
+     </p>
+     <p>
+      As participants worked, researchers circulated recording observations about problem solving approach, behaviors supporting that approach, participants’ codenames, and puzzles, enabling us to link observations and log data later. We provided limited help modeled on hint progressions within Intelligent Tutoring Systems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ] on request. Researchers first asked participants to describe what is correct in their current solution and how they know. Subsequent questions isolated the participants’ struggle to perceiving differences with the correct, understanding the current behavior of their code, and identifying potential changes. Participants typically asked for help only when very frustrated. Accordingly, their ratings of cognitive load for puzzles completed with help were typically high, reflecting that frustration. This potentially adds noise to our data set. However, we feel some help was necessary to prevent disengagement and is consistent with what would happen in a classroom setting.
+     </p>
+    </section>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Participants
+       </h3>
+      </div>
+     </header>
+     <p>
+      We recruited a total of 76 participants. One participant did not complete the pre-study survey. We report the information for the remaining 75 participants. Four of the five camps were for girls only; we had 69 female and 6 male participants with an average age of 12.36 years (
+      <em>
+       SD
+      </em>
+      = 1.61). 56% had previously written a computer program. Four had used Looking Glass, but none had experience with the code puzzles.
+     </p>
+    </section>
+   </section>
+   <section id="sec-15">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       PREDICTIVE MODEL DEVELOPMENT
+      </h2>
+     </div>
+    </header>
+    <p>
+     We went through three stages to develop our predictive model for cognitive load. First, we explored the data quality and did some simple cleaning. Next, we developed features inspired by CLT and informed by our observations and logs of participants’ problem solving processes. Finally, we constructed the model using our cleaned data and features.
+    </p>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Data Quality and Cleaning
+       </h3>
+      </div>
+     </header>
+     <p>
+      We collected more than 5000 examples of puzzle solutions and attempts at varying cognitive loads, ranging from 1 (Extremely Easy) to 9 (Extremely Difficult). We rescaled these to -4 to 4 for analysis purposes. The distribution (see Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      ) is skewed towards puzzles perceived as easier, however we have representation across all ratings.
+     </p>
+     <p>
+      We labeled puzzles that participants quit after testing at least one solution with a difficulty of 5 and discarded all other quit puzzles. Based on our observation notes, most participants quit attempted puzzles due to difficulty. However, we note that participants sometimes quit puzzles for other reasons, most commonly due to the end of a session.
+     </p>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Cognitive Load Distribution.
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Rating
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -4
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -3
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -2
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -1
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          3
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          4
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          5
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          %
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .14
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .2
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .18
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .13
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .09
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .08
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .03
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .02
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .01
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .12
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </section>
+    <section id="sec-17">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Features
+       </h3>
+      </div>
+     </header>
+     <p>
+      We created three groups of features that capture aspects of intrinsic, extraneous, and germane load observable through either puzzle characteristics or participants’ behavior and one additional group that captures characteristics of individual learners. We recorded each feature value for four different types of history (exceptions are noted in each subcategory, as appropriate):
+     </p>
+     <ol class="list-no-style">
+      <li id="list4" label="(1)">
+       The last puzzle completed or attempted.
+       <br/>
+      </li>
+      <li id="list5" label="(2)">
+       The last three puzzles completed or attempted.
+       <br/>
+      </li>
+      <li id="list6" label="(3)">
+       The last three puzzles where participants struggled (i.e. reported a cognitive load greater than one).
+       <br/>
+      </li>
+      <li id="list7" label="(4)">
+       The last three puzzles completed without struggle.
+       <br/>
+      </li>
+     </ol>
+     <p>
+      We developed these features using a three-phase process. During the studies, researchers recorded field notes describing learner behaviors when struggling and not struggling. Next, we built visualizations of puzzle completion showing line by line correctness each time the puzzle was tested along with plays of the correct and participants’ versions. We used these visualizations and our field notes to propose features that captured puzzle solving behavior by iteratively reviewing both to capture the range of learner behaviors we saw. Finally, we grouped the features into intrinsic, extraneous, and germane loads, and learner characteristics. Note that we cannot currently measure the different types of load directly. Thus, many studies define intrinsic, extraneous, and germane load for their target problems by analyzing the educational goals, the knowledge learners need to manipulate, and the actions they can take to promote their own understanding [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ]. In the following sections, we outline the rationales for our feature classifications by cognitive load type.
+     </p>
+     <section id="sec-18">
+      <p>
+       <em>
+        Intrinsic Load Features.
+       </em>
+       We defined the intrinsic load based on our top level learning goal: we wanted learners to be able to combine differing code constructs to achieve a variety of behaviors. Since intrinsic load varies by learner according to their current knowledge [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+        75
+       </a>
+       ], the intrinsic load features focus on the difficulty imposed by the code structures within the future puzzle and recently completed puzzles: 1) the structure of the code constructs represented (e.g. two loops in sequence vs two nested loops) and 2) learners’ experiences with construct sub-problems.
+      </p>
+      <p>
+       Structural Difficulty: This group includes two feature types: 1) features that capture the count of different structures in the current puzzle and recently completed puzzles and 2) modifications to those structures via locking. The structural count features capture the raw difficulty of the concepts presented. The structural count features include the counts of each code structure present in the puzzle and the greatest nesting depth of code constructs. Nested constructs require learners to understand both the behavior of the component constructs and the ways in which they interact. The locking features capture changes that remove some of the conceptually-based decisions that learners need to make, reducing the raw difficulty of puzzles. Features in this group include: the counts of each code structure present in the puzzle, the greatest nesting depth of code constructs, the locked constructs count (see section
+       <a class="sec" href="#sec-12">
+        3
+       </a>
+       ), and the number of constructs that a user needs to place to solve the puzzle. We record these values both for previously completed puzzles and for the future puzzle.
+      </p>
+      <p>
+       Experience with Sub-problems: While the difficulty of a given problem cannot be altered via instructional method, many problems can be broken into sub-problems that are taught individually [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+        45
+       </a>
+       ]. Nesting of code structures can be seen as an integration of the component code structures. Accordingly, this group of features captures participants’ exposure to and perceived difficulty of different code structures that may serve as sub-problems. These features provide an indication of learners’ preparation to integrate sub-problems. For each structure (see Table
+       <a class="tbl" href="#tab2">
+        2
+       </a>
+       ), we tracked the number of exposures a participant had to that structure, and their average cognitive load rating for that structure overall and on the last three puzzles attempted. If a participant has fewer than three puzzles for recent history or one puzzle for full history, we fill in ratings of 5 (i.e. a quit) for any missing puzzles. Two final features use knowledge of the code structures within the future, unseen puzzle: these features look at the number of previously quit puzzles with the same code structures as the future puzzle, in total and consecutively. These final two features capture learners’ experience with the necessary integration of sub-problems for the future puzzle.
+      </p>
+     </section>
+     <section id="sec-19">
+      <p>
+       <em>
+        Extraneous Load Features.
+       </em>
+       Extraneous load is additional cognitive load required to solve a problem that is unrelated to the learning goals. Our features are inspired by one well studied type of extraneous load known as the split-attention effect, in which learners must split their cognitive attention between two goals: one related to the intended learning goals and one not [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ]. For example, one study explored the impact of geometry problems in which the angles were labeled within the diagram or explained through text below it [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0076">
+        76
+       </a>
+       ]. Learners who had to transfer the textual angle descriptions to the figure had higher ratings of cognitive load [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0076">
+        76
+       </a>
+       ]. Because the load associated with mapping the textual descriptions to the figures was unrelated to the target geometry concepts, it was considered extraneous.
+      </p>
+      <p>
+       Similarly, our extraneous load features attempt to capture sources of cognitive load that are independent of code structure: those arising from API learning. This feature group includes the number of unique statements in the puzzle, the number of unfamiliar statements, the number of locked statements (see section
+       <a class="sec" href="#sec-12">
+        3
+       </a>
+       ), and the number of statements users must place. These features attempt to capture the degree to which learners may need to invest cognitive effort to understand method behavior, which is unrelated to the learning goals. Additionally, we record the number of semantically similar statements within the code. For example, if a puzzle contains five statements in which characters spin, correctly placing spin for one character can suggest the solution for the rest. Semantically similar statements both decrease the cognitive effort associated with method understanding and provide cues about the placement of those statements within the code structure. We record these values for completed puzzles and the future puzzle.
+      </p>
+     </section>
+     <section id="sec-20">
+      <p>
+       <em>
+        Germane Load Features.
+       </em>
+       Tasks that are not required for learning but help to support it impose germane load. Our features are inspired by the self-explanation effect in which learners who attempt to explain to themselves the steps necessary to complete a problem invest more cognitive load, but achieve greater learning gains [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+        12
+       </a>
+       ]. Self-explaining a program's behavior is not directly observable through log files. Instead, we leveraged our observations, which typically followed learners through solving entire puzzles. Using our notes, we identified behaviors that occurred when learners attempted or did not attempt to understand their code, its’ behavior, and how it differed from correct behavior. Our germane load features included: how participants seek and respond to feedback, the persistence of structural problems, and behaviors indicative of guessing.
+      </p>
+      <p>
+       Feedback Seeking: To achieve a correct solution, participants must understand how their solution differs from the correct one. An important precursor to understanding the behavior of your program is identifying how it differs from correct program behavior. We observed that learners who identified a specific difference between their program and the correct one often went on to reason through their code and hypothesize a reason for this difference through attempts at self-explanation. While this may sound like typical debugging behavior, some learners never tried to identify a concrete difference. Based on our observations, learners who primarily played their own code tended to make arbitrary code changes. Accordingly, we track the ratio of participants playing their own animation and the correct one. Additionally, we count numbers of consecutive plays of the participants’ solution, the correct solution, and either. Consecutive plays can suggest that learners are attempting to identify a concrete difference. Finally, we record a count of puzzles where the correct solution was never played. In this case, learners are effectively never identifying specific differences between their program and the correct one. All would have seen the correct animation before starting the puzzle.
+      </p>
+      <p>
+       Feedback Response: We observed that learners who attempted to self-explain the behavior of their code and hypothesize reasons for any differences with the correct version were better at identifying relevant code changes to make. As such, this feature group explores the degree to which learners’ post-feedback code changes were productive. We track the average score change between consecutive play-edit cycles (overall and within structures) and after a play correct. Additionally, we look at learners’ responses to the first error: correcting it, or adding blocks before or after it. Since many learners work beginning to end, edits that do not address the first error provide evidence against self-explanation.
+      </p>
+      <p>
+       Persistence of Structural Problems: We observed that participants who did not appear to self-explain were slow to modify the code structure. Accordingly, this feature group logs the persistence of incorrect code structures. We track a variety of situations: 1) testing solutions without any constructs, 2) separating constructs that need to be nested, and 3) reversing the positions of nested constructs. All of these can indicate that a learner is not reasoning about the construct behaviors. Additionally, we also see learners place statements incorrectly relative to constructs. Our observations suggest that the persistence of these mistakes also indicates a lack of self-explanation. To track struggles with placing statements relative to constructs, we track the average number of attempts with decreasing construct score.
+      </p>
+      <p>
+       Thrashing Behaviors: This final group of features records behaviors we see when users are making arbitrary rather than thoughtful changes, suggesting that self-explanation is not occurring. We track the average number of attempts with less than two statements inside a Do Together and the number of attempts in which participants switch the order of statements inside a parallel construct, which have no effect on program execution, as well as repeated movements of the same statement. These kinds of changes are unlikely to help the learner move towards a correct solution and, as such, are suggestive of unreasoned changes. Additionally, we observed that some participants made many unmotivated changes between plays. We tracked two related features: the number of times that a participant had a correct but untested solution and the number of times participants revisited previous incorrect code configurations. The existence of correct and repeated solutions are suggestive that the learner is using an arbitrary rather than a thoughtful solution process.
+      </p>
+     </section>
+     <section id="sec-21">
+      <p>
+       <em>
+        Learner Characteristics.
+       </em>
+       CLT research suggests that cognitive load is highly individual. For example, learners may differ in working memory load and personality [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+        55
+       </a>
+       ]. These factors can lead to differing perceptions of mental effort. We noticed that some learners had a higher tolerance for challenge than others and that this tended to be reflected in their cognitive load ratings. While we did not measure characteristics like working memory capacity directly, we hypothesize that learners’ perceptions of challenge reflect some of these individual characteristics. Accordingly, this group of features focuses on learners’ perceptions of and tolerance for difficulty in solving puzzles. We tracked each of the following for our four history types: participants’ average cognitive load ratings, the average number of attempts necessary to solve a puzzle, the average number of times they re-started puzzles, and the average number of steps necessary to complete puzzles. The average number of attempts, steps, and restarts provide insight into the degree of struggle completing puzzles. Typically, participants restarted puzzles out of frustration. These, in combination with cognitive load ratings, provide insight into challenge tolerance. Additionally, we include a feature tracking average cognitive load over all completed or attempted puzzles.
+      </p>
+     </section>
+    </section>
+    <section id="sec-22">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Model Construction
+       </h3>
+      </div>
+     </header>
+     <p>
+      We constructed Random Forest Classifiers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ] to predict cognitive load on a future puzzle. We chose Random Forest Classifiers because the resulting models are human-interpretable. We initially tried to construct a single model for all code structures, but found that approach did not achieve acceptable performance. Instead, we trained an ensemble of Random Forests, one for each code structure, using the ‘RandomForestClassifier’ library [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ] and all features. We omit the three structures in the final pathway due to lack of data; most learners did not reach this pathway. The Random Forest for each remaining code structure contained 10 trees. To minimize overfitting, we used a maximum depth of 10 and required at least 20 samples per leaf. We enabled out-of-bag scoring to estimate error on novel data [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ]. Out-of-bag error is the average error on each sample, using only random forest trees that did not use that sample as training data. To generate a prediction for a given puzzle, we averaged the results of the trees in the forest, producing a decimal value between -4 (extremely easy) and 5 (quit puzzle).
+     </p>
+    </section>
+   </section>
+   <section id="sec-23">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       RESULTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We have two primary research questions:
+    </p>
+    <ol class="list-no-style">
+     <li id="list8" label="(1)">
+      Is it possible to build a model that predicts cognitive load on a future problem?
+      <br/>
+     </li>
+     <li id="list9" label="(2)">
+      What does the model reveal about the factors that contribute to cognitive load?
+      <br/>
+     </li>
+    </ol>
+    <section id="sec-24">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Cognitive Load Model Performance
+       </h3>
+      </div>
+     </header>
+     <div class="table-responsive" id="tab2">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 2:
+       </span>
+       <span class="table-title">
+        Structures and Performance of the Models.
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Code Struct-ure
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          # Exa-mples
+         </td>
+         <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          Baseline Error
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Model
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          OOB
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          AUC/ ROC (
+          <em>
+           σ
+          </em>
+          =.03)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Freq
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Avg
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Error
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Error
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          (
+          <em>
+           σ
+          </em>
+          =1.31)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          (
+          <em>
+           σ
+          </em>
+          =.41)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          (
+          <em>
+           σ
+          </em>
+          =.31)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          (
+          <em>
+           σ
+          </em>
+          =.41)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          T{}
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1715
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.22
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.04
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.549
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.801
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.734
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          R{}
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          659
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.56
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.51
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.324
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.508
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.726
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          R{R{}}
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          455
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          4.57
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.57
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.08
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.439
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.758
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          R{T{}}
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          485
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.98
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.05
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.57
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.885
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.713
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          T{R{}}
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          702
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.46
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.29
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.884
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.345
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.71
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          T{O{}}
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          834
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.49
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.32
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.67
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.073
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.787
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          T{O{ T{}}}
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          325
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          4.91
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.79
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.185
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.71
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.735
+         </td>
+        </tr>
+       </tbody>
+       <tfoot>
+        <tr>
+         <td colspan="7">
+          T -
+          <em>
+           do together
+          </em>
+          , O -
+          <em>
+           do in order
+          </em>
+          , R -
+          <em>
+           repeat
+          </em>
+          <hr/>
+         </td>
+        </tr>
+       </tfoot>
+      </table>
+     </div>
+     <p>
+      We answered our first question in two ways: 1) by comparing our model with baseline models, and 2) by computing the area under the receiver operating characteristic curve (AUC/ROC). We found a modest improvement in error compared to our baselines, and acceptable AUC/ROC values.
+     </p>
+     <p>
+      Our model outperforms two baseline models. The first, most frequent response, uses the most frequently chosen cognitive load for each code structure. The second, average response, averages the reported cognitive loads for each code structure and rounds to the nearest whole number. We then computed the mean absolute error for the baseline models, for our model with all data, and for our model using only non-training data (i.e. out-of-bag data). See Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      for the full results. Using all data, our model outperforms both baseline models, reducing error by 15-55% and 12-28% for the most frequent and average baselines, respectively. When using only out-of-bag data to approximate test performance, our models range from similar performance to the baseline to a 44% improvement over the most frequent and 11% over the average model. The average model is arguably a better fit because we see often see a bimodal distribution.
+     </p>
+     <p>
+      Our computed AUC/ROC values range from .71 to .79. This is considered acceptable performance; random performance would yield .5. AUC/ROC is a widely used performance measure for binary classification [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ] that, in our case, captures the probability that given two differently-rated puzzles with the same code structure, the more difficult one is correctly identified. By evaluating whether the more difficult model is found, we reduce our classification problem to binary.
+     </p>
+     <p>
+      Taken together, these results are a significant step towards predicting the cognitive load on a future puzzle. Our model may enable an adaptive code puzzle system in which the ability to determine the harder of two puzzles can be used to select puzzles easier or harder than the just-completed puzzle, and gradually move towards an appropriate level of challenge for an individual learner. This is an exciting result that warrants exploration of the predictive features.
+     </p>
+     <figure id="fig2">
+      <img alt="" class="img-responsive" longdesc="This shows a bar graph of the types of features by importance. The Germane load features were most predictive for the models followed by Intrinsic, Participant's Characteristics, and Extraneous load features." src="3300487_files\chi2019257fig2.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        Feature Importance Summary.
+       </span>
+      </div>
+     </figure>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="The three most important features overall and for each model." src="3300487_files\chi2019257fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        This graph displays the three most important features overall and for each model. Both transparency and height of the blocks represent the feature importance value.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-25">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Features that Predict Cognitive Load
+       </h3>
+      </div>
+     </header>
+     <p>
+      All feature categories contribute to the model predictions (see Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      for feature importance by category and subcategory, measured using “gini importance” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ]). We review the categories and subcategories in decreasing importance order and summarize the three most important features in each subcategory.
+     </p>
+     <section id="sec-26">
+      <p>
+       <em>
+        Germane Load Features.
+       </em>
+       Our Germane load features were inspired by the self-explanation effect. They attempt to capture behaviors that we observed suggesting that learners were or were not expending additional mental effort to understand the behavior of their programs. This information may help the model in two ways: 1) past self-explanation behavior may predict self explanation behavior on future puzzles and 2) past self-explanation behavior may provide insight into learner's mastery of previous content. Overall, this feature group provided the most information to the model of our four feature groups. The most important feature category was Response to Feedback followed by Persistence of Structural Problems, Use of Feedback, and Thrashing.
+      </p>
+      <p>
+       Feedback Response (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       -GL-FR): The top two features are the change in correctness after playing the correct animation in the last three struggle and non-struggle puzzles. Based on our observations, the ability to make progress after feedback was related to the effort learners devoted to understanding the reasons for differences between their program and the correct one. The third important feature tracked the number of solution attempts where learners added a statement before the first error, indicating learners did not identify a specific error and, instead, introduced a new error.
+      </p>
+      <p>
+       Persistence of Structural Problems (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       -GL-PoSP): The most important features track decreasing correctness inside code constructs in the last three puzzles and struggle puzzles, and the last puzzle. While it is natural to focus on structural correctness, the methods cause observable actions where constructs do not. Placing methods incorrectly relative to the construct structure is an indication that learners are not attempting to predict and explain the behavior of their code.
+      </p>
+      <p>
+       Feedback Seeking (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       -GL-FS): The top overall features are all related to not playing the correct animation, when struggling, when not struggling and in the last puzzle attempted. These features identify participants who are not attempting to identify a specific difference between their program and the correct one.
+      </p>
+      <p>
+       Thrashing Behaviors (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       -GL-TB): The three features with highest overall importance were: moving the same statement consecutively in the last three puzzles and struggle puzzles, and playing the same solution more than once in the last three puzzles. All suggest arbitrary code changes.
+      </p>
+     </section>
+     <section id="sec-27">
+      <p>
+       <em>
+        Intrinsic Load.
+       </em>
+       Intrinsic load is a measure of how difficult an educational task is for a given learner. While intrinsic load is seen as unalterable, a given problem can often be broken into individually taught sub-problems. Our structural difficulty features attempt to capture the raw difficulty of the current puzzle and recently completed puzzles. For puzzles with nested structures, learners’ experiences with constructs in those structures can be seen as sub-problems. Overall, the intrinsic load features are the second most influential feature group, with sub-problems having slightly more importance in the model than structural difficulty.
+      </p>
+      <p>
+       Experience with Sub-problems (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       -IL-EwSP): The top three features in this category capture the average cognitive load on the last three Do Together and nested Repeat puzzles and the average cognitive load over all nested Repeat puzzles. These constructs appear to serve as broad pre-requisites to many code structures. We hypothesize that because Do Together and nested Repeat are the first structure and nested structure seen, respectively, they may capture the importance of understanding containment and construct nesting. Within the later nested structures, we see additional, structure-specific pre-requisites emerging. For example, the average cognitive load on the last three R{T{}} puzzles is an important feature in the T{R{}} model (see Table 2).
+      </p>
+      <p>
+       Structural Difficulty (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       -IL-SD): The most important features in this category capture whether or not recent struggle puzzles contained locked structures. These help to provide insight into the raw difficulty of recent puzzles and their match to the future puzzle. The relative strength of the construct locking features suggest that it is a promising approach to adjusting the difficulty of a puzzle.
+      </p>
+     </section>
+     <section id="sec-28">
+      <p>
+       <em>
+        Personal Characteristics.
+       </em>
+       Our personal characteristics features capture participants’ perceptions of and tolerance for challenge. The top features (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       -PC) included the average cognitive load in the last three puzzles 1) completed or attempted and 2) in which learners did not struggle and 3) the average cognitive load over all puzzles. This feature category also included features that track solution efficiency through numbers of steps and attempts. However, these were not among the top features, suggesting that solution efficiency may not be a strong predictor of cognitive load and, therefore, may not be the best approach for selecting appropriately challenging puzzles. This contradicts prior work proposing solution efficiency as a metric for selecting a Parsons problem with appropriate difficulty [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ].
+      </p>
+     </section>
+     <section id="sec-29">
+      <p>
+       <em>
+        Extraneous Load.
+       </em>
+       Our extraneous load features (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       -EL) are inspired by the split attention effect and attempt to capture sources of cognitive load that are independent of code structure: those caused by API learning. The most important features capture the degree to which the three most recent puzzles and struggle puzzles have been more difficult due to the presence of unfamiliar methods. The final important feature tracks unfamiliar methods in the future puzzle. The importance of unfamiliar methods features suggests that problem selection strategies should either limit the methods represented in puzzles or, if API learning is also a consideration, to introduce unfamiliar methods within the context of puzzle structures with which the learner is already confident.
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-30">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Our results have implications in three areas: 1) personalizing code puzzle selection, 2) exploring the impact of code puzzle attributes and 3) providing new insight into cognitive load.
+    </p>
+    <section id="sec-31">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Personalizing Code Puzzle Selection
+       </h3>
+      </div>
+     </header>
+     <p>
+      Despite growing interest in the use of code puzzles to teach programming skills, most current code puzzle systems provide a static sequence of puzzles for all learners. Recent research has begun to explore different approaches for adapting code puzzles to individual learners [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ]. However, to date, adaptive approaches remain either unevaluated [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ] or do not perform better than a static sequence of puzzles [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ]. Our predictive model for cognitive load on future puzzles creates the potential for a new approach to adaptive code puzzle systems and, more broadly, adaptive educational systems. Prior adaptive educational systems have typically used performance-based metrics to adapt. Future systems that adapt based on predicted cognitive load may instead be able to focus on optimizing the learner's perceived experiences. While we did this work in the context of Looking Glass, we believe that a similar approach and feature set would enable cognitive load predictions for other programming systems with similar code puzzles. Further, our results suggest that we should use caution in using the number of attempts to gauge appropriate challenge. This approach has been suggested [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ] and implemented in recent adaptive code puzzle systems[
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ]. The low weights of attempt-based features in our model suggest either that number of attempts provides little information about future cognitive load or that it is highly correlated with other measures. While cognitive load is not the only potential measure of challenge, the fact that number of attempts weakly predicts cognitive load suggests that it should not be broadly used to evaluate appropriate challenge without additional research.
+     </p>
+    </section>
+    <section id="sec-32">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Exploring the Impact of Code Puzzle Attributes
+       </h3>
+      </div>
+     </header>
+     <p>
+      Research exploring how to maximize the learning from code puzzles is still in its early days. Further, there are many variations on code puzzles that may have potentially complex effects on learning. The existing research surrounding the use of distractors provides one such example [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ]. The ability to inspect a predictive model, such as ours, may provide a new avenue for gaining insight into the importance and impact of different code puzzle variations. In this work, we explored one such variation: the practice of locking selected statements and constructs into their correct position relative to their parents. Locking features were among the most predictive features associated with a future puzzle. Further, the model itself provides insight into how the use of these features impacts future learning. Future work could explore the impact of other potential puzzle variations, including distractors, on cognitive load, using feature importance to select the most promising for additional study.
+     </p>
+    </section>
+    <section id="sec-33">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Understanding Cognitive Load
+       </h3>
+      </div>
+     </header>
+     <p>
+      A lot of research has contributed to the development and validation of Cognitive Load Theory in a range of learning contexts. However, to the best of our knowledge, our model represents the first attempt to create a predictive model that can itself be studied. CLT is based on characteristics that are difficult or impossible to measure directly: the contents of working memory and the schemata learners have developed. Instead, we measure cognitive load indirectly using instruments like subjective surveys [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ] and biometrics (e.g. pupil dilation) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ], and interference with co-requisite tasks [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ]. These kinds of measures limit our opportunities to explore influences on cognitive load. Predictive models, like ours, may reveal new insights. For example, we initially expected that learners would have schema associated with each code structure. However, the broad importance of the features tracking cognitive load on Do Together and nested Repeat may suggest that early schema focus on containment.
+     </p>
+    </section>
+   </section>
+   <section id="sec-34">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       FUTURE WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     This work demonstrates strong promise at predicting cognitive load on future learning activities. Future cognitive load models should expand the set of educational domains and continue to refine the set of predictive features. However, this work also opens additional interesting questions:
+    </p>
+    <ol class="list-no-style">
+     <li id="list10" label="(1)">
+      While previous work using cognitive load has adjusted the pace at which a learner moves through a sequence of content, the ability to predict cognitive load may enable the creation of adaptive learning systems that can shape the learning experience in new ways, such as following the experience curves used in games [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+       68
+      </a>
+      ].
+      <br/>
+     </li>
+     <li id="list11" label="(2)">
+      Our results suggest that learners’ ability to effectively use feedback, a sign of a structured problem solving approach, has a large impact on overall performance. While researchers have created intelligent tutors for programming [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+       69
+      </a>
+      ], none to our knowledge have focused on teaching the effective use of feedback.
+      <br/>
+     </li>
+     <li id="list12" label="(3)">
+      Our current model predicts future cognitive load, but human-interpretable predictive models of cognitive load on a just-completed problem could provide new insights into how the different types of cognitive load and learner behaviors contribute to learning.
+      <br/>
+     </li>
+    </ol>
+   </section>
+   <section id="sec-35">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       LIMITATIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This work has two limitations. First, our data came almost exclusively from middle school aged girls. We do not know to what degree our model and results would apply to other populations. Second, because we asked participants to complete one pathway before starting the next one, we have more data for the earlier pathways than the later. For the last pathway, which included multiple structures, we did not get sufficient data to train models. We think it is likely that the kinds of features that were important in the earlier pathways would be useful for these structures, but we cannot evaluate that conclusively with our current data set.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-36">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This material is based upon work supported by the National Science Foundation under Grant No. 1440996. Additionally, the authors would like to thank Joey Allen, Evan Balzuweit, Brian Bristol, Patrick Gardner, Angela He, and Annie Lee for their help in collecting data.
+    </p>
+   </section>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      2018.
+      <em>
+       BotLogic
+      </em>
+      .
+      <a class="link-inline force-break" href="http://botlogic.us/sthash.0kCo1qo6.dpbs">
+       http://botlogic.us/sthash.0kCo1qo6.dpbs
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      2018.
+      <em>
+       Code Avengers
+      </em>
+      .
+      <a class="link-inline force-break" href="https://www.codeavengers.com/">
+       https://www.codeavengers.com/
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      2018.
+      <em>
+       Code Combat
+      </em>
+      .
+      <a class="link-inline force-break" href="https://codecombat.com/">
+       https://codecombat.com/
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      2018.
+      <em>
+       code.org
+      </em>
+      .
+      <a class="link-inline force-break" href="https://code.org/">
+       https://code.org/
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      2018.
+      <em>
+       Lightbot
+      </em>
+      .
+      <a class="link-inline force-break" href="http://lightbot.com/hoc.html">
+       http://lightbot.com/hoc.html
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      2018.
+      <em>
+       Looking Glass
+      </em>
+      .
+      <a class="link-inline force-break" href="https://lookingglass.wustl.edu/">
+       https://lookingglass.wustl.edu/
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      2018.
+      <em>
+       Robozzle
+      </em>
+      .
+      <a class="link-inline force-break" href="http://www.robozzle.com/">
+       http://www.robozzle.com/
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      2018.
+      <em>
+       Scikit-Learn
+      </em>
+      .
+      <a class="link-inline force-break" href="http://scikit-learn.org/stable/">
+       http://scikit-learn.org/stable/
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      2018.
+      <em>
+       Tynker
+      </em>
+      .
+      <a class="link-inline force-break" href="https://www.tynker.com/">
+       https://www.tynker.com/
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      M'hammed Abdous, He Wu, and Cherng-Jyh Yen. 2012. Using data mining for predicting relationships between online question theme and final grade.
+      <em>
+       <em>
+        Journal of Educational Technology &amp; Society
+       </em>
+      </em>
+      15, 3 (2012), 77.
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Robert K. Atkinson, Richard Catrambone, and Mary Margaret Merrill. 2003. Aiding Transfer in Statistics: Examining the Use of Conceptually Oriented Equations and Elaborations During Subgoal Learning.
+      <em>
+       <em>
+        Journal of Educational Psychology
+       </em>
+      </em>
+      95, 4 (2003), 762.
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Robert K. Atkinson, Alexander Renkl, and Mary Margaret Merrill. 2003. Transitioning from studying examples to solving problems: Effects of self-explanation prompts and fading worked-out steps.
+      <em>
+       <em>
+        Journal of Educational Psychology
+       </em>
+      </em>
+      95, 4 (2003), 774.
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Ryan SJd Baker, Sujith Gowda, Michael Wixon, Jessica Kalka, Angela Wagner, Aatish Salvi, Vincent Aleven, Gail Kusbit, Jaclyn Ocumpaugh, and Lisa Rossi. 2012. Sensor-free automated detection of affect in a Cognitive Tutor for Algebra. In
+      <em>
+       Educational Data Mining 2012
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Joseph Beck and Beverly Woolf. 2000. High-level student modeling with machine learning. In
+      <em>
+       Intelligent tutoring systems
+      </em>
+      . Springer, 584–593.
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      L Breiman. 1996. Out-of-bag estimation, ftp. stat. berkeley. edu/pub/users/breiman.
+      <em>
+       <em>
+        OOBestimation. ps
+       </em>
+      </em>
+      199, 6 (1996).
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Leo Breiman. 2001. Random forests.
+      <em>
+       <em>
+        Machine learning
+       </em>
+      </em>
+      45, 1 (2001), 5–32.
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Leo Breiman. 2017.
+      <em>
+       Classification and regression trees
+      </em>
+      . Routledge.
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Roland Brunken, Jan L. Plass, and Detlev Leutner. 2003. Direct measurement of cognitive load in multimedia learning.
+      <em>
+       <em>
+        Educational psychologist
+       </em>
+      </em>
+      38, 1 (2003), 53–61.
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      PL Brusilovsky. 1992. Intelligent tutor, environment and manual for introductory programming.
+      <em>
+       <em>
+        Educational and Training Technology International
+       </em>
+      </em>
+      29, 1(1992), 26–34.
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Peter Brusilovsky. 1998. Methods and techniques of adaptive hypermedia. In
+      <em>
+       Adaptive hypertext and hypermedia
+      </em>
+      . Springer, 1–43.
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Peter Brusilovsky and Michael V Yudelson. 2008. From webex to navex: Interactive access to annotated program examples.
+      <em>
+       <em>
+        Proc. IEEE
+       </em>
+      </em>
+      96, 6 (2008), 990–999.
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Gino Camp, Fred Paas, Remy Rikers, and Jeroen van Merrienboer. 2001. Dynamic problem selection in air traffic control training: A comparison between performance, mental effort and mental efficiency.
+      <em>
+       <em>
+        Computers in Human Behavior
+       </em>
+      </em>
+      17, 5 (2001), 575–595.
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Richard Catrambone. 1998. The subgoal learning model: Creating better examples so that students can solve novel problems.
+      <em>
+       <em>
+        Journal of Experimental Psychology: General
+       </em>
+      </em>
+      127, 4 (1998), 355.
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Paul Chandler and John Sweller. 1992. The split-attention effect as a factor in the design of instruction.
+      <em>
+       <em>
+        British Journal of Educational Psychology
+       </em>
+      </em>
+      62, 2 (1992), 233–246.
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Chih-Ming Chen. 2008. Intelligent web-based learning system with personalized learning path guidance.
+      <em>
+       <em>
+        Computers &amp; Education
+       </em>
+      </em>
+      51, 2 (2008), 787–814.
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Michelene TH Chi, Miriam Bassok, Matthew W. Lewis, Peter Reimann, and Robert Glaser. 1989. Self-explanations: How students study and use examples in learning to solve problems.
+      <em>
+       <em>
+        Cognitive science
+       </em>
+      </em>
+      13, 2 (1989), 145–182.
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Gemma Corbalan, Liesbeth Kester, and Jeroen JG Van Merrienboer. 2006. Towards a personalized task selection model with shared instructional control.
+      <em>
+       <em>
+        Instructional Science
+       </em>
+      </em>
+      34, 5 (2006), 399–422.
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Gemma Corbalan, Liesbeth Kester, and Jeroen JG Van Merrienboer. 2008. Selecting learning tasks: Effects of adaptation and shared control on learning efficiency and task involvement.
+      <em>
+       <em>
+        Contemporary Educational Psychology
+       </em>
+      </em>
+      33, 4 (2008), 733–756.
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Albert T Corbett and John R Anderson. 1994. Knowledge tracing: Modeling the acquisition of procedural knowledge.
+      <em>
+       <em>
+        User modeling and user-adapted interaction
+       </em>
+      </em>
+      4, 4 (1994), 253–278.
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Jesse Davis and Mark Goadrich. 2006. The relationship between Precision-Recall and ROC curves. In
+      <em>
+       Proceedings of the 23rd international conference on Machine learning
+      </em>
+      . ACM, 233–240.
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Sidney K D'mello, Scotty D Craig, Amy Witherspoon, Bethany Mcdaniel, and Arthur Graesser. 2008. Automatic detection of learner's affect from conversational cues.
+      <em>
+       <em>
+        User modeling and user-adapted interaction
+       </em>
+      </em>
+      18, 1 (2008), 45–80.
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Barbara J. Ericson. 2015. Adaptive Parsons Problems with Discourse Rules. In
+      <em>
+       Proceedings of the Eleventh Annual International Conference on International Computing Education Research
+      </em>
+      (
+      <em>
+       ICER ’15
+      </em>
+      ). Omaha, Nebraska, USA, 259–260.
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Barbara J Ericson. 2016. Dynamically Adaptive Parsons Problems. In
+      <em>
+       Proceedings of the 2016 ACM Conference on International Computing Education Research
+      </em>
+      . ACM, 269–270.
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Barbara J Ericson, James D Foley, and Jochen Rick. 2018. Evaluating the Efficiency and Effectiveness of Adaptive Parsons Problems. In
+      <em>
+       Proceedings of the 2018 ACM Conference on International Computing Education Research
+      </em>
+      . ACM, 60–68.
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Barbara J Ericson, Lauren E Margulieux, and Jochen Rick. 2017. Solving parsons problems versus fixing and writing code. In
+      <em>
+       Proceedings of the 17th Koli Calling Conference on Computing Education Research
+      </em>
+      . ACM, 20–29.
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Stuart Garner. 2007. An Exploration of How a Technology-Facilitated Part-Complete Solution Method Supports the Learning of Computer Programming.
+      <em>
+       <em>
+        Issues in Informing Science &amp; Information Technology
+       </em>
+      </em>
+      4 (2007).
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Peter Gerjets and Katharina Scheiter. 2003. Goal configurations and processing strategies as moderators between instructional design and cognitive load: Evidence from hypertext-based instruction.
+      <em>
+       <em>
+        Educational psychologist
+       </em>
+      </em>
+      38, 1 (2003), 33–41.
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Arthur C. Graesser, Katja Wiemer-Hastings, Peter Wiemer-Hastings, Roger Kreuz, and Tutoring Research Group. 1999. AutoTutor: A simulation of a human tutor.
+      <em>
+       <em>
+        Cognitive Systems Research
+       </em>
+      </em>
+      1, 1 (1999), 35–51.
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Sabine Graf and K Kinshuk. 2007. Providing adaptive courses in learning management systems with respect to learning styles. In
+      <em>
+       E-Learn: World Conference on E-Learning in Corporate, Government, Healthcare, and Higher Education
+      </em>
+      . Association for the Advancement of Computing in Education (AACE), 2576–2583.
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Kyle J Harms, Evan Balzuweit, Jason Chen, and Caitlin Kelleher. 2016. Learning programming from tutorials and code puzzles: Children's perceptions of value. In
+      <em>
+       Visual Languages and Human-Centric Computing (VL/HCC), 2016 IEEE Symposium on
+      </em>
+      . IEEE, 59–67.
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      Kyle James Harms, Jason Chen, and Caitlin L. Kelleher. 2016. Distractors in Parsons Problems Decrease Learning Efficiency for Young Novice Programmers. In
+      <em>
+       Proceedings of the 2016 ACM Conference on International Computing Education Research
+      </em>
+      . ACM, 241–250.
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      Kyle J Harms, Noah Rowlett, and Caitlin Kelleher. 2015. Enabling independent learning of programming concepts through programming completion puzzles. In
+      <em>
+       Visual Languages and Human-Centric Computing (VL/HCC), 2015 IEEE Symposium on
+      </em>
+      . IEEE, 271–279.
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Jean-Mathias Heraud, Laure France, and Alain Mille. 2004. Pixed: An ITS that guides students with the help of learners’ interaction log. In
+      <em>
+       International conference on intelligent tutoring systems, workshop analyzing student tutor interaction logs to improve educational outcomes. Maceio, Brazil
+      </em>
+      . 57–64.
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      Ada S Kim and Andrew J Ko. 2017. A pedagogical analysis of online coding tutorials. In
+      <em>
+       Proceedings of the 2017 ACM SIGCSE Technical Symposium on Computer Science Education
+      </em>
+      . ACM, 321–326.
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      Paul A. Kirschner, John Sweller, and Richard E. Clark. 2006. Why minimal guidance during instruction does not work: An analysis of the failure of constructivist, discovery, problem-based, experiential, and inquiry-based teaching.
+      <em>
+       <em>
+        Educational psychologist
+       </em>
+      </em>
+      41, 2 (2006), 75–86.
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      René F Kizilcec, Chris Piech, and Emily Schneider. 2013. Deconstructing disengagement: analyzing learner subpopulations in massive open online courses. In
+      <em>
+       Proceedings of the third international conference on learning analytics and knowledge
+      </em>
+      . ACM, 170–179.
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      Aleksandra Klasnja-Milicevic, Boban Vesin, Mirjana Ivanovic, and Zoran Budimac. 2011. E-Learning personalization based on hybrid recommendation strategy and learning style identification.
+      <em>
+       <em>
+        Computers &amp; Education
+       </em>
+      </em>
+      56, 3 (2011), 885–899.
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      Amruth N Kumar. 2018. Epplets: A Tool for Solving Parsons Puzzles. In
+      <em>
+       Proceedings of the 49th ACM Technical Symposium on Computer Science Education
+      </em>
+      . ACM, 527–532.
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      Michael J Lee. 2014. Gidget: An online debugging game for learning and engagement in computing education. In
+      <em>
+       Visual Languages and Human-Centric Computing (VL/HCC), 2014 IEEE Symposium on
+      </em>
+      . IEEE, 193–194.
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      Michael J Lee and Andrew J Ko. 2015. Comparing the effectiveness of online learning approaches on CS1 learning outcomes. In
+      <em>
+       Proceedings of the Eleventh Annual International Conference on International Computing Education Research
+      </em>
+      . ACM, 237–246.
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      Jie Lu. 2004. A personalized e-learning material recommender system. In
+      <em>
+       International Conference on Information Technology and Applications
+      </em>
+      . Macquarie Scientific Publishing.
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Manolis Mavrikis. 2008. Data-driven modelling of students’ interactions in an ILE. In
+      <em>
+       Educational Data Mining 2008
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0053" label="[53]">
+      Loredana Mihalca, Ron JCM Salden, Gemma Corbalan, Fred Paas, and Mircea Miclea. 2011. Effectiveness of cognitive-load based adaptive instruction in genetics education.
+      <em>
+       <em>
+        Computers in Human Behavior
+       </em>
+      </em>
+      27, 1 (2011), 82–88.
+     </li>
+     <li id="BibPLXBIB0054" label="[54]">
+      Briana B. Morrison, Brian Dorn, and Mark Guzdial. 2014. Measuring cognitive load in introductory CS: adaptation of an instrument. In
+      <em>
+       Proceedings of the tenth annual conference on International computing education research
+      </em>
+      . ACM, 131–138.
+     </li>
+     <li id="BibPLXBIB0055" label="[55]">
+      Fred Paas, Alexander Renkl, and John Sweller. 2003. Cognitive load theory and instructional design: Recent developments.
+      <em>
+       <em>
+        Educational psychologist
+       </em>
+      </em>
+      38, 1 (2003), 1–4.
+     </li>
+     <li id="BibPLXBIB0056" label="[56]">
+      Fred Paas, Juhani E Tuovinen, Huib Tabbers, and Pascal WM Van Gerven. 2003. Cognitive load measurement as a means to advance cognitive load theory.
+      <em>
+       <em>
+        Educational psychologist
+       </em>
+      </em>
+      38, 1 (2003), 63–71.
+     </li>
+     <li id="BibPLXBIB0057" label="[57]">
+      Fred GWC Paas, Jeroen JG Van Merrienboer, and Jos J Adam. 1994. Measurement of cognitive load in instructional research.
+      <em>
+       <em>
+        Perceptual and motor skills
+       </em>
+      </em>
+      79, 1 (1994), 419–430.
+     </li>
+     <li id="BibPLXBIB0058" label="[58]">
+      Zachary A Pardos, Ryan SJD Baker, Maria OCZ San Pedro, Sujith M Gowda, and Supreeth M Gowda. 2013. Affective states and state tests: Investigating how affect throughout the school year predicts end of year learning outcomes. In
+      <em>
+       Proceedings of the Third International Conference on Learning Analytics and Knowledge
+      </em>
+      . ACM, 117–124.
+     </li>
+     <li id="BibPLXBIB0059" label="[59]">
+      Dale Parsons and Patricia Haden. 2006. Parson's programming puzzles: a fun and effective learning tool for first programming courses. In
+      <em>
+       Proceedings of the 8th Australasian Conference on Computing Education-Volume 52
+      </em>
+      . Australian Computer Society, Inc., 157–163.
+     </li>
+     <li id="BibPLXBIB0060" label="[60]">
+      Thomas W Price, Yihuan Dong, and Dragan Lipovac. 2017. iSnap: towards intelligent tutoring in novice programming environments. In
+      <em>
+       Proceedings of the 2017 ACM SIGCSE Technical Symposium on Computer Science Education
+      </em>
+      . ACM, 483–488.
+     </li>
+     <li id="BibPLXBIB0061" label="[61]">
+      Stephen K. Reed, Alexandra Dempster, and Michael Ettinger. 1985. Usefulness of analogous solutions for solving algebra word problems.
+      <em>
+       <em>
+        Journal of Experimental Psychology: Learning, Memory, and Cognition
+       </em>
+      </em>
+      11, 1(1985), 106.
+     </li>
+     <li id="BibPLXBIB0062" label="[62]">
+      Brian J Reiser, John R Anderson, and Robert G Farrell. 1985. Dynamic Student Modelling in an Intelligent Tutor for LISP Programming.. In
+      <em>
+       IJCAI
+      </em>
+      , Vol. 85. 8–14.
+     </li>
+     <li id="BibPLXBIB0063" label="[63]">
+      Alexander Renkl. 1997. Learning from worked-out examples: A study on individual differences.
+      <em>
+       <em>
+        Cognitive science
+       </em>
+      </em>
+      21, 1 (1997), 1–29.
+     </li>
+     <li id="BibPLXBIB0064" label="[64]">
+      Alexander Renkl, Robin Stark, Hans Gruber, and Heinz Mandl. 1998. Learning from worked-out examples: The effects of example variability and elicited self-explanations.
+      <em>
+       <em>
+        Contemporary educational psychology
+       </em>
+      </em>
+      23, 1 (1998), 90–108.
+     </li>
+     <li id="BibPLXBIB0065" label="[65]">
+      Cristóbal Romero, Sebastián Ventura, Amelia Zafra, and Paul De Bra. 2009. Applying Web usage mining for personalizing hyperlinks in Web-based adaptive educational systems.
+      <em>
+       <em>
+        Computers &amp; Education
+       </em>
+      </em>
+      53, 3 (2009), 828–840.
+     </li>
+     <li id="BibPLXBIB0066" label="[66]">
+      Vicente-Arturo Romero-Zaldivar, Abelardo Pardo, Daniel Burgos, and Carlos Delgado Kloos. 2012. Monitoring student progress using virtual appliances: A case study.
+      <em>
+       <em>
+        Computers &amp; Education
+       </em>
+      </em>
+      58, 4 (2012), 1058–1067.
+     </li>
+     <li id="BibPLXBIB0067" label="[67]">
+      Ron JCM Salden, Fred Paas, Nick J Broers, and Jeroen JG Van Merrienboer. 2004. Mental effort and performance as determinants for the dynamic selection of learning tasks in air traffic control training.
+      <em>
+       <em>
+        Instructional science
+       </em>
+      </em>
+      32, 1-2 (2004), 153–172.
+     </li>
+     <li id="BibPLXBIB0068" label="[68]">
+      Jesse Schell. 2014.
+      <em>
+       The Art of Game Design: A book of lenses
+      </em>
+      . AK Peters/CRC Press.
+     </li>
+     <li id="BibPLXBIB0069" label="[69]">
+      Elliot M Soloway, Beverly Woolf, Eric Rubin, and Paul Barth. 1981. Meno-ii: An intelligent tutoring system for novice programmers. In
+      <em>
+       Proceedings of the 7th international joint conference on Artificial intelligence-Volume 2
+      </em>
+      . Morgan Kaufmann Publishers Inc., 975–977.
+     </li>
+     <li id="BibPLXBIB0070" label="[70]">
+      Jun-Ming Su, Shian-Shyong Tseng, Wei Wang, Jui-Feng Weng, Jin-Tan David Yang, Wen-Nung Tsai, and others. 2006. Learning portfolio analysis and mining for SCORM compliant environment.
+      <em>
+       <em>
+        Educational Technology &amp; Society
+       </em>
+      </em>
+      9, 1 (2006), 262–275.
+     </li>
+     <li id="BibPLXBIB0071" label="[71]">
+      John Sweller. 1988. Cognitive load during problem solving: Effects on learning.
+      <em>
+       <em>
+        Cognitive science
+       </em>
+      </em>
+      12, 2 (1988), 257–285.
+     </li>
+     <li id="BibPLXBIB0072" label="[72]">
+      John Sweller, Paul Ayres, and Slava Kalyuga. 2011. Measuring cognitive load. In
+      <em>
+       Cognitive load theory
+      </em>
+      . Springer, 71–85.
+     </li>
+     <li id="BibPLXBIB0073" label="[73]">
+      Rohani A. Tarmizi and John Sweller. 1988. Guidance during mathematical problem solving.
+      <em>
+       <em>
+        Journal of educational psychology
+       </em>
+      </em>
+      80, 4 (1988), 424.
+     </li>
+     <li id="BibPLXBIB0074" label="[74]">
+      Jeroen JG Van Merrienboer and Hein PM Krammer. 1990. The” completion strategy” in programming instruction: Theoretical and empirical support.
+      <em>
+       <em>
+        Research on instruction: Design and effects
+       </em>
+      </em>
+      (1990), 45–61.
+     </li>
+     <li id="BibPLXBIB0075" label="[75]">
+      Jeroen JG Van Merrienboer and John Sweller. 2005. Cognitive load theory and complex learning: Recent developments and future directions.
+      <em>
+       <em>
+        Educational psychology review
+       </em>
+      </em>
+      17, 2 (2005), 147–177.
+     </li>
+     <li id="BibPLXBIB0076" label="[76]">
+      Mark Ward and John Sweller. 1990. Structuring effective worked examples.
+      <em>
+       <em>
+        Cognition and instruction
+       </em>
+      </em>
+      7, 1 (1990), 1–39.
+     </li>
+     <li id="BibPLXBIB0077" label="[77]">
+      A. Yan, M. J. Lee, and A. J. Ko. 2017. Predicting abandonment in online coding tutorials. In
+      <em>
+       2017 IEEE Symposium on Visual Languages and Human-Centric Computing (VL/HCC)
+      </em>
+      . 191–199.
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300487" target="_blank">
+      https://doi.org/10.1145/3290605.3300487
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8757ccb8cb60383e',t:'MTcxMzMwODUxMi40NjMwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

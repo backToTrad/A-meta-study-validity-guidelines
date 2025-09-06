@@ -1,0 +1,3984 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3581388_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3581388_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3581388_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3581388_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3581388_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3581388_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3581388_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3581388_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <main>
+   <section class="front-matter">
+    <section>
+     <header class="title-info">
+      <div class="journal-title">
+       <h1>
+        <span class="title">
+         Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts
+        </span>
+        <br/>
+        <span class="subTitle">
+        </span>
+       </h1>
+      </div>
+     </header>
+     <div class="authorGroup">
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-5310-6728" ref="author">
+        <span class="givenName">
+         J.D.
+        </span>
+        <span class="surName">
+         Zamfirescu-Pereira
+        </span>
+       </a>
+       , EECS, UC Berkeley, United States,
+       <a href="mailto:zamfi@berkeley.edu">
+        zamfi@berkeley.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-8613-0380" ref="author">
+        <span class="givenName">
+         Richmond
+        </span>
+        <span class="givenName">
+         Y.
+        </span>
+        <span class="surName">
+         Wong
+        </span>
+       </a>
+       , Digital Media, Georgia Institute of Technology, United States,
+       <a href="mailto:rwong34@gatech.edu">
+        rwong34@gatech.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-0693-0829" ref="author">
+        <span class="givenName">
+         Bjoern
+        </span>
+        <span class="surName">
+         Hartmann
+        </span>
+       </a>
+       , EECS, UC Berkeley, United States,
+       <a href="mailto:bjoern@eecs.berkeley.edu">
+        bjoern@eecs.berkeley.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-3548-2535" ref="author">
+        <span class="givenName">
+         Qian
+        </span>
+        <span class="surName">
+         Yang
+        </span>
+       </a>
+       , Computing and Information Science, Cornell University, United States,
+       <a href="mailto:qy242@cornell.edu">
+        qy242@cornell.edu
+       </a>
+      </div>
+     </div>
+     <br/>
+     <div class="pubInfo">
+      <p>
+       DOI:
+       <a href="https://doi.org/10.1145/3544548.3581388" target="_blank">
+        https://doi.org/10.1145/3544548.3581388
+       </a>
+       <br/>
+       CHI '23:
+       <a href="https://doi.org/10.1145/3544548" target="_blank">
+        Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems
+       </a>
+       , Hamburg, Germany, April 2023
+      </p>
+     </div>
+     <div class="abstract">
+      <p>
+       <small>
+        Pre-trained large language models (“LLMs”) like GPT-3 can engage in fluent, multi-turn instruction-taking out-of-the-box, making them attractive materials for designing natural language interactions. Using natural language to steer LLM outputs (“prompting”) has emerged as an important design technique potentially accessible to non-AI-experts. Crafting effective prompts can be challenging, however, and prompt-based interactions are brittle. Here, we explore whether non-AI-experts can successfully engage in “end-user prompt engineering” using a design probe—a prototype LLM-based chatbot design tool supporting development and systematic evaluation of prompting strategies. Ultimately, our probe participants explored prompt designs opportunistically, not systematically, and struggled in ways echoing end-user programming systems and interactive machine learning systems. Expectations stemming from human-to-human instructional experiences, and a tendency to overgeneralize, were barriers to effective prompt design. These findings have implications for non-AI-expert-facing LLM-based tool design and for improving LLM-and-prompt literacy among programmers and the public, and present opportunities for further research.
+       </small>
+      </p>
+     </div>
+     <div class="CCSconcepts">
+      <ccs2012>
+       <small>
+        <span style="font-weight:bold;">
+         CCS Concepts:
+        </span>
+        •
+        <strong>
+         Human-centered computing → Empirical studies in interaction design
+        </strong>
+        ; •
+        <strong>
+         Computing methodologies → Natural language processing
+        </strong>
+        ;
+       </small>
+      </ccs2012>
+     </div>
+     <br/>
+     <div class="classifications">
+      <div class="author">
+       <span style="font-weight:bold;">
+        <small>
+         Keywords:
+        </small>
+       </span>
+       <span class="keyword">
+        <small>
+         language models
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         end-users
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         design tools
+        </small>
+       </span>
+      </div>
+      <br/>
+      <div class="AcmReferenceFormat">
+       <p>
+        <small>
+         <span style="font-weight:bold;">
+          ACM Reference Format:
+         </span>
+         <br/>
+         J.D. Zamfirescu-Pereira, Richmond Y. Wong, Bjoern Hartmann, and Qian Yang. 2023. Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts. In
+         <em>
+          Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems (CHI '23), April 23–28, 2023, Hamburg, Germany.
+         </em>
+         ACM, New York, NY, USA 21 Pages.
+         <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3581388" target="_blank">
+          https://doi.org/10.1145/3544548.3581388
+         </a>
+        </small>
+       </p>
+      </div>
+     </div>
+    </section>
+   </section>
+   <section class="body">
+    <section id="sec-2">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         1
+        </span>
+        INTRODUCTION
+       </h2>
+      </div>
+     </header>
+     <p>
+      The idea of instructing computers in natural language has fascinated researchers for decades, as it promises to make the power of computing more customizable and accessible to people without programming training [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ]. The combination of pre-trained large language models (LLMs) and prompts brought renewed excitement to this vision. Recent pre-trained LLMs (e.g., GPT-3 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ], ChatGPT [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ]) can engage in fluent, multi-turn conversations out-of-the-box, substantially lowering the data and programming-skill barriers to creating passable conversational user experiences [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ]. People can improve LLM outputs by prepending
+      <em>
+       prompts
+      </em>
+      —textual instructions and examples of their desired interactions—to LLM inputs. Prompts directly bias the model towards generating the desired outputs, raising the ceiling of what conversational UX is achievable for non-AI experts. In the past two years, social media platforms have witnessed an explosion of posts showing the results of lay peoples’ experimentation with LLMs for question answering, creative dialogue writing, writing code, and more. This excitement around LLMs and prompting is propelling a rapidly growing set of LLM-powered applications [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ] and prompt design tools [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ].
+     </p>
+     <p>
+      Yet despite widespread excitement, surprisingly little is known about how non-experts intuitively approach designing prompts with LLM-and-prompt-based tools, and how effective they are in doing so. While prompting LLMs can appear effortless, designing effective prompting strategies requires identifying the contexts in which these LLMs’ errors arise, devising prompting strategies to overcome them, and systematically assessing those strategies’ effectiveness. These tasks fall on so-called “prompt engineers”—the designers, domain experts, and any other end-user or professional attempting to improve an LLM's output—and are challenging tasks even for LLM experts, as well as topics of ongoing research in Natural Language Processing (NLP) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ]. Prompt design tools to date have focused on supporting professional programmers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ] and NLP practitioners [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ], rather than non-AI experts, non-programmers, and other potential end-users of these systems.
+     </p>
+     <p>
+      <strong>
+       In this work, we investigate how non-AI-experts intuitively approach prompt design when designing LLM-based chatbots, with an eye towards how non-AI-expert-facing design tools might help.
+      </strong>
+      Specifically, we investigate these questions in the context of designing an instructional chatbot, that is, a chatbot that walks the user through an activity (e.g., cooking a recipe, fixing a wifi connection) while answering user questions and engaging in social conversation throughout the process. Traditionally requiring multiple large datasets and extensive model training, building an instructional chatbot is one of the tasks for which a near-trivial prompt provided to GPT-3 (“
+      <tt>
+       Walk the user through the following steps: &lt;steps&gt;
+      </tt>
+      ”) alone yields a strong baseline. Among other uses, merely enabling non-AI-experts to customize and improve instructional chatbots has the potential to revolutionize customer service bots, one of the most common chatbot use cases. The explosion of interest in LLM-based ChatGPT [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ] demonstrates that chat-based interactions with LLMs can provide a powerful engine for a wide variety of tasks, including joke-writing, programming, writing college-level essays, medical diagnoses, and more; see [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ] for a summary.
+     </p>
+     <p>
+      Toward this goal, we created a no-code LLM-based chatbot design tool,
+      <font style="font-variant: small-caps">
+       BotDesigner
+      </font>
+      , that (1) allows users to create an LLM-based chatbot solely through prompts, and (2) encourages iterative design and evaluation of effective prompt strategies. Using this tool as a design probe, we observed how 10 participants without substantial prompt design experience executed a chatbot design task using
+      <font style="font-variant: small-caps">
+       BotDesigner
+      </font>
+      , to explore a few different pieces of this larger question. Our findings suggest that, while end-users can explore prompt designs opportunistically, they struggle to make robust, systematic progress. Their struggles echo many well-known struggles observed in end-user programming systems (EUPS) and non-expect users of interactive machine learning (iML) systems. Additional barriers to effective prompt design stem from limited conceptions of LLMs’ prompt understanding and execution abilities and their understandable inclinations to design prompts that resemble human-to-human instructions. We discuss these observations’ implications for designing effective end-user-facing LLM-based design tools, implications for education that improves LLM-and-prompt literacy among programmers and the general public, and opportunities for further research.
+     </p>
+     <p>
+      This paper makes three contributions. First, it describes a novel, no-code LLM-and-prompt-based chatbot design tool that encourages iterative design and evaluation of robust prompt strategies (rather than opportunistic experimentation.) Second, it offers a rare rich description of how non-experts intuitively approached prompt design, and where, how, and why they struggled. Finally, it identifies opportunities for non-expert-facing prompt design tools and open research questions in making LLM-powered design innovation accessible.
+     </p>
+    </section>
+    <section id="sec-3">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         2
+        </span>
+        RELATED WORK
+       </h2>
+      </div>
+     </header>
+     <section id="sec-4">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.1
+         </span>
+         The Promises of Non-Expert Prompt Design
+        </h3>
+       </div>
+      </header>
+      <p>
+       Today's chatbot design practice—i.e., designing multi-turn conversational interactions—follows a well-established workflow [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+        12
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+        13
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+        39
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+        44
+       </a>
+       ]. Designers first (i) identify the chatbot's functionality or persona and draft ideal user-bot conversations, for example, through Wizard-of-Oz or having experts drafting scripts; (ii) create a dialogue flow template (e.g., “(1) greeting message; (2) questions to collect user intention; (3)...”); (iii) fill the template with supervised NLP models (e.g., user intent classifier, response generator, etc.); and finally (iv) iterate on these components to achieve a desired conversational experience. In this “supervised learning” paradigm, designers make NLP models generate their desired interactions by improving its training data and feature design; tasks that require substantial machine learning and programming knowledge [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+        50
+       </a>
+       ].
+      </p>
+      <p>
+       The emergent “pre-train, prompt, predict
+       <a class="fn" href="#fn1" id="foot-fn1">
+        <sup>
+         1
+        </sup>
+       </a>
+       ” paradigm in NLP promises to lower the entry barrier for non-experts innovating on conversational interactions [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ]. In this paradigm, designers can create conversational agents with little to no training data, programming skills, or even NLP knowledge. Leveraging pre-trained large language models such as ChatGPT [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+        1
+       </a>
+       ], designers can create a general-purpose conversational system with passable, though sometimes problematic, performance. Next, they can improve the LLM outputs using natural language prompts (see Table
+       <a class="tbl" href="#tab1">
+        1
+       </a>
+       for an example) and/or model fine-tuning. In this paradigm, people without programming skills or NLP knowledge can nonetheless make NLP models generate desired interactions by crafting effective prompt strategies (e.g., natural language instructions, examples, and templates) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+        3
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+        15
+       </a>
+       ].
+      </p>
+      <div class="table-responsive" id="tab1">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 1:
+        </span>
+        <span class="table-title">
+         An example of how designers (
+         <span class="inline-equation">
+          <img alt="" class="img-responsive" src="3581388_files\chi23696fig6.jpg"/>
+         </span>
+         ) can directly improve chatbot interactions by modifying prompt strategies. Note the
+         <font color="#0000FF">
+          changes
+         </font>
+         in the bot's (
+         <span class="inline-equation">
+          <img alt="" class="img-responsive" src="3581388_files\chi23696fig7.jpg"/>
+         </span>
+         ) response to the user's (
+         <span class="inline-equation">
+          <img alt="" class="img-responsive" src="3581388_files\chi23696fig8.jpg"/>
+         </span>
+         ) statement.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           <strong>
+            Prompt Strategy
+           </strong>
+          </td>
+          <td style="text-align:center;">
+           <strong>
+            Resulting Human-GPT-3 Conversation
+           </strong>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           No prompt
+           <br/>
+           (baseline)
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <img alt="" class="img-responsive" src="3581388_files\chi23696fig1.jpg"/>
+           </span>
+           <strong>
+            User:
+           </strong>
+           Ok hang on while I get a chair
+           <br/>
+           <span class="inline-equation">
+            <img alt="" class="img-responsive" src="3581388_files\chi23696fig2.jpg"/>
+           </span>
+           <strong>
+            Bot:
+           </strong>
+           Scoot to the front of your chair
+           <em>
+            [...]
+           </em>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           Explicit instruction
+          </td>
+          <td style="text-align:center;">
+           <span class="inline-equation">
+            <img alt="" class="img-responsive" src="3581388_files\chi23696fig3.jpg"/>
+           </span>
+           <font color="#0000FF">
+            <strong>
+             Prompt design:
+            </strong>
+            If the user asks you to wait, explain that this is not a problem
+            <em>
+             [...]
+            </em>
+           </font>
+           <br/>
+           <span class="inline-equation">
+            <img alt="" class="img-responsive" src="3581388_files\chi23696fig4.jpg"/>
+           </span>
+           <strong>
+            User:
+           </strong>
+           Ok hang on while I get a chair
+           <br/>
+           <span class="inline-equation">
+            <img alt="" class="img-responsive" src="3581388_files\chi23696fig5.jpg"/>
+           </span>
+           <strong>
+            Bot:
+           </strong>
+           <font color="#0000FF">
+            Once you have your chair,
+           </font>
+           scoot to the front of it
+           <em>
+            [...]
+           </em>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </section>
+     <section id="sec-5">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.2
+         </span>
+         Known Challenges in Prompt Design
+        </h3>
+       </div>
+      </header>
+      <p>
+       While prompting
+       <em>
+        can appear
+       </em>
+       as easy as instructing a human, crafting effective and generalizable prompt strategies is a challenging task. How a prompt or a prompt strategy directly impacts model outputs, and how prompts modify LLMs’ billions of parameters during re-training, are both active areas of NLP research [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+        42
+       </a>
+       ]. Moreover, established prompt design workflows do not yet exist. Even for NLP experts, prompt engineering requires extensive trial and error, iteratively experimenting and assessing the effects of various prompt strategies on concrete input-output pairs, before assessing them more systematically on large datasets.
+      </p>
+      <p>
+       That said, ongoing NLP research does offer some hints toward effective prompt design strategies. Notably, these prompt strategies are effective in improving LLMs’ performance over a range of NLP tasks and conversational contexts; it remains unclear to what extent these strategies can improve any particular conversational interactions or contexts.
+      </p>
+      <ul class="list-no-style">
+       <li id="list1" label="•">
+        <strong>
+         Give examples of desired interactions in prompts.
+        </strong>
+        The original GPT-3 paper demonstrated that examples substantially improved the performance of GPT-3 on a battery of tasks such as question answering and language translation [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+         9
+        </a>
+        ]. This approach appears frequently in online tutorials, such as in OpenAI Playground's example set [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+         36
+        </a>
+        ].
+        <br/>
+       </li>
+       <li id="list2" label="•">
+        <strong>
+         Write prompts that look (somewhat) like code.
+        </strong>
+        “Prompting looks more like writing web pages.” Researchers found that explicitly demarcating prompt text and inserted input data, such as by using a templating language like Jinja, yielded prompts that are more robust to broader input distributions [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+         3
+        </a>
+        ].
+        <br/>
+       </li>
+       <li id="list3" label="•">
+        <strong>
+         Repeat yourself.
+        </strong>
+        The authors of DALL · E, the large text-to-image model, report that to generate a neon sign that reads “backprop”, the prompt “
+        <em>
+         a neon sign that reads backprop; backprop neon sign; a neon sign that backprop
+        </em>
+        ” can be more effective than the one without the repetition [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+         40
+        </a>
+        ]. (This strategy is under-investigated in text generation.)
+        <br/>
+       </li>
+      </ul>
+      <p>
+       Little research has investigated how non-experts conduct prompt engineering intuitively or the challenges they encounter. One rare exception is a CHI’22 workshop paper “How to prompt?” [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+        14
+       </a>
+       ], where Dang
+       <em>
+        et al.
+       </em>
+       conducted a focus group with HCI researchers and identified an initial set of challenges they encountered in prompting. These challenges include “the lack of guidance in trial and error,” “poor representation of tasks and effects,” and “computational costs and ethical concerns.” In prompting text-to-image models such as DALL · E, an adjacent area to prompting LLMs, Liu
+       <em>
+        et al.
+       </em>
+       describe a study with artists, identifying emergent strategies for
+       <em>
+        prototyping
+       </em>
+       prompts, such as “try multiple generations to get a representative idea of what prompts return” and “focus on keywords rather than the phrasings of the prompt” [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ]. This paper builds upon this emergent line of research and aims to deepen these understandings.
+      </p>
+     </section>
+     <section id="sec-6">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.3
+         </span>
+         Non-Expert Prompt Design Tools
+        </h3>
+       </div>
+      </header>
+      <p>
+       Arguably, the most widely used prompt design tool among non-experts remains the OpenAI Playground, a “plain text” input box that triggers GPT-3 to predict text completions. The
+       <em>
+        Playground
+       </em>
+       interface includes over 50 example prompts and enables anyone to experiment with different prompts for accomplishing various tasks. Though useful,
+       <em>
+        Playground
+       </em>
+       lacks any support for systematic evaluation of prompts.
+      </p>
+      <p>
+       Propelled by the potential of non-expert prompt design, a rapidly growing set of end-user-facing LLM-based applications is emerging from HCI research, many with features that support prompt engineering. Such applications span across LLM-enhanced story writing and programming [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+        23
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+        38
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+        45
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+        48
+       </a>
+       ]. NLP researchers have also started creating tools to enable anyone to contribute prompts to help train LLMs [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+        3
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+        15
+       </a>
+       ].
+      </p>
+      <p>
+       Interestingly, these tools offer little to no support for non-experts in generating or evaluating prompts, often assuming that looking at individual input-output pairs in isolation is sufficient. One telling example is
+       <em>
+        AI Chains
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+        49
+       </a>
+       ], a tool for exploring human-LLM collaborative writing interactions. AI Chains allows designers to construct a chain of LLMs where the output of one LLM becomes the input for the next, and to test the resulting interactions themselves. The tool successfully enables designers to explore prompt and chaining strategies more efficiently and strategically [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+        48
+       </a>
+       ]. However, it is unclear whether the resulting strategies are effective or robust beyond the few interaction contexts that the designers experimented with.
+      </p>
+     </section>
+     <section id="sec-7">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.4
+         </span>
+         Known Challenges in Non-Expert Programming and Machine Learning
+        </h3>
+       </div>
+      </header>
+      <p>
+       Early HCI research tells us that program-authoring interactions that do not require programming are not necessarily accessible to non-programmers; drag-and-drop and interactive machine learning (iML) tools cannot necessarily enable non-ML experts to build models [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+        50
+       </a>
+       ], and prompting can be viewed as a programming or iML task. In this context, one might ask: does prompt engineering similarly involve tacit knowledge that non-AI experts do not have? What mental models might hinder non-AI experts’ ability to devise robust prompt strategies and create desired conversational interactions? Research on prompt design has not yet asked these questions.
+      </p>
+      <div class="table-responsive" id="tab2">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 2:
+        </span>
+        <span class="table-title">
+         Known differences in non-experts’ and experts’ approaches to software engineering [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+          26
+         </a>
+         ] and to machine learning model building [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+          50
+         </a>
+         ].
+        </span>
+       </div>
+       <table class="table">
+        <thead>
+         <tr>
+          <th style="text-align:center;">
+           <strong>
+            PROGRAMMING
+           </strong>
+          </th>
+          <th style="text-align:center;">
+           <strong>
+            Non-Experts’ Intuitive Approach
+           </strong>
+          </th>
+          <th style="text-align:center;">
+           <strong>
+            Experts’ Intuitive Approaches
+           </strong>
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           Task requirement
+          </td>
+          <td style="text-align:center;">
+           Implicit
+          </td>
+          <td style="text-align:center;">
+           Explicit
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           Task specification
+          </td>
+          <td style="text-align:center;">
+           Implicit
+          </td>
+          <td style="text-align:center;">
+           Explicit
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           Code reuse
+          </td>
+          <td style="text-align:center;">
+           Unplanned
+          </td>
+          <td style="text-align:center;">
+           Planned
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           Code testing &amp; verification
+          </td>
+          <td style="text-align:center;">
+           Overconfident
+          </td>
+          <td style="text-align:center;">
+           Cautious
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;">
+           Debugging
+          </td>
+          <td style="text-align:center;">
+           Opportunistic
+          </td>
+          <td style="text-align:center;">
+           Systematic
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;">
+           <strong>
+            MACHINE LEARNING
+           </strong>
+          </td>
+          <td style="text-align:center;">
+           <strong>
+            Non-Experts’ Intuitive Approach
+           </strong>
+          </td>
+          <td style="text-align:center;">
+           <strong>
+            Experts’ Intuitive Approaches
+           </strong>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           ML task design
+          </td>
+          <td style="text-align:center;">
+           Directly map personal need to model task
+          </td>
+          <td style="text-align:center;">
+           Framing an achievable task
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           Debugging
+          </td>
+          <td style="text-align:center;">
+           Add more data, or “use deep learning”
+          </td>
+          <td style="text-align:center;">
+           Identify solvable underlying problems
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;">
+           Measuring success
+          </td>
+          <td style="text-align:center;">
+           Consider only one performance metric
+          </td>
+          <td style="text-align:center;">
+           Seek multiple performance indicators
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p>
+       Here, we briefly overview known barriers and challenges in end-user programming and iML (list below [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ]) as well as how experts and non-experts approach these tasks differently (Table
+       <a class="tbl" href="#tab2">
+        2
+       </a>
+       ), to motivate and contextualize our investigation into end-users’ intuitive approaches to prompt design.
+      </p>
+      <ul class="list-no-style">
+       <li id="list4" label="•">
+        <em>
+         Design barriers:
+        </em>
+        “I don't even know what I want the computer to do...”
+        <br/>
+       </li>
+       <li id="list5" label="•">
+        <em>
+         Selection barriers:
+        </em>
+        “I know what I want the computer to do, but I don't know what to use...”
+        <br/>
+       </li>
+       <li id="list6" label="•">
+        <em>
+         Coordination barriers:
+        </em>
+        “I know what things to use, but I don't know how to make them work together...”
+        <br/>
+       </li>
+       <li id="list7" label="•">
+        <em>
+         Use barriers:
+        </em>
+        “I know what to use, but I don't know how to use it...”
+        <br/>
+       </li>
+       <li id="list8" label="•">
+        <em>
+         Understanding barriers:
+        </em>
+        “I thought I knew how to use this, but it didn't do what I expected...”
+        <br/>
+       </li>
+       <li id="list9" label="•">
+        <em>
+         Information barriers:
+        </em>
+        “I know why it didn't do what I expected, but I don't know how to check...”
+        <br/>
+       </li>
+      </ul>
+      <p>
+       In this work, we use these previously-identified challenges to better understand
+       <em>
+        why
+       </em>
+       we observe some of the struggles with end-user prompt engineering that we do.
+      </p>
+     </section>
+    </section>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         3
+        </span>
+        METHOD: DESIGN PROBE
+       </h2>
+      </div>
+     </header>
+     <p>
+      In this work, we aim to understand how non-experts intuitively approach designing
+      <em>
+       robust
+      </em>
+      prompts, and whether and how they struggle in doing so. We want to dive deep into what those struggles reveal about people's assumptions and understanding of prompt-based systems in order to inform how end-user-facing prompt design tools might best support their users.
+     </p>
+     <p>
+      We chose to investigate these questions in the context of designing instructional chatbots—chatbots that walk users through an activity (e.g., cooking a recipe, fixing a wifi connection) while answering user questions and engaging in social conversation as needed. Chatbot tasks are sufficiently open-ended that they open the door to a wide variety of types of problems and prompt-based solution approaches. Instructional chatbots represent a common chatbot use case (e.g., customer service bots), and their constituent tasks are some of the tasks that GPT-3 peforms more effectively out-of-the-box.
+     </p>
+     <p>
+      In support of these goals, we developed a no-code prompt design tool,
+      <font style="font-variant: small-caps">
+       BotDesigner
+      </font>
+      , as a design probe [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ], and conducted a user study with components of contextual inquiry and interview. We chose to create a design probe because the robustness of prompt strategies is highly dependent on specific conversational contexts, as is users’ ability to create prompts and debug. Enabling people to engage in designing LLM-and-prompt-based chatbots
+      <em>
+       hands-on
+      </em>
+      offers deeper insights than conducting interviews about hypothetical scenarios alone. We chose to purpose-build a prompt design tool because existing tools focus on enabling non-experts to experiment with various prompting strategies rather than crafting robust and generalizable prompts.
+     </p>
+     <section id="sec-9">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.1
+         </span>
+         Designing a No-Code Prompt Design Tool as Probe
+        </h3>
+       </div>
+      </header>
+      <p>
+       <em>
+        Design Goals.
+       </em>
+       We have two goals in designing
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       : First, to enable end-users, without any prompt design experience or even programming or ML experience, to (i) create a chatbot using prompts, without code, and (ii) systematically evaluate their prompts. Second, to allow end-users to engage in this process in a flexible, open-ended way, allowing us to observe their intuitive behaviors and thought processes.
+      </p>
+      <p>
+       Supporting a full chatbot design workflow, while adhering to a prompt-only, no-code format,
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       has to support two separate, complementary activities:
+      </p>
+      <ul class="list-no-style">
+       <li id="list10" label="•">
+        <strong>
+         Conversation authoring &amp; interaction
+        </strong>
+        : Users instruct chatbot behavior with prompts alone (without code) and can observe the effects of their prompts by engaging in conversation with the chatbot.
+        <br/>
+       </li>
+       <li id="list11" label="•">
+        <strong>
+         Error testing
+        </strong>
+        : Users collect a set of conversations using each draft of their prompt strategy, label any errors in each conversation, and inspect the strategy's overall impact on the conversations in aggregate.
+        <br/>
+       </li>
+      </ul>
+      <figure id="fig1">
+       <img alt="Figure 1" aria-describedby="fig002" class="img-responsive" src="3581388_files\chi23696fig9.jpg"/>
+       <p id="fig002" style="display:none">
+        The BotDesigner user interface enables authoring prompts as well as engaging in conversations, labeling utterances with errors, and then viewing those errors in aggregate to understand the cross-conversational impacts of changing prompts.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 1:
+        </span>
+        <span class="figure-title">
+         <font style="font-variant: small-caps">
+          BotDesigner
+         </font>
+         main user interface. Right pane: the
+         <em>
+          prompt template
+         </em>
+         authoring area (1); designers use plain text here to describe desired behavior for the chatbot they are developing. Left, tabbed pane: the conversation authoring area; here, designers can send chat messages (2) to the bot defined by the current template on the right. A
+         <em>
+          label
+         </em>
+         button reveals a labeling widget (3) that allows designers to attach an arbitrary text label to any bot-produced chat message, for aggregation and later identification. A
+         <em>
+          retry
+         </em>
+         button (4), only visible after the
+         <em>
+          prompt template
+         </em>
+         has been changed, lets designers test what new bot chat message would be produced, at that specific point in the conversation, as a result of the prompt template change. The “Error Browser” tab (5) reveals a UI panel for designers to test prompt changes against all labeled bot responses, across all conversations (see Figure
+         <a class="fig" href="#fig2">
+          2
+         </a>
+         ).
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       <em>
+        Related work in tool design.
+       </em>
+       . Two challenges stand out on the path to achieving these goals: (i) How can
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       allow users to observe a prompt's impact on a single conversation? (ii) How can
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       enable users to inspect a prompt's impact on a full set of conversations, while each of these conversations unfolds differently depending on the user's utterances and the LLM's probabilistic outputs?
+      </p>
+      <p>
+       To address the challenge in tracking prompt's effects,
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       builds on tool design in prior interactive ML research (see [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ] for a review). Explainability and model manipulation tools for text and code generation have used a variety of interactions for exploring underlying reasons for specific behavior, such as the “questioning” approaches by Liao
+       <em>
+        et al.
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ] and iterative dialog approaches by Lakkaraju
+       <em>
+        et al.
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ].
+      </p>
+      <p>
+       To address the challenge of visualizing and analyzing multiple divergent conversations,
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       draws inspiration from prior work that tackles analogous challenges in computer-generated images by supporting side-by-side comparisons. One early interactive system for exploring the design space of computer-generated images, Marks
+       <em>
+        et al.
+       </em>
+       ’s
+       <em>
+        Design Galleries
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+        33
+       </a>
+       ] enables users to explore a space of images generated by a specific set of parameters specifying lighting and other image features on a rendering tool. Modern takes on this work have traded CGI parameters for deep model hyperparameters, such as Carter
+       <em>
+        et al.
+       </em>
+       ’s
+       <em>
+        Activation Atlas
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+        10
+       </a>
+       ] for inspecting image classifiers, Evirgen and Chen's
+       <em>
+        GANzilla
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+        18
+       </a>
+       ] for searching a GAN-based image generator's latent space using scatter/gather interactions [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ], and Zhang and Banovic's interactive image galleries for sampling from a GAN. These tools, and the concepts they embody, directly informed the design of
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       .
+      </p>
+      <figure id="fig2">
+       <img alt="Figure 2" aria-describedby="fig003" class="img-responsive" src="3581388_files\chi23696fig10.jpg"/>
+       <p id="fig003" style="display:none">
+        The BotDesigner error browser reports aggregate statistics over labeled utterances, enabling the designer to quickly understand the impacts of a prompt change.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 2:
+        </span>
+        <span class="figure-title">
+         The
+         <font style="font-variant: small-caps">
+          BotDesigner
+         </font>
+         <em>
+          Error Browser
+         </em>
+         , showing the results of evaluating a new bot template's prompts (off-screen, right) against a set of previously-labeled utterances. The left column are the original utterances, while the right column are the new utterances produced by a modified template. Under the heading
+         <em>
+          Aggregate Stats
+         </em>
+         , per-error listings show the count of modified utterances across all labeled conversations.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+      <p>
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       <em>
+        Design.
+       </em>
+       .
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       has two interfaces: a
+       <em>
+        Conversation
+       </em>
+       view and an
+       <em>
+        Error Browser
+       </em>
+       . Using the Conversation view, end-user chatbot designers can create a chatbot by authoring a set of natural language prompts, referred to as
+       <em>
+        prompt template
+       </em>
+       (see Appendix
+       <a class="sec" href="#sec-27">
+        A.1
+       </a>
+       for a concrete example of a prompt template and its resulting chatbot). Designers can explore how any given prompt template behaves as a chatbot by engaging in a conversation with the chatbot defined by that template (Figure
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       ). Specifically, the
+       <em>
+        prompt template
+       </em>
+       consists of several text fields: (i) A
+       <em>
+        preamble
+       </em>
+       that consists of direct natural language instruction to the bot; (ii) A fixed set of
+       <em>
+        first turns
+       </em>
+       of conversation, causing all conversations with this bot to start with this specific set of messages; and (iii) A
+       <em>
+        reminder
+       </em>
+       that is included in the LLM prompt immediately before LLM is queried for its next conversational turn.
+      </p>
+      <p>
+       Using
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       ’s
+       <em>
+        Error Browser
+       </em>
+       , designers can run a new or modified prompt template against a full set of prior conversations. The system then displays a list of how the LLM-produced chat messages change given the new bot template (Figure
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       ).
+      </p>
+      <p>
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       <em>
+        Implementation.
+       </em>
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       is implemented as a React-based web application with a node.js-based backend, relying on OpenAI's GPT-3 API and its
+       <tt>
+        text-davinci-002
+       </tt>
+       model as the underlying LLM. Much of the implementation of the application consists of standard CRUD-style techniques; we offer a detailed description of
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       ’s implementation and pilot usability study in Appendix
+       <a class="sec" href="#sec-26">
+        A
+       </a>
+       .
+      </p>
+      <p>
+       Of note, we selected
+       <tt>
+        text-davinci-002
+       </tt>
+       because it was the most capable model available at the time of our study, in particular, the most capable at taking instruction in natural language with fewer in-line examples. Because we expect the costs of large model API calls to decrease over time, we did not consider performance/cost tradeoffs, reasoning that future models will likely have different tradeoffs and that today's “most capable” models will be next year's intermediate models in any case. Indeed, as of this writing, OpenAI has already released
+       <tt>
+        text-davinci-003
+       </tt>
+       and
+       <font style="font-variant: small-caps">
+        ChatGPT
+       </font>
+       —models that will certainly have different capabilities.
+      </p>
+     </section>
+     <section id="sec-10">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.2
+         </span>
+         <font style="font-variant: small-caps">
+          BotDesigner
+         </font>
+         at Work: an Example Prompt-Based Chatbot Design Process
+        </h3>
+       </div>
+      </header>
+      <p>
+       To demonstrate the full potential of
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       , consider the following example: an end-user/designer, Alex, wishes to create a chatbot that walks the user through cooking a recipe (Mixed Veggie Tempura), answers any questions they might have, and engages in social chit-chat if needed. Alex also plans to use the chatbot via voice while cooking.
+      </p>
+      <ol class="list-no-style">
+       <li id="list12" label="(1)">
+        <strong>
+         Defining a “baseline” chatbot prompt template
+        </strong>
+        . Because GPT-3 is well-equipped to carry multi-turn conversations out of the box, this step can be quite simple: Alex types the following into the
+        <em>
+         preamble
+        </em>
+        text field: “
+        <tt>
+         You are a recipe instruction bot. Engage in conversation to walk the user through the following recipe for Mixed Veggie Tempura:
+        </tt>
+        ” followed by a set of ingredients and recipe steps copied from a website, ending with “
+        <tt>
+         Start by helping the user collect and prepare the ingredents, then execute the directions. Go step by step. Stay friendly
+        </tt>
+        ”.
+        <br/>
+       </li>
+       <li id="list13" label="(2)">
+        <strong>
+         Assessing what the baseline bot is capable of
+        </strong>
+        , Alex next generates an initial set of conversations with the baseline bot, trying a few different types of questions that real-world users might ask, such as “Is this recipe vegan?” and “Can I make this recipe vegan?”. Alex might also recruit other users or crowd workers to create such requests.
+        <br/>
+       </li>
+       <li id="list14" label="(3)">
+        <strong>
+         Identifying errors.
+        </strong>
+        Alex next inspects this set of conversations, catalogs any errors or striking successes found, and labels specific bot responses in their conversational context, for use as a “regression test” suite.
+        <a class="fn" href="#fn2" id="foot-fn2">
+         <sup>
+          2
+         </sup>
+        </a>
+        For example, if the bot suggests a dangerous cooking activity, Alex might add label “dangerous”, indicating this is one of the critical errors to fix; if the bot produces a list of ingredients that's too difficult to follow, Alex might add “list too long”.
+        <br/>
+       </li>
+       <li id="list15" label="(4)">
+        <strong>
+         Debugging
+        </strong>
+        , Alex selects one type of error to focus on repairing, based on frequency or potential for harm. For example, to fix the “list too long” error, Alex adds “
+        <tt>
+         but don't list more than one ingredient in each message
+        </tt>
+        ” to the end of the prompt template
+        <em>
+         preamble
+        </em>
+        ’s first paragraph.
+        <br/>
+       </li>
+       <li id="list16" label="(5)">
+        <strong>
+         Evaluating the new prompt locally.
+        </strong>
+        To see if the prompt change has fixed the error, Alex clicks the “retry” button next to a chatbot response that bears this error label (see Figure
+        <a class="fig" href="#fig1">
+         1
+        </a>
+        , item 4).
+        <em>
+         Retrying
+        </em>
+        allows Alex to test whether the new prompt design can fix the error in the same conversational context where it first occurred. In addition to
+        <em>
+         retry
+        </em>
+        , the
+        <em>
+         edit
+        </em>
+        button allows Alex to edit the user's utterances in a conversation, playing out how the new prompt would lead to a new conversation with the user.
+        <br/>
+       </li>
+       <li id="list17" label="(6)">
+        <strong>
+         Evaluating the new prompt globally.
+        </strong>
+        After the new prompt has fixed the error locally, Alex tests it on the full set of conversations collected in step (2), in case this new prompt fixes other errors or causes new ones.
+        <br/>
+       </li>
+       <li id="list18" label="(7)">
+        <strong>
+         Iteration.
+        </strong>
+        Having identified a globally-effective prompt, Alex returns to choose a different error and experiment with new prompt design solutions (iterating on steps 5-7 or 2-7).
+        <br/>
+       </li>
+      </ol>
+      <p>
+       This workflow (reproduced visually in the Appendix as Figure
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       ) mirrors HCI's traditional iterative prototyping process in many ways; however, it differs from almost all previous non-expert prompt design tools, which focused solely on ad-hoc experimentation (steps 1-2).
+      </p>
+      <p>
+       It is worth noting that although
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       enables this full workflow, we do not necessarily expect all end-users to engage in all its steps. However, we did validate
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       ’s functionality and usability throughout this workflow via a set of pilot user studies (see Appendix
+       <a class="sec" href="#sec-29">
+        A.3
+       </a>
+       for details) to ensure that these pieces are available should users choose to systematically assess their prompt designs.
+      </p>
+     </section>
+     <section id="sec-11">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.3
+         </span>
+         User Study Design
+        </h3>
+       </div>
+      </header>
+      <p>
+       To understand how end users intuitively approach prompt design, we invited 10 non-expert prompt designers to use
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       and think-aloud. We invited the participants to improve upon a baseline chatbot template towards given goals (see
+       <em>
+        Tasks
+       </em>
+       below), while we observed and took note of the various prompt design approaches and testing strategies they engaged in. We chose the task of improving a chatbot, instead of creating it from scratch, in order to avoid the Blank Page Syndrome, the effect where users staring at a blank page do not know where to begin.
+      </p>
+      <p>
+       <em>
+        Participants.
+       </em>
+       . All participants (
+       <em>
+        N
+       </em>
+       = 10) had little to no experience with prompt design; none had substantial prior experience working with LLMs. We recruited participants with varying levels of programming and chatbot design experience. Recall that our focus here is understanding end-users in the domain of
+       <em>
+        prompt design
+       </em>
+       ; experience in
+       <em>
+        chatbot design
+       </em>
+       was thus not considered grounds for exclusion. Our sample size was chosen in line with prior work around formative testing for usability [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+        19
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+        43
+       </a>
+       ]: our goal is to explore the first, “easy-to-find” problems users encounter when engaged in our task, and our experience with a pilot user suggested that problem discoverability was likely to be high.
+      </p>
+      <p>
+       Our participant pool, skewed towards professionals and graduate students in STEM-related fields, is not representative of the population at large. As a result, we cannot (and will not) make claims about the relative prevalence of specific behavior or beliefs among the general population; instead, we identify behaviors and intuitions among a population that we expect is disproportionately likely to be early adopters of LLM-based tools—and some of our findings are especially surprising given the high level of technical literacy among our participant pool.
+      </p>
+      <div class="table-responsive" id="tab3">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 3:
+        </span>
+        <span class="table-title">
+         Study participants.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           <strong>
+            ID
+           </strong>
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           <strong>
+            Age
+           </strong>
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           <strong>
+            Profession
+           </strong>
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           <strong>
+            Programming Experience
+           </strong>
+          </td>
+          <td>
+           <strong>
+            LLM Knowledge
+           </strong>
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           P1
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           30s
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Psychology Professor
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           None
+          </td>
+          <td>
+           None
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           P2
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           20s
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Graduate Student
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Professional
+          </td>
+          <td>
+           None
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           P3
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           20s
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Graduate Student
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Amateur
+          </td>
+          <td>
+           None
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           P4
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           30s
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Designer
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Amateur
+          </td>
+          <td>
+           Has heard of LLMs
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           P5
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           20s
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Graduate Student
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Professional
+          </td>
+          <td>
+           Has read about LLMs
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           P6
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           20s
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Graduate Student
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Amateur
+          </td>
+          <td>
+           Has read about LLMs
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           P7
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           30s
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Designer &amp; Lecturer
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Professional
+          </td>
+          <td>
+           None
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           P8
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           60s
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Software Engineer
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Professional
+          </td>
+          <td>
+           None
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           P9
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           40s
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Speech Therapy Researcher
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           None
+          </td>
+          <td>
+           None
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           P10
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           40s
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Product Manager
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Minimal
+          </td>
+          <td>
+           Has heard of LLMs
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p>
+       <em>
+        Task.
+       </em>
+       . Participants were asked to recreate, in chatbot form, a professional chef that walks an amateur (the chatbot's
+       <em>
+        user
+       </em>
+       ) through the various steps of cooking a recipe. This task was inspired by the web series
+       <em>
+        Back to Back Chef
+       </em>
+       , in which Bon Appétit Test Kitchen chef Carla Lalli walks celebrities through cooking a specific recipe “through verbal instructions only.” [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ] Carla can see neither the celebrities that she is instructing nor their actions;
+       <em>
+        all
+       </em>
+       information is communicated by voice, making this web series an ideal source material for a purely-language-medium chatbot. Participants’ ultimate goal is to modify the chatbot's utterances and behavior to better match Carla Lalli's performance in the series: engaging in humor and social conversation, making analogies, simplifying complicated concepts, asking for confirmation that specific steps have been completed, and performing a few other types of actions found in the web series.
+      </p>
+      <p>
+       We operationalized the decision to chose a chatbot
+       <em>
+        improvement
+       </em>
+       task rather than a chatbot
+       <em>
+        creation
+       </em>
+       task by providing the
+       <em>
+        baseline bot template
+       </em>
+       pre-loaded in the
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       interface, instead of asking participants to generate one. This baseline bot can successfully list out ingredients and steps, but in general does not engage in the behaviors described above.
+      </p>
+      <p>
+       In selecting this particular chatbot improvement task, we considered (and even piloted) a few other chatbot design tasks, including an open-ended “design a chatbot” task, without any particular target or baseline chatbot goals. We offered a few baseline chatbot templates and asked users to come up with a chatbot idea and implement it, but ultimately, our pilot users’ behaviors were dominated by open-ended exploration of the baseline bot's capabilities, and they did not engage very much in iterative prompt design. Understanding GPT-3’s capabilities was a non-goal of our study, and we found too few instances of prompt design for the amount of effort our pilot participants were engaged in. We ultimately selected the Carla chatbot (“CarlaBot”) design task because it captures a number of behaviors that are (i) hard to do with traditional NLP, that (ii) GPT-3 and other LLMs are nominally capable of, making them motivating and persuasive for our participants, and that are (iii) not present in the baseline bot, requiring prompt iteration to achieve.
+      </p>
+      <p>
+       <em>
+        Interview Protocol.
+       </em>
+       . We showed users a specific episode of
+       <em>
+        Back to Back Chef
+       </em>
+       in which Carla walks actress Elizabeth Olsen through the preparation of Mixed Veggie Tempura [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ]. After watching the first few minutes of the episode, we showed participants a transcript of that video, containing within it a set of color-coded highlights that we drew participants’ attention to verbally and then described. These highlights identified several specific instances of Carla engaging in humor and social conversation, making analogies, simplifying complicated concepts, asking for confirmation that specific steps have been completed, and performing a few other types of actions that are atypical of cookbook recipes—and unlike what one might expect a typical voice assistant to perform. The first few turns of this transcript appear in Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       , and the full transcript is provided in Appendix
+       <a class="sec" href="#sec-30">
+        B
+       </a>
+       .
+      </p>
+      <figure id="fig3">
+       <img alt="Figure 3" class="img-responsive" src="3581388_files\chi23696fig11.jpg"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 3:
+        </span>
+        <span class="figure-title">
+         The first few turns of the Back To Back Chef we showed participants before asking them to reproduce the
+         <strong>
+          Expert
+         </strong>
+         as a bot. Note the analogies, concept simplification, step completion confirmation, and humor.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+      <p>
+       We asked participants to use
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       to improve on a baseline chatbot we provided (see appendix; Figure 4b). We began by describing the components of the interface, showing where the designer could have a conversation with the chatbot under development, as well as identifying the
+       <strong>
+        preamble
+       </strong>
+       ,
+       <strong>
+        first turns
+       </strong>
+       , and
+       <strong>
+        reminder
+       </strong>
+       components of the bot template and explaining their connection to the chatbot, as well as identifying the “start a new conversation” button.
+      </p>
+      <p>
+       We encouraged participants to first evaluate what the baseline bot template is (and is
+       <em>
+        not
+       </em>
+       ) capable of, and then asked participants to try to prompt the bot to perform the additional types of conversational tasks that Carla engages in, but that are absent from the baseline. Participants were allowed up to 1 hour to get as far as they could on this task, and we communicated that we were most interested in observing how they set about this task, and not how well they managed to do so; we also set expectations that completing this task may not be possible at all, let alone in the allotted time. Participants were allowed to explore the tool in an open-ended manner and attempt multiple different strategies to complete the task.
+      </p>
+      <p>
+       In a few cases, described here, we informed or reminded participants of specific functionality of
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       later in the interview, at a certain stage of the participant's progress. First, when participants identified an error, we would point out the labeling functionality, and show how to use the systematic error testing functionality. Second, when participants modified a bot template and expressed a wish to evaluate it, with a question like “how do I see what this change does?”, we would additionally point out the “edit” and “replay” local testing functionality.
+      </p>
+      <p>
+       The interview proceeded in two phases. For the first 10-15 minutes of the prompt design task, we did not offer participants suggestions for prompt design unless we observed zero prompt design attempts in a span of several minutes; at those points where participants got stuck for several minutes, in the interest of observing subsequent behavior, we would make a suggestion for a particular prompt to try, and noted which participants were unable to attempt prompt design without assistance (RQ1).
+      </p>
+      <p>
+       After this initial phase, again in the interest of observing subsequent behavior, we would offer suggestions for prompts to try that were in line with the research around prompt design. Examples of this advice include “try reframing that ‘do not’ statement into a positive statement, say what it is you want the bot to say, not what you don't want it to say” or “have you considered copying some of the Carla-Lizzie transcript directly into the preamble?” We did not intentionally vary this advice across participants; however, due to the unpredictable nature of which errors participants chose to focus on, not all participants received the same advice or advice in the same order, a limitation of our approach.
+      </p>
+      <p>
+       <em>
+        Analysis &amp; Evaluation.
+       </em>
+       . We asked participants to think aloud, then engaged in exploratory data analysis, transcribing all videos and observing what prompt design approaches participants attempted, and noting when participants appeared to struggle and where interviewers intervened. Two of the authors then compared these approaches across participants and categorized their struggles using affinity diagrams [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+        34
+       </a>
+       ] and by creating a service blueprint [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+        5
+       </a>
+       ] that documents the specific approaches individual participants attempt. We chose these methods from HCI and the field of service design because our focus is on discovering opportunities created by a new technology, rather than understanding how an
+       <em>
+        existing
+       </em>
+       set of users engages in
+       <em>
+        established
+       </em>
+       work practices—a context in which a grounded theory approach would be more conventional.
+      </p>
+     </section>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         4
+        </span>
+        USER STUDY FINDINGS
+       </h2>
+      </div>
+     </header>
+     <p>
+      We found the following:
+     </p>
+     <ol class="list-no-style">
+      <li id="list19" label="(1)">
+       Using
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       , all participants were able to engage in
+       <em>
+        ad hoc
+       </em>
+       opportunistic iteration on prompts, with local testing of prompt changes. Two out of our ten participants required assistance in order to begin this process, but could then iterate on their own.
+       <br/>
+      </li>
+      <li id="list20" label="(2)">
+       Participants’ struggles with generating prompts, evaluating prompt effectiveness, and explaining prompt effects, primarily stemmed from (a) over-generalization from single observations of success and failure of prompt changes; and (b) models of system behavior rooted in human-human interactions.
+       <br/>
+      </li>
+     </ol>
+     <p>
+      In the following subsections, we dive into, describe, and illustrate with examples some of the observations that lead us to these findings. Throughout this section, prompt text is set in
+      <tt>
+       monospace font
+      </tt>
+      , while spoken participant comments and user/bot dialog messages are “quoted.”
+     </p>
+     <section id="sec-13">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.1
+         </span>
+         Overview: Non-Experts’ Approach to Prompt Design
+        </h3>
+       </div>
+      </header>
+      <p>
+       In our open-ended prompt design task, participants almost exclusively took an
+       <em>
+        ad hoc
+       </em>
+       , opportunistic approach to prompt exploration.
+      </p>
+      <p>
+       Before engaging in the following flow, participants were asked to watch a short segment of the
+       <em>
+        Back to Back Chef
+       </em>
+       episode described in §
+       <a class="sec" href="#sec-11">
+        3.3
+       </a>
+       , shown a transcript of that episode, led through a description of a few types of desirable human behaviors Carla engages in (e.g., analogies, concept simplification, confirmation of recipe steps), and asked to modify the baseline chatbot's instructions in order to replicate some of those behaviors in CarlaBot.
+      </p>
+      <p>
+       From that starting point, the typical flow is:
+      </p>
+      <ol class="list-no-style">
+       <li id="list21" label="(1)">
+        Participants start an example conversation as the baseline chatbot's “user” partner, continuing until the bot issues an utterance that the participant deems
+        <em>
+         in error
+        </em>
+        . Common errors that participants often pause at include:
+        <br/>
+        <ol class="list-no-style">
+         <li id="list22" label="(a)">
+          Humorlessness, often in the form of terse, dry prose.
+          <br/>
+         </li>
+         <li id="list23" label="(b)">
+          Chatbot providing overly complicated statements, such as listing
+          <em>
+           all nine
+          </em>
+          necessary ingredients in a single utterance.
+          <br/>
+         </li>
+         <li id="list24" label="(c)">
+          Chatbot moving on to a next step without confirming that the user has completed the previous step.
+          <br/>
+         </li>
+         <li id="list25" label="(d)">
+          Chatbot giving undesired explanations, such as “I like using my hands because then you get a little bit more of that natural flavor in there.” (P4)
+          <br/>
+         </li>
+        </ol>
+       </li>
+       <li id="list26" label="(2)">
+        Most participants stop after encountering a single erroneous utterance, though a few proceed past that error, or try to repair it through the chat dialog. A few participants also start a second conversation before making any changes.
+        <br/>
+       </li>
+       <li id="list27" label="(3)">
+        Participants then alter the “instructions” in the preamble to explicitly request some other behavior. Examples of targeted behavior include:
+        <br/>
+        <ol class="list-no-style">
+         <li id="list28" label="(a)">
+          Describing the chatbot's role in a new way, such as by replacing the first line of the baseline bot template
+          <tt>
+           You are a recipe instruction bot
+          </tt>
+          with
+          <tt>
+           You are a middle-aged female comedian
+          </tt>
+          (P2)
+          <br/>
+         </li>
+         <li id="list29" label="(b)">
+          Adding explicit general direction to elicit a specific type of behavior, such as adding
+          <tt>
+           0. Make some jokes, banter with the user
+          </tt>
+          (P6) above the 1st step of the recipe.
+          <br/>
+         </li>
+         <li id="list30" label="(c)">
+          Adding explicit
+          <em>
+           specific
+          </em>
+          direction to elicit or avoid a specific utterance, such as
+          <tt>
+           Don't say that when you use your hands you get a little bit more of that natural flavor in there.
+          </tt>
+          (P4)
+          <br/>
+         </li>
+        </ol>
+        Most participants begin making prompt changes by pattern matching off the existing instructions in the baseline bot (as in the examples above, by changing adjectives or descriptions of behavior).
+        <br/>
+       </li>
+       <li id="list31" label="(4)">
+        When stuck, participants take a few different approaches. Most start by asking the interviewer for advice or guidance, but a few (P2, P4) search the Internet for suggestions and advice.
+        <br/>
+       </li>
+       <li id="list32" label="(5)">
+        Targeting a specific erroneous utterance, participants typically iterate until they observe a successful outcome, for example, the chatbot tells a joke. Most participants declare success after just a single instance, and move on to another behavioral target.
+        <br/>
+       </li>
+       <li id="list33" label="(6)">
+        Participants then continue the conversation, or start a new one, until a new problem emerges (or the interviewer intervenes). To iterate, participants primarily used the “retry” button or started new conversations, with limited use of the “edit” button.
+        <br/>
+       </li>
+      </ol>
+      <p>
+       About half of participants used the reminder field, which starts empty. One participant just wanted the bot to “Confirm that the user has completed the step before starting the next.”
+      </p>
+      <p>
+       Participants did not make much use of the error labeling functionality, and as a result also did not find the systematic testing functionality useful. Instead, participants engaged primarily in repeated local testing, without consideration for whether changes made later in the prompt design process reintroduced earlier, previously-solved errors. This local testing was typically conducted by using the “retry” button on the specific problematic utterance the participant was trying to resolve, or by starting new conversations.
+      </p>
+     </section>
+     <section id="sec-14">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.2
+         </span>
+         Challenges in End-User Prompt Design
+        </h3>
+       </div>
+      </header>
+      <p>
+       Though we report on a wide spectrum of our participants’ struggles iterating on prompts, we found that many of these behaviors arose from two fundamental sources: over-generalization from limited experience, and a social lens that filtered participants’ prompts (and the system's responses to those prompts) through expectations originating in human-human interactions.First, participants over-generalized from single data points, whether positive or negative. For example, when writing a prompt to generate specific behavior, participants often stopped iterating once the behavior was observed in a single conversational context, without considering other conversations or contexts—or gave up too early if the behavior was not observed on a first or second attempt, and assumed the system was incapable of generating that behavior. Second, participants filtered their prompts and observations through a lens based on behavioral expectations drawn from human-human interactions, in some cases so strongly that they avoided effective prompt designs
+       <em>
+        even after their interviewer encouraged their use and demonstrated their effectiveness
+       </em>
+       . For example, all participants held a strong bias for direct instruction over providing examples in-line, and when encouraged to give examples, most participants did, and noted their effectiveness,
+       <em>
+        but none subsequently made substantial use of examples in their prompt designs
+       </em>
+       . Other effects of the human-human interaction expectations included some participants’ beliefs that the chatbot would “understand” the instructions provided, not considering the instruction merely as priming a language model—resulting in surprise that a prompt like “Do not say
+       <strong>
+        ABC
+       </strong>
+       ” leads to the chatbot saying
+       <strong>
+        ABC
+       </strong>
+       verbatim. In the following sections we illustrate these behaviors with example prompts and quotes drawn from our interviews, explicitly connect behaviors with the causes described above, and draw parallels where these behaviors echo challenges described in the end-user programming systems and interactive machine learning literature.
+      </p>
+     </section>
+     <section id="sec-15">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.3
+         </span>
+         Impacts: Challenges’ Effects on Prompt Design
+        </h3>
+       </div>
+      </header>
+      <p>
+       In this section, we describe and illustrate the specific behaviors and effects we observed in our participant interviews, organized by subtask:
+       <strong>
+        generating prompts
+       </strong>
+       ,
+       <strong>
+        evaluating prompt effectiveness
+       </strong>
+       , and
+       <strong>
+        explaning system behavior
+       </strong>
+       .
+      </p>
+      <section id="sec-16">
+       <p>
+        <em>
+         <span class="section-number">
+          4.3.1
+         </span>
+         Generating Prompts.
+        </em>
+        <em>
+         Confusions Getting Started
+        </em>
+        .
+       </p>
+       <p>
+        About half of participants began unsure of what kinds of behaviors they could reasonably expect, nor how to make modifications to the preexisting baseline template, asking some version of the question “what can I even do here to make this better?” These participants had read the baseline bot's preamble, but didn't know what words they could use, echoing the
+        <em>
+         design
+        </em>
+        and
+        <em>
+         selection
+        </em>
+        barriers to end-user programming described in [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+         27
+        </a>
+        ].
+       </p>
+       <p>
+        Confusion around the role the human end-user played in this design task was also common (P1, P3, P9, P10): is the human acting as Carla? Or is the human the “producer,” “directing” Carla's performance as though they were directing the Bon Appétit web series (P9)? Though P9 found “defining my role was really helpful, I'm the producer, I'm not the chef, I'm coaching the chef” (P9), the metaphor's inherent leakiness led to confusion down the line about the nature of the instructions entered into the preamble and in conversations: why, then, did Carla seem to forget any directions given in the course of one conversation, when engaged in subsequent conversations? This role assumption, though not completely valid, allowed P9 to make short-term progress, but hindered later understanding. This echoes the findings in [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+         27
+        </a>
+        ]: invalid assumptions made to surmount one learning barrier can render future barriers insurmountable in end-user programming systems.
+       </p>
+       <p>
+        <em>
+         Choosing the Right Instructions
+        </em>
+        .
+       </p>
+       <p>
+        Finding the right instructions to use to achieve a desired effect was a struggle for nearly every participant, e.g., “I want CarlaBot to make some jokes, but I don't know how to do that.” (P2)—once again echoing the end-user programming (EUPS)
+        <em>
+         selection
+        </em>
+        barrier  [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+         27
+        </a>
+        ]. One participant, P9, explicitly drew a connection between “coaching” CarlaBot and programming:
+       </p>
+       <blockquote>
+        <p>
+         I think I'm doing a lot of trial and error, which is actually not a bad thing, about how to get it to do what I want it to do, because I haven't done something like this before. I think perhaps because I'm not a programmer I don't know the parameters of what I can do. So for example learning that I could tell it to “be conversational” and that...it could actually do that...was quite surprising, because I didn't know that computers can understand something like that I guess? (P9)
+        </p>
+       </blockquote>
+       <p>
+        One common cause of struggle in this area was over-generalizing from a single failure.P2, for example, first attempted to use a particular type of prompt, like
+        <tt>
+         Tell some jokes
+        </tt>
+        , observed zero effect, then assumed that
+        <em>
+         no instructions of that type would succeed
+        </em>
+        , that the bot
+        <em>
+         was incapable of following the requested instruction, regardless of phrasing
+        </em>
+        , leading to an early exit from a successfully selected prompt type that was merely being misused: “ok, I guess it doesn't like to tell jokes.” (P2) These effects echo previous reports that non-experts face challenges measuring and interpreting model performance [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+         50
+        </a>
+        ].
+       </p>
+       <p>
+        <em>
+         Expecting Human Capabilities
+        </em>
+        .
+       </p>
+       <p>
+        Perhaps driven by human-human interaction experiences, a number of participants (P4, P5 and P9) mixed behavioral commands directed at the
+        <em>
+         bot
+        </em>
+        with recipe commands directed at the bot's
+        <em>
+         users
+        </em>
+        , with the expectation that the bot would know which is which:
+       </p>
+       <blockquote>
+        <p>
+         <tt>
+          2. Break the maitake mushroom into small pieces. Explain that this should be done with the user's hands, except when the mushroom is dry or spongy on the bottom. When the mushroom is dry or spongy on the bottom, use a paring knife. Don't explain why hands are used.
+         </tt>
+         (P4-authored text in preamble.)
+        </p>
+       </blockquote>
+       <p>
+        Note that the “
+        <tt>
+         Break [...]
+        </tt>
+        ” command above is directed to the chatbot's
+        <em>
+         user
+        </em>
+        , while the subsequent “
+        <tt>
+         Explain [...]
+        </tt>
+        ” command is directed
+        <em>
+         to the chatbot itself
+        </em>
+        . When prompted about this apparent discrepancy, P4 did not initially recognize it, then defended it as something the bot should understand.
+       </p>
+       <p>
+        Similarly, two participants (P9, P10) appeared to hold an expectation that the chatbot would remember prior conversations with users and that behavioral instructions given in conversation, rather than in the preamble, would be considered by the chatbot in subsequent conversations. The idea that the chatbot would take direction from preamble instructions but was “hard reset” for every new conversation—effectively forced to forget all previous conversations when starting a new one—was not at all intuitive, especially to non-programmers.
+       </p>
+       <p>
+        <em>
+         Socially Appropriate Ways of Prompting
+        </em>
+        .
+       </p>
+       <p>
+        Exclusively polite language in prompts, a strong and consistent preference for a number of participants, is one of the specific prompt design choices that draws from human social expectations. P8 in particular—despite persistent interviewer suggestions towards the session end—consistently insisted on beginning any instruction to the chatbot with the word “please”. Several participants (P1, P4, P6), despite being visibly frustrated, did not appear to express that frustration through a change in the tone or content of their instructions to the chatbot, maintaining a neutral tone in their requests. Construed as direct feedback, politeness in giving machines instructions was explicitly explored in
+        <em>
+         Computers are Social Actors
+        </em>
+        : Nass
+        <em>
+         et al
+        </em>
+        [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+         35
+        </a>
+        ] found that humans respond more politely and positively when asked to provide
+        <em>
+         direct
+        </em>
+        feedback, as opposed to
+        <em>
+         indirect
+        </em>
+        feedback—even if the recipient of that feedback in an obviously inanimate computer.
+       </p>
+       <p>
+        Use of repetition at the word or phrase level, in contrast, was rare. Even when prompted by interviewers, repetition felt unnatural to participants, and only one participant (P8) repeated text either within the preamble or across the preamble and reminder.
+       </p>
+       <p>
+        Participants also biased heavily towards direct instruction (e.g.,
+        <tt>
+         Tell some jokes
+        </tt>
+        ) over examples (e.g.,
+        <tt>
+         say “Isn't that a line from a Woody Allen movie?”
+        </tt>
+        ). P5 was the only participant to independently add example dialog to the preamble. However, the baseline bot template is only instructions without example dialog, which may explain the observed bias if participants start by merely pattern-matching–and indeed, when prompted, other participants did in fact copy several turns of conversation from the transcript to the preamble. Incorporating example dialog into the preamble appeared to be very effective not only at steering the chatbot's utterances for that particular recipe step, but also in shifting the chatbot's “voice” to be more like Carla's in future utterances.
+       </p>
+       <p>
+        Yet even those participants who were explicitly asked to copy dialog from the transcript into the preamble did not do so more than once. This happened despite participants’ observations of substantial improvements from copying dialog, suggesting that this bias may not simple be pattern matching. Two of these participants (P2, P9) remarked that it felt like “cheating” to copy example dialog into the prompt, in the sense that it would not steer the chatbot's utterances beyond the copied lines—implying that they did not notice (or were insufficiently convinced by) the shift in Carla's voice that persisted beyond the copied lines, as noted by interviewers. For example, Carla frequently begins statements with “So,...”—and this phrasing persists to new bot responses beyond the copied example dialog. From P2:
+       </p>
+       <blockquote>
+        <p>
+         ...if I fed it the entire dialog it would do a good job replicating that, but that's probably not useful given this exact use case, right? To me, that doesn't seem like AI. (P2)
+        </p>
+       </blockquote>
+       <p>
+        P9 offers a similar rationale for avoiding examples, when prompted to follow up on the claim that “I'm definitely learning [how to prompt]”:
+       </p>
+       <blockquote>
+        <p>
+         Initially I started by giving very explicit quotes, but actually it was more efficient for me, and more generalizable for the system, to say “be conversational, avoid technical language,” that seems to be better [than quotes].
+        </p>
+       </blockquote>
+       <p>
+        In both of these cases, participants are expressing a concern that quotes/examples are
+        <em>
+         too specific
+        </em>
+        to the particular recipe, and thus aren't “generalizable”—now inferring
+        <em>
+         too little
+        </em>
+        rather than
+        <em>
+         too much
+        </em>
+        capability on the part of the LLM.
+       </p>
+       <p>
+        The universality of the advice “show, don't tell” [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+         46
+        </a>
+        ] for novice writers, suggesting that humans commonly reach for descriptions over examples, is another possible corroboration for this bias.
+       </p>
+       <p>
+        <em>
+         Seeking Help
+        </em>
+        .
+       </p>
+       <p>
+        Two participants (P2, P4) who did seek solutions on the web both had a hard time making use of the examples they found, in part because they could not see how specific prompt designs translated across domains. P2, for example, searched Google for “how can GPT-3 assume an identity,” hoping to find advice on having their chatbot take on Carla's identity. Despite finding an example illustrating how to generate text written in the style of a particular author, P2 decided this example was too far from what they were looking for, and did not attempt that particular approach. One participant, P6, didn't pursue seeking solutions on the web because “I have no idea what I would Google because I've never worked with language models before.” (P6)
+       </p>
+      </section>
+      <section id="sec-17">
+       <p>
+        <em>
+         <span class="section-number">
+          4.3.2
+         </span>
+         Evaluating Prompts.
+        </em>
+        Although all participants struggled with generating prompts in various ways, they were all ultimately successful in adding and modifying prompt text in ways that led to some, if not all, of the desired effects. On the other hand, participants’ struggles with
+        <em>
+         evaluating
+        </em>
+        prompts, and in particular evaluating the
+        <em>
+         robustness of prompt changes
+        </em>
+        , were much more severe.
+       </p>
+       <p>
+        <em>
+         Collecting Data
+        </em>
+        .
+       </p>
+       <p>
+        Participants overall were exclusively opportunistic in their approaches to prompt design. None of our participants elicited more than one or two conversations with the bot—nor did they follow any single conversation through to task completion—before jumping in with attempts to fix. This behavior echoes previous findings that non-experts debug programs opportunistically, rather than systematically [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+         26
+        </a>
+        ], and debug ML models haphazardly, rather than strategically [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+         50
+        </a>
+        ].
+       </p>
+       <p>
+        Labeling of errors for future regression testing or later re-testing was also uncommon; participants preferred to address each error as it appeared with
+        <em>
+         retries
+        </em>
+        , rather than “saving them for later” as the labels appeared designed to do. In fact, the participants who did label errors initially when encouraged to (P3, P9) stopped labeling once they realized that their debugging and development processes did not actually make use of these labels. In fact, some participants initially expected that the error labels were interpreted and used by the chatbot to improve itself (P9, P3a), and continued labeling longer for that reason—but stopped after an interviewer explained that the labels are for human use only.
+       </p>
+       <p>
+        P9, asked about their non-use of labels, initially said “Well, I don't know how I would use it, because I know the AI system doesn't understand [the label text]”—and later described the follow-on effects on systematic testing:
+       </p>
+       <blockquote>
+        <p>
+         I think one of the reasons I didn't really use the [systematic testing] in part is because I only really labeled one thing in each error type in each case. So this would be helpful if I were finding multiple cases of each type [...] because then you could go back and see a pattern. (P9)
+        </p>
+       </blockquote>
+       <p>
+        <em>
+         Systematic Testing
+        </em>
+        .
+       </p>
+       <p>
+        Zero participants made use of the systematic prompt testing interface in
+        <font style="font-variant: small-caps">
+         BotDesigner
+        </font>
+        for our prompt design task—including the few who did engage in error labeling. Instead, participants in general were satisfied and eager to move on as soon as they succeeded in a observing a “correct” (or even merely “improved”) response caused by modifying the bot template.
+       </p>
+       <p>
+        A few participants did sometimes wonder why their specific prompt changes succeeded where others had failed, but were still satisfied enough with the success that even these participants did not pursue systematically exploring the context of the error, nor did they generate new conversations to explore whether and where the error might occur in different conversational contexts. This behavior echoes the behavior seen in end-user programmers who are overconfident in testing and verification, rather than cautious [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+         26
+        </a>
+        ].
+       </p>
+       <p>
+        Surprisingly, we observed this pattern of premature victory declaration for participants across all levels of prior programming experience. However, some of the participants with “professional” programming experience (P2, P7) expressed concerns about their process and how generalizable their prompts would be, suggesting an awareness of this particular pitfall. One participant (P6), reminded of
+        <font style="font-variant: small-caps">
+         BotDesigner
+        </font>
+        ’s functionality supporting systematic evaluation of prompts, did not choose to revisit it in the moment—instead noting that it did not quite support the exact workflow they had in mind.
+       </p>
+       <p>
+        P4 in particular noted a preference for functionality that allowed explicit comparisons of pairs of
+        <em>
+         templates
+        </em>
+        rather than
+        <em>
+         conversations
+        </em>
+        or
+        <em>
+         utterances
+        </em>
+        . In P4’s ideal workflow, one view would highlight the different words and phrases between two templates, and then a corresponding view would highlight the differences between every conversation's utterances as generated by the two templates. Such an interface would allow P4 to observe at a glance the
+        <em>
+         effect
+        </em>
+        of specific words in a prompt change on the specific words of the conversational turns. Interestingly, this style of prompt change analysis is more aligned with a desire to
+        <em>
+         understand the effect of a prompt change in order to develop intuitions for prompt design
+        </em>
+        rather than to systematically ensure the effectiveness of a single prompt change.
+       </p>
+      </section>
+      <section id="sec-18">
+       <p>
+        <em>
+         <span class="section-number">
+          4.3.3
+         </span>
+         Explaining Prompts’ Effects.
+        </em>
+        Unsurprisingly, given the highly probabilistic nature of LLM outputs, participants frequently found themselves wondering
+        <em>
+         why
+        </em>
+        some action had the effect that it did.
+       </p>
+       <p>
+        <em>
+         Generalizing Across Contexts
+        </em>
+        .
+       </p>
+       <p>
+        Participants frequently found themselves in situations where a prompt design that worked in one context simply did not work in another, similar context. For example, P9 discovered that they could simply write out instructional steps in colloquial language and the bot would repeat those verbatim. But
+        <tt>
+         Are you done?
+        </tt>
+        appended to the end of one of the phrases that was previously copied verbatim
+        <em>
+         simply did not appear
+        </em>
+        , as though the question was not actually there—resulting in extreme confusion for P9. As in this case, participants frequently made assumptions, likely based on their experiences giving other
+        <em>
+         humans
+        </em>
+        instructions, about what kinds of “understanding” they could expect; in this case, P9 believed that the chatbot understood to use the recipe step phrases verbatim, and could not imagine why that would not extend to “Are you done?” Without an ability to provide corrections, or engage in dialog with the bot over its behavior, P9 was left with little more than bewilderment.
+       </p>
+       <p>
+        <em>
+         Incapability as Explanation
+        </em>
+        .
+       </p>
+       <p>
+        A number of participants made assumptions about the kinds of instructions LLMs respond well to after just one attempt with a particular prompt design, once again overgeneralizing from a single (typically negative) example. Very few participants attempted rephrasing of statements, as participants seemed inclined to infer a lack of ability, to assume that the bot was simply incapable of behaving in a certain way if a direct request was ignored rather than trying to establish if a different phrasing of the same request would work. In particular, on a few occasions interviewers observed “Do not do thing X” to be much less effective than “Do thing Y”, yet the “Do not do thing X” phrasing was much more common among participants. Seeking corroboration, we found that the early childhood education literature suggests that exhibiting the
+        <em>
+         opposite
+        </em>
+        bias, of using “do” rather than “do not” phrasing (helpful for parents and teachers), requires training (e.g.,  [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+         17
+        </a>
+        ]).
+       </p>
+       <p>
+        By way of example, P4 was instructed by the interviewer to try the
+        <strong>
+         do
+        </strong>
+        version and omit the
+        <strong>
+         do not
+        </strong>
+        version of the same request about an extraneous explanation of hand use and natural flavor; the
+        <strong>
+         do
+        </strong>
+        -only version finally succeeded. In context: P4 had succeeded in generating a more “chatty” bot with some detailed behavioral instructions (“
+        <tt>
+         Explain that this should be done with the users’ hands [...]
+        </tt>
+        ”), but later discovered that this prompt had the additional undesired side effect that, when asked about using a paring knife to cut a Maitake mushroom, the bot offered “I like using my hands because then you get a little bit more of that natural flavor in there”—a somewhat nonsensical and oddly hygiene-unfriendly response.
+       </p>
+       <p>
+        To repair, P4 reasoned that an explicit instruction to
+        <em>
+         not
+        </em>
+        say this exact phrase would help, and added “
+        <tt>
+         Don't say that when you use your hands you get a little bit more of that natural flavor in there.
+        </tt>
+        ” immediately after the original “
+        <tt>
+         Explain...
+        </tt>
+        ” instruction. This addition had no discernible effect, however, much to P4’s surprise. After P4 tried a few variations over a few minutes—adding quotation marks, changing punctuation, etc.—the interviewer finally suggested trying a
+        <tt>
+         do
+        </tt>
+        -focused form of the instruction, which P4 initially appended
+        <em>
+         after
+        </em>
+        the “
+        <tt>
+         Don't [...]
+        </tt>
+        ” instruction, again without success. Removing the “
+        <tt>
+         Don't [...]
+        </tt>
+        ” instruction finally resolved this particular error.
+       </p>
+       <p>
+        This example illustrates two of the mismatches between human expectations about instruction-giving and the realities of LLM prompting. First, our participants expected that plain descriptions of behavior should be “understood” and acted upon, and if they aren't, it reflects LLM capabilities. Second, our participants expected that semantically equivalent instructions would have semantically equivalent results, while in reality trivial modifications to a prompt can lead to dramatic shifts in future unfolding of conversations.
+       </p>
+       <p>
+        In another example, P2 expressed confusion about interacting prompts, asking “is there an upper limit on how many [...] instructional statements you could give it before it gets confused? Because it's not really echoing the sentiments I'm telling it to, and I'm just unsure why that is. Besides, of course, fundamental GPT-3 level inability”—echoing the “coordination” barrier [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+         27
+        </a>
+        ] and showing overgeneralization about incapability from single failure.
+       </p>
+       <p>
+        <em>
+         “But why...?”
+        </em>
+        .
+       </p>
+       <p>
+        Finally, every participant at one point asked their interviewer
+        <strong>
+         “why did it do that?”
+        </strong>
+        In nearly every case, our answer had to be “I don't know”—for now, the black box nature of LLMs allows only speculation about the reasons for one behavior or another, unlike with traditional programming systems.
+       </p>
+      </section>
+     </section>
+    </section>
+    <section id="sec-19">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         5
+        </span>
+        DISCUSSION
+       </h2>
+      </div>
+     </header>
+     <p>
+      In this section we address the implications of our findings: we offer ideas for training and education, we identify opportunities for design, and we lay out open questions revealed by this work.
+     </p>
+     <section id="sec-20">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.1
+         </span>
+         What Do People Currently Do? Implications for Training and Education
+        </h3>
+       </div>
+      </header>
+      <p>
+       One major opportunity for training and education revealed by our study is that
+       <em>
+        end-users should collect more data than they are naturally inclined to
+       </em>
+       . Systematic testing and robust prompt design—designing prompts that work across many users and many conversations—are
+       <em>
+        by definition
+       </em>
+       impossible if the user only ever engages in a single conversation, even continuously updated. That said, for some contexts non-robust prompt design can be appropriate: chatbots intended for a single user who is also the designer do not necessarily need to be robust.
+      </p>
+      <p>
+       A second major opportunity stems from the fact that most of the prompt design approaches participants tried before receiving any guidance (see §
+       <a class="sec" href="#sec-11">
+        3.3
+       </a>
+       for details regarding this guidance) had some effect—enough for participants to feel that they could, in fact, affect chatbot output with prompt changes—but participants hit dead ends that incurred interviewer intervention more frequently than we expected.
+      </p>
+      <p>
+       A searchable repository of examples, such as
+       <em>
+        The DALL·E 2 Prompt Book
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ], could help users overcome the “design”, “selection”, and “use” barriers that often led to the aforementioned dead ends. In particular, these examples should include
+       <em>
+        specific prompts that work
+       </em>
+       , and the
+       <em>
+        contexts
+       </em>
+       in which they work, so users can set their own expectations around when to try what kind of instruction, or what kind of sample dialog (or other input-output pair) to include, how much to repeat themselves, how much emotion to give, etc. Examples would also help users develop reasonable expectations about whether a specific
+       <em>
+        type
+       </em>
+       of prompt design should work in a given context—and if not, whether rephrasing or repositioning that prompt would help.
+      </p>
+      <p>
+       Third, in our related work, we identified a few prompt design approaches that recent literature supports as effective, including the use of example input/output pairs (such as sample conversational turns, in the context of chatbots) and the use of repetition within prompts. We found, however, that some users avoided these known-effective strategies, sometimes
+       <em>
+        even when encouraged by the interviewer to try them
+       </em>
+       . This may be a result of what communications researcher Clifford Nass identifies as a “computers are social actors” (CASA) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ] effect; that line of work shows that humans are cautious about giving feedback to a computer system
+       <em>
+        they are actively interacting with
+       </em>
+       , despite recognizing the computer as incapable of feeling judged. One finding of Nass's work is that
+       <em>
+        if
+       </em>
+       the human's instructions to the computer are perceived by the human as applying not to the computer the human is interacting with, but rather to a third party that is not present,
+       <em>
+        then
+       </em>
+       humans can avoid social pitfalls—that is, avoid behaving as though the chatbot is a social actor they're instructing. Achieving this may be a matter of combining training with specific tool design; we offer some possible direction in the next section.
+      </p>
+      <p>
+       Fourth, some users, especially those with limited programming experience, struggled to recognize the ways in which the instructions they gave in the preamble, in the reminder, or
+       <em>
+        in conversation with the chatbot
+       </em>
+       had different time horizons. Instructions in conversation, in particular, had no bearing on
+       <em>
+        any future conversations
+       </em>
+       ; the prompt sent to GPT-3 consists only of the preamble, the single conversation in progress, and the reminder—prior conversations are not “remembered” in any sense. Though this problem is likely especially pronounced for chatbots that present a social, interactive interface, making sure that users understand the specific lifecycle over which instructions have an effect is important to avoid frustrations arising from the feeling that the user has to repeat themselves or that they “told you this already”.
+      </p>
+      <p>
+       Finally, we conclude this section on training by drawing on our finding that participants in general
+       <em>
+        chose not to
+       </em>
+       engage in systematic testing:
+       <em>
+        for users to engage in systematic testing of prompts, we must train and encourage users to do so
+       </em>
+       .
+      </p>
+     </section>
+     <section id="sec-21">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.2
+         </span>
+         Opportunities for Design
+        </h3>
+       </div>
+      </header>
+      <p>
+       How might future tools be designed to help users avoid some of the learning barriers and pitfalls?
+      </p>
+      <p>
+       To avoid struggles around having enough data for systematic testing, future tools might benefit from explicitly supporting robustness testing and demonstrating its value—a set of heuristics here will likely be very useful. These heuristics would ideally help the user understand:
+      </p>
+      <ol class="list-no-style">
+       <li id="list34" label="(1)">
+        How much data is enough data? How many conversations, in the case of a chatbot designer?
+        <br/>
+       </li>
+       <li id="list35" label="(2)">
+        How many examples of a particular error are necessary in order to be confident in that error's resolution? Participants in our small
+        <font style="font-variant: small-caps">
+         BotDesigner
+        </font>
+        suitability task recognized that one or two examples of a given error class was rarely enough to feel confident in that particular error class being resolved.
+        <br/>
+       </li>
+      </ol>
+      <p>
+       To help users avoid EUPS-style struggles, developers can take a few steps. First, tool designers should consider how to make the successful examples described earlier
+       <em>
+        discoverable
+       </em>
+       and even
+       <em>
+        salient
+       </em>
+       in the moments when users most need them.
+      </p>
+      <p>
+       Second, tool support for explicit explorations of cause-and-effect, such as through highlighting prompt changes and the resulting conversational changes, would help users overcome the “understanding” and “information” barriers. Indeed, a number of participants with programming experience specifically requested just such an interface for
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       .
+      </p>
+      <p>
+       Though examples and instructions to the designer will hopefully help, application designers can also try to hide the direct nature of the instructions-to-the-bot experience to mitigate the impacts of the social expectations we associated above with the CASA paradigm. Some methods of achieving this might include:
+      </p>
+      <ol class="list-no-style">
+       <li id="list36" label="(1)">
+        restructuring the app so that the natural language users are asked to produce doesn't feel like instructions;
+        <br/>
+       </li>
+       <li id="list37" label="(2)">
+        priming the user to think of the app as non-social in other ways, perhaps by using explicit examples that break people's social conventions, making the user's subsequent violation feel normal/acceptable/expected, such as using
+        <font style="font-variant: small-caps">
+         all caps
+        </font>
+        , or communicating with an angry tone, or including the same instruction multiple times;
+        <br/>
+       </li>
+       <li id="list38" label="(3)">
+        having the app do some of the socially violating work itself, hidden from the user, such as repeating user prompts multiple times “under the hood,” or using a template that explicitly repeats without giving the user agency, in the style of Mad Libs.
+        <br/>
+       </li>
+      </ol>
+      <p>
+       Importantly, we note that several of these design opportunities explicitly surface the non-humanness of the app to the user or suggest ways for users to consider general. While visions of new technologies often imagine “seamless” interactions where the technology behind interactions is made invisible and fades into the background [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+        47
+       </a>
+       ], “seamful” design interactions (originating from ubiquitous computing) can make the technology and its imperfections visible to the user [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+        11
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ]. In this case, we note that rather than making the app interface try to act more human, there may be useful design opportunities by making the app interface act explicitly in non-human ways.
+      </p>
+     </section>
+     <section id="sec-22">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.3
+         </span>
+         Limitations
+        </h3>
+       </div>
+      </header>
+      <p>
+       We do not claim here that
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       or even LLMs in general should replace contemporary chatbot design techniques, but we do observe that the simplicity and accessibility of prompt-instructed chatbots suggests that we may be on the cusp of an explosion of end user-created chatbots and other similar systems that rely solely on human natural language prompting for their behavior. In this paper, we use chatbots as an example domain to explore the interactions between end user designers and prompt-based systems backed by LLMs (as
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       is).
+      </p>
+      <p>
+       A few additional limitations of our study bear exploration, and point to future studies. First, the reliance on a relatively small pool of likely “early adopters” drawn from academia may skew the observed phenomena towards a specific set of analogies and preconceived notions around technology and its capabilities. We claim neither that our observations are universal of all end users, nor that they are a complete description of all common misconceptions or behaviors of end-users working with LLM-backed systems. Additionally, the time we gave participants to engage in prompt design was relatively limited, and it is likely that, given enough time and motivation, end users would advance quite quickly in developing better mental models and more effective strategies. Ultimately, we hope that our observations offer fruitful and interesting directions for future work, including to what extent our findings generalize to other domains (e.g., non-chatbots, where users’ social expectations may be less pronounced) and a broader population, as we describe in §
+       <a class="sec" href="#sec-23">
+        5.4
+       </a>
+       <em>
+        Open Questions
+       </em>
+       .
+      </p>
+      <p>
+       While this paper explores the positive potential for LLM-backed systems to be more widely accessible to a broader range of users, we acknowledge that prior research also highlights the potential for negative or complex social effects related to LLMs (such as implications for intellectual property rights and authorship, online harassment, or the loss of jobs due to automation). While a deeper discussion of these issues is beyond the scope of this paper's use of an LLM system as a probe, we surface these as a reminder of additional considerations that may be necessary when developing LLM-backed systems that are meant to be deployed “in the wild.”
+      </p>
+     </section>
+     <section id="sec-23">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.4
+         </span>
+         Open Questions &amp; Future Work
+        </h3>
+       </div>
+      </header>
+      <p>
+       In addition to the implications for training and design given above, our work reveals a few questions we feel warrant future study:
+      </p>
+      <p>
+       First, to what extent do the challenges and behaviors we describe here also appear in other populations that might use these tools? A larger study, looking at a more diverse population than we have here, will likely uncover new challenges and can speak to the degree to which the behaviors we observe are universal (or not!) in the general public. Further: which challenges persist, and what new challenges emerge, when users engage in natural language tasks in other domains, including non-chatbot domains? Chatbot “programming” involves giving instructions
+       <em>
+        to an agent
+       </em>
+       , a context in which social expectations might be much more pronounced than when, say, prompting a poetry generator or a search tool—while the EUPS and iML struggles, like overgeneralization, seem more likely to persist.
+      </p>
+      <p>
+       Relatedly, to the extent the challenges we describe here—or new ones uncovered by future work—can be addressed through the mechanisms we offer in §
+       <a class="sec" href="#sec-21">
+        5.2
+       </a>
+       , which approaches are most effective, and why?
+      </p>
+      <p>
+       Second, can we quantify the extent to which users’ prompts and interactions are actually impacted by social expectations? Nass’ CASA work suggests the effect could be substantial, and if that proves true, then we should further explore: do examples suffice to overcome this bias, or is more explicit tool support required? Does the magnitude of the intervention depend on individual societal context, and do tools need to be aware of their users’ societal contexts as a result? Or, do these impacts reduce in impact over time, as users habituate to models’ responses and behaviors? Third, are there broader effects of end user culture on some of the hypothesized social interaction inhibitions? Do members of high-context cultures struggle in different ways than what we observed in this work?
+      </p>
+      <p>
+       Fourth, how can tools appropriately set capability expectations for end users? LLMs are not an artificial general intelligence, sometimes known by the initialism “AGI,” but will end-users hold those expectations by default—and if so, what are effective ways of dispelling those notions?
+      </p>
+     </section>
+    </section>
+    <section id="sec-24">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         6
+        </span>
+        CONCLUSION
+       </h2>
+      </div>
+     </header>
+     <p>
+      In this work, we explore the intuitions and behaviors of end-users engaged in prompt engineering through
+      <font style="font-variant: small-caps">
+       BotDesigner
+      </font>
+      , a prompt-based (no-code) chatbot design tool. To create effective and delightful end-user human-AI hybrid tools, tool designers will want to consider what default behaviors, intuitions, preferences and capabilities humans bring to prompt design. Human intuitions rooted in social experiences appear to have a significant impact on what prompts end users will attempt when exploring these tools, including biases towards giving instruction over depicting examples, assumptions about capability based on limited examples, and avoidance of displays of emotion. We hope designers of future tools will consider how best to support users in the face of these behaviors and common struggles we exhibit.
+     </p>
+    </section>
+   </section>
+   <section class="back-matter">
+    <section id="sec-25">
+     <header>
+      <div class="title-info">
+       <h2>
+        ACKNOWLEDGMENTS
+       </h2>
+      </div>
+     </header>
+     <p>
+      The authors would like to thanks the anonymous reviewers for their constructive feedback, and our participants for engaging in our probe. J.D. Zamfirescu-Pereira was partially supported by the United States Air Force and DARPA under contracts FA8750-20-C-0156, FA8750-20-C-0074, and FA8750-20-C0155 (SDCPS Program).
+     </p>
+     <p>
+      The authors would also like to thank two inspirational researchers: the late Clifford Nass, whose work helped explain some otherwise inexplicable behaviors we found here; and the late Doug Tygar, whose “Why Johnny Can't Encrypt” spurred a decade of renewed interest in the human side of systems research.
+     </p>
+    </section>
+    <appendix>
+     <section id="sec-26">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          A
+         </span>
+         <font style="font-variant: small-caps">
+          BotDesigner
+         </font>
+         Implementation Details &amp; Pilot Evaluation
+        </h2>
+       </div>
+      </header>
+      <p>
+       For additional context, we offer the following details regarding
+       <font style="font-variant: small-caps">
+        BotDesigner
+       </font>
+       ’s implementation and pilot evaluation.
+      </p>
+      <section id="sec-27">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           A.1
+          </span>
+          Mapping Template to Prompt
+         </h3>
+        </div>
+       </header>
+       <figure id="fig4">
+        <img alt="Figure 4" class="img-responsive" src="3581388_files\chi23696fig12.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 4:
+         </span>
+         <span class="figure-title">
+          Sample
+          <font style="font-variant: small-caps">
+           BotDesigner
+          </font>
+          bot template and the corresponding generated prompts.
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+        To generate a given bot's chat messages,
+        <font style="font-variant: small-caps">
+         BotDesigner
+        </font>
+        concatenates the preamble, the entirety of the conversation so far (using
+        <font style="font-variant: small-caps">
+         Bot:
+        </font>
+        and
+        <font style="font-variant: small-caps">
+         User:
+        </font>
+        prefixes for each turn as appropriate), the reminder (if any), and the final prompt
+        <font style="font-variant: small-caps">
+         Bot:
+        </font>
+        . (Figure 4b in this appendix shows this relationship.) This text string is then sent as a single prompt to GPT-3. For consistency across tests,
+        <font style="font-variant: small-caps">
+         BotDesigner
+        </font>
+        always uses GPT-3’s
+        <tt>
+         text-davinci-002
+        </tt>
+        model with
+        <font style="font-variant: small-caps">
+         temperature
+        </font>
+        <a class="fn" href="#fn3" id="foot-fn3">
+         <sup>
+          3
+         </sup>
+        </a>
+        set to 0.
+       </p>
+      </section>
+      <section id="sec-28">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           A.2
+          </span>
+          Evaluating Effects of Prompt Changes
+         </h3>
+        </div>
+       </header>
+       <p>
+        To evaluate whether a particular
+        <strong>
+         template
+        </strong>
+        change affects any of the identified problematic chatbot responses,
+        <font style="font-variant: small-caps">
+         BotDesigner
+        </font>
+        replays conversations containing errors and displays any modified responses. Two implementation approaches are possible for this task: (a) a system could either perform an “single replay” by assuming all conversational turns prior to the error will occur as in the original conversation, and test only whether the error utterance is changed; or, (b) it could perform a “total replay” in which every conversational turn is replayed and any changed utterances are flagged for user review. Both approaches have merit; the “total replay” approach is more consistent with the “regression testing” concept—certainly, a designer would not want to inadvertently introduce problematic utterances where none previously existed—but providing clear feedback requires identifying which conversational turns have changed in trivial ways, itself a nontrivial task.
+       </p>
+       <p>
+        For
+        <font style="font-variant: small-caps">
+         BotDesigner
+        </font>
+        , we default to the “single replay” in an attempt to reduce noise, and accept the resulting short-term trade-off in accuracy that allows more rapid iteration—but leaving designers with the need to perform more extensive testing before deployment.
+       </p>
+      </section>
+      <section id="sec-29">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           A.3
+          </span>
+          Pilot Evaluation of
+          <font style="font-variant: small-caps">
+           BotDesigner
+          </font>
+          ’s Use
+         </h3>
+        </div>
+       </header>
+       <p>
+        To validate that
+        <font style="font-variant: small-caps">
+         BotDesigner
+        </font>
+        does enable systematic prompt evaluation, we recruited
+        <em>
+         N
+        </em>
+        = 3 academic researchers with a range of interest levels and experience with conversational agent design
+        <a class="fn" href="#fn4" id="foot-fn4">
+         <sup>
+          4
+         </sup>
+        </a>
+        and evaluated how effectively they could identify common or particularly severe bugs or errors in a baseline chatbot, and how effectively they could evaluate a new bot template for improvements over the baseline bot.
+       </p>
+       <p>
+        In advance of the interview, we collected conversations with the baseline bot from AMT workers conversing with a baseline chatbot. We then asked our pilot users to (1) browse the collected conversations to find errors and label them with categorization tags; (2) evaluate a “new” template with updated prompts, provided by us, and decide whether this new template resolved any of the errors participants had previously identified.
+       </p>
+       <p>
+        Our pilot users had no problems detecting most of a set of 5 error categories we had previously identified in the set of conversations between AMT workers and the baseline chatbot: (1) skipped steps, (2) ignored user expressions of negative emotion, (3) ignored user requests to wait until the user had completed some task, (4) factually incorrect responses to questions, and (5) otherwise unhelpful responses.
+       </p>
+       <p>
+        We learned a few things from this small pilot that ultimately informed our probe. First, we learned that
+        <font style="font-variant: small-caps">
+         BotDesigner
+        </font>
+        functioned well enough for a small set of researchers to use it successfully. Second, critically, we observed that looking over a set of prerecorded conversations is quite cognitively demanding, involving lots of context switching, because these were not conversations pilot users themselves had with the bot. As a result of these observations, we (1) retained the “Error Browser”, but (2) dropped a prototype “Conversation Browser” view (focused on tracking common conversational threads across conversations) from the version of
+        <font style="font-variant: small-caps">
+         BotDesigner
+        </font>
+        we used in our probe. We also (3) designed a much more open-ended task for our probe requiring less knowledge of task minutiae to identify errors, and encouraging users to have their own conversations with the bot, while skipping the initial collection of conversations from AMT workers and thus avoiding the need for participants to understand the task well enough to identify subtle errors in instruction.
+       </p>
+       <figure id="fig5">
+        <img alt="Figure 5" class="img-responsive" src="3581388_files\chi23696fig13.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 5:
+         </span>
+         <span class="figure-title">
+          <font style="font-variant: small-caps">
+           BotDesigner
+          </font>
+          workflow. Numbered steps here correspond to the numbered steps described in §
+          <a class="sec" href="#sec-10">
+           3.2
+          </a>
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+      </section>
+     </section>
+     <section id="sec-30">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          B
+         </span>
+         Transcript of “Back to Back Chef: Carla Lalli &amp; Elizabeth Olson”
+        </h2>
+       </div>
+      </header>
+      <section id="sec-31">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           B.1
+          </span>
+          Behavioral categories
+         </h3>
+        </div>
+       </header>
+       <p>
+        Observed behavioral categories for Carla:
+       </p>
+       <ul class="list-no-style">
+        <li id="list39" label="•">
+         Concept simplification, analogies,
+         <br/>
+        </li>
+        <li id="list40" label="•">
+         Detailed instructions that recipes typically don't cover
+         <br/>
+        </li>
+        <li id="list41" label="•">
+         Step completion confirmation
+         <br/>
+        </li>
+        <li id="list42" label="•">
+         Social conversation
+         <br/>
+        </li>
+        <li id="list43" label="•">
+         Repair
+         <br/>
+        </li>
+        <li id="list44" label="•">
+         Emotional grounding
+         <br/>
+        </li>
+       </ul>
+       <p>
+        These categories were highlighted in the following transcript.
+       </p>
+      </section>
+      <section id="sec-32">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           B.2
+          </span>
+          Transcript
+         </h3>
+        </div>
+       </header>
+       <p>
+        Today we have 20 minutes to make mixed veggie tempura and we're gonna see if Lizzie can follow along with me through verbal instructions only.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : So the first thing we're gonna do is take this very brain-looking giant mushroom – so this is a hen-of-the-woods mushroom, also called a maitake. I got my squash and my lemons out of the way.
+       </p>
+       <p>
+        So the first thing I want you to do is just turn it over so the stem side is up got it and then just use your hands to kind of break big clusters off of the bottom and like kind of large pieces.
+       </p>
+       <p>
+        And then we'll go back in and we can make them smaller and I like doing this with my hands because then you get -
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : oh you're not using your paring knife
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : No, I'm only using the paring knife if it was dry or spongy at the bottom. We're probably used a quarter of these (mushrooms.) So then just take the tray with the mushrooms on it and move that over to your right-hand side and we're gonna make the batter.
+       </p>
+       <p>
+        So next thing – you got your board cleared?
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Yes, there's mushroom juice on it but it's fine.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : I think that's the line from a Woody Allen movie. So now you've got two bowls. One is flour and one is cornstarch. So put those into the larger bowl together. We're gonna make the tempura batter now.
+       </p>
+       <p>
+        Once you have your flour and your cornstarch. You have a little dish that has salt and baking soda and those get combined too.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Wait… Wha..?
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : They should be in the same little bowl.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : There's another little bowl that has salt and baking powder - it was to my left. Is it to your left?
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : It's in my bowl now but yeah there was a little bowl with white stuff that isn't salt then that's your…
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Okay.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : And so let's just whisk the dry ingredients first. So once the dry ingredients are whisked together, take your measuring cup that's over to the right and those two little bottles of seltzer and we're gonna measure 2 cups, which I want to add gradually. So take your whisk in one hand, your measuring cup in the other and then gradually whisk in. Do about four-fifths of this and then we'll check the texture …
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : It's like… you know what “Oobleck” is?
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : What did you say? “Blueblack?”?
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : “Oobleck”. It's like a thing you play with as a kid with, like baking soda and water and that's what it's reminding me of.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : Cool, and it should be about the consistency of heavy cream.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Yeah okay. I'm gonna try and get a little more bumps out but I think I'm almost there.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : All right so I'm gonna put my whisk into the garbage bowl just to get it out of the way and do you feel like you're in a lump-free place? Because we're gonna start frying.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Em oh no... I'm like a perfectionist, so I'm gonna... I think I'm just gonna say yes…
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : Okay, great. Take one big handful of mushrooms.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Uh huh.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : And, put them right into the batter. And, there should also be a fork, and a spoon.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Yeah.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : And, I'm gonna use my hands and the fork to really gently, ’cause I don't wanna break these clusters up, but I wanna coat all of the mushrooms with batter.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Yup.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : So, we should be at around 350. So, maybe while we're waiting we can start prepping our acorn squash.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Great.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : So, now you need your cleaver.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Yup, oh God.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : You got your acorn squash.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Yes.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : So put it on one side so that the stem end is like closest to your dominant hand.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Yes, got it.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : And then, just cut straight down, kinda close to the stem. And, just shear off that front part.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : How do you use a cleaver? Do you just like... hit it?
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : You can hit it. You can use it like a slicing knife and just go straight down.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : I make really fun faces when I'm frustrated, or like straining, and it's not pleasant to have a camera in front of me.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : All you need to do right now is just create like a flat edge so that we can stand–
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Did it. Okay.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : Great. And then, we're gonna cut it into two lobes. Straight down.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Okay.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : And, if you're off to one side it's fine, ’cause we only need a quarter of the squash.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Just a quarter.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : Just a quarter. So, get–
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : So, cut the halves into quarters as well.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : Yeah, so once you have it in half.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Got it.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : Take your spoon, and scoop the seeds into that little trash bowl that we made.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Yes.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : And then, we're gonna leave the skin on, and cut this into thin slices.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Okay.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : Going crosswise, so they're kind of like, they look like little clouds to me.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Okay. Do you find it easier to use a cleaver than like a chef's knife?
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : Not necessarily.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Yeah, I'm not finding it the easiest.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : You could switch to your paring knife if you want.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : It's okay. I'm just kind of scared of big silvery things.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : Yeah, it's a scary tool for sure. All right, so by now, do you have a quarter sliced? A quarter acorn sliced?
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Yup, just about.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : All right. So, go back to the mushrooms.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Yup.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : And, then using your hand and the fork again.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Yes.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : Lift them out and let that excess batter drip off. And then, you wanna just go right into the oil.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Okay, I'm using my hands ’cause I–
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : Same. But, we're not afraid of fry oil.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : Well, it's not splattering the way my, the way I've been frying, ’cause I don't have a thermometer...so clearly I've been–
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : You might be going really high.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : I think it was way too hot. Wonder if I should've added more of my club soda.
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : If it feels thick, yeah, add more.
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : ’Cause I do, I feel like mine's–
+       </p>
+       <p>
+        <strong>
+         Expert
+        </strong>
+        : A little too thick?
+       </p>
+       <p>
+        <strong>
+         Amateur
+        </strong>
+        : It's a thick tempura.
+       </p>
+      </section>
+     </section>
+    </appendix>
+    <section id="ref-001">
+     <header>
+      <div class="title-info">
+       <h2 class="page-brake-head">
+        REFERENCES
+       </h2>
+      </div>
+     </header>
+     <ul class="bibUl">
+      <li id="BibPLXBIB0001" label="[1]">
+       2022. CHATGPT: Optimizing language models for dialogue.
+       <a class="link-inline force-break" href="https://openai.com/blog/chatgpt/">
+        https://openai.com/blog/chatgpt/
+       </a>
+      </li>
+      <li id="BibPLXBIB0002" label="[2]">
+       Bon Appétit. 2018. Elizabeth Olsen Tries to Keep Up with a Professional Chef | Back-to-Back Chef | Bon Appétit. Youtube.
+       <a class="link-inline force-break" href="https://www.youtube.com/watch?v=Om2oM-TDErQ">
+        https://www.youtube.com/watch?v=Om2oM-TDErQ
+       </a>
+      </li>
+      <li id="BibPLXBIB0003" label="[3]">
+       Stephen H. Bach, Victor Sanh, Zheng-Xin Yong, Albert Webson, Colin Raffel, Nihal V. Nayak, Abheesht Sharma, Taewoon Kim, M Saiful Bari, Thibault Fevry, Zaid Alyafeai, Manan Dey, Andrea Santilli, Zhiqing Sun, Srulik Ben-David, Canwen Xu, Gunjan Chhablani, Han Wang, Jason Alan Fries, Maged S. Al-shaibani, Shanya Sharma, Urmish Thakker, Khalid Almubarak, Xiangru Tang, Dragomir Radev, Mike Tian-Jian Jiang, and Alexander M. Rush. 2022. PromptSource: An Integrated Development Environment and Repository for Natural Language Prompts.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2202.01279">
+        https://doi.org/10.48550/ARXIV.2202.01279
+       </a>
+      </li>
+      <li id="BibPLXBIB0004" label="[4]">
+       MP Barnett and WM Ruhsam. 1968. A natural language programming system for text processing.
+       <em>
+        <em>
+         IEEE transactions on engineering writing and speech
+        </em>
+       </em>
+       11, 2 (1968), 45–52.
+      </li>
+      <li id="BibPLXBIB0005" label="[5]">
+       Mary Jo Bitner, Amy L Ostrom, and Felicia N Morgan. 2008. Service blueprinting: a practical technique for service innovation.
+       <em>
+        <em>
+         California management review
+        </em>
+       </em>
+       50, 3 (2008), 66–94.
+      </li>
+      <li id="BibPLXBIB0006" label="[6]">
+       Kirsten Boehner, Janet Vertesi, Phoebe Sengers, and Paul Dourish. 2007. How HCI Interprets the Probes. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (San Jose, California, USA) (CHI ’07). Association for Computing Machinery, New York, NY, USA, 1077–1086.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1240624.1240789">
+        https://doi.org/10.1145/1240624.1240789
+       </a>
+      </li>
+      <li id="BibPLXBIB0007" label="[7]">
+       Rishi Bommasani, Drew A. Hudson, Ehsan Adeli, Russ Altman, Simran Arora, Sydney von Arx, Michael S. Bernstein, Jeannette Bohg, Antoine Bosselut, Emma Brunskill, Erik Brynjolfsson, Shyamal Buch, Dallas Card, Rodrigo Castellon, Niladri Chatterji, Annie Chen, Kathleen Creel, Jared Quincy Davis, Dora Demszky, Chris Donahue, Moussa Doumbouya, Esin Durmus, Stefano Ermon, John Etchemendy, Kawin Ethayarajh, Li Fei-Fei, Chelsea Finn, Trevor Gale, Lauren Gillespie, Karan Goel, Noah Goodman, Shelby Grossman, Neel Guha, Tatsunori Hashimoto, Peter Henderson, John Hewitt, Daniel E. Ho, Jenny Hong, Kyle Hsu, Jing Huang, Thomas Icard, Saahil Jain, Dan Jurafsky, Pratyusha Kalluri, Siddharth Karamcheti, Geoff Keeling, Fereshte Khani, Omar Khattab, Pang Wei Koh, Mark Krass, Ranjay Krishna, Rohith Kuditipudi, Ananya Kumar, Faisal Ladhak, Mina Lee, Tony Lee, Jure Leskovec, Isabelle Levent, Xiang Lisa Li, Xuechen Li, Tengyu Ma, Ali Malik, Christopher D. Manning, Suvir Mirchandani, Eric Mitchell, Zanele Munyikwa, Suraj Nair, Avanika Narayan, Deepak Narayanan, Ben Newman, Allen Nie, Juan Carlos Niebles, Hamed Nilforoshan, Julian Nyarko, Giray Ogut, Laurel Orr, Isabel Papadimitriou, Joon Sung Park, Chris Piech, Eva Portelance, Christopher Potts, Aditi Raghunathan, Rob Reich, Hongyu Ren, Frieda Rong, Yusuf Roohani, Camilo Ruiz, Jack Ryan, Christopher Ré, Dorsa Sadigh, Shiori Sagawa, Keshav Santhanam, Andy Shih, Krishnan Srinivasan, Alex Tamkin, Rohan Taori, Armin W. Thomas, Florian Tramèr, Rose E. Wang, William Wang, Bohan Wu, Jiajun Wu, Yuhuai Wu, Sang Michael Xie, Michihiro Yasunaga, Jiaxuan You, Matei Zaharia, Michael Zhang, Tianyi Zhang, Xikun Zhang, Yuhui Zhang, Lucia Zheng, Kaitlyn Zhou, and Percy Liang. 2021. On the Opportunities and Risks of Foundation Models. arxiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/2108.07258">
+        2108.07258
+       </a>
+       [cs.LG]
+      </li>
+      <li id="BibPLXBIB0008" label="[8]">
+       Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell,
+       <em>
+        et al.
+       </em>
+       2020. Language models are few-shot learners.
+       <em>
+        <em>
+         Advances in neural information processing systems
+        </em>
+       </em>
+       33 (2020), 1877–1901.
+      </li>
+      <li id="BibPLXBIB0009" label="[9]">
+       Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel Ziegler, Jeffrey Wu, Clemens Winter, Chris Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. 2020. Language Models are Few-Shot Learners. In
+       <em>
+        Advances in Neural Information Processing Systems
+       </em>
+       , H. Larochelle, M. Ranzato, R. Hadsell, M. F. Balcan, and H. Lin (Eds.). Vol. 33. Curran Associates, Inc., 1877–1901.
+      </li>
+      <li id="BibPLXBIB0010" label="[10]">
+       Shan Carter, Zan Armstrong, Ludwig Schubert, Ian Johnson, and Chris Olah. 2019. Activation Atlas.
+       <em>
+        <em>
+         Distill
+        </em>
+       </em>
+       (2019).
+       <a class="link-inline force-break" href="https://doi.org/10.23915/distill.00015">
+        https://doi.org/10.23915/distill.00015
+       </a>
+       <a class="link-inline force-break" href="https://distill.pub/2019/activation-atlas">
+        https://distill.pub/2019/activation-atlas
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0011" label="[11]">
+       Matthew Chalmers, Ian MacColl, and Marek Bell. 2003. Seamful design: Showing the seams in wearable computing. In
+       <em>
+        2003 IEE Eurowearable
+       </em>
+       . IET, 11–16.
+      </li>
+      <li id="BibPLXBIB0012" label="[12]">
+       Zhifa Chen, Yichen Lu, Mika P. Nieminen, and Andrés Lucero. 2020.
+       <em>
+        Creating a Chatbot for and with Migrants: Chatbot Personality Drives Co-Design Activities
+       </em>
+       . Association for Computing Machinery, New York, NY, USA, 219–230.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3357236.3395495">
+        https://doi.org/10.1145/3357236.3395495
+       </a>
+      </li>
+      <li id="BibPLXBIB0013" label="[13]">
+       Justin Cranshaw, Emad Elwany, Todd Newman, Rafal Kocielnik, Bowen Yu, Sandeep Soni, Jaime Teevan, and Andrés Monroy-Hernández. 2017. Calendar. help: Designing a workflow-based scheduling agent with humans in the loop. In
+       <em>
+        Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+       </em>
+       . ACM, 2382–2393.
+      </li>
+      <li id="BibPLXBIB0014" label="[14]">
+       Hai Dang, Lukas Mecke, Florian Lehmann, Sven Goller, and Daniel Buschek. 2022. How to Prompt? Opportunities and Challenges of Zero-and Few-Shot Learning for Human-AI Interaction in Creative Applications of Generative Models.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2209.01390">
+          2209.01390
+         </a>
+        </em>
+       </em>
+       (2022).
+      </li>
+      <li id="BibPLXBIB0015" label="[15]">
+       Ning Ding, Shengding Hu, Weilin Zhao, Yulin Chen, Zhiyuan Liu, Hai-Tao Zheng, and Maosong Sun. 2021. Openprompt: An open-source framework for prompt-learning.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2111.01998">
+          2111.01998
+         </a>
+        </em>
+       </em>
+       (2021).
+      </li>
+      <li id="BibPLXBIB0016" label="[16]">
+       John J Dudley and Per Ola Kristensson. 2018. A review of user interface design for interactive machine learning.
+       <em>
+        <em>
+         ACM Transactions on Interactive Intelligent Systems (TiiS)
+        </em>
+       </em>
+       8, 2(2018), 1–37.
+      </li>
+      <li id="BibPLXBIB0017" label="[17]">
+       Glen Dunlap, Rose Iovannone, Kelly J Wilson, Donald K Kincaid, and Phillip Strain. 2010. Prevent-teach-reinforce: A standardized model of school-based behavioral intervention.
+       <em>
+        <em>
+         Journal of Positive Behavior Interventions
+        </em>
+       </em>
+       12, 1 (2010), 9–22.
+      </li>
+      <li id="BibPLXBIB0018" label="[18]">
+       Noyan Evirgen and Xiang'Anthony’ Chen. 2022. GANzilla: User-Driven Direction Discovery in Generative Adversarial Networks. In
+       <em>
+        Proceedings of the 35th Annual ACM Symposium on User Interface Software and Technology
+       </em>
+       . 1–10.
+      </li>
+      <li id="BibPLXBIB0019" label="[19]">
+       Laura Faulkner. 2003. Beyond the five-user assumption: Benefits of increased sample sizes in usability testing.
+       <em>
+        <em>
+         Behavior Research Methods, Instruments, &amp; Computers
+        </em>
+       </em>
+       35 (2003), 379–383.
+      </li>
+      <li id="BibPLXBIB0020" label="[20]">
+       Samuel Gehman, Suchin Gururangan, Maarten Sap, Yejin Choi, and Noah A. Smith. 2020. RealToxicityPrompts: Evaluating Neural Toxic Degeneration in Language Models. In
+       <em>
+        Findings of the Association for Computational Linguistics: EMNLP 2020
+       </em>
+       . Association for Computational Linguistics, Online, 3356–3369.
+      </li>
+      <li id="BibPLXBIB0021" label="[21]">
+       Marti A Hearst and Jan O Pedersen. 1996. Reexamining the cluster hypothesis: Scatter/gather on retrieval results. In
+       <em>
+        Proceedings of the 19th annual international ACM SIGIR conference on Research and development in information retrieval
+       </em>
+       . 76–84.
+      </li>
+      <li id="BibPLXBIB0022" label="[22]">
+       Sarah Inman and David Ribes. 2019. "Beautiful Seams": Strategic Revelations and Concealments. In Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems (Glasgow, Scotland Uk) (CHI ’19). Association for Computing Machinery, New York, NY, USA, 1–14.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300508">
+        https://doi.org/10.1145/3290605.3300508
+       </a>
+      </li>
+      <li id="BibPLXBIB0023" label="[23]">
+       Ellen Jiang, Edwin Toh, Alejandra Molina, Aaron Donsbach, Carrie J Cai, and Michael Terry. 2021. GenLine and GenForm: Two Tools for Interacting with Generative Language Models in a Code Editor. In The Adjunct Publication of the 34th Annual ACM Symposium on User Interface Software and Technology (Virtual Event, USA) (UIST ’21). Association for Computing Machinery, New York, NY, USA, 145–147.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3474349.3480209">
+        https://doi.org/10.1145/3474349.3480209
+       </a>
+      </li>
+      <li id="BibPLXBIB0024" label="[24]">
+       Bogyeong Kim, Jaehoon Pyun, and Woohun Lee. 2018. Enhancing Storytelling Experience with Story-Aware Interactive Puppet. In Extended Abstracts of the 2018 CHI Conference on Human Factors in Computing Systems (Montreal QC, Canada) (CHI EA ’18). ACM, New York, NY, USA, Article LBW076, 6 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3170427.3188515">
+        https://doi.org/10.1145/3170427.3188515
+       </a>
+      </li>
+      <li id="BibPLXBIB0025" label="[25]">
+       Scott R. Klemmer, Anoop K. Sinha, Jack Chen, James A. Landay, Nadeem Aboobaker, and Annie Wang. 2000. Suede: A Wizard of Oz Prototyping Tool for Speech User Interfaces. In Proceedings of the 13th Annual ACM Symposium on User Interface Software and Technology (San Diego, California, USA) (UIST ’00). ACM, New York, NY, USA, 1–10.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/354401.354406">
+        https://doi.org/10.1145/354401.354406
+       </a>
+      </li>
+      <li id="BibPLXBIB0026" label="[26]">
+       Amy J. Ko, Robin Abraham, Laura Beckwith, Alan Blackwell, Margaret Burnett, Martin Erwig, Chris Scaffidi, Joseph Lawrance, Henry Lieberman, Brad Myers, Mary Beth Rosson, Gregg Rothermel, Mary Shaw, and Susan Wiedenbeck. 2011. The State of the Art in End-User Software Engineering.
+       <em>
+        <em>
+         ACM Comput. Surv.
+        </em>
+       </em>
+       43, 3, Article 21 (apr 2011), 44 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1922649.1922658">
+        https://doi.org/10.1145/1922649.1922658
+       </a>
+      </li>
+      <li id="BibPLXBIB0027" label="[27]">
+       Amy J. Ko, Brad A. Myers, and Htet Htet Aung. 2004. Six Learning Barriers in End-User Programming Systems. In
+       <em>
+        Proceedings of the 2004 IEEE Symposium on Visual Languages - Human Centric Computing
+       </em>
+       (
+       <em>
+        VLHCC ’04
+       </em>
+       ). IEEE Computer Society, USA, 199–206.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/VLHCC.2004.47">
+        https://doi.org/10.1109/VLHCC.2004.47
+       </a>
+      </li>
+      <li id="BibPLXBIB0028" label="[28]">
+       Himabindu Lakkaraju, Dylan Slack, Yuxin Chen, Chenhao Tan, and Sameer Singh. 2022. Rethinking Explainability as a Dialogue: A Practitioner's Perspective.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2202.01875">
+          2202.01875
+         </a>
+        </em>
+       </em>
+       (2022).
+      </li>
+      <li id="BibPLXBIB0029" label="[29]">
+       Q Vera Liao, Daniel Gruen, and Sarah Miller. 2020. Questioning the AI: informing design practices for explainable AI user experiences. In
+       <em>
+        Proceedings of the 2020 CHI Conference on Human Factors in Computing Systems
+       </em>
+       . 1–15.
+      </li>
+      <li id="BibPLXBIB0030" label="[30]">
+       Pengfei Liu, Weizhe Yuan, Jinlan Fu, Zhengbao Jiang, Hiroaki Hayashi, and Graham Neubig. 2021. Pre-train, Prompt, and Predict: A Systematic Survey of Prompting Methods in Natural Language Processing. arxiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/2107.13586">
+        2107.13586
+       </a>
+       [cs.CL]
+      </li>
+      <li id="BibPLXBIB0031" label="[31]">
+       Vivian Liu and Lydia B. Chilton. 2021. Design Guidelines for Prompt Engineering Text-to-Image Generative Models.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2109.06977">
+        https://doi.org/10.48550/ARXIV.2109.06977
+       </a>
+      </li>
+      <li id="BibPLXBIB0032" label="[32]">
+       Robert L Logan IV, Ivana Balažević, Eric Wallace, Fabio Petroni, Sameer Singh, and Sebastian Riedel. 2021. Cutting down on prompts and parameters: Simple few-shot learning with language models.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2106.13353">
+          2106.13353
+         </a>
+        </em>
+       </em>
+       (2021).
+      </li>
+      <li id="BibPLXBIB0033" label="[33]">
+       J. Marks, B. Andalman, P. A. Beardsley, W. Freeman, S. Gibson, J. Hodgins, T. Kang, B. Mirtich, H. Pfister, W. Ruml, K. Ryall, J. Seims, and S. Shieber. 1997. Design Galleries: A General Approach to Setting Parameters for Computer Graphics and Animation. In
+       <em>
+        Proceedings of the 24th Annual Conference on Computer Graphics and Interactive Techniques
+       </em>
+       (
+       <em>
+        SIGGRAPH ’97
+       </em>
+       ). ACM Press/Addison-Wesley Publishing Co., USA, 389–400.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/258734.258887">
+        https://doi.org/10.1145/258734.258887
+       </a>
+      </li>
+      <li id="BibPLXBIB0034" label="[34]">
+       Bill Moggridge. 2006.
+       <em>
+        Designing Interactions
+       </em>
+       . The MIT Press.
+      </li>
+      <li id="BibPLXBIB0035" label="[35]">
+       Clifford Nass, Jonathan Steuer, and Ellen R Tauber. 1994. Computers are social actors. In
+       <em>
+        Proceedings of the SIGCHI conference on Human factors in computing systems
+       </em>
+       . 72–78.
+      </li>
+      <li id="BibPLXBIB0036" label="[36]">
+       OpenAI. 2022.
+       <em>
+        Examples - OpenAI API
+       </em>
+       .
+       <a class="link-inline force-break" href="https://beta.openai.com/examples">
+        https://beta.openai.com/examples
+       </a>
+      </li>
+      <li id="BibPLXBIB0037" label="[37]">
+       Guy Parsons. 2022.
+       <em>
+        The DALL·E 2 Prompt Book
+       </em>
+       .
+       <a class="link-inline force-break" href="https://dallery.gallery/the-dalle-2-prompt-book/">
+        https://dallery.gallery/the-dalle-2-prompt-book/
+       </a>
+      </li>
+      <li id="BibPLXBIB0038" label="[38]">
+       Ben Pietrzak, Ben Swanson, Kory Mathewson, Monica Dinculescu, and Sherol Chen. 2021. Story Centaur: Large Language Model Few Shot Learning as a Creative Writing Tool.
+      </li>
+      <li id="BibPLXBIB0039" label="[39]">
+       Catherine Pricilla, Dessi Puji Lestari, and Dody Dharma. 2018. Designing interaction for chatbot-based conversational commerce with user-centered design. In
+       <em>
+        2018 5th International Conference on Advanced Informatics: Concept Theory and Applications (ICAICTA)
+       </em>
+       . IEEE, 244–249.
+      </li>
+      <li id="BibPLXBIB0040" label="[40]">
+       Aditya Ramesh, Mikhail Pavlov, Gabriel Goh, Scott Gray, Chelsea Voss, Alec Radford, Mark Chen, and Ilya Sutskever. 2021. Zero-shot text-to-image generation. In
+       <em>
+        International Conference on Machine Learning
+       </em>
+       . PMLR, 8821–8831.
+      </li>
+      <li id="BibPLXBIB0041" label="[41]">
+       Kevin Roose. 2022. The Brilliance and Weirdness of ChatGPT.
+       <em>
+        <em>
+         The New York Times
+        </em>
+       </em>
+       (2022).
+       <a class="link-inline force-break" href="https://www.nytimes.com/2022/12/05/technology/chatgpt-ai-twitter.html">
+        https://www.nytimes.com/2022/12/05/technology/chatgpt-ai-twitter.html
+       </a>
+      </li>
+      <li id="BibPLXBIB0042" label="[42]">
+       Victor Sanh, Albert Webson, Colin Raffel, Stephen H. Bach, Lintang Sutawika, Zaid Alyafeai, Antoine Chaffin, Arnaud Stiegler, Teven Le Scao, Arun Raja, Manan Dey, M Saiful Bari, Canwen Xu, Urmish Thakker, Shanya Sharma Sharma, Eliza Szczechla, Taewoon Kim, Gunjan Chhablani, Nihal Nayak, Debajyoti Datta, Jonathan Chang, Mike Tian-Jian Jiang, Han Wang, Matteo Manica, Sheng Shen, Zheng Xin Yong, Harshit Pandey, Rachel Bawden, Thomas Wang, Trishala Neeraj, Jos Rozen, Abheesht Sharma, Andrea Santilli, Thibault Fevry, Jason Alan Fries, Ryan Teehan, Tali Bers, Stella Biderman, Leo Gao, Thomas Wolf, and Alexander M. Rush. 2021. Multitask Prompted Training Enables Zero-Shot Task Generalization.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2110.08207">
+        https://doi.org/10.48550/ARXIV.2110.08207
+       </a>
+      </li>
+      <li id="BibPLXBIB0043" label="[43]">
+       Jeff Sauro and James R Lewis. 2016.
+       <em>
+        Quantifying the user experience: Practical statistics for user research
+       </em>
+       . Morgan Kaufmann.
+      </li>
+      <li id="BibPLXBIB0044" label="[44]">
+       Lisa Stifelman, Adam Elman, and Anne Sullivan. 2013. Designing Natural Speech Interactions for the Living Room. In CHI ’13 Extended Abstracts on Human Factors in Computing Systems (Paris, France) (CHI EA ’13). ACM, New York, NY, USA, 1215–1220.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2468356.2468574">
+        https://doi.org/10.1145/2468356.2468574
+       </a>
+      </li>
+      <li id="BibPLXBIB0045" label="[45]">
+       Hendrik Strobelt, Albert Webson, Victor Sanh, Benjamin Hoover, Johanna Beyer, Hanspeter Pfister, and Alexander M Rush. 2022. Interactive and Visual Prompt Engineering for Ad-hoc Task Adaptation with Large Language Models.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2208.07852">
+          2208.07852
+         </a>
+        </em>
+       </em>
+       (2022).
+      </li>
+      <li id="BibPLXBIB0046" label="[46]">
+       M. Swan. 1927.
+       <em>
+        How You Can Write Plays: A Practical Guide-book
+       </em>
+       . S. French.
+       <a class="link-inline force-break" href="https://books.google.com/books?id=UyYrAAAAIAAJ">
+        https://books.google.com/books?id=UyYrAAAAIAAJ
+       </a>
+      </li>
+      <li id="BibPLXBIB0047" label="[47]">
+       Mark Weiser. 1999. The Computer for the 21st Century.
+       <em>
+        <em>
+         SIGMOBILE Mob. Comput. Commun. Rev.
+        </em>
+       </em>
+       3, 3 (jul 1999), 3–11.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/329124.329126">
+        https://doi.org/10.1145/329124.329126
+       </a>
+      </li>
+      <li id="BibPLXBIB0048" label="[48]">
+       Tongshuang Wu, Ellen Jiang, Aaron Donsbach, Jeff Gray, Alejandra Molina, Michael Terry, and Carrie J Cai. 2022. PromptChainer: Chaining Large Language Model Prompts through Visual Programming. In
+       <em>
+        Extended Abstracts of the 2022 CHI Conference on Human Factors in Computing Systems
+       </em>
+       .
+      </li>
+      <li id="BibPLXBIB0049" label="[49]">
+       Tongshuang Wu, Michael Terry, and Carrie J Cai. 2022. AI Chains: Transparent and Controllable Human-AI Interaction by Chaining Large Language Model Prompts. In
+       <em>
+        Proceedings of the 2022 CHI conference on human factors in computing systems
+       </em>
+       .
+      </li>
+      <li id="BibPLXBIB0050" label="[50]">
+       Qian Yang, Jina Suh, Nan-Chen Chen, and Gonzalo Ramos. 2018. Grounding Interactive Machine Learning Tool Design in How Non-Experts Actually Build Models. In Proceedings of the 2018 Designing Interactive Systems Conference (Hong Kong, China) (DIS ’18). Association for Computing Machinery, New York, NY, USA, 573–584.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3196709.3196729">
+        https://doi.org/10.1145/3196709.3196729
+       </a>
+      </li>
+     </ul>
+    </section>
+   </section>
+   <section class="footnote" id="foot-001">
+    <header>
+     <div class="title-info">
+      <h2>
+       FOOTNOTE
+      </h2>
+     </div>
+    </header>
+    <p id="fn1">
+     <a href="#foot-fn1">
+      <sup>
+       1
+      </sup>
+     </a>
+     <em>
+      Predict
+     </em>
+     here refers to generating model outputs, referred to as “prediction” because model outputs are probabilistic predictions for the words (tokens) that might follow the prompt.
+    </p>
+    <p id="fn2">
+     <a href="#foot-fn2">
+      <sup>
+       2
+      </sup>
+     </a>
+     Regression tests, in the context of software engineering and in the sense we intend here, are tests that verify that any
+     <em>
+      new
+     </em>
+     changes to a system do not
+     <em>
+      reintroduce
+     </em>
+     previously-resolved errors (called
+     <em>
+      regressions
+     </em>
+     ).
+    </p>
+    <p id="fn3">
+     <a href="#foot-fn3">
+      <sup>
+       3
+      </sup>
+     </a>
+     When used to predict subsequent tokens given a specified prefix (which we call a “prompt” in this paper), language models typically assign a probability to
+     <em>
+      every possible subsequent token
+     </em>
+     , and then select among the most likely contenders. The
+     <font style="font-variant: small-caps">
+      temperature
+     </font>
+     parameter affects how the next prediction is selected among the probability-ranked tokens. At
+     <font style="font-variant: small-caps">
+      temperature
+     </font>
+     = 0,
+     <em>
+      the most likely next token is always selected
+     </em>
+     , preventing any random variation in response to a given prefix.
+    </p>
+    <p id="fn4">
+     <a href="#foot-fn4">
+      <sup>
+       4
+      </sup>
+     </a>
+     At this stage, we are not exploring end users’ intuitions about prompts, merely exploring whether
+     <font style="font-variant: small-caps">
+      BotDesigner
+     </font>
+     ’s systematic prompt analysis functionality
+     <em>
+      can be
+     </em>
+     used as intended.
+    </p>
+    <div class="bibStrip">
+     <p>
+      <img alt="CC-BY non-commercial license image" class="img-responsive" src="3581388_files\ccbync.jpg"/>
+      <br/>
+      This work is licensed under a
+      <a href="https://creativecommons.org/licenses/by-nc/4.0/">
+       Creative Commons Attribution-NonCommercial International 4.0 License
+      </a>
+      .
+     </p>
+     <p>
+      <em>
+       CHI '23, April 23–28, 2023, Hamburg, Germany
+      </em>
+     </p>
+     <p>
+      © 2023 Copyright held by the owner/author(s).
+      <br/>
+      ACM ISBN 978-1-4503-9421-5/23/04.
+      <br/>
+      DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3581388" target="_blank">
+       https://doi.org/10.1145/3544548.3581388
+      </a>
+     </p>
+    </div>
+   </section>
+  </main>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'869d9b1ded1bbba7',t:'MTcxMTM1NjEyOS4zNjIwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

@@ -1,0 +1,5518 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   The Dissimilarity-Consensus Approach to Agreement Analysis in Gesture Elicitation Studies
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300454_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300454_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300454_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300454_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300454_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300454_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300454_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300454_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        The Dissimilarity-Consensus Approach to Agreement Analysis in Gesture Elicitation Studies
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Radu-Daniel
+      </span>
+      <span class="surName">
+       Vatavu
+      </span>
+      , University Stefan cel Mare of Suceava, Romania,
+      <a href="mailto:vatavu@eed.usv.ro">
+       vatavu@eed.usv.ro
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300454" target="_blank">
+       https://doi.org/10.1145/3290605.3300454
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       We introduce the dissimilarity-consensus method, a new approach to computing objective measures of consensus between users’ gesture preferences to support data analysis in end-user gesture elicitation studies. Our method models and quantifies the relationship between users’ consensus over gesture articulation and numerical measures of gesture dissimilarity, e.g., Dynamic Time Warping or Hausdorff distances, by employing growth curves and logistic functions. We exemplify our method on 1,312 whole-body gestures elicited from 30 children, ages 3 to 6 years, and we report the first empirical results in the literature on the consensus between whole-body gestures produced by children this young. We provide
+       <tt>
+        C#
+       </tt>
+       and
+       <tt>
+        R
+       </tt>
+       software implementations of our method and make our gesture dataset publicly available.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → User studies
+       </strong>
+       ; •
+       <strong>
+        Human-centered computing → Gestural input
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Gesture input; Gesture elicitation; Consensus; Growth curves; Logistic model; Children; Whole-body gestures; Dataset.
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Radu-Daniel Vatavu. 2019. The Dissimilarity-Consensus Approach to Agreement Analysis in Gesture Elicitation Studies. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 14 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300454" target="_blank">
+         https://doi.org/10.1145/3290605.3300454
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Gestures enable users to operate devices fast and intuitively by means of direct input on touchscreens [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0077">
+      77
+     </a>
+     ], wrist control on smartwatches [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+      22
+     </a>
+     ], head movements for augmented reality glasses [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ], feet input for locomotion interfaces in virtual reality [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+      70
+     </a>
+     ], mid-air hand shortcuts for peripheral interaction [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+      55
+     </a>
+     ], and whole-body gesture input for video games [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+      56
+     </a>
+     ]. However, designing effective gesture interaction and a rewarding user experience requires key knowledge about what gestures are intuitive [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ], low-fatigue [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ], efficient to perform [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+      33
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ], and straightforward to recall [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+      43
+     </a>
+     ].
+    </p>
+    <figure id="fig1">
+     <img alt="" class="img-responsive" longdesc="Thirty small pictures showing children performing whole-body gestures." src="3300454_files\chi2019224fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       Thirty children performing whole-body gestures with variations in body pose, handedness, amplitude of movement, hand poses, etc. What criteria should be used to assess the similarity of any two body gestures in order to understand the consensus between these children's gestures? Unfortunately, this is where the practitioner's subjectivity intervenes with a direct influence on the magnitude of reported consensus; see the text for a numerical example.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     Understanding users’ preferences for gestures they would like to use represents an important step towards effective gesture UI design. To this end, the gesture elicitation methodology [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+      68
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0071">
+      71
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ] has proven immensely resourceful for designers to form an understanding of users’ mental models of gesture interaction. Since its first implementation for multitouch gestures [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ], the methodology has been reapplied for a variety of gesture types and applications [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+      31
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+      41
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+      52
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+      56
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+      60
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+      62
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+      69
+     </a>
+     ], revealing users’ preferences for interactive gestures and accumulating important design knowledge.
+    </p>
+    <p>
+     One of the outcomes of any gesture elicitation study is a set of recommendable gestures together with an estimation of users’ consensus or agreement [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+      68
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0071">
+      71
+     </a>
+     ] as a measure of the expected intuitiveness of those gestures [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ]. Consensus has been evaluated numerically by clustering the elicited gestures into classes of similar types [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ], a procedure performed manually by a human and guided by a set of clustering criteria. Unfortunately, the criteria used to evaluate which gestures are similar vary from study to study [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+      31
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+      41
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+      52
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+      56
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+      60
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+      62
+     </a>
+     ], causing the magnitude of consensus to depend on the specific and subjective criteria chosen by the practitioner. While a subjective approach to the interpretation of gestures is indispensable when trying to understand the common meaning of equivalent, yet structurally different gestures, such as cultural gestures [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+      19
+     </a>
+     ], or when applying the principles of somaesthetics [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+      32
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+      40
+     </a>
+     ] to inform movement-based interaction, the vast majority of gesture elicitation studies are conducted to find objective consensus in gesture articulation. For the later case, the use of subjective criteria to cluster elicited gestures may lead to different consensus results for the same data, a distressing outcome, as we are about to show with a numerical example. The alternative, which we introduce in this paper, is
+     <em>
+      a holistic approach to understanding the numerical relationship between gesture similarity and users’ consensus over articulation
+     </em>
+     , a process that can be conducted entirely on a computer to deliver
+     <em>
+      objective magnitudes of consensus in just a few seconds.
+     </em>
+    </p>
+    <section id="sec-3">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Subjectivity in Reporting Consensus in End-User Gesture Elicitation Studies: A Motivating Example
+       </h3>
+      </div>
+     </header>
+     <p>
+      We provide an example to illustrate the dependence of the magnitude of reported consensus on the criteria employed to cluster elicited gestures into classes of similar types. We also use this example to introduce new readers to the principles of the end-user gesture elicitation methodology [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ].
+     </p>
+     <p>
+      Consider a designer that wishes to understand children's preferences for whole-body gestures to symbolize a cat scratching (an action denoted in the following as the “referent,” according to the terminology from Wobbrock
+      <em>
+       et al.
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ]) in order to inform a technique to detect such gestures effectively for a gesture-controlled video game. Following the steps of the gesture elicitation methodology [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ], the designer assembles a group of children, e.g.,
+      <em>
+       N
+      </em>
+      = 30 children, representative of the target user group, presents them with the desired effect, i.e., a cat scratching, and asks each child to perform a gesture to generate that effect. At the end of the experiment, the designer has recorded 30 gestures, such as the ones illustrated in Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      . Clearly, not all the gestures will have the same articulation, but rather gestures will vary in terms of, e.g., the amplitude of movement, the use of the dominant, nondominant, or both hands, execution speed, repetition of movement, hand poses to suggest claws, body poses and facial expressions to suggest a cat, and so on. The designer wishes to understand how much consensus exists in the data they collected, preferably as a value between 0% and 100%, where 0% means no consensus (i.e., all the gestures are different) and 100% denotes perfect consensus.
+     </p>
+     <p>
+      Consensus has been computed in the literature as a two-step procedure: (1) elicited gestures are clustered into classes of similar types, and (2) the cardinalities of all the clusters are aggregated into a numerical measure of consensus, such as the Agreement Rate [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+       68
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ]. To implement the first step, the designer decides which gestures are “similar” by defining and employing a set of criteria to cluster the elicited gestures. And here is where subjectivity intervenes. Let's say that two “scratch like a cat” gestures are judged to be similar if they are performed with the same hand or with both hands “scratching” simultaneously. Using this
+      <em>
+       handedness
+      </em>
+      criterion, the designer evaluates the magnitude of consensus at 39.3%, meaning that, of all pairs of gestures, 39.3% are similar.
+      <a class="fn" href="#fn1" id="foot-fn1">
+       <sup>
+        1
+       </sup>
+      </a>
+      But what about body pose? Is it important if the child stands straight up, sits down on the floor, crouches, walks around, and so on, while scratching like a cat? With the
+      <em>
+       body pose
+      </em>
+      criterion added, consensus drops at 19.6%.
+      <sup>
+       1
+      </sup>
+      But what about the pattern of the hand(s) moving to symbolize scratching? Is scratching with the left hand followed by the right the same gesture as scratching with the right hand followed by the left and then the right hand again? By considering the
+      <em>
+       pattern
+      </em>
+      criterion, consensus drops further at 12.2%.
+      <sup>
+       1
+      </sup>
+      What about repetitive movements? Is scratching once the same gesture as scratching multiple times? With
+      <em>
+       repetition
+      </em>
+      as the fourth criterion, consensus drops at 4.7%,
+      <sup>
+       1
+      </sup>
+      a value that is 8 times smaller than the original magnitude of consensus computed with the
+      <em>
+       handedness
+      </em>
+      criterion only. What about the location where scratching takes place, the speed of the scratching movement, or the hand pose that symbolizes a claw? Should all these criteria, or others, be considered? The answer may depend on many factors (e.g., the application requirements, the resolution of the sensor, the goals of the investigation, etc.) but, it is clear that, by considering more criteria, the magnitude of consensus can eventually become 0% for this example. Our designer will compromise somewhere between 0% and 39.3%, favoring some criteria and dismissing others, but it is evident now how the choice of the clustering criteria affects the magnitude of reported consensus.
+     </p>
+    </section>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Contributions
+       </h3>
+      </div>
+     </header>
+     <p>
+      We contribute an alternative approach to subjective clustering criteria and manual labeling of elicited gestures and introduce the “dissimilarity-consensus” method (abbreviated
+      <em>
+       τ
+      </em>
+      -C) by adopting
+      <em>
+       a holistic perspective on computing and understanding how consensus forms.
+      </em>
+      Moreover, the process is implemented entirely by a computer, which transforms long hours and even days of manual, subjective clustering into obtaining reliable, objective results in a matter of just a few seconds. Our method employs growth curves, modeled with logistic functions, that describe how fast consensus increases in response to an increase in the tolerance in gesture dissimilarity that is allowed when judging how similar two gestures are. Our practical contributions are as follows:
+     </p>
+     <ol class="list-no-style">
+      <li id="list1" label="(1)">
+       We introduce the dissimilarity-consensus method (
+       <em>
+        τ
+       </em>
+       -C) for computing objective magnitudes of consensus in end-user gesture elicitation studies.
+       <br/>
+      </li>
+      <li id="list2" label="(2)">
+       We demonstrate the
+       <em>
+        τ
+       </em>
+       -C method on whole-body gestures elicited from children aged 3 to 6 years, a user group that we specifically chose to maximize the variance of elicited gestures (children at this age are still developing their motor and cognitive skills) and, thus, maximize the influence of clustering criteria on the magnitude of consensus reported with the traditional approach.
+       <br/>
+      </li>
+      <li id="list3" label="(3)">
+       We release software implementations in
+       <tt>
+        C#
+       </tt>
+       and
+       <tt>
+        R
+       </tt>
+       to compute consensus and visualize
+       <em>
+        τ
+       </em>
+       -C growth curves to support data analysis for end-user gesture elicitation studies towards accumulation of new gesture knowledge in our community. We also release our dataset of 1,312 whole-body gestures produced by 30 children to foster advances in designing gesture interaction for small children.
+       <br/>
+      </li>
+     </ol>
+    </section>
+   </section>
+   <section id="sec-5">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     We relate in this section to prior work on gesture elicitation studies and review whole-body interaction for children.
+    </p>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        End-User Gesture Elicitation Studies
+       </h3>
+      </div>
+     </header>
+     <p>
+      Wobbrock
+      <em>
+       et al.
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0071">
+       71
+      </a>
+      ] introduced the elicitation methodology in 2005 as a practical implementation of a participatory design study to evaluate and maximize the “guessability” of symbolic input with an application to text entry and the EdgeWrite [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+       73
+      </a>
+      ] alphabet. The first application to gestures (2009) was for multitouch input on tabletops [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ]. Since then, many gesture elicitation studies have been conducted to unveil end-users’ preferences for a variety of gesture types and gesture-controlled applications, such as video games [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ], augmented reality [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ], TV control [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+       75
+      </a>
+      ], interaction with multiple displays [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ], pairing devices [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ], keyboard shortcuts [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ], web applications [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ], motion gestures on smartphones [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ], interacting with drones [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ], smart environments [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ], on-skin input [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ], elastic and deformable displays [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ], input on smart rings [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ], smartwatches [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ], mid-air gesture input for connected cars [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ], designing consistent gesture commands across devices [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ], etc. Over the years, the original method [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ] has been refined with an updated formula for computing agreement [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ], measures of disagreement and co-agreement [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+       68
+      </a>
+      ], adaptations to within-subjects and between-subjects designs [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+       68
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+       69
+      </a>
+      ] and using crowdsourcing to elicit users’ preferences [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ]. Ticklish aspects, such as the “legacy bias” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ], i.e., the influence of users’ prior experience with interactive systems on elicited gestures, were addressed with methodological variations, such as production, priming, and partners [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ], soft-constraints [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ], and the “framed guessability” approach [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ]. However, the essential part of computing consensus by manual clustering of gestures has remained unchanged.
+     </p>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Studies on Children's Whole-Body Gestures
+       </h3>
+      </div>
+     </header>
+     <p>
+      In this work, we demonstrate our new dissimilarity-consensus method by applying it to whole-body gestures elicited from small children, ages 3 to 6 years. To connect our results with the literature on child-computer interaction, we review in this section prior work conducted to understand how children perform whole-body gestures.
+     </p>
+     <p>
+      One way to acquire data about children's gestures is through observational studies, where children are placed in interactive contexts and their actions observed. For example, Rahman
+      <em>
+       et al.
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ] examined children's perceptions of whole-body gesture interaction (Kinect)
+      <em>
+       vs.
+      </em>
+      touch input (iPad); Hoysniemi
+      <em>
+       et al.
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ] conducted a Wizard-of-Oz study to observe children's whole-body movements to control an avatar; and Connell
+      <em>
+       et al.
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ] collected gestures from 6 children, ages 3 to 8 years, in response to 22 referents regarding object manipulation, navigation, and spatial interaction tasks. Two recent studies [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ] revealed differences between children and adults’ whole-body gesture articulations. Jain
+      <em>
+       et al.
+      </em>
+      ’s [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ] perceptual study showed that the gestures of children between 5 and 9 years old are perceived differently by human observers than the same gesture types performed by an adult. This result has implications for recognition techniques that should be tailored to children's specific ways to articulate gestures, but also to data synthesis of “child-like” movements [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ] to support creation of realistic child characters for computer animations and video games.
+     </p>
+     <p>
+      These studies have contributed with important knowledge on how children, of various age groups, perform gestures. However, compared to the considerable advances in generic body gesture recognition and analysis for adults [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0076">
+       76
+      </a>
+      ], children's whole-body gesture performance is, unfortunately, still little understood today. Besides limited research, the lack of publicly-available datasets on gestures produced by children has also prevented new discoveries. A very recent (2018) initiative of Aishat
+      <em>
+       et al.
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ] was to release a Kinect dataset with 58 motions performed by 10 children (ages 5 to 9 years) and 10 adults. As a side contribution of this work, we also align to this initiative by releasing our dataset of gestures performed by 30 children, ages 3 to 6 years. In this context, our empirical results on the consensus between children's gesture articulations and our dataset come at a right time to stimulate more research in this direction.
+     </p>
+    </section>
+   </section>
+   <section id="sec-8">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       THE DISSIMILARITY-CONSENSUS APPROACH TO ANALYZING GESTURE ELICITATION DATA
+      </h2>
+     </div>
+    </header>
+    <p>
+     We present in this section our new method to compute the consensus between end-users’ gestures. Our approach introduces a shift from gesture data analysis based on manual labeling and subjective clustering criteria, currently in-use in the community, to a holistic modeling of the numerical relationship between consensus and gesture dissimilarity.
+    </p>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Automated Computation of Consensus using Gesture Dissimilarity Functions
+       </h3>
+      </div>
+     </header>
+     <p>
+      We start the presentation of our method by introducing a formula to compute consensus for a set of gestures by using a gesture dissimilarity function. Let
+      <em>
+       g
+       <sub>
+        i
+       </sub>
+      </em>
+      represent the gesture elicited from the
+      <em>
+       i
+      </em>
+      -th participant in response to some referent
+      <em>
+       R
+      </em>
+      . Let
+      <em>
+       Δ
+      </em>
+      denote a dissimilarity function that computes a real, positive number to characterize how dissimilar two gestures are. For example,
+      <em>
+       Δ
+      </em>
+      may be the Dynamic Time Warping (DTW) cost function, a popular and accurate technique for classifying time-series data [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ], including gesture data of all kinds, e.g., stylus gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0074">
+       74
+      </a>
+      ], finger touch strokes [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+       67
+      </a>
+      ], motion gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+       63
+      </a>
+      ], mid-air freehand gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ], and whole-body movement [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ]. Let
+      <em>
+       τ
+      </em>
+      represent our tolerance for deciding when two gestures are “similar,” i.e., gestures
+      <em>
+       g
+       <sub>
+        i
+       </sub>
+      </em>
+      and
+      <em>
+       g
+       <sub>
+        j
+       </sub>
+      </em>
+      are considered similar if
+      <em>
+       Δ
+      </em>
+      (
+      <em>
+       g
+       <sub>
+        i
+       </sub>
+      </em>
+      ,
+      <em>
+       g
+       <sub>
+        j
+       </sub>
+      </em>
+      ) ≤
+      <em>
+       τ
+      </em>
+      . With these definitions, we compute the consensus between
+      <em>
+       N
+      </em>
+      gestures
+      <em>
+       g
+      </em>
+      <sub>
+       <em>
+        i
+       </em>
+       (= 1..
+       <em>
+        N
+       </em>
+       )
+      </sub>
+      elicited for referent
+      <em>
+       R
+      </em>
+      from
+      <em>
+       N
+      </em>
+      users as follows:
+     </p>
+     <p>
+      2pt0pt
+     </p>
+     <p>
+      <em>
+       Definition:
+      </em>
+      Consensus for referent
+      <em>
+       R
+      </em>
+      is the percent of all pairs of gestures that are evaluated to be similar,
+     </p>
+     <div class="table-responsive" id="eq1">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} C_R(\tau) = \frac{\displaystyle \sum _{i=1}^{N}{\sum _{j=i+1}^{N}{\left[\Delta (g_i, g_j) \le \tau \right]}}}{\frac{1}{2} N (N-1)} [\cdot 100\%] \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (1)
+       </span>
+      </div>
+     </div>
+     <p>
+     </p>
+     <p>
+      where
+      <em>
+       N
+      </em>
+      is the number of participants from which gestures are elicited, and the expression in square brackets evaluates to either 1 or 0, depending whether it is true or false.
+      <em>
+       C
+       <sub>
+        R
+       </sub>
+      </em>
+      (
+      <em>
+       τ
+      </em>
+      ) takes values in [0..100], where 0% denotes no consensus and 100% perfect consensus. For example, consider that
+      <em>
+       N
+      </em>
+      = 4 participants are elicited for their gesture preferences with respect to some referent and that the DTW dissimilarity computed on all the (4 × 3)/2 = 6 pairs of participants gives the results shown in Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      . If we choose
+      <em>
+       τ
+      </em>
+      = 1.00, then consensus is
+      <span class="inline-equation">
+       <span class="tex">
+        $C_R=(1+0+1+0+1+0) /6\cdot 100\%$
+       </span>
+      </span>
+      = 50%.
+     </p>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Mock-up example to illustrate computation of consensus. Using Eq.
+        <a class="eqn" href="#eq1">
+         1
+        </a>
+        and
+        <strong>
+         <em>
+          τ
+         </em>
+         = 1.00
+        </strong>
+        , consensus is 50%.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;">
+         </th>
+         <th style="text-align:right;">
+          <strong>
+           P
+           <strong>
+            <sub>
+             1
+            </sub>
+           </strong>
+          </strong>
+         </th>
+         <th style="text-align:right;">
+          <strong>
+           P
+           <strong>
+            <sub>
+             2
+            </sub>
+           </strong>
+          </strong>
+         </th>
+         <th style="text-align:right;">
+          <strong>
+           P
+           <strong>
+            <sub>
+             3
+            </sub>
+           </strong>
+          </strong>
+         </th>
+         <th style="text-align:right;">
+          <strong>
+           P
+           <strong>
+            <sub>
+             4
+            </sub>
+           </strong>
+          </strong>
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           P
+           <strong>
+            <sub>
+             1
+            </sub>
+           </strong>
+          </strong>
+         </td>
+         <td style="text-align:right;">
+          0
+         </td>
+         <td style="text-align:right;">
+          0.25
+         </td>
+         <td style="text-align:right;">
+          1.85
+         </td>
+         <td style="text-align:right;">
+          0.93
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           P
+           <strong>
+            <sub>
+             2
+            </sub>
+           </strong>
+          </strong>
+         </td>
+         <td style="text-align:right;">
+          0.25
+         </td>
+         <td style="text-align:right;">
+          0
+         </td>
+         <td style="text-align:right;">
+          2.13
+         </td>
+         <td style="text-align:right;">
+          0.78
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           P
+           <strong>
+            <sub>
+             3
+            </sub>
+           </strong>
+          </strong>
+         </td>
+         <td style="text-align:right;">
+          1.85
+         </td>
+         <td style="text-align:right;">
+          2.13
+         </td>
+         <td style="text-align:right;">
+          0
+         </td>
+         <td style="text-align:right;">
+          1.10
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           P
+           <strong>
+            <sub>
+             4
+            </sub>
+           </strong>
+          </strong>
+         </td>
+         <td style="text-align:right;">
+          0.93
+         </td>
+         <td style="text-align:right;">
+          0.78
+         </td>
+         <td style="text-align:right;">
+          1.10
+         </td>
+         <td style="text-align:right;">
+          0
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Computation of Consensus for Repeated Elicitation
+       </h3>
+      </div>
+     </header>
+     <p>
+      Eq.
+      <a class="eqn" href="#eq1">
+       1
+      </a>
+      covers the case where only one gesture is elicited from each participant for referent
+      <em>
+       R
+      </em>
+      , which represents the original implementation of the gesture elicitation methodology [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ]. However, more complex experimental designs may elicit more than one gesture per participant, a procedure known as “production” to force participants move beyond legacy-biased gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ]. In the following, we extend Eq.
+      <a class="eqn" href="#eq1">
+       1
+      </a>
+      to address such scenarios involving multiple, distinct gestures collected from the same participant for the same referent.
+     </p>
+     <p>
+      Let
+      <em>
+       g
+      </em>
+      <sub>
+       <em>
+        i
+       </em>
+       ,
+       <em>
+        t
+       </em>
+      </sub>
+      represent the
+      <em>
+       t
+      </em>
+      -th gesture proposal collected from the
+      <em>
+       i
+      </em>
+      -th participant for
+      <em>
+       R
+      </em>
+      . The extended formula becomes:
+     </p>
+     <p>
+      2pt0pt
+     </p>
+     <p>
+      <em>
+       Definition:
+      </em>
+      Consensus for referent
+      <em>
+       R
+      </em>
+      , under repeated elicitation, is the percent of all pairs of gestures, including their repetitions, that are evaluated to be similar,
+     </p>
+     <div class="table-responsive" id="eq2">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} C^{\star }_R(\tau) = \frac{\displaystyle \sum _{i=1}^{N}{\sum _{j=i+1}^{N}{\left[ \zeta \left(\left\lbrace \Delta (g_{i,t}, g_{j,u}) \,\forall t,u \right\rbrace \right) \le \tau \right] }}}{\frac{1}{2} N (N-1)} [\cdot 100\%] \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (2)
+       </span>
+      </div>
+     </div>
+     <p>
+     </p>
+     <p>
+      where
+      <em>
+       t
+      </em>
+      and
+      <em>
+       u
+      </em>
+      index gestures proposed by participants
+      <em>
+       i
+      </em>
+      and
+      <em>
+       j
+      </em>
+      for referent
+      <em>
+       R
+      </em>
+      , and
+      <em>
+       ζ
+      </em>
+      is a new function that takes as input all the dissimilarity values computed for all the
+      <em>
+       t
+      </em>
+      ×
+      <em>
+       u
+      </em>
+      combinations of
+      <em>
+       g
+      </em>
+      <sub>
+       <em>
+        i
+       </em>
+       ,
+       <em>
+        t
+       </em>
+      </sub>
+      and
+      <em>
+       g
+      </em>
+      <sub>
+       <em>
+        j
+       </em>
+       ,
+       <em>
+        u
+       </em>
+      </sub>
+      and returns a single, aggregated value. In this work, we implement and evaluate
+      <em>
+       ζ
+      </em>
+      with the
+      <tt>
+       min
+      </tt>
+      ,
+      <tt>
+       max
+      </tt>
+      , and
+      <tt>
+       avg
+      </tt>
+      functions, corresponding to optimistic, pessimistic, and realistic computation of consensus. For example, consider that the four participants from Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      were elicited two more times. In this case, we would have a set of 12 gestures with three gestures from each participant. To compare the gestures of, say, participants P
+      <sub>
+       1
+      </sub>
+      and P
+      <sub>
+       2
+      </sub>
+      , we need 3 × 3 = 9 evaluations of the dissimilarity measure
+      <em>
+       Δ
+      </em>
+      in Eq.
+      <a class="eqn" href="#eq2">
+       2
+      </a>
+      . Suppose that the resulting dissimilarity values are, in ascending order, 0.23, 0.29, 0.35, 0.36, 0.51, 0.72, 0.89, 1.10, and 1.51. Depending on our choice of
+      <em>
+       ζ
+      </em>
+      , the aggregated dissimilarity between gestures elicited from P
+      <sub>
+       1
+      </sub>
+      and P
+      <sub>
+       2
+      </sub>
+      may be 0.23 for
+      <em>
+       ζ
+      </em>
+      =
+      <tt>
+       min
+      </tt>
+      , 1.51 for
+      <em>
+       ζ
+      </em>
+      =
+      <tt>
+       max
+      </tt>
+      , 0.66 for
+      <em>
+       ζ
+      </em>
+      =
+      <tt>
+       avg
+      </tt>
+      , and so on. After the aggregation, computation of consensus for a given
+      <em>
+       τ
+      </em>
+      proceeds similarly as in the previous example; see Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      .
+     </p>
+     <figure id="fig2">
+      <img alt="" class="img-responsive" longdesc="Two examples of growth curves for two referents." src="3300454_files\chi2019224fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        Growth curves quantify the relationship between consensus and the tolerance in gesture dissimilarity,
+        <em>
+         τ
+        </em>
+        , below which two gestures are considered similar. In this example, the growth rate of consensus for referent “A” is larger than for “B,” showing faster reaching consensus for “A.”
+        <em>
+         Note:
+        </em>
+        actual consensus in orange, logistic model fit in black.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Dissimilarity-Consensus Growth Curves
+       </h3>
+      </div>
+     </header>
+     <p>
+      The value chosen for the tolerance parameter,
+      <em>
+       τ
+      </em>
+      , can cause consensus to take any value from 0% to 100%, e.g., choosing a small, conservative value when judging how similar two gestures are will lead to a smaller magnitude of consensus than when employing a more permissive
+      <em>
+       τ
+      </em>
+      . Thus, working with a single
+      <em>
+       τ
+      </em>
+      value would be equivalent to clustering the elicited gestures according to a specific set of criteria, just like in the example from the introduction of this paper.
+     </p>
+     <p>
+      The alternative approach, which we propose in the following, is to adopt a holistic perspective, according to which the relationship between consensus and
+      <em>
+       τ
+      </em>
+      is modeled in the form of a growth curve. Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      illustrates two examples of
+      <em>
+       τ
+      </em>
+      -C growth curves for two referents from our dataset (presented in the next section). When
+      <em>
+       τ
+      </em>
+      values are small, consensus is small as well, and it is difficult to differentiate the two referents by the magnitudes of their consensus. For
+      <em>
+       τ
+      </em>
+      less than 0.1 m, it appears that referent “B” has a slightly larger consensus than referent “A,” but the difference is small and it may be that we are too conservative in our dissimilarity criterion to detect a true difference in consensus. For
+      <em>
+       τ
+      </em>
+      values larger than 0.4 m, both referents reach very high consensus, i.e., 100% for “A” and 94% for “B,” but this time it may be that we are too permissive in our criteria (
+      <em>
+       τ
+      </em>
+      ) to really understand differences in consensus. The big picture is provided only when we look at consensus overall as a function of
+      <em>
+       τ
+      </em>
+      , instead of taking snapshots at specific points.
+     </p>
+     <p>
+      To characterize the growth of consensus numerically, we need a model of the
+      <em>
+       τ
+      </em>
+      -C relationship. Because consensus cannot grow indefinitely as it is upper bounded by 100%, logistic growth, a technique commonly employed to model growth for populations that increase towards a maximum limit [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+       61
+      </a>
+      ], seems appropriate to model the dissimilarity-consensus relationship. We thus employ the standard form of the logistic model which, expressed using our notations, is:
+     </p>
+     <div class="table-responsive" id="eq3">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} C_R(\tau) = \frac{C_\infty \cdot C_0}{C_0 + \displaystyle \left(C_\infty -C_0 \right) \cdot \exp {(-r \cdot \tau)}} \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (3)
+       </span>
+      </div>
+     </div>
+     where
+     <em>
+      C
+     </em>
+     <sub>
+      ∞
+     </sub>
+     = lim
+     <sub>
+      <em>
+       τ
+      </em>
+      → ∞
+     </sub>
+     <em>
+      C
+     </em>
+     (
+     <em>
+      τ
+     </em>
+     ) and
+     <em>
+      C
+     </em>
+     <sub>
+      0
+     </sub>
+     = lim
+     <sub>
+      <em>
+       τ
+      </em>
+      → 0
+     </sub>
+     <em>
+      C
+     </em>
+     (
+     <em>
+      τ
+     </em>
+     ) are the upper and lower bounds of consensus and
+     <em>
+      r
+     </em>
+     is the growth rate. For the experiments reported in this work, we fit growth curves using the
+     <tt>
+      R
+     </tt>
+     library
+     <tt>
+      growthcurver
+     </tt>
+     by Sprouffske [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+      57
+     </a>
+     ]. For a good fit, we want
+     <em>
+      C
+     </em>
+     <sub>
+      0
+     </sub>
+     to be close to zero,
+     <em>
+      C
+     </em>
+     <sub>
+      ∞
+     </sub>
+     close to 100, and
+     <em>
+      r
+     </em>
+     to show a statistically significant fit at
+     <em>
+      α
+     </em>
+     = .05. The growth rate
+     <em>
+      r
+     </em>
+     is our measure to characterize the overall numerical relationship between consensus and gesture dissimilarity.
+     <p>
+     </p>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Creation of Consensus Gesture Sets
+       </h3>
+      </div>
+     </header>
+     <p>
+      According to Wobbrock
+      <em>
+       et al.
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ], the consensus set of recommendable gestures is formed by
+      <em>
+       “taking the largest groups of identical gestures for each referent and assigning those groups’ gestures to the referent”
+      </em>
+      (p. 1087). The
+      <em>
+       τ
+      </em>
+      -C technique basically works by running an iterative clustering of the elicited gestures for multiple, continuously increasing values of the tolerance threshold
+      <em>
+       τ
+      </em>
+      . At any
+      <em>
+       τ
+      </em>
+      , the result is a binary matrix encoding similarity relationships between any two gestures, according to the evaluation of the expression [
+      <em>
+       Δ
+      </em>
+      (
+      <em>
+       g
+       <sub>
+        i
+       </sub>
+      </em>
+      ,
+      <em>
+       g
+       <sub>
+        j
+       </sub>
+      </em>
+      ) ≤
+      <em>
+       τ
+      </em>
+      ]. From this matrix, a set of optimally separable clusters and, specifically, the largest cluster of similar gestures can be determined automatically using techniques such as hill climbing or correlation clustering, among others, as demonstrated by the recent Crowdsensus system [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ]. If the practitioner cannot decide on a single
+      <em>
+       τ
+      </em>
+      , the range values of
+      <em>
+       τ
+      </em>
+      can be sampled, e.g., in 10 or 50 points, and the corresponding binary matrices added together, providing thus an overall perspective of similarity relationships across all
+      <em>
+       τ
+      </em>
+      ’s, just like the logistic curve describes the relationship between dissimilarity and consensus. The same clustering techniques [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ] are then applied directly to the sum matrix to identify the largest cluster and, correspondingly, the “winning” gestures. Also, as consensus is determined for each referent independently, the same type of outcomes as in previous work on gesture elicitation, e.g., selecting the same gesture for two distinct referents, are still possible with our technique.
+     </p>
+    </section>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Domain of Application
+       </h3>
+      </div>
+     </header>
+     <p>
+      In this work, we demonstrate the
+      <em>
+       τ
+      </em>
+      -C method on whole-body gestures elicited from small children; see the next section. However, our method is general and applicable to any type of gestures, such as touch, multitouch, mid-air, free-hand, whole-body, or any combinations of these, as long as a numerical representation of those gestures is available and a dissimilarity function
+      <em>
+       Δ
+      </em>
+      can be defined to be used in Eqs.
+      <a class="eqn" href="#eq1">
+       1
+      </a>
+      and
+      <a class="eqn" href="#eq2">
+       2
+      </a>
+      . For example, gestures are commonly represented as time series, where instantaneous measurements about the progression of a gesture in time are reported by some sensor. These measurements can be 2-D points for touch input [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0074">
+       74
+      </a>
+      ], 3-D accelerations for motion gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+       63
+      </a>
+      ], hand poses for free-hand gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+       75
+      </a>
+      ], or poses of the whole body [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ], as exemplified later in this paper. For time series, the Dynamic Time Warping function, to name just one example, has been proven to work remarkably well in practice [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ].
+     </p>
+    </section>
+   </section>
+   <section id="sec-14">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       EXPERIMENT
+      </h2>
+     </div>
+    </header>
+    <p>
+     To demonstrate our method, we conducted a gesture elicitation experiment [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ] to collect whole-body gestures.
+    </p>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Participants
+       </h3>
+      </div>
+     </header>
+     <p>
+      Thirty (30) children, ages 3 to 6 years (
+      <em>
+       M
+      </em>
+      = 4.4,
+      <em>
+       SD
+      </em>
+      = 0.9), participated in our study. Half were boys, and the age distributions were similar for the two gender groups (
+      <em>
+       M
+      </em>
+      = 4.4 years for boys and 4.5 years for girls, respectively). Parents’ consent was obtained before the study. Children were divided into three age groups of equal size: (i) younger than 4 years, (ii) between 4 and 5 years old, and (iii) older than 5 years.
+     </p>
+    </section>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Apparatus
+       </h3>
+      </div>
+     </header>
+     <p>
+      Children's whole-body gestures were captured with a Microsoft Kinect sensor
+      <em>
+       v
+      </em>
+      1.8 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ] that was connected to a 2.1 GHz Dual-Core PC running Windows 7 and our custom software application. All gestures were stored as skeleton data in XML format with 20 joints per body pose.
+     </p>
+     <div class="table-responsive" id="tab2">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 2:
+       </span>
+       <span class="table-title">
+        The set of referents used to elicit body gestures.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;">
+          <strong>
+           No.
+          </strong>
+         </th>
+         <th style="text-align:left;">
+          <strong>
+           Referent
+          </strong>
+         </th>
+         <th style="text-align:left;">
+          <strong>
+           Instructions received†
+          </strong>
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+          1
+         </td>
+         <td style="text-align:left;">
+          Throw ball
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Show how you throw a ball!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          2
+         </td>
+         <td style="text-align:left;">
+          Climb ladder
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Show how you climb a ladder!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          3
+         </td>
+         <td style="text-align:left;">
+          Slice carrots
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Show how you slice carrots!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          4
+         </td>
+         <td style="text-align:left;">
+          Angry bear
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Show how an angry bear looks like!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          5
+         </td>
+         <td style="text-align:left;">
+          Bird flying
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Show how a bird flies!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          6
+         </td>
+         <td style="text-align:left;">
+          Cat scratching
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Show how a cat scratches!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          7
+         </td>
+         <td style="text-align:left;">
+          Circle
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Draw a circle in mid-air!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          8
+         </td>
+         <td style="text-align:left;">
+          Square
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Draw a square in mid-air!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          9
+         </td>
+         <td style="text-align:left;">
+          Flower
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Draw a flower in mid-air!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          10
+         </td>
+         <td style="text-align:left;">
+          Applaud
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Applaud as hard as you can!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          11
+         </td>
+         <td style="text-align:left;">
+          Hands up
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Raise your hands up in the air!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          12
+         </td>
+         <td style="text-align:left;">
+          Stand on one foot
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Stand on one foot!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          13
+         </td>
+         <td style="text-align:left;">
+          Jump
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Jump as high as you can!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          14
+         </td>
+         <td style="text-align:left;">
+          Crouch
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Crouch!
+          </em>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          15
+         </td>
+         <td style="text-align:left;">
+          Turn around
+         </td>
+         <td style="text-align:left;">
+          <em>
+           Turn around!
+          </em>
+         </td>
+        </tr>
+       </tbody>
+       <tfoot>
+        <tr>
+         <td colspan="3">
+          †Provided to children in the form of audio recordings.
+          <hr/>
+         </td>
+        </tr>
+       </tfoot>
+      </table>
+     </div>
+    </section>
+    <section id="sec-17">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Task
+       </h3>
+      </div>
+     </header>
+     <p>
+      Children stood at about 3 m in front of the Kinect sensor inside a circle with a diameter of 2 m delimited on the ground with white tape to prevent them from exiting the active sensing area; see Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      . Children were asked to produce body gestures in response to short instructions provided by our software with audio recordings, e.g.,
+      <em>
+       “show how you throw a ball!”
+      </em>
+      or
+      <em>
+       “draw a flower in mid-air!”
+      </em>
+      There was no visual feedback in order not to influence children's body movements in any way. Instructions were played by a speaker in the form of a bear toy, representing an implementation of gamification [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ], to keep children motivated during the study. Children were told to move as they wished in response to the instructions received from the bear. After the child confirmed that the instructions were understood, they produced the gesture, which was recorded by our application.
+     </p>
+     <p>
+      We selected 15 referents to reveal children's metaphors of thought for various iconic movements, e.g., manipulation of objects, mimicking animal behavior, and drawing shapes in mid-air; see Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      . Some of the gesture types were inspired by previous work, e.g., “throw a ball” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ], “jump” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ], “crouch” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ], “fly like a bird” and “climb” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ], while the others were newly designed to complement the gesture types from the literature. In contrast to other studies [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ], we elicited children for the same referent multiple times to collect more gesture variation. Each referent was presented for three times, resulting in 15 × 3 = 45 trials. The order of the trials was randomized per participant. On average, data collection took about 7 minutes per child.
+     </p>
+    </section>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Completion Rate
+       </h3>
+      </div>
+     </header>
+     <p>
+      The total number of expected gestures was 30 (children) × 15 (referents) × 3 (repetitions) = 1,350. The actual number of collected gestures was 1,312, corresponding to a completion rate of 97.2%. Missing data were caused by children not knowing how to move in response to some of the referents. Except “angry bear” (71.1%), all the other referents scored completion rates over 95.5%, very high given the small age of our children (3 − 6 years) and the low completion rates often reported in the literature for studies with children, e.g., 81.8% for touch input [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+       66
+      </a>
+      ] or between 73% and 97% for stroke gesture input on smartphones [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ]. Implementing gamification (the bear toy) and keeping the data collection procedure short (7 minutes on average) definitely helped.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="Fifteen charts arranged in a 3 by 5 matrix showing growth curves for each of the 15 referents considered in this paper." src="3300454_files\chi2019224fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Growth curves (actual data in orange, logistic models in black) illustrating the dissimilarity-consensus relationship: the larger the tolerance
+        <strong>
+         <em>
+          τ
+         </em>
+        </strong>
+        allowed for judging two whole-body gestures as similar (
+        <em>
+         x
+        </em>
+        axis), the higher the consensus (
+        <em>
+         y
+        </em>
+        axis).
+        <em>
+         Notes:
+        </em>
+        growth rates,
+        <strong>
+         r
+        </strong>
+        , and their standard errors are shown for each referent: the larger the growth rate, the faster consensus is reached for the same unit of
+        <strong>
+         <em>
+          τ
+         </em>
+        </strong>
+        ; all growth rates showed a statistically significant fit at
+        <strong>
+         p &lt; .001
+        </strong>
+        .
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+   </section>
+   <section id="sec-19">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       Results #1: Validation of the Logistic Model for Consensus Growth Curves
+      </h2>
+     </div>
+    </header>
+    <p>
+     We start the presentation of our empirical results with an evaluation of the goodness of fit of the logistic function for modeling
+     <em>
+      τ
+     </em>
+     -C growth curves. At the same time, we also want to understand the effect of the gesture dissimilarity measure (
+     <em>
+      Δ
+     </em>
+     in Eqs.
+     <a class="eqn" href="#eq1">
+      1
+     </a>
+     and
+     <a class="eqn" href="#eq2">
+      2
+     </a>
+     ) and the aggregator function (
+     <em>
+      ζ
+     </em>
+     in Eq.
+     <a class="eqn" href="#eq2">
+      2
+     </a>
+     ) on consensus. To this end, we designed the validation procedure as a 3-way 15 × 4 × 3 mixed design with the following independent variables:
+    </p>
+    <ol class="list-no-style">
+     <li id="list4" label="(1)">
+      <font style="font-variant: small-caps">
+       Referent
+      </font>
+      , nominal, 15 conditions; see Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      .
+      <br/>
+     </li>
+     <li id="list5" label="(2)">
+      <font style="font-variant: small-caps">
+       Dissimilarity
+      </font>
+      <em>
+       Δ
+      </em>
+      , nominal, 4 conditions: DTW, Euclidean, Hausdorff, and modified Hausdorff, described next.
+      <br/>
+     </li>
+     <li id="list6" label="(3)">
+      <font style="font-variant: small-caps">
+       Aggregator
+      </font>
+      <em>
+       ζ
+      </em>
+      , nominal, 3 conditions:
+      <tt>
+       min
+      </tt>
+      ,
+      <tt>
+       max
+      </tt>
+      , and
+      <tt>
+       avg
+      </tt>
+      .
+      <br/>
+     </li>
+    </ol>
+    <section id="sec-20">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Dissimilarity Measures for Whole-Body Gestures
+       </h3>
+      </div>
+     </header>
+     <p>
+      As mentioned earlier, one choice for the dissimilarity measure
+      <em>
+       Δ
+      </em>
+      is DTW due to its high accuracy and popularity in the gesture literature, including for whole-body gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+       63
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ], while the
+      <tt>
+       avg
+      </tt>
+      function seems a reasonable implementation of the aggregator function
+      <em>
+       ζ
+      </em>
+      for repeated elicitation that is neither pessimistic nor optimistic. These choices will be validated by the results of this section, as we compare multiple
+      <em>
+       Δ
+      </em>
+      and
+      <em>
+       ζ
+      </em>
+      conditions. Next, we provide a definition and a brief motivation for each dissimilarity measure that we employ in this work. For all following definitions, we consider a whole-body gesture
+      <em>
+       g
+      </em>
+      to be represented as a time series of body poses,
+      <em>
+       g
+      </em>
+      = {
+      <em>
+       g
+      </em>
+      <sub>
+       [
+       <em>
+        i
+       </em>
+       ]
+      </sub>
+      |
+      <em>
+       i
+      </em>
+      = 1..
+      <em>
+       n
+      </em>
+      }, where
+      <em>
+       n
+      </em>
+      is the number of body poses and each pose is a set of 3-D points representing locations of body joints in space,
+      <span class="inline-equation">
+       <span class="tex">
+        $g_{[i]} = \left\lbrace g_{[i]}^k \,|\, k = 1..20 \right\rbrace$
+       </span>
+      </span>
+      . Note that we place the index
+      <em>
+       i
+      </em>
+      in square brackets to refer to a body pose and, thus, to differentiate from the notations regarding participants’ indices used in Eqs.
+      <a class="eqn" href="#eq1">
+       1
+      </a>
+      and
+      <a class="eqn" href="#eq2">
+       2
+      </a>
+      .
+     </p>
+     <section id="sec-21">
+      <p>
+       <em>
+        Dynamic Time Warping.
+       </em>
+       DTW is a generic technique for matching time series data of all kinds that computes the optimum chronological alignment between two series using dynamic programming [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+        15
+       </a>
+       ]. The optimum matching is computed using memoization, i.e., partial results are stored in a matrix
+       <em>
+        Δ
+       </em>
+       , so that cell
+       <em>
+        Δ
+       </em>
+       <sub>
+        <em>
+         i
+        </em>
+        ,
+        <em>
+         j
+        </em>
+       </sub>
+       contains the optimum matching of the first
+       <em>
+        i
+       </em>
+       data points of the first series to the first
+       <em>
+        j
+       </em>
+       data points of the second. The final result is found in the bottom-right cell of the matrix,
+       <em>
+        Δ
+       </em>
+       <sub>
+        <em>
+         n
+        </em>
+        ,
+        <em>
+         m
+        </em>
+       </sub>
+       , where
+       <em>
+        n
+       </em>
+       and
+       <em>
+        m
+       </em>
+       are the lengths of the two series. In this work, we employ the normalized DTW measure by dividing the matching result
+       <em>
+        Δ
+       </em>
+       <sub>
+        <em>
+         n
+        </em>
+        ,
+        <em>
+         m
+        </em>
+       </sub>
+       to the number of alignments performed during the matching process,
+       <em>
+        l
+       </em>
+       <sub>
+        <em>
+         n
+        </em>
+        ,
+        <em>
+         m
+        </em>
+       </sub>
+       :
+      </p>
+      <div class="table-responsive" id="eq4">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation} \Delta _{\text{DTW}}(g,h) = \Delta _{n,m} / l_{n,m} \end{equation}
+        </span>
+        <br/>
+        <span class="equation-number">
+         (4)
+        </span>
+       </div>
+      </div>
+      where the matrix
+      <em>
+       Δ
+      </em>
+      <sub>
+       ·, ·
+      </sub>
+      is defined recursively as follows:
+      <div class="table-responsive">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation*} \Delta _{i,j} = {\left\lbrace \begin{array}{@{}l@{\quad }l@{}}\delta (g_{[1]},h_{[1]}) \text{, if } i = 1 \wedge j = 1 \\ \Delta _{1,j-1} + \delta (g_{[1]},h_{[j]}) \text{, if } i = 1 \wedge j {\gt} 1 \\ \Delta _{i-1,1} + \delta (g_{[i]},h_{[1]}) \text{, if } i {\gt} 1 \wedge j = 1 \\ \min {\left\lbrace \Delta _{i-1,j-1}, \Delta _{i-1,j}, \Delta _{i,j-1}\right\rbrace } + \delta (g_{[i]},h_{[j]}) \text{, otherwise} \end{array}\right.} \nonumber \end{equation*}
+        </span>
+        <br/>
+       </div>
+      </div>
+      and
+      <span class="inline-equation">
+       <span class="tex">
+        $\delta (g_{[i]},h_{[j]})=\frac{1}{20} \sum _{k=1}^{20}{\left\Vert g_{[i]}^k - h_{[j]}^k \right\Vert }$
+       </span>
+      </span>
+      represents the Euclidean distance between the
+      <em>
+       i
+      </em>
+      -th body pose of gesture
+      <em>
+       g
+      </em>
+      and the
+      <em>
+       j
+      </em>
+      -th body pose of gesture
+      <em>
+       h
+      </em>
+      , respectively. We divide the sum by 20 to make
+      <em>
+       δ
+      </em>
+      invariant to the number of points tracked on the human body by the Kinect
+      <em>
+       v
+      </em>
+      1.8 sensor.
+      <p>
+      </p>
+     </section>
+     <section id="sec-22">
+      <p>
+       <em>
+        Euclidean distance.
+       </em>
+       The Euclidean distance between two gestures
+       <em>
+        g
+       </em>
+       and
+       <em>
+        h
+       </em>
+       computes the sum of the Euclidean distances between their corresponding body poses,
+       <em>
+        g
+       </em>
+       <sub>
+        [
+        <em>
+         i
+        </em>
+        ]
+       </sub>
+       and
+       <em>
+        h
+       </em>
+       <sub>
+        [
+        <em>
+         i
+        </em>
+        ]
+       </sub>
+       , under the assumption of the same number
+       <em>
+        n
+       </em>
+       of body poses for both
+       <em>
+        g
+       </em>
+       and
+       <em>
+        h
+       </em>
+       . (An assumption not met in practice, but achieved with a resampling procedure; see next.)
+      </p>
+      <div class="table-responsive" id="eq5">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation} \Delta _\text{E}(g,h) = \frac{1}{n} \sum _{i=1}^{n} { \delta (g_{[i]},h_{[i]}) } \end{equation}
+        </span>
+        <br/>
+        <span class="equation-number">
+         (5)
+        </span>
+       </div>
+      </div>
+      where
+      <em>
+       δ
+      </em>
+      was introduced before. The Euclidean distance does not posses the matching flexibility of DTW, but is straightforward to implement and was found to work well with all kinds of gesture types represented as time series [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+       63
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0074">
+       74
+      </a>
+      ].
+      <p>
+      </p>
+     </section>
+     <section id="sec-23">
+      <p>
+       <em>
+        Hausdorff distance.
+       </em>
+       A common and accurate technique employed in the Computer Vision community to match shapes, point sets, sketches, stroke-gestures, volumes, and images is to compute the maximum of the minimum distances between pairs of data points of the two sequences being matched, known as the “Hausdorff distance” [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ]. This procedure can be easily extended to whole-body gestures as follows:
+      </p>
+      <div class="table-responsive" id="eq6">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{eqnarray} \Delta _\text{H}(g,h) = \max \left\lbrace \text{Hausdorff}(g,h), \text{Hausdorff}(h,g)\right\rbrace \\\text{Hausdorff}(g,h) = \max _{i=1,n}{ \left\lbrace \min _{j=1,m}{ \delta (g_{[i]},h_{[j]})} \right\rbrace } \nonumber \end{eqnarray}
+        </span>
+        <br/>
+        <span class="equation-number">
+         (6)
+        </span>
+       </div>
+      </div>
+      where
+      <em>
+       δ
+      </em>
+      is the Euclidean distance, and
+      <em>
+       n
+      </em>
+      and
+      <em>
+       m
+      </em>
+      represent the number of body poses of gestures
+      <em>
+       g
+      </em>
+      and
+      <em>
+       h
+      </em>
+      , respectively.
+      <p>
+      </p>
+     </section>
+     <section id="sec-24">
+      <p>
+       <em>
+        Modified Hausdorff distance.
+       </em>
+       A variant of the Hausdorff distance, delivering more accurate results in practice [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+        18
+       </a>
+       ], considers the average instead of the maximum aggregator:
+      </p>
+      <div class="table-responsive" id="eq7">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{eqnarray} \Delta _\text{MH}(g,h) = \max \left\lbrace \text{m-Hausdorff}(g,h), \text{m-Hausdorff}(h,g)\right\rbrace \\\text{m-Hausdorff}(g,h) = \frac{1}{n} \sum _{i=1}^{n}{ \min _{j=1,m}{ \delta (g_{[i]},h_{[j]}) }} \nonumber \end{eqnarray}
+        </span>
+        <br/>
+        <span class="equation-number">
+         (7)
+        </span>
+       </div>
+      </div>
+      <p>
+      </p>
+     </section>
+    </section>
+    <section id="sec-25">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Gesture Preprocessing
+       </h3>
+      </div>
+     </header>
+     <p>
+      Before computing the dissimilarity measures, we normalized all the gestures using the following steps:
+     </p>
+     <ol class="list-no-style">
+      <li id="list7" label="(1)">
+       <em>
+        Resampling of body poses.
+       </em>
+       This operation makes the dissimilarity computations independent of the sampling resolution of the sensor. We resampled all the gestures at 25 fps. For example, a gesture that took 3.32 seconds to produce was resampled into 83 body poses, uniformly spaced at 3.32/(83 − 1) = 0.04 seconds apart (i.e., 25 fps).
+       <br/>
+      </li>
+      <li id="list8" label="(2)">
+       <em>
+        Height normalization.
+       </em>
+       This operation makes the dissimilarity values independent of children's body sizes. We rescaled all the gestures so that to the body height of each child, standing up straight, was 1.0 m.
+       <br/>
+      </li>
+      <li id="list9" label="(3)">
+       <em>
+        Translation to origin.
+       </em>
+       This operation makes the dissimilarity values independent of where the gesture is produced in space. For each gesture, we subtracted its centroid from each body joint, so that the new centroid was (0,0,0).
+       <br/>
+      </li>
+     </ol>
+    </section>
+    <section id="sec-26">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Goodness of Fit of the Logistic Model
+       </h3>
+      </div>
+     </header>
+     <p>
+      We computed the
+      <em>
+       τ
+      </em>
+      -C growth curves for all the fifteen referents and the twelve
+      <em>
+       Δ
+      </em>
+      ×
+      <em>
+       ζ
+      </em>
+      combinations. Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      illustrates the data for the
+      <em>
+       Δ
+      </em>
+      <sub>
+       DTW
+      </sub>
+      dissimilarity and the
+      <tt>
+       avg
+      </tt>
+      <em>
+       ζ
+      </em>
+      aggregator: raw data is shown in orange and the fitted logistic model in black. (For space concerns, we skip the illustration of the other
+      <em>
+       Δ
+      </em>
+      ×
+      <em>
+       ζ
+      </em>
+      combinations, but numerical goodness of fit results are shown in Table
+      <a class="tbl" href="#tab3">
+       3
+      </a>
+      for all
+      <em>
+       Δ
+      </em>
+      ×
+      <em>
+       ζ
+      </em>
+      , while all the growth curves are accessible from the companion web page of this paper, where we make our gesture dataset publicly available.) Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      shows visually that the logistic model provides a good fit for all the referents. Table
+      <a class="tbl" href="#tab3">
+       3
+      </a>
+      confirms this intuition with the numerical results of the fit. The estimated values for
+      <em>
+       C
+      </em>
+      <sub>
+       0
+      </sub>
+      (see Eq.
+      <a class="eqn" href="#eq3">
+       3
+      </a>
+      ) are close to zero (
+      <em>
+       M
+      </em>
+      = 0.32,
+      <em>
+       SD
+      </em>
+      = 0.17) and the values of
+      <em>
+       C
+      </em>
+      <sub>
+       ∞
+      </sub>
+      approach 100 (
+      <em>
+       M
+      </em>
+      = 95.41,
+      <em>
+       SD
+      </em>
+      = 1.00), both signs of a good fit. Moreover, all the growth rates
+      <em>
+       r
+      </em>
+      are significant at
+      <em>
+       p
+      </em>
+      &lt; .001, which confirms the suitability of the logistic function to model the
+      <em>
+       τ
+      </em>
+      -C relationship.
+     </p>
+     <div class="table-responsive" id="tab3">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 3:
+       </span>
+       <span class="table-title">
+        Numerical indicators of the goodness of fit of the logistic growth model for all the
+        <em>
+         Δ
+        </em>
+        ×
+        <em>
+         ζ
+        </em>
+        conditions.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;">
+          <strong>
+           <strong>
+            <em>
+             Δ
+            </em>
+           </strong>
+          </strong>
+         </th>
+         <th style="text-align:center;">
+          <strong>
+           <strong>
+            <em>
+             ζ
+            </em>
+           </strong>
+          </strong>
+         </th>
+         <th style="text-align:center;">
+          <strong>
+           <strong>
+            C
+            <sub>
+             0
+            </sub>
+           </strong>
+          </strong>
+          †
+         </th>
+         <th style="text-align:center;">
+          <strong>
+           <strong>
+            C
+            <sub>
+             ∞
+            </sub>
+           </strong>
+          </strong>
+          ‡
+         </th>
+         <th style="text-align:center;">
+          <strong>
+           Growth rate
+          </strong>
+          <em>
+           r
+          </em>
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;">
+          <em>
+           Δ
+          </em>
+          <sub>
+           DTW
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <tt>
+           min
+          </tt>
+         </td>
+         <td style="text-align:center;">
+          0.18
+         </td>
+         <td style="text-align:center;">
+          96.55
+         </td>
+         <td style="text-align:center;">
+          82.92 (
+          <em>
+           p
+          </em>
+          &lt; .001)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:center;">
+          <tt>
+           max
+          </tt>
+         </td>
+         <td style="text-align:center;">
+          0.37
+         </td>
+         <td style="text-align:center;">
+          95.07
+         </td>
+         <td style="text-align:center;">
+          47.26 (
+          <em>
+           p
+          </em>
+          &lt; .001)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:center;">
+          <tt>
+           avg
+          </tt>
+         </td>
+         <td style="text-align:center;">
+          0.25
+         </td>
+         <td style="text-align:center;">
+          95.77
+         </td>
+         <td style="text-align:center;">
+          65.24 (
+          <em>
+           p
+          </em>
+          &lt; .001)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          <em>
+           Δ
+          </em>
+          <sub>
+           E
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <tt>
+           min
+          </tt>
+         </td>
+         <td style="text-align:center;">
+          0.13
+         </td>
+         <td style="text-align:center;">
+          96.62
+         </td>
+         <td style="text-align:center;">
+          76.33 (
+          <em>
+           p
+          </em>
+          &lt; .001)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:center;">
+          <tt>
+           max
+          </tt>
+         </td>
+         <td style="text-align:center;">
+          0.33
+         </td>
+         <td style="text-align:center;">
+          95.33
+         </td>
+         <td style="text-align:center;">
+          45.67 (
+          <em>
+           p
+          </em>
+          &lt; .001)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:center;">
+          <tt>
+           avg
+          </tt>
+         </td>
+         <td style="text-align:center;">
+          0.20
+         </td>
+         <td style="text-align:center;">
+          95.97
+         </td>
+         <td style="text-align:center;">
+          61.77 (
+          <em>
+           p
+          </em>
+          &lt; .001)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          <em>
+           Δ
+          </em>
+          <sub>
+           H
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <tt>
+           min
+          </tt>
+         </td>
+         <td style="text-align:center;">
+          0.29
+         </td>
+         <td style="text-align:center;">
+          96.00
+         </td>
+         <td style="text-align:center;">
+          61.36 (
+          <em>
+           p
+          </em>
+          &lt; .001)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:center;">
+          <tt>
+           max
+          </tt>
+         </td>
+         <td style="text-align:center;">
+          0.69
+         </td>
+         <td style="text-align:center;">
+          92.96
+         </td>
+         <td style="text-align:center;">
+          32.42 (
+          <em>
+           p
+          </em>
+          &lt; .001)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:center;">
+          <tt>
+           avg
+          </tt>
+         </td>
+         <td style="text-align:center;">
+          0.60
+         </td>
+         <td style="text-align:center;">
+          94.93
+         </td>
+         <td style="text-align:center;">
+          43.80 (
+          <em>
+           p
+          </em>
+          &lt; .001)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          <em>
+           Δ
+          </em>
+          <sub>
+           MH
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <tt>
+           min
+          </tt>
+         </td>
+         <td style="text-align:center;">
+          0.18
+         </td>
+         <td style="text-align:center;">
+          95.89
+         </td>
+         <td style="text-align:center;">
+          94.89 (
+          <em>
+           p
+          </em>
+          &lt; .001)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:center;">
+          <tt>
+           max
+          </tt>
+         </td>
+         <td style="text-align:center;">
+          0.37
+         </td>
+         <td style="text-align:center;">
+          94.43
+         </td>
+         <td style="text-align:center;">
+          55.39 (
+          <em>
+           p
+          </em>
+          &lt; .001)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:center;">
+          <tt>
+           avg
+          </tt>
+         </td>
+         <td style="text-align:center;">
+          0.26
+         </td>
+         <td style="text-align:center;">
+          95.34
+         </td>
+         <td style="text-align:center;">
+          74.99 (
+          <em>
+           p
+          </em>
+          &lt; .001)
+         </td>
+        </tr>
+        <tr>
+         <td colspan="2" style="text-align:right;;border-bottom: 2pt solid #000000;">
+          <strong>
+           Average, all
+           <em>
+            Δ
+           </em>
+           ×
+           <em>
+            ζ
+           </em>
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           0.32
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           95.41
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+        </tr>
+       </tbody>
+       <tfoot>
+        <tr>
+         <td colspan="5">
+          † Values of
+          <em>
+           C
+          </em>
+          <sub>
+           0
+          </sub>
+          closer to 0 show a better fit.
+          <hr/>
+         </td>
+        </tr>
+        <tr>
+         <td colspan="5">
+          ‡ Values of
+          <em>
+           C
+          </em>
+          <sub>
+           ∞
+          </sub>
+          closer to 100 show a better fit.
+          <hr/>
+         </td>
+        </tr>
+       </tfoot>
+      </table>
+     </div>
+     <div class="table-responsive" id="tab4">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 4:
+       </span>
+       <span class="table-title">
+        Pearson coefficients between growth rates for each
+        <em>
+         Δ
+        </em>
+        ×
+        <em>
+         ζ
+        </em>
+        combination.
+        <em>
+         Note:
+        </em>
+        all correlations are significant at
+        <em>
+         p
+        </em>
+        &lt; .001.
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+         </td>
+         <td colspan="4" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          <strong>
+           <em>
+            ζ
+           </em>
+           =
+          </strong>
+          <tt>
+           min
+          </tt>
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td colspan="4" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          <strong>
+           <em>
+            ζ
+           </em>
+           =
+          </strong>
+          <tt>
+           max
+          </tt>
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td colspan="4" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          <strong>
+           <em>
+            ζ
+           </em>
+           =
+          </strong>
+          <tt>
+           avg
+          </tt>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            DTW
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            E
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            H
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            MH
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            DTW
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            E
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            H
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            MH
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            DTW
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            E
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            H
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            MH
+           </strong>
+          </sub>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            DTW
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          1.000
+         </td>
+         <td style="text-align:center;">
+          .974
+         </td>
+         <td style="text-align:center;">
+          .972
+         </td>
+         <td style="text-align:center;">
+          .971
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          1.000
+         </td>
+         <td style="text-align:center;">
+          .977
+         </td>
+         <td style="text-align:center;">
+          .915
+         </td>
+         <td style="text-align:center;">
+          .935
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          1.000
+         </td>
+         <td style="text-align:center;">
+          .988
+         </td>
+         <td style="text-align:center;">
+          .959
+         </td>
+         <td style="text-align:center;">
+          .971
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            E
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          1.000
+         </td>
+         <td style="text-align:center;">
+          .953
+         </td>
+         <td style="text-align:center;">
+          .956
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          1.000
+         </td>
+         <td style="text-align:center;">
+          .923
+         </td>
+         <td style="text-align:center;">
+          .877
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          1.000
+         </td>
+         <td style="text-align:center;">
+          .940
+         </td>
+         <td style="text-align:center;">
+          .958
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            H
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          1.000
+         </td>
+         <td style="text-align:center;">
+          .971
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          1.000
+         </td>
+         <td style="text-align:center;">
+          .836
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          1.000
+         </td>
+         <td style="text-align:center;">
+          .940
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            Δ
+           </em>
+          </strong>
+          <sub>
+           <strong>
+            MH
+           </strong>
+          </sub>
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          1.000
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          1.000
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          ·
+         </td>
+         <td style="text-align:center;">
+          1.000
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           Average
+          </strong>
+         </td>
+         <td colspan="4" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          <strong>
+           Pearson's r
+           <sub>
+            (N = 15)
+           </sub>
+           = .966
+          </strong>
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td colspan="4" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          <strong>
+           Pearson's r
+           <sub>
+            (N = 15)
+           </sub>
+           = .911
+          </strong>
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td colspan="4" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          <strong>
+           Pearson's r
+           <sub>
+            (N = 15)
+           </sub>
+           = .959
+          </strong>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </section>
+    <section id="sec-27">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        The Effect of Gesture Dissimilarity and Aggregator
+       </h3>
+      </div>
+     </header>
+     <p>
+      Next, we analyze the effect of the dissimilarity measure
+      <em>
+       Δ
+      </em>
+      and aggregator function
+      <em>
+       ζ
+      </em>
+      on growth rates
+      <em>
+       r
+      </em>
+      . Specifically, we want to know whether the magnitude of growth rates
+      <em>
+       r
+      </em>
+      and the ranking of gestures by overall consensus, as reflected by growth rates, are impacted by the choice of
+      <em>
+       Δ
+      </em>
+      and/or
+      <em>
+       ζ
+      </em>
+      .
+     </p>
+     <p>
+      A preliminary RM ANOVA indicated a significant effect of
+      <em>
+       Δ
+      </em>
+      on the magnitude of growth rates
+      <em>
+       r
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       (2.078, 29.090)
+      </sub>
+      = 98.260,
+      <em>
+       p
+      </em>
+      &lt; .001,
+      <span class="inline-equation">
+       <span class="tex">
+        $\eta _p^2=.875$
+       </span>
+      </span>
+      , Greenhouse-Geisser's
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{\epsilon }=.693$
+       </span>
+      </span>
+      ) as well as a significant effect of aggregator function
+      <em>
+       ζ
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       (1.157, 16.202)
+      </sub>
+      = 68.509,
+      <em>
+       p
+      </em>
+      &lt; .001,
+      <span class="inline-equation">
+       <span class="tex">
+        $\eta _p^2=.830$
+       </span>
+      </span>
+      ,
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{\epsilon }=.579$
+       </span>
+      </span>
+      ). However, this result is little informative, as differences
+      <em>
+       are
+      </em>
+      expected to be present in the magnitude of growth rates simply because of the different magnitudes delivered by different dissimilarity functions on the same data; see Eqs.
+      <a class="eqn" href="#eq4">
+       4
+      </a>
+      ,
+      <a class="eqn" href="#eq5">
+       5
+      </a>
+      ,
+      <a class="eqn" href="#eq6">
+       6
+      </a>
+      , and
+      <a class="eqn" href="#eq7">
+       7
+      </a>
+      . What we are actually interested in is whether the ratio of consensus (e.g., as in the expression “consensus for referent A growths twice faster than consensus for B”) is preserved across
+      <em>
+       Δ
+      </em>
+      ’s and
+      <em>
+       ζ
+      </em>
+      ’s. To this end, we normalized growth rates
+      <em>
+       r
+      </em>
+      for each
+      <em>
+       Δ
+      </em>
+      ×
+      <em>
+       ζ
+      </em>
+      condition into [0..1] by applying a linear scale transform, i.e.,
+      <em>
+       r
+      </em>
+      = (
+      <em>
+       r
+      </em>
+      − min(
+      <em>
+       r
+      </em>
+      ))/(max(
+      <em>
+       r
+      </em>
+      ) − min(
+      <em>
+       r
+      </em>
+      )). This time, the same ANOVA test found no significant effects of either
+      <em>
+       Δ
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       (3, 42)
+      </sub>
+      = .891,
+      <em>
+       p
+      </em>
+      &gt; .05,
+      <em>
+       n
+      </em>
+      .
+      <em>
+       s
+      </em>
+      .) or
+      <em>
+       ζ
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       (1.144, 16.020)
+      </sub>
+      = .909,
+      <em>
+       p
+      </em>
+      &gt; .05,
+      <em>
+       n
+      </em>
+      .
+      <em>
+       s
+      </em>
+      .,
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{\epsilon }=.572$
+       </span>
+      </span>
+      ) on mean growth rates
+      <em>
+       r
+      </em>
+      , which builds up confidence that the relative consensus is preserved across
+      <em>
+       Δ
+      </em>
+      and
+      <em>
+       ζ
+      </em>
+      functions.
+     </p>
+     <p>
+      To further understand the impact of
+      <em>
+       Δ
+      </em>
+      ×
+      <em>
+       ζ
+      </em>
+      on ranking referents by consensus, we also performed Pearson correlations between the growth rates computed for the
+      <em>
+       N
+      </em>
+      = 15 referents. Results are shown in Table
+      <a class="tbl" href="#tab4">
+       4
+      </a>
+      . Pearson coefficients were very large: .966 on average for
+      <em>
+       ζ
+      </em>
+      =
+      <tt>
+       min
+      </tt>
+      , .911 for
+      <em>
+       ζ
+      </em>
+      =
+      <tt>
+       max
+      </tt>
+      , and .959 for
+      <em>
+       ζ
+      </em>
+      =
+      <tt>
+       avg
+      </tt>
+      , showing that the ranking of referents by consensus, as reflected by their growth rates
+      <em>
+       r
+      </em>
+      , is little affected by the choice of
+      <em>
+       Δ
+      </em>
+      and
+      <em>
+       ζ
+      </em>
+      . The largest correlation coefficients were obtained for
+      <em>
+       ζ
+      </em>
+      =
+      <tt>
+       min
+      </tt>
+      (the optimistic aggregator) and
+      <em>
+       ζ
+      </em>
+      =
+      <tt>
+       avg
+      </tt>
+      (the realistic aggregator). Based on this empirical evidence, we recommend
+      <em>
+       Δ
+      </em>
+      <sub>
+       DTW
+      </sub>
+      and
+      <em>
+       ζ
+      </em>
+      =
+      <tt>
+       avg
+      </tt>
+      for use in practice.
+     </p>
+    </section>
+    <section id="sec-28">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Manual Gesture Clustering
+        <em>
+         vs.
+        </em>
+        Automated Computation of Consensus using Growth Rates
+       </h3>
+      </div>
+     </header>
+     <p>
+      As a final test, we computed Pearson correlation coefficients between the magnitudes of growth rates
+      <em>
+       r
+      </em>
+      obtained with
+      <em>
+       Δ
+      </em>
+      <sub>
+       DTW
+      </sub>
+      and the
+      <tt>
+       avg
+      </tt>
+      aggregator and agreement rates AR calculated using the formula of Vatavu and Wobbrock [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+       68
+      </a>
+      ] after manual labeling and clustering of the elicited gestures using the criteria mentioned in the example from the Introduction. Because there is no extended formula of AR [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+       68
+      </a>
+      ] for repeated elicitation, we computed agreement rates separately for each trial: AR
+      <sub>
+       1
+      </sub>
+      , AR
+      <sub>
+       2
+      </sub>
+      , and AR
+      <sub>
+       3
+      </sub>
+      , respectively. Results showed statistically significant correlations between growth rates
+      <em>
+       r
+      </em>
+      and AR
+      <sub>
+       1
+      </sub>
+      (Pearson's
+      <em>
+       r
+      </em>
+      <sub>
+       (
+       <em>
+        N
+       </em>
+       = 15)
+      </sub>
+      = .644,
+      <em>
+       p
+      </em>
+      &lt; .01), AR
+      <sub>
+       2
+      </sub>
+      (
+      <em>
+       r
+      </em>
+      <sub>
+       (
+       <em>
+        N
+       </em>
+       = 15)
+      </sub>
+      = .647,
+      <em>
+       p
+      </em>
+      &lt; .01), and AR
+      <sub>
+       3
+      </sub>
+      (
+      <em>
+       r
+      </em>
+      <sub>
+       (
+       <em>
+        N
+       </em>
+       = 15)
+      </sub>
+      = .650,
+      <em>
+       p
+      </em>
+      &lt; .01), respectively.
+     </p>
+    </section>
+   </section>
+   <section id="sec-29">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       Results #2: Consensus Between Children's Whole-Body Gestures
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this section, we demonstrate the
+     <em>
+      τ
+     </em>
+     -C method by applying it to report the level of consensus between whole-body gestures produced by small children, ages 3 to 6 years. Overall, we report empirical results on 1,312 gestures, consisting in a total number of 48,299 body poses, elicited from
+     <em>
+      N
+     </em>
+     = 30 children. Note that it is not our intention to be exhaustive in the analysis that we report in this section, but rather to demonstrate how the
+     <em>
+      τ
+     </em>
+     -C method can be applied in practice. Nevertheless, we do report, for the first time in the literature, empirical results on the way children produce whole-body gestures, such as an effect of the age group on the magnitude of consensus between their gesture articulations; see next.
+    </p>
+    <section id="sec-30">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Consensus Results
+       </h3>
+      </div>
+     </header>
+     <p>
+      We computed
+      <em>
+       τ
+      </em>
+      -C growth curves for each referent from Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      using the
+      <em>
+       Δ
+      </em>
+      <sub>
+       DTW
+      </sub>
+      dissimilarity, the
+      <tt>
+       avg
+      </tt>
+      aggregator, and the consensus formula from Eq.
+      <a class="eqn" href="#eq2">
+       2
+      </a>
+      ; see Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      . We found that consensus growth rates varied between
+      <em>
+       r
+      </em>
+      = 29.1 (for the “climb ladder” referent) to
+      <em>
+       r
+      </em>
+      = 119.0 (“applaud”) with a mean of 65.2 (
+      <em>
+       SD
+      </em>
+      = 23.4); see Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      a for all the referents listed in decreasing order of their consensus growth rates. The ratio between the largest and smallest growth rates was 4.0, i.e., consensus for “applaud” grew four times faster than for “climb ladder” for the same unit increase of
+      <em>
+       τ
+      </em>
+      . Referents that involved moving around (e.g., “jump”, “crouch”) or movement of several body parts at once (e.g., “stand on one foot,” for which children used movements of both hands to keep stable equilibrium) achieved less consensus, revealed by smaller growth rates, than referents that involved stable body poses and movement of fewer body parts (e.g., “applaud”, “slice carrots”, or “hands up”). Also, we found that referents that necessitated instantiation of a metaphor into a motor response, such as “angry bear”, “cat scratching” or “climb ladder,” received less consensus compared to simple shapes drawn in mid-air, such as “flower”, “square”, and “circle.”
+     </p>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="Two bar charts. The left chart shows growth rates for each of the 15 referents. The right chart shows average growth rates for each age group." src="3300454_files\chi2019224fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Consensus between whole-body gestures elicited from 30 children, expressed with growth rates: (a) per referent and (b) per age group.
+        <em>
+         Note:
+        </em>
+        error bars show 95% CIs.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-31">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        The Effect of Age Group
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our analysis showed that consensus was reached 24.5% faster by 4-year-olds and 44.8% times faster by 5-year-olds compared to children aged between 3 and 4 years; see Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      b. A Repeated-Measures ANOVA revealed a significant effect of
+      <font style="font-variant: small-caps">
+       Age-Group
+      </font>
+      on growth rates (
+      <em>
+       F
+      </em>
+      <sub>
+       (1.451, 20.318)
+      </sub>
+      = 5.034,
+      <em>
+       p
+      </em>
+      = .025,
+      <span class="inline-equation">
+       <span class="tex">
+        $\eta _p^2=.264$
+       </span>
+      </span>
+      , Greenhouse-Geisser's
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{\epsilon }=.726$
+       </span>
+      </span>
+      ). Post-hoc tests (Bonferroni corrected) revealed significant differences between children with ages between 3 and 4 years and the 5-6-years-old group (
+      <em>
+       p
+      </em>
+      &lt; .001). These results find support in the literature of child development and especially in the developmental theory of Piaget [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ]: as children grow up, they acquire and refine their motor skills, integrate more metaphors of thought, and move beyond an egocentric perspective affecting their cognitive representations of the physical world [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ].
+     </p>
+    </section>
+    <section id="sec-32">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Towards Further Discoveries
+       </h3>
+      </div>
+     </header>
+     <p>
+      As mentioned before, it is not the goal of this paper to continue with detailed examinations of how small children perform whole-body gestures, although an exciting investigation. Instead, we provide our dataset in the community for free to foster such new discoveries; see the next section for details. Future investigations may include numerical analysis of children's whole-body gesture articulations, such as by employing the geometric, kinematic, and body-appearance set of measures and toolkit of Vatavu [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ], or investigating correlations between consensus between proposed gestures and numerical measures of gesture articulation, such as gesture volume, quantity of movement, or body pose variation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ]. Designing robust gesture recognition techniques for whole-body gestures produced by children is another challenging future work direction, for which our large dataset can provide support for user-independent evaluation procedures.
+     </p>
+    </section>
+   </section>
+   <section id="sec-33">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       GESTURE DATASET AND SOURCE CODE
+      </h2>
+     </div>
+    </header>
+    <p>
+     We release our dataset composed of 1,312 whole-body gestures and 48,299 body poses elicited from 30 children free to download and use for research purposes. To our knowledge, our dataset is the only whole-body gesture data publicly available for children this young (3 to 6 years old). We also release source code in
+     <tt>
+      C#
+     </tt>
+     that reads the gesture data and implements the dissimilarity measures
+     <em>
+      Δ
+     </em>
+     and aggregator functions
+     <em>
+      ζ
+     </em>
+     employed in this work and
+     <tt>
+      R
+     </tt>
+     code to compute dissimilarity-consensus growth rates and visualize
+     <em>
+      τ
+     </em>
+     -C curves. All the resources are available from the companion web page of this paper at
+     <a class="link-inline force-break" href="http://www.eed.usv.ro/~vatavu">
+      http://www.eed.usv.ro/~vatavu
+     </a>
+    </p>
+   </section>
+   <section id="sec-34">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       CONCLUSION AND FUTURE WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     We introduced and evaluated in this paper a new approach to computing and understanding consensus in end-user gesture elicitation studies by adopting a holistic perspective on the numerical relationship between consensus and gesture dissimilarity. We hope that our theoretical contribution, empirical results, and practical source code will benefit designers and practitioners in the need of an objective assessment of the magnitude of consensus for their gesture studies.
+    </p>
+    <p>
+     At the same time, we acknowledge the need for more work that is needed to incorporate into our method the interpretative dimensions of sociocultural impact, such as cultural gestures with the same meaning, yet structurally different appearance [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ] or approaches based on somaesthetics [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+      19
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+      37
+     </a>
+     ], that cannot be addressed at this moment by our automated technique, which is blind to such aspects. We also suggest further investigations of the middle ground between manual and automated approaches, which we believe will foster valuable methodological developments. Another direction for future work is applying the
+     <em>
+      τ
+     </em>
+     -C method for other types of gestures. Although we demonstrated
+     <em>
+      τ
+     </em>
+     -C for whole-body movements, our technique is general and applicable to any type of gestures, such as touch [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ], mid-air [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+      46
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+      75
+     </a>
+     ], or ring gestures [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ], to name just a few. Also, we have barely scratched the potential for understanding how small children produce whole-body gestures. But we hope that our large whole-body gesture dataset will foster new discoveries, advancing our present understanding regarding how small children perform whole-body movements.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-35">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This work was supported by a grant of the Ministry of Research and Innovation, CNCS-UEFISCDI, project no. PN-III-P1-1.1-TE-2016-2173 (TE141/2018), within PNCDI III. We thank G. Cramariuc for help with data collection and the anonymous reviewers for very useful suggestions.
+    </p>
+   </section>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Abdullah X. Ali, Meredith Ringel Morris, and Jacob O. Wobbrock. 2018. Crowdsourcing Similarity Judgments for Agreement Analysis in End-User Elicitation Studies. In
+      <em>
+       Proceedings of the 31st Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’18
+      </em>
+      ). ACM, New York, NY, USA, 177–188.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3242587.3242621" target="_blank">
+       https://doi.org/10.1145/3242587.3242621
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Saad Ali and Mubarak Shah. 2010. Human Action Recognition in Videos Using Kinematic Features and Multiple Instance Learning.
+      <em>
+       <em>
+        IEEE Transactions on Pattern Analysis and Machine Intelligence
+       </em>
+      </em>
+      32, 2 (Feb. 2010), 288–303.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TPAMI.2008.284" target="_blank">
+       https://doi.org/10.1109/TPAMI.2008.284
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Aishat Aloba, Gianne Flores, Julia Woodward, Alex Shaw, Amanda Castonguay, Isabella Cuba, Yuzhu Dong, Eakta Jain, and Lisa Anthony. 2018. Kinder-Gator: The UF Kinect Database of Child and Adult Motion. In EG 2018 - Short Papers, Olga Diamanti and Amir Vaxman (Eds.). The Eurographics Association.
+      <a class="link-inline force-break" href="https://doi.org/10.2312/egs.20181033">
+       https://doi.org/10.2312/egs.20181033
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Dane Archer. 1997. Unspoken Diversity: Cultural Differences in Gestures.
+      <em>
+       <em>
+        Qualitative Sociology
+       </em>
+      </em>
+      20, 1 (March 1997), 79–105.
+      <a class="link-inline force-break" href="https://doi.org/10.1023/A:1024716331692" target="_blank">
+       https://doi.org/10.1023/A:1024716331692
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Shaikh Shawon Arefin Shimon, Courtney Lutton, Zichun Xu, Sarah Morrison-Smith, Christina Boucher, and Jaime Ruiz. 2016. Exploring Non-touchscreen Gestures for Smartwatches. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 3822–3833.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858385" target="_blank">
+       https://doi.org/10.1145/2858036.2858385
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Ilhan Aslan, Andreas Uhl, Alexander Meschtscherjakov, and Manfred Tscheligi. 2014. Mid-air Authentication Gestures: An Exploration of Authentication Based on Palm and Finger Motions. In
+      <em>
+       Proceedings of the 16th International Conference on Multimodal Interaction
+      </em>
+      (
+      <em>
+       ICMI ’14
+      </em>
+      ). ACM, New York, NY, USA, 311–318.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2663204.2663246" target="_blank">
+       https://doi.org/10.1145/2663204.2663246
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Gilles Bailly, Thomas Pietrzak, Jonathan Deber, and Daniel J. Wigdor. 2013. Métamorphe: Augmenting Hotkey Usage with Actuated Keys. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’13
+      </em>
+      ). ACM, New York, NY, USA, 563–572.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2470734" target="_blank">
+       https://doi.org/10.1145/2470654.2470734
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Idil Bostan, Oğuz Turan Buruk, Mert Canat, Mustafa Ozan Tezcan, Celalettin Yurdakul, Tilbe Göksun, and Oğuzhan Özcan. 2017. Hands As a Controller: User Preferences for Hand Specific On-Skin Gestures. In
+      <em>
+       Proceedings of the 2017 Conference on Designing Interactive Systems
+      </em>
+      (
+      <em>
+       DIS ’17
+      </em>
+      ). ACM, New York, NY, USA, 1123–1134.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3064663.3064766" target="_blank">
+       https://doi.org/10.1145/3064663.3064766
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Robin Brewer, Lisa Anthony, Quincy Brown, Germaine Irwin, Jaye Nias, and Berthel Tate. 2013. Using Gamification to Motivate Children to Complete Empirical Studies in Lab Environments. In
+      <em>
+       Proceedings of the 12th International Conference on Interaction Design and Children
+      </em>
+      (
+      <em>
+       IDC ’13
+      </em>
+      ). ACM, New York, NY, USA, 388–391.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2485760.2485816" target="_blank">
+       https://doi.org/10.1145/2485760.2485816
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Francesco Cafaro, Leilah Lyons, and Alissa N. Antle. 2018. Framed Guessability: Improving the Discoverability of Gestures and Body Movements for Full-Body Interaction. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 593, 12 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174167" target="_blank">
+       https://doi.org/10.1145/3173574.3174167
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Ziyun Cai, Jungong Han, Li Liu, and Ling Shao. 2017. RGB-D datasets using Microsoft Kinect or similar sensors: A survey.
+      <em>
+       <em>
+        Multimedia Tools and Applications
+       </em>
+      </em>
+      76, 3 (Feb 2017), 4313–4355.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/s11042-016-3374-6" target="_blank">
+       https://doi.org/10.1007/s11042-016-3374-6
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Jessica R. Cauchard, Jane L. E, Kevin Y. Zhai, and James A. Landay. 2015. Drone &amp; Me: An Exploration into Natural Human-Drone Interaction. In
+      <em>
+       Proceedings of the 2015 ACM International Joint Conference on Pervasive and Ubiquitous Computing
+      </em>
+      (
+      <em>
+       UbiComp ’15
+      </em>
+      ). ACM, New York, NY, USA, 361–365.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2750858.2805823" target="_blank">
+       https://doi.org/10.1145/2750858.2805823
+      </a>
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Sabrina Connell, Pei-Yi Kuo, Liu Liu, and Anne Marie Piper. 2013. A Wizard-of-Oz Elicitation Study Examining Child-defined Gestures with a Whole-body Interface. In
+      <em>
+       Proceedings of the 12th International Conference on Interaction Design and Children
+      </em>
+      (
+      <em>
+       IDC ’13
+      </em>
+      ). ACM, New York, NY, USA, 277–280.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2485760.2485823" target="_blank">
+       https://doi.org/10.1145/2485760.2485823
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Suranjith De Silva, Michael Barlow, and Adam Easton. 2014. An Evaluation of DTW Approaches for Whole-of-Body Gesture Recognition. In
+      <em>
+       Proceedings of the 28th International BCS Human Computer Interaction Conference on HCI 2014 - Sand, Sea and Sky - Holiday HCI
+      </em>
+      (
+      <em>
+       BCS-HCI ’14
+      </em>
+      ). BCS, UK, 11–21.
+      <a class="link-inline force-break" href="https://doi.org/10.14236/ewic/hci2014.2" target="_blank">
+       https://doi.org/10.14236/ewic/hci2014.2
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Hui Ding, Goce Trajcevski, Peter Scheuermann, Xiaoyue Wang, and Eamonn Keogh. 2008. Querying and Mining of Time Series Data: Experimental Comparison of Representations and Distance Measures.
+      <em>
+       <em>
+        Proceedings of the VLDB Endowment
+       </em>
+      </em>
+      1, 2 (Aug. 2008), 1542–1552.
+      <a class="link-inline force-break" href="https://doi.org/10.14778/1454159.1454226" target="_blank">
+       https://doi.org/10.14778/1454159.1454226
+      </a>
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Tilman Dingler, Rufat Rzayev, Alireza Sahami Shirazi, and Niels Henze. 2018. Designing Consistent Gestures Across Device Types: Eliciting RSVP Controls for Phone, Watch, and Glasses. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 419, 12 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3173993" target="_blank">
+       https://doi.org/10.1145/3173574.3173993
+      </a>
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Yuzhu Dong, Aishat Aloba, Sachin Paryani, Lisa Anthony, Neha Rana, and Eakta Jain. 2017. Adult2Child: Dynamic Scaling Laws to Create Child-like Motion. In
+      <em>
+       Proceedings of the 10th International Conference on Motion in Games
+      </em>
+      (
+      <em>
+       MIG ’17
+      </em>
+      ). ACM, New York, NY, USA, Article 13, 10 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3136457.3136460" target="_blank">
+       https://doi.org/10.1145/3136457.3136460
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Marie-Pierre Dubuisson and Anil K. Jain. 1994. A modified Hausdorff distance for object matching. In
+      <em>
+       Proceedings of 12th International Conference on Pattern Recognition
+      </em>
+      , Vol. 1. 566–568.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/ICPR.1994.576361" target="_blank">
+       https://doi.org/10.1109/ICPR.1994.576361
+      </a>
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Jane L. E, Ilene L. E, James A. Landay, and Jessica R. Cauchard. 2017. Drone &amp; Wo: Cultural Influences on Human-Drone Interaction Techniques. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 6794–6799.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025755" target="_blank">
+       https://doi.org/10.1145/3025453.3025755
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Leah Findlater, Ben Lee, and Jacob Wobbrock. 2012. Beyond QWERTY: Augmenting Touch Screen Keyboards with Multi-touch Gestures for Non-alphanumeric Input. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’12
+      </em>
+      ). ACM, New York, NY, USA, 2679–2682.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2207676.2208660" target="_blank">
+       https://doi.org/10.1145/2207676.2208660
+      </a>
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Bogdan-Florin Gheran, Jean Vanderdonckt, and Radu-Daniel Vatavu. 2018. Gestures for Smart Rings: Empirical Results, Insights, and Design Implications. In
+      <em>
+       Proceedings of the 2018 Designing Interactive Systems Conference
+      </em>
+      (
+      <em>
+       DIS ’18
+      </em>
+      ). ACM, New York, NY, USA, 623–635.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3196709.3196741" target="_blank">
+       https://doi.org/10.1145/3196709.3196741
+      </a>
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Jun Gong, Xing-Dong Yang, and Pourang Irani. 2016. WristWhirl: One-handed Continuous Smartwatch Input Using Wrist Gestures. In
+      <em>
+       Proceedings of the 29th Annual Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’16
+      </em>
+      ). ACM, New York, NY, USA, 861–872.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2984511.2984563" target="_blank">
+       https://doi.org/10.1145/2984511.2984563
+      </a>
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Lynn Hoff, Eva Hornecker, and Sven Bertel. 2016. Modifying Gesture Elicitation: Do Kinaesthetic Priming and Increased Production Reduce Legacy Bias?. In
+      <em>
+       Proceedings of the TEI ’16: Tenth International Conference on Tangible, Embedded, and Embodied Interaction
+      </em>
+      (
+      <em>
+       TEI ’16
+      </em>
+      ). ACM, New York, NY, USA, 86–91.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2839462.2839472" target="_blank">
+       https://doi.org/10.1145/2839462.2839472
+      </a>
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Kristina Höök, Martin P. Jonsson, Anna Ståhl, and Johanna Mercurio. 2016. Somaesthetic Appreciation Design. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 3131–3142.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858583" target="_blank">
+       https://doi.org/10.1145/2858036.2858583
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Johanna Höysniemi, Perttu Hämäläinen, and Laura Turkki. 2004. Wizard of Oz Prototyping of Computer Vision Based Action Games for Children. In
+      <em>
+       Proceedings of the 2004 Conference on Interaction Design and Children: Building a Community
+      </em>
+      (
+      <em>
+       IDC ’04
+      </em>
+      ). ACM, New York, NY, USA, 27–34.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1017833.1017837" target="_blank">
+       https://doi.org/10.1145/1017833.1017837
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Johanna Höysniemi, Perttu Hämäläinen, Laura Turkki, and Teppo Rouvi. 2005. Children's Intuitive Gestures in Vision-based Action Games.
+      <em>
+       <em>
+        Commun. ACM
+       </em>
+      </em>
+      48, 1 (Jan. 2005), 44–50.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1039539.1039568" target="_blank">
+       https://doi.org/10.1145/1039539.1039568
+      </a>
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Daniel P. Huttenlocher, Gregory A. Klanderman, and William J. Rucklidge. 1993. Comparing Images Using the Hausdorff Distance.
+      <em>
+       <em>
+        IEEE Transactions on Pattern Analysis and Machine Intelligence
+       </em>
+      </em>
+      15, 9 (Sept. 1993), 850–863.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/34.232073" target="_blank">
+       https://doi.org/10.1109/34.232073
+      </a>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Shoya Ishimaru, Kai Kunze, Koichi Kise, Jens Weppner, Andreas Dengel, Paul Lukowicz, and Andreas Bulling. 2014. In the Blink of an Eye: Combining Head Motion and Eye Blink Frequency for Activity Recognition with Google Glass. In
+      <em>
+       Proceedings of the 5th Augmented Human International Conference
+      </em>
+      (
+      <em>
+       AH ’14
+      </em>
+      ). ACM, New York, NY, USA, Article 15, 4 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2582051.2582066" target="_blank">
+       https://doi.org/10.1145/2582051.2582066
+      </a>
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Eakta Jain, Lisa Anthony, Aishat Aloba, Amanda Castonguay, Isabella Cuba, Alex Shaw, and Julia Woodward. 2016. Is the Motion of a Child Perceivably Different from the Motion of an Adult?
+      <em>
+       <em>
+        ACM Transactions on Applied Perception
+       </em>
+      </em>
+      13, 4, Article 22 (July 2016), 17 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2947616" target="_blank">
+       https://doi.org/10.1145/2947616
+      </a>
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Sujin Jang, Wolfgang Stuerzlinger, Satyajit Ambike, and Karthik Ramani. 2017. Modeling Cumulative Arm Fatigue in Mid-Air Interaction Based on Perceived Exertion and Kinetics of Arm Motion. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 3328–3339.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025523" target="_blank">
+       https://doi.org/10.1145/3025453.3025523
+      </a>
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Christian Kray, Daniel Nesbitt, John Dawson, and Michael Rohs. 2010. User-defined Gestures for Connecting Mobile Phones, Public Displays, and Tabletops. In
+      <em>
+       Proceedings of the 12th International Conference on Human Computer Interaction with Mobile Devices and Services
+      </em>
+      (
+      <em>
+       MobileHCI ’10
+      </em>
+      ). ACM, New York, NY, USA, 239–248.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1851600.1851640" target="_blank">
+       https://doi.org/10.1145/1851600.1851640
+      </a>
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Wonjun Lee, Youn-kyung Lim, and Richard Shusterman. 2014. Practicing Somaesthetics: Exploring Its Impact on Interactive Product Design Ideation. In
+      <em>
+       Proceedings of the 2014 Conference on Designing Interactive Systems
+      </em>
+      (
+      <em>
+       DIS ’14
+      </em>
+      ). ACM, New York, NY, USA, 1055–1064.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2598510.2598561" target="_blank">
+       https://doi.org/10.1145/2598510.2598561
+      </a>
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Luis A. Leiva, Daniel Martín-Albo, Réjean Plamondon, and Radu-Daniel Vatavu. 2018. KeyTime: Super-Accurate Prediction of Stroke Gesture Production Times. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 239, 12 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3173813" target="_blank">
+       https://doi.org/10.1145/3173574.3173813
+      </a>
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Luis A. Leiva, Daniel Martín-Albo, and Radu-Daniel Vatavu. 2017. Synthesizing Stroke Gestures Across User Populations: A Case for Users with Visual Impairments. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 4182–4193.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025906" target="_blank">
+       https://doi.org/10.1145/3025453.3025906
+      </a>
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Jiayang Liu, Lin Zhong, Jehan Wickramasuriya, and Venu Vasudevan. 2009. uWave: Accelerometer-based Personalized Gesture Recognition and Its Applications.
+      <em>
+       <em>
+        Pervasive and Mobile Computing
+       </em>
+      </em>
+      5, 6 (Dec. 2009), 657–675.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.pmcj.2009.07.007" target="_blank">
+       https://doi.org/10.1016/j.pmcj.2009.07.007
+      </a>
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Yihua Lou, Wenjun Wu, Radu-Daniel Vatavu, and Wei-Tek Tsai. 2017. Personalized gesture interactions for cyber-physical smart-home environments.
+      <em>
+       <em>
+        Science China Information Sciences
+       </em>
+      </em>
+      (July 2017), 60:072104.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/s11432-015-1014-7" target="_blank">
+       https://doi.org/10.1007/s11432-015-1014-7
+      </a>
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Dan Mauney, Jonathan Howarth, Andrew Wirtanen, and Miranda Capra. 2010. Cultural Similarities and Differences in User-defined Gestures for Touchscreen User Interfaces. In
+      <em>
+       CHI ’10 Extended Abstracts on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI EA ’10
+      </em>
+      ). ACM, New York, NY, USA, 4015–4020.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1753846.1754095" target="_blank">
+       https://doi.org/10.1145/1753846.1754095
+      </a>
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Keenan R. May, Thomas M. Gable, and Bruce N. Walker. 2017. Designing an In-Vehicle Air Gesture Set Using Elicitation Methods. In
+      <em>
+       Proceedings of the 9th International Conference on Automotive User Interfaces and Interactive Vehicular Applications
+      </em>
+      (
+      <em>
+       AutomotiveUI ’17
+      </em>
+      ). ACM, New York, NY, USA, 74–83.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3122986.3123015" target="_blank">
+       https://doi.org/10.1145/3122986.3123015
+      </a>
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Microsoft. 2018. Kinect for Windows.
+      <a class="link-inline force-break" href="http://kinectforwindows.org/">
+       http://kinectforwindows.org/
+      </a>
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Jin Moen. 2005. Towards People Based Movement Interaction and Kinaesthetic Interaction Experiences. In
+      <em>
+       Proceedings of the 4th Decennial Conference on Critical Computing: Between Sense and Sensibility
+      </em>
+      (
+      <em>
+       CC ’05
+      </em>
+      ). ACM, New York, NY, USA, 121–124.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1094562.1094579" target="_blank">
+       https://doi.org/10.1145/1094562.1094579
+      </a>
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      Meredith R. Morris. 2012. Web on the Wall: Insights from a Multimodal Interaction Elicitation Study. In
+      <em>
+       Proceedings of the 2012 ACM International Conference on Interactive Tabletops and Surfaces
+      </em>
+      (
+      <em>
+       ITS ’12
+      </em>
+      ). ACM, New York, NY, USA, 95–104.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2396636.2396651" target="_blank">
+       https://doi.org/10.1145/2396636.2396651
+      </a>
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      Meredith R. Morris, Andreea Danielescu, Steven Drucker, Danyel Fisher, Bongshin Lee, m. c. schraefel, and Jacob O. Wobbrock. 2014. Reducing Legacy Bias in Gesture Elicitation Studies.
+      <em>
+       <em>
+        interactions
+       </em>
+      </em>
+      21, 3 (May 2014), 40–45.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2591689" target="_blank">
+       https://doi.org/10.1145/2591689
+      </a>
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Miguel A. Nacenta, Yemliha Kamber, Yizhou Qiang, and Per Ola Kristensson. 2013. Memorability of Pre-designed and User-defined Gesture Sets. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’13
+      </em>
+      ). ACM, New York, NY, USA, 1099–1108.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2466142" target="_blank">
+       https://doi.org/10.1145/2470654.2466142
+      </a>
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      Jean Piaget. 2001.
+      <em>
+       The Psychology of Intelligence (2nd Ed.)
+      </em>
+      . London: Routledge.
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      Jean Piaget and Bärbel Elisabeth Inhelder. 1969.
+      <em>
+       The Psychology of the Child
+      </em>
+      . New York: Basic Books.
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      Thammathip Piumsomboon, Adrian Clark, Mark Billinghurst, and Andy Cockburn. 2013. User-defined Gestures for Augmented Reality. In
+      <em>
+       CHI ’13 Extended Abstracts on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI EA ’13
+      </em>
+      ). ACM, New York, NY, USA, 955–960.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2468356.2468527" target="_blank">
+       https://doi.org/10.1145/2468356.2468527
+      </a>
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      Ronald Poppe. 2007. Vision-based Human Motion Analysis: An Overview.
+      <em>
+       <em>
+        Computer Vision and Image Understanding
+       </em>
+      </em>
+      108, 1-2 (Oct. 2007), 4–18.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.cviu.2006.10.016" target="_blank">
+       https://doi.org/10.1016/j.cviu.2006.10.016
+      </a>
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      Ronald Poppe. 2010. A Survey on Vision-based Human Action Recognition.
+      <em>
+       <em>
+        Image and Vision Computing
+       </em>
+      </em>
+      28, 6 (June 2010), 976–990.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.imavis.2009.11.014" target="_blank">
+       https://doi.org/10.1016/j.imavis.2009.11.014
+      </a>
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      Mohd. Salihan Rahman, Nazlena Mohamad Ali, and Masnizah Mohd. 2013. A Study on the Naturalness of Gesture-Based Interaction for Children. In
+      <em>
+       Third International Visual Informatics Conference on Advances in Visual Informatics - Volume 8237
+      </em>
+      (
+      <em>
+       IVIC’13
+      </em>
+      ). Springer-Verlag New York, Inc., New York, NY, USA, 718–728.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/978-3-319-02958-0_65" target="_blank">
+       https://doi.org/10.1007/978-3-319-02958-0_65
+      </a>
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      Thanawin Rakthanmanon, Bilson Campana, Abdullah Mueen, Gustavo Batista, Brandon Westover, Qiang Zhu, Jesin Zakaria, and Eamonn Keogh. 2012. Searching and Mining Trillions of Time Series Subsequences Under Dynamic Time Warping. In
+      <em>
+       Proceedings of the 18th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining
+      </em>
+      (
+      <em>
+       KDD ’12
+      </em>
+      ). ACM, New York, NY, USA, 262–270.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2339530.2339576" target="_blank">
+       https://doi.org/10.1145/2339530.2339576
+      </a>
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      Jaime Ruiz and Yang Li. 2011. DoubleFlip: A Motion Gesture Delimiter for Mobile Interaction. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’11
+      </em>
+      ). ACM, New York, NY, USA, 2717–2720.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1978942.1979341" target="_blank">
+       https://doi.org/10.1145/1978942.1979341
+      </a>
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Jaime Ruiz, Yang Li, and Edward Lank. 2011. User-defined Motion Gestures for Mobile Interaction. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’11
+      </em>
+      ). ACM, New York, NY, USA, 197–206.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1978942.1978971" target="_blank">
+       https://doi.org/10.1145/1978942.1978971
+      </a>
+     </li>
+     <li id="BibPLXBIB0053" label="[53]">
+      Jaime Ruiz and Daniel Vogel. 2015. Soft-Constraints to Reduce Legacy and Performance Bias to Elicit Whole-body Gestures with Low Arm Fatigue. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’15
+      </em>
+      ). ACM, New York, NY, USA, 3347–3350.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702583" target="_blank">
+       https://doi.org/10.1145/2702123.2702583
+      </a>
+     </li>
+     <li id="BibPLXBIB0054" label="[54]">
+      Teddy Seyed, Chris Burns, Mario Costa Sousa, Frank Maurer, and Anthony Tang. 2012. Eliciting Usable Gestures for Multi-display Environments. In
+      <em>
+       Proceedings of the 2012 ACM International Conference on Interactive Tabletops and Surfaces
+      </em>
+      (
+      <em>
+       ITS ’12
+      </em>
+      ). ACM, New York, NY, USA, 41–50.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2396636.2396643" target="_blank">
+       https://doi.org/10.1145/2396636.2396643
+      </a>
+     </li>
+     <li id="BibPLXBIB0055" label="[55]">
+      Gözel Shakeri, John H. Williamson, and Stephen Brewster. 2017. Novel Multimodal Feedback Techniques for In-Car Mid-Air Gesture Interaction. In
+      <em>
+       Proceedings of the 9th International Conference on Automotive User Interfaces and Interactive Vehicular Applications
+      </em>
+      (
+      <em>
+       AutomotiveUI ’17
+      </em>
+      ). ACM, New York, NY, USA, 84–93.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3122986.3123011" target="_blank">
+       https://doi.org/10.1145/3122986.3123011
+      </a>
+     </li>
+     <li id="BibPLXBIB0056" label="[56]">
+      Chaklam Silpasuwanchai and Xiangshi Ren. 2014. Jump and Shoot!: Prioritizing Primary and Alternative Body Gestures for Intense Gameplay. In
+      <em>
+       Proceedings of the 32nd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’14
+      </em>
+      ). ACM, New York, NY, USA, 951–954.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2556288.2557107" target="_blank">
+       https://doi.org/10.1145/2556288.2557107
+      </a>
+     </li>
+     <li id="BibPLXBIB0057" label="[57]">
+      Kathleen Sprouffske. 2018.
+      <em>
+       growthcurver: Simple Metrics to Summarize Growth Curves
+      </em>
+      .
+      <a class="link-inline force-break" href="https://CRAN.R-project.org/package=growthcurver">
+       https://CRAN.R-project.org/package=growthcurver
+      </a>
+      R package version 0.3.0.
+     </li>
+     <li id="BibPLXBIB0058" label="[58]">
+      Eugene M. Taranta II, Amirreza Samiei, Mehran Maghoumi, Pooya Khaloo, Corey R. Pittman, and Joseph J. LaViola Jr.2017. Jackknife: A Reliable Recognizer with Few Samples and Many Modalities. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 5850–5861.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3026002" target="_blank">
+       https://doi.org/10.1145/3025453.3026002
+      </a>
+     </li>
+     <li id="BibPLXBIB0059" label="[59]">
+      Eugene M. Taranta II, Thaddeus K. Simons, Rahul Sukthankar, and Joseph J. Laviola Jr.2015. Exploring the Benefits of Context in 3D Gesture Recognition for Game-Based Virtual Environments.
+      <em>
+       <em>
+        ACM Transactions on Interactive Intelligent Systems
+       </em>
+      </em>
+      5, 1, Article 1 (March 2015), 34 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2656345" target="_blank">
+       https://doi.org/10.1145/2656345
+      </a>
+     </li>
+     <li id="BibPLXBIB0060" label="[60]">
+      Giovanni Maria Troiano, Esben Warming Pedersen, and Kasper Hornbæk. 2014. User-defined Gestures for Elastic, Deformable Displays. In
+      <em>
+       Proceedings of the 2014 International Working Conference on Advanced Visual Interfaces
+      </em>
+      (
+      <em>
+       AVI ’14
+      </em>
+      ). ACM, New York, NY, USA, 1–8.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2598153.2598184" target="_blank">
+       https://doi.org/10.1145/2598153.2598184
+      </a>
+     </li>
+     <li id="BibPLXBIB0061" label="[61]">
+      Anastasios Tsoularis and James Wallace. 2002. Analysis of logistic growth models.
+      <em>
+       <em>
+        Mathematical Biosciences
+       </em>
+      </em>
+      179, 1 (2002), 21–55.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/S0025-5564(02)00096-2" target="_blank">
+       https://doi.org/10.1016/S0025-5564(02)00096-2
+      </a>
+     </li>
+     <li id="BibPLXBIB0062" label="[62]">
+      Radu-Daniel Vatavu. 2012. User-defined Gestures for Free-hand TV Control. In
+      <em>
+       Proceedings of the 10th European Conference on Interactive TV and Video
+      </em>
+      (
+      <em>
+       EuroITV ’12
+      </em>
+      ). ACM, New York, NY, USA, 45–48.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2325616.2325626" target="_blank">
+       https://doi.org/10.1145/2325616.2325626
+      </a>
+     </li>
+     <li id="BibPLXBIB0063" label="[63]">
+      Radu-Daniel Vatavu. 2013. The Impact of Motion Dimensionality and Bit Cardinality on the Design of 3D Gesture Recognizers.
+      <em>
+       <em>
+        International Journal of Human-Computer Studies
+       </em>
+      </em>
+      71, 4 (April 2013), 387–409.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.ijhcs.2012.11.005" target="_blank">
+       https://doi.org/10.1016/j.ijhcs.2012.11.005
+      </a>
+     </li>
+     <li id="BibPLXBIB0064" label="[64]">
+      Radu-Daniel Vatavu. 2017. Beyond Features for Recognition: Human-Readable Measures to Understand Users’ Whole-Body Gesture Performance.
+      <em>
+       <em>
+        International Journal of Human–Computer Interaction
+       </em>
+      </em>
+      33, 9(2017), 713–730.
+      <a class="link-inline force-break" href="https://doi.org/10.1080/10447318.2017.1278897" target="_blank">
+       https://doi.org/10.1080/10447318.2017.1278897
+      </a>
+     </li>
+     <li id="BibPLXBIB0065" label="[65]">
+      Radu-Daniel Vatavu. 2017. Smart-Pockets: Body-Deictic Gestures for Fast Access to Personal Data during Ambient Interactions.
+      <em>
+       <em>
+        International Journal of Human-Computer Studies
+       </em>
+      </em>
+      103, C (July 2017), 1–21.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.ijhcs.2017.01.005" target="_blank">
+       https://doi.org/10.1016/j.ijhcs.2017.01.005
+      </a>
+     </li>
+     <li id="BibPLXBIB0066" label="[66]">
+      Radu-Daniel Vatavu, Gabriel Cramariuc, and Doina Maria Schipor. 2015. Touch Interaction for Children Aged 3 to 6 Years: Experimental Findings and Relationship to Motor Skills.
+      <em>
+       <em>
+        International Journal of Human-Computer Studies
+       </em>
+      </em>
+      74 (2015), 54–76.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.ijhcs.2014.10.007" target="_blank">
+       https://doi.org/10.1016/j.ijhcs.2014.10.007
+      </a>
+     </li>
+     <li id="BibPLXBIB0067" label="[67]">
+      Radu-Daniel Vatavu, Bogdan-Florin Gheran, and Maria Doina Schipor. 2018. The Impact of Low Vision on Touch-Gesture Articulation on Mobile Devices.
+      <em>
+       <em>
+        IEEE Pervasive Computing
+       </em>
+      </em>
+      17, 1 (Jan. 2018), 27–37.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/MPRV.2018.011591059" target="_blank">
+       https://doi.org/10.1109/MPRV.2018.011591059
+      </a>
+     </li>
+     <li id="BibPLXBIB0068" label="[68]">
+      Radu-Daniel Vatavu and Jacob O. Wobbrock. 2015. Formalizing Agreement Analysis for Elicitation Studies: New Measures, Significance Test, and Toolkit. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’15
+      </em>
+      ). ACM, New York, NY, USA, 1325–1334.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702223" target="_blank">
+       https://doi.org/10.1145/2702123.2702223
+      </a>
+     </li>
+     <li id="BibPLXBIB0069" label="[69]">
+      Radu-Daniel Vatavu and Jacob O. Wobbrock. 2016. Between-Subjects Elicitation Studies: Formalization and Tool Support. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 3390–3402.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858228" target="_blank">
+       https://doi.org/10.1145/2858036.2858228
+      </a>
+     </li>
+     <li id="BibPLXBIB0070" label="[70]">
+      Eduardo Velloso, Dominik Schmidt, Jason Alexander, Hans Gellersen, and Andreas Bulling. 2015. The Feet in Human–Computer Interaction: A Survey of Foot-Based Interaction.
+      <em>
+       <em>
+        ACM Comput. Surv.
+       </em>
+      </em>
+      48, 2, Article 21 (Sept. 2015), 35 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2816455" target="_blank">
+       https://doi.org/10.1145/2816455
+      </a>
+     </li>
+     <li id="BibPLXBIB0071" label="[71]">
+      Jacob O. Wobbrock, Htet Htet Aung, Brandon Rothrock, and Brad A. Myers. 2005. Maximizing the Guessability of Symbolic Input. In
+      <em>
+       CHI ’05 Extended Abstracts on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI EA ’05
+      </em>
+      ). ACM, New York, NY, USA, 1869–1872.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1056808.1057043" target="_blank">
+       https://doi.org/10.1145/1056808.1057043
+      </a>
+     </li>
+     <li id="BibPLXBIB0072" label="[72]">
+      Jacob O. Wobbrock, Meredith R. Morris, and Andrew D. Wilson. 2009. User-defined Gestures for Surface Computing. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’09
+      </em>
+      ). ACM, New York, NY, USA, 1083–1092.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1518701.1518866" target="_blank">
+       https://doi.org/10.1145/1518701.1518866
+      </a>
+     </li>
+     <li id="BibPLXBIB0073" label="[73]">
+      Jacob O. Wobbrock, Brad A. Myers, and John A. Kembel. 2003. EdgeWrite: A Stylus-based Text Entry Method Designed for High Accuracy and Stability of Motion. In
+      <em>
+       Proceedings of the 16th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’03
+      </em>
+      ). ACM, New York, NY, USA, 61–70.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/964696.964703" target="_blank">
+       https://doi.org/10.1145/964696.964703
+      </a>
+     </li>
+     <li id="BibPLXBIB0074" label="[74]">
+      Jacob O. Wobbrock, Andrew D. Wilson, and Yang Li. 2007. Gestures Without Libraries, Toolkits or Training: A
+      <font style="normal">
+       $
+      </font>
+      1 Recognizer for User Interface Prototypes. In
+      <em>
+       Proceedings of the 20th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’07
+      </em>
+      ). ACM, New York, NY, USA, 159–168.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1294211.1294238" target="_blank">
+       https://doi.org/10.1145/1294211.1294238
+      </a>
+     </li>
+     <li id="BibPLXBIB0075" label="[75]">
+      Ionut-Alexandru Zaiţi, Ştefan Gheorghe Pentiuc, and Radu-Daniel Vatavu. 2015. On Free-Hand TV Control: Experimental Results on User-Elicited Gestures with Leap Motion.
+      <em>
+       <em>
+        Personal and Ubiquitous Computing
+       </em>
+      </em>
+      19, 5–6, 821–838.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/s00779-015-0863-y" target="_blank">
+       https://doi.org/10.1007/s00779-015-0863-y
+      </a>
+     </li>
+     <li id="BibPLXBIB0076" label="[76]">
+      Mihai Zanfir, Marius Leordeanu, and Cristian Sminchisescu. 2013. The Moving Pose: An Efficient 3D Kinematics Descriptor for Low-Latency Action Recognition and Detection. In
+      <em>
+       Proceedings of the 2013 IEEE International Conference on Computer Vision
+      </em>
+      (
+      <em>
+       ICCV ’13
+      </em>
+      ). IEEE Computer Society, Washington, DC, USA, 2752–2759.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/ICCV.2013.342" target="_blank">
+       https://doi.org/10.1109/ICCV.2013.342
+      </a>
+     </li>
+     <li id="BibPLXBIB0077" label="[77]">
+      Shumin Zhai, Per Kristensson, Caroline Appert, Tue Andersen, and Xiang Cao. 2012. Foundational Issues in Touch-Surface Stroke Gesture Design: An Integrative Review.
+      <em>
+       <em>
+        Foundations and Trends in Human-Computer Interaction
+       </em>
+      </em>
+      5, 2 (Feb. 2012), 97–205.
+      <a class="link-inline force-break" href="https://doi.org/10.1561/1100000012" target="_blank">
+       https://doi.org/10.1561/1100000012
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    This example reports actual consensus values from our data (
+    <em>
+     N
+    </em>
+    = 30 children) using the Agreement Rate measure of Vatavu and Wobbrock [
+    <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+     68
+    </a>
+    ].
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300454" target="_blank">
+      https://doi.org/10.1145/3290605.3300454
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'875845889cdc2c71',t:'MTcxMzMxMzQ2MC44NjMwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

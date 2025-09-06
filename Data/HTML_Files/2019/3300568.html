@@ -1,0 +1,3467 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Sensing Fine-Grained Hand Activity with Smartwatches
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300568_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300568_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300568_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300568_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300568_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300568_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300568_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300568_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Sensing Fine-Grained Hand Activity with Smartwatches
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Gierad
+      </span>
+      <span class="surName">
+       Laput
+      </span>
+      , Carnegie Mellon University, USA,
+      <a href="mailto:gierad.laput@cs.cmu.edu">
+       gierad.laput@cs.cmu.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Chris
+      </span>
+      <span class="surName">
+       Harrison
+      </span>
+      , Carnegie Mellon University, USA,
+      <a href="mailto:chris.harrison@cs.cmu.edu">
+       chris.harrison@cs.cmu.edu
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300568" target="_blank">
+       https://doi.org/10.1145/3290605.3300568
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Capturing fine-grained hand activity could make computational experiences more powerful and contextually aware. Indeed, philosopher Immanuel Kant argued, "the hand is the visible part of the brain." However, most prior work has focused on detecting whole-body activities, such as walking, running and bicycling. In this work, we explore the feasibility of sensing hand activities from commodity smartwatches, which are the most practical vehicle for achieving this vision. Our investigations started with a 50 participant, in-the-wild study, which captured hand activity labels over nearly 1000 worn hours. We then studied this data to scope our research goals and inform our technical approach. We conclude with a second, in-lab study that evaluates our classification stack, demonstrating 95.2% accuracy across 25 hand activities. Our work highlights an underutilized, yet highly complementary contextual channel that could unlock a wide range of promising applications.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+      </small>
+      <span class="keyword">
+       <small>
+        Human-centered computing∼ Ubiquitous and mobile computing systems and tools.
+       </small>
+      </span>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="keyword">
+      <span style="font-weight:bold;">
+       <small>
+        Author Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Bio-acoustics
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        context-sensing
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        activity recognition,
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Gierad Laput and Chris Harrison. 2019. Sensing Fine-Grained Hand Activity with Smartwatches. In
+        <em>
+         Proceedings of CHI '19: CHI Conference on Human Factors in Computing Systems (CHI '19), May 04, 2019, Glasgow, Scotland UK
+        </em>
+        . ACM, New York, NY, USA,
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300568">
+         https://doi.org/10.1145/3290605.3300568
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec1">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Human activity sensing has been an area of active research for several decades (see
+     <em>
+      e.g.,
+     </em>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib6">
+      6
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib9">
+      9
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib14">
+      14
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib23">
+      23
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib71">
+      71
+     </a>
+     ]). The advent of robust mobile sensing platforms (like the Intel Mobile Sensing Platform (MSP) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib12">
+      12
+     </a>
+     ]) and the ubiquity of smartphones has served to further accelerate research in this domain. In just the past few years, wearables have emerged, affording researchers a beachhead on the body, offering improved fidelity and new sensed dimensions. Today, many consumer smartphones and smartwatches include built-in activity sensing capabilities that can distinguish between
+     <em>
+      e.g.,
+     </em>
+     walking, biking, driving and sleeping [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib23">
+      23
+     </a>
+     ].
+    </p>
+    <p>
+     Most often, classified data is exposed to users for fitness and personal informatics applications, and thus is chiefly focused on locomotion (or the lack thereof). However, this ignores a rich and expansive landscape of fine-grained human actions, especially those undertaken by the hands. We call these
+     <em>
+      hand activities
+     </em>
+     , and they are often independent of body activity. For example, one can
+     <em>
+      type on their smartphone
+     </em>
+     (hand activity) while
+     <em>
+      walking (
+     </em>
+     body activity); or take a
+     <em>
+      sip
+     </em>
+     of water from a bottle while
+     <em>
+      jogging;
+     </em>
+     or
+     <em>
+      flip through a book
+     </em>
+     while
+     <em>
+      lying
+     </em>
+     in bed. Wilson [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib76">
+      76
+     </a>
+     ] offers an eloquent portrayal of these diverse uses:
+    </p>
+    <p>
+     <em>
+      “After tugging at the covers and sheets and rolling yourself into a more comfortable position, you realized that you really did have to get out of bed. Next came the circus routine of noisy bathroom antics: the twisting of faucet handles, opening and closing of cabinet and shower doors, putting the toilet seat back where it belongs. There were slippery things to play with: soap, brushes, tubes, and little jars with caps and lids to twist or flip open; […] Each morning begins with a ritual dash through our own private obstacle course – objects to be opened or closed, lifted or pushed, twisted or turned, pulled, twiddled, or tied. The hands move so ably over this terrain that we think nothing of the accomplishment. […] Our lives are so full of commonplace experience in which the hands are so skillfully and silently involved that we rarely consider how dependent upon them we actually are.”
+     </em>
+    </p>
+    <p>
+     If computing systems could know the activity of both the body
+     <em>
+      and
+     </em>
+     the hands, applications could be more context sensitive and assistive to immediate, ongoing tasks. State-of-the-art activity detection has been largely stuck at ambulatory states (walking, standing, sleeping, etc.) for decades. We envision smartwatches (slowly becoming more pervasive) as a unique beachhead on the body for capturing rich everyday actions. This could unlock many applications, ranging from personal informatics, health and skills assessment, and broadly, context-awareness. For example, a system that knows what your hands are doing can intelligently avoid interruptions. Hand activity detection can also be used to identify the onset of harmful patterns (
+     <em>
+      e.g.,
+     </em>
+     repetitive strain injury or hand-arm vibration syndrome), or for building healthy habits (
+     <em>
+      e.g.,
+     </em>
+     regular hand washing).
+    </p>
+    <p>
+     In this work, we show that hand activity can be sensed robustly from a commodity, off-the-shelf smartwatch, without any external infrastructure or instrumentation of objects, opening a new and practical means for achieving this vision. In addition to tracking coarse movement and orientation of the hand, the wrist is also the perfect vantage point to capture bio-acoustic information produced as a byproduct of most hand activities (
+     <em>
+      e.g.,
+     </em>
+     typing, brushing teeth). Here, we define bio-acoustics as body-coupled micro-vibrations propagating through the user's arm. These signals are inherently diverse, owing to user variance, innumerable tools and accessories, and differences in environment. To overcome this, we developed a flexible processing pipeline that demonstrates surprising robustness, underscoring the feasibility of our approach.
+    </p>
+    <p>
+     We also draw an important distinction between
+     <strong>
+      <em>
+       hand actions
+      </em>
+     </strong>
+     and
+     <strong>
+      <em>
+       hand activities
+      </em>
+     </strong>
+     . Specifically, we define a hand activity as a sustained series of related hand actions, typically lasting seconds or minutes. For example, a single clap would be a hand action, whereas a series of claps would be the activity of clapping. The decision to focus on hand activities was both
+     <em>
+      practical
+     </em>
+     (there is more data from a continuous signal to enable robust classification) and
+     <em>
+      functional
+     </em>
+     (instantaneous hand events are rarely indicative of a user's activity, and thus offer less opportunities for computational enhancement).
+    </p>
+    <p>
+     As we will discuss in detail, we started our investigations with a 50 participant, in-the-wild, experience sampling (ESM) study [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib17">
+      17
+     </a>
+     ]. This yielded a trove of real-world data that informed our machine learning efforts. Secondly, it gave us a working set of how people employ their hands in the modern world, as there were no contemporary “hand ethnographies” to draw upon. We categorized participants’ labels and selected 25 routine, yet interesting hand activities (
+     <a class="fig" href="#fig1">
+      Figures 1
+     </a>
+     and
+     <a class="fig" href="#fig4">
+      4
+     </a>
+     ) to study for a second, in-lab feasibility evaluation. Employing an “obstacle course” methodology [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib6">
+      6
+     </a>
+     ], we tested our full pipeline, which demonstrated 95.2% classification accuracy. We also ran a series of supplemental experiments to investigate specific questions, such as false positive rejection. Overall, we believe this work demonstrates practical sensing of fine-grained hand activities using just a commodity smartwatch, opening new possibilities for responsive and context-sensitive applications.
+    </p>
+    <figure id="fig1">
+     <img alt="Figure 1." class="img-responsive" longdesc="" src="3300568_files\image1.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1.
+      </span>
+      <span class="figure-title">
+       In this work, we investigate the feasibility of sensing 25 hand activities using commodity smartwatches, which are uniquely positioned to capture such fine-grained activity. Activity names are provided in
+       <a class="fig" href="#fig3">
+        Figure 3
+       </a>
+       . The 25th hand activity we evaluated, brushing teeth (Y), is not shown.
+      </span>
+     </div>
+    </figure>
+   </section>
+   <section id="sec2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Hands and their activities are the subject of study in many fields; here we concentrate on prior work most directly related to our immediate efforts, with a focus on the HCI literature.
+    </p>
+    <section id="sec2Z1">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         2.1
+        </span>
+        Coarse Activity Recognition
+       </h3>
+      </div>
+     </header>
+     <p>
+      Most activity recognition efforts have inferred user-state through worn sensors [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib6">
+       6
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib9">
+       9
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib16">
+       16
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib43">
+       43
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib58">
+       58
+      </a>
+      ]. These systems are generally constrained to a limited set of coarse, whole-body activities, such as walking, running and bicycling. In general, systems must strike a balance between signal richness and instrumentation unobtrusiveness. Activity recognition systems have seen some success in the market, including Nike+ shoe sensors, Apple Watch, FitBit, and Garmin armbands. These products sense human activity via a combination of inertial measurement units (IMU), heart rate sensors and GPS. However, these products require explicit selection of pre-planned activities (
+      <em>
+       i.e.
+      </em>
+      , user selects a new run session from Nike+) to function reliably.
+     </p>
+    </section>
+    <section id="sec2Z2">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         2.2
+        </span>
+        Fine-Grained Activity Recognition
+       </h3>
+      </div>
+     </header>
+     <p>
+      One approach for fine-grained, human activity sensing is to deploy sensors and tags in the environment. Methods include acoustic monitoring [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib13">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib55">
+       55
+      </a>
+      ], computer vision [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib70">
+       70
+      </a>
+      ], electromagnetic sensing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib60">
+       60
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib80">
+       80
+      </a>
+      ], and tagging objects of interest with markers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib44">
+       44
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib57">
+       57
+      </a>
+      ] and sensors [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib46">
+       46
+      </a>
+      ]. Infrastructure-mediated [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib15">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib26">
+       26
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib27">
+       27
+      </a>
+      ] and general-purpose sensing approaches [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib40">
+       40
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib41">
+       41
+      </a>
+      ] have attempted room- and building- scale activity recognition. Alternatively, activity sensing can be achieved through worn sensing systems (see [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib14">
+       14
+      </a>
+      ] for a survey). Wearables with electromagnetic [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib38">
+       38
+      </a>
+      ], magneto-inductive [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib71">
+       71
+      </a>
+      ], inertial [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib49">
+       49
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib50">
+       50
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib51">
+       51
+      </a>
+      ] and acoustic sensing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib72">
+       72
+      </a>
+      ] have all been used to recognize fine-grained activity sensing, including recognition of tool and appliance use. Also, worn cameras, in glasses [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib66">
+       66
+      </a>
+      ] or on wrists [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib35">
+       35
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib47">
+       47
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib54">
+       54
+      </a>
+      ], have been used extensively.
+     </p>
+    </section>
+    <section id="sec2Z3">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         2.3
+        </span>
+        Hand Pose and Gesture Detection
+       </h3>
+      </div>
+     </header>
+     <p>
+      Hand pose and motion sensing technologies can also be used to infer a user's context and activity (
+      <em>
+       e.g.
+      </em>
+      , typing, playing a musical instrument, grasping a cup). A wide variety of approaches have been demonstrated, including computer vision [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib20">
+       20
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib35">
+       35
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib54">
+       54
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib74">
+       74
+      </a>
+      ], electromyography [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib61">
+       61
+      </a>
+      ], ultrasonics [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib73">
+       73
+      </a>
+      ], bioacoustics [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib28">
+       28
+      </a>
+      ], anatomical tomography [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib82">
+       82
+      </a>
+      ], high-frequency radio [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib45">
+       45
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib81">
+       81
+      </a>
+      ] and motion sensing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib1">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib7">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib56">
+       56
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib75">
+       75
+      </a>
+      ]. One of the major uses of such sensing is automatic sign language translation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib63">
+       63
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib79">
+       79
+      </a>
+      ].
+     </p>
+    </section>
+    <section id="sec2Z4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         2.4
+        </span>
+        ViBand; Hand Actions vs. Activities
+       </h3>
+      </div>
+     </header>
+     <p>
+      Most related to this research is our previous work on ViBand [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib39">
+       39
+      </a>
+      ], which also overclocked the accelerometer in a smartwatch to 4kHz, allowing it to capture high-fidelity, bio-acoustic information. We directly build on top of this enabling capability, though our research focus is different: ViBand looked at explicit hand
+      <em>
+       gestures
+      </em>
+      for interactive control — waves, flicks, snaps and the like – which are different than
+      <em>
+       hand activities
+      </em>
+      performed by users to achieve a task –
+      <em>
+       e.g.,
+      </em>
+      typing, cutting, pouring, writing. Moreover, gestures tend to have exaggerated motions (as they are used for communication) and are well segmented — this is rarely true of hand activities, which can be subtle, discontinuous and of varying durations.
+     </p>
+     <p>
+      Enabling hand activity recognition required different innovations, and as a consequence, our machine learning pipeline is significantly more advanced than that used in ViBand. Further, ViBand's largest hand gesture set contained six actions, which achieved 96.0% accuracy in its user study. This stands in contrast to our user study's 25 hand activities demonstrated at 95.2% accuracy. Our experience sampling and obstacle course studies also move significantly beyond our initial work in ViBand.
+     </p>
+    </section>
+   </section>
+   <section id="sec3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       PROOF-OF-CONCEPT SMARTWATCH
+      </h2>
+     </div>
+    </header>
+    <p>
+     As previously noted, a wide array of methods have been considered for detecting hand actions and activities. In contrast to almost all prior work in hand sensing, we purposely selected a commodity platform for our explorations and studies. On one hand, this is constraining, limiting the worn locations and breadth of sensors we can bring to bear on this challenging problem. On the other hand, if successful, it offers an immediate and practical means to achieve our vision; manufacturers could deploy such sensing functionality with little more than a software update.
+    </p>
+    <p>
+     As a proof-of-concept platform, we use the smartwatch and high-speed sampling mode identified in our previous ViBand [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib39">
+      39
+     </a>
+     ] research. This is a LG W100 smartwatch running Android Wear (
+     <a class="fig" href="#fig2">
+      Figure 2
+     </a>
+     ). By modifying the publicly available kernel [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib5">
+      5
+     </a>
+     ], it is possible to configure the built-in MPU6515 IMU to stream three-axis accelerometer data at 4kHz [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib30">
+      30
+     </a>
+     ]. This data stream captures coarse hand movement and orientation, as well as bio-acoustic data (up to the 2kHz Nyquist limit).
+    </p>
+    <figure id="fig2">
+     <img alt="Figure 2." class="img-responsive" longdesc="" src="3300568_files\image2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 2.
+      </span>
+      <span class="figure-title">
+       Our experience sampling watch app. At random intervals, wearers are prompted for activity labels (A). They select a hand activity (B), followed by a body activity (C).
+      </span>
+     </div>
+    </figure>
+   </section>
+   <section id="sec4">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       POWER CONSUMPTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     In worn systems, with small batteries, it is important to consider how changes in operation will affect battery life. The MPU6515 datasheet details power consumption rates. At 200Hz, power draw is 147μW, while at 4kHz sampling, power draw is 2719μW. While a ∼18x difference is substantial, both are small values and it is important to consider it in context. The LG G watch contains a 1520mWh battery, which means the difference of 2572μW consumes &lt;0.2% of battery life per hour.
+    </p>
+    <p>
+     Harder to estimate is total power load, which includes
+     <em>
+      e.g.,
+     </em>
+     waking the main application processor, moving data around in memory, and saving data to persistent storage. As a real-world test, we configured five LG G watches to
+     <em>
+      continuously
+     </em>
+     capture high-speed accelerometer. We gave these watches to five participants, who wore them all day, and charged them at night. Over the course of five days, we recorded battery statistics from when the watches powered on to when they ran out of power.
+    </p>
+    <p>
+     Across five days and five devices, the average battery life was 7.1 hours (SD=2.5). Given that our application kept the main application processor awake, we believe all day battery life is immediately achievable in a commercial implementation. It is now standard practice in the mobile industry to use low-power coprocessors (
+     <em>
+      i.e.
+     </em>
+     , “sensor hubs”) for reading, buffering and processing continuous sensor data (for functions such as step counting, lift to unlock, and spoken keyword detection).
+    </p>
+   </section>
+   <section id="sec5">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       OPEN SOURCE DATA AND CODE
+      </h2>
+     </div>
+    </header>
+    <p>
+     To facilitate future work in this area, we provide the source code for high-speed accelerometer acquisition on compatible Android devices. We also make available our study data and model code.
+     <a class="link-inline force-break" href="http://github.com/FIGLAB/hand-actions">
+      http://github.com/FIGLAB/hand-actions
+     </a>
+    </p>
+   </section>
+   <section id="sec6">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       CONTEMPORARY HAND ACTIVITIES
+      </h2>
+     </div>
+    </header>
+    <p>
+     Hands are central to the human experience, and as such, have been the focus of inquiry across many fields, including paleontology and anatomy [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib77">
+      77
+     </a>
+     ], linguistics [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib48">
+      48
+     </a>
+     ] and neuroscience [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib76">
+      76
+     </a>
+     ], to name just a few. Ethnographic work has studied how hands are employed in everything from domestic life to industrial settings [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib3">
+      3
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib37">
+      37
+     </a>
+     ]. Many hand taxonomies have been proposed, most commonly organized by grip or communication primitives [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib18">
+      18
+     </a>
+     ], which roughly correlate to functional or expressive uses respectively (see
+     <em>
+      e.g.,
+     </em>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib21">
+      21
+     </a>
+     ] for a survey of taxonomies). Unfortunately, much of this seminal research was completed in a time before computing was common. Thus, as a starting point to our research, we wished to know two key questions:
+    </p>
+    <p>
+     1)
+     <em>
+      What activities do humans perform with their hands in the modern world?
+     </em>
+     Armed with such a list, we hoped to focus our technical efforts and better understand how recognition of these activities could be valuable in a computationally-enhanced setting.
+    </p>
+    <p>
+     2)
+     <em>
+      Do different hand activities generate characteristic signals?
+     </em>
+     In other words, are hand activities distinct and separable? Does a commodity sensor in a smartwatch provide sufficient fidelity to enable robust classification?
+    </p>
+    <section id="sec6Z1">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         6.1
+        </span>
+        Experience Sampling Study
+       </h3>
+      </div>
+     </header>
+     <p>
+      To explore these questions, we sought to collect hand activity data, in the wild, from a random cross-section of participants going about their daily routines. Although retrospective data collection methods (
+      <em>
+       e.g.,
+      </em>
+      surveys, interviews) are relatively easy to deploy, they are also subject to self-selection and recall bias [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib36">
+       36
+      </a>
+      ], especially for something as unexceptional as hand activities. We also considered observational methods, but this was impractical for the scale of deployment we wished to achieve.
+     </p>
+     <p>
+      Instead, we employed an experience sampling method (ESM) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib17">
+       17
+      </a>
+      ], which reduces biases by collecting data in situ [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib10">
+       10
+      </a>
+      ]. Using a fleet of ten smartwatches, we deployed a custom application to 50 participants over the course of two weeks. We used a participant pool drawn from the local population to cover a variety of ages, genders and professions (25 female, mean age of 26.3).
+     </p>
+     <p>
+      Our smartwatches ran a custom background application that we developed (
+      <a class="fig" href="#fig2">
+       Figure 2
+      </a>
+      ). After a random sleep interval between 7 and 15 minutes, our application surreptitiously captures ten seconds of accelerometer data. The app then activates the screen and vibration motor to catch the wearer's attention. A simple labeling interface is displayed. The initial screen offers three options: ignore the prompt, mark the activity as ill-defined (
+      <em>
+       e.g.,
+      </em>
+      indistinct, between activities), or proceed to label the hand activity. Selecting either of the first two options causes the application to return to sleep. If “
+      <em>
+       label activity
+      </em>
+      ” is selected, the next screen asks: "
+      <em>
+       what were your hands doing?"
+      </em>
+      A pre-populated list of activities is provided, as well as the ability to add custom labels (using a companion smartphone application for ease of typing), which are added to the list for future use. If no user input was received on any screen for more than 30 seconds, the application returns to sleep.
+     </p>
+     <p>
+      Before deployment, participants completed a one-hour setup and orientation. The pre-populated hand activity labels were reviewed for understanding. Participants could also add additional labels as they desired. Participants also specified when they did not wish to be disturbed by the experiment (
+      <em>
+       e.g.,
+      </em>
+      10pm – 8am). Following this orientation, participants wore the smartwatch for two days on their dominant arm (removed at night for recharging). Participants were paid
+      <font style="normal">
+       $
+      </font>
+      10 per day, plus
+      <font style="normal">
+       $
+      </font>
+      0.25 per label, up to a maximum of
+      <font style="normal">
+       $
+      </font>
+      15 on top of the base pay (
+      <em>
+       i.e.
+      </em>
+      , max
+      <font style="normal">
+       $
+      </font>
+      25 per day). The study concluded with a 30-minute open-ended interview. Participants often elaborated on hand activities they noticed but were never captured by the watch's random sampling interval.
+     </p>
+    </section>
+    <section id="sec6Z2">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         6.2
+        </span>
+        Results
+       </h3>
+      </div>
+     </header>
+     <p>
+      Cumulatively, our watches were deployed for 100 days (950 worn hours), during which time they captured 5830 instances. Of these, 765 instances (13.1%) were labeled as ill-defined. The remaining 5065 instances contained 120 unique labels. To regularize participant labels, a pair of human coders used a consensus merging scheme. For example, “hand in pocket” and “hand on hips” were ultimately merged into a unified “hand still” label, which is the fundamental hand activity. This reduced the number of unique labels to 83, provided in
+      <a class="tbl" href="#tb1">
+       Table 1.
+      </a>
+     </p>
+     <div class="table-responsive" id="tb1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1.
+       </span>
+       <span class="table-title">
+        All hand activities captured and labeled during our experience sampling study (50 users, 950 worn hours). ‡ denotes activities that were pre-populated on our watches (
+        <em>
+         i.e.,
+        </em>
+        not entered manually by users), while bulleted (•) items were incorporated into the subsequent obstacle course user study (letter key also used in
+        <a class="fig" href="#fig1">
+         Figures 1
+        </a>
+        and
+        <a class="fig" href="#fig3">
+         3
+        </a>
+        ).
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;">
+          <strong>
+           Rank
+          </strong>
+         </th>
+         <th style="text-align:left;">
+          <strong>
+           Hand Activity
+          </strong>
+         </th>
+         <th style="text-align:left;">
+          <strong>
+           Category
+          </strong>
+         </th>
+         <th style="text-align:left;">
+          <strong>
+           Count
+          </strong>
+         </th>
+         <th style="text-align:left;">
+          <strong>
+           Rank
+          </strong>
+         </th>
+         <th style="text-align:left;">
+          <strong>
+           Hand Activity
+          </strong>
+         </th>
+         <th style="text-align:left;">
+          <strong>
+           Category
+          </strong>
+         </th>
+         <th style="text-align:left;">
+          <strong>
+           Count
+          </strong>
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;">
+          1
+         </td>
+         <td style="text-align:left;">
+          Hands Still / Idle (a) • ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1797
+         </td>
+         <td style="text-align:left;">
+          43
+         </td>
+         <td style="text-align:left;">
+          Opening Door (p) •
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          2
+         </td>
+         <td style="text-align:left;">
+          Scrolling on Trackpad / Phone (b) • ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          615
+         </td>
+         <td style="text-align:left;">
+          44
+         </td>
+         <td style="text-align:left;">
+          Closing Door
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          3
+         </td>
+         <td style="text-align:left;">
+          Typing on Keyboard (c) • ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          480
+         </td>
+         <td style="text-align:left;">
+          45
+         </td>
+         <td style="text-align:left;">
+          Reaching for Object
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          4
+         </td>
+         <td style="text-align:left;">
+          Swaying (while locomoting) • ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          346
+         </td>
+         <td style="text-align:left;">
+          46
+         </td>
+         <td style="text-align:left;">
+          Giving Massage
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          5
+         </td>
+         <td style="text-align:left;">
+          Typing on Phone (e) ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          281
+         </td>
+         <td style="text-align:left;">
+          47
+         </td>
+         <td style="text-align:left;">
+          Tying Shoes
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          6
+         </td>
+         <td style="text-align:left;">
+          Moving/Clicking Mouse (d) ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          266
+         </td>
+         <td style="text-align:left;">
+          48
+         </td>
+         <td style="text-align:left;">
+          Adjusting Watch
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          7
+         </td>
+         <td style="text-align:left;">
+          Eating ‡
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          241
+         </td>
+         <td style="text-align:left;">
+          49
+         </td>
+         <td style="text-align:left;">
+          Kickboxing
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          8
+         </td>
+         <td style="text-align:left;">
+          Gesturing (while speaking) ‡
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          236
+         </td>
+         <td style="text-align:left;">
+          50
+         </td>
+         <td style="text-align:left;">
+          Operating Hand Drill (k) • ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          9
+         </td>
+         <td style="text-align:left;">
+          Carrying Object ‡
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          233
+         </td>
+         <td style="text-align:left;">
+          51
+         </td>
+         <td style="text-align:left;">
+          Pilates
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          10
+         </td>
+         <td style="text-align:left;">
+          Writing (with implement) (i) • ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          127
+         </td>
+         <td style="text-align:left;">
+          52
+         </td>
+         <td style="text-align:left;">
+          Wiping (cleaning) (v) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          11
+         </td>
+         <td style="text-align:left;">
+          Drinking (s) • ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          61
+         </td>
+         <td style="text-align:left;">
+          53
+         </td>
+         <td style="text-align:left;">
+          Selecting Clothes
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          12
+         </td>
+         <td style="text-align:left;">
+          Cooking ‡
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          53
+         </td>
+         <td style="text-align:left;">
+          54
+         </td>
+         <td style="text-align:left;">
+          Exercising
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          13
+         </td>
+         <td style="text-align:left;">
+          Steering (while driving) ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          38
+         </td>
+         <td style="text-align:left;">
+          55
+         </td>
+         <td style="text-align:left;">
+          Shaving
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          14
+         </td>
+         <td style="text-align:left;">
+          Turning Pages
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          32
+         </td>
+         <td style="text-align:left;">
+          56
+         </td>
+         <td style="text-align:left;">
+          Tying Hair
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          15
+         </td>
+         <td style="text-align:left;">
+          Smoking ‡
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          25
+         </td>
+         <td style="text-align:left;">
+          57
+         </td>
+         <td style="text-align:left;">
+          Counting Cash
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          16
+         </td>
+         <td style="text-align:left;">
+          Washing Hands (x) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          23
+         </td>
+         <td style="text-align:left;">
+          58
+         </td>
+         <td style="text-align:left;">
+          Holding Phone (on call)
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          17
+         </td>
+         <td style="text-align:left;">
+          Exercising (on elliptical) ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          19
+         </td>
+         <td style="text-align:left;">
+          59
+         </td>
+         <td style="text-align:left;">
+          Grating (food) (t) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          18
+         </td>
+         <td style="text-align:left;">
+          Brushing Teeth (y) • ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          19
+         </td>
+         <td style="text-align:left;">
+          60
+         </td>
+         <td style="text-align:left;">
+          Chopping Vegetables (u) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          19
+         </td>
+         <td style="text-align:left;">
+          Stocking Items ‡
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          19
+         </td>
+         <td style="text-align:left;">
+          61
+         </td>
+         <td style="text-align:left;">
+          Using Spoon (eating)
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          20
+         </td>
+         <td style="text-align:left;">
+          Using Hand Tools ‡
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          9
+         </td>
+         <td style="text-align:left;">
+          62
+         </td>
+         <td style="text-align:left;">
+          Using Knife (eating)
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          21
+         </td>
+         <td style="text-align:left;">
+          Grasping Bicycle Exercise Machine ‡
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          8
+         </td>
+         <td style="text-align:left;">
+          63
+         </td>
+         <td style="text-align:left;">
+          Yoga
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          22
+         </td>
+         <td style="text-align:left;">
+          Playing Piano (f) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          8
+         </td>
+         <td style="text-align:left;">
+          64
+         </td>
+         <td style="text-align:left;">
+          Washing Utensils (w) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          23
+         </td>
+         <td style="text-align:left;">
+          Operating Weight Machine ‡
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          8
+         </td>
+         <td style="text-align:left;">
+          65
+         </td>
+         <td style="text-align:left;">
+          Scrubbing Counter
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          24
+         </td>
+         <td style="text-align:left;">
+          Sign Language ‡
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          7
+         </td>
+         <td style="text-align:left;">
+          66
+         </td>
+         <td style="text-align:left;">
+          Operating Vacuum
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          25
+         </td>
+         <td style="text-align:left;">
+          Washing Dishes
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          7
+         </td>
+         <td style="text-align:left;">
+          67
+         </td>
+         <td style="text-align:left;">
+          Putting on Lotion
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          26
+         </td>
+         <td style="text-align:left;">
+          Putting on Clothes
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          7
+         </td>
+         <td style="text-align:left;">
+          68
+         </td>
+         <td style="text-align:left;">
+          Stretching
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          27
+         </td>
+         <td style="text-align:left;">
+          Showering
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          5
+         </td>
+         <td style="text-align:left;">
+          69
+         </td>
+         <td style="text-align:left;">
+          Searching Pocket
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          28
+         </td>
+         <td style="text-align:left;">
+          Dancing
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          5
+         </td>
+         <td style="text-align:left;">
+          70
+         </td>
+         <td style="text-align:left;">
+          Screwing Bolt
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          29
+         </td>
+         <td style="text-align:left;">
+          Cleaning
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          4
+         </td>
+         <td style="text-align:left;">
+          71
+         </td>
+         <td style="text-align:left;">
+          Opening Bottle
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          30
+         </td>
+         <td style="text-align:left;">
+          Putting Away Clothes
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          4
+         </td>
+         <td style="text-align:left;">
+          72
+         </td>
+         <td style="text-align:left;">
+          Opening Jar (q) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          31
+         </td>
+         <td style="text-align:left;">
+          Brushing Hair (g) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          4
+         </td>
+         <td style="text-align:left;">
+          73
+         </td>
+         <td style="text-align:left;">
+          Operating Scanner
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          32
+         </td>
+         <td style="text-align:left;">
+          Folding Napkins
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          4
+         </td>
+         <td style="text-align:left;">
+          74
+         </td>
+         <td style="text-align:left;">
+          Putting on Jacket
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          33
+         </td>
+         <td style="text-align:left;">
+          Scratching (o) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          3
+         </td>
+         <td style="text-align:left;">
+          75
+         </td>
+         <td style="text-align:left;">
+          Grooming Beard
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          34
+         </td>
+         <td style="text-align:left;">
+          Doing Makeup
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          3
+         </td>
+         <td style="text-align:left;">
+          76
+         </td>
+         <td style="text-align:left;">
+          Shifting Gears (while driving)
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          35
+         </td>
+         <td style="text-align:left;">
+          Using Scissors (j) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          3
+         </td>
+         <td style="text-align:left;">
+          77
+         </td>
+         <td style="text-align:left;">
+          Tapping Screen (e) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          36
+         </td>
+         <td style="text-align:left;">
+          Pushing
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+         <td style="text-align:left;">
+          78
+         </td>
+         <td style="text-align:left;">
+          Pouring Drink (r) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          37
+         </td>
+         <td style="text-align:left;">
+          Operating Microscope
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+         <td style="text-align:left;">
+          79
+         </td>
+         <td style="text-align:left;">
+          Blowing Nose
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          38
+         </td>
+         <td style="text-align:left;">
+          Petting (m) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+         <td style="text-align:left;">
+          80
+         </td>
+         <td style="text-align:left;">
+          Playing Tennis
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          39
+         </td>
+         <td style="text-align:left;">
+          Drying Hair
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+         <td style="text-align:left;">
+          81
+         </td>
+         <td style="text-align:left;">
+          Sorting Paper
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          40
+         </td>
+         <td style="text-align:left;">
+          Using Remote / Game Controller (l) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+         <td style="text-align:left;">
+          82
+         </td>
+         <td style="text-align:left;">
+          Lifting Free Weights ‡
+         </td>
+         <td style="text-align:left;">
+          ambiguous
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          41
+         </td>
+         <td style="text-align:left;">
+          Clapping (n) •
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+         <td style="text-align:left;">
+          83
+         </td>
+         <td style="text-align:left;">
+          Putting on Chapstick / Lipstick
+         </td>
+         <td style="text-align:left;">
+          atomic
+         </td>
+         <td style="text-align:left;">
+          1
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          42
+         </td>
+         <td style="text-align:left;">
+          Folding Clothes
+         </td>
+         <td style="text-align:left;">
+          compound
+         </td>
+         <td style="text-align:left;">
+          2
+         </td>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:left;">
+          <strong>
+           Total Count_
+          </strong>
+         </td>
+         <td style="text-align:left;">
+          <strong>
+           5065
+          </strong>
+         </td>
+         <td style="text-align:left;">
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      The insights and implications from our experience sampling study were multifold. Foremost, it confirmed our assumption that human hands engage in an incredible diversity of activities. However, a few activities dominate: 35% of our labels are of the hands still or idle, and the next 4 most frequent labels are more common than the remaining 78 hand activities combined. We believe this bodes well for hand activity sensing, as detecting a small class of common actions could encompass most hand activities over the course of a day (an easier classification problem). However, it is also apparent there is an extraordinarily long tail of less frequent activities. Some of these may be rare, but others may be common and are simply short in duration, so as to be infrequently captured by our random sampling method.
+     </p>
+     <p>
+      We also found many labels that participants did not decompose into
+      <em>
+       atomic
+      </em>
+      hand activities. By atomic, we mean events that cannot be broken down into distinct stages. For example, eating and cooking were common labels, but these are
+      <em>
+       compound
+      </em>
+      activities that encompass a variety of atomic hand activities (
+      <em>
+       e.g.,
+      </em>
+      washing, chopping, mixing). Our coders also encountered labels that were
+      <em>
+       ambiguous.
+      </em>
+      For example, “open bottle” might mean twisting a cap off or using a bottle opener, which we view as distinct hand activities (though with a similar goal). These categorizations are included in
+      <a class="tbl" href="#tb1">
+       Table 1.
+      </a>
+     </p>
+     <p>
+      Obviously, this result is just a small window onto the diverse landscape of hand activities, and much future work remains to be done in both HCI and beyond. Nonetheless, this result was sufficient to ground our assumptions and guide our subsequent technical efforts.
+     </p>
+    </section>
+   </section>
+   <section id="sec7">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       HAND ACTIVITY CLASSIFICATION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Informed by the findings from our experience sampling study, we proceeded to build a hand activity sensing pipeline for evaluation. Our system is comprised of three key stages: sensing, signal processing, and machine learning.
+    </p>
+    <section id="sec7Z1">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         7.1
+        </span>
+        Sensing
+       </h3>
+      </div>
+     </header>
+     <p>
+      As mentioned earlier, our software for the LG G watch captures both gross orientation and movement of the hands, as well as higher-fidelity, bio-acoustic information resulting from hand activities. A dedicated background process reads IMU data and fills three, 256-length circular buffers with accelerometer readings (X, Y and Z axes) at 4kHz. These buffers are sent to a laptop over Bluetooth at ∼16 FPS, which maintains an even larger buffer and performs additional processing operations.
+     </p>
+    </section>
+    <section id="sec7Z2">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         7.2
+        </span>
+        Signal Processing
+       </h3>
+      </div>
+     </header>
+     <p>
+      A sampling rate of 4kHz in combination with a large buffer (8192 samples) allows our system to compute very high resolution Fourier transforms (4096 bins with a 0.5Hz resolution) within a short period – just over two seconds worth of data, which is about how fast hands transition to new activities. We utilize only the lower 256 FFT bins representing frequencies from 0-128Hz, which we found best characterized most human activities in our ESM study. Finally, these 256 bins are saved into a 48-frame rolling spectrogram, representing ∼3 seconds of data (
+      <a class="fig" href="#fig3">
+       Figure 3
+      </a>
+      ). These spectrograms are maintained for each of the three accelerometer axes.
+     </p>
+     <figure id="fig3">
+      <img alt="Figure 3." class="img-responsive" longdesc="" src="3300568_files\image3.png"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3.
+       </span>
+       <span class="figure-title">
+        Example spectrograms of the 25 hand activities used in our obstacle course study (max of accelerometer axes shown). Y-axis is spectral power from 0 to 128 Hz. X-axis is time (3 seconds). Photos of these hand activities are shown in
+        <a class="fig" href="#fig1">
+         Figure 1
+        </a>
+        , while
+        <a class="tbl" href="#tb1">
+         Table 1
+        </a>
+        offers a rough estimation of how frequent these activities occur.
+       </span>
+      </div>
+     </figure>
+    </section>
+    <section id="sec7Z3">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         7.3
+        </span>
+        Machine Learning
+       </h3>
+      </div>
+     </header>
+     <p>
+      The next stage of the pipeline is extracting and modeling patterns from the signal. From our experiments, we noticed that important spatial-temporal relationships are encoded in the accelerometer's three axes. For instance, when wiping a table, the Z-axis is mostly unperturbed (chiefly bio-acoustic noise resulting from friction, but little coarse motion), while the X and Y channels experience low frequency oscillations as the hand slides on the surface, often in a linear or circling motion. Indeed, we found many hand activities generated similarly distinctive activation patterns, which can be automatically learned with sufficient data.
+     </p>
+     <p>
+      To learn from our data, we leverage a convolutional neural network (CNN) architecture [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib2">
+       2
+      </a>
+      ]. Specifically, we use a variant of VGG16 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib64">
+       64
+      </a>
+      ] with modified fully connected layers (
+      <a class="fig" href="#fig4">
+       Figure 4
+      </a>
+      , last two layer sizes set to 2000 and 500). CNNs have been widely used for visual datasets (
+      <em>
+       i.e.
+      </em>
+      , width × height × color channel), and in our case, we represent hand activities as spatio-temporal patches of bio-acoustic data. Specifically, we stack accelerometer spectrograms as 256 frequency bins × 48 frames × 3 orientation channels, which serves as input to the CNN. Because of the strongly coupled nature of our channels, this setup forces our architecture to learn cross-axis relationships.
+     </p>
+     <figure id="fig4">
+      <img alt="Figure 4." class="img-responsive" longdesc="" src="3300568_files\image4.png"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4.
+       </span>
+       <span class="figure-title">
+        Our convolutional neural network (CNN) architecture, comprised of several convolutional units (three shown here), two fully connected layers, a dropout layer, and a softmax. We also apply batch normalization between non-linear layers (
+        <em>
+         i.e.
+        </em>
+        , activations).
+       </span>
+      </div>
+     </figure>
+     <p>
+      Each convolutional unit in our VGG16 architecture is comprised of four sub-layers: 1) the convolutional operator, 2) a batch normalization layer [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib31">
+       31
+      </a>
+      ], 3) a rectified linear unit (ReLu) activation layer [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib53">
+       53
+      </a>
+      ], and 4) a pooling layer [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib62">
+       62
+      </a>
+      ]. We also added a dropout layer [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib64">
+       64
+      </a>
+      ] to the output of the second fully connected layer (p=0.4) to mitigate overfitting. An illustration of our network architecture is offered in
+      <a class="fig" href="#fig4">
+       Figure 4
+      </a>
+      (showing 3 of 5 convolutional units). The network was implemented using TensorFlow (tensorflow.org) and Keras (keras.io). To encourage replication, readers are welcome to download our dataset and model code (see Section 5)
+      <em>
+       .
+      </em>
+     </p>
+    </section>
+   </section>
+   <section id="sec8">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       EVALUATION
+      </h2>
+     </div>
+    </header>
+    <p>
+     To quantify the feasibility and robustness of our hand activity classifier, we conducted a second user study. To properly validate our system, a reliable ground truth was needed. Because of the unsupervised nature of our earlier experience sampling study, it was not possible to use that dataset for an accuracy evaluation (though we use it to study false positives, described later). Instead, we employed an "obstacle course" methodology [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib6">
+      6
+     </a>
+     ] – a technique that has been reliably used in past research to provide ground truth data collection, while emulating natural activities and settings. For this, we selected 25 atomic hand activities (
+     <a class="fig" href="#fig1">
+      Figures 1
+     </a>
+     and
+     <a class="fig" href="#fig3">
+      3
+     </a>
+     ) from classes identified in our experience sampling study (
+     <a class="tbl" href="#tb1">
+      Table 1
+     </a>
+     , bulleted items). We dropped several frequent hand activities that were impractical to capture experimentally, including as eating, cooking, and steering a vehicle. We integrated our final hand activity set into a series of physical tasks that participants completed while wearing our smartwatches.
+    </p>
+    <p>
+     We recruited 12 people from a public participant pool (9 female, mean age 26.6), who were compensated
+     <font style="normal">
+      $
+     </font>
+     20 for the 90-minute study. Participants were asked to wear our smartwatch on their dominant arm. Once comfortable, the “obstacle course” began. Each “lap” of the course consisted of visiting four stations with physical activities that incorporated the 25 hand activities (random order). Participants performed each hand activity for at least 15 seconds, and they were free to perform them however they saw fit, capturing natural user variation.
+    </p>
+    <p>
+     In total, participants completed four laps of our course, with three-minute breaks in between. This ensured temporal separation between data collection rounds. Additionally, in between laps three and four, participants were asked to remove and then re-wear the smartwatch, again to capture variation and to mitigate overfitting (common in worn sensing systems). A trained observer labeled data using a laptop interface immediately after each hand activity was performed. This process yielded 2500 labeled instances per session, per user, resulting in a total of 120K instances.
+    </p>
+   </section>
+   <section id="sec9">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        9
+       </span>
+       RESULTS
+      </h2>
+     </div>
+    </header>
+    <section id="sec9Z1">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         9.1
+        </span>
+        Per-User Accuracy
+       </h3>
+      </div>
+     </header>
+     <p>
+      To assess whether accelerometers provide sufficient information power to distinguish between dozens of hand actions, we trained a model using data from laps one and two, and tested it with data collected from lap three. Across all participants and 25 hand activities, our system achieved a mean per-user accuracy of 95.2% (SD=4.1, max=98.8%, chance=4%). See
+      <a class="fig" href="#fig5">
+       Figure 5
+      </a>
+      for the confusion matrix.
+     </p>
+     <figure id="fig5">
+      <img alt="Figure 5." class="img-responsive" longdesc="" src="3300568_files\image5.png"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5.
+       </span>
+       <span class="figure-title">
+        Per-user-trained model confusion matrix. Mean accuracy is 95.2% across 25 activities and 12 users.
+       </span>
+      </div>
+     </figure>
+    </section>
+    <section id="sec9Z2">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         9.2
+        </span>
+        Accuracy Post-Removal
+       </h3>
+      </div>
+     </header>
+     <p>
+      Too often, worn sensing systems are trained (or calibrated) and then tested having never been removed from the user. This is artificial, as most wearables are removed daily. Owing to placement sensitivity for most worn sensors, it also tends to lead to artificially impressive results. This experimental effect can be allayed by explicitly including a post-removal collection round, which not only offers for a more realistic estimate of accuracy, but also lets one assess the accuracy drop-off.
+     </p>
+     <p>
+      Using the same model as before (
+      <em>
+       i.e.,
+      </em>
+      trained on laps one and two), we evaluated accuracy using data collected from lap 4 (
+      <em>
+       i.e.,
+      </em>
+      post removal). Overall, our system achieved an average accuracy of 88.3% (SD=16.5, max=98.9%, chance=4%). The confusion matrix is offered in
+      <a class="fig" href="#fig6">
+       Figure 6
+      </a>
+      . The 6.9% drop in accuracy from pre-to-post watch removal was much less than we expected and suggests that our signals and approach are fairly robust to placement variation. We strongly suspect that if additional laps of data were collected following a similar watch removal/replacement procedure, accuracy would rebound.
+     </p>
+     <figure id="fig6">
+      <img alt="Figure 6." class="img-responsive" longdesc="" src="3300568_files\image6.png"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 6.
+       </span>
+       <span class="figure-title">
+        Post-watch removal confusion matrix. Mean accuracy is 88.3% across 25 activities and 12 users.
+       </span>
+      </div>
+     </figure>
+    </section>
+    <section id="sec9Z3">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         9.3
+        </span>
+        All-Users Accuracy
+       </h3>
+      </div>
+     </header>
+     <p>
+      To answer the central question of whether a commodity smartwatch accelerometer provides sufficient information power to distinguish between a variety of hand activities, we ran a lap-fold, cross validation study. For example, we trained a model on all user data from on laps 1, 2 and 3, and then tested on lap 4 (
+      <em>
+       i.e.,
+      </em>
+      90,000 train, 30,000 test instances). We repeated this process for all lap combinations and averaged the results. Across all participants, this “all users” model achieves a mean accuracy of 90.7% (SD=2.2, chance=4%).
+      <a class="fig" href="#fig7">
+       Figure 7
+      </a>
+      shows the confusion matrix.
+     </p>
+     <figure id="fig7">
+      <img alt="Figure 7." class="img-responsive" longdesc="" src="3300568_files\image7.png"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7.
+       </span>
+       <span class="figure-title">
+        Across-user performance confusion matrix. Mean accuracy is 90.7% across our 25 activities and 12 users.
+       </span>
+      </div>
+     </figure>
+    </section>
+    <section id="sec9Z4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         9.4
+        </span>
+        Leave-One-User-Out Accuracy (Across User)
+       </h3>
+      </div>
+     </header>
+     <p>
+      Finally, we ran a leave-one-user-out analysis to investigate performance across users. Here, data from one participant (laps 1-4) served as a hold-out set, while data from all remaining participants are used for training. We repeat this process for all users and average the results. Across all participants, mean leave-one-out accuracy was 79.2% (SD=6.4, max=84.8%). This is a 10% drop compared to the previous result (90.7%), which simulated a general model seeded with some per-user calibration data (
+      <em>
+       i.e.,
+      </em>
+      1/12th of corpus).
+     </p>
+    </section>
+    <section id="sec9Z5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         9.5
+        </span>
+        False Positive Rejection
+       </h3>
+      </div>
+     </header>
+     <p>
+      In a worn input system – especially one that is hand-centric – it is vital to consider mechanisms for rejecting false positive events. For this, we take advantage of the per-class confidence scores output from our classifier's softmax layer. When participants performed a (known) hand activity, the top ranked class had an average confidence of 98.0%, while the second highest ranked class had a mean confidence of 2%. This significant drop-off suggested that confidence could be a good predictor of “unknown-ness”. For example, our software could label events as unknown if the most confident class was below 50%. To identify a reasonable confidence threshold, we ran a simulation using our study data varying this threshold from 0 to 100%. The results, plotted in
+      <a class="fig" href="#fig8">
+       Figure 8
+      </a>
+      , suggest rejecting events when the top-ranked class is under 90% confident, offering a balance between false positive rejection and missed detections.
+     </p>
+     <figure id="fig8">
+      <img alt="Figure 8." class="img-responsive" longdesc="" src="3300568_files\image8.png"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 8.
+       </span>
+       <span class="figure-title">
+        Precision vs. recall characterizations of our model. We can prevent false positive occurrences by setting a confidence value cutoff, but at the expense of missing events.
+       </span>
+      </div>
+     </figure>
+     <p>
+      In addition to the simulation above, we ran another experiment where we trained a model with “negative” example data extracted from our experience sampling study. More specifically, we randomly selected 30K data instances that participants had labeled with hand activities not included in our test set of 25 (which included
+      <em>
+       e.g.,
+      </em>
+      driving, smoking and doing makeup). We labeled these diverse instances as an “unknown” hand activity class. Next, we performed a random 80/20 train-test split on the unknown class dataset, and then added this to our all-users model's train and test datasets. After retraining, our model correctly predicted (
+      <em>
+       i.e.,
+      </em>
+      rejected) 76.0% of the unknown activities, while the overall accuracy was 87.9%. If we include the confidence threshold identified in the previous simulation (confidence &gt; 90%), the overall accuracy is 92.2% (with unknown detection of 86.3%).
+      <a class="fig" href="#fig9">
+       Figure 9
+      </a>
+      provides this confusion matrix; note the confusion along the Z column, which we use for the unknown class.
+     </p>
+     <figure id="fig9">
+      <img alt="Figure 9." class="img-responsive" longdesc="" src="3300568_files\image9.png"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 9.
+       </span>
+       <span class="figure-title">
+        Confusion matrix for a cross-users model with unknown class detection. Using confidence thresholds, global accuracy is 92.2%, while unknown rejection is 86.3%.
+       </span>
+      </div>
+     </figure>
+     <p>
+      Finally, we also ran a clustering experiment (t-SNE; based on the top-3 PCA components of our input data;
+      <a class="fig" href="#fig10">
+       Figure 10
+      </a>
+      ) to visualize the discriminability of our signals, as it may be possible to employ clustering techniques to mitigate false positives, where events that are “distant” from known hand activity clusters are rejected. This distance-based method could also be used to capture negative example data, or prompt wearers for labels for future recognition
+     </p>
+     <figure id="fig10">
+      <img alt="Figure 10." class="img-responsive" longdesc="" src="3300568_files\image10.png"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 10.
+       </span>
+       <span class="figure-title">
+        Clustering results from a t-SNE nonlinear dimensionality reduction (perplexity=40, 5000 iterations, projector.tensorflow.org) on a random subset of our 25 hand activities. Note how less intense activities (
+        <em>
+         e.g.
+        </em>
+        , pouring drink, scrolling touch screen) cluster together, while more vigorous hand activities (
+        <em>
+         e.g.
+        </em>
+        , clapping, scratching and wiping) emerge as distinct groups.
+       </span>
+      </div>
+     </figure>
+    </section>
+    <section id="sec9Z6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         9.6
+        </span>
+        Sampling Frequency vs. Accuracy
+       </h3>
+      </div>
+     </header>
+     <p>
+      We ran a final post hoc experiment to investigate the effect of accelerometer sampling frequency on classification accuracy. For this, we created downsampled versions of our original 4kHz data to simulate lower sampling rates: 2kHz, 1kHz, 500Hz, 250Hz, and 125Hz. As with our 4kHz data, this was featurized into three-axis, 0-128 Hz, three-second spectrograms. We performed cross-lap validation for each sample rate (train on one round, test on remaining rounds, four rounds total), and combined the results, shown in
+      <a class="fig" href="#fig11">
+       Figure 11
+      </a>
+      . There is a clear, monotonic decrease in accuracy as sample rate decreases, with a marked cliff around 500Hz.
+     </p>
+     <figure id="fig11">
+      <img alt="Figure 11." class="img-responsive" longdesc="" src="3300568_files\image11.png"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 11.
+       </span>
+       <span class="figure-title">
+        Post-hoc analysis of simulated sampling frequency vs. hand activity classification accuracy.
+       </span>
+      </div>
+     </figure>
+    </section>
+   </section>
+   <section id="sec10">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        10
+       </span>
+       LIMITATIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     The most immediate limitation of our technique is the need for smartwatches to be worn on the active arm. Most often, this will be a wearer's dominant arm, whereas it is more common for watches to be worn on the passive arm. However, detection still works for two-handed activities such as clapping, washing hands, or typing. Detecting events on the passive arm is an area we plan to explore in future work. We also note that we did not explore simultaneous hand activities, though these appear rare for a single hand.
+    </p>
+    <p>
+     We also acknowledge that the 25 hand activities we evaluated, though large for a recognition study, are a small fraction of the ways we engage our arms and hands in the real world. As reported earlier, there is an exceptionally long tail of hand actions and activities that will certainly prove challenging to distinguish. Thus we suggest that future work focus on specific activities that can especially benefit from computational support (
+     <em>
+      e.g.,
+     </em>
+     contextual aware assistance [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib14">
+      14
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib38">
+      38
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib39">
+      39
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib44">
+      44
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib58">
+      58
+     </a>
+     ], smoking secession [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib11">
+      11
+     </a>
+     ], elder care [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib19">
+      19
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib59">
+      59
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib68">
+      68
+     </a>
+     ], hand-arm vibration syndrome (HAVS) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib68">
+      68
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib69">
+      69
+     </a>
+     ], typing RSI [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib8">
+      8
+     </a>
+     ]). Fortunately, as classifiers become more robust (perhaps through mass adoption of consumer smartwatches), over-the-air updates could unlock recognition of new classes incrementally.
+    </p>
+    <p>
+     Finally, as discussed earlier, our FFTs use long windows, both to mitigate noise and capture high-resolution spectral data for lower frequencies. As a consequence, we incur a latency penalty of a few seconds in recognizing events. For extended activities, like eating a meal, where classification might trigger devices to enter a “do not disturb” mode, a few seconds of latency is acceptable. However, for short-duration activities, like operating a TV remote control, users will want relevant information to be pulled up quickly (
+     <em>
+      e.g.
+     </em>
+     , to make a decision regarding entertainment). Future systems will likely want to use smaller windows with variable class confidence thresholds in order to support hand activities of longer and shorter durations.
+    </p>
+   </section>
+   <section id="sec11">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        11
+       </span>
+       EXAMPLE USE DOMAINS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Using commodity smartwatches for hand activity recognition is applicable to a wide range of application scenarios that have been well motivated in prior research. We believe our work points towards a more practical means to bring these use cases closer to feasibility.
+    </p>
+    <p>
+     One obvious use for fine-grained hand activity sensing is personal informatics [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib33">
+      33
+     </a>
+     ]. Hand activities are a fine-grained, contextual channel that naturally complements ambulatory state [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib9">
+      9
+     </a>
+     ]. Fine-grained activity tracing (e.g., washing hands, brushing teeth –
+     <a class="fig" href="#fig12">
+      Figure 12
+     </a>
+     , A &amp; B) has been shown to nudge users towards more healthy lifestyles [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib16">
+      16
+     </a>
+     ], and spark personal reflection and social facilitation [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib22">
+      22
+     </a>
+     ]. A system that knows what hands are doing could also have many health-related applications. For example, a smartwatch could track a user's typing behavior to prevent repetitive strain injury (RSI) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib8">
+      8
+     </a>
+     ]. Likewise, a smartwatch might be able to track smoking as part of a cessation regime [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib11">
+      11
+     </a>
+     ], or monitor a construction workers tool use to prevent hand-arm vibration syndrome (HAVS) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib68">
+      68
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib69">
+      69
+     </a>
+     ]. Eldercare monitoring systems [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib19">
+      19
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib59">
+      59
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib68">
+      68
+     </a>
+     ] could also make use of this new and nuanced information source.
+    </p>
+    <figure id="fig12">
+     <img alt="Figure 12." class="img-responsive" longdesc="" src="3300568_files\image12.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 12.
+      </span>
+      <span class="figure-title">
+       Real-time detection of hand activities can unlock many applications, ranging from personal informatics to skills assessment, and in general, power richer context-aware applications. Please also see Video Figure.
+      </span>
+     </div>
+    </figure>
+    <p>
+     There has also been interesting research into automatic skill assessment [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib34">
+      34
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib67">
+      67
+     </a>
+     ]. Prior work has looked at musical skill acquisition [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib78">
+      78
+     </a>
+     ], sports performance [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib52">
+      52
+     </a>
+     ], and rehabilitation [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib4">
+      4
+     </a>
+     ]. Automatic assessment could create opportunities for
+     <em>
+      in situ
+     </em>
+     feedback and skill-level evaluation [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib67">
+      67
+     </a>
+     ]. It may even be possible to detect skill degradation overtime, and the onset of motor impairments such as Parkinson's.
+    </p>
+    <p>
+     Most generally, hand activity recognition could unlock richer, context-sensitive applications [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib14">
+      14
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib38">
+      38
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib39">
+      39
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib44">
+      44
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib58">
+      58
+     </a>
+     ]. Sequences of fine-grained hand activities could also be used to infer higher-level human activities. For example, filling a kettle, turning on the stove, and then later pouring the kettle, can be indicative of the user making a cup of tea. However, if hand activities occur out of order (
+     <em>
+      e.g.,
+     </em>
+     pouring water before boiling it), it could suggest
+     <em>
+      e.g.,
+     </em>
+     the onset of dementia [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib40">
+      40
+     </a>
+     ]. Hand activities could also be valuable in augmenting methods that gauge human interruptibility [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib25">
+      25
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib29">
+      29
+     </a>
+     ], for example delaying a notification while a user is chopping with a knife (
+     <a class="fig" href="#fig12">
+      Figure 12C
+     </a>
+     ).
+    </p>
+   </section>
+   <section id="sec12">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        12
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We believe there is great value in knowing what activities the hands are engaged in to support assistive computational experiences. In this paper, we investigated the feasibility of such sensing using commodity smartwatches, which are an immediately practical means for achieving this vision. Our explorations started with an in-the-wild deployment and culminated with a controlled lab study. Our classification pipeline demonstrates 95.2% accuracy across 25 hand activities, and can reject unknown hand activities at 86.3% accuracy. At a high level, we believe these results bring the promise of contextually responsive applications much closer to reality, especially as our approach requires no external infrastructure or instrumentation of objects.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ack-001">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        13
+       </span>
+       ACKNOWLEDGEMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This work was generously supported with funds from the Packard Foundation, Sloan Foundation, and the Google Ph.D. Fellowship. We would also like to thank Prof. Robert Xiao for his early work on kernel driver integration.
+    </p>
+   </section>
+   <section id="bib-sec-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="bib1" label="1.">
+      Ahmad Akl, Chen Feng and Shakroh Valaee. 2011. A Novel Accelerometer-Based Gesture Recognition Sys-tem. In
+      <em>
+       IEEE Transactions on Signal Processing,
+      </em>
+      vol. 59, no. 12, pp. 6197-6205, Dec. 2011.
+     </li>
+     <li id="bib2" label="2.">
+      Neena Aloysius and M. Geetha. 2017. A review on deep convolutional neural networks. 2017
+      <em>
+       International Conference on Communication and Signal Processing (ICCSP),
+      </em>
+      Chennai, 2017, pp. 0588-0592.
+     </li>
+     <li id="bib3" label="3.">
+      Ethel J. Alpenfels. 1955. The Anthropology and Social Significance of the Human Hand. In
+      <em>
+       Artificial Limbs. Volume 2
+      </em>
+      , Number 2. 4-21.
+     </li>
+     <li id="bib4" label="4.">
+      Swamy Ananthanarayan, Miranda Sheh, Alice Chien, Halley Profita, and Katie Siek. 2013. Pt Viz: towards a wearable device for visualizing knee rehabilitation exercises. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI '13).
+      </em>
+      1247-1250.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2466161">
+       https://doi.org/10.1145/2470654.2466161
+      </a>
+     </li>
+     <li id="bib5" label="5.">
+      Android Wear 5.0.2 for Qualcomm chipsets, Inven-Sense MPU 6515 driver
+      <a class="link-inline force-break" href="https://android.googlesource.com/kernel/msm.git/+/android-wear-5.0.2_r0.1/drivers/iio/imu/inv_mpu6515">
+       https://android.googlesource.com/kernel/msm.git/+/android-wear-5.0.2_r0.1/drivers/iio/imu/inv_mpu6515
+      </a>
+     </li>
+     <li id="bib6" label="6.">
+      Ling Bao and Stephen S. Intille. 2004. Activity Recognition from User-Annotated Acceleration Data. In
+      <em>
+       Proceedings of Pervasive Computing '14. 1-17.
+      </em>
+      DOI: 10.1007/978-3-540-24646-6_1
+     </li>
+     <li id="bib7" label="7.">
+      Yannick Bernaerts, Matthias Druwé, Sebastiaan Steensels, Jo Vermeulen, and Johannes Schöning. 2014. The office smartwatch: development and design of a smart-watch app to digitally augment interactions in an office environment. In
+      <em>
+       Proceedings of the 2014 companion publication on Designing interactive systems (DIS Companion '14).
+      </em>
+      ACM, New York. 41-44. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2598784.2602777">
+       http://dx.doi.org/10.1145/2598784.2602777
+      </a>
+     </li>
+     <li id="bib8" label="8.">
+      Dave Berque, Jimmy Burgess, Alexander Billingsley, ShanKara Johnson, Terri L. Bonebright, and Brad Wethington. 2011. Design and evaluation of persuasive technology to encourage healthier typing behaviors. In
+      <em>
+       Proceedings of the 6th International Conference on Persuasive Technology: Persuasive Technology and De-sign: Enhancing Sustainability and Health (PERSUASIVE '11).
+      </em>
+      ACM, New York. Article 9, 10 pages. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2467803.2467812">
+       https://doi.org/10.1145/2467803.2467812
+      </a>
+     </li>
+     <li id="bib9" label="9.">
+      J. B. J. Bussmann, W. L. J. Martens, J. H. M. Tulen, F. C. Schasfoort, H. J. G. van den Berg-Emons, and H. J. Stam. 2001. Measuring daily behavior using ambulatory accelerometry: The Activity Monitor. In
+      <em>
+       Behavior Research Methods, Instruments, &amp; Computers.
+      </em>
+      August 2001, Volume 33, Issue 3, pp 349-356.
+     </li>
+     <li id="bib10" label="10.">
+      Yung-Ju Chang, Gaurav Paruthi, and Mark W. New-man. 2015. A field study comparing approaches to collecting annotated activity data in real-world settings. In
+      <em>
+       Proceedings of the 2015 ACM International Joint Conference on Pervasive and Ubiquitous Computing (UbiComp '15).
+      </em>
+      ACM, New York, NY, USA, 671-682. DOI:
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2750858.2807524">
+       http://dx.doi.org/10.1145/2750858.2807524
+      </a>
+     </li>
+     <li id="bib11" label="11.">
+      Soujanya Chatterjee, Karen Hovsepian, Hillol Sarker, Nazir Saleheen, Mustafa al'Absi, Gowtham Atluri, Emre Ertin, Cho Lam, Andrine Lemieux, Motohiro Nakajima, Bonnie Spring, David W. Wetter, and Santosh Kumar. 2016. mCrave: continuous estimation of craving during smoking cessation. In
+      <em>
+       Proceedings of the 2016 ACM International Joint Conference on Pervasive and Ubiquitous Computing (UbiComp '16).
+      </em>
+      ACM, New York, NY, USA, 863-874. DOI:
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2971648.2971672">
+       http://dx.doi.org/10.1145/2971648.2971672
+      </a>
+     </li>
+     <li id="bib12" label="12.">
+      Tanzeem Choudhury, Gaetano Borriello, Sunny Consolvo, Dirk Haehnel, Beverly Harrison, Bruce Heming-way, Jeffrey Hightower, Predrag "Pedja" Klasnja, Karl Koscher, Anthony LaMarca, James A. Landay, Louis LeGrand, Jonathan Lester, Ali Rahimi, Adam Rea, and Danny Wyatt. 2008. The Mobile Sensing Platform: An Embedded Activity Recognition System. In
+      <em>
+       IEEE Pervasive Computing 7, 2
+      </em>
+      (April 2008), 32-41. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1109/MPRV.2008.39">
+       http://dx.doi.org/10.1109/MPRV.2008.39
+      </a>
+     </li>
+     <li id="bib13" label="13.">
+      Brian Clarkson and Nitin Sawhney and Alex Pentland. 1998. Auditory Context Awareness via Wearable Computing. In
+      <em>
+       Proceedings of the 1998 Workshop on Perceptual User Interfaces (PUI '98).
+      </em>
+     </li>
+     <li id="bib14" label="14.">
+      Brian Clarkson. 2002. Life Patterns: Structure from Wearable Sensors.
+      <em>
+       Ph.D. Thesis
+      </em>
+      , Massachusetts Institute of Technology.
+     </li>
+     <li id="bib15" label="15.">
+      Gabe Cohn, Sidhant Gupta, Jon Froehlich, Eric Larson, and Shwetak N. Patel. 2010. GasSense: appliance-level, single-point sensing of gas activity in the home. In
+      <em>
+       Proceedings of the 8th international conference on Pervasive Computing (Pervasive'10).
+      </em>
+      265-282.
+     </li>
+     <li id="bib16" label="16.">
+      Sunny Consolvo, David W. McDonald, Tammy Toscos, Mike Y. Chen, Jon Froehlich, Beverly Harrison, Predrag Klasnja, Anthony LaMarca, Louis LeGrand, Ryan Libby, Ian Smith, and James A. Landay. 2008. Activity sensing in the wild: a field trial of ubifit garden. In
+      <em>
+       Proceedings of the SIGCHI Conference on Hu-man Factors in Computing Systems (CHI '08).
+      </em>
+      ACM, New York, NY, USA, 1797-1806. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/1357054.1357335">
+       http://dx.doi.org/10.1145/1357054.1357335
+      </a>
+     </li>
+     <li id="bib17" label="17.">
+      Mihaly Csikszentmihalyhi and Reed Larson. 1987. Validity and Reliability of the Experience-Sampling Method.
+      <em>
+       Journal of Nervous and Mental Disease.
+      </em>
+      175:526-536.
+     </li>
+     <li id="bib18" label="18.">
+      Mark R. Cutkosky. 1989. On grasp choice, grasp models, and the design of hands for manufacturing tasks. In
+      <em>
+       IEEE Transactions on Robotics and Automation
+      </em>
+      , vol. 5, no. 3. 269-279.
+     </li>
+     <li id="bib19" label="19.">
+      Siddharth Dalal, Majd Alwan, Reza Seifrafi, Steve Kell, and Donald Brown. A rule-based approach to the analysis of elders activity data: Detection of health and possible emergency conditions. In
+      <em>
+       Proceedings of AAAI Fall 2005 Symposium.
+      </em>
+      2545-2552, 2005.
+     </li>
+     <li id="bib20" label="20.">
+      Huong Giang Doan, Hai Vu, and Thanh Hai Tran. 2015. Recognition of hand gestures from cyclic hand movements using spatial-temporal features. In
+      <em>
+       Proceedings of the Sixth International Symposium on Information and Communication Technology (SoICT 2015).
+      </em>
+      ACM, New York, NY, USA, 260-267. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2833258.2833301">
+       http://dx.doi.org/10.1145/2833258.2833301
+      </a>
+     </li>
+     <li id="bib21" label="21.">
+      Aaron M. Dollar. 2014. Classifying Human Hand Use and the Activities of Daily Living. The Human Hand as an Inspiration for Robot Hand Development. Volume 95, Springer
+      <em>
+       Tracts in Advanced Robotics
+      </em>
+      . 201-216.
+     </li>
+     <li id="bib22" label="22.">
+      Daniel A. Epstein, Jennifer H. Kang, Laura R. Pina, James Fogarty, and Sean A. Munson. 2016. Reconsidering the device in the drawer: lapses as a design opportunity in personal informatics. In
+      <em>
+       Proceedings of the 2016 ACM International Joint Conference on Pervasive and Ubiquitous Computing (UbiComp '16).
+      </em>
+      ACM, New York, NY, USA, 829-840. DOI:
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2971648.2971656">
+       http://dx.doi.org/10.1145/2971648.2971656
+      </a>
+     </li>
+     <li id="bib23" label="23.">
+      FitBit. Healt and Activity Index. Last Accessed: January 2, 2019.
+      <a class="link-inline force-break" href="https://www.fitbit.com/activity-index">
+       https://www.fitbit.com/activity-index
+      </a>
+     </li>
+     <li id="bib24" label="24.">
+      F. Foerster, M. Smeja, J. Fahrenberg. 1999. Detection of posture and motion by accelerometry: a validation study in ambulatory monitoring. In
+      <em>
+       Computers in Human Behavior,
+      </em>
+      Volume 15, Issue 5, 1 September 1999, Pages 571-583, ISSN 0747-5632,
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1016/S0747-5632(99)00037-0.">
+       http://dx.doi.org/10.1016/S0747-5632(99)00037-0.
+      </a>
+     </li>
+     <li id="bib25" label="25.">
+      James Fogarty, Scott E. Hudson, and Jennifer Lai. 2004. Examining the robustness of sensor-based statistical models of human interruptibility. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI '04).
+      </em>
+      ACM, New York. 207-214. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/985692.985719">
+       http://dx.doi.org/10.1145/985692.985719
+      </a>
+     </li>
+     <li id="bib26" label="26.">
+      Jon E. Froehlich, Eric Larson, Tim Campbell, Conor Haggerty, James Fogarty, and Shwetak N. Patel. 2009. HydroSense: infrastructure-mediated single-point sensing of whole-home water activity. In
+      <em>
+       Proceedings of the 11th international conference on Ubiquitous computing (UbiComp '09).
+      </em>
+      ACM, New York, NY, USA, 235-244. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/1620545.1620581">
+       http://dx.doi.org/10.1145/1620545.1620581
+      </a>
+     </li>
+     <li id="bib27" label="27.">
+      Sidhant Gupta, Daniel Morris, Shwetak Patel, and Desney Tan. 2012. SoundWave: using the doppler effect to sense gestures. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI '12).
+      </em>
+      ACM, New York, NY, USA, 1911-1914. DOI:
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2207676.2208331">
+       http://dx.doi.org/10.1145/2207676.2208331
+      </a>
+     </li>
+     <li id="bib28" label="28.">
+      Chris Harrison, Desney Tan, and Dan Morris. 2010. Skinput: appropriating the body as an input surface. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI '10).
+      </em>
+      ACM, New York, NY, USA, 453-462. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/1753326.1753394">
+       http://dx.doi.org/10.1145/1753326.1753394
+      </a>
+     </li>
+     <li id="bib29" label="29.">
+      Scott Hudson, James Fogarty, Christopher Atkeson, Daniel Avrahami, Jodi Forlizzi, Sara Kiesler, Johnny Lee, and Jie Yang. 2003. Predicting human interruptibility with sensors: A Wizard of Oz feasibility study. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI '03).
+      </em>
+      257-264. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/642611.642657">
+       http://dx.doi.org/10.1145/642611.642657
+      </a>
+     </li>
+     <li id="bib30" label="30.">
+      InvenSense, Inc. MPU-6500 Register Map and Descriptions Revision 2.1. September 16, 2013.
+      <a class="link-inline force-break" href="https://www.invensense.com/wp-content/uploads/2015/02/MPU-6500-Register-Map2.pdf">
+       https://www.invensense.com/wp-content/uploads/2015/02/MPU-6500-Register-Map2.pdf
+      </a>
+     </li>
+     <li id="bib31" label="31.">
+      Sergey Ioffe and Christian Szegedy. 2015. Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift. In
+      <em>
+       ICML, volume 37 of JMLR Workshop and Conference Proceedings.
+      </em>
+      448-456.
+     </li>
+     <li id="bib32" label="32.">
+      Howell Istance, Richard Bates, Aulikki Hyrskykari, and Stephen Vickers. 2008. Snap clutch, a modeled approach to solving the Midas touch problem. In
+      <em>
+       Proceedings of the 2008 symposium on Eye tracking research &amp; applications (ETRA '08).
+      </em>
+      221-228. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1344471.1344523">
+       https://doi.org/10.1145/1344471.1344523
+      </a>
+     </li>
+     <li id="bib33" label="33.">
+      Elisabeth T. Kersten-van Dijk, Joyce H.D.M. Westerink, Femke Beute &amp; Wijnand A. IJsselsteijn. 2017. Personal Informatics, Self-Insight, and Behavior Change: A Critical Review of Current Literature. In
+      <em>
+       Journal of Human-Computer Interaction.
+      </em>
+      Taylor &amp; Francis Publishing. 1-29. DOI
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1080/07370024.2016.1276456">
+       http://dx.doi.org/10.1080/07370024.2016.1276456
+      </a>
+     </li>
+     <li id="bib34" label="34.">
+      Aftab Khan, Sebastian Mellor, Eugen Berlin, Robin Thompson, Roisin McNaney, Patrick Olivier, and Thomas Plötz. 2015. Beyond activity recognition: skill assessment from accelerometer data. In
+      <em>
+       Proceedings of the 2015 ACM International Joint Conference on Pervasive and Ubiquitous Computing (UbiComp '15).
+      </em>
+      ACM, New York, NY, USA, 1155-1166. DOI:
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2750858.2807534">
+       http://dx.doi.org/10.1145/2750858.2807534
+      </a>
+     </li>
+     <li id="bib35" label="35.">
+      David Kim, Otmar Hilliges, Shahram Izadi, Alex D. Butler, Jiawen Chen, Iason Oikonomidis, and Patrick Olivier. 2012. Digits: freehand 3D interactions any-where using a wrist-worn gloveless sensor. In
+      <em>
+       Proceedings of the 25th annual ACM symposium on User inter-face software and technology (UIST '12).
+      </em>
+      ACM, New York, NY, USA, 167-176. DOI:
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2380116.2380139">
+       http://dx.doi.org/10.1145/2380116.2380139
+      </a>
+     </li>
+     <li id="bib36" label="36.">
+      Jacek A. Kopec, John M. Esdaile. 1990. Bias in case-control studies: A review.
+      <em>
+       Journal of epidemiology and community health.
+      </em>
+      44 (3): 179-86
+     </li>
+     <li id="bib37" label="37.">
+      Wilton M. Krogman. 1942. The Anthropology of the hand.
+      <em>
+       Ciba Symposia
+      </em>
+      , Vol. 4 (4). 1294.
+     </li>
+     <li id="bib38" label="38.">
+      Gierad Laput, Chouchang Yang, Robert Xiao, Alanson Sample, and Chris Harrison. 2015. EM-Sense: Touch Recognition of Uninstrumented, Electrical and Electromechanical Objects.
+      <em>
+       In Proc. of the 28th Annual ACM Symposium on User Interface Software &amp; Technology (UIST '15).
+      </em>
+      157-166. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2807442.2807481">
+       https://doi.org/10.1145/2807442.2807481
+      </a>
+     </li>
+     <li id="bib39" label="39.">
+      Gierad Laput, Robert Xiao, and Chris Harrison. 2016. ViBand: High-Fidelity Bio-Acoustic Sensing Using Commodity Smartwatch Accelerometers. In
+      <em>
+       Proceedings of the 29th Annual Symposium on User Interface Software and Technology (UIST '16).
+      </em>
+      321-333. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2984511.2984582">
+       https://doi.org/10.1145/2984511.2984582
+      </a>
+     </li>
+     <li id="bib40" label="40.">
+      Gierad Laput, Yang Zhang, and Chris Harrison. 2017. Synthetic Sensors: Towards General-Purpose Sensing. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (CHI '17). ACM, New York, NY, USA, 3986-3999. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025773">
+       https://doi.org/10.1145/3025453.3025773
+      </a>
+     </li>
+     <li id="bib41" label="41.">
+      Gierad Laput, Karan Ahuja, Mayank Goel, and Chris Harrison. 2018. Ubicoustics: Plug-and-Play Acoustic Activity Recognition. In
+      <em>
+       Proceedings of the 31st Annual ACM Symposium on User Interface Software and Technology (UIST '18)
+      </em>
+      . ACM, New York, NY, USA, 213-224. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3242587.3242609">
+       https://doi.org/10.1145/3242587.3242609
+      </a>
+     </li>
+     <li id="bib42" label="42.">
+      Walter S. Lasecki, Young Chol Song, Henry Kautz, and Jeffrey P. Bigham. 2013. Real-time crowd labeling for deployable activity recognition. In
+      <em>
+       Proceedings of the 2013 conference on Computer supported cooperative work (CSCW '13).
+      </em>
+      1203-1212. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2441776.2441912">
+       http://dx.doi.org/10.1145/2441776.2441912
+      </a>
+     </li>
+     <li id="bib43" label="43.">
+      Seon-Woo Lee and Kenji Mase. 2002. Activity and Location Recognition Using Wearable Sensors. In
+      <em>
+       IEEE Pervasive Computing
+      </em>
+      1, 3 (July 2002), 24-32. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1109/MPRV.2002.1037719">
+       http://dx.doi.org/10.1109/MPRV.2002.1037719
+      </a>
+     </li>
+     <li id="bib44" label="44.">
+      Hanchuan Li, Can Ye, and Alanson P. Sample. 2015. IDSense: A Human Object Interaction Detection System Based on Passive UHF RFID. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems (CHI '15).
+      </em>
+      ACM, New York, NY, USA, 2555-2564. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702178">
+       https://doi.org/10.1145/2702123.2702178
+      </a>
+     </li>
+     <li id="bib45" label="45.">
+      Jaime Lien, Nicholas Gillian, M. Emre Karagozler, Patrick Amihood, Carsten Schwesig, Erik Olson, Hakim Raja, and Ivan Poupyrev. 2016. Soli: ubiquitous gesture sensing with millimeter wave radar.
+      <em>
+       ACM Trans. Graph
+      </em>
+      . 35, 4, Article 142 (July 2016), 19 pages. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2897824.2925953">
+       https://doi.org/10.1145/2897824.2925953
+      </a>
+     </li>
+     <li id="bib46" label="46.">
+      Beth Logan, Jennifer Healey, Matthai Philipose, Emmanuel Munguia Tapia, and Stephen Intille. 2007. A long-term evaluation of sensing modalities for activity recognition. In
+      <em>
+       Proceedings of the 9th international conference on Ubiquitous computing (UbiComp '07).
+      </em>
+      Springer-Verlag, Berlin, Heidelberg, 483-500.
+     </li>
+     <li id="bib47" label="47.">
+      Takuya Maekawa, Yasue Kishino, Yutaka Yanagisawa and Yasushi Sakurai. 2012. WristSense: Wrist-worn sensor device with camera for daily activity recognition. In
+      <em>
+       IEEE Pervasive Computing.
+      </em>
+      510-512.
+     </li>
+     <li id="bib48" label="48.">
+      David McNeill. 1985. So You Think Gestures Are Nonverbal? In Psychological Review 92, No. 3. 350-371.
+     </li>
+     <li id="bib49" label="49.">
+      Dan Morris, T. Scott Saponas, Andrew Guillory, and Ilya Kelner. 2014. RecoFit: using a wearable sensor to find, recognize, and count repetitive exercises. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI '14).
+      </em>
+      ACM, New York, NY, USA, 3225-3234. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2556288.2557116">
+       https://doi.org/10.1145/2556288.2557116
+      </a>
+     </li>
+     <li id="bib50" label="50.">
+      Alessandra Moschetti, Laura Fiorini, Dario Esposito, Paolo Dario, and Filippo Cavallo. 2016. Recognition of Daily Gestures with Wearable Inertial Rings and Bracelets. In
+      <em>
+       Sensors
+      </em>
+      (Basel, Switzerland) vol. 16,8 1341. 22 Aug. 2016. DOI:10.3390/s16081341
+     </li>
+     <li id="bib51" label="51.">
+      Alessandra Moschetti, Laura Fiorini, Dario Esposito, Paolo Dario, and Filippo Cavallo. 2017. Daily activity recognition with inertial ring and bracelet: An unsupervised approach. In
+      <em>
+       Proceedings of IEEE International Conference on Robotics and Automation (ICRA),
+      </em>
+      Singapore, 2017, pp. 3250-3255. DOI: 10.1109/ICRA.2017.7989370
+     </li>
+     <li id="bib52" label="52.">
+      Josip Music and Roderick Murray-Smith. 2010. Virtual hooping: teaching a phone about hula-hooping for fitness, fun and rehabilitation. In
+      <em>
+       Proceedings of Mobile HCI (MobileHCI '10).
+      </em>
+      ACM, New York, NY, USA, 309-312. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/1851600.1851654">
+       http://dx.doi.org/10.1145/1851600.1851654
+      </a>
+     </li>
+     <li id="bib53" label="53.">
+      Vinod Nair and Geoffrey E. Hinton. 2010. Rectified Linear Units Improve Restricted Boltzmann Machines. In
+      <em>
+       Proceedings of the 27th International Conference on Machine Learning (ICML-10).
+      </em>
+      807-814.
+     </li>
+     <li id="bib54" label="54.">
+      Masa Ogata and Michita Imai. 2015. SkinWatch: skin gesture interaction for smart watch. In
+      <em>
+       Proceedings of the 6th Augmented Human International Conference (AH '15).
+      </em>
+      ACM, New York, NY, USA, 21-24. DOI:
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2735711.2735830">
+       http://dx.doi.org/10.1145/2735711.2735830
+      </a>
+     </li>
+     <li id="bib55" label="55.">
+      Vesa Peltonen, Juha Tuomi, Anssi Klapuri, Jyri Huopaniemi and Timo Sorsa. 2002. Computational auditory scene recognition. In
+      <em>
+       IEEE International Conference on Acoustics, Speech, and Signal Processing,
+      </em>
+      Orlando, FL, USA, 2002, pp. II-1941-II-1944.
+     </li>
+     <li id="bib56" label="56.">
+      John K. Perng, Brian Fisher, Seth Hollar and Kristofer S. J. Pister. 1999. Acceleration sensing glove (ASG)". In
+      <em>
+       Proceedings of the Third International Symposium on Wearable Computers,
+      </em>
+      San Francisco, CA, USA, 1999, pp. 178-180.
+     </li>
+     <li id="bib57" label="57.">
+      Matthai Philipose. 2005. Large-Scale Human Activity Recognition Using Ultra-Dense Sensing. In
+      <em>
+       The Bridge, National Academy of Engineering.
+      </em>
+     </li>
+     <li id="bib58" label="58.">
+      Cliff Randell and Henk Muller. 2000. Context Aware-ness by Analyzing Accelerometer Data. In
+      <em>
+       Proceedings of the 4th IEEE International Symposium on Wearable Computers (ISWC '00).
+      </em>
+      IEEE, Washington, DC, USA, 175.
+     </li>
+     <li id="bib59" label="59.">
+      Marilyn J. Rantz
+      <em>
+       et al.
+      </em>
+      2011. Using sensor networks to detect urinary tract infections in older adults. In
+      <em>
+       IEEE 13th International Conference on e-Health Networking, Applications and Services,
+      </em>
+      Columbia, MO, 2011, pp. 142-149.
+     </li>
+     <li id="bib60" label="60.">
+      Ruth Ravichandran, Elliot Saba, Ke-Yu Chen, Mayank Goel, Sidhant Gupta and Shwetak N. Patel. 2015. Wi-Breathe: Estimating respiration rate using wireless signals in natural settings in the home. In
+      <em>
+       IEEE International Conference on Pervasive Computing and Communications (PerCom),
+      </em>
+      St. Louis, MO, 2015, pp. 131-139.
+     </li>
+     <li id="bib61" label="61.">
+      T. Scott Saponas, Desney S. Tan, Dan Morris, Ravin Balakrishnan, Jim Turner, and James A. Landay. 2009. Enabling always-available input with muscle-computer interfaces. In
+      <em>
+       Proceedings of the 22nd annual ACM symposium on User interface software and technology (UIST '09).
+      </em>
+      167-176. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/1622176.1622208">
+       http://dx.doi.org/10.1145/1622176.1622208
+      </a>
+     </li>
+     <li id="bib62" label="62.">
+      Dominik Scherer, Andreas C. Müller, and Sven Behnke. 2010. Evaluation of Pooling Operations in Convolutional Architectures for Object Recognition. In
+      <em>
+       Artificial Neural Networks (ICANN),
+      </em>
+      20th International Conference on. Thessaloniki, Greece: Springer. 92-101.
+     </li>
+     <li id="bib63" label="63.">
+      Frank M. Shipman, Ricardo Gutierrez-Osuna, and Caio D. D. Monteiro. 2014. Identifying Sign Language Videos in Video Sharing Sites. In
+      <em>
+       ACM Trans. Access. Comput. 5, 4, Article 9 (March 2014),
+      </em>
+      14 pages. DOI:
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2579698">
+       http://dx.doi.org/10.1145/2579698
+      </a>
+     </li>
+     <li id="bib64" label="64.">
+      Karen Simonyan and Andrew Zisserman. 2014. Very Deep Convolutional Networks for Large-Scale Image Recognition. In arXiv. eprint arXiv:1409.1556. 2014arXiv1409.1556S
+     </li>
+     <li id="bib65" label="65.">
+      Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, and Ruslan Salakhutdinov. 2014. Drop-out: a simple way to prevent neural networks from over-fitting.
+      <em>
+       In J. Mach. Learn. Res.
+      </em>
+      15, 1 (January 2014), 1929-1958.
+     </li>
+     <li id="bib66" label="66.">
+      Thad Starner, Bernt Schiele and Alex Pentland. 1998. Visual contextual awareness in wearable computing". In
+      <em>
+       Proc. of the Second International Symposium on Wearable Computers (Cat. No.98EX215),
+      </em>
+      1998, pp. 50-57.
+     </li>
+     <li id="bib67" label="67.">
+      Todor Stojanov and Xue-Mei Ding. 2015. Operators Skill Level Evaluation Method for Balancing of an Apparel Assembly Line.
+      <em>
+       Int. J. Productiv. Manage. As-sess. Technol.
+      </em>
+      3, 1 (January 2015), 1-12. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.4018/IJPMAT.2015010101">
+       http://dx.doi.org/10.4018/IJPMAT.2015010101
+      </a>
+     </li>
+     <li id="bib68" label="68.">
+      James S. Taylor. 1985. Vibration syndrome in industry: Dermatological viewpoint.
+      <em>
+       Am. J. Ind. Med
+      </em>
+      ., 8: 415-432. doi:10.1002/ajim.4700080423
+     </li>
+     <li id="bib69" label="69.">
+      Vibration Syndrome. Current Intelligence Bulletin #38. National Institute for Occupational Safety and Health (NIOSH), Publication No. 83-110. March 29, 1983. Cincinnati, OH.
+     </li>
+     <li id="bib70" label="70.">
+      Christian Vogler and Dimitris Metaxas. 1998. ASL recognition based on a coupling between HMMs and 3D motion analysis. In
+      <em>
+       Proc. of the Sixth International Conference on Computer Vision,
+      </em>
+      IEEE Cat. No.98CH36271, Bombay, 1998, pp. 363-369.
+     </li>
+     <li id="bib71" label="71.">
+      Edward J. Wang, Tien-Jui Lee, Alex Mariakakis, Ma-yank Goel, Sidhant Gupta, and Shwetak N. Patel. 2015. MagnifiSense: inferring device interaction using wrist-worn passive magneto-inductive sensors. In Proceedings of the 2015 ACM
+      <em>
+       International Joint Conference on Pervasive and Ubiquitous Computing (UbiComp '15).
+      </em>
+      ACM, New York, NY, USA, 15-26. DOI:
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2750858.2804271">
+       http://dx.doi.org/10.1145/2750858.2804271
+      </a>
+     </li>
+     <li id="bib72" label="72.">
+      Jamie. A. Ward, Paul Lukowicz, Gerhard Troster and Thad E. Starner. 2006. Activity Recognition of Assembly Tasks Using Body-Worn Microphones and Accelerometers. In
+      <em>
+       IEEE Transactions on Pattern Analysis and Machine Intelligence,
+      </em>
+      vol. 28, no. 10, pp. 1553-1567, Oct. 2006.
+     </li>
+     <li id="bib73" label="73.">
+      Hiroki Watanabe, Tsutomu Terada, and Masahiko Tsukamoto. 2013. Ultrasound-based movement sensing, gesture-, and context-recognition. In
+      <em>
+       Proceedings of the 2013 International Symposium on Wearable Computers (ISWC '13).
+      </em>
+      ACM, New York, NY, USA, 57-64. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1145/2493988.2494335">
+       http://dx.doi.org/10.1145/2493988.2494335
+      </a>
+     </li>
+     <li id="bib74" label="74.">
+      David Way and Joseph Paradiso. 2014. A Usability User Study Concerning Free-Hand Microgesture and Wrist-Worn Sensors. In
+      <em>
+       Proceedings of the 2014 11th International Conference on Wearable and Implantable Body Sensor Networks (BSN '14).
+      </em>
+      IEEE, Washington, DC, USA, 138-142. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1109/BSN.2014.32">
+       http://dx.doi.org/10.1109/BSN.2014.32
+      </a>
+     </li>
+     <li id="bib75" label="75.">
+      Hongyi Wen, Julian Ramos Rojas, and Anind K. Dey. 2016. Serendipity: Finger Gesture Recognition using an Off-the-Shelf Smartwatch. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems (CHI '16).
+      </em>
+      3847-3851. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858466">
+       https://doi.org/10.1145/2858036.2858466
+      </a>
+     </li>
+     <li id="bib76" label="76.">
+      Frank R. Wilson. 1998. The Hand: How its use shapes the brain, language, and human culture. Random House, Inc.
+     </li>
+     <li id="bib77" label="77.">
+      Charlotte Wolf. 1942. The Human Hand. Methuen, London.
+     </li>
+     <li id="bib78" label="78.">
+      Iwan G. J. H. Wopereis, Jeroen J. G. van Merriënboer, and Paul A. Kirschner. 2010. Improvising in music: a learning biography study to reveal skill acquisition. In
+      <em>
+       Proceedings of the 9th International Conference of the Learning Sciences - Volume 2 (ICLS '10),
+      </em>
+      Vol. 2. International Society of the Learning Sciences 419-420.
+     </li>
+     <li id="bib79" label="79.">
+      Jie Yang, Jiang Gao, Ying Zhang, and Alex Waibel. 2001. Towards automatic sign translation. In
+      <em>
+       Proceedings of the first international conference on Human language technology research (HLT '01).
+      </em>
+      1-6. DOI=
+      <a class="link-inline force-break" href="http://dx.doi.org/10.3115/1072133.1072223">
+       http://dx.doi.org/10.3115/1072133.1072223
+      </a>
+     </li>
+     <li id="bib80" label="80.">
+      Hui-Shyong Yeo, Gergely Flamich, Patrick Schrempf, David Harris-Birtill, and Aaron Quigley. 2016. Radar-Cat: Radar Categorization for Input &amp; Interaction. In
+      <em>
+       Proceedings of the 29th Annual Symposium on User Interface Software and Technology (UIST '16).
+      </em>
+      ACM, New York, NY, USA, 833-841. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2984511.2984515">
+       https://doi.org/10.1145/2984511.2984515
+      </a>
+     </li>
+     <li id="bib81" label="81.">
+      Ouyang Zhang and Kannan Srinivasan. 2016. Mudra: User-friendly Fine-grained Gesture Recognition using WiFi Signals. In
+      <em>
+       Proceedings of the 12th International on Conference on emerging Networking Experiments and Technologies (CoNEXT '16).
+      </em>
+      ACM, New York, NY, USA, 83-96. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2999572.2999582">
+       https://doi.org/10.1145/2999572.2999582
+      </a>
+     </li>
+     <li id="bib82" label="82.">
+      Yang Zhang and Chris Harrison. 2015. Tomo: Wearable, Low-Cost Electrical Impedance Tomography for Hand Gesture Recognition. In
+      <em>
+       Proceedings of the 28th Annual ACM Symposium on User Interface Software &amp; Technology (UIST '15).
+      </em>
+      167-173. DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2807442.2807480">
+       https://doi.org/10.1145/2807442.2807480
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Association for Computing Machinery.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300568" target="_blank">
+      https://doi.org/10.1145/3290605.3300568
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8757e32bc8ba90f4',t:'MTcxMzMwOTQzMi4wNDYwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

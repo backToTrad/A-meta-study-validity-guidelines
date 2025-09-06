@@ -27,7 +27,21 @@ class PaperParser:
 
     def get_abstract(self) -> str:
         """Returns the abstract of a paper"""
+        # Try the old format first (2023 files)
         abstract_tag = self.soup.find("div", class_="abstract")
+        
+        # If not found, try the new format (2025 files)
+        if abstract_tag is None:
+            abstract_tag = self.soup.find("section", {"id": "abstract", "role": "doc-abstract"})
+        
+        # If still not found, try alternative selectors
+        if abstract_tag is None:
+            abstract_tag = self.soup.find("section", {"data-type": "main", "id": "abstract"})
+        
+        # Try the summary-abstract format (newer 2025 files)
+        if abstract_tag is None:
+            abstract_tag = self.soup.find("section", {"id": "summary-abstract"})
+        
         if abstract_tag is None:
             raise RuntimeError("Abstract not found!")
         return abstract_tag.text.strip()
@@ -143,10 +157,11 @@ class PaperParser:
         pattern = re.compile(r"^sec")
         sections = self.soup.find_all("section", id=pattern)
         for section in sections:
+            # Try different header structures
             headers = section.find_all("header")
             for header in headers:
                 title_info = header.find("div", class_="title-info")
-                if title_info.get_text().strip().endswith(title):
+                if title_info and title_info.get_text().strip().endswith(title):
                     section_copy = copy(section)
                     # Remove any tables
                     for table_div in section_copy.find_all("div", class_="table-responsive"):
@@ -155,6 +170,19 @@ class PaperParser:
                     for figure_to_remove in section_copy.find_all("figure"):
                         figure_to_remove.decompose()
                     return self.clean_cite(section_copy.get_text())
+            
+            # Also try direct h2, h3 tags (for 2025 format)
+            for header_tag in section.find_all(["h2", "h3", "h4", "h5"]):
+                if header_tag.get_text().strip().endswith(title):
+                    section_copy = copy(section)
+                    # Remove any tables
+                    for table_div in section_copy.find_all("div", class_="table-responsive"):
+                        table_div.decompose()
+                    # Remove any figures
+                    for figure_to_remove in section_copy.find_all("figure"):
+                        figure_to_remove.decompose()
+                    return self.clean_cite(section_copy.get_text())
+        
         raise ValueError(f'No section with title "{title}" available!')
 
 

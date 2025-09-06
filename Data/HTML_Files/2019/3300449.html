@@ -1,0 +1,2163 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Interpreting the Diversity in Subjective Judgments
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300449_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300449_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300449_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300449_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300449_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300449_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300449_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300449_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Interpreting the Diversity in Subjective Judgments
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Jean-Bernard
+      </span>
+      <span class="surName">
+       Martens
+      </span>
+      , Eindhoven University of Technology, Netherlands,
+      <a href="mailto:j.b.o.s.martens@tue.nl">
+       j.b.o.s.martens@tue.nl
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300449" target="_blank">
+       https://doi.org/10.1145/3290605.3300449
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       In a CHI paper from 10 years ago, entitled ”Accounting for Diversity in Subjective Judgments”, an interesting dichotomy was reported between, on the one side, the increased use of idiosyncratic constructs when judging the user experience of diverse products and, on the other hand, the statistical methods available to analyze such data. The paper more specifically proposed a method to extract diverse perspectives (called views) from experimental data. The current paper provides three improvements of this existing method by: 1) showing that a little-known approach for clustering attributes, called VARCLUS, can be applied and extended to provide a more optimal algorithm, 2) showing how the VARCLUS method can be applied to perform both within- and across-subject analysis, and 3) providing access to the VARCLUS method by incorporating it in ILLMO, a user-friendly and freely available program for interactive statistics.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → User studies
+       </strong>
+       ;
+       <em>
+        Empirical studies in HCI;
+       </em>
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        User Experience
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        Diversity
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        Repertory Grid
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        Quantitative Methods
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        Clustering
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Jean-Bernard Martens. 2019. Interpreting the Diversity in Subjective Judgments. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 11 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300449" target="_blank">
+         https://doi.org/10.1145/3290605.3300449
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     In the field of human-computer interaction, we take it for granted that human judgements, and not technical features, decide the (potential) value of the products that we design. The products that we design, such as smart phone or website applications, are becoming increasingly complex so that only a fraction of their features may appeal to a specific user or in a specific context of use. This results in users developing an idiosyncratic perspective on the (expected) user experience when faced with a new product.
+    </p>
+    <p>
+     In the field of user-experience research it has long been recognized that standardized, and therefore generically formulated, questionnaires may fail to fully capture such personal perspectives. In the paper ”Accounting for Diversity in Subjective Judgments” [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ], the authors therefore formulated the increasingly popular point of view that ”An alternative approach to posing predefined questionnaires to participants lies in a combination of
+     <em>
+      structured interviewing
+     </em>
+     , that aims at eliciting the attributes that are personally meaningful for each individual, with a subsequent
+     <em>
+      rating process
+     </em>
+     performed on the attributes that were elicited during the interview”. Mixing personalized attributes with attributes from standardized questionnaires is another popular approach. Note that the interpretation of standardized questions may also vary across subjects, so it can even be advisable to treat the answers to such questions as personal attributes.
+    </p>
+    <p>
+     A very popular technique for structured interviewing is the Repertory Grid Technique (RGT) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+      15
+     </a>
+     ], in which subjects are presented with triplets of products and their task is to come up with criteria for distinguishing two of the products from the third one. Subsequent laddering can be used to dissect such criteria into more basic personal attributes and to establish how such criteria contribute to the end-user judgement on the products.
+    </p>
+    <p>
+     While the above approach is by now widely accepted and practiced in diverse application areas in the field of user-experience research [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ], it also creates a problem, as discussed in more depth in [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ]. Most often we are interested in generalizing the observations made by individual participants in a study, but also not up to the point where all individual perspectives are averaged out. This implies that, in the analysis of such data, we need some flexibility in controlling the level of generalization or, if viewed from the opposite perspective, the level up to which individual perspectives should be reflected.
+    </p>
+    <p>
+     The analysis method in [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ] is a proposal for how to derive a number of distinct perspectives from ratings of personal attributes. Rather than constructing a single multi-dimensional model from the experimental data, a number of distinct two-dimensional (2D) models, called
+     <em>
+      views
+     </em>
+     , are derived. The proposed method is however quite rigid and difficult to execute, which is why the current paper presents a new method that is not only more optimal, but also more flexible and more easily accessible and easy to use. The latter aspect has been accomplished by integrating the new method in a freely available program for doing interactive statistics [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ].
+    </p>
+    <figure id="fig1">
+     <img alt="" class="img-responsive" longdesc="" src="3300449_files\chi2019219fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       The 2D view on the left is derived from the 9 scaled attribute judgements on 8 (activity) bracelets. The length of the arrows are proportional to the fraction of explained variance, where the circle corresponds to a fraction of 1 (perfect correlation). The graph on the right shows the correlation between the measured values on the first attribute and the predictions according to the 2D view, which are the coordinates of the 8 bracelets (s1-s8) in the direction of the
+       <em>
+        A1:Jewelry
+       </em>
+       vector.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       INTRODUCTION TO 2D VIEWS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Before demonstrating how multiple 2D views can be derived from an extensive experimental data set, we start with a fairly simple example illustrating the use of a single 2D view in product design. We want the reader to be aware of the fact that clustering (of which the VARCLUS method discussed in this paper is one example) is an exploratory data analysis technique, aimed at giving users insights into their data, and that there are no widely accepted objective criteria for comparing clustering algorithms (which explains why there are some many variations). In the end it comes down to the insights that users can extract from the visualisations (such as the 2D views) being generated.
+    </p>
+    <p>
+     A student (Daphne Menheere) at our department of Industrial Design collected user impressions about 8 commercially available bracelets, six of which were (physical) activity bracelets (see
+     <a class="link-inline force-break" href="http://www.daphnemenheere.nl/M12/pdf">
+      http://www.daphnemenheere.nl/M12/pdf
+     </a>
+     for more details). She first conducted structured interviewing using the Repertory Grid Technique, which resulted in nine attributes that users proposed as viable ways to compare the bracelets. These attributes were subsequently used to create a questionnaire in which subjects needed to rate (on a 7-point scale) their agreement with statements such as: this bracelet can be considered as {Jewelry, Feminine, Masculine, Unisex, Sportive, Tough, Luxurious, Graceful, Easy to Combine}. Three points on the 7-point scale were labeled as completely disagree (1), neutral (4) and completely agree (7).
+    </p>
+    <p>
+     The responses from 5 subjects for all 8 bracelets and 9 attributes were used by the VARCLUS algorithm, discussed in the next section, to derive the 2D view shown in the left graph in Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     . This view provides insight into the existing design space. Especially noteworthy is the negative correlation between the semantically distinct attributes
+     <em>
+      A2:Feminine
+     </em>
+     and
+     <em>
+      A5:Sportive
+     </em>
+     , which reveals a premise that seems to be implicit in the design space of the products that were investigated. Assuming that sportive and feminine are opposite attributes is obviously nonsense in general but nevertheless seems to hold true within the set of commercially available bracelets. This led the student to develop a bracelet that scored high on both of these attributes (and that would hence not fit very well in the 2D view that inspired it in the first place). In this sense, we could state that 2D views are not only intended at visualizing the current situation, but also at broadening our view towards new opportunities. Combining features of existing products, which corresponds to imagining products that are in between existing products in the 2D view, can be considered as evolutionary design, while breaking some relationships (or dependencies) that seem to be implicitly present in the view on existing products, can be characterized as more revolutionary design.
+    </p>
+    <p>
+     The case where all empirical data can be represented into a single 2D view is rather unusual. In cases where not all attributes can be adequately represented, existing clustering algorithms adopt a multi-dimensional space as model. The problem with such multi-dimensional spaces is of course that they are hard to visualize and hence do not serve well their primary purpose, which is to help explore relationships in the data. Some form of interaction is often provided in order to allow the user to generate (a succession of) 2D images that correspond to distinctive perspective views on the more-dimensional space. The strategy adopted here is not to rely on such user interaction to find interesting perspectives, but instead to aim directly at generating 2D views that offer complementary perspectives (technically speaking, a number of such 2D views could always be combined into a multi-dimensional model).
+    </p>
+   </section>
+   <section id="sec-4">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       MULTIPLE 2D VIEWS
+      </h2>
+     </div>
+    </header>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Experimental Data
+       </h3>
+      </div>
+     </header>
+     <p>
+      In order to facilitate comparison to the paper of Karapanos et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ], we adopt the same experimental data that they used to illustrate their method. The data concerned emerged from an RGT experiment [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ] with 10 students of the Technical University of Darmstadt (TUD) who rated the homepage of 8 German universities on personal constructs. The RGT experiment produced 118 personal attributes (10 to 14 per subject). The 10 subjects rated the 8 websites on a separate 7-point Likert scale for each of the attributes that they proposed.
+     </p>
+     <p>
+      In subsequent analyses performed in this paper the eight university websites will be referenced as: (s1) Darmstadt, (s2) Mannheim, (s3) Heidelberg, (s4) Mainz, (s5) Frankfurt, (s6) Aachen, (s7) Karlsruhe and (s8) Munchen.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Original Method
+       </h3>
+      </div>
+     </header>
+     <p>
+      The method proposed in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ] consists of a number of steps. In the
+      <em>
+       first step
+      </em>
+      , a 2D view is constructed from the attributes of each subject using an established method for dimension reduction such as factor analysis or principal component analysis (PCA) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ].
+     </p>
+     <p>
+      In the
+      <em>
+       second step
+      </em>
+      , the goodness-of-fit between the original attribute scores
+      <em>
+       A
+       <sub>
+        ki
+       </sub>
+      </em>
+      for atribute
+      <em>
+       k
+      </em>
+      , where
+      <em>
+       i
+      </em>
+      identifies the distinct websites being judged, and the predictions
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{A}_{ki}$
+       </span>
+      </span>
+      according to the 2D view, is established (in a similar way as shown in the right graph of Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      ) using a combination of two effect sizes. The first effect size for attribute
+      <em>
+       k
+      </em>
+      is
+      <span class="inline-equation">
+       <span class="tex">
+        $R_k^2$
+       </span>
+      </span>
+      , the
+      <em>
+       squared correlation coefficient
+      </em>
+      (or fraction of explained variance). The second effect size is defined as
+     </p>
+     <div class="table-responsive" id="Xeq1">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} C_k = \frac{ \hat{A}_{k,max} - \hat{A}_{k,min} }{\sigma _k}, \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (1)
+       </span>
+      </div>
+     </div>
+     where
+     <em>
+      σ
+      <sub>
+       k
+      </sub>
+     </em>
+     is the estimated standard error. This second effect size is equal to
+     <em>
+      Cohen's d
+     </em>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2
+     </a>
+     ] between the two most extreme predicted scores, and has been proposed earlier [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ] as a goodness-of-fit measure. Three levels of goodness of fit are distinguished based on these two effect sizes:
+     <p>
+     </p>
+     <ol class="list-no-style">
+      <li id="list1" label="(1)">
+       <strong>
+        good fit:
+       </strong>
+       <span class="inline-equation">
+        <span class="tex">
+         $R_k^2{\gt}0.5$
+        </span>
+       </span>
+       and
+       <em>
+        C
+        <sub>
+         k
+        </sub>
+       </em>
+       &gt; 6
+       <br/>
+      </li>
+      <li id="list2" label="(2)">
+       <strong>
+        adequate fit:
+       </strong>
+       <span class="inline-equation">
+        <span class="tex">
+         $R_k^2{\gt}0.5$
+        </span>
+       </span>
+       and
+       <em>
+        C
+        <sub>
+         k
+        </sub>
+       </em>
+       &gt; 4
+       <br/>
+      </li>
+      <li id="list3" label="(3)">
+       <strong>
+        poor fit
+       </strong>
+       :
+       <span class="inline-equation">
+        <span class="tex">
+         $R_k^2\le 0.5$
+        </span>
+       </span>
+       or
+       <em>
+        C
+        <sub>
+         k
+        </sub>
+       </em>
+       ≤ 4
+       <br/>
+      </li>
+     </ol>
+     <p>
+      In the
+      <em>
+       third step
+      </em>
+      of the method, the attributes with poor fit are used to construct one or more additional 2D views.
+     </p>
+     <p>
+      In the
+      <em>
+       fourth step
+      </em>
+      , only 2D views that contain at least two attributes with good fit are retained, so that the resulting number of 2D views can vary across subjects. In the example case there were 2 subjects with 0 views, 3 subjects with 1 view and 5 subjects with 2 views. These 13 views provided good predictions for 62 (out of the 118) attributes.
+     </p>
+     <p>
+      In the
+      <em>
+       fifth step
+      </em>
+      , a distance measure was introduced to compare pairs of 2D views. It was used by a hierarchical clustering algorithm to reduce the number of views. For the example data, it was concluded that the 13 views could be clustered into 3 clusters, and the 2D views in the same cluster were averaged to end up with the final three 2D views.
+     </p>
+     <p>
+      In the
+      <em>
+       sixth step
+      </em>
+      , the goodness-of-fit of all attributes in the clustered views was established. In the example, the 3 clustered views provided a good fit for 38 of the 118 attributes, which was substantially more than in case of a single (averaged) view which only provided a good fit for 18 attributes.
+     </p>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        VARCLUS method
+       </h3>
+      </div>
+     </header>
+     <p>
+      The original method is interesting in terms of the key proposition that it makes, i.e., that multiple views can provide a good fit to substantially more attributes than a single averaged view. The reason why more views are better is explained in the original paper. If the number of views is too low, the effect is NOT that the approximation/modelling of all observed attributes is reduced, but that the resulting views are mostly determined by a subset of the attributes, and that the remaining ones are effectively discarded.
+     </p>
+     <p>
+      The clustering method in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ] also adopts a number of interesting principles that we subscribe to. The first principle is that the outcome of a statistical analysis should preferably be presented (graphically) as low-dimensional (more specifically, 2D) spaces or views. Users can be expected to have a hard time interpreting spaces with a dimension higher than 2, such as the ones that arise from more established clustering methods (such as factor analysis). The second principle is that any single 2D view can only provide a good fit for a limited subset of the observed attributes, so that attributes will inevitably have to be divided over different views. This latter principle will be supported quantitatively later on (see Figures 3 and 4).
+     </p>
+     <p>
+      There is an existing clustering algorithm that has been developed with very similar principles in mind. Unfortunately, it is limited to deriving one-dimensional (1D) spaces or views from observed attributes. Moreover, it is not available in popular statistical packages (such as SPSS). The clustering algorithm in question is sometimes referred to as
+      <em>
+       Oblique Principal Component Cluster Analysis
+      </em>
+      (OPCCA). It is also known by the name VARCLUS under which it is implemented in the statistical package SAS [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ]. Interestingly enough, the name of the original inventor and implementor of the VARCLUS algorithm seems to have been lost, and details about the method are actually quite hard to find.
+     </p>
+     <p>
+      The implementation that we will use is based on the description in an unpublished paper [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ] available through ResearchGate. Specific about VARCLUS is that, unlike other clustering methods, it does not attempt to minimize the number of clusters, but instead primarily tries to create clusters with high internal consistency. This may for instance result in VARCLUS producing three clusters with high internal consistency, where other clustering algorithms such as VARIMAX (or PROMAX) would produce two dimensions with smaller internal consistency. A popular indicator for the consistency of a number of attributes that are assigned to a single 1D cluster is
+      <em>
+       Cronbach's alpha
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ].
+     </p>
+     <p>
+      The VARCLUS algorithm is applied on z-scores rather than on the original attribute scores, i.e., the linearly transformed scores that are used as input into the algorithm are normalized to have zero mean and unit variance. The effect of this normalization is that all attributes receive an equal weight (of 1) and are a priori considered to be equally important.
+     </p>
+     <p>
+      The clustering starts with all attributes in a single cluster and uses PCA to decide whether or not this single cluster should be split into two sub-clusters. The PCA determines so-called
+      <em>
+       eigenvalues
+      </em>
+      which are delivered in decreasing order. VARCLUS decides to split a cluster if the second eigenvalue
+      <em>
+       λ
+      </em>
+      <sub>
+       2
+      </sub>
+      is larger than a threshold value
+      <em>
+       λ
+      </em>
+      <sub>
+       2
+      </sub>
+      (
+      <em>
+       thr
+      </em>
+      ). This threshold value is the main parameter of the VARCLUS algorithm as it allows to control the level of generalization. More specifically, increasing the value of this threshold parameter will reduce the number of clusters up to the point where all attributes are allocated to a single cluster.
+     </p>
+     <p>
+      The complicating part of VARCLUS, which we will not attempt to explain in detail, is that the original attributes are iteratively re-assigned to optimize internal consistency every time an additional cluster is introduced. It is this iterative procedure that ensures that the algorithm is more optimal than the procedure proposed in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ] which contains only a single iteration (in which the attributes with a poor fit are removed from the initial cluster to define a new cluster). The sketched procedure is applied recursively until the second eigenvalue for all clusters is below the threshold. The details of the VARCLUS (or OPCCA) method are described in the unpublished paper cited above.
+     </p>
+     <p>
+      While the VARCLUS algorithm possesses several characteristics that we aspire for in a clustering algorithm, it is restricted to clustering into 1D views. It was therefore necessary to devise an extension towards 2D views. The corresponding clustering algorithm, which will be denoted by VARCLUS2, again uses PCA to determine whether or not a cluster of attributes should be split into sub-clusters. While VARCLUS uses PCA up to order 2, VARCLUS2 uses PCA up to order 4, resulting in 4 eigenvalues per cluster, denoted by
+      <em>
+       λ
+       <sub>
+        i
+       </sub>
+      </em>
+      , for
+      <em>
+       i
+      </em>
+      = 1, …, 4, in decreasing order. These eigenvalues are combined pairwise into
+     </p>
+     <div class="table-responsive" id="Xeq2">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} \tilde{\lambda }_i = \sqrt { \lambda _{2i-1}^2 + \lambda _{2i}^2 }, i=1,2 \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (2)
+       </span>
+      </div>
+     </div>
+     and a cluster is split into two sub-clusters if the second value
+     <span class="inline-equation">
+      <span class="tex">
+       $\tilde{\lambda }_2$
+      </span>
+     </span>
+     exceeds the specified threshold value of
+     <span class="inline-equation">
+      <span class="tex">
+       $\sqrt {2}\cdot \tilde{\lambda }_2(thr)$
+      </span>
+     </span>
+     . The iterative re-assignment of attributes every time an additional cluster is introduced, done in order to optimize internal consistency, also needed to be generalized (using a concept called communality that is an extension of the well-known concept of correlation for 1D spaces). The detailed textual and mathematical descriptions of both VARCLUS and VARCLUS2 can be found in [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+      11
+     </a>
+     ].
+     <p>
+     </p>
+    </section>
+   </section>
+   <section id="sec-8">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       SINGLE-LEVEL APPLICATION OF VARCLUS
+      </h2>
+     </div>
+    </header>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Within-subject analysis
+       </h3>
+      </div>
+     </header>
+     <p>
+      In order to allow for a direct comparison with the within-subject analysis (i.e., the first four steps) of the original method, we performed a similar analysis with VARCLUS2 (with parameter value
+      <span class="inline-equation">
+       <span class="tex">
+        $\tilde{\lambda }_2(thr)=1$
+       </span>
+      </span>
+      ), the results of which are summarized in Table 1.
+     </p>
+     <p>
+      In total, 12 views were derived which allowed for good fit of 58 attributes (and adequate fit for another 31 attributes), which is comparable to the 62 attributes with good fit in the 13 views generated by the original method (see Table 4 in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ]). There are however some obvious differences between the outcomes of both methods. The first is that VARCLUS2 provides at least 1 view for each subject (while there were no views for 2 subjects in the original method), and only requires a second view for 2 of the subjects (3 and 7), while in the original method 2 views were required for 5 subjects (1, 2, 4, 6 and 10). The reason that the VARCLUS algorithm is able to come up with one 2D view per subject, where the original algorithm did not, is that it performs an exhaustive search over a large number of possible groupings of attributes in order to find the ones that result in views where multiple attributes have a good fit. Manually trying all these alternatives is simply not practically feasible. In the original method, groupings were established in an interactive way by the user, inspecting the outputs of existing clustering methods and adopting the step-by-step method explained above, so that only few alternatives can actually be tried.
+     </p>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Number of attributes modeled by the (up to two) 2D views, for all 10 participants (VARCLUS2 with
+        <span class="inline-equation">
+         <span class="tex">
+          $\tilde{\lambda }_2(thr)=1$
+         </span>
+        </span>
+        ). The number of attributes with good and adequate fit are specified by the number outside and inside the brackets, respectively.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;">
+          Participant
+         </th>
+         <th style="text-align:center;">
+          Total
+         </th>
+         <th style="text-align:center;">
+          View a
+         </th>
+         <th style="text-align:center;">
+          View b
+         </th>
+         <th style="text-align:center;">
+          Remain
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+          1
+         </td>
+         <td style="text-align:center;">
+          13
+         </td>
+         <td style="text-align:center;">
+          4 (7)
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          9 (2)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          2
+         </td>
+         <td style="text-align:center;">
+          13
+         </td>
+         <td style="text-align:center;">
+          6 (5)
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          7 (2)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          3
+         </td>
+         <td style="text-align:center;">
+          14
+         </td>
+         <td style="text-align:center;">
+          4 (3)
+         </td>
+         <td style="text-align:center;">
+          7 (0)
+         </td>
+         <td style="text-align:center;">
+          3 (0)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          4
+         </td>
+         <td style="text-align:center;">
+          10
+         </td>
+         <td style="text-align:center;">
+          9 (0)
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          1 (1)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          5
+         </td>
+         <td style="text-align:center;">
+          12
+         </td>
+         <td style="text-align:center;">
+          9 (0)
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          3 (3)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          6
+         </td>
+         <td style="text-align:center;">
+          11
+         </td>
+         <td style="text-align:center;">
+          6 (4)
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          5 (1)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          7
+         </td>
+         <td style="text-align:center;">
+          13
+         </td>
+         <td style="text-align:center;">
+          4 (4)
+         </td>
+         <td style="text-align:center;">
+          3 (2)
+         </td>
+         <td style="text-align:center;">
+          6 (0)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          8
+         </td>
+         <td style="text-align:center;">
+          11
+         </td>
+         <td style="text-align:center;">
+          5 (3)
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          6 (3)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          9
+         </td>
+         <td style="text-align:center;">
+          10
+         </td>
+         <td style="text-align:center;">
+          4 (5)
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          6 (1)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          10
+         </td>
+         <td style="text-align:center;">
+          11
+         </td>
+         <td style="text-align:center;">
+          7 (0)
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          4 (4)
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      Having to discard attributes (or subjects) that are a priori of interest (e.g., based on their description) because the analysis method is not able to handle them obviously constitutes a problem. So continuing to generate views until at least all attributes (or subjects) of interest have a good fit makes sense. Using the parameter of VARCLUS2 it is easy to increase the number of attributes that have a good fit, especially for those subjects where a substantial number of the attributes are only adequately or poorly fit. For instance, by lowering the VARCLUS2 parameter to
+      <span class="inline-equation">
+       <span class="tex">
+        $\tilde{\lambda }_2(thr)=0.8$
+       </span>
+      </span>
+      , we obtain the results in Table 2. The number of views has increased from 12 to 17, but so have the number of attributes that have a good fit (increases from 58 to 88). As there are fewer attributes left that do not have a good fit, the number of attributes with an adequate fit decreases to 24 (so that 112 of the 118 attributes now have a good or adequate fit, versus 89 in case of VARCLUS2 with
+      <span class="inline-equation">
+       <span class="tex">
+        $\tilde{\lambda }_2(thr)=1$
+       </span>
+      </span>
+      ).
+     </p>
+     <div class="table-responsive" id="tab2">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 2:
+       </span>
+       <span class="table-title">
+        Number of attributes modeled by the (up to two) views for all 10 participants (VARCLUS2 with
+        <span class="inline-equation">
+         <span class="tex">
+          $\tilde{\lambda }_2(thr)=0.8$
+         </span>
+        </span>
+        ). The number of attributes with good and adequate fit are specified by the number outside and inside the brackets, respectively.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;">
+          Participant
+         </th>
+         <th style="text-align:center;">
+          Total
+         </th>
+         <th style="text-align:center;">
+          View a
+         </th>
+         <th style="text-align:center;">
+          View b
+         </th>
+         <th style="text-align:center;">
+          Remain
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+          1
+         </td>
+         <td style="text-align:center;">
+          13
+         </td>
+         <td style="text-align:center;">
+          6 (1)
+         </td>
+         <td style="text-align:center;">
+          5 (0)
+         </td>
+         <td style="text-align:center;">
+          2 (1)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          2
+         </td>
+         <td style="text-align:center;">
+          13
+         </td>
+         <td style="text-align:center;">
+          7 (1)
+         </td>
+         <td style="text-align:center;">
+          4 (1)
+         </td>
+         <td style="text-align:center;">
+          2 (0)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          3
+         </td>
+         <td style="text-align:center;">
+          14
+         </td>
+         <td style="text-align:center;">
+          4 (3)
+         </td>
+         <td style="text-align:center;">
+          7 (0)
+         </td>
+         <td style="text-align:center;">
+          3 (0)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          4
+         </td>
+         <td style="text-align:center;">
+          10
+         </td>
+         <td style="text-align:center;">
+          9 (0)
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          1 (1)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          5
+         </td>
+         <td style="text-align:center;">
+          12
+         </td>
+         <td style="text-align:center;">
+          9 (0)
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          3 (3)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          6
+         </td>
+         <td style="text-align:center;">
+          11
+         </td>
+         <td style="text-align:center;">
+          6 (4)
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          5 (1)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          7
+         </td>
+         <td style="text-align:center;">
+          13
+         </td>
+         <td style="text-align:center;">
+          4 (4)
+         </td>
+         <td style="text-align:center;">
+          3 (2)
+         </td>
+         <td style="text-align:center;">
+          6 (0)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          8
+         </td>
+         <td style="text-align:center;">
+          11
+         </td>
+         <td style="text-align:center;">
+          5 (2)
+         </td>
+         <td style="text-align:center;">
+          3 (1)
+         </td>
+         <td style="text-align:center;">
+          3 (0)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          9
+         </td>
+         <td style="text-align:center;">
+          10
+         </td>
+         <td style="text-align:center;">
+          4 (1)
+         </td>
+         <td style="text-align:center;">
+          5 (0)
+         </td>
+         <td style="text-align:center;">
+          1 (0)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          10
+         </td>
+         <td style="text-align:center;">
+          11
+         </td>
+         <td style="text-align:center;">
+          7 (0)
+         </td>
+         <td style="text-align:center;">
+          0 (4)
+         </td>
+         <td style="text-align:center;">
+          4 (0)
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      The example hence supports our claim that the VARCLUS2 algorithm constitutes an improvement in both performance and flexibility when compared to the method proposed in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ]. It guarantees that all attributes are assigned to one 2D view only, and uses an iterative method to minimize the number of views required. The flexibility is created by controlling the parameter
+      <span class="inline-equation">
+       <span class="tex">
+        $\tilde{\lambda }_2(thr)$
+       </span>
+      </span>
+      of the VARCLUS2 algorithm in such a way that at least the attributes of interest are represented with a good or (at least) adequate fit.
+     </p>
+     <figure id="fig2">
+      <img alt="" class="img-responsive" longdesc="" src="3300449_files\chi2019219fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        Two 2D views derived from the 14 scaled attributes of participant 3. The length of the arrows are proportional to the fraction of explained variance, where the circle corresponds to a fraction of 1 (perfect correlation). Attributes with good fit are represented by bold arrows, while attributes with adequate fit are represented by regular arrows. The low-contrast dashed arrows correspond to the attributes that are represented in the alternative view.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      As an example of the generated output, we show the two views derived for subject 3 in Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      . The left view has 4 attributes with a good fit (represented by the bold arrows), and 3 attributes with an adequate fit (represented by the regular arrows). The right view has 7 attributes with good fit. The lengths of all vectors are proportional to the fraction of explained variance (or squared correlation coefficient), where the circle corresponds to a perfect correlation of 1. This correlation coefficient is determined by a linear regression between the measured attribute values and
+      <em>
+       the orthogonal projections
+      </em>
+      of the points representing the stimuli (i.e., the 8 websites indicated by
+      <em>
+       s
+      </em>
+      1 to
+      <em>
+       s
+      </em>
+      8)
+      <em>
+       onto the vector that represents this attribute
+      </em>
+      . These projected values (see Figure 1 in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ]) are hence
+      <em>
+       the model predictions
+      </em>
+      for the measured attribute.
+     </p>
+     <p>
+      The low-contrast dashed arrows in a view correspond to the attributes that are not assigned to this view (and which are represented better in the other view). The fact that the lengths of many of these vectors are much smaller than 1 indicates that the view does indeed not account for the judgements expressed in these attributes, and that a second complimentary view is required to model them.
+     </p>
+     <p>
+      The left view in Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      contains attributes that relate to the positioning or image of the university (such as A13: externally oriented, A4: open to new directions, and A12: not driven by fixed values or tradition), ways of providing information (such as A10: clear layout, A9: sober layout, and A2: concrete) and A5: care invested in website. In the right view of Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      , a very noticeable feature is that the own university (s1) is very much distinguished from the other universities. Especially the aspects of A3: spontaneity, A6: broad offer and A11: possibility to explore, on the one hand, and A7: focus on technology and A8: focus on objectivity, on the other hand, positively distinguish the own university in the perception of this student. Properties of the website that can also be distinguished in this view are A1: good overview and A14: focus on own university. The fact that most of the other universities cluster together in this second view could be real, but might also point at a lack of detailed knowledge of this student about the educational program and didactical methods offered at other universities. In summary, where the left view helps to capture the student's perception of the university image and way of communication on the website, the right view provides insight into his understanding of the nature of the program being offered.
+     </p>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Across-subject analysis
+       </h3>
+      </div>
+     </header>
+     <p>
+      Rather than creating individual 2D views, and subsequently clustering these views to reduce their number, as was done in the last two steps of the original method to construct a joint interpretation of all collected attributes, we propose a more straightforward method which is to analyze all 118 attributes simultaneously using VARCLUS2. The default value of
+      <span class="inline-equation">
+       <span class="tex">
+        $\tilde{\lambda }_2(thr)=1$
+       </span>
+      </span>
+      results in 8 views that provide a good fit for 90 attributes and an adequate fit for 24 attributes (in total, this provides a fit for 114 of the 118 attributes).
+     </p>
+     <p>
+      By stepwise increasing the threshold value
+      <span class="inline-equation">
+       <span class="tex">
+        $\tilde{\lambda }_2(thr)$
+       </span>
+      </span>
+      from 1.0 to 3.5, the number of views can be decreased all the way down to 1, as illustrated in Table 3 and Figure 3. A comparison with the original method can be made by looking at the case where 3 views are produced; with the original method 38 attributes had good fit, while with the VARCLUS2 method a slightly larger number of 41 attributes have good fit.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="" src="3300449_files\chi2019219fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Number of attributes with good and adequate fit (and their sum) as a function of the number of 2D views used to model all attributes.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <div class="table-responsive" id="tab3">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 3:
+       </span>
+       <span class="table-title">
+        By changing the threshold value
+        <span class="inline-equation">
+         <span class="tex">
+          $\tilde{\lambda }_2(thr)$
+         </span>
+        </span>
+        of VARCLUS2 method, the number of 2D views used for modeling all attributes can be varied. For each solution, the table also provides the number of attributes that have good fit, the number of attributes that have adequate fit, and their sum.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\tilde{\lambda }_2(thr)$
+           </span>
+          </span>
+         </th>
+         <th style="text-align:center;">
+          Number Views
+         </th>
+         <th style="text-align:center;">
+          Good Fit
+         </th>
+         <th style="text-align:center;">
+          Adequate Fit
+         </th>
+         <th style="text-align:center;">
+          Total
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+          0.8
+         </td>
+         <td style="text-align:center;">
+          10
+         </td>
+         <td style="text-align:center;">
+          101
+         </td>
+         <td style="text-align:center;">
+          16
+         </td>
+         <td style="text-align:center;">
+          117
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          0.9
+         </td>
+         <td style="text-align:center;">
+          9
+         </td>
+         <td style="text-align:center;">
+          93
+         </td>
+         <td style="text-align:center;">
+          24
+         </td>
+         <td style="text-align:center;">
+          117
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          1.0
+         </td>
+         <td style="text-align:center;">
+          8
+         </td>
+         <td style="text-align:center;">
+          90
+         </td>
+         <td style="text-align:center;">
+          24
+         </td>
+         <td style="text-align:center;">
+          114
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          1.1
+         </td>
+         <td style="text-align:center;">
+          7
+         </td>
+         <td style="text-align:center;">
+          82
+         </td>
+         <td style="text-align:center;">
+          31
+         </td>
+         <td style="text-align:center;">
+          113
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          1.3
+         </td>
+         <td style="text-align:center;">
+          6
+         </td>
+         <td style="text-align:center;">
+          77
+         </td>
+         <td style="text-align:center;">
+          34
+         </td>
+         <td style="text-align:center;">
+          111
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          1.4
+         </td>
+         <td style="text-align:center;">
+          5
+         </td>
+         <td style="text-align:center;">
+          69
+         </td>
+         <td style="text-align:center;">
+          33
+         </td>
+         <td style="text-align:center;">
+          102
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          1.5
+         </td>
+         <td style="text-align:center;">
+          4
+         </td>
+         <td style="text-align:center;">
+          59
+         </td>
+         <td style="text-align:center;">
+          32
+         </td>
+         <td style="text-align:center;">
+          91
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          2.0
+         </td>
+         <td style="text-align:center;">
+          3
+         </td>
+         <td style="text-align:center;">
+          43
+         </td>
+         <td style="text-align:center;">
+          48
+         </td>
+         <td style="text-align:center;">
+          91
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          2.5
+         </td>
+         <td style="text-align:center;">
+          2
+         </td>
+         <td style="text-align:center;">
+          32
+         </td>
+         <td style="text-align:center;">
+          48
+         </td>
+         <td style="text-align:center;">
+          80
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          3.5
+         </td>
+         <td style="text-align:center;">
+          1
+         </td>
+         <td style="text-align:center;">
+          21
+         </td>
+         <td style="text-align:center;">
+          34
+         </td>
+         <td style="text-align:center;">
+          56
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      Note that the largest increase in number of attributes with a good fit actually occurs when moving from 3 to 4 views, which could be used to argue for 4 instead of 3 views. An alternative way of displaying the same information is shown in Figure 4, where the average number of attributes being fitted per view is plotted. This figure reveals that at least 4 views are needed to ensure that the number of attributes with good fit exceeds the number of attributes with adequate fit. We could argue for an even larger number of views, as the total number of attributes with good or adequate fit only starts to saturate when the number of views exceeds 6.
+     </p>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="" src="3300449_files\chi2019219fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Average number of attributes with good and adequate fit per 2D view as a function of the number of 2D views used to model all attributes.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      Having a large number of views is not necessarily a problem, as long as each view provides a good or adequate fit for a substantial number of attributes. The views can indeed be seen as alternative ways to position a product of interest with respect to possible competing products, and to identify distinct strengths and weaknesses of such products. A 2D view in which a number of attributes have a good fit creates an opportunity for interpreting these attributes simultaneously, rather than individually, and to get insight into mutual dependencies and conflicts. Keep in mind that views are intended to support human (design) thinking and reflection rather than to create economic models from data.
+     </p>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="" src="3300449_files\chi2019219fig6.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        Attributes with good and adequate fit in one of the 8 generated 2D views (view 5) that arise from the joint analysis of all collected attributes.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      For instance, the study that we use as example was executed to better understand the position of Darmstadt university (s1) with respect to other German universities. Any of the views can potentially trigger a discussion about opportunities for improving the current position. Take for instance view 5, which is reproduced in Figure 5. The choice for this view came about by picking an attribute of interest (A5) and selecting the view to which this attribute was assigned. The view reveals that s1 scores well on attributes A64, A69 and A70 (which all indicate a good Access to Information), which is obviously a desired feature, but that other universities, especially s6, s7 and s8, perform a lot better on attributes such as A5 (modern layout), A100 (professional appearance) and A9 (future-oriented), which could for instance be interpreted as a need for a more modern appearance of the website.
+     </p>
+     <p>
+      Note that views can also contain relationships that are seemingly strange (or even absurd). For instance, in the view of Figure 5, A5 (modern layout) is opposite to A67 (easy connection to the university), which are obviously not related attributes in general. We should however keep in mind that the views are derived from ratings of only the 8 university websites contained in the study, so that this questionable relationship is actually a property of the design space being considered. Adding more (and more diverse) websites into the comparison is likely to reduce the correlation between such semantically different concepts. As indicated before, imagining how the website of interest (s1) could be redesigned so that it scores well on both, seemingly conflicting, attributes could be an interesting design assignment.
+     </p>
+    </section>
+   </section>
+   <section id="sec-11">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       MULTI-LEVEL APPLICATION OF VARCLUS
+      </h2>
+     </div>
+    </header>
+    <p>
+     In the previous analysis, we implicitly assumed that all attributes generated by the participants reflect a worthwhile perspective and should be accounted for and be visualized (as much as possible). The fact that VARCLUS2 works on z-scores even implies that all attributes receive equal weight in this analysis. We could however also argue that it is unlikely that individuals develop 10-14 independent attributes to assess a limited number of stimuli (in casu, 8 websites). Maybe a participant actually distinguishes a much smaller number of internal constructs or discriminative processes (say 2-3) but externalizes them using a number of different verbalizations (i.e., uses several attributes to describe the construct). According to such a perspective, it makes sense to first establish these personal constructs, and to subsequently create 2D views in order to visualize mutual dependencies between them. Deriving such hidden constructs from ratings of attributes is what the original VARCLUS algorithm was developed for in the first place (e.g, the VARCLUS algorithm has been used to cluster the outcomes on different tasks in an IQ test). In order to establish a consistent terminology we will refer to such personal constructs as 1D views.
+    </p>
+    <div class="table-responsive" id="tab4">
+     <div class="table-caption">
+      <span class="table-number">
+       Table 4:
+      </span>
+      <span class="table-title">
+       Number of attributes modeled by the (up to 4) 1D views for all 10 participants (VARCLUS with
+       <em>
+        λ
+       </em>
+       <sub>
+        2
+       </sub>
+       (
+       <em>
+        thr
+       </em>
+       ) = 1). For each view we specify the number of attributes assigned to this 1D view, followed by the consistency measure Cronbach's
+       <em>
+        α
+       </em>
+       between brackets. The number outside of the brackets after the semicolon is the number of attributes with good fit, while the number inside the brackets is the number of attributes with adequate fit.
+      </span>
+     </div>
+     <table class="table">
+      <thead>
+       <tr>
+        <th style="text-align:center;">
+         Participant
+        </th>
+        <th style="text-align:center;">
+         Number of Attributes
+        </th>
+        <th style="text-align:center;">
+         View a
+        </th>
+        <th style="text-align:center;">
+         View b
+        </th>
+        <th style="text-align:center;">
+         View c
+        </th>
+        <th style="text-align:center;">
+         View d
+        </th>
+        <th style="text-align:center;">
+         Total
+        </th>
+        <th style="text-align:center;">
+         Remain
+        </th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr>
+        <td style="text-align:center;">
+         1
+        </td>
+        <td style="text-align:center;">
+         13
+        </td>
+        <td style="text-align:center;">
+         5 (0.901): 2 (2)
+        </td>
+        <td style="text-align:center;">
+         5 (0.901): 0 (1)
+        </td>
+        <td style="text-align:center;">
+         3 (0.971): 3 (0)
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+         5 (3)
+        </td>
+        <td style="text-align:center;">
+         5
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         2
+        </td>
+        <td style="text-align:center;">
+         13
+        </td>
+        <td style="text-align:center;">
+         6 (0.950): 2 (3)
+        </td>
+        <td style="text-align:center;">
+         2 (0.718): 2 (0)
+        </td>
+        <td style="text-align:center;">
+         5 (0.957): 4 (0)
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+         8 (3)
+        </td>
+        <td style="text-align:center;">
+         2
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         3
+        </td>
+        <td style="text-align:center;">
+         14
+        </td>
+        <td style="text-align:center;">
+         6 (0.911): 3 (2)
+        </td>
+        <td style="text-align:center;">
+         5 (0.891): 4 (0)
+        </td>
+        <td style="text-align:center;">
+         3 (0.917): 3 (0)
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+         10 (2)
+        </td>
+        <td style="text-align:center;">
+         2
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         4
+        </td>
+        <td style="text-align:center;">
+         10
+        </td>
+        <td style="text-align:center;">
+         6 (0.935): 3 (3)
+        </td>
+        <td style="text-align:center;">
+         3 (0.974): 3 (0)
+        </td>
+        <td style="text-align:center;">
+         1 (1.000): 1 (0)
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+         7 (3)
+        </td>
+        <td style="text-align:center;">
+         0
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         5
+        </td>
+        <td style="text-align:center;">
+         12
+        </td>
+        <td style="text-align:center;">
+         7 (0.958): 3 (1)
+        </td>
+        <td style="text-align:center;">
+         5 (0.867): 2 (1)
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+         5 (2)
+        </td>
+        <td style="text-align:center;">
+         5
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         6
+        </td>
+        <td style="text-align:center;">
+         11
+        </td>
+        <td style="text-align:center;">
+         9 (0.947): 3 (2)
+        </td>
+        <td style="text-align:center;">
+         2 (0.930): 2 (0)
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+         5 (2)
+        </td>
+        <td style="text-align:center;">
+         4
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         7
+        </td>
+        <td style="text-align:center;">
+         13
+        </td>
+        <td style="text-align:center;">
+         5 (0.925): 1 (4)
+        </td>
+        <td style="text-align:center;">
+         3 (0.907): 1 (2)
+        </td>
+        <td style="text-align:center;">
+         3 (0.920): 2 (1)
+        </td>
+        <td style="text-align:center;">
+         2 (0.780): 0 (2)
+        </td>
+        <td style="text-align:center;">
+         4 (9)
+        </td>
+        <td style="text-align:center;">
+         0
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         8
+        </td>
+        <td style="text-align:center;">
+         11
+        </td>
+        <td style="text-align:center;">
+         5 (0.898): 1 (2)
+        </td>
+        <td style="text-align:center;">
+         1 (1.000): 1 (0)
+        </td>
+        <td style="text-align:center;">
+         5 (0.927): 3 (0)
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+         5 (2)
+        </td>
+        <td style="text-align:center;">
+         4
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         9
+        </td>
+        <td style="text-align:center;">
+         10
+        </td>
+        <td style="text-align:center;">
+         6 (0.942): 2 (3)
+        </td>
+        <td style="text-align:center;">
+         4 (0.830): 1 (1)
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+         3 (4)
+        </td>
+        <td style="text-align:center;">
+         3
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         10
+        </td>
+        <td style="text-align:center;">
+         11
+        </td>
+        <td style="text-align:center;">
+         3 (0.879): 2 (1)
+        </td>
+        <td style="text-align:center;">
+         4 (0.876): 2 (2)
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+         4 (4)
+        </td>
+        <td style="text-align:center;">
+         3
+        </td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <p>
+     In Table 4 we summarize the results of a VARCLUS analysis with
+     <em>
+      λ
+     </em>
+     <sub>
+      2
+     </sub>
+     (
+     <em>
+      thr
+     </em>
+     ) = 1 for each of the participants . The number of 1D views per subject derived from this analysis varies from 2 to 4. The total number of attributes with a good fit is 56, while the number of attributes with an adequate fit is 34. This leaves 28 attributes that are not adequately represented by any of the 28 1D views. Obviously, in case some of the attributes with poor fit are considered of interest, we can always increase the number of attributes that have a good or reasonable fit, at the cost of increasing the number of 1D views, by decreasing the value of the VARCLUS parameter
+     <em>
+      λ
+     </em>
+     <sub>
+      2
+     </sub>
+     (
+     <em>
+      thr
+     </em>
+     ).
+    </p>
+    <p>
+     The next step could be to remove or split some 1D views, such as the ones that have low internal consistency (such a 2b, 7d and 10c), as the evidence for a single underlying construct is weak in this case (in order not to overly complicate matters, we will not actually do so in our current example). Note that removing 1D views that are supported by few, or even a single, attribute may not always be advisable. For instance, in the example case, there are two instances of 1D views with only a single attribute, i.e., 4c and 8b. In both cases it turns out that these views represent unique perspectives, i.e., aspects that are only remarked upon by individual participants but that nevertheless could be highly relevant, i.e., 4c is about how lively the student scene is, while 8b is about the international orientation of the university.
+    </p>
+    <p>
+     In order to provide some evidence for the fact that the different 1D views indeed reflect different perspectives, we used the semantic classification of the attributes in 13 categories that the authors of the original paper [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ] have established. They defined 10 main categories of attributes (including: website layout, focus on students, specific university image, access to information, clear target group, commercial orientation, etc.), but subdivided the layout category into 4 subcategories (layout of the menus, information and images and the use of color). We established that for the 97 attributes that belonged to the two most prominent 1D views (with the largest membership per subject), 30 were assigned to shared categories (i.e., both 1D views contained attributes that were in this category) while 67 were assigned to unique categories. This is equivalent to only 31% of these attributes ending up in both 1D views (with 95% confidence interval of [22%,41.2%]), supporting the argument that the different 1D views do indeed reflect complementary perspectives within individual participants.
+    </p>
+    <figure id="fig6">
+     <img alt="" class="img-responsive" longdesc="" src="3300449_files\chi2019219fig7.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 6:
+      </span>
+      <span class="figure-title">
+       Two of the three 2D views derived from the 28 personal constructs (or 1D views). The length of the arrows are proportional to the fraction of explained variance, where the circle corresponds to a fraction of 1. Personal constructs with good fit are represented by bold arrows, while those with adequate fit are represented by regular arrows. Personal constructs with inadequate fit are represented by dashed arrows. The low-contrast dashed arrows correspond to the personal constructs that are represented in one of the alternative views.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     The 1D views that are identified by the above procedure can subsequently be used by VARCLUS2 to create 2D views that can provide insight into the relationships between these 1D views (or personal constructs). In case of the 28 1D views, applying VARCLUS2 with a parameter value of
+     <span class="inline-equation">
+      <span class="tex">
+       $\tilde{\lambda }_2(thr)=1$
+      </span>
+     </span>
+     results in three 2D views. The two 2D views that provide a good fit for the majority (25 out of 28) of the 1D views are illustrated in Figure 4 (the third 2D view contains only three personal constructs and is not shown). The left view contains 14 personal constructs, 9 with good fit, 4 with adequate fit and 1 with inadequate fit. The right view contains 11 personal constructs, 6 with good fit, 4 with adequate fit and 1 with inadequate fit. It is worthwhile to mention that the three 2D views established using multi-level VARCLUS are actually quite different from the three 2D views produced by the original method.
+    </p>
+    <p>
+     As indicated before, one application of 2D views is to identify personal constructs that can be jointly interpreted. For constructs that demonstrate a good fit in a 2D view, participants seem to at least agree on how the products under study (in casu, the 8 websites) relate to each other. For instance, in the left view in Figure 5 there appear to be clusters of websites such as (s2,s3), (s4,s5) and (s1,s6,s8) that behave similarly, and the personal constructs can help to identify the distinguishing characteristics of such clusters. For instance, personal constructs 4a, 8c and 9b, as well as 5b and 6a ,can help to identify in which sense websites (s4,s5) distinguish themselves, either positively or negatively, from the other websites, while other personal constructs such as 3a can help to identify aspects in which these same websites are not extreme at all.
+    </p>
+    <p>
+     It is potentially interesting to use such 2D views as input into a discussion with the original participants in the RGT experiment, something which is obviously no longer possible in the example case. Especially if the participants are provided with feedback about which of their original attributes relate to their diverse personal constructs, such a discussion might lead to a jointly shared interpretation of different directions in the space. This might in turn inspire design ideas in the way discussed before. What would be required to move one of the websites in a specific direction (evolutionary design)? Why do some personal constructs which are semantically quite different point in the same or opposite direction, and how could this coupling possibly be broken by a new (revolutionary) design?
+    </p>
+    <figure id="fig7">
+     <img alt="" class="img-responsive" longdesc="" src="3300449_files\chi2019219fig8.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 7:
+      </span>
+      <span class="figure-title">
+       Interface in the ILLMO program that provides access to the VARCLUS method. The spreadsheet at the bottom shows that the 13 attributes of subject 3 have been entered into the ILLMO program. VARCLUS2 has been executed with the default parameter value (2D eigenvalue) of
+       <span class="inline-equation">
+        <span class="tex">
+         $\tilde{\lambda }_2(thr)=1$
+        </span>
+       </span>
+       , as is evidenced by the spreadsheet at the top, which shows that two 2D views (shown in Figure 2) have been generated and stored as patterns.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+   </section>
+   <section id="sec-12">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       SOFTWARE ACCESS TO THE VARCLUS METHOD
+      </h2>
+     </div>
+    </header>
+    <p>
+     Presenting a method such as VARCLUS, and its extension to VARCLUS2, would hardly be useful if there was not an easy and user-friendly way to get access to the method. In order to allow for easy and free access, we have integrated the method in a freely available program for interactive statistics called ILLMO [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+      9
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ]. The program (for both Mac OS and Windows) is available for download through the website
+     <a class="link-inline force-break" href="http://illmoproject.wordpress.com">
+      http://illmoproject.wordpress.com
+     </a>
+     , and data can be entered into ILLMO using standard means such as CSV (comma-separated values) files. Amongst others, the website contains references to an iBook [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+      11
+     </a>
+     ] with more detailed information on the program and to a diversity of instruction videos (e.g., the videos on cluster analysis provide an introduction to the VARCLUS method).
+    </p>
+    <p>
+     In Figure 7, we show the interface of the ILLMO program that provides access to the VARCLUS method. Next to the button ”create views from included private patterns” (in the upper left corner), there are 3 possible options to choose from, ”1D views only” (VARCLUS), ”2D views only” (VARCLUS2) and ”1D followed by 2D views” (multi-level VARCLUS). The values ”1D eigenvalue” and ”2D eigenvalue” correspond to the parameters
+     <em>
+      λ
+     </em>
+     <sub>
+      2
+     </sub>
+     (
+     <em>
+      thr
+     </em>
+     ) and
+     <span class="inline-equation">
+      <span class="tex">
+       $\tilde{\lambda }_2(thr)$
+      </span>
+     </span>
+     of VARCLUS and VARCLUS2, respectively. Depending on the setting, a separate window with additional information in graphical format will be generated; this can be the views themselves, but also a comparison between original attribute values and model predictions (such as in the right graph of Figure 1). The program also generates gnuplot files (see htttp://
+     <a class="link-inline force-break" href="http://gnuplot.sourceforge.net">
+      http://gnuplot.sourceforge.net
+     </a>
+     ), which were for instance used to generative the graphs in this paper.
+    </p>
+   </section>
+   <section id="sec-13">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       CONCLUSIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This paper has presented a way to systematically derive multiple views from ratings of products on individually defined attributes. Such views are alternative ways to look at the design space of the rated products. According to some views, products may behave very similarly, while in other views the same products may be seen as quite different. The attributes that are assigned to a view help to interpret the view and can inspire ideas for modified or new products. By integrating the method into a freely available program, we contribute to making it more accessible and easy to use, so that experimenting with it is much more feasible than with the original method proposed in [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ].
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Norman Richard Draper and Harry Smith. 1966.
+      <em>
+       Applied regression analysis
+      </em>
+      . Wiley, New York [u.a.].
+      <a class="link-inline force-break" href="http://gso.gbv.de/DB=2.1/CMD?ACT=SRCHASRT=YOPIKT=1016TRM=ppn+022791892sourceid=fbw_bibsonomy">
+       http://gso.gbv.de/DB=2.1/CMD?ACT=SRCHASRT=YOPIKT=1016TRM=ppn+022791892sourceid=fbw_bibsonomy
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Andy Field. 2013.
+      <em>
+       Discovering Statistics Using IBM SPSS Statistics (4th ed.)
+      </em>
+      . Sage Publications Ltd., Los Angeles.
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Marc Hassenzahl and Tibor Trautmann. 2001. Analysis of Web Sites with the Repertory Grid Technique. In
+      <em>
+       CHI ’01 Extended Abstracts on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI EA ’01
+      </em>
+      ). ACM, New York, NY, USA, 167–168.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/634067.634169" target="_blank">
+       https://doi.org/10.1145/634067.634169
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Sarah Hayes, Trevor Hogan, and Kieran Delaney. 2017. Exploring the Materials of TUIs: A Multi-Method Approach. In
+      <em>
+       Proceedings of the 2017 ACM Conference Companion Publication on Designing Interactive Systems
+      </em>
+      (
+      <em>
+       DIS ’17 Companion
+      </em>
+      ). ACM, New York, NY, USA, 55–60.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3064857.3079119" target="_blank">
+       https://doi.org/10.1145/3064857.3079119
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Stephanie Heidecker and Marc Hassenzahl. 2007. Eine gruppenspezifische Repertory Grid Analyse der wahrgenommenen Attraktivität von Universitätswebsites. In
+      <em>
+       Mensch &amp; Computer 2007: Interaktion im Plural - Konferenz für interaktive und kooperative Medien, Bauhaus-Universität Weimar, Weimar, Germany, September 2-5, 2007
+      </em>
+      . 129–138.
+      <a class="link-inline force-break" href="https://dl.gi.de/20.500.12116/7246">
+       https://dl.gi.de/20.500.12116/7246
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Ruud Hendrickx and Ton van Schaik. 2003. A Note on Oblique Principal Component Cluster Analysis.
+      <a class="link-inline force-break" href="https://www.researchgate.net/publication/242249665_A_Note_on_Oblique_Principal_Component_Cluster_Analysis">
+       https://www.researchgate.net/publication/242249665_A_Note_on_Oblique_Principal_Component_Cluster_Analysis
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Evangelos Karapanos, Jean-Bernard Martens, and Marc Hassenzahl. 2009. Accounting for Diversity in Subjective Judgments. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’09
+      </em>
+      ). ACM, New York, NY, USA, 639–648.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1518701.1518801" target="_blank">
+       https://doi.org/10.1145/1518701.1518801
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Lucas Layman, Carolyn Seaman, Davide Falessi, and Madeline Diep. 2015. Ask the Engineers: Exploring Repertory Grids and Personal Constructs for Software Data Analysis. In
+      <em>
+       Proceedings of the Eighth International Workshop on Cooperative and Human Aspects of Software Engineering
+      </em>
+      (
+      <em>
+       CHASE ’15
+      </em>
+      ). IEEE Press, Piscataway, NJ, USA, 81–84.
+      <a class="link-inline force-break" href="http://dl.acm.org/citation.cfm?id=2819321.2819336">
+       http://dl.acm.org/citation.cfm?id=2819321.2819336
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Jean-Bernard Martens. 2012. Statistics from an HCI Perspective: Illmo - Interactive Log Likelihood Modeling. In
+      <em>
+       Proceedings of the International Working Conference on Advanced Visual Interfaces
+      </em>
+      (
+      <em>
+       AVI ’12
+      </em>
+      ). ACM, New York, NY, USA, 382–385.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2254556.2254629" target="_blank">
+       https://doi.org/10.1145/2254556.2254629
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Jean-Bernard Martens. 2014. Interactive Statistics with Illmo.
+      <em>
+       <em>
+        ACM Trans. Interact. Intell. Syst.
+       </em>
+      </em>
+      4, 1, Article 4 (April 2014), 28 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2509108" target="_blank">
+       https://doi.org/10.1145/2509108
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Jean-Bernard Martens. 2017. Insights into Experimental Data: Interactive Statistics with the ILLMO Program.
+      <a class="link-inline force-break" href="https://itunes.apple.com/us/book/insights-in-experimental-data/id1210325588?mt=13">
+       https://itunes.apple.com/us/book/insights-in-experimental-data/id1210325588?mt=13
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Iain McGregor and Phil Turner. 2012. Soundscapes and Repertory Grids: Comparing Listeners’ and a Designer's Experiences. In
+      <em>
+       Proceedings of the 30th European Conference on Cognitive Ergonomics
+      </em>
+      (
+      <em>
+       ECCE ’12
+      </em>
+      ). ACM, New York, NY, USA, 131–137.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2448136.2448164" target="_blank">
+       https://doi.org/10.1145/2448136.2448164
+      </a>
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Mati Mőttus, Evangelos Karapanos, David Lamas, and Gilbert Cockton. 2016. Understanding Aesthetics of Interaction: A Repertory Grid Study. In
+      <em>
+       Proceedings of the 9th Nordic Conference on Human-Computer Interaction
+      </em>
+      (
+      <em>
+       NordiCHI ’16
+      </em>
+      ). ACM, New York, NY, USA, Article 120, 6 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2971485.2996755" target="_blank">
+       https://doi.org/10.1145/2971485.2996755
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      CORPORATE SAS Institute Inc. Staff (Ed.). 1988.
+      <em>
+       SAS-STAT User's Guide: Release 6.03 Edition
+      </em>
+      . SAS Institute Inc., Cary, NC, USA.
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Doménique van Gennip, Elise van den Hoven, and Panos Markopoulos. 2016. The Phenomenology of Remembered Experience: A Repertoire for Design. In
+      <em>
+       Proceedings of the European Conference on Cognitive Ergonomics
+      </em>
+      (
+      <em>
+       ECCE ’16
+      </em>
+      ). ACM, New York, NY, USA, Article 11, 8 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2970930.2970942" target="_blank">
+       https://doi.org/10.1145/2970930.2970942
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Association for Computing Machinery.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300449" target="_blank">
+      https://doi.org/10.1145/3290605.3300449
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8757f7defa6136df',t:'MTcxMzMxMDI3OS44NTAwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

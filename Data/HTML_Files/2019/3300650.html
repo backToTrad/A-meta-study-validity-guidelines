@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   On the Latency of USB-Connected Input Devices
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300650_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300650_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300650_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300650_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300650_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300650_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300650_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300650_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        On the Latency of USB-Connected Input Devices
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Raphael
+      </span>
+      <span class="surName">
+       Wimmer
+      </span>
+      , University of Regensburg, Germany,
+      <a href="mailto:raphael.wimmer@ur.de">
+       raphael.wimmer@ur.de
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Andreas
+      </span>
+      <span class="surName">
+       Schmid
+      </span>
+      , University of Regensburg, Germany,
+      <a href="mailto:andreas1.schmid@stud.uni-regensburg.de">
+       andreas1.schmid@stud.uni-regensburg.de
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Florian
+      </span>
+      <span class="surName">
+       Bockes
+      </span>
+      , University of Regensburg, Germany,
+      <a href="mailto:florian.bockes@ur.de">
+       florian.bockes@ur.de
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300650" target="_blank">
+       https://doi.org/10.1145/3290605.3300650
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       We propose a method for accurately and precisely measuring the intrinsic latency of input devices and document measurements for 36 keyboards, mice and gamepads connected via USB. Our research shows that devices differ not only in average latency, but also in the distribution of their latencies, and that forced polling at 1000 Hz decreases latency for some but not all devices. Existing practices - measuring end-to-end latency as a proxy of input latency and reporting only mean values and standard deviations - hide these characteristic latency distributions caused by device intrinsics and polling rates. A probabilistic model of input device latency demonstrates these issues and matches our measurements. Thus, our work offers guidance for researchers, engineers, and hobbyists who want to measure the latency of input devices or select devices with low latency.
+      </small>
+     </p>
+    </div>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        latency
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        lag
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        USB
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        input
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        input devices
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        model
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Raphael Wimmer, Andreas Schmid, and Florian Bockes. 2019. On the Latency of USB-Connected Input Devices. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 11 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300650" target="_blank">
+         https://doi.org/10.1145/3290605.3300650
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     The amount of latency (or lag) in human-computer interfaces affects how effectively, efficiently, and satisfactorily users interact with a computer system. As shown by Ng et al. (Ng et al.
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      2012
+     </a>
+     ), users are able to detect the effects of latency in a user interface, down to an overall latency of 2 ms. In practice, a maximum latency of 20 ms for touch input and 2 ms for dragging actions is desirable (Jota et al.
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+      2013
+     </a>
+     ). High latency disproportionally increases task completion time for pointing tasks by slowing down feedback loops (MacKenzie and Ware
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      1993
+     </a>
+     , @teather_effects_2009). In certain computer games, such as first-person shooters or real-time strategy games, the amount of latency a user experiences decides over virtual life or death (Lampe et al.
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      2013
+     </a>
+     ). In experimental psychology, researchers conducting reaction time studies are concerned about the latency of computers tainting the results (Plant, Hammond, and Whitehouse
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      2003
+     </a>
+     ). When controlling surgical robots or vehicles, spikes of high latency may cause critical situations and real physical harm (Rayman et al.
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      2005
+     </a>
+     ). Therefore, reducing and controlling latency is of great importance for designers of such systems. Attig et al. give a good overview of recent findings on the effect of latency on human performance (Attig et al.
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2017
+     </a>
+     ).
+    </p>
+    <figure id="fig1">
+     <img alt="" class="img-responsive" longdesc="Swarm plots of the latency distributions for three input devices (Logitech G9 mouse, Unicomp Endura Pro keyboard, and Sony Dualshock 3 gamepad)." src="3300650_files\chi2019420fig1.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       Latency of input devices varies significantly between devices. This becomes especially obvious when plotting the latency distributions gained from multiple measurements (blue). Reporting such latency distributions instead of average latency exposes individual quirks and common patterns (bottom). When forcing a 1000 Hz USB polling rate (orange), average latency and latency variance shrinks for most (top) but not all devices (middle).
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     In order to characterize or reduce the overall latency of a system, it is necessary to isolate and measure individual sources of latency, such as input devices, output devices, network connections, or applications. In recent years, several researchers and hobbyists have started measuring the latency of input devices. However, we have found that previous research reports imprecise or incorrect latencies, incorrectly uses overall latency as a proxy for input latency, and neglects the important effects of polling rate and phase on latency.
+    </p>
+    <p>
+     We present a simple method for precisely and accurately characterizing the latency of common input devices, such as computer mice, keyboards, joysticks and gamepads. To achieve this, we explicitly choose three limitations:
+    </p>
+    <p>
+     <strong>
+      Focusing only on USB-connected input devices
+     </strong>
+     makes it easier to compare devices and reason about technical issues. While sensors may be connected to a computer through various interfaces (e.g., I2C, SPI, UART), the Universal Serial Bus (USB) (USB Implementers Forum
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      2000
+     </a>
+     ) is by far most common wired peripheral interface on desktop computers, notebooks, and mobile phones at the moment. The wide choice of available input devices allows users and designers to actually choose an input device based on its latency.
+    </p>
+    <p>
+     <strong>
+      Limiting latency measurements to binary button presses
+     </strong>
+     allows for more accurately characterizing input latency. Unlike mouse or joystick movement, button presses are easy to reproduce repeatedly, have a quite clearly defined starting point (when electrical contact is made), and have no inherent noise. Furthermore, mice, keyboard, and gamepads all contain buttons, allowing to compare their latency.
+    </p>
+    <p>
+     <strong>
+      Ignoring the mechanical latency of a button press
+     </strong>
+     improves accuracy, precision and reproducibility of the measurements. The amount of time between a user pressing a button and it closing an electrical contact is undoubtedly an important characteristic of an input device. However, as Oulasvirta et al (Oulasvirta, Kim, and Lee
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+      2018
+     </a>
+     ) show, pressing a button is an inherently complex neuromechanical process. Thus, it is conceptually hard to define at which point in time a button press is initiated. Furthermore, humans are quite bad at precisely repeating the same movement thousands of times.
+    </p>
+    <p>
+     For conducting the measurements, we implemented
+     <em>
+      LagBox
+     </em>
+     , a simple Raspberry-Pi-based tool that measures latency of USB-connected input devices by repeatedly electrically triggering a button on the device and detecting the input event on the Raspberry Pi. LagBox can automatically conduct thousands of latency measurements per input device, reproducibly collecting more data in a shorter time period and with higher accuracy than manual approaches. Our measurements show significant differences between devices and highlight some peculiarities and commonalities (Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     ). Most importantly, we found that latency distributions differ so much between devices that only reporting average latency and standard deviation may be misleading. In order to better understand and explain how these latency distributions are generated, we developed a probabilistic simulation of input latency that allows reproducing many of the latency distributions we observed.
+    </p>
+    <p>
+     Our work is intended to provide guidance and tools for researchers, practitioners, and enthusiasts who want to measure or improve latency. The main contributions in this paper are: a model of latency in input devices, a set of guidelines for measuring and reporting latency, a robust method for measuring latency of USB-connected input devices with high accuracy and precision, and a collection of measurements illustrating important characteristics of input device latency.
+    </p>
+    <p>
+     This paper is organized as follows: In the next section, we shortly introduce basic concepts of
+     <em>
+      Latency in Interactive Systems
+     </em>
+     . Afterwards, we give an overview of
+     <em>
+      Related Work
+     </em>
+     , present
+     <em>
+      A Model of USB Input Latency
+     </em>
+     , and discuss challenges when
+     <em>
+      Measuring and Reporting Input Latency
+     </em>
+     . We describe the implementation of our measuring system,
+     <em>
+      LagBox
+     </em>
+     , and present
+     <em>
+      Latency Measurements
+     </em>
+     , for 36 USB input devices gathered with LagBox. After a
+     <em>
+      Discussion
+     </em>
+     of limitations and general insights that can be gained from our measurements, the paper ends with a
+     <em>
+      Conclusion and Outlook
+     </em>
+     on future work.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       LATENCY IN INTERACTIVE SYSTEMS
+      </h2>
+     </div>
+    </header>
+    <p>
+     As famously described by the Card et al.’s
+     <em>
+      human processor
+     </em>
+     model (Card, Moran, and Newell
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      1986
+     </a>
+     1986), interactive systems are part of a continuous feedback loop wherein the user performs an input action which is received and processed by the system. The system's output is in turn perceived by the user who reacts to it. Latency in an interactive system slows down these feedback loops and thus increases the time needed to perform a task. The most important latency metric for interactive systems is
+     <em>
+      end-to-end latency
+     </em>
+     , also sometimes called
+     <em>
+      system latency
+     </em>
+     or
+     <em>
+      overall latency
+     </em>
+     . It usually refers to the delay between user input and perceivable system output
+     <a class="fn" href="#fn1" id="foot-fn1">
+      <sup>
+       1
+      </sup>
+     </a>
+     . We define end-to-end latency as the amount of time that passes between the user starting to change a physical state which is monitored by the system (e.g., pressing a button on a keyboard) and the system starting to output something in response to the user's action (e.g., as a change of screen content on a monitor, auditory, or haptic feedback). In order to reduce end-to-end latency, its individual components need to be analyzed and reduced. These
+     <em>
+      partial latencies
+     </em>
+     can be roughly grouped into
+     <em>
+      input latency
+     </em>
+     ,
+     <em>
+      processing latency
+     </em>
+     , and
+     <em>
+      output latency
+     </em>
+     . We define
+     <em>
+      input latency
+     </em>
+     as the delay between the beginning of a physical state change (e.g., button press) and an application receiving notice of this state change.
+     <em>
+      Processing latency
+     </em>
+     is the delay between an application receiving notice of a physical or digital state change and the application handing over the results of the state change to the operating system (or computer if no OS is involved). Processing latency may also typically include network latency, disk latency, etc.
+     <em>
+      Output latency
+     </em>
+     describes the delay between the output data being handed over to the operating system and it actually being presented to the user.
+    </p>
+    <p>
+     This rather crude grouping has the advantage that it mirrors the typical separation of concerns in developing, using, and studying interactive systems. Rarely do application developers also implement input/output hardware, corresponding operation system drivers, or input/output frameworks. As most interactive systems allow for adding or exchanging individual input or output devices, users interested in reducing the end-to-end latency of their system can choose appropriate input and output devices independently from the applications. As we discuss later in this paper, measuring just end-to-end latency does not allow inferring the actual latency of a component. Only by focusing on individual parts, we are able to identify
+     <em>
+      why
+     </em>
+     and
+     <em>
+      how
+     </em>
+     latency varies. In the remainder of this paper we focus on measuring input latency.
+    </p>
+   </section>
+   <section id="sec-4">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Measuring input latency has been a pastime of researchers, engineers, and hobbyists for decades. The latency measurement methods employed in previous research can be categorized in the following ways:
+    </p>
+    <ul class="list-no-style">
+     <li id="list1" label="•">
+      directly measuring
+      <em>
+       partial latency
+      </em>
+      vs. using
+      <em>
+       end-to-end latency
+      </em>
+      as a proxy metric
+      <br/>
+     </li>
+     <li id="list2" label="•">
+      <em>
+       destructive
+      </em>
+      vs.
+      <em>
+       non-destructive
+      </em>
+      rigging of input devices for latency measurements
+      <br/>
+     </li>
+     <li id="list3" label="•">
+      reporting
+      <em>
+       absolute latency
+      </em>
+      of a device vs. reporting
+      <em>
+       relative latency
+      </em>
+      compared to other devices
+      <a class="fn" href="#fn2" id="foot-fn2">
+       <sup>
+        2
+       </sup>
+      </a>
+      <br/>
+     </li>
+    </ul>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         3.1
+        </span>
+        End-to-End latency on Desktop Computers
+       </h3>
+      </div>
+     </header>
+     <p>
+      Many previously presented approaches measure end-to-end latency, i.e. the time difference between an input event (e.g., the user pressing a button) and an output event (e.g., a change of screen contents). By varying only one part of the processing pipeline - such as the input device that is being used - one may indirectly determine latency differences caused by these changes und thus non-destructively measure relative, partial latency. This approach is often done using a video camera (Kaaresoja and Brewster
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       2010
+      </a>
+      ). Industrial cameras and high-end mobile phones offer frame rates of several hundred or thousand frames per second, allowing for measuring latency with high precision. However, accuracy of such approaches is problematic. Video footage needs to be manually analyzed in order to find the point in time where an input event occurs. In many cases, it is not easy to precisely define the beginning of an input action. Casiez et al. (Casiez et al.
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       2015
+      </a>
+      ) - who also give a good overview of related work on latency - present a non-destructive approach for measuring absolute end-to-end latency of a computing system. To this end, they place a computer mouse on a display that shows a moving pattern which stimulates the mouse into reporting movement. Measuring the time between pattern change and mouse event gives an estimate of end-to-end latency. The authors report results of measurements with different graphical toolkits and for different computer mice. In a later publication, Casiez et al. (Casiez et al.
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       2017
+      </a>
+      ) present another method for measuring end-to-end latency. They attach a piezoelectric vibration sensor to the user's finger to capture tapping and button-pressing. An application running on a computer changes screen contents when receiving an button-press event. A photodiode is used for capturing this screen response. An Arduino board captures input from both sensors and measures the time between both events. While the authors’ focus is on presenting a measuring method, they mention that output latency makes up most of the end-to-end latency they measured
+      <a class="fn" href="#fn3" id="foot-fn3">
+       <sup>
+        3
+       </sup>
+      </a>
+      . Casiez et al. report an input latency of 12 ms for a computer mouse polled at 125 Hz and 2 ms for a gaming mouse polled at 1000 Hz.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         3.2
+        </span>
+        End-to-End Latency on Touch Screens
+       </h3>
+      </div>
+     </header>
+     <p>
+      Deber et al. present a similar tool for measuring the end-to-end latency of devices with touch screens (Deber et al.
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       2016
+      </a>
+      ). Their “Latency Hammer” uses a metallic probe that is placed on a capacitive touch screen. When connecting the probe electrode to ground, a touch event is simulated. A photodiode connected to the “Latency Hammer” captures the screen response.
+     </p>
+     <p>
+      Mooney and Koudritsky, engineers at Google, have published tools for measuring input latency of touch screens - Quickstep
+      <a class="fn" href="#fn4" id="foot-fn4">
+       <sup>
+        4
+       </sup>
+      </a>
+      and its successor WALT
+      <a class="fn" href="#fn5" id="foot-fn5">
+       <sup>
+        5
+       </sup>
+      </a>
+      . Both employ simple custom hardware which senses input events in the physical domain. The difference between the timestamps of the physical input event and of the digital input event (as recorded by the operating system's kernel) gives the latency of the touch screen. Using these tools, Mooney and Koudritsky found that typical tap latencies for touchscreens in mobile devices are in the range of 10 - 45 ms
+      <a class="fn" href="#fn6" id="foot-fn6">
+       <sup>
+        6
+       </sup>
+      </a>
+      .
+     </p>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         3.3
+        </span>
+        Input Latency
+       </h3>
+      </div>
+     </header>
+     <p>
+      While the aforementioned research allows for indirectly measuring the latency of input devices, few researchers have directly measured input latency. Most notably, Plant measured the input latency of eight computer mice, a keyboard, and a
+      <em>
+       response box
+      </em>
+      <a class="fn" href="#fn7" id="foot-fn7">
+       <sup>
+        7
+       </sup>
+      </a>
+      connected to a computer via the serial port, PS/2 or USB (Plant, Hammond, and Whitehouse
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       2003
+      </a>
+      ) . An oscilloscope was used to measure the delay between a (simulated) button press on the device and a signal being emitted to the computer. Each measurement was repeated 80 times. Latencies recorded ranged from 6.5 ms to 60 ms for the mice. The keyboard had a latency of 28 ms, whereas the response box had a latency of only 1 ms. Plant et al. also report on previous attempts to measure mouse latency ranging back to 1990. Plant has published several other papers on this topic over the last decade, urging psychologists to measure and control input latency in their experiments (Plant
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       2016
+      </a>
+      ).
+     </p>
+     <p>
+      Luu conducted experiments measuring the latency of multiple keyboards by manually triggering keys and inspecting the output of a logic analyzer attached to the USB cable (Luu
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       2017b
+      </a>
+      ). The measurements are rounded to 5 ms increments and Luu estimates an error in the 1 ms to 10 ms range. Luu also reports on further experiments and sources concerning general latency of computers and terminals (Luu
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       2017c
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       2017a
+      </a>
+      ).
+     </p>
+     <p>
+      In parallel to academic research, computer gaming enthusiasts have explored ways to to measure the latency of input devices. Overclock.net forum member
+      <em>
+       uaokkkkkkkk
+      </em>
+      has compiled a comprehensive overview of these approaches
+      <a class="fn" href="#fn8" id="foot-fn8">
+       <sup>
+        8
+       </sup>
+      </a>
+     </p>
+     <p>
+      A very simple, non-destructive way to measure the difference in latency between two computer mice is to connect both to the same computer and simultaneously press buttons on both mice. This is usually done by placing the left mouse button of one mouse on the right mouse button of the other mouse and rapidly pressing both together. Input device manufacturer
+      <em>
+       Bloody
+      </em>
+      offers a Windows application for this task
+      <a class="fn" href="#fn9" id="foot-fn9">
+       <sup>
+        9
+       </sup>
+      </a>
+      . The same approach also works for joysticks and keyboards. While simple and non-destructive, this approach requires a second mouse to be available and does not measure absolute latency. Furthermore, if the spring of the micro-switch in the first mouse is stronger than the spring in the second mouse, the second mouse button will always be depressed earlier, resulting in a systematic measurement error. In addition, the approach requires repeated manual action. This introduces additional random and systematic measurement errors depending on the user conducting the experiment.
+     </p>
+     <p>
+      Since 2013 the Japanese blog
+      <em>
+       rafalog
+      </em>
+      <a class="fn" href="#fn10" id="foot-fn10">
+       <sup>
+        10
+       </sup>
+      </a>
+      has measured the relative latency of more than 50 mice by soldering a single push-button to the micro-switches of both a reference mouse (Logitech G300) and a mouse to be tested. Pressing this button simultaneously closes the electrical circuits of both mice, mitigating the major limitation of the aforementioned
+      <em>
+       Bloody
+      </em>
+      approach. The
+      <em>
+       rafalog
+      </em>
+      approach is destructive and only reports relative latency. However, as they use a Logitech G300 as reference mouse in all tests, whose absolute latency we report in this paper, absolute latencies for the other mice can be easily calculated. A commenter on
+      <em>
+       rafalog
+      </em>
+      , Chou Star, seems to have implemented a system that is quite similar to our LagBox
+      <a class="fn" href="#fn11" id="foot-fn11">
+       <sup>
+        11
+       </sup>
+      </a>
+      . They use the GPIO pin on a Raspberry Pi to toggle the electrical circuit of a mouse button while the mouse is connected to the Raspberry Pi. A video shows latency values for the G300 which are in the 3 - 5 ms range, roughly similar to the ones we measured. Another blogger,
+      <em>
+       sousu
+      </em>
+      , conducted absolute, end-to-end latency measurements for over 50 mice with another destructive method
+      <a class="fn" href="#fn12" id="foot-fn12">
+       <sup>
+        12
+       </sup>
+      </a>
+      . They soldered a phototransistor to the contacts of the mouse button and glued it to a computer screen. The measuring software turned the screen white causing the phototransistor to become conductive and trigger the mouse button. The latency between screen update and mouse event was measured. Latency values seem to be a few milliseconds higher than our measurements as end-to-end latency was measured.
+     </p>
+     <p>
+      Overall, we found that only few researchers and hobbyists investigated the latency of input devices so far. Most existing approaches either use end-to-end latency as a proxy for input latency or measure only relative latency. In general, only average latency, and sometimes standard deviation, is reported. As discussed in the following sections, both practices distort the actual latency profiles of input devices.
+     </p>
+    </section>
+   </section>
+   <section id="sec-8">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       A MODEL OF USB INPUT LATENCY
+      </h2>
+     </div>
+    </header>
+    <p>
+     When conducting preliminary latency measurements with our system, we were surprised by the latency distributions some devices exhibited (Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     ). In order to better understand the observed data, we developed a simple model that helps to explain how complex latency distributions may arise from a combination of individual latency sources.
+    </p>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         4.1
+        </span>
+        Types of Latency in a Button Press
+       </h3>
+      </div>
+     </header>
+     <p>
+      When a user presses a button on an USB-connected input device, the following individual steps happen, each with its associated latency (approximate orders of magnitude in parentheses):
+     </p>
+     <ol class="list-no-style">
+      <li id="list4" label="(1)">
+       the user first touches the input device,
+       <br/>
+      </li>
+      <li id="list5" label="(2)">
+       the user overcomes activation force and triggers a mechanical switch (~ 20 ms (Kim, Lee, and Oulasvirta
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+        2018
+       </a>
+       )),
+       <br/>
+      </li>
+      <li id="list6" label="(3)">
+       the mechanical switch closes an electrical circuit,
+       <br/>
+      </li>
+      <li id="list7" label="(4)">
+       the closed circuit is detected by the device's controller chip (~ 1-20 ms),
+       <br/>
+      </li>
+      <li id="list8" label="(5)">
+       after processing the sensor data the chip puts data into a USB buffer (~ 1-20 ms),
+       <br/>
+      </li>
+      <li id="list9" label="(6)">
+       the host computer queries the USB device for new data (~ 1-10 ms),
+       <br/>
+      </li>
+      <li id="list10" label="(7)">
+       the device sends data over the wire (0.001 ms),
+       <br/>
+      </li>
+      <li id="list11" label="(8)">
+       the host computer notifies the OS about new data from the USB (0.001 ms),
+       <br/>
+      </li>
+      <li id="list12" label="(9)">
+       the OS has processed the data and made it available to userland libraries (0.01 ms),
+       <br/>
+      </li>
+      <li id="list13" label="(10)">
+       user code has received an input event from a userland library (0.01 ms).
+       <br/>
+      </li>
+     </ol>
+     <p>
+      The overall latency of a button press is therefore in the range between 23 and 70 ms, depending on user, button, and context. In this paper, we focus on non-mechanical latency comprised by steps 4 - 10. While each individual step contributes latency, the amounts and distributions of these partial latencies are very heterogeneous and device-specific.
+     </p>
+     <p>
+      Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      shows a slightly simplified example of the involved latencies.
+     </p>
+     <figure id="fig2">
+      <img alt="" class="img-responsive" longdesc="A diagram showing the effective latencies of button presses at three different times. Depending on the phases of polling rates, latency changes." src="3300650_files\chi2019420fig2.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        Simplified illustration of the path an input takes from button press to the input event arriving at the application. Each step adds constant latency (black bar). The microcontroller (MC), USB, and operating system (OS) also add varying amounts of latency depending when an event is handed over within a scanning/polling interval. Overall input latency therefore varies significantly depending on when the button is pressed.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      Detecting a closed switch (step 4) may be either done via a hardware interrupt in the controller or by regularly scanning the state of the switch. In general, hardware interrupts are consistently processed within microseconds, adding
+      <strong>
+       constant latency
+      </strong>
+      . Scanning introduces
+      <strong>
+       variable latency
+      </strong>
+      : if the button is pressed right before the controller checks its state, latency is low; if the button is pressed immediately after the controller checked its state, the controller will only find out about this the next time it scans the state of the switch. In most cases, hardware interrupts provide little benefit and add complexity to the code. As far as we know, most USB input devices sequentially scan switch state in the main loop of the controller code
+      <a class="fn" href="#fn13" id="foot-fn13">
+       <sup>
+        13
+       </sup>
+      </a>
+      .
+     </p>
+     <p>
+      Processing the input in the device's controller (step 5) may take constant time in theory. In practice, different code paths may be taken which introduce a
+      <strong>
+       set of distinct constant latencies
+      </strong>
+      . For example, debouncing
+      <a class="fn" href="#fn14" id="foot-fn14">
+       <sup>
+        14
+       </sup>
+      </a>
+      or integrating the state of other sensors may require a variable amount of time.
+     </p>
+     <p>
+      These three types of latency - constant latency, variable latency, and a set of distinct latencies may be used to characterize each processing step. Of course, in reality constant latency is not perfectly constant but shows some spread due to physical noise. Variable latency may exhibit different distributions, most commonly uniform or normal distributions.
+     </p>
+     <p>
+      While processing of USB events on the host computer (steps 8-10) usually occurs within microseconds, USB polling (steps 6-7) introduces variable latency up to several dozen milliseconds and thus warrants closer inspection.
+     </p>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         4.2
+        </span>
+        The Role of the USB Polling Rate
+       </h3>
+      </div>
+     </header>
+     <p>
+      HID-class USB input devices (USB Implementers Forum
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       2001
+      </a>
+      ), such as keyboards, mice, joysticks, and gamepads, communicate with a host computer using
+      <em>
+       interrupt transfers
+      </em>
+      . Despite their name, interrupt transfers do not actually rely on hardware interrupts. Instead, the host computer periodically polls the USB device for new data or sends new data to the device (USB Implementers Forum
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       2000
+      </a>
+      ). In contrast to other transfer types, interrupt transfers are guaranteed a maximum upper latency limit. A device endpoint may specify a polling interval via its
+      <em>
+       bInterval
+      </em>
+      field which is transmitted during registration of the device with the host. This polling interval specifies how much time may pass
+      <em>
+       at maximum
+      </em>
+      between two polling events. According to the USB HID specification, for
+      <em>
+       high-speed
+      </em>
+      input devices (connected via USB 2.0) the polling interval may be in the range of 1 to 255 ms (USB Implementers Forum
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       2001
+      </a>
+      , 69). For
+      <em>
+       low-speed
+      </em>
+      input devices (USB 1.1), the minimum polling interval is 10 ms (USB Implementers Forum
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       2000
+      </a>
+      , 51). The actual polling interval may be shorter but is guaranteed to be not longer. On Windows, the maximum polling interval is limited to 32 ms (Microsoft
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       n.d.
+      </a>
+      ). In practice, polling intervals are rounded down to the next lower power of two, at least on Windows (Microsoft
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       n.d.
+      </a>
+      ) and Linux (Linux Kernel Developers
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       2019
+      </a>
+      ). This allows for better allocation of available bandwidth. Therefore, an USB HID device specifying a desired polling interval of 10 ms is usually polled every 8 ms, i.e. with a polling rate of 125 Hz. If the polled device does not have any new data available in its USB buffer, it sends a NAK packet. It is therefore possible and specification-conforming to poll a HID device at a higher rate than specified. For example, the
+      <em>
+       usb_hid
+      </em>
+      driver in the Linux kernel allows specifying a custom polling rate for HID mice and joysticks. Similar functionality is offered by vendor-provided and inoffical Windows tools. It is primarily used by gamers to reduce input latency. We investigated the effects of polling devices with the maximum rate of 1000 Hz. Results are described in the
+      <em>
+       Latency Measurements
+      </em>
+      section.
+     </p>
+     <p>
+      An important aspect of USB devices being polled at fixed intervals is that their latency in no small part depends on the polling rate. Even if an input device rapidly detects and processes a button press, the host computer only learns about the button press when it polls the device the next time. However, a low polling rate results not only in higher overall latency but also in significant variance in latency. This issue is rarely acknowledged at all in studies of input latency. Another important aspect to consider is
+      <em>
+       polling phase
+      </em>
+      of each latency component, i.e. the relative displacement between the scanning/polling intervals of devices within a processing chain. Overall input latency may vary a lot depending on the phase difference between the involved polling intervals. We describe both effects in more detail in the following section.
+     </p>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         4.3
+        </span>
+        Simulating Input Device Latency
+       </h3>
+      </div>
+     </header>
+     <p>
+      In order to verify whether our understanding of input device latency is correct, we developed a simple programmatic model of input latency for USB devices. As most device manufacturers do not publish the source code for their firmware, input devices are essentially black boxes. However, based on the assumptions described above and example source code providedme.g., by Cypress Semiconductors
+      <a class="fn" href="#fn15" id="foot-fn15">
+       <sup>
+        15
+       </sup>
+      </a>
+      , one may build a model of a
+      <em>
+       typical
+      </em>
+      input device. Such a model has three purposes. First, the model allows us to validate our understanding of input device latency by comparing predicted latencies with empirically measured latencies. Second, the model allows for predicting latency distributions of input devices if components are known. Third, the model allows to find the latency properties of input devices by adjusting model parameters, such as keyboard scan rate, until the predicted latencies match measured latencies. In this paper, we focus on the first use case, showing that a simple combination of partial latencies may produce complex latency distributions.
+     </p>
+     <p>
+      In our model, each major latency component - button, microcontroller, USB bus, and OS - is implemented as a Python object that adds intrinsic latency and polling-related latency. The intrinsic latency can be either a constant value or randomly chosen from a set of constant latencies (which may exhibit a certain distribution as described above). Furthermore, each component has a polling/scanning rate and a polling/scanning phase. From these values, the polling-related latency is determined. When running the simulation, a randomized start time is passed to the
+      <em>
+       button
+      </em>
+      object which adds its intrinsic and polling-related latency and returns a new timestamp. This timestamp is in turn passed along by the
+      <em>
+       microcontroller
+      </em>
+      ,
+      <em>
+       USB
+      </em>
+      , and
+      <em>
+       OS
+      </em>
+      objects which each add their own intrinsic and polling-related latency.
+     </p>
+     <p>
+      Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      shows the latency distribution for 2000 simulated measurements. In this instance, the microcontroller had two “code paths” with different latency from which one was chosen at random. While the distinct latency of each code path is clearly visible in Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      a - where the USB polling rate was set to 1000 Hz / 1 ms, the latency distribution for polling at 125 Hz / 8 ms (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      b) hides the effect of different code paths on latency. Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      c shows the simulated latency distribution for a controller with slightly different values for latency and scanning rate.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="Three swarm plots showing simulation results. They resemble the latency distributions shown in Fig. 1." src="3300650_files\chi2019420fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Simulations of input latency for a controller with two code paths. Small changes in partial latencies, scanning rate, polling rate, and polling phase produce distinctly different latency distributions.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      Adding many partial latencies which have a uniform or normal distribution always leads to a more or less normal-distributed overall latency if the ranges are in the same order of magnitude. However, partial latencies that have a distribution with much higher average or variance than the other latency distributions, dominate in the overall latency distribution. Thus, a low USB polling rate smoothes and broadens the overall latency distribution.
+     </p>
+     <p>
+      For reporting latency distributions, we strongly suggest using swarmplots which are similar to histograms but show each individual measurement as a dot. Other forms of visualizations, such as bar graphs, boxplots, violin plots, or histograms may hide important characteristics (Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      ).
+     </p>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="Different visualizations for the same two latency distributions. Only histplot and swarm plot faithfully show the gaps in the distributions." src="3300650_files\chi2019420fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Actual latency measurements for two gamepads visualized in five different ways: a) bar charts, b) box plots, c) violin plots, d) histograms with kernel density estimates and rug plots, e) swarmplots. Only swarm plots and histograms faithfully show peculiar latency characteristics.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+   </section>
+   <section id="sec-12">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       LAGBOX
+      </h2>
+     </div>
+    </header>
+    <p>
+     In order to accurately and precisely measure input latency, we used LagBox (Bockes, Wimmer, and Schmid
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      2018
+     </a>
+     ), a system for automatically triggering the buttons of input devices and measuring how much time passes until the corresponding input event is received. This device was used for conducting all measurements presented in this paper. In order to simplify device design and make the device affordable for a wide audience, LagBox is built around a Raspberry Pi 2. A shown in Figure
+     <a class="fig" href="#fig5">
+      5
+     </a>
+     , an optocoupler is connected to a GPIO pin on the Raspberry Pi. The switched side of the optocoupler is connected to the contacts of a button in the device that is to be tested. The connection can either be made via soldering or via micro-clips or pogo pins
+     <a class="fn" href="#fn16" id="foot-fn16">
+      <sup>
+       16
+      </sup>
+     </a>
+     . The device under test is also connected to the Raspberry Pi via USB. When the GPIO pin is pulled high, the optocoupler electrically connects both contacts of the button, thereby simulating a button press. This is registered by the input device's microcontroller which stores the new value in its USB buffer and transmits it to the host computer the next time the USB endpoint is polled.
+    </p>
+    <figure id="fig5">
+     <img alt="" class="img-responsive" longdesc="Schematic of our measuring setup, using only an optocoupler and a resistor." src="3300650_files\chi2019420fig5.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 5:
+      </span>
+      <span class="figure-title">
+       The LagBox measurement circuit. Via an optocoupler (Fairchild Semiconductors H11A817) connected to a GPIO pin, the Raspberry Pi triggers the button of an input device and measures the time until the USB event arrives.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     LagBox offers two user interfaces - a versatile command line interface and a graphical frontend written in Python. A small application written in C handles measurements and logging. It is optimized for low overhead and low latency in the critical code path. The general testing algorithm is as follows:
+    </p>
+    <p>
+     <span class="inline-equation">
+      <img alt="" class="img-responsive" longdesc="" src="3300650_files\chi2019420img1.svg"/>
+     </span>
+    </p>
+    <p>
+     Potential latency sources in our measurement setup are the main loop of our measurement software, triggering the GPIO pin, and handling the USB packet. We have verified that all of these inherent latencies are in the low microsecond range, adding up to much less than 0.1 ms. Thus, we are confident that our setup accurately measures latency in the millisecond range with sub-millisecond accuracy.
+    </p>
+    <p>
+     Between each two latency measurements, our code waits for a pseudo-random amount of time between 100 and 1000 ms in order to emulate button presses at random times. If one would not wait and trigger the button again directly after an USB event has been received, the next event would usually arrive exactly
+     <em>
+      polling interval
+     </em>
+     milliseconds later at the next time when the device is polled.
+    </p>
+    <p>
+     latency-measurements
+    </p>
+   </section>
+   <section id="sec-13">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       LATENCY MEASUREMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     In the following, we describe measurements that we conducted using LagBox. Overall, we measured the latency of 36 commercially available USB devices (including wired and wireless variants): 11 keyboards, 16 mice, and 9 gamepads. Our choice of devices was determined by three factors: availability, published latency measurements in related work, and popularity. Input devices which only had a PS/2 connector were measured using a PS/2-USB adapter reporting a
+     <em>
+      bInterval
+     </em>
+     of 10 ms. For each device and each choice of polling rate, 5000 latency measurements were conducted. After each 1000 measurements, we disconnected and reconnected the input device in order to mitigate any synchronization effects.
+    </p>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         6.1
+        </span>
+        General Comparison
+       </h3>
+      </div>
+     </header>
+     <p>
+      As shown in Figures
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      -
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      , significant differences exist between devices and between device classes. Latency distributions are shown as overlayed swarmplots - blue for the default polling interval, orange for a forced 1000 Hz polling rate (see below).
+     </p>
+     <figure id="fig6">
+      <img alt="" class="img-responsive" longdesc="Overview of latency distributions for tested mice." src="3300650_files\chi2019420fig6.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 6:
+       </span>
+       <span class="figure-title">
+        Latency distributions for USB mice. Default polling interval is given in the legend. Blue: default polling rate, orange: forced 1000 Hz polling rate.
+       </span>
+      </div>
+     </figure>
+     <figure id="fig7">
+      <img alt="" class="img-responsive" longdesc="Overview of latency distributions for tested keyboards." src="3300650_files\chi2019420fig7.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        Latency distributions for USB keyboards. Default polling interval is given in the legend. Blue: default polling rate, orange: forced 1000 Hz polling rate.
+       </span>
+      </div>
+     </figure>
+     <figure id="fig8">
+      <img alt="" class="img-responsive" longdesc="Overview of latency distributions for tested gamepads." src="3300650_files\chi2019420fig8.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 8:
+       </span>
+       <span class="figure-title">
+        Latency distributions for gamepads. Default polling interval is given in the legend. Blue: default polling rate, orange: forced 1000 Hz polling rate.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         6.2
+        </span>
+        Forced 1000 Hz polling.
+       </h3>
+      </div>
+     </header>
+     <p>
+      While USB devices report the desired polling rate in their endpoint descriptors, the operating system may poll the devices more often - up to every millisecond (1000 Hz). The Linux !usbhid! driver offers a configuration option to manually define the polling interval in milliseconds for mice (!usbhid.mousepoll=N!), joysticks (!usbhid.jspoll=N!), and keyboards (!usbhid.kbpoll=N!)
+      <a class="fn" href="#fn17" id="foot-fn17">
+       <sup>
+        17
+       </sup>
+      </a>
+      .
+     </p>
+     <p>
+      As only the
+      <em>
+       mousepoll
+      </em>
+      parameter was implemented when we started our research, we modified the usbhid driver so that the manually defined polling interval applied to all devices. For all tested input devices, we measured the latency once when polled at their requested polling rate, and once when explicitly polled at 1000 Hz. In Figures
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      -
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      , latency distributions for the default polling rates are plotted in blue, whereas distributions for polling at 1000 Hz are plotted in orange. If the blue plot completely occludes the orange plot, this means that polling at 1000 Hz makes no difference – usually because the device is already polled at 1000 Hz by default.
+     </p>
+     <p>
+      For some devices, the latency does not change or changes only little. This is probably because their internal latency is higher than the reported polling rate. For some devices the latency decreases when polled more often, i.e. the internal latency of the devices is lower than their desired polling interval. Most notably, the
+      <em>
+       Logitech Wingman Precision
+      </em>
+      - sold for around 10 USD - offers an extremely low latency of 1-2 milliseconds when polled at 1000 Hz.
+     </p>
+     <p>
+      In summary, forcing a higher polling rate than advertised by the device may reduce latency in some devices. Polling at a higher rate also reduces the variance in latency. We have anecdotal evidence that some devices may not be able to handle higher polling rates. A cheap
+      <em>
+       GreenAsia
+      </em>
+      gamepad became permanently unresponsive when polled at 1000 Hz. However, this seems to be a very rare exception. We have not found any evidence online that users who enforced 1000 Hz polling on Linux via
+      <em>
+       usbhid
+      </em>
+      parameters temporarily or permanently damaged their devices. Higher polling rates might lead to higher power consumption on the host and on the input device (Linux Input Mailing List
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       2018
+      </a>
+      ). To test this hypothesis, we measured the power consumption of a Raspberry Pi 2 running an LXDE desktop environment and an attached Logitech RX250 under 2×2 different conditions: with default (125 Hz) and maximum (1000 Hz) polling rate, and while the mouse was sitting still or being jiggled rapidly. Current was measured with milliampere resolution via the power supply. While the mouse was sitting still, current varied between 740 and 750 mA. Rapidly jiggling the mouse resulted in a current of 770-800 mA. In both cases, changing the polling rate did not discernibly increase current consumption. We therefore assume that any increase in power consumption due to higher polling rates is negligible on laptops and desktop computers. Wireless input devices with a USB dongle should not be affected by a higher USB polling rate, as they only send events to the USB dongle when a button/key has been pressed (Newlin
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       2016
+      </a>
+      ). In our opinion, polling at the maximum rate (usually 1000 Hz) should be enabled in most use cases in order to reduce average latency and latency variance.
+     </p>
+    </section>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+         6.3
+        </span>
+        Effect of USB Hubs and Raspberry Pi versions
+       </h3>
+      </div>
+     </header>
+     <p>
+      We conducted measurements with a gamepad connected either directly to the Raspberry Pi, via a cheap USB 2.0 hub, or via a cheap USB 3.0 hub. Measurements were conducted both with the device's default polling rate and with a polling rate of 1000 Hz. None of the measurements indicated that measureable latency was added by a USB hub. We also measured a device's latency using different Raspberry Pi models (1-3) and found no difference.
+     </p>
+    </section>
+   </section>
+   <section id="sec-17">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     In the following, we discuss limitations, findings, and conclusions. Our approach to measuring latency is limited in several ways. As mentioned, LagBox can only measure the latency of USB devices. Currently, only button events are detected. All measurements were conducted on Raspberry Pi devices running Linux. Whether latency on other devices and other operating systems is the same, needs to be investigated. While we made sure that latency sources in our measuring setup are in the low microsecond range, we have not conducted conclusive measurements of kernel scheduling and USB subsystem latency. Also, the latency values we measured are not necessarily an indicator of practical performance. We assume that mechanical latency contributes more to overall input latency than the electrical latency we measured. End-to-end latency might be affected even more by processing latency and output latency.
+    </p>
+    <p>
+     Nevertheless, our research resulted in a few salient findings. Most importantly, we found that the latencies of most USB input devices have a bimodal or even multimodal distribution. Nearly none of the prior works contain histograms depicting latency distributions. While Casiez et al. show histograms in Figure 5 of their paper, two of them do not show any indications of multimodal distributions (Casiez et al.
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      2015
+     </a>
+     ). Therefore, the peaks in the lower histogram appear to be caused by timing issues of the Qt framework. Teather et al. report a “roughly bimodal distribution around 12 ms (70%) and 24 ms (30%)” (Teather et al.
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      2009
+     </a>
+     ,). However, they attribute this effect to timing limitations of their software framework. Damian (Damian
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      2010
+     </a>
+     ) argues that polling-rate-related variance of latency for typical input devices (with a standard deviation (SD) in the millisecond range) is much smaller than the variation in reaction times (SD in the dozens of milliseconds) for a number of typical psychological experiments. Therefore, effects of latency jitter might usually be neglected. Damian supports this claim with the results of simulations. However, his model assumes that variance is small and follows a uniform distribution. As we show in this paper, this is not the case for most input devices.
+    </p>
+   </section>
+   <section id="sec-18">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       CONCLUSION AND OUTLOOK
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this paper we have presented a model of input latency, as well as a latency measurements for 36 USB devices. Our measurements show - for example - that great differences exist between input devices, that even for the same device latency may vary up to several dozen milliseconds due to wide latency distributions, and that polling input devices at the maximum speed of 1000 Hz oftentimes improves both average latency and latency variance. Even if input latency is only a small part of end-to-end latency in a computing system, measuring and improving it helps in improving the latency of other components. General concepts discussed in this paper, such as the effect of polling rate or ways of reporting latency, may also be of use in other contexts.
+    </p>
+    <p>
+     In summary, we suggest that
+    </p>
+    <ul class="list-no-style">
+     <li id="list14" label="•">
+      partial latencies should be measured as directly as possible in order to better characterize sources of latency,
+      <br/>
+     </li>
+     <li id="list15" label="•">
+      that swarmplots should be preferred over other common visualizations and especially over average/SD reports for reporting latency,
+      <br/>
+     </li>
+     <li id="list16" label="•">
+      that the issue of input latency in reaction time studies should be revisited,
+      <br/>
+     </li>
+     <li id="list17" label="•">
+      and that operating systems should use a polling rate of 1000 Hz for input devices per default at least on desktop and laptop computers.
+      <br/>
+     </li>
+    </ul>
+    <p>
+     Future research would include more precisely determining the actual effect of input latency in realistic tasks, extending LagBox to non-binary input events, such as mouse movement, and extending the catalogue of devices whose latency has been measured. LagBox might also be used to calibrate other, non-invasive methods (Casiez et al.
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      2017
+     </a>
+     ).
+    </p>
+    <p>
+     We informally discussed ethical implications of this research according to the ACM Code of Ethics (ACM Code 2018 Task Force
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      2018
+     </a>
+     ) and do not see any direct or indirect negative effects of our research. Source code and dataset are attached as supplementary material in the ACM Digital Library. Additional information can be found at the accompanying website:
+     <a class="link-inline force-break" href="https://hci.ur.de/projects/latency">
+      hci.ur.de/projects/latency
+     </a>
+     .
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-19">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This paper builds on earlier work done by Simon Fürnstein, Oliver Pieper, and Mark Engerißer in their bachelor's theses under the supervision of Raphael Wimmer. We would like to thank all reviewers for their helpful feedback, Sunjun Kim for valuable discussions, the members of the linux-input mailing list for background information on the USB polling rate, and Lucia Eckl for editing the accompanying video. This project is funded by the Bavarian State Ministry of Science and the Arts in the framework of the Centre Digitisation.Bavaria (ZD.B)
+    </p>
+    <section id="ref-001">
+     <header>
+      <div class="title-info">
+       <h2 class="page-brake-head">
+        REFERENCES
+       </h2>
+      </div>
+     </header>
+     <ul class="bibUl">
+      <li id="BibPLXBIB0001">
+       ACM Code 2018 Task Force. 2018. “ACM Code of Ethics.”
+       <a class="link-inline force-break" href="https://www.acm.org/code-of-ethics">
+       </a>
+       <a class="link-inline force-break" href="https://www.acm.org/code-of-ethics">
+        https://www.acm.org/code-of-ethics
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0002">
+       Attig, Christiane, Nadine Rauh, Thomas Franke, and Josef F. Krems. 2017. “System Latency Guidelines Then and Now – Is Zero Latency Really Considered Necessary?” In Engineering Psychology and Cognitive Ergonomics: Cognition and Design, edited by Don Harris, 3–14. Lecture Notes in Computer Science. Springer International Publishing.
+      </li>
+      <li id="BibPLXBIB0003">
+       Bockes, Florian, Raphael Wimmer, and Andreas Schmid. 2018. “LagBox – Measuring the Latency of USB-Connected Input Devices.” In Extended Abstracts of the 2018 CHI Conference on Human Factors in Computing Systems, LBW115:1–LBW115:6. CHI EA ’18. New York, NY, USA: ACM.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3170427.3188632">
+        https://doi.org/10.1145/3170427.3188632
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0004">
+       Card, Stuart K, Thomas P Moran, and Allen Newell. 1986. “The Model Human Processor - an Engineering Model of Human Performance.” Handbook of Perception and Human Performance. 2 (45–1).
+      </li>
+      <li id="BibPLXBIB0005">
+       Casiez, Géry, Stéphane Conversy, Matthieu Falce, Stéphane Huot, and Nicolas Roussel. 2015. “Looking Through the Eye of the Mouse: A Simple Method for Measuring End-to-End Latency Using an Optical Mouse.” In, 629–36. ACM Press.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2807442.2807454">
+        https://doi.org/10.1145/2807442.2807454
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0006">
+       Casiez, Géry, Thomas Pietrzak, Damien Marchal, Sébastien Poulmane, Matthieu Falce, and Nicolas Roussel. 2017. “Characterizing Latency in Touch and Button-Equipped Interactive Systems.” In Proceedings of the 30th Annual ACM Symposium on User Interface Software and Technology, 29–39. UIST ’17. New York, NY, USA: ACM.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3126594.3126606">
+        https://doi.org/10.1145/3126594.3126606
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0007">
+       Damian, Markus F. 2010. “Does Variability in Human Performance Outweigh Imprecision in Response Devices Such as Computer Keyboards?” Behavior Research Methods 42 (1): 205–11.
+       <a class="link-inline force-break" href="https://doi.org/10.3758/BRM.42.1.205">
+        https://doi.org/10.3758/BRM.42.1.205
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0008">
+       Deber, Jonathan, Bruno Araujo, Ricardo Jota, Clifton Forlines, Darren Leigh, Steven Sanders, and Daniel Wigdor. 2016. “Hammer Time!: A Low-Cost, High Precision, High Accuracy Tool to Measure the Latency of Touchscreen Devices.” In, 2857–68. ACM Press.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858394">
+        https://doi.org/10.1145/2858036.2858394
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0009">
+       Jota, Ricardo, Albert Ng, Paul Dietz, and Daniel Wigdor. 2013. “How Fast Is Fast Enough?: A Study of the Effects of Latency in Direct-Touch Pointing Tasks.” In Proceedings of the Sigchi Conference on Human Factors in Computing Systems, 2291–2300. ACM.
+      </li>
+      <li id="BibPLXBIB0010">
+       Kaaresoja, Topi, and Stephen Brewster. 2010. “Feedback Is... Late: Measuring Multimodal Delays in Mobile Device Touchscreen Interaction.” In, 1. ACM Press.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1891903.1891907">
+        https://doi.org/10.1145/1891903.1891907
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0011">
+       Kim, Sunjun, Byungjoo Lee, and Antti Oulasvirta. 2018. “Impact Activation Improves Rapid Button Pressing.” In Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems, 571:1–571:8. CHI ’18. New York, NY, USA: ACM.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174145">
+        https://doi.org/10.1145/3173574.3174145
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0012">
+       Lampe, Ulrich, Qiong Wu, Ronny Hans, André Miede, and Ralf Steinmetz. 2013. “To Frag or to Be Fragged - an Empirical Assessment of Latency in Cloud Gaming:” In, 5–12. SciTePress - Science; and Technology Publications.
+       <a class="link-inline force-break" href="https://doi.org/10.5220/0004345900050012">
+        https://doi.org/10.5220/0004345900050012
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0013">
+       Linux Input Mailing List. 2018. “Re: Reasons for Respecting bInterval?”
+       <a class="link-inline force-break" href="https://www.spinics.net/lists/linux-input/msg59274.html">
+       </a>
+       <a class="link-inline force-break" href="https://www.spinics.net/lists/linux-input/msg59274.html">
+        https://www.spinics.net/lists/linux-input/msg59274.html
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0014">
+       Linux Kernel Developers. 2019. “Linux Kernel: Drivers/Usb/Core/Urb.c.”
+       <a class="link-inline force-break" href="https://github.com/torvalds/linux/blob/master/drivers/usb/core/urb.c#L566">
+        https://github.com/torvalds/linux/blob/master/drivers/usb/core/urb.c#L566
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0015">
+       Luu, Dan. 2017a. “Terminal Latency.”
+       <a class="link-inline force-break" href="https://danluu.com/term-latency/">
+        https://danluu.com/term-latency/
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0016">
+       2017b. “Keyboard Latency.”
+       <a class="link-inline force-break" href="https://danluu.com/keyboard-latency/">
+        https://danluu.com/keyboard-latency/
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0017">
+       2017c. “Computer Latency: 1977-2017.”
+       <a class="link-inline force-break" href="https://danluu.com/input-lag/">
+        https://danluu.com/input-lag/
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0018">
+       MacKenzie, I Scott, and Colin Ware. 1993. “Lag as a Determinant of Human Performance in Interactive Systems.” In Proceedings of the Interact’93 and Chi’93 Conference on Human Factors in Computing Systems, 488–93. ACM.
+      </li>
+      <li id="BibPLXBIB0019">
+       Microsoft. n.d. “_USB_ENDPOINT_DESCRIPTOR Documentation.” Accessed January 7, 2019.
+       <a class="link-inline force-break" href="https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/usbspec/ns-usbspec-_usb_endpoint_descriptor">
+        https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/usbspec/ns-usbspec-_usb_endpoint_descriptor
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0020">
+       Newlin, Marc. 2016. “MouseJack - Injecting Keystrokes into Wireless Mice.” Bastille Threat Research Team Whitepaper.
+       <a class="link-inline force-break" href="https://github.com/BastilleResearch/mousejack/blob/master/doc/pdf/MouseJack-whitepaper-v1.1.pdf">
+        https://github.com/BastilleResearch/mousejack/blob/master/doc/pdf/MouseJack-whitepaper-v1.1.pdf
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0021">
+       Ng, Albert, Julian Lepinski, Daniel Wigdor, Steven Sanders, and Paul Dietz. 2012. “Designing for Low-Latency Direct-Touch Input.” In Proceedings of the 25th Annual Acm Symposium on User Interface Software and Technology, 453–64. UIST ’12. New York, NY, USA: ACM.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2380116.2380174">
+        https://doi.org/10.1145/2380116.2380174
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0022">
+       Oulasvirta, Antti, Sunjun Kim, and Byungjoo Lee. 2018. “Neuromechanics of a Button Press.” In, 4099–4112. ACM Press.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174082">
+        https://doi.org/10.1145/3173574.3174082
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0023">
+       Plant, Richard R. 2016. “A Reminder on Millisecond Timing Accuracy and Potential Replication Failure in Computer-Based Psychology Experiments: An Open Letter.” Behavior Research Methods 48 (1): 408–11.
+       <a class="link-inline force-break" href="https://doi.org/10.3758/s13428-015-0577-0">
+        https://doi.org/10.3758/s13428-015-0577-0
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0024">
+       Plant, Richard R., Nick Hammond, and Tom Whitehouse. 2003. “How Choice of Mouse May Affect Response Timing in Psychological Studies.” Behavior Research Methods, Instruments, &amp; Computers 35 (2): 276–84.
+       <a class="link-inline force-break" href="https://doi.org/10.3758/BF03202553">
+        https://doi.org/10.3758/BF03202553
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0025">
+       Rayman, Reiza, Serguei Primak, Rajni Patel, Merhdad Moallem, Roya Morady, Mahdi Tavakoli, Vanja Subotic, Natalie Galbraith, Aimee Van Wynsberghe, and Kris Croome. 2005. “Effects of Latency on Telesurgery: An Experimental Study.” In International Conference on Medical Image Computing and Computer-Assisted Intervention, 57–64. Springer.
+      </li>
+      <li id="BibPLXBIB0026">
+       Teather, Robert J., Andriy Pavlovych, Wolfgang Stuerzlinger, and I. Scott MacKenzie. 2009. “Effects of Tracking Technology, Latency, and Spatial Jitter on Object Movement.” In, 43–50. IEEE.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/3DUI.2009.4811204">
+        https://doi.org/10.1109/3DUI.2009.4811204
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0027">
+       USB Implementers Forum. 2000. “Universal Serial Bus Specification Revision 2.0.”
+       <a class="link-inline force-break" href="https://www.usb.org/document-library/usb-20-specification">
+       </a>
+       <a class="link-inline force-break" href="https://www.usb.org/document-library/usb-20-specification">
+        https://www.usb.org/document-library/usb-20-specification
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0028">
+       2001. “Universal Serial Bus (USB) Device Class Definition for Human Interface Devices (HID), Firmware Specification Version 1.11.”
+       <a class="link-inline force-break" href="https://www.usb.org/sites/default/files/documents/hid1_11.pdf">
+       </a>
+       <a class="link-inline force-break" href="https://www.usb.org/sites/default/files/documents/hid1_11.pdf">
+        https://www.usb.org/sites/default/files/documents/hid1_11.pdf
+       </a>
+       .
+      </li>
+     </ul>
+    </section>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    A detailed description of the many individual steps involved when typing a search term into a web form and pressing
+    <em>
+     Enter
+    </em>
+    can be found at
+    <a class="link-inline force-break" href="https://github.com/alex/what-happens-when">
+     https://github.com/alex/what-happens-when
+    </a>
+   </p>
+   <p id="fn2">
+    <a href="#foot-fn2">
+     <sup>
+      2
+     </sup>
+    </a>
+    i.e., the difference in latency between an input device and either a reference device (whose absolute latency does not need to be known) or multiple other devices.
+   </p>
+   <p id="fn3">
+    <a href="#foot-fn3">
+     <sup>
+      3
+     </sup>
+    </a>
+    Leo Bodnar Electronics sells a
+    <em>
+     Video Signal Input Lag Tester
+    </em>
+    which allows for measuring the latency of TVs and computer monitors.
+    <a class="link-inline force-break" href="http://www.leobodnar.com/shop/?main_page=product_info&amp;products_id=212">
+     http://www.leobodnar.com/shop/?main_page=product_info&amp;products_id=212
+    </a>
+   </p>
+   <p id="fn4">
+    <a href="#foot-fn4">
+     <sup>
+      4
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="https://docs.google.com/document/d/1B3GfZkwAfHlQE5kAuHcn-wq8I-7D5UF2Ap7C_CYk5co/">
+     https://docs.google.com/document/d/1B3GfZkwAfHlQE5kAuHcn-wq8I -7D5UF2Ap7C_CYk5co/
+    </a>
+   </p>
+   <p id="fn5">
+    <a href="#foot-fn5">
+     <sup>
+      5
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="https://github.com/google/walt">
+     https://github.com/google/walt
+    </a>
+   </p>
+   <p id="fn6">
+    <a href="#foot-fn6">
+     <sup>
+      6
+     </sup>
+    </a>
+    Mark Koudritsky, personal communication, 2016-04-12.
+   </p>
+   <p id="fn7">
+    <a href="#foot-fn7">
+     <sup>
+      7
+     </sup>
+    </a>
+    A
+    <em>
+     response box
+    </em>
+    is an external computer peripheral used for reaction time experiments. It usually contains multiple buttons and/or lights and allows for low-latency, high-accuracy/-precision time measurements.
+   </p>
+   <p id="fn8">
+    <a href="#foot-fn8">
+     <sup>
+      8
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="http://www.overclock.net/t/1572872/firmware-added-button-delay-testing-attempts-tapping-mouse-buttons-lightly">
+     http://www.overclock.net/t/1572872/firmware-added-button-delay-testing -attempts-tapping-mouse-buttons-lightly
+    </a>
+    (most information is hidden behind the “spoilers” links)
+   </p>
+   <p id="fn9">
+    <a href="#foot-fn9">
+     <sup>
+      9
+     </sup>
+    </a>
+    KeyResponse PK,
+    <a class="link-inline force-break" href="http://www.bloody.tw/en/download.php">
+     http://www.bloody.tw/en/download.php
+    </a>
+   </p>
+   <p id="fn10">
+    <a href="#foot-fn10">
+     <sup>
+      10
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="http://web.archive.org/web/20160224102835/PLX-https-PLX:///utmalesoldiers.blogspot.de/2013/02/114.html">
+     http://web.archive.org/web/20160224102835/ https://utmalesoldiers.blogspot.de/2013/02/114.html
+    </a>
+   </p>
+   <p id="fn11">
+    <a href="#foot-fn11">
+     <sup>
+      11
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="https://www.youtube.com/watch?v=u9z62MKX_Wg">
+     https://www.youtube.com/watch?v=u9z62MKX_Wg
+    </a>
+   </p>
+   <p id="fn12">
+    <a href="#foot-fn12">
+     <sup>
+      12
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="http://sousuch.web.fc2.com/DIY/mouse_latency/index.html">
+     http://sousuch.web.fc2.com/DIY/mouse_latency/index.html
+    </a>
+   </p>
+   <p id="fn13">
+    <a href="#foot-fn13">
+     <sup>
+      13
+     </sup>
+    </a>
+    If an input devices has many keys, such as a keyboard, matrix scanning is employed. This implementation choice does not substantially affect latency, however.
+   </p>
+   <p id="fn14">
+    <a href="#foot-fn14">
+     <sup>
+      14
+     </sup>
+    </a>
+    The metal contacts in mechanical micro-switches tend to bounce slightly after impact, resulting in multiple short interruptions of the contact. The controller firmware has to filter out these ‘echoes’, e.g. by not accepting repeated button presses for a limited time. Some device manufacturers employ optical switches which do not require debouncing (e.g.,
+    <a class="link-inline force-break" href="http://www.bloody.tw/en/Products.php?pid=28">
+     http://www.bloody.tw/en/Products.php?pid=28
+    </a>
+    ,
+    <a class="link-inline force-break" href="http://www.wooting.nl/">
+     http://www.wooting.nl/
+    </a>
+    )
+   </p>
+   <p id="fn15">
+    <a href="#foot-fn15">
+     <sup>
+      15
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="http://www.cypress.com/file/103181/download">
+     http://www.cypress.com/file/103181/download
+    </a>
+   </p>
+   <p id="fn16">
+    <a href="#foot-fn16">
+     <sup>
+      16
+     </sup>
+    </a>
+    We used the Hirschmann MICRO-KLEPS clips and MPS2/0.64FT probes.
+   </p>
+   <p id="fn17">
+    <a href="#foot-fn17">
+     <sup>
+      17
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="https://patchwork.kernel.org/patch/10299667/">
+     https://patchwork.kernel.org/patch/10299667/
+    </a>
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.0.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300650" target="_blank">
+      https://doi.org/10.1145/3290605.3300650
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'875851ec0be63a4f',t:'MTcxMzMxMzk2OC4yOTEwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

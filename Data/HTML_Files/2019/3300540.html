@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   On the Usability of HTTPS Deployment
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300540_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300540_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300540_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300540_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300540_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300540_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300540_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300540_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        On the Usability of HTTPS Deployment
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Matthew
+      </span>
+      <span class="surName">
+       Bernhard
+      </span>
+      , University of Michigan, USA,
+      <a href="mailto:matber@umich.edu">
+       matber@umich.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Jonathan
+      </span>
+      <span class="surName">
+       Sharman
+      </span>
+      , Rice University, USA,
+      <a href="mailto:jonathan.sharman@gmail.com">
+       jonathan.sharman@gmail.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Claudia
+      </span>
+      <span class="surName">
+       Acemyan
+      </span>
+      , Rice University, USA,
+      <a href="mailto:czacemyan@gmail.com">
+       czacemyan@gmail.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Philip
+      </span>
+      <span class="surName">
+       Kortum
+      </span>
+      , Rice University, USA,
+      <a href="mailto:pkortum@rice.edu">
+       pkortum@rice.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Dan
+      </span>
+      <span class="surName">
+       Wallach
+      </span>
+      , Rice University, USA,
+      <a href="mailto:dwallach@cs.rice.edu">
+       dwallach@cs.rice.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       J. Alex
+      </span>
+      <span class="surName">
+       Halderman
+      </span>
+      , University of Michigan, USA,
+      <a href="mailto:jhalderm@umich.edu">
+       jhalderm@umich.edu
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300540" target="_blank">
+       https://doi.org/10.1145/3290605.3300540
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       HTTPS and TLS are the backbone of Internet security, however setting up web servers to run these protocols is a notoriously difficult process. In this paper, we perform two live subjects usability studies on the deployment of HTTPS in a real-world setting. Study 1 is a within subjects comparison between traditional HTTPS configuration (purchasing a certificate and installing it on a server) and Let's Encrypt, which automates much of the process. Study 2 is a between subjects study looking at the same two systems, examining why users encounter usability issues. Overall we confirm past results that HTTPS is difficult to deploy, and we find some evidence that suggests Let's Encrypt is an easier, more efficient method for deploying HTTPS.
+      </small>
+     </p>
+    </div>
+    <div class="classifications">
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Matthew Bernhard, Jonathan Sharman, Claudia Acemyan, Philip Kortum, Dan Wallach, and J. Alex Halderman. 2019. On the Usability of HTTPS Deployment. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 10 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300540" target="_blank">
+         https://doi.org/10.1145/3290605.3300540
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     The modern Internet is largely secured via the HTTPS protocol, which relies on Transport Layer Security (TLS). Google Chrome recently integrated a feature that automatically treats websites not served over HTTPS as ”not secure” [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ]. However, TLS is known as a notoriously difficult protocol to set up and deploy successfully. Certificates are often expensive and difficult to acquire. Misconfiguration and the difficulty of modifying server configurations to mitigate known attacks have resulted in numerous web vulnerabilities, and misconfiguration exacerbates attacks like FREAK, DROWN, and POODLE [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+      11
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+      19
+     </a>
+     ]. Recent efforts like Let's Encrypt have attempted to remedy this problem by making TLS deployment automated and free, and a majority of websites are now using the HTTPS protocol [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ].
+    </p>
+    <p>
+     In this paper, we study the usability of deploying TLS, both manually and using Let's Encrypt. We study a diverse set of participants purchasing certificates from real certificate authorities, configuring an Apache2 webserver, and contrast the usability of this method of TLS deployment against that of Let's Encrypt and the EFF's certbot. We verify the findings of Krombholz et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ], and expand it with a more diverse sample and more real-world testing conditions.
+    </p>
+    <p>
+     Overall, we find that HTTPS deployment is in fact very difficult, even for users with technical expertise. Neither manual configuration nor Let's Encrypt resulted in all of our participants successfully deploying HTTPS. However, Let's Encrypt did see higher rates of success than manual configuration and lower time on task, indicating that Let's Encrypt is a more usable way to deploy HTTPS. We believe these findings provide limited support for the argument that Let's Encrypt makes the Internet a safer place.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       BACKGROUND
+      </h2>
+     </div>
+    </header>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Usability
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our study evaluates usability based on the ISO 9241-11 standard, which provides three categories for evaluation: effectiveness, efficiency, and satisfaction [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ]. For efficiency, we measure the amount of time it takes for a user to completely deploy TLS. For satisfaction, we rely on the system usability score (SUS), which was developed by Brooke [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ], and evaluated by Bangor et al. in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ]. For effectiveness, we rely on SSLLabs’ SSL Server Test [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ], an external evaluation service that provides a letter grade score determining how secure a given website is. What makes a TLS connection “secure”, and how SSLLabs determines this and provides a score, is explained further in Section
+      <a class="sec" href="#sec-5">
+       2
+      </a>
+      .
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Enabling HTTPS
+       </h3>
+      </div>
+     </header>
+     <p>
+      In order to enable HTTPS, site operators must first acquire a trusted certificate from one of several certificate authorities (CAs), and then install the certificate on their web server. Most certificate authorities require that a site operator submit a self-generate certificate signing request (CSR), which contains information about the website and site operator necessary for creating a trusted end-entity certificate. After submitting a CSR, site operators can download a certificate bundle that they can install onto their web server. On Apache2, the web server that we use in this study, this requires updating web server configuration to use the proper certificate file, private key file, and certificate chain file generated by the certificate authority. Users can also change the server configuration to support different variants of the SSL/TLS protocol, which trades compatibility for security, as older version of the protocol have known vulnerabilities like FREAK, DROWN, and POODLE, to name a few [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ].
+     </p>
+     <p>
+      This is not the workflow for all CAs. Let's Encrypt, a free certificate authority that we investigate in this study, does not require site operators to submit a CSR or set up their web server manually. Instead services like the Electronic Frontier Foundation's
+      <tt>
+       certbot
+      </tt>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ] program interact with the Let's Encrypt CA and generate a certificate automatically, as well as updating the web server configuration to support HTTPS with the newly generated certificate.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Evaluating Security
+       </h3>
+      </div>
+     </header>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        <strong>
+         SSL Labs Grades Mapping
+        </strong>
+        —a mapping of SSL Labs letter grades to the corresponding numerical values.
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr>
+         <td style="text-align:left;">
+          Letter
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Numeric
+         </td>
+         <td style="text-align:center;">
+          Letter
+         </td>
+         <td>
+          Numeric
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          Grade
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Grade
+         </td>
+         <td style="text-align:center;">
+          Grade
+         </td>
+         <td>
+          Grade
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          A+
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          100
+         </td>
+         <td style="text-align:center;">
+          C-
+         </td>
+         <td>
+          46.67
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          A
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          93.33
+         </td>
+         <td style="text-align:center;">
+          D+
+         </td>
+         <td>
+          40
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          A-
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          86.67
+         </td>
+         <td style="text-align:center;">
+          D
+         </td>
+         <td>
+          33.33
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          B+
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          80
+         </td>
+         <td style="text-align:center;">
+          D-
+         </td>
+         <td>
+          26.67
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          B
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          73.33
+         </td>
+         <td style="text-align:center;">
+          E+
+         </td>
+         <td>
+          20
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          B-
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          66.67
+         </td>
+         <td style="text-align:center;">
+          E
+         </td>
+         <td>
+          13.33
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          C+
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          60
+         </td>
+         <td style="text-align:center;">
+          E-
+         </td>
+         <td>
+          6.67
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          C
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          53.33
+         </td>
+         <td style="text-align:center;">
+          F
+         </td>
+         <td>
+          0
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      Qualys SSL Labs [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ] provides a web service where users can type in the name of a website, and then receive a detailed break down of the HTTPS configuration of the server hosting that website, along with a letter grade assessing the overall security provided by the site. Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      provides a mapping of letter grades to numerical score, out of 100, which we use throughout the paper in discussing SSL Labs results as well as user sentiment, e.g. likelihood to recommend and overall ease-of-use.
+     </p>
+    </section>
+   </section>
+   <section id="sec-7">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       METHODOLOGY
+      </h2>
+     </div>
+    </header>
+    <p>
+     Our experiment ran in two studies. The first was a within-subjects comparison between Let's Encrypt and manual certificate acquisition and server configuration. The second study was between-subjects, studying the specific error modes of using each method from Study 1. We obtained IRB approval for both studies.
+    </p>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Participants
+       </h3>
+      </div>
+     </header>
+     <p>
+      Subjects for both studies were recruited via Craigslist and Facebook ads or via connections with the researchers. Each participant was paid
+      <font style="normal">
+       $
+      </font>
+      50 for participating in this study. We attempted to recruit a diverse sample of participants with some UNIX knowledge, ranging from hobbyists to system administrators. All participants were recruited from the Houston area and self-reported normal or corrected-to-normal vision. Recruitment for this study under these constraints was very difficult, which greatly limited the number of participants we could recruit. We further discuss the limitations imposed by our recruitment later in Section
+      <a class="sec" href="#sec-20">
+       5
+      </a>
+      .
+     </p>
+     <p>
+      <em>
+       Study 1
+      </em>
+      . We recruited nine participants in total for Study 1, eight of which are included in the results. (One participant had to be excluded from the study due to a methodological error during the experiment.) Seven of the participants spoke English natively, and the remaining participant was a native speaker of Telugu. The mean age was 26.4 years, with a median of 23 and a range of 19 to 41. Seven participants were male, and one was female. Participants were Asian (7, 87.5%) and African American (1, 12.5%). The highest education levels of the participants were bachelor's degree or equivalent (4, 50%), some college or associate's degree (2, 25%), high school or G.E.D. (1, 12.5%), and postgraduate degree (1, 12.5%). Participants self-reported their computer expertise on a scale from 1 to 10, with a mean of 6.1, median of 7, and range of (1, 10).
+     </p>
+     <p>
+      <em>
+       Study 2
+      </em>
+      . We recruited ten participants in Study 2, assigning five to use Let's Encrypt and five to use manual HTTPS deployment methods. All participants spoke English natively. The mean age in the Let's Encrypt group was 40.4, with a median of 37 and a range of 28 to 63. The mean age in the manual group was 41.4 years, with a median of 42 and a range of 29 to 64. All participants in both groups were male. The Let's Encrypt participants’ ethnicities were Caucasian (3, 60%) and African American (2, 40%), and those of the manual participants were Caucasian (2, 40%), African American (1, 20%), Asian (1, 20%), and Mexican American/Chicano (1, 20%). The highest education levels for Let's Encrypt participants were bachelor's degree (3, 60%), postgraduate degree (1, 20%), and some college or associate's degree (1, 20%); manual participants had a bachelor's or equivalent (2, 40%), postgraduate degree (2, 40%), and some college or associate's degree (1, 20%). Let's Encrypt participants’ self-reported computer expertise scores on a scale from 1 to 10 had a mean and median of 8 and a range of (7, 10). For manual participants, the expertise scores had a mean of 8.2, median of 8, and range of (7, 10).
+     </p>
+    </section>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Design
+       </h3>
+      </div>
+     </header>
+     <p>
+      We measured efficiency as the total time to complete a task. Subjects were limited to two hours to finish the task.
+     </p>
+     <p>
+      <em>
+       Study 1
+      </em>
+      . Each participant attempted to deploy HTTPS on an Apache2 web server using both Let's Encrypt and manual acquisition, deployment, and configuration. The order of the two tasks was assigned at random for each participant, to control for possible ordering effects. In this study, we measured effectiveness as either success or failure. The participant succeeded if and only if the test server was accessible via HTTPS after they completed the task.
+     </p>
+     <p>
+      <em>
+       Study 2
+      </em>
+      . Each participant was assigned at random to attempt to deploy HTTPS using either Let's Encrypt or manual deployment. In this study, in addition to success or failure as a measure of effectiveness, we also recorded the Qualys SSL Labs score for each server configuration. SSL Labs provides a letter grade from F to A+ indicating the level of security of a server's HTTPS configuration. Since SSL Labs does not provide a score for a server that cannot communicate using HTTPS, we considered such servers to have a score of F for the purpose of analysis.
+     </p>
+     <p>
+      To assess participants’ understanding of the task and their satisfaction with both methods, we issued a System Usability Score (SUS) survey after each task [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ], as well as asking participants for comments about the system. We consider shorter times on task, higher SSL Labs scores, high SUS scores, and positive comments from participants to indicate that a system is more usable.
+     </p>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Procedures
+       </h3>
+      </div>
+     </header>
+     <p>
+      In both studies, we obtained informed consent from each participant before beginning and then read them instructions for their first task.
+     </p>
+     <p>
+      Participants were read instructions about both studies from a script (see Appendix
+      <a class="sec" href="#sec-27">
+       A
+      </a>
+      ). For Study 1, we instructed participants to acquire a TLS certificate and then deploy it on the provided server, using either Let's Encrypt or manual configuration. After completing the task for one method, participants would fill out a questionnaire and then repeat the task with the other method. In Study 2, participants were similarly instructed to acquire a certificate using one method or the other. The choice or ordering of methods for each participant in each Study was determined by alternating between assignments while attempting to keep a uniform distribution of demographics between both experimental groups.
+     </p>
+     <p>
+      Participants were provided with an information sheet containing login credentials, certificate authority information, and billing information to enable them to purchase certificates or fill out Let's Encrypt data (see Appendix
+      <a class="sec" href="#sec-28">
+       B
+      </a>
+      for an example). At the beginning of each session, participants were given a laptop with a blank Safari tab open and a terminal that was already SSH'd into the remote server, to avoid added complexity in instructions. Participants were permitted to use any Internet resources they could find, including but not limited to tutorials and instruction sites from CAs.
+     </p>
+     <p>
+      <em>
+       Manual Configuration
+      </em>
+      . For the manual portions of studies 1 and 2, participants were expected to navigate to the CA's website and purchase a certificate. We chose Namecheap [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ] as our CA, as its certificates are relatively inexpensive and it is a fairly commonly used service. Once purchased, the CA asked for a certificate signing request, which is generated via OpenSSL [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ] on the remote server. Participants would then download the certificate and upload it to the remote server. After upload, participants would configure a default Apache2 configuration to use the certificate.
+     </p>
+     <p>
+      <em>
+       Let's Encrypt
+      </em>
+      . For the Let's Encrypt portions of both studies, participants were expected to navigate to Let's Encrypt's website and download certbot to the remote server. Participants then followed the prompts on the remote server to acquire a certificate, with the server configuration being done automatically by certbot.
+     </p>
+     <p>
+      <em>
+       Study 1
+      </em>
+      . If the participant spent more than ten minutes not making any progress (e.g. staring at the same web page), the experimenter stopped them.
+      <a class="fn" href="#fn1" id="foot-fn1">
+       <sup>
+        1
+       </sup>
+      </a>
+      After attempting each task, each participant answered a set of survey questions about the subjective usability of the system they just used; however, these were ultimately not used due to an incident in which some of the survey results from Study 1 were lost. After finishing with both tasks, participants filled out a survey with demographic and TLS background information.
+     </p>
+     <p>
+      <em>
+       Study 2
+      </em>
+      . In this study, participants were allowed to keep trying to complete the task even if they became stuck, as long as they remained within the three-hour time limit. As in Study 1, after attempting the task participants filled out a survey, providing a SUS score of the system to which they were assigned, along with demographic and background information.
+     </p>
+     <p>
+      Finally, in both studies, participants were debriefed, compensated, and thanked for participating in the study.
+     </p>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Materials
+       </h3>
+      </div>
+     </header>
+     <p>
+      Both studies of the study required similar work flows for the participants. We gave each participant a unique GMail account. For participants in Study 1 or the manual configuration of Study 2, we also provided a Visa gift card with enough value to purchase a certificate. Finally, participants were sat at a 2015 MacBook Pro 15-inch laptop, operating in guest user mode, to complete the study. For the remote server, we allocated an Amazon EC2 instance running Ubuntu 16.04, with Apache2 preinstalled. We chose Apache2 as it is the most common server deployed on Linux [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ] and has dominated market share over the past two decades. Thus, Apache2 provides a baseline for server configuration experience.
+     </p>
+     <p>
+      We obtained demographic information and satisfaction data via SurveyMonkey [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ] forms.
+     </p>
+    </section>
+   </section>
+   <section id="sec-12">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       RESULTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This section summarizes the quantitative and qualitative findings for both Study 1 and Study 2. In Study 1 (within-subjects), we ran a paired t-test for each measured quantity, including measures of effectiveness and efficiency. In Study 2 (between-subjects), we used an unpaired Welch's t-test and measured satisfaction, in addition to effectiveness and efficiency. Results differed between Study 1 and Study 2. In Study 1, we observed a reliable effect of deployment method on effectiveness but not on efficiency. In Study 2, we observed a reliable effect of deployment method on efficiency but not on effectiveness or satisfaction.
+    </p>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Study 1
+       </h3>
+      </div>
+     </header>
+     <div class="table-responsive" id="tab2">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 2:
+       </span>
+       <span class="table-title">
+        <strong>
+         Results for the Study 1
+        </strong>
+        —Time on task, and success for each subject in study 1.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;">
+         </th>
+         <th style="text-align:center;">
+          Manual
+         </th>
+         <th style="text-align:center;">
+          Manual
+         </th>
+         <th style="text-align:center;">
+          LE
+         </th>
+         <th style="text-align:center;">
+          LE
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:left;">
+          Subject
+         </th>
+         <th style="text-align:center;">
+          Time (s)
+         </th>
+         <th style="text-align:center;">
+          Success
+         </th>
+         <th style="text-align:center;">
+          Time (s)
+         </th>
+         <th style="text-align:center;">
+          Success
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;">
+          1
+         </td>
+         <td style="text-align:right;">
+          981
+         </td>
+         <td style="text-align:right;">
+          N
+         </td>
+         <td style="text-align:right;">
+          579
+         </td>
+         <td style="text-align:right;">
+          Y
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          2
+         </td>
+         <td style="text-align:right;">
+          5406
+         </td>
+         <td style="text-align:right;">
+          N
+         </td>
+         <td style="text-align:right;">
+          520
+         </td>
+         <td style="text-align:right;">
+          Y
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          3
+         </td>
+         <td style="text-align:right;">
+          5820
+         </td>
+         <td style="text-align:right;">
+          N
+         </td>
+         <td style="text-align:right;">
+          420
+         </td>
+         <td style="text-align:right;">
+          Y
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          4
+         </td>
+         <td style="text-align:right;">
+          2220
+         </td>
+         <td style="text-align:right;">
+          N
+         </td>
+         <td style="text-align:right;">
+          3180
+         </td>
+         <td style="text-align:right;">
+          N
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          5
+         </td>
+         <td style="text-align:right;">
+          3060
+         </td>
+         <td style="text-align:right;">
+          N
+         </td>
+         <td style="text-align:right;">
+          2820
+         </td>
+         <td style="text-align:right;">
+          N
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          7
+         </td>
+         <td style="text-align:right;">
+          300
+         </td>
+         <td style="text-align:right;">
+          N
+         </td>
+         <td style="text-align:right;">
+          1140
+         </td>
+         <td style="text-align:right;">
+          N
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          8
+         </td>
+         <td style="text-align:right;">
+          3720
+         </td>
+         <td style="text-align:right;">
+          N
+         </td>
+         <td style="text-align:right;">
+          3240
+         </td>
+         <td style="text-align:right;">
+          N
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          9
+         </td>
+         <td style="text-align:right;">
+          6420
+         </td>
+         <td style="text-align:right;">
+          N
+         </td>
+         <td style="text-align:right;">
+          300
+         </td>
+         <td style="text-align:right;">
+          Y
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:left;">
+          Avg.
+         </td>
+         <td style="text-align:right;">
+          3491.0
+         </td>
+         <td style="text-align:right;">
+          0
+         </td>
+         <td style="text-align:right;">
+          1525.0
+         </td>
+         <td style="text-align:right;">
+          0.5
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          Std. Dev.
+         </td>
+         <td style="text-align:right;">
+          2268.0
+         </td>
+         <td style="text-align:right;">
+          0
+         </td>
+         <td style="text-align:right;">
+          1316.5
+         </td>
+         <td style="text-align:right;">
+          0.5
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      Results for Study 1 are summarized in Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      .
+     </p>
+     <section id="sec-14">
+      <p>
+       <em>
+        Effectiveness.
+       </em>
+       To evaluate effectiveness, we treat a passing server configuration as a 1 and a failing configuration as a 0. In Study 1, no participants were able to successfully deploy HTTPS using the manual deployment method,
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 0$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 0. Four participants were able to deploy HTTPS using Let's Encrypt,
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 0.500$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 0.535. There was a reliable effect of deployment method on task completion, t = -2.646, 7 degrees of freedom, p = 0.033. The Cohen's d effect size was -0.935, indicating a large effect.
+      </p>
+     </section>
+     <section id="sec-15">
+      <p>
+       <em>
+        Efficiency.
+       </em>
+       For the efficiency of manual deployment, we observed
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 3491$
+        </span>
+       </span>
+       s,
+       <em>
+        s
+       </em>
+       = 2267.999 s, and range = (300 s, 6420 s). For Let's Encrypt,
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 1525$
+        </span>
+       </span>
+       s,
+       <em>
+        s
+       </em>
+       = 1316.494 s, and range = (300 s, 3240 s). There was no reliable evidence that time on task differed between manual deployment and Let's Encrypt, t = 1.874, 7 degrees of freedom, p = 0.103, though we note that this may have been due to the restrictive time limit we placed on participants..
+      </p>
+     </section>
+    </section>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Study 2
+       </h3>
+      </div>
+     </header>
+     <p>
+      Results for Study 2 are summarized in Tables
+      <a class="tbl" href="#tab3">
+       3
+      </a>
+      and
+      <a class="tbl" href="#tab4">
+       4
+      </a>
+      .
+     </p>
+     <div class="table-responsive" id="tab3">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 3:
+       </span>
+       <span class="table-title">
+        Results for Study 2 Manual configuration.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;">
+         </th>
+         <th style="text-align:right;">
+         </th>
+         <th style="text-align:center;">
+          SSLLabs
+         </th>
+         <th style="text-align:right;">
+         </th>
+         <th style="text-align:right;">
+         </th>
+         <th style="text-align:right;">
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:left;">
+          Subject
+         </th>
+         <th style="text-align:center;">
+          Time (s)
+         </th>
+         <th style="text-align:center;">
+          Grade
+         </th>
+         <th style="text-align:center;">
+          SUS
+         </th>
+         <th style="text-align:center;">
+          LR
+         </th>
+         <th style="text-align:center;">
+          UF
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;">
+          102
+         </td>
+         <td style="text-align:right;">
+          8116
+         </td>
+         <td style="text-align:right;">
+          0 (F)
+         </td>
+         <td style="text-align:right;">
+          12.5
+         </td>
+         <td style="text-align:right;">
+          2
+         </td>
+         <td style="text-align:right;">
+          33.33 (D)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          104
+         </td>
+         <td style="text-align:right;">
+          6881
+         </td>
+         <td style="text-align:right;">
+          73.33 (B)
+         </td>
+         <td style="text-align:right;">
+          52.5
+         </td>
+         <td style="text-align:right;">
+          6
+         </td>
+         <td style="text-align:right;">
+          46.67 (C-)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          105
+         </td>
+         <td style="text-align:right;">
+          4256
+         </td>
+         <td style="text-align:right;">
+          86.67 (A-)
+         </td>
+         <td style="text-align:right;">
+          35.0
+         </td>
+         <td style="text-align:right;">
+          4
+         </td>
+         <td style="text-align:right;">
+          66.67 (B-)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          108
+         </td>
+         <td style="text-align:right;">
+          10127
+         </td>
+         <td style="text-align:right;">
+          86.67 (A-)
+         </td>
+         <td style="text-align:right;">
+          10.0
+         </td>
+         <td style="text-align:right;">
+          1
+         </td>
+         <td style="text-align:right;">
+          26.67 (D-)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          109
+         </td>
+         <td style="text-align:right;">
+          7221
+         </td>
+         <td style="text-align:right;">
+          0 (F)
+         </td>
+         <td style="text-align:right;">
+          5.0
+         </td>
+         <td style="text-align:right;">
+          2
+         </td>
+         <td style="text-align:right;">
+          26.67 (D-)
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:left;">
+          Avg.
+         </td>
+         <td style="text-align:right;">
+          7320
+         </td>
+         <td style="text-align:right;">
+          49.33 (C-)
+         </td>
+         <td style="text-align:right;">
+          23.0
+         </td>
+         <td style="text-align:right;">
+          3
+         </td>
+         <td style="text-align:right;">
+          40.00 (D+)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td colspan="3" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          LR—likely to recommend
+         </td>
+         <td colspan="3" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          UF—user friendliness
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <div class="table-responsive" id="tab4">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 4:
+       </span>
+       <span class="table-title">
+        Results for Study 2 Let's Encrypt configuration.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;">
+         </th>
+         <th style="text-align:right;">
+         </th>
+         <th style="text-align:center;">
+          SSLLabs
+         </th>
+         <th style="text-align:right;">
+         </th>
+         <th style="text-align:right;">
+         </th>
+         <th style="text-align:right;">
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:left;">
+          Subject
+         </th>
+         <th style="text-align:center;">
+          Time (s)
+         </th>
+         <th style="text-align:center;">
+          Grade
+         </th>
+         <th style="text-align:center;">
+          SUS
+         </th>
+         <th style="text-align:center;">
+          LR
+         </th>
+         <th style="text-align:center;">
+          UF
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;">
+          101
+         </td>
+         <td style="text-align:right;">
+          2874
+         </td>
+         <td style="text-align:right;">
+          100.0 (A+)
+         </td>
+         <td style="text-align:right;">
+          45.0
+         </td>
+         <td style="text-align:right;">
+          5
+         </td>
+         <td style="text-align:right;">
+          73.33 (B)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          103
+         </td>
+         <td style="text-align:right;">
+          2048
+         </td>
+         <td style="text-align:right;">
+          93.33 (A)
+         </td>
+         <td style="text-align:right;">
+          92.5
+         </td>
+         <td style="text-align:right;">
+          10
+         </td>
+         <td style="text-align:right;">
+          93.33 (A)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          106
+         </td>
+         <td style="text-align:right;">
+          488
+         </td>
+         <td style="text-align:right;">
+          0 (F)
+         </td>
+         <td style="text-align:right;">
+          15.0
+         </td>
+         <td style="text-align:right;">
+          1
+         </td>
+         <td style="text-align:right;">
+          0 (F)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          107
+         </td>
+         <td style="text-align:right;">
+          8413
+         </td>
+         <td style="text-align:right;">
+          0 (F)
+         </td>
+         <td style="text-align:right;">
+          67.5
+         </td>
+         <td style="text-align:right;">
+          8
+         </td>
+         <td style="text-align:right;">
+          66.67 (B-)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          110
+         </td>
+         <td style="text-align:right;">
+          769
+         </td>
+         <td style="text-align:right;">
+          93.33 (A)
+         </td>
+         <td style="text-align:right;">
+          97.5
+         </td>
+         <td style="text-align:right;">
+          10
+         </td>
+         <td style="text-align:right;">
+          93.33 (A)
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:left;">
+          Avg.
+         </td>
+         <td style="text-align:right;">
+          2918
+         </td>
+         <td style="text-align:right;">
+          57.33 (C)
+         </td>
+         <td style="text-align:right;">
+          63.5
+         </td>
+         <td style="text-align:right;">
+          6.8
+         </td>
+         <td style="text-align:right;">
+          65.33 (C+)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td colspan="3" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          LR—likely to recommend
+         </td>
+         <td colspan="3" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          UF—user friendliness
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <section id="sec-17">
+      <p>
+       <em>
+        Effectiveness.
+       </em>
+       Completion rates were identical between both systems in Study 2 with three participants completing the task and two failing for each system,
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 0.6$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 0.548. Thus, in contrast to the results of Study 1, there was no reliable effect of the system used on effectiveness as measured by success or failure,
+       <em>
+        t
+       </em>
+       = 0, 8 degrees of freedom,
+       <em>
+        p
+       </em>
+       = 1.
+      </p>
+      <p>
+       In Study 2, we recorded Qualys SSL Labs grades – in addition to binary pass/fail data – to obtain more fine-grained information about how secure participants’ solutions were. It is possible for two servers that each serve HTTPS to have different degrees of security, depending on the specifics of each server's configuration. SSL Labs provides a letter grade for a given server, deducting points for configurations that can result in security vulnerabilities and awarding bonus points for especially secure server practices. For analysis, we converted the provided letter grades into a numerical grade from 0 to 100, 0 corresponding to a grade of “F” and 100 to a grade of “A+”.
+      </p>
+      <p>
+       For numeric grades when using manual deployment,
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 49.33$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 45.36, and range = (0, 86.67). For Let's Encrypt,
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 57.33$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 52.41, and range = (0, 100). While the sample mean grade was slightly lower for manual compared to Let's Encrypt, the effect was not reliable,
+       <em>
+        t
+       </em>
+       = −0.258, 7.8389 degrees of freedom,
+       <em>
+        p
+       </em>
+       = 0.803.
+      </p>
+      <p>
+       Based on our experience in this Study, grades are essentially bimodal. Even the default Apache configuration with no manual tuning obtained no less than a B according to SSL Labs. Therefore, while additional tuning or the use of automated configuration tools may improve the server's grade slightly, these benefits are marginal compared to passing or failing.
+      </p>
+     </section>
+     <section id="sec-18">
+      <p>
+       <em>
+        Efficiency.
+       </em>
+       For participants assigned to manual deployment,
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 7320 s$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 2127
+       <em>
+        s
+       </em>
+       , and range = (4256 s, 10,127 s). For participants assigned to Let's Encrypt,
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 2918 s$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 3220
+       <em>
+        s
+       </em>
+       , and range = (488 s, 8413 s). There was a reliable effect of deployment system on efficiency, i.e. participants using Let's Encrypt took less time compared to participants using manual deployment to either complete the task or determine that they could not complete the task,
+       <em>
+        t
+       </em>
+       = 2.550, 6.933 degrees of freedom,
+       <em>
+        p
+       </em>
+       = 0.0384. Cohen's d for this property was 1.613, indicating that the effect of deployment method on efficiency is large.
+      </p>
+      <p>
+       These results differ notably from the efficiency results in Study 1. We discuss possible explanations for this discrepancy in Section
+       <a class="sec" href="#sec-20">
+        5
+       </a>
+       .
+      </p>
+     </section>
+     <section id="sec-19">
+      <p>
+       <em>
+        Satisfaction.
+       </em>
+       To assess satisfaction, we report quantitative and qualitative measures, namely SUS scores and comments from participants.
+      </p>
+      <p>
+       <em>
+        Quantitative Measures
+       </em>
+       . Each participant in Study 2 completed a SUS survey about the assigned HTTPS deployment method, providing a numerical score from 0 (worst) to 100 (best). For manual deployment SUS scores,
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 23.0$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 20.109, and range = (5.0, 52.5). For Let's Encrypt SUS scores,
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 63.5$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 34.3, and range = (15, 97.5). At a 95% confidence interval, there was no reliable effect of deployment method on satisfaction, t = -2.277, 6.459 degrees of freedom, p = 0.060. Cohen's d was -1.440, indicating a large effect size.
+      </p>
+      <p>
+       In addition to the standard SUS questions, we asked each participant to provide quantitative ratings of his assigned deployment system, viz. a letter grade of the overall user-friendliness of the system, how likely she would be to recommend the method to a friend from 1-10, and how confident she was in the security of the system she had just set up.
+      </p>
+      <p>
+       Each participant provided a letter grade representing the user-friendliness of the assigned deployment method. We then converted these scores to a 100-point scale, using the same mapping we used to convert SSL Labs scores.
+      </p>
+      <p>
+       We did not find reliable differences in the other satisfaction metrics we examined. For manual user-friendliness,
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 40.00$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 16.997, range (26.67, 66.67). Let's Encrypt user-friendless was
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 65.33$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 38.412, range (0, 93.33). At a 95% confidence interval, there was no reliable effect: Welch Two Sample t-test: t = -1.3484, df = 5.5087, p-value = 0.2303, and Cohen's d was -0.8528179, indicating a large effect size.
+      </p>
+      <p>
+       For manual recommendation likelihood,
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 3$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 2.000, range (1, 6). Let's Encrypt recommendation likelihood was
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 6.8$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 3.834, range (1, 10). Again, we found no reliable effect, with Welch Two Sample t = -1.9649, df = 6.0268, p-value = 0.09682 and a large effect size from Cohen's d = -1.242733.
+      </p>
+      <p>
+       Finally, we found no reliable effect on the confidence users had between the two methods. For manual configuration, confidence was
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 4$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 3.082, range (1, 8). For Let's Encrypt, confidence was
+       <span class="inline-equation">
+        <span class="tex">
+         $\bar{x} = 6.2$
+        </span>
+       </span>
+       ,
+       <em>
+        s
+       </em>
+       = 2.168, range (3, 8). Welch Two Sample t = -1.3055, df = 7.1796, p-value = 0.232, and a large effect size from Cohen's d: -0.8256453.
+      </p>
+      <p>
+       The lack of reliable effects between the two is possibly due to the small dataset, but could also be due to both methods being somewhat technically intricate and not designed to be user-friendly.
+      </p>
+      <p>
+       <em>
+        Qualitative Measures
+       </em>
+       . We collected comments from each participant about the HTTPS deployment method to which she was assigned, addressing the satisfaction of using that method.
+      </p>
+      <p>
+       When asked whether anything about manual HTTPS deployment was frustrating, three of the five participants referred to the domain control validation (DCV) process. Specific problems with the DCV process included difficulty in telling whether the process was underway, long delays between starting and finishing the process, and insufficient feedback from the CA.
+      </p>
+      <p>
+       Users of both systems cited frustration by unfamiliarity with the process and tools. One user of Let's Encrypt was frustrated that Let's Encrypt did not disable TLS 1.0 and 1.1 by default.
+      </p>
+      <p>
+       The justifications for confidence ratings were different for each manual deployment participant. One participant rated his confidence in his system as 1 (not at all confident), saying simply “I didn't complete the assignment”. Another participant who gave a rating of 1 listed three concerns, including that the server was running on Apache, that he did not disable HTTP, and that he did not think he had properly secured his private key. A participant who gave a rating of 4 stated “The configuration process did not give me enough information to determine the available security options and their relative strengths.” The participant with a rating of 6 simply stated “you can generate csr key using public tool”. The most confident participant (8) said that the SSL seemed to be working fine based on the fact that the site could be accessed by HTTPS.
+      </p>
+      <p>
+       Let's Encrypt users overall rated their confidence in their system higher than users of the manual system, but all still had qualms about the system. Two participants (with ratings 3 and 7) mentioned unfamiliarity/lack of knowledge as reasons for lowering their confidence rating, and one (5) mentioned lack of testing. Another participant (8) wondered “if you get what you pay for”, referring to the fact that Let's Encrypt is a free tool that obtains a free certificate. The last participant (8) said he was “very confident, if both obsolete versions of TLS are disabled”.
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-20">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <section id="sec-21">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Discrepancies between Study 1 and Study 2
+       </h3>
+      </div>
+     </header>
+     <p>
+      As reported in Section
+      <a class="sec" href="#sec-12">
+       4
+      </a>
+      , there were differences in the results between phase 1 and phase 2 of this study. The biggest methodological change between phase 1 and phase 2 was going from a within-subjects to a between-subjects design.
+     </p>
+     <p>
+      One key methodological difference between the two phases that could partially explain this is that in the first study, we stopped the participants if they failed to make any forward progress after ten minutes (for example, if they just spent ten minutes scrolling through web search results and not working on the task). In phase 2, we allowed participants to keep trying as long as they wanted within the allotted time. Often these subjects would appear to be completely stuck but would eventually figure out how to proceed. Preempting participants reduces both their time-on-task and their success rate, which could partially explain both why manual completion times were relatively slower in the second phase and why manual completion rates were relatively higher.
+     </p>
+     <p>
+      We also slightly changed the wording of our recruitment criteria. In our recruitment materials for phase 1, we solicited participants with “working knowledge of UNIX-like operating systems and Internet infrastructure”. In phase 2, we replaced this wording with “working knowledge of the Unix shell and either experience configuring web servers or the intention to configure a web server in the future”. Our intent with this change was to focus our recruitment efforts on the specific skills of our target population, i.e. ability to deploy and configure web servers. This more targeted language may have attracted participants with more relevant technological experience. It is possible that Let's Encrypt is easier to deploy for non-experts but that the gap between Let's Encrypt and manual deployment narrows among more experienced users, but we do not have sufficient data to draw this conclusion.
+     </p>
+    </section>
+    <section id="sec-22">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Difficulties with Recruitment
+       </h3>
+      </div>
+     </header>
+     <p>
+      University students, while readily available to serve as participants, are not necessarily representative of the entire population of people who are likely to set up an externally visible web server. One of the goals of this study was to obtain a more representative sampling of this population. However, we found it extremely difficult to recruit a sufficient number of well qualified participants, which diminishes the statistical power of our results. We suspect that a significant barrier to recruitment was the modest level of compensation we offered for participants’ time. Given the high advertised upper bound for the duration of the study (around three hours), the high average level of education, job experience, and income of target participants, and the busy schedule of typical web developers,
+      <font style="normal">
+       $
+      </font>
+      50 may simply not have been enough for many would-be participants to justify spending the time to participate.
+     </p>
+    </section>
+    <section id="sec-23">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Conclusions
+       </h3>
+      </div>
+     </header>
+     <p>
+      Taking the results of both phases of the study together, we find limited evidence that Let's Encrypt is more effective at enabling participants to deploy HTTPS, and that it allows them to do so more efficiently. Let's Encrypt obviates several of the common sources of mistakes and frustration during the deployment process, such as uncertainty over the choice of certificate to purchase, confusion surrounding CSRs, and difficulties in the domain validation stage. We believe these advantages are significant enough to recommend Let's Encrypt over manual methods.
+     </p>
+     <p>
+      However, we did not find conclusive evidence regarding which method is more satisfactory to users, which enables more secure configurations, which system users were more confident in, nor which systems users would recommend. This is likely due to our small sample size, and future work is needed to better understand these features.
+     </p>
+    </section>
+   </section>
+   <section id="sec-24">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Our work follows a chain of research that investigates the relationship that users have with TLS and HTTPS. Much of this work has focused on understanding and improving SSL browser warnings [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+      23
+     </a>
+     ]. Most recently, Reeder et al. extended this work by surveying user reactions to browser warnings in the field [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ], and find that many users have different reasons for following browser warnings depending on their individual context.
+    </p>
+    <p>
+     Other work has focused on why webmasters and site operators make HTTPS configuration errors. In 2014, Fahl et al. surveyed 755 web operators that ran websites with invalid X.509 certificates, and identified that one-third of survey participants accidentally misconfigured their webservers [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ]. This misconfiguration can lead to a host of security issues, many of which the website operators were unaware of. Researchers have further analyzed misconfiguration in other contexts, such as certificate correctness [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ], DNSSEC deployments [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ], and enterprise networks [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ].
+    </p>
+    <p>
+     Most similar to our work is by Krombholz et al., who measured the usability of deploying HTTPS with a laboratory study of 28 participants [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ]. Our work differs primarily in that Krombholz et al. ran their study prior to the release of Let's Encrypt, which has since grown to be the most widely deployed certificate authority on the Internet [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ]. In addition, our work aims to capture a broader set of participants with varying levels of technical expertise, rather than focus on those that have proficient knowledge in the areas of security and privacy. Overall, we seem to confirm the Krombholz results. Combining their results with ours, the lack of usability in HTTPS deployment seems a pervasive barrier to securing the Internet.
+    </p>
+   </section>
+   <section id="sec-25">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Significant work remains to be done in better understanding how users interact with many of the systems required to successfully deploy HTTPS, like terminals and text editors. Our study also would have benefited from a more precise means of expert participant recruitment, which may also prove a fertile area of future research.
+    </p>
+    <p>
+     Overall, we find that the technology involved in deploying HTTPS is not particularly user-friendly. Let's Encrypt did seem to better enable users to deploy HTTPS, and it also seemed speed up the process over manual configuration. However, we did not find reliable effects regarding the satisfaction of either method.
+    </p>
+   </section>
+   <section id="sec-26">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     The authors would like to thank Stephen Reger, Jeffrey, and our anonymous reviewers for their help and constructive feedback. This material is based on work supported by the National Science Foundation under grants CNS-1409505, CNS-1518888, CNS-1755841, CNS-1409401, and CNS-1314492.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-27">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       EXAMPLE SCRIPT FROM STUDY 1
+      </h2>
+     </div>
+    </header>
+    <p>
+     <span class="inline-equation">
+      <img alt="" class="img-responsive" longdesc="" src="3300540_files\chi2019310fig1.jpg"/>
+     </span>
+     <span class="inline-equation">
+      <img alt="" class="img-responsive" longdesc="" src="3300540_files\chi2019310fig2.jpg"/>
+     </span>
+    </p>
+   </section>
+   <section id="sec-28">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        9
+       </span>
+       EXAMPLE INFORMATION SHEET
+      </h2>
+     </div>
+    </header>
+    <p>
+     <span class="inline-equation">
+      <img alt="" class="img-responsive" longdesc="" src="3300540_files\chi2019310fig3.jpg"/>
+     </span>
+    </p>
+   </section>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      certbot.
+      <a class="link-inline force-break" href="https://certbot.eff.org">
+       https://certbot.eff.org
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Namecheap.
+      <a class="link-inline force-break" href="https://www.namecheap.com/">
+      </a>
+      <a class="link-inline force-break" href="https://www.namecheap.com/">
+       https://www.namecheap.com/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      OpenSSL.
+      <a class="link-inline force-break" href="https://www.openssl.org/">
+      </a>
+      <a class="link-inline force-break" href="https://www.openssl.org/">
+       https://www.openssl.org/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Surveymonkey.
+      <a class="link-inline force-break" href="https://surveymonkey.com">
+       https://surveymonkey.com
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      D. Akhawe, B. Amann, M. Vallentin, and R. Sommer. Here's my cert, so trust me, maybe?: understanding tls errors on the web. In 22nd international conference on World Wide Web, 2013.
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      D. Akhawe and A. P. Felt. Alice in warningland: A large-scale field study of browser security warning effectiveness. In 22nd USENIX Security Symposium, 2013.
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      A. Bangor, P. Kortum, and J. Miller. Determining what individual sus scores mean: Adding an adjective rating scale. Journal of usability studies, 4(3):114–123, 2009.
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      A. Bangor, P. T. Kortum, and J. T. Miller. An empirical evaluation of the system usability scale. Intl. Journal of Human–Computer Interaction, 24(6):574–594, 2008.
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      J. Brooke. Sus: A “quick and dirty” usability scale. In P. W. Jordan, B. Thomas, B. Weerdmeester, and I. L. McClelland, editors, Usability evaluation in industry, page 189–194. Taylor and Francis, 1996.
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      T. Chung, R. van Rijswijk-Deij, B. Chandrasekaran, D. Choffnes, D. Levin, B. M. Maggs, A. Mislove, and C. Wilson. A longitudinal, end-to-end view of the dnssec ecosystem. In 26th USENIX Security Symposium, 2017.
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      The DROWN attack.
+      <a class="link-inline force-break" href="https://drownattack.com/">
+       https://drownattack.com/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Z. Durumeric, D. Adrian, A. Mirian, M. Bailey, and J. A. Halderman. Tracking the FREAK attack.
+      <a class="link-inline force-break" href="https://freakattack.com/">
+       https://freakattack.com/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      S. Fahl, Y. Acar, H. Perl, and M. Smith. Why eve and mallory (also) love webmasters: a study on the root causes of ssl misconfigurations. In 9th ACM Symposium on Information, Computer and Communications Security, 2014.
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      G. Gebhart. We're halfway to encrypting the entire web.
+      <a class="link-inline force-break" href="https://www.eff.org/deeplinks/2017/02/were-halfway-encrypting-entire-web">
+      </a>
+      <a class="link-inline force-break" href="https://www.eff.org/deeplinks/2017/02/were-halfway-encrypting-entire-web">
+       https://www.eff.org/deeplinks/2017/02/were-halfway-encrypting-entire-web
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      ISO. ISO 9241-11:1998 Ergonomic requirements for office work with visual display terminals (VDTs) – Part 11: Guidance on usability. Technical report, International Organization for Standardization, 1998.
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      P. Kortum. Usability assessment: how to measure the usability of products, services, and systems. Human Factors and Ergonomics Society, 2016.
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      K. Krombholz, W. Mayer, M. Schmiedecker, and E. Weippl. “I Have No Idea What I'm Doing”–On the Usability of Deploying HTTPS. In 26th USENIX Security Symposium, 2017.
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      D. Kumar, M. Bailey, Z. Wang, M. Hyder, J. Dickinson, G. Beck, D. Adrian, J. Mason, Z. Durumeric, and J. A. Halderman. Tracking certificate misissuance in the wild. In 39th IEEE Symposium on Security and Privacy, 2018.
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      B. Moller, T. Duong, and K. Kotowicz. This POODLE bites: Exploiting the SSL 3.0 fallback.
+      <a class="link-inline force-break" href="https://www.openssl.org/~bodo/ssl-poodle.pdf">
+      </a>
+      <a class="link-inline force-break" href="https://www.openssl.org/~bodo/ssl-poodle.pdf">
+       https://www.openssl.org/~bodo/ssl-poodle.pdf
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Netcraft. January 2018 Web Server Survey.
+      <a class="link-inline force-break" href="https://news.netcraft.com/archives/2018/01/19/january-2018-web-server-survey.html">
+       https://news.netcraft.com/archives/2018/01/19/january-2018-web-server-survey.html
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      R. W. Reeder, A. P. Felt, S. Consolvo, N. Malkin, C. Thompson, and S. Egelman. An experience sampling study of user reactions to browser warnings in the field. In 2018 Conference on Human Factors in Computing Systems, 2018.
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Q. SSLLabs. Ssllabs ssl server test.
+      <a class="link-inline force-break" href="https://www.ssllabs.com/ssltest/">
+      </a>
+      <a class="link-inline force-break" href="https://www.ssllabs.com/ssltest/">
+       https://www.ssllabs.com/ssltest/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      J. Sunshine, S. Egelman, H. Almuhimedi, N. Atri, and L. F. Cranor. Crying wolf: An empirical study of ssl warning effectiveness. In 18th USENIX Security Symposium, 2009.
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      B. VanderSloot, J. Amann, M. Bernhard, Z. Durumeric, M. Bailey, and J. A. Halderman. Towards a complete view of the certificate ecosystem. In 16th ACM Internet Measurement Conference, 2016.
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      S. Wells. Chrome rolls out for all users ‘not secure’ markers on unencrypted pages.
+      <a class="link-inline force-break" href="https://techcrunch.com/2018/07/24/chrome-rolls-out-for-all-users-not-secure-markers-on-unencrypted-pages/">
+       https://techcrunch.com/2018/07/24/chrome-rolls-out-for-all-users-not-secure-markers-on-unencrypted-pages/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      J. Zhang, Z. Durumeric, M. Bailey, M. Liu, and M. Karir. On the mismanagement and maliciousness of networks. In 21st Network and Distributed Systems Security Conference, 2014.
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    Ten minutes was chosen following precedent of related work (e.g. [
+    <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+     16
+    </a>
+    ]. However, we ultimately decided that this limitation artificially hindered our participants and removed it for our second study.
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of part or all of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for third-party components of this work must be honored. For all other uses, contact the owner/author(s).
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s).
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300540" target="_blank">
+      https://doi.org/10.1145/3290605.3300540
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8757811c4d59366f',t:'MTcxMzMwNTQxNS42MjQwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

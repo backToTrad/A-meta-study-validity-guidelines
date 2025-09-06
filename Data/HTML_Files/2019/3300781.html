@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Transforming Game Difficulty Curves usingFunction Composition
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300781_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300781_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300781_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300781_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300781_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300781_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300781_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300781_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Transforming Game Difficulty Curves usingFunction Composition
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Anurag
+      </span>
+      <span class="surName">
+       Sarkar
+      </span>
+      , Northeastern University, USA,
+      <a href="mailto:sarkar.an@husky.neu.edu">
+       sarkar.an@husky.neu.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Seth
+      </span>
+      <span class="surName">
+       Cooper
+      </span>
+      , Northeastern University, USA,
+      <a href="mailto:seth.cooper@gmail.com">
+       seth.cooper@gmail.com
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300781" target="_blank">
+       https://doi.org/10.1145/3290605.3300781
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Player engagement within a game is often influenced by its difficulty curve: the pace at which in-game challenges become harder. Thus, finding an optimal difficulty curve is important. In this paper, we present a flexible and formal approach to transforming game difficulty curves by leveraging function composition. This allows us to describe changes to difficulty curves, such as making them “smoother”, in a more precise way. In an experiment with 400 players, we used function composition to modify the existing difficulty curve of the puzzle game
+       <em>
+        Paradox
+       </em>
+       to generate new curves. We found that transforming difficulty curves in this way impacted player engagement, including the number of levels completed and the estimated skill needed to complete those levels, as well as perceived competence. Further, we found some transformed curves dominated others with respect to engagement, indicating that different design goals can be traded-off by considering a subset of curves.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Human computer interaction (HCI)
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        games; difficulty; adaptivity; difficulty curve
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Anurag Sarkar and Seth Cooper. 2019. Transforming Game Difficulty Curves usingFunction Composition. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 6 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300781" target="_blank">
+         https://doi.org/10.1145/3290605.3300781
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     The difficulty curve of a game defines how the game's difficulty changes over the course of gameplay. In most situations, the in-game difficulty should ideally be compatible with the player's current level of skill so that the player is neither overwhelmed by challenges beyond their capabilities, nor bored by challenges too simple to overcome [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ]. Thus, defining an optimal curve that presents challenges having difficulties commensurate with player skill is an important game design problem. Traditional methods of finding such a curve involve the designer creating an initial curve which is then refined using an iterative process of playtesting [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ].
+    </p>
+    <figure id="fig1">
+     <img alt="" class="img-responsive" longdesc="A screenshot of Paradox." src="3300781_files\chi2019551fig1.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       <em>
+        Paradox
+       </em>
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     In this paper, we present a method of such curve refinement by modeling transformations to a game's difficulty curve as function composition. Function composition allows multiple functions to be composed into one by applying one function to the output of another. Given two functions
+     <em>
+      f
+     </em>
+     (
+     <em>
+      x
+     </em>
+     ) and
+     <em>
+      g
+     </em>
+     (
+     <em>
+      x
+     </em>
+     ), the composition of the functions
+     <em>
+      f
+     </em>
+     ○
+     <em>
+      g
+     </em>
+     is
+     <em>
+      f
+     </em>
+     (
+     <em>
+      g
+     </em>
+     (
+     <em>
+      x
+     </em>
+     )). This allows us to treat the difficulty curve largely as a black box, only needing to know a few parameters, and using function composition to adjust its inputs and outputs. Doing so also allows us to more precisely describe relative difficulty curves and formalize what it means to, for example, “steepen” or “smooth” a game's difficulty curve. This is similar in spirit to Swink's approach to formalizing “game feel” [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ] (e.g. what does it mean for controls to feel “floaty”?). Moreover, using functions to transform curves, as opposed to manual refinement, helps capture a potential space of possible difficulty curves that can be explored by applying transformations. Such transformations could give us an approach to considering changes to difficulty curves in a game-independent manner. In addition to moving towards formalizing curve transformations and giving them more precise definitions, the use of functions opens up the possibility of combining such precisely defined curves to generate new curves with precise definitions.
+    </p>
+    <p>
+     Additionally, we conducted an experiment to test the effects that such curve transformations have on player engagement. Specifically, we applied function composition to transform the difficulty curve of the human computation puzzle game
+     <em>
+      Paradox
+     </em>
+     (a screenshot of the game is given in Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     ) to see what changes in engagement would be brought forth by different transformations and if any such transformation would further improve the engagement benefits that the heuristically-defined existing curve had demonstrated in previous work [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ]. We found that different curve transformations do in fact impact gameplay and engagement. We also identified a set of Pareto efficient [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ] transformations for some measures of engagement, i.e. transformed curves for which it is not possible to increase one engagement measure without decreasing another.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       BACKGROUND
+      </h2>
+     </div>
+    </header>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Engagement and Flow
+       </h3>
+      </div>
+     </header>
+     <p>
+      Difficulty curves aim to tune game difficulty so as to optimize player engagement. Engagement refers to a concept in the psychology of motivation that attempts to capture how engrossed a person feels in the performance of a task. It draws from Csikszentmihalyi's flow theory [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ] which says that one is optimally engaged when in the
+      <em>
+       flow state
+      </em>
+      —a state of mind characterized by deep immersion in an activity coupled with a strong motivation to do it well. Thus, games seek to optimize player experiences by pushing players toward such a flow state in order to keep them engaged and entertained. Most often, games do this via difficulty balancing, i.e. adjusting the challenge posed by in-game levels so as to match the skill level of the player. In other words, challenging players with tasks that are neither too difficult so as to not frustrate them, nor too easy so as to not bore them, thereby keeping them within the flow state. Such difficulty balancing methods can take many forms, including pre-release playtesting, dynamic adjustment during gameplay, or analysis of difficulty curves, i.e. comparing different difficulty progressions, as in this work.
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Dynamic Difficulty Adjustment
+       </h3>
+      </div>
+     </header>
+     <p>
+      Rather than presenting every player with the same difficulty, some games tailor the difficulty presented to each player using dynamic difficulty adjustment (DDA). DDA is a general term for techniques used to dynamically modify in-game difficulty during the course of gameplay as a means to tailor the experience more towards the player's current level of play. This has been achieved in games through various techniques such as parameter tuning [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ], modifying level design [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ], machine learning [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ], the use of rating systems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ] and player modeling [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ].
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Learning Curve Analysis
+       </h3>
+      </div>
+     </header>
+     <p>
+      Similar to difficulty curves, learning curves focus on the rate at which skills are acquired by players rather than on the progression of difficulty. These curves are often used in analyzing the pace and challenge presented within educational or puzzle games, as done by Linehan et al [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ]. Harpstead et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ] demonstrated the use of such learning curve analysis to analyze an educational game and discovered changes that could be made to improve the game's design to enable it to achieve its teaching goals more effectively. Similarly, analyzing and improving upon a game's difficulty curve would help improve its difficulty progression. While several DDA techniques have also been employed to tailor the difficulty curve appropriately as mentioned in the previous section, to the best of our knowledge, ours is the first work that explores the use of function composition to transform difficulty curves, with Jacob [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ] only briefly mentioning the feasibility of doing so.
+     </p>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Difficulty Balancing in Human Computation Games
+       </h3>
+      </div>
+     </header>
+     <p>
+      For our experiment, we used the human computation game (HCG)
+      <em>
+       Paradox
+      </em>
+      . HCGs are games that aim to leverage the collective abilities of players in order to solve computationally intractable problems. Levels within HCGs, on account of modeling unsolved real world problems, are not readily amenable to traditional DDA techniques since their difficulties are unknown in advance and they cannot be easily modified without compromising their link to the underlying problem [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ]. Past work [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ] has shown that such barriers can be overcome by mapping player skill and level difficulty to a common rating system such as Glicko-2 and then using a matchmaking algorithm to serve levels to players in an order that enhances engagement. Through such an ordering, the rating system thus defines a skill-dependent difficulty curve for the game. However, in previous work, the curve was defined heuristically and its fitness tested against baselines that did not fully leverage the ratings system. While other work [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ] demonstrated improved engagement by offering ratings-based skill feedback to players, no modifications were made to the curve itself to see if orderings in which levels were served, and thereby engagement, could be improved further.
+     </p>
+     <p>
+      Based on prior related work, we formulated the following hypothesis for our experiment:
+      <em>
+       Transforming the difficulty curve of a game using function composition impacts player behavior and experience, with different transformations leading to different player behavior and experience.
+      </em>
+     </p>
+    </section>
+   </section>
+   <section id="sec-8">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       GAME DESCRIPTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Levels in
+     <em>
+      Paradox
+     </em>
+     are puzzles derived from MAX-SAT boolean constraint satisfaction problems. Player moves within the game involve using various tools to change boolean values to satisfy constraints. The player's score for a level is the percentage of all constraints that are satisfied; the player's goal is to achieve a
+     <em>
+      target score
+     </em>
+     for the level. A level is considered
+     <em>
+      attempted
+     </em>
+     if the player makes at least one move and
+     <em>
+      completed
+     </em>
+     if the player is able to reach the target score for that level.
+    </p>
+    <p>
+     The game uses a difficulty curve-based matchmaking system to determine the next level that is served to a player as they progress through the game and uses the Glicko-2 rating system [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ] for matchmaking between players and levels. Using Glicko-2, each player and level is assigned a rating. These ratings can be updated over time based on the outcomes of player attempts at levels. Ratings can be used to estimate a player's chance of losing a level, i.e. the level's difficulty for that player. We may consider that a level's rating is an estimate of the player skill needed to complete the level, and the lower a player's rating is relative to a level's rating, the more difficult that level will be for them. Level ratings were computed in previous work and kept fixed during this experiment while player ratings were updated over the course of gameplay. Each player starts with a default rating of 1500. If a player completes a level, it is considered a win for the player and their rating goes up. If they forfeit a level (i.e. attempt it without being able to complete it), it is considered a loss for the player and their rating goes down. The player's rating goes up or down by an amount proportional to the rating of the level. In this way, the difficulty of the game adapts to each player's skill level as it changes over time. More detailed descriptions of both the game and the matchmaking system can be found in prior work [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ].
+    </p>
+    <div class="table-responsive" id="tab1">
+     <div class="table-caption">
+      <span class="table-number">
+       Table 1:
+      </span>
+      <span class="table-title">
+       Difficulty curve-related functions and parameters.
+      </span>
+     </div>
+     <table class="table">
+      <tbody>
+       <tr>
+        <td style="text-align:center;">
+         Curve Parameters
+        </td>
+        <td style="text-align:center;">
+         Description
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <em>
+          r
+          <sub>
+           i
+          </sub>
+         </em>
+         = 1500
+        </td>
+        <td style="text-align:center;">
+         Player's starting rating
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+         (Glicko-2 starting rating)
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <em>
+          r
+          <sub>
+           d
+          </sub>
+         </em>
+         = 350
+        </td>
+        <td style="text-align:center;">
+         Rating scale factor
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+        </td>
+        <td style="text-align:center;">
+         (Glicko-2 initial rating deviation)
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <em>
+          ω
+         </em>
+         = 0.1
+        </td>
+        <td style="text-align:center;">
+         Desired loss rate for starting player
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         Baseline Curve
+        </td>
+        <td style="text-align:center;">
+         Description
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <span class="inline-equation">
+          <span class="tex">
+           $f(x) = \frac{1}{1 + e^{\alpha (x-\beta)}}$
+          </span>
+         </span>
+        </td>
+        <td style="text-align:center;">
+         Logistic curve
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <em>
+          β
+         </em>
+         = 1850
+        </td>
+        <td style="text-align:center;">
+         Set so
+         <em>
+          f
+         </em>
+         (
+         <em>
+          r
+          <sub>
+           i
+          </sub>
+         </em>
+         +
+         <em>
+          r
+          <sub>
+           d
+          </sub>
+         </em>
+         ) = 0.5
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <em>
+          α
+         </em>
+         ≈ 0.00628
+        </td>
+        <td style="text-align:center;">
+         Set so
+         <em>
+          f
+         </em>
+         (
+         <em>
+          r
+          <sub>
+           i
+          </sub>
+         </em>
+         ) =
+         <em>
+          ω
+         </em>
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         Transformation Functions
+        </td>
+        <td style="text-align:center;">
+         Description
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <em>
+          t
+          <sub>
+           δ
+          </sub>
+         </em>
+         (
+         <em>
+          x
+         </em>
+         ) =
+         <em>
+          x
+         </em>
+         +
+         <em>
+          δ
+         </em>
+        </td>
+        <td style="text-align:center;">
+         Translate by
+         <em>
+          δ
+         </em>
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <em>
+          s
+         </em>
+         <sub>
+          <em>
+           σ
+          </em>
+          ,
+          <em>
+           c
+          </em>
+         </sub>
+         (
+         <em>
+          x
+         </em>
+         ) =
+         <em>
+          σ
+         </em>
+         (
+         <em>
+          x
+         </em>
+         −
+         <em>
+          c
+         </em>
+         ) +
+         <em>
+          c
+         </em>
+        </td>
+        <td style="text-align:center;">
+         Scale by
+         <em>
+          σ
+         </em>
+         around
+         <em>
+          c
+         </em>
+        </td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+   </section>
+   <section id="sec-9">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       CURVE TRANSFORMATIONS
+      </h2>
+     </div>
+    </header>
+    <div class="table-responsive" id="tab2">
+     <div class="table-caption">
+      <span class="table-number">
+       Table 2:
+      </span>
+      <span class="table-title">
+       Overview of the difficulty curves used and their representation as function compositions.
+      </span>
+     </div>
+     <table class="table">
+      <tbody>
+       <tr>
+        <td style="text-align:center;">
+         Curve Name
+        </td>
+        <td style="text-align:center;">
+         Function
+        </td>
+        <td style="text-align:center;">
+         Description
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <tt>
+          BASELINE
+         </tt>
+        </td>
+        <td style="text-align:center;">
+         <em>
+          f
+         </em>
+        </td>
+        <td style="text-align:center;">
+         baseline curve
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <tt>
+          INFLATE
+         </tt>
+        </td>
+        <td style="text-align:center;">
+         <span class="inline-equation">
+          <span class="tex">
+           $f \circ t_{r_d}$
+          </span>
+         </span>
+        </td>
+        <td style="text-align:center;">
+         inflate difficulty via shifting curve left by a constant
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <tt>
+          DEFLATE
+         </tt>
+        </td>
+        <td style="text-align:center;">
+         <span class="inline-equation">
+          <span class="tex">
+           $f \circ t_{-r_d}$
+          </span>
+         </span>
+        </td>
+        <td style="text-align:center;">
+         deflate difficulty via shifting curve right by a constant
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <tt>
+          STEEPEN
+         </tt>
+        </td>
+        <td style="text-align:center;">
+         <span class="inline-equation">
+          <span class="tex">
+           $f \circ s_{2,r_i}$
+          </span>
+         </span>
+        </td>
+        <td style="text-align:center;">
+         steepen difficulty by increasing curve's rate of change
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <tt>
+          SMOOTH
+         </tt>
+        </td>
+        <td style="text-align:center;">
+         <span class="inline-equation">
+          <span class="tex">
+           $f \circ s_{0.5,r_i}$
+          </span>
+         </span>
+        </td>
+        <td style="text-align:center;">
+         smooth difficulty by decreasing curve rate's rate of change
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <tt>
+          INVERT
+         </tt>
+        </td>
+        <td style="text-align:center;">
+         <em>
+          s
+         </em>
+         <sub>
+          − 1, 0.5
+         </sub>
+         ○
+         <em>
+          f
+         </em>
+        </td>
+        <td style="text-align:center;">
+         invert difficulty by flipping curve upside down
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <tt>
+          FIX@50
+         </tt>
+        </td>
+        <td style="text-align:center;">
+         <em>
+          t
+         </em>
+         <sub>
+          0.5
+         </sub>
+         ○
+         <em>
+          s
+         </em>
+         <sub>
+          0, 0
+         </sub>
+         ○
+         <em>
+          f
+         </em>
+        </td>
+        <td style="text-align:center;">
+         fix difficulty at 50% loss chance
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         <tt>
+          FIX@START
+         </tt>
+        </td>
+        <td style="text-align:center;">
+         <em>
+          t
+          <sub>
+           ω
+          </sub>
+         </em>
+         ○
+         <em>
+          s
+         </em>
+         <sub>
+          0, 0
+         </sub>
+         ○
+         <em>
+          f
+         </em>
+        </td>
+        <td style="text-align:center;">
+         fix difficulty at starting difficulty
+        </td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <figure id="fig2">
+     <img alt="" class="img-responsive" longdesc="Plot of the different difficulty curves used." src="3300781_files\chi2019551fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 2:
+      </span>
+      <span class="figure-title">
+       Plot of the different difficulty curves used.
+      </span>
+     </div>
+    </figure>
+    <p>
+     In this work, we consider a difficulty curve as a function that maps from player skill to difficulty. Here, player skill is represented by the player's Glicko-2 rating and difficulty refers to the desired loss rate i.e. the desired probability of the player losing the level at their current skill rating. This rate is a measure of the difficulty since it determines how hard the level will be for the player to complete. Thus, the difficulty curve can be given by the function
+     <span class="inline-equation">
+      <img alt="" class="img-responsive" src="3300781_files\chi2019551inline6.svg"/>
+     </span>
+     . We can further characterize a difficulty curve using a few generic parameters:
+     <em>
+      r
+      <sub>
+       i
+      </sub>
+     </em>
+     , the skill rating of a starting player;
+     <em>
+      r
+      <sub>
+       d
+      </sub>
+     </em>
+     , a rating scale factor (derived from the rating system); and
+     <em>
+      ω
+     </em>
+     , the loss rate for a starting player. For our specific baseline curve, we used a logistic function, similar to the one used in past work involving
+     <em>
+      Paradox
+     </em>
+     , that smoothly increases difficulty as a player's rating increases. Details on the specific parameters and functions used are given in Table
+     <a class="tbl" href="#tab1">
+      1
+     </a>
+     .
+    </p>
+    <div class="table-responsive" id="tab3">
+     <div class="table-caption">
+      <span class="table-number">
+       Table 3:
+      </span>
+      <span class="table-title">
+       Summary of data and analysis. For each variable, median and median absolute deviation (in parenthesis) are shown. Letter superscripts
+       <sup>
+        <em>
+         a
+        </em>
+        <em>
+         b
+        </em>
+        <em>
+         c
+        </em>
+        <em>
+         d
+        </em>
+       </sup>
+       show post-hoc significance groups; that is, variables sharing a letter were not significantly different.
+       <em>
+        Final Player Rating
+       </em>
+       and
+       <em>
+        Effort/Importance
+       </em>
+       did not have a significant omnibus test and thus post-hoc tests were not run.
+      </span>
+     </div>
+     <table class="table">
+      <tbody>
+       <tr>
+        <td>
+         <img alt="" class="img-responsive" src="3300781_files\chi2019551img1.svg"/>
+        </td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <p>
+     The baseline difficulty curve and the transformed curves obtained using function composition are listed in Table
+     <a class="tbl" href="#tab2">
+      2
+     </a>
+     . The name of each new curve indicates how it transforms the difficulty progression of the game relative to the
+     <tt>
+      BASELINE
+     </tt>
+     . This is done by applying the transformation functions to either the input (i.e. the player's current rating) to the baseline function
+     <em>
+      f
+     </em>
+     as in
+     <tt>
+      INFLATE
+     </tt>
+     ,
+     <tt>
+      DEFLATE
+     </tt>
+     ,
+     <tt>
+      STEEPEN
+     </tt>
+     and
+     <tt>
+      SMOOTH
+     </tt>
+     , or its output (i.e the desired loss rate) as in
+     <tt>
+      INVERT
+     </tt>
+     ,
+     <tt>
+      FIX@50
+     </tt>
+     and
+     <tt>
+      FIX@START
+     </tt>
+     . Specifically, to obtain
+     <tt>
+      INFLATE
+     </tt>
+     and
+     <tt>
+      DEFLATE
+     </tt>
+     , we translate the baseline curve along the x-axis (i.e. shift the player rating to the left and right respectively). This causes the player's desired loss rate to be higher and lower respectively for the same rating, thereby
+     <em>
+      inflating
+     </em>
+     (making the game harder) or
+     <em>
+      deflating
+     </em>
+     (making it easier) the base curve, hence the naming. Similarly, for
+     <tt>
+      STEEPEN
+     </tt>
+     and
+     <tt>
+      SMOOTH
+     </tt>
+     , the player rating is scaled to double and half, causing the base curve to be steeper (increasing the rate at which the game gets harder) or smoother (decreasing this rate) respectively.
+     <tt>
+      INVERT
+     </tt>
+     simply flips the base curve upside down by applying scaling to the desired loss rate output by
+     <em>
+      f
+     </em>
+     while
+     <tt>
+      FIX@START
+     </tt>
+     and
+     <tt>
+      FIX@50
+     </tt>
+     always serve levels that the player has a 10% (
+     <em>
+      ω
+     </em>
+     ) and 50% chance of losing, respectively. A plot of the eight curves is shown in Figure
+     <a class="fig" href="#fig2">
+      2
+     </a>
+     .
+    </p>
+   </section>
+   <section id="sec-10">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       DATA COLLECTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     To gather data, we ran a Human Intelligence Task (HIT) on Amazon Mechanical Turk. The HIT paid
+     <font style="normal">
+      $
+     </font>
+     2 and recruited 400 players who were randomly assigned one of the 8 difficulty curves in Table
+     <a class="tbl" href="#tab2">
+      2
+     </a>
+     . The version of
+     <em>
+      Paradox
+     </em>
+     used in our experiment required players to play though 8 tutorial levels. These tutorial levels did not affect player rating and were not used in our analysis. After the tutorial, players could play any number of 50 challenge levels, which they could either skip (i.e. not make any moves before moving to next level), forfeit (i.e. make at least 1 move but fail to complete the level) or complete. After failing to complete (i.e. skipping and/or forfeiting) 3 levels, players could fill out a survey based on the Intrinsic Motivation Inventory (IMI) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ] to finish the HIT. Previous work has shown that players recruited through Mechanical Turk can respond similarly to experiments as volunteer players [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+      15
+     </a>
+     ].
+    </p>
+    <p>
+     For each player, we recorded
+     <em>
+      Time
+     </em>
+     (spent playing levels),
+     <em>
+      Levels Attempted
+     </em>
+     (those not skipped), and
+     <em>
+      Levels Completed
+     </em>
+     , as well as the
+     <em>
+      Final Player Rating
+     </em>
+     (player's rating when they finished the HIT) and the
+     <em>
+      Highest Level Rating
+     </em>
+     (rating of the highest rated level that the player completed). The survey contained the IMI subscales for
+     <em>
+      Interest/Enjoyment
+     </em>
+     (scale of 7 to 49),
+     <em>
+      Perceived Competence
+     </em>
+     (scale of 6 to 42), and
+     <em>
+      Effort/Importance
+     </em>
+     (scale of 5 to 35). 55 players did not complete any challenge levels and were excluded from
+     <em>
+      Highest Level Rating
+     </em>
+     analysis while 4 players had errors in their surveys and were excluded from survey variable analysis.
+    </p>
+   </section>
+   <section id="sec-11">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       CURVE COMPARISONS AND DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Due to non-normality of recorded variables, as indicated by a Shapiro-Wilk normality test, we used the non-parametric Aligned Rank Transform [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ]. For each variable, we first ran an omnibus ANOVA comparison of all curves. If that was significant, we then ran a full post-hoc pairwise comparison with the Tukey method. We used
+     <em>
+      α
+     </em>
+     = .05. Results of our analyses comparing curves are given in Table
+     <a class="tbl" href="#tab3">
+      3
+     </a>
+     .
+    </p>
+    <p>
+     Our analyses revealed that transforming difficulty curves did impact player engagement in terms of the variables that we measured, thereby supporting our hypothesis that different curve transformations would affect player behavior and experience differently. We found significant omnibus differences across curves for all variables except
+     <em>
+      Player Rating
+     </em>
+     and
+     <em>
+      Effort/Importance
+     </em>
+     and significant post-hoc differences for all other variables except
+     <em>
+      Interest/Enjoyment
+     </em>
+     . The latter may speak to the game not being very enjoyable, as can be the case with HCGs in general, on account of having to balance being fun with staying true to the underlying problem. Interestingly, this highlights that though different curves led to players exhibiting different behavior and reporting varying levels of competence, these curves did not seem to affect how much players subjectively enjoyed the game.
+    </p>
+    <p>
+     Looking at
+     <em>
+      Time
+     </em>
+     , players spent more time playing a
+     <tt>
+      SMOOTH
+     </tt>
+     difficulty curve than a curve that had a
+     <tt>
+      FIX@START
+     </tt>
+     “easy” difficulty. This may indicate that some ramp-up in difficulty is more engaging. For
+     <em>
+      Levels Completed
+     </em>
+     ,
+     <em>
+      Levels Attempted
+     </em>
+     , and
+     <em>
+      Perceived Competence
+     </em>
+     , the general trend appears to be that these were increased by making the curve “easier”.
+     <tt>
+      DEFLATE
+     </tt>
+     was always significantly greater than
+     <tt>
+      INFLATE
+     </tt>
+     . On the other hand, the trend for
+     <em>
+      Highest Level Rating
+     </em>
+     seems to be that it was increased by making the curve “harder”. These trends make some intuitive sense as in an easier game, players would be expected to attempt and complete more levels while feeling more competent, but the levels they complete would have lower ratings. This is similar to the findings of Lomas et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ] which suggest that players are more engaged and play for longer when the game is easier.
+    </p>
+    <p>
+     It is worth noting that all the curves do not start at the same difficulty. Thus, one question is if it is the starting difficulty that accounts for these differences rather than the change in difficulty due to the curves. If we look at the three curves that start at a difficulty above
+     <em>
+      ω
+     </em>
+     (
+     <tt>
+      INFLATE
+     </tt>
+     ,
+     <tt>
+      FIX@50
+     </tt>
+     , and
+     <tt>
+      INVERT
+     </tt>
+     ), there were no significant differences between them. Looking at the curves that start at difficulty
+     <em>
+      ω
+     </em>
+     (
+     <tt>
+      BASELINE
+     </tt>
+     ,
+     <tt>
+      SMOOTH
+     </tt>
+     ,
+     <tt>
+      STEEPEN
+     </tt>
+     , and
+     <tt>
+      FIX@START
+     </tt>
+     ), most of the differences are not significant. However, for
+     <em>
+      Time
+     </em>
+     ,
+     <tt>
+      FIX@START
+     </tt>
+     was different from
+     <tt>
+      SMOOTH
+     </tt>
+     , and for
+     <em>
+      Highest Level Rating
+     </em>
+     ,
+     <tt>
+      FIX@START
+     </tt>
+     was different from
+     <tt>
+      STEEPEN
+     </tt>
+     . Only one curve started with difficulty below
+     <em>
+      ω
+     </em>
+     (
+     <tt>
+      DEFLATE
+     </tt>
+     ). Therefore, we did see cases where the curve of difficulty change makes a difference; in these cases, it appears that increasing difficulty with skill is preferable to a fixed difficulty.
+    </p>
+   </section>
+   <section id="sec-12">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       PARETO EFFICIENCY
+      </h2>
+     </div>
+    </header>
+    <figure id="fig3">
+     <img alt="" class="img-responsive" longdesc="Plot of the variables Levels Completed against Highest Level Rating for the difficulty curves reveals a Pareto frontier defined by the curves INVERT, STEEPEN, SMOOTH and DEFLATE." src="3300781_files\chi2019551fig3.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 3:
+      </span>
+      <span class="figure-title">
+       Plot of the variables
+       <em>
+        Levels Completed
+       </em>
+       against
+       <em>
+        Highest Level Rating
+       </em>
+       for the difficulty curves. The darker dashed line shows the Pareto frontier of curves examined for these variables. The frontier is defined by the curves
+       <tt>
+        INVERT
+       </tt>
+       ,
+       <tt>
+        STEEPEN
+       </tt>
+       ,
+       <tt>
+        SMOOTH
+       </tt>
+       and
+       <tt>
+        DEFLATE
+       </tt>
+       . The lighter solid lines connect curves that were not found to be significantly different for either of these two variables.
+      </span>
+     </div>
+    </figure>
+    <p>
+     Human computation games (HCGs) aim to enable players to maximize the number and/or quality (i.e. accuracy, usefulness) of in-game tasks that they complete [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ]. Thus, HCG designers may wish to trade off between the amount of work done and its quality (in our case, level ratings, since higher rated levels are harder and thus may be less amenable to being solved by automated methods). From our analyses, comparing
+     <em>
+      Levels Completed
+     </em>
+     and
+     <em>
+      Highest Level Rating
+     </em>
+     revealed four of the difficulty curves (
+     <tt>
+      INVERT
+     </tt>
+     ,
+     <tt>
+      STEEPEN
+     </tt>
+     ,
+     <tt>
+      SMOOTH
+     </tt>
+     and
+     <tt>
+      DEFLATE
+     </tt>
+     ) to be Pareto efficient for these two variables—that is, the other curves were dominated by these four. A plot demonstrating the Pareto efficiency of the curves is shown in Figure
+     <a class="fig" href="#fig3">
+      3
+     </a>
+     . Looking at the significance groupings, we also found four triplets of curves, namely (
+     <tt>
+      INVERT
+     </tt>
+     –
+     <tt>
+      INFLATE
+     </tt>
+     –
+     <tt>
+      FIX@50
+     </tt>
+     ,
+     <tt>
+      STEEPEN
+     </tt>
+     –
+     <tt>
+      BASELINE
+     </tt>
+     –
+     <tt>
+      SMOOTH
+     </tt>
+     ,
+     <tt>
+      SMOOTH
+     </tt>
+     –
+     <tt>
+      FIX@START
+     </tt>
+     –
+     <tt>
+      BASELINE
+     </tt>
+     and
+     <tt>
+      DEFLATE
+     </tt>
+     –
+     <tt>
+      SMOOTH
+     </tt>
+     –
+     <tt>
+      BASELINE
+     </tt>
+     ), which were not significantly different from each other for these two variables. These perspectives suggest that different design goals may be traded off by considering only a subset of the transformed curves. Interestingly, though the differences were not significant, the original
+     <tt>
+      BASELINE
+     </tt>
+     was outperformed by
+     <tt>
+      SMOOTH
+     </tt>
+     and
+     <tt>
+      DEFLATE
+     </tt>
+     in terms of both variables, suggesting that these might be better difficulty curves for
+     <em>
+      Paradox
+     </em>
+     in the future, and speaking to the potential usefulness of this technique for exploring the space of difficulty curves.
+    </p>
+   </section>
+   <section id="sec-13">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       CONCLUSION AND FUTURE WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this paper, we demonstrated a formal approach to transforming a game's difficulty curve by modeling it as function composition. This enabled us to modify the existing curve of the game
+     <em>
+      Paradox
+     </em>
+     to generate new curves for the game and give mathematically precise definitions to how each curve modified the original curve. Our experiment revealed that the transformed curves impact gameplay significantly and that some of them improve player engagement compared to the game's existing difficulty curve. We consider a number of avenues for future work.
+    </p>
+    <p>
+     In our experiment, we used the difficulty curves to adapt the game on a per-level basis but this could be done in other ways such as on a per-section basis in a procedurally generated platformer. Additionally, our baseline difficulty curve was monotonic and we used simple functions during composition. In the future, it is worth exploring more complex and/or non-monotonic functions (e.g.
+     <em>
+      ln
+     </em>
+     and
+     <em>
+      sin
+     </em>
+     ) as baselines and transformations. Also worth investigating in the future is combinations of different transformations (e.g. “steepen and deflate”). The parameters of the transformation functions also define a space of possible curve transformations, presenting the possibility for optimization and evolving an optimal difficulty curve for a given game. Finally, while this work transformed the difficulty curves of one game, it may be possible to determine a transformation between difficulty curves of multiple games and discuss their relative properties (e.g. “game X has an inflated difficulty curve compared to game Y”).
+    </p>
+   </section>
+   <section id="sec-14">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGEMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This material is based upon work supported by the National Science Foundation under grant no. 1652537. We would like to thank the players, and the University of Washington's Center for Game Science for initial
+     <em>
+      Paradox
+     </em>
+     development.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Maria-Virginia Aponte, Guillaume Levieux, and Stephane Natkin. 2011. Measuring the level of difficulty in single player video games.
+      <em>
+       <em>
+        Entertainment Computing
+       </em>
+      </em>
+      2, 4 (2011), 205–213.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.entcom.2011.04.001" target="_blank">
+       https://doi.org/10.1016/j.entcom.2011.04.001
+      </a>
+      Special Section: International Conference on Entertainment Computing and Special Section: Entertainment Interfaces.
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Seth Cooper, Sebastian Deterding, and Theo Tsapakos. 2016. Player rating systems for balancing human computation games: testing the effect of bipartiteness. In
+      <em>
+       Proceedings of the 1st International Joint Conference of DiGRA and FDG
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Valve Corporation. 2008.
+      <em>
+       Left 4 Dead
+      </em>
+      . Game.
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Mihaly Csikszentmihalyi. 1990.
+      <em>
+       Flow: The Psychology of Optimal Experience
+      </em>
+      . Harper and Row, New York.
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Drew Dean, Sean Gaurino, Leonard Eusebi, Andrew Keplinger, Tim Pavlik, Ronald Watro, Aaron Cammarata, John Murray, Kelly McLaughlin, John Cheng, and Thomas Maddern. 2015. Lessons learned in game development for crowdsourced software formal verification. In
+      <em>
+       Proceedings of the 2015 USENIX Summit on Gaming, Games, and Gamification in Security Education
+      </em>
+      .
+      <a class="link-inline force-break" href="https://www.usenix.org/conference/3gse15/summit-program/presentation/dean">
+       https://www.usenix.org/conference/3gse15/summit-program/presentation/dean
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Mark E. Glickman. 1999. Parameter estimation in large dynamic paired comparison experiments.
+      <em>
+       <em>
+        Journal of the Royal Statistical Society: Series C (Applied Statistics)
+       </em>
+      </em>
+      48, 3(1999), 377–394.
+      <a class="link-inline force-break" href="https://doi.org/10.1111/1467-9876.00159" target="_blank">
+       https://doi.org/10.1111/1467-9876.00159
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Erik Harpstead and Vincent Aleven. 2015. Using empirical learning curve analysis to inform design in an educational game. In
+      <em>
+       Proceedings of the 2015 Annual Symposium on Computer-Human Interaction in Play
+      </em>
+      . 197–207.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2793107.2793128" target="_blank">
+       https://doi.org/10.1145/2793107.2793128
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Robin Hunicke. 2005. The case for dynamic difficulty adjustment in games. In
+      <em>
+       Proceedings of the 2005 ACM SIGCHI International Conference on Advances in Computer Entertainment Technology
+      </em>
+      . 429–433.
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      João Jacob. 2016.
+      <em>
+       Estimating Player Performance and Adaptivity in Exergames and Location-Based Games
+      </em>
+      . Ph.D. Dissertation. Faculdade de Engenharia da Universidade do Porto.
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Martin Jennings-Teats, Gillian Smith, and Noah Wardrip-Fruin. 2010. Polymorph: dynamic difficulty adjustment through level generation. In
+      <em>
+       Proceedings of the 2010 Workshop on Procedural Content Generation in Games
+      </em>
+      . 11:1–11:4.
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Conor Linehan, George Bellord, Ben Kirman, Zachary H. Morford, and Bryan Roche. 2014. Learning curves: analysing pace and challenge in four successful puzzle games. In
+      <em>
+       Proceedings of the First ACM SIGCHI Annual Symposium on Computer-Human Interaction in Play
+      </em>
+      . 181–190.
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Derek Lomas, Kishan Patel, Jodi Forlizzi, and Kenneth Koedinger. 2013. Optimizing challenge in an educational game using large-scale design experiments. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      . 89–98.
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Vilfredo Pareto. 1963.
+      <em>
+       The Mind and Society; A Treatise on General Sociology
+      </em>
+      . Translated by Andrew Bongiorno and Arthur Livingston. Dover, New York.
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Richard M. Ryan and Edward L. Deci. 2000. Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being.
+      <em>
+       <em>
+        American Psychologist
+       </em>
+      </em>
+      55, 1 (2000), 68–78.
+      <a class="link-inline force-break" href="https://doi.org/10.1037/0003-066X.55.1.68" target="_blank">
+       https://doi.org/10.1037/0003-066X.55.1.68
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Anurag Sarkar and Seth Cooper. 2018. Comparing paid and volunteer recruitment in human computation games. In
+      <em>
+       Proceedings of the 13th International Conference on the Foundations of Digital Games
+      </em>
+      . 37:1–37:9.
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Anurag Sarkar and Seth Cooper. 2018. Meet your match rating: providing skill information and choice in player-versus-level matchmaking. In
+      <em>
+       Proceedings of the 13th International Conference on the Foundations of Digital Games
+      </em>
+      . 36:1–36:8.
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Anurag Sarkar, Michael Williams, Sebastian Deterding, and Seth Cooper. 2017. Engagement effects of player rating system-based matchmaking for level ordering in human computation games. In
+      <em>
+       Proceedings of the 12th International Conference on the Foundations of Digital Games
+      </em>
+      . 22:1–22:10.
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Kristin Siu, Alexander Zook, and Mark Riedl. 2017. A framework for exploring and evaluating mechanics in human computation games. In
+      <em>
+       Proceedings of the 12th International Conference on the Foundations of Digital Games
+      </em>
+      . 38:1–38:4.
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Alex Cho Snyder and Mario Izquierdo. 2014.
+      <em>
+       Jumpcraft
+      </em>
+      . Game.
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Steve Swink. 2008.
+      <em>
+       Game Feel: A Game Designer's Guide to Virtual Sensation
+      </em>
+      . CRC Press.
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Jacob O. Wobbrock, Leah Findlater, Darren Gergle, and James J. Higgins. 2011. The Aligned Rank Transform for nonparametric factorial analyses using only ANOVA procedures. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      . 143–146.
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Alexander Zook and Mark Riedl. 2012. A temporal data-driven player model for dynamic difficulty adjustment. In
+      <em>
+       Proceedings of the Eighth AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment
+      </em>
+      . 93–98.
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Association for Computing Machinery.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300781" target="_blank">
+      https://doi.org/10.1145/3290605.3300781
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8758245e2d799b5e',t:'MTcxMzMxMjEwMi4zNjYwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

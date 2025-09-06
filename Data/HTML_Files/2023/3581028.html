@@ -1,0 +1,3984 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Relative Design Acquisition: A Computational Approach for Creating Visual Interfaces to Steer User Choices
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3581028_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3581028_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3581028_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3581028_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3581028_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3581028_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3581028_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3581028_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <main>
+   <section class="front-matter">
+    <section>
+     <header class="title-info">
+      <div class="journal-title">
+       <h1>
+        <span class="title">
+         Relative Design Acquisition: A Computational Approach for Creating Visual Interfaces to Steer User Choices
+        </span>
+        <br/>
+        <span class="subTitle">
+        </span>
+       </h1>
+      </div>
+     </header>
+     <div class="authorGroup">
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-9535-778X" ref="author">
+        <span class="givenName">
+         George
+        </span>
+        <span class="givenName">
+         B
+        </span>
+        <span class="surName">
+         Mo
+        </span>
+       </a>
+       , Department of Engineering, University of Cambridge, United Kingdom,
+       <a href="mailto:georgemo535@gmail.com">
+        georgemo535@gmail.com
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-7139-871X" ref="author">
+        <span class="givenName">
+         Per Ola
+        </span>
+        <span class="surName">
+         Kristensson
+        </span>
+       </a>
+       , Department of Engineering, University of Cambridge, United Kingdom,
+       <a href="mailto:pok21@cam.ac.uk">
+        pok21@cam.ac.uk
+       </a>
+      </div>
+     </div>
+     <br/>
+     <div class="pubInfo">
+      <p>
+       DOI:
+       <a href="https://doi.org/10.1145/3544548.3581028" target="_blank">
+        https://doi.org/10.1145/3544548.3581028
+       </a>
+       <br/>
+       CHI '23:
+       <a href="https://doi.org/10.1145/3544548" target="_blank">
+        Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems
+       </a>
+       , Hamburg, Germany, April 2023
+      </p>
+     </div>
+     <div class="abstract">
+      <p>
+       <small>
+        A central objective in computational design is that an optimal design is desired which optimizes a performance metric. We explore a different problem class with a computational approach we call relative design acquisition. As a motivational example, consider a user prompted to make a choice using buttons. One button may have a more visually appealing design and hence is visually optimal to steer users to click it more often than the second button. In such a design case, a relative design is acquired of a certain quality with respect to a reference design to guide a user decision. After mathematically formalizing this problem, we report the results of three experiments that demonstrate the approach's efficacy in generating relative designs in a visual interface preference setting. The relative designs are controllable by a quality factor, which affects both comparative ratings and human decision time between the reference and relative designs.
+       </small>
+      </p>
+     </div>
+     <div class="CCSconcepts">
+      <ccs2012>
+       <small>
+        <span style="font-weight:bold;">
+         CCS Concepts:
+        </span>
+        •
+        <strong>
+         Human-centered computing → Systems and tools for interaction design
+        </strong>
+        ; •
+        <strong>
+         Human-centered computing → Interaction techniques
+        </strong>
+        ; •
+        <strong>
+         Human-centered computing → Interaction design process and methods
+        </strong>
+        ;
+       </small>
+      </ccs2012>
+     </div>
+     <br/>
+     <div class="classifications">
+      <div class="author">
+       <span style="font-weight:bold;">
+        <small>
+         Keywords:
+        </small>
+       </span>
+       <span class="keyword">
+        <small>
+         Interface Design; Bayesian Optimization; Computational Interaction; Human-in-the-Loop
+        </small>
+       </span>
+      </div>
+      <br/>
+      <div class="AcmReferenceFormat">
+       <p>
+        <small>
+         <span style="font-weight:bold;">
+          ACM Reference Format:
+         </span>
+         <br/>
+         George B Mo and Per Ola Kristensson. 2023. Relative Design Acquisition: A Computational Approach for Creating Visual Interfaces to Steer User Choices. In
+         <em>
+          Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems (CHI '23), April 23–28, 2023, Hamburg, Germany.
+         </em>
+         ACM, New York, NY, USA 17 Pages.
+         <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3581028" target="_blank">
+          https://doi.org/10.1145/3544548.3581028
+         </a>
+        </small>
+       </p>
+      </div>
+     </div>
+    </section>
+   </section>
+   <section class="body">
+    <section id="sec-2">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         1
+        </span>
+        INTRODUCTION
+       </h2>
+      </div>
+     </header>
+     <p>
+      Computational interaction is an emerging field that leverages machine learning methods to aid in the design and implementation of interactive systems and techniques [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ]. An overarching objective in computational interaction and in computation design is to optimize a design over its design parameters to maximize a performance metric, such as speed and accuracy [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ], ergonomics [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ], or user ratings [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ]. Approaches taken include using Bayesian optimization for human-in-the-loop interface design [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ], neural network based methods [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ], combinatorial optimization [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ], and linear programming techniques [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ]. However, in this paper, we take on a separate class of problems in computational design which instead focuses on finding a
+      <em>
+       relative design
+      </em>
+      of a certain
+      <em>
+       quality
+      </em>
+      in relation to a reference design.
+     </p>
+     <p>
+      Consider the following scenario.
+      <font color="#000000">
+       In a map application (Figure
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       a), we are often presented with two choices of route journeys. The visual interfaces for these two choices are designed to entice the user to pick a particular path as to improve the time of travel. However, consider the use case of alleviating the overall traffic in a geographic area. For instance, in this scenario for Google Maps, the more recommended routes could be designed with a bolder border and a brighter color of a controllable visual appeal to the user so as to elicit certain proportions of route traffic selection in Figure
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       b. Hence, the routes are designed to be optimal in the sense that they are designed to attract more users to select certain routes whereas other alternative routes are designed to have a relative quality below the desirable route to sway user attention away from selecting it with varying degrees.
+      </font>
+     </p>
+     <figure id="fig1">
+      <img alt="Figure 1" class="img-responsive" src="3581028_files\chi23345fig1.jpg"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        Potential application of relative design acquisition to a maps scenario. Currently in Google Maps, the most desired path is shown in blue whereas the other options are greyed out (Fig. a). However, a secondary preferred option can be designed with relative design acquisition as in (b) to be relative of a certain quality with respect to the reference path design to prompt user path taking.
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+     </p>
+     <p>
+      From this scenario, it is apparent that with respect to the objective of visual attractiveness and attention-drawing, not only is it desirable to find the optimally attractive interface, it is also desired to identify a relative interface for the second option so as not to attract the customer to it, and to do so with a controllable quality. This is a different problem from that of design optimization because instead of searching for a design optimum, we require a
+      <em>
+       relative design
+      </em>
+      in relation to a
+      <em>
+       reference design
+      </em>
+      . Note that frequently this reference design is an optimal design, or a close approximation of an optimal design.
+     </p>
+     <p>
+      For many applications, we suggest that a desired characteristic of relative design acquisition is that the relative design's quality can be controlled in relation to a reference design. For example, if the relative button in the web-page was designed to be so poor that the text would not be visible or the button size would be too small, this would render the button completely inaccessible and hence would not satisfy basic established web design principles. This would be an undesirable result. To avoid this it is necessary that the relative design is
+      <em>
+       controllable
+      </em>
+      by some factor and we call this design parameter
+      <em>
+       quality
+      </em>
+      . This design parameter is essential for allowing the designer to tune a relative design.
+     </p>
+     <p>
+      In addition, another desirable characteristic of relative design acquisition is that this design technique is applicable and demonstrably effective in synthesizing relative designs in relation to a reference design based on user feedback. In the maps example, a method in which attractiveness can be assessed is through the rating or reaction of the user to the design. Therefore, another desirable characteristic of relative design acquisition is that the proposed method is effective in a human-in-the-loop setting, as in based upon iterative user feedback, and generates new and more fitting designs. Further, the generated relative designs should be consistent in quality for an entire population of users, not just individualized designs for specific users. This allows the relative design acquisition technique to be more widely applicable for creating relative designs that are effective for groups of individuals with respect to some desired outcome or objective.
+     </p>
+     <p>
+      To attempt to tackle the problem of relative design acquisition, as motivated from the example above, the rest of this paper presents a computational method that incorporates the above desired characteristics and reports the results of three experiments that demonstrate the efficacy of this approach.
+     </p>
+     <p>
+      In summary, the main contributions of this work are:
+     </p>
+     <ul class="list-no-style">
+      <li id="list1" label="•">
+       A mathematical formalization of the problem of relative design acquisition and a generalized framework for computing quality-controllable relative designs using a computational approach.
+       <br/>
+      </li>
+      <li id="list2" label="•">
+       An empirical investigation of relative design acquisition for visual context-free and visual context-present scenarios for individual user preferences in human-in-the-loop experiments.
+       <br/>
+      </li>
+      <li id="list3" label="•">
+       An evaluation to understand the performance and potential uses of relative design acquisition applied to creating reference and relative visual designs for a new population of users in a shopping website design context example, highlighting its effectiveness in generating relative designs and effects on human decision time.
+       <br/>
+      </li>
+     </ul>
+     <figure id="fig2">
+      <img alt="Figure 2" class="img-responsive" src="3581028_files\chi23345fig2.jpg"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        Example of two buttons adjacent on the bottom right that lead to different options of buying using Amazon Prime (
+        <em>
+         Join Prime Today
+        </em>
+        versus
+        <em>
+         Continue with Free One-Day Delivery
+        </em>
+        ). The button urging customers to buy is designed to be more visually attractive than the one that allows the customer to continue without buying. The two buttons are termed as
+        <em>
+         reference
+        </em>
+        and
+        <em>
+         relative
+        </em>
+        respectively.
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+      In this paper, we primarily focus on the application of relative design acquisition for button interfaces in the context of a shopping website (Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      ).
+      <font color="#000000">
+       On such a website, users are often presented with two choices—to either purchase the product at hand, or not to purchase it. The visual interfaces for these two choices are designed to entice the customer to pick the button to purchase more. For instance, in this scenario for Amazon Prime, the button to buy the product is designed with a brighter yellow color with a more discernible border and darker font color compared to the “continue without buying” option.
+      </font>
+      Relative design acquisition can conceivably be applied to other scenarios, but this application was chosen to be explored in depth to account for the many differing factors that could affect user behavior. Specifically, the first study in this paper explores the effects of memorability and the lack of visual context. The second study investigates the effects of a visual context and the sampling method. Finally, the third study examines the effects of different tasks on ratings and decision times for relative designs generated for a new set of participants.
+     </p>
+     <p>
+      <font color="#000000">
+       We also draw attention to the fact that this specific shopping website example could lead to ethical concerns on its use as a dark design pattern for user manipulation, which we specifically address in Section
+       <a class="sec" href="#sec-36">
+        4.1
+       </a>
+      </font>
+      .
+      <font color="#000000">
+       We stress that dark designs could be an easy application of this method, and emphasize the cautionary approach that would have to be taken when using relative design acquisition, that is, aligning the intent of steering user choices with ethical considerations.
+      </font>
+     </p>
+     <p>
+      Through exploring the different effects of applying relative design acquisition to visual interfaces, our method shows promise in generalizing to many scenarios where multiple choices are presented and users should be nudged to make a certain choice over the other. For instance in guiding a user around a tutorial for a productivity application, less frequently used or less useful tools can be designed to be suboptimal in their visual affordance. A further example would be training wheels for a user interface [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ], where the interface designs of advanced features can be gradually adjusted in quality to become more prominent as users gain proficiency. The key advantage of our method is that it can generate systematically different design candidates of controllable quality to steer user choices. Note that in all the above applications, controllability in guiding user decisions is especially important to yield
+      <font color="#000000">
+       controllable user choice proportions for a certain objective, such as to alleviate overall traffic in an area for a map application
+      </font>
+      .
+     </p>
+    </section>
+    <section id="sec-3">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         2
+        </span>
+        APPROACH
+       </h2>
+      </div>
+     </header>
+     <section id="sec-4">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.1
+         </span>
+         Background
+        </h3>
+       </div>
+      </header>
+      <p>
+       To introduce the method for relative design acquisition, we first detail Gaussian Processes and how they can be applied in human-in-the-loop applications.
+       <font color="#000000">
+        For clarity, we note that our method, relative design acquisition, is based on Gaussian Processes only and the assumption that we can build a Gaussian Process model based on data we collect from the user. We emphasize that relative design acquisition tries to find a relative design of a certain quality with respect to a reference design. It is independent, and not reliant on, the way the data is gathered or sampled to build the Gaussian Process model, and is a generalized method for generating a relative design given a reference design.
+       </font>
+      </p>
+      <section id="sec-5">
+       <p>
+        <em>
+         <span class="section-number">
+          2.1.1
+         </span>
+         Gaussian Processes.
+        </em>
+        For many applications, the relationship between the input parameters
+        <strong>
+         x
+        </strong>
+        and the output from function
+        <span class="inline-equation">
+         <span class="tex">
+          $f: \mathcal {X} \rightarrow \mathbb {R}$
+         </span>
+        </span>
+        is unknown,
+        <font color="#000000">
+         which in our context is a design objective function
+        </font>
+        . This for instance could be
+        <strong>
+         x
+        </strong>
+        representing the configuration for a particular design and
+        <em>
+         f
+        </em>
+        be the user performance to that design, such as speed, accuracy, or user rating. We can model
+        <em>
+         f
+        </em>
+        as a sample from a Gaussian Process (GP), which is a collection of dependent random variables for each
+        <span class="inline-equation">
+         <span class="tex">
+          $\mathbf {x} \in \mathcal {X}$
+         </span>
+        </span>
+        , where every subset is distributed as a multivariable Gaussian. A Gaussian Process
+        <em>
+         GP
+        </em>
+        (
+        <em>
+         μ
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        ),
+        <em>
+         k
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        ,
+        <strong>
+         x
+        </strong>
+        ′)) is specified by its mean function
+        <span class="inline-equation">
+         <span class="tex">
+          $\mu (\mathbf {x}) = \mathbb {E}[f(\mathbf {x})]$
+         </span>
+        </span>
+        and kernel function
+        <span class="inline-equation">
+         <span class="tex">
+          $k(\mathbf {x}, \mathbf {x}^{\prime }) = \mathbb {E}[(f(\mathbf {x}) - \mu (\mathbf {x}))(f(\mathbf {x}^{\prime }) - \mu (\mathbf {x}^{\prime }))]$
+         </span>
+        </span>
+        . Let the GP prior be
+        <em>
+         GP
+        </em>
+        (0,
+        <em>
+         k
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        ,
+        <strong>
+         x
+        </strong>
+        ′)).
+       </p>
+       <p>
+        Suppose we sample
+        <span class="inline-equation">
+         <span class="tex">
+          $\mathcal {X}$
+         </span>
+        </span>
+        at points
+        <strong>
+         X
+        </strong>
+        = {
+        <strong>
+         x
+        </strong>
+        <sub>
+         1
+        </sub>
+        ,
+        <strong>
+         x
+        </strong>
+        <sub>
+         2
+        </sub>
+        ,...,
+        <strong>
+         x
+        </strong>
+        <sub>
+         <em>
+          n
+         </em>
+        </sub>
+        } and retrieve
+        <strong>
+         y
+        </strong>
+        = {
+        <em>
+         y
+        </em>
+        <sub>
+         1
+        </sub>
+        ,
+        <em>
+         y
+        </em>
+        <sub>
+         2
+        </sub>
+        ,...,
+        <em>
+         y
+         <sub>
+          n
+         </sub>
+        </em>
+        }, where
+        <em>
+         y
+         <sub>
+          i
+         </sub>
+        </em>
+        =
+        <em>
+         f
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        <sub>
+         <em>
+          i
+         </em>
+        </sub>
+        ) + ϵ
+        <sub>
+         <em>
+          i
+         </em>
+        </sub>
+        ,
+        <span class="inline-equation">
+         <span class="tex">
+          $\epsilon _i \sim \mathcal {N}(0, \sigma ^2)$
+         </span>
+        </span>
+        i.i.d. Gaussian noise. Then, the posterior over
+        <em>
+         f
+        </em>
+        is a GP distribution with mean
+        <em>
+         μ
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        ), covariance
+        <em>
+         K
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        ,
+        <strong>
+         x
+        </strong>
+        ′), and variance
+        <em>
+         σ
+        </em>
+        <sup>
+         2
+        </sup>
+        (
+        <strong>
+         x
+        </strong>
+        ):
+       </p>
+       <div class="table-responsive">
+        <div class="display-equation">
+         <span class="tex mytex">
+          \begin{align*} \mu (\mathbf {x}) &amp;= \mathbf {k}(\mathbf {x})^T(\mathbf {K} + \sigma ^2 \mathbf {I})^{-1} \mathbf {y} \\ K(\mathbf {x}, \mathbf {x}^{\prime }) &amp;= k(\mathbf {x}, \mathbf {x}^{\prime }) - \mathbf {k}(\mathbf {x})^T (\mathbf {K} + \sigma ^2 \mathbf {I})^{-1} \mathbf {k}(\mathbf {x}^{\prime }) \\ \sigma ^2(\mathbf {x}) &amp;= k(\mathbf {x}, \mathbf {x}) \end{align*}
+         </span>
+         <br/>
+        </div>
+       </div>
+       <p>
+       </p>
+       <p>
+        Here,
+        <strong>
+         k
+        </strong>
+        (
+        <strong>
+         x
+        </strong>
+        ) = [
+        <em>
+         k
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        <sub>
+         1
+        </sub>
+        ,
+        <strong>
+         x
+        </strong>
+        ),...,
+        <em>
+         k
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        <sub>
+         <em>
+          n
+         </em>
+        </sub>
+        ,
+        <strong>
+         x
+        </strong>
+        )]
+        <sup>
+         <em>
+          T
+         </em>
+        </sup>
+        and
+        <span class="inline-equation">
+         <span class="tex">
+          $\mathbf {K} = [k(\mathbf {x}, \mathbf {x}^{\prime })]_{\mathbf {x}, \mathbf {x}^{\prime } \in \mathcal {X}}$
+         </span>
+        </span>
+        . Notably, we use GPs to create a surrogate model of the relationship between the design parameters
+        <span class="inline-equation">
+         <span class="tex">
+          $\mathbf {x} \in \mathcal {X}$
+         </span>
+        </span>
+        and the design objective function
+        <em>
+         f
+        </em>
+        representing the user's performance on that design parameter. As
+        <em>
+         f
+        </em>
+        is a black-box system, this is an appropriate model as user performance over design parameters is assumed to be smooth and continuous across
+        <span class="inline-equation">
+         <span class="tex">
+          $\mathcal {X}$
+         </span>
+        </span>
+        .
+        <font color="#000000">
+         In human-computer interaction, Gaussian Processes have been applied in many computational design scenarios to optimize designs (e.g. [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+          9
+         </a>
+         ,
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+          16
+         </a>
+         ,
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+          17
+         </a>
+         ]), due to its ability to accurately model user behavior given limited data and its low computational overhead for human-in-the-loop applications
+        </font>
+        .
+       </p>
+       <figure id="fig3">
+        <img alt="Figure 3" class="img-responsive" src="3581028_files\chi23345fig3.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 3:
+         </span>
+         <span class="figure-title">
+          Computational framework for relative design acquisition, where the data collected from the users from an arbitrary sampling method is then used to generate the reference design and the relative design. For the relative design, it is obtained through optimizing the
+          <font color="#000000">
+           RDA objective
+          </font>
+          and using the surrogate model. The two choices are then presented to the user for a comparative rating.
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+      </section>
+     </section>
+     <section id="sec-6">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.2
+         </span>
+         Computational Approach to Relative Design Acquisition
+        </h3>
+       </div>
+      </header>
+      <section id="sec-7">
+       <p>
+        <em>
+         <span class="section-number">
+          2.2.1
+         </span>
+         Approach for Controllability.
+        </em>
+        We now detail the novel mathematical formulation of the problem we here term
+        <em>
+         relative design acquisition
+        </em>
+        .
+        <font color="#000000">
+         This method is distinct from, and modular to, the sampling method from which the data is collected for creating the Gaussian Process.
+        </font>
+        Suppose that the design problem we are working on involves a black-box system design objective function that takes design parameters as inputs and outputs an objective value, namely
+        <span class="inline-equation">
+         <span class="tex">
+          $f: \mathcal {X} \rightarrow \mathbb {R}$
+         </span>
+        </span>
+        . Suppose we have decided upon a reference design
+        <strong>
+         x
+        </strong>
+        <sup>
+         *
+        </sup>
+        from which we want to find a relative design. Much of the time,
+        <strong>
+         x
+        </strong>
+        <sup>
+         *
+        </sup>
+        would be an optimal design with respect to
+        <em>
+         f
+        </em>
+        , and has an objective function value of
+        <em>
+         f
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        <sup>
+         *
+        </sup>
+        ). Suppose that we have also collected data
+        <span class="inline-equation">
+         <span class="tex">
+          $\mathcal {D} = \lbrace \mathbf {x}_i, y_i\rbrace _{i=1}^{N}$
+         </span>
+        </span>
+        where
+        <strong>
+         x
+        </strong>
+        <sub>
+         <em>
+          i
+         </em>
+        </sub>
+        are the design parameters and
+        <em>
+         y
+         <sub>
+          i
+         </sub>
+        </em>
+        are the corresponding objective function observations (i.e.
+        <em>
+         y
+         <sub>
+          i
+         </sub>
+        </em>
+        =
+        <em>
+         f
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        <sub>
+         <em>
+          i
+         </em>
+        </sub>
+        ) + ϵ, where ϵ is some noise term). We further assume the data
+        <span class="inline-equation">
+         <span class="tex">
+          $\mathcal {D}$
+         </span>
+        </span>
+        is then used to create a surrogate model for
+        <em>
+         f
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        ) using a GP.
+       </p>
+       <p>
+        From the GP we can infer the predictive mean of
+        <em>
+         f
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        <sup>
+         *
+        </sup>
+        ). Say it is
+        <em>
+         μ
+        </em>
+        . Then say for the relative design, we want to find one that is
+        <em>
+         γ
+        </em>
+        in quality compared to the reference design
+        <strong>
+         x
+        </strong>
+        <sup>
+         *
+        </sup>
+        . That means that we want to find a relative design
+        <strong>
+         x
+        </strong>
+        <sup>
+         <em>
+          a
+         </em>
+        </sup>
+        such that
+        <span class="inline-equation">
+         <span class="tex">
+          $\mathbb {E}[f(\mathbf {x}^a)] = \gamma (\mu - f_l) + f_l$
+         </span>
+        </span>
+        , where
+        <em>
+         f
+         <sub>
+          l
+         </sub>
+        </em>
+        is the lower bound of the function
+        <em>
+         f
+        </em>
+        .
+       </p>
+       <p>
+        This formulation allows us to construct an
+        <font color="#000000">
+         objective
+        </font>
+        function to find the relative design
+        <strong>
+         x
+        </strong>
+        <sup>
+         <em>
+          a
+         </em>
+        </sup>
+        with quality
+        <em>
+         γ
+        </em>
+        . Essentially, we want to find a relative design
+        <strong>
+         x
+        </strong>
+        <sup>
+         <em>
+          a
+         </em>
+        </sup>
+        such that
+        <span class="inline-equation">
+         <span class="tex">
+          $\mathbb {E}[|f(\mathbf {x}^a) - (\gamma (\mu - f_l) + f_l)|]$
+         </span>
+        </span>
+        is minimized. Hence, our
+        <font color="#000000">
+         objective
+        </font>
+        function for the relative design is:
+       </p>
+       <div class="table-responsive" id="eq1">
+        <div class="display-equation">
+         <span class="tex mytex">
+          \begin{equation} RDA(\mathbf {x}^a | \mathbf {x}^*) = \mathbb {E}_{f(\mathbf {x}^a)} [|f(\mathbf {x}^a) - (\gamma (\mu - f_l) + f_l)|] \end{equation}
+         </span>
+         <br/>
+         <span class="equation-number">
+          (1)
+         </span>
+        </div>
+       </div>
+       <p>
+       </p>
+       <p>
+        We now explain more details about this
+        <font color="#000000">
+         objective
+        </font>
+        function, especially the role of
+        <em>
+         γ
+        </em>
+        .
+        <font color="#000000">
+         We will call the objective function in equation
+         <a class="eqn" href="#eq1">
+          1
+         </a>
+         the
+         <em>
+          RDA objective
+         </em>
+         , which differentiates it from the design objective function to which we evaluate a design.
+        </font>
+        As in many of our applications,
+        <em>
+         μ
+        </em>
+        represents the objective function value or performance of the reference design. As the reference design is frequently some sort of optimal design, we limit
+        <em>
+         γ
+        </em>
+        to be 0 ≤
+        <em>
+         γ
+        </em>
+        ≤ 1. For example, if
+        <em>
+         γ
+        </em>
+        = 0.9 in the RDA objective, then
+        <strong>
+         x
+        </strong>
+        <sup>
+         <em>
+          a
+         </em>
+        </sup>
+        should have a design objective function value that is 90% of that of the optima, and hence the two designs—relative and reference—should have approximately the same quality. However, if
+        <em>
+         γ
+        </em>
+        = 0.5, then
+        <strong>
+         x
+        </strong>
+        <sup>
+         <em>
+          a
+         </em>
+        </sup>
+        would have a design objective function value that is half of that of the reference design, and hence the relative and reference designs should have a greater discrepancy in observed quality.
+       </p>
+       <p>
+        Note that we can actually replace
+        <em>
+         μ
+        </em>
+        with any observation of the objective value
+        <em>
+         y
+        </em>
+        we get that corresponds to the reference design we want to find a relative one to. It does not have to be the mean of the predictive distribution of
+        <em>
+         f
+        </em>
+        (
+        <strong>
+         x
+        </strong>
+        <sup>
+         *
+        </sup>
+        ), but can simply be an objective value that corresponds to the performance of
+        <strong>
+         x
+        </strong>
+        <sup>
+         *
+        </sup>
+        .
+       </p>
+       <p>
+        Appendix A shows an explicit expansion of the
+        <font color="#000000">
+         RDA objective
+        </font>
+        into an analytic form given a GP model.
+        <font color="#000000">
+         We stress that relative design acquisition is not an iterative optimization process and it does not aim to find an optimal design to maximize the design objective function.
+        </font>
+        We expect that, for some applications, optimizing the RDA objective will yield several relative design candidates of a certain quality with respect to a reference design. In such a case, the designer will have to use design judgment or user studies to choose a preferred generated relative design.
+       </p>
+      </section>
+      <section id="sec-8">
+       <p>
+        <em>
+         <span class="section-number">
+          2.2.2
+         </span>
+         Integrating with Different Sampling Methods.
+        </em>
+        As may be realized from the previous subsection, the sampling method to build up the data
+        <span class="inline-equation">
+         <span class="tex">
+          $\mathcal {D}$
+         </span>
+        </span>
+        to create the GP is something that does not need to be fixed, and hence relative design acquisition can be integrated with many different types of data collection settings. Thus, the sampling method (which could be random sampling, Bayesian optimization, etc.) and relative design acquisition are modular.
+        <font color="#000000">
+         We describe below how random sampling and Bayesian optimization can be integrated as sampling methods to obtain a reference design from which relative design acquisition can be used to generate the relative design.
+        </font>
+       </p>
+       <ul class="list-no-style">
+        <li id="list4" label="•">
+         <em>
+          Random sampling
+         </em>
+         can be used to generate a dataset
+         <span class="inline-equation">
+          <span class="tex">
+           $\mathcal {D}$
+          </span>
+         </span>
+         . The surrogate model (GP) can then be built using
+         <span class="inline-equation">
+          <span class="tex">
+           $\mathcal {D}$
+          </span>
+         </span>
+         . To find the reference design that is near-optimal, one option is optimizing over the posterior mean of the GP in
+         <span class="inline-equation">
+          <span class="tex">
+           $\mathcal {X}$
+          </span>
+         </span>
+         , namely retrieving
+         <strong>
+          x
+         </strong>
+         <sup>
+          *
+         </sup>
+         and
+         <span class="inline-equation">
+          <span class="tex">
+           $\mu = \mathbb {E}[f(\mathbf {x}^*)]$
+          </span>
+         </span>
+         . Using
+         <strong>
+          x
+         </strong>
+         <sup>
+          *
+         </sup>
+         and
+         <em>
+          μ
+         </em>
+         or the achieved objective value
+         <em>
+          y
+         </em>
+         <sup>
+          *
+         </sup>
+         =
+         <em>
+          f
+         </em>
+         (
+         <strong>
+          x
+         </strong>
+         <sup>
+          *
+         </sup>
+         ) + ϵ, and selecting
+         <em>
+          γ
+         </em>
+         , we can use relative design acquisition to find the relative design
+         <strong>
+          x
+         </strong>
+         <sup>
+          <em>
+           a
+          </em>
+         </sup>
+         .
+         <br/>
+        </li>
+        <li id="list5" label="•">
+         <font color="#000000">
+          <em>
+           Bayesian optimization
+          </em>
+          allows an optimum design to be searched for the black-box system design objective
+          <em>
+           f
+          </em>
+          and can be thought of as an iterative sampling method.
+         </font>
+         As a result of iterative sampling, a dataset
+         <span class="inline-equation">
+          <span class="tex">
+           $\mathcal {D}$
+          </span>
+         </span>
+         is created from which a surrogate model of
+         <em>
+          f
+         </em>
+         can be generated using a GP. The surrogate model and relative design acquisition can then be used to find a relative design
+         <strong>
+          x
+         </strong>
+         <sup>
+          <em>
+           a
+          </em>
+         </sup>
+         of which a reference design
+         <strong>
+          x
+         </strong>
+         <sup>
+          *
+         </sup>
+         (the maximum we have seen thus far) is compared to. The design objective value of the reference point
+         <em>
+          x
+         </em>
+         <sup>
+          *
+         </sup>
+         can be taken as either the posterior mean in
+         <span class="inline-equation">
+          <span class="tex">
+           $\mu = \mathbb {E}[f(\mathbf {x}^*)]$
+          </span>
+         </span>
+         or the achieved design objective value
+         <em>
+          y
+         </em>
+         <sup>
+          *
+         </sup>
+         corresponding to
+         <strong>
+          x
+         </strong>
+         <sup>
+          *
+         </sup>
+         .
+         <br/>
+        </li>
+       </ul>
+       <p>
+        In summary, relative design acquisition can be integrated with a wide variety of sampling techniques and settings. The complete framework for relative design acquisition is shown in Figure
+        <a class="fig" href="#fig3">
+         3
+        </a>
+        .
+       </p>
+      </section>
+      <section id="sec-9">
+       <p>
+        <em>
+         <span class="section-number">
+          2.2.3
+         </span>
+         Practical Considerations.
+        </em>
+        In all our experiments, we normalize each of the design parameters so that they each lie within the range [0, 1], and each of the optimizations of the
+        <font color="#000000">
+         RDA objective
+        </font>
+        is done with the optimization algorithm L-BFGS-B with 25 restarts. Also, the design objective function is normalized so that it is within the range [ − 1, 1], hence
+        <em>
+         f
+         <sub>
+          l
+         </sub>
+        </em>
+        = −1. The GP used has a radial-basis function kernel with length-scale
+        <em>
+         l
+        </em>
+        , composed with a white noise kernel with a noise level
+        <em>
+         σ
+        </em>
+        . In addition, when new data is added, the hyperparameters {
+        <em>
+         l
+        </em>
+        ,
+        <em>
+         σ
+        </em>
+        } of the GP are also updated by maximizing the maximum log likelihood.
+       </p>
+      </section>
+     </section>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         3
+        </span>
+        EXPERIMENTS
+       </h2>
+      </div>
+     </header>
+     <p>
+      To understand how relative design acquisition can be applied to practical interactive design scenarios, we conduct three different studies all of which involve the design of visual interfaces. The objective function used to assess the quality of the generated visual interfaces is the absolute user rating of the designs. Study 1 focuses on a visual context-free scenario, Study 2 focuses on a visual context-present scenario of a shopping website, and Study 3 focuses on evaluating the generated relative designs with a population of users. All three studies were performed on a ASUS ProArt Display monitor, 1920 × 1200, using a keyboard and mouse. The studies were approved by the local ethics committee and in all studies, participants were not told about the concepts of reference and relative designs. The only inclusion criteria in all studies was that the participant is not color-blind.
+     </p>
+     <section id="sec-11">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.1
+         </span>
+         Study 1: Visual Context-Free Interface Design
+        </h3>
+       </div>
+      </header>
+      <section id="sec-12">
+       <p>
+        <em>
+         <span class="section-number">
+          3.1.1
+         </span>
+         Goals.
+        </em>
+        The primary goal of the first study is to understand if the method of relative design acquisition can be applied to find relative designs in a visual context-free scenario for individual users. We mean visual context-free as in only the interface is displayed without any other visual context. Specifically, we want to explore the following research questions:
+       </p>
+       <ol class="list-no-style">
+        <li id="list6" label="(1)">
+         Can relative design acquisition capture individual visual preferences of users in a visual context-free scenario, i.e. do people prefer the relative designs less?
+         <br/>
+        </li>
+        <li id="list7" label="(2)">
+         If so, do the generated relative designs capture individual visual preferences that do not change when
+         <font color="#000000">
+          sampled various times for the same user
+         </font>
+         ?
+         <br/>
+        </li>
+        <li id="list8" label="(3)">
+         Can relative design acquisition be controlled by the design parameter
+         <em>
+          γ
+         </em>
+         (the
+         <em>
+          quality
+         </em>
+         )?
+         <br/>
+        </li>
+        <li id="list9" label="(4)">
+         Does the amount of data collected impact the quality of the relative designs generated?
+         <br/>
+        </li>
+       </ol>
+      </section>
+      <section id="sec-13">
+       <p>
+        <em>
+         <span class="section-number">
+          3.1.2
+         </span>
+         Participants.
+        </em>
+        To address the above questions, we conducted an experiment as a within-subjects design. We recruited 16 participants (12 males, 4 females) with an average age of 21.7 (
+        <font color="#000000">
+         <em>
+          sd
+         </em>
+         = 1.3
+        </font>
+        ). The participants were recruited through opportunity sampling within our institution. None of the participants had any visual impairments.
+       </p>
+      </section>
+      <section id="sec-14">
+       <p>
+        <em>
+         <span class="section-number">
+          3.1.3
+         </span>
+         Task.
+        </em>
+        In the study participants were asked to rate a button or text style generated from Bayesian Optimization or relative design acquisition on the basis of whether they think the design would attract customers in a hypothetical scenario of a shopping website.
+       </p>
+       <p>
+        We used two different rating tasks: 1) an
+        <em>
+         absolute rating task
+        </em>
+        in which the participant was asked to indicate whether a generated button or text style was bad or good using a continuous rating scale; and 2) a
+        <em>
+         comparative rating task
+        </em>
+        in which a participant was presented with a reference design and a relative design positioned next to each other in a randomized A/B test and asked to manipulate a continuous slider towards the design that he or she thought was better. An example of an absolute rating task in Study 1 is shown in Figure
+        <a class="fig" href="#fig4">
+         4
+        </a>
+        a and an example of a comparative rating task is shown in Figure
+        <a class="fig" href="#fig4">
+         4
+        </a>
+        c.
+       </p>
+       <p>
+        Both rating tasks (absolute and comparative) used a continuous scale, however, the precise continuous value was not shown to participants. The internal scale was from zero to ten. For the comparative rating task we chose a continuous comparative rating to evaluate the effect of
+        <em>
+         γ
+        </em>
+        on the preference in a continuous manner as opposed to a discrete manner (i.e. selecting one button over the other).
+       </p>
+       <p>
+        In the text task, to change the font style of the text displayed, we take the Adaptifont text generation process as detailed in Kadner et al. [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+         13
+        </a>
+        ]. They took candidate fonts and performed PCA to project the font styles onto three distinct axes from which continuous style changes in fonts can be generated. The design parameters and corresponding parameter ranges in the text task were:
+       </p>
+       <ul class="list-no-style">
+        <li id="list10" label="•">
+         Font size – [15.0, 40,0]
+         <br/>
+        </li>
+        <li id="list11" label="•">
+         Transparency – [0.1, 1.0]
+         <br/>
+        </li>
+        <li id="list12" label="•">
+         Font axis 1 from Adaptifont – [3.0, 13.0]
+         <br/>
+        </li>
+        <li id="list13" label="•">
+         Font axis 2 from Adaptifont – [3.0, 13.0]
+         <br/>
+        </li>
+        <li id="list14" label="•">
+         Font axis 3 from Adaptifont – [3.0, 13.0]
+         <br/>
+        </li>
+       </ul>
+       <p>
+        The three axes corresponding to the font style of the text from Adaptifont [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+         13
+        </a>
+        ], roughly control the horizontal and vertical scaling, and the serif. The range for the font size was selected so that the text would be at an appropriate size for a text link on a web page. The range for the transparency was selected so that the text would be visible, and the three font axes ranges were selected to allow the text to be successfully rendered.
+       </p>
+       <figure id="fig4">
+        <img alt="Figure 4" class="img-responsive" src="3581028_files\chi23345fig4.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 4:
+         </span>
+         <span class="figure-title">
+          (a) and (b) show the absolute rating interface for the text and button tasks respectively. (c) and (d) show the comparative rating interface for the text and button tasks respectively.
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+       <p>
+        In the button rating task, the absolute rating task and comparative rating task layouts were very similar to the text task. The design parameters in the button task were:
+       </p>
+       <ul class="list-no-style">
+        <li id="list15" label="•">
+         Size – [0.5, 2.0]
+         <br/>
+        </li>
+        <li id="list16" label="•">
+         Transparency – [0.1, 1.0]
+         <br/>
+        </li>
+        <li id="list17" label="•">
+         Hue of the button colour – [0.0, 1.0]
+         <br/>
+        </li>
+        <li id="list18" label="•">
+         Saturation of the button colour – [0.0, 1.0]
+         <br/>
+        </li>
+        <li id="list19" label="•">
+         Value of the button colour – [0.0, 1.0]
+         <br/>
+        </li>
+        <li id="list20" label="•">
+         Width of the button border – [0.0, 1.0]
+         <br/>
+        </li>
+       </ul>
+       <p>
+        The rating interfaces for the button task are shown in Figures
+        <a class="fig" href="#fig4">
+         4
+        </a>
+        b and d. Specifically, the ranges for the size and transparency were selected for both tasks so that they could be realistically rendered on a web-page and be seen by the user. The upper bound for the border width was selected to make it appropriately thick for the smallest button size. To clarify, for both tasks the black-box design objective function would be the user rating of the design, and we chose to make the text the same for the text rating task so that the two designs are semantically the same.
+       </p>
+      </section>
+      <section id="sec-15">
+       <p>
+        <em>
+         <span class="section-number">
+          3.1.4
+         </span>
+         Procedure.
+        </em>
+        For the study protocol, we have 2 × 2 conditions: 1) the specific interface element: either a button or text; and 2) the quality design parameter: generating the relative designs based on either
+        <em>
+         γ
+        </em>
+        = 0.6 or
+        <em>
+         γ
+        </em>
+        = 0.9. The order of all conditions were counterbalanced across the 16 participants. Participants were given the prompt of judging the button or text based on the quality of whether they thought it would attract the most customers on a shopping website using their imagination. Each condition involved two phases separated by a 3 minute break - 1) the Bayesian Optimization phase that involved both absolute and comparative rating tasks; and 2) the comparative rating phase only involving comparative rating tasks.
+       </p>
+       <p>
+        We started each condition with a tutorial describing the task followed by 10 absolute ratings and 1 comparative rating to calibrate their preferences and exposure to different designs. The Bayesian Optimization phase was then initialized with 5 random samples for absolute ratings. Then, after every 15 iterations of Bayesian Optimization (absolute ratings), we took the top-3 designs with the highest absolute ratings in the previous 20 iterations. We computed relative designs based on those best designs given the data observed so far (yielding 5 groups per condition). Next, we presented the relative designs with the corresponding reference designs in comparative rating tasks. The above was then repeated for 5 batches, so in total each setting underwent 75 iterations of Bayesian Optimization (absolute ratings) and 3 × 5 = 15 A/B comparisons involving relative designs (comparative ratings).
+        <font color="#000000">
+         For further clarity, Figure
+         <a class="fig" href="#fig5">
+          5
+         </a>
+         shows the procedure of this study, with the tutorial, the Bayesian Optimization phase consisting of 5 groups, and the comparative rating phase.
+        </font>
+       </p>
+       <p>
+        The participants were then asked to take a 3 minute break. In the comparative rating phase, the 3 × 5 = 15 comparative rating tasks generated through the Bayesian Optimization process were then presented in a randomized order to the participant again. This was to see if the relative designs generated for each participant were actually representative of their true personal preferences, and not just an artifact of memorability.
+       </p>
+       <p>
+        The study finished with a short post-study questionnaire. In the questionnaire, participants were first asked on what basis of quality did they judge the two different design scenarios. They were then presented with some of the button and text designs they had seen during the study, and then asked if what they had answered previously is consistent with what they observed they preferred in the designs. Each participant was compensated £10 for their participation and the entire session lasted approximately one hour.
+       </p>
+       <figure id="fig5">
+        <img alt="Figure 5" class="img-responsive" src="3581028_files\chi23345fig5.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 5:
+         </span>
+         <span class="figure-title">
+          <font color="#000000">
+           The procedure of Study 1 for each of the four tested conditions, showing the tutorial, the Bayesian Optimization phase, and the comparative rating phase. The darker orange color represents an absolute rating and the lighter orange color represents a comparative rating. The numbers within the boxes show the number of trials performed.
+          </font>
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+      </section>
+      <section id="sec-16">
+       <p>
+        <em>
+         <span class="section-number">
+          3.1.5
+         </span>
+         Quantitative Results.
+        </em>
+        <mytag>
+        </mytag>
+       </p>
+       <figure id="fig6">
+        <img alt="Figure 6" class="img-responsive" src="3581028_files\chi23345fig6.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 6:
+         </span>
+         <span class="figure-title">
+          Comparative rating box-and-whiskers plot for (a) the text task and (b) the button task for each condition, with the whiskers representing the first or third quartile ± 1.5 IQR.
+         </span>
+        </figcaption>
+       </figure>
+       <div class="table-responsive" id="tab1">
+        <div class="table-caption">
+         <span class="table-number">
+          Table 1:
+         </span>
+         <span class="table-title">
+          Mean and standard variations for the text and button tasks for the two
+          <em>
+           γ
+          </em>
+          and time conditions.
+         </span>
+        </div>
+        <table class="table">
+         <tbody>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td colspan="4" style="text-align:center;">
+            <em>
+             γ
+            </em>
+            = 0.6
+           </td>
+           <td colspan="4" style="text-align:center;border-right: 2pt solid #000000;">
+            <em>
+             γ
+            </em>
+            = 0.9
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td colspan="2" style="text-align:center;">
+            During
+           </td>
+           <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+            After
+           </td>
+           <td colspan="2" style="text-align:center;">
+            During
+           </td>
+           <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+            After
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Text
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.426
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.370
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.576
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.160
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.377
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.822
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.315
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.600
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Button
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.197
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.981
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.359
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.601
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.577
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.205
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.584
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.795
+           </td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+       <p>
+        We first analyze the distribution of comparative ratings for the designs generated by relative design acquisition. We term the comparative ratings done during the optimization as “during” and comparative ratings after the three minutes of a break as “after”, and term these collectively as the time factor. For each comparative rating, we adjust the rating such that a comparative rating of 10 always indicates a maximum preference of a generated relative design, a rating of 0 always indicates a maximum preference of a generated reference design, and a rating of 5 represents the case when participants cannot really tell the difference between the generate reference or relative designs.
+       </p>
+       <p>
+        Figures
+        <a class="fig" href="#fig6">
+         6
+        </a>
+        a and b show the box-and-whiskers plot for both the text and button tasks’ comparative ratings. Table
+        <a class="tbl" href="#tab1">
+         1
+        </a>
+        shows the means and standard deviations for each of the 2 × 2 conditions for both the text and button tasks. A repeated measures two-way ANOVA was performed with the within-subjects fixed factors of
+        <em>
+         γ
+        </em>
+        and time (during and after) for both the text and buttons task with the dependent variable of the comparative rating. None of the analyses violated sphericity by Mauchly's test. For the text task,
+        <em>
+         γ
+        </em>
+        was statistically significant (
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{1, 15} = 90.42, p &lt; 0.0001, \eta _P^2 = 0.858$
+         </span>
+        </span>
+        ), but the time factor (during vs. after) was not statistically significant in determining the user rating (
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{1, 15} = 0.196, p = 0.664, \eta _P^2 = 0.0129$
+         </span>
+        </span>
+        ). For the button task,
+        <em>
+         γ
+        </em>
+        was statistically significant (
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{1, 15} = 19.46, p = 0.000506, \eta _P^2 = 0.565$
+         </span>
+        </span>
+        ), but the time factor was not statistically significant in determining the user rating (
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{1, 15} = 1.166, p = 0.297, \eta _P^2 = 0.0721$
+         </span>
+        </span>
+        ).
+       </p>
+       <p>
+        We analyzed the comparative ratings for the 5 groups of the number of data points used to generate the relative designs for
+        <em>
+         γ
+        </em>
+        = 0.6 (as there were 3 × 5 = 15 comparative ratings during Bayesian Optimization) for both the “during” and “after” scores. Note that the data points collected were used to create the GP model from which relative design acquisition was performed. A repeated measures 2-way ANOVA with the fixed within subjects factors of time (during and after) as well as the 5 different data conditions was performed with the dependent variable of comparative rating. For all conditions, there was no significant difference in the data groups, indicating that data may not significantly affect the relative design quality.
+        <font color="#000000">
+         We also did not observe any statistical significance for the same analyses applied to
+         <em>
+          γ
+         </em>
+         = 0.9.
+        </font>
+       </p>
+      </section>
+      <section id="sec-17">
+       <p>
+        <em>
+         <span class="section-number">
+          3.1.6
+         </span>
+         Questionnaire Results.
+        </em>
+        All participants commented on their preferences of color for the button task, but the responses were highly varied as 5 preferred bright colors while 5 preferred lighter and darker colors. There was also high variation in preferences in button size, as 2 preferred a larger size, 4 a medium size, and 1 a smaller size. Further, 8 participants preferred a border, but three did not like the border at all or in some instances. There were also more descriptive words applied to the buttons the participants preferred, such as “muted and professional” (P11), “sleekness and modern look” (P14), and “not scam buttons” (P9). 4 participants made amendments to the qualities of the buttons they preferred after reviewing the designs.
+       </p>
+       <p>
+        For the text task, 10 participants commented that they preferred a larger font size, 12 participants commented that they preferred darker text, and 11 preferred smaller text spacing. Some characteristics participants preferred of texts were that they were “readable” (P6, P12), “not melted” (P16), and “regular” (P2, P3). 3 participants made amendments to the qualities of the buttons they preferred after reviewing the designs.
+       </p>
+      </section>
+      <section id="sec-18">
+       <p>
+        <em>
+         <span class="section-number">
+          3.1.7
+         </span>
+         Discussion.
+        </em>
+        Overall, relative design acquisition can capture individual visual preferences in a visual context-free scenario that is not dependent on the time of rating of the user. In addition, we see from the high effect sizes that the comparative ratings can be controlled by the design parameter
+        <em>
+         γ
+        </em>
+        (the quality), and that the amount of data might not significantly impact the quality of relative designs generated. We observed more variety and subjectivity in what users preferred for the button task, as opposed to the text task where the majority preferred larger, darker, and appropriately spaced texts.
+        <font color="#000000">
+         We emphasize that our analysis for the effect on the time of rating (before vs. after) on the comparative rating is preliminary and further experiments are required to validate our approach on the consistency of the comparative ratings when sampled several times for the same user.
+        </font>
+       </p>
+      </section>
+     </section>
+     <section id="sec-19">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.2
+         </span>
+         Study 2: Interface Design in a Visual Context-Present Setting
+        </h3>
+       </div>
+      </header>
+      <section id="sec-20">
+       <p>
+        <em>
+         <span class="section-number">
+          3.2.1
+         </span>
+         Goals.
+        </em>
+        Study 1 showed that in a visual context-free scenario, relative design acquisition is able to synthesize relative designs for individual users based on their preferences. In Study 2, we want to explore if the results would change if the interfaces were presented in a visual context-present scenario of a shopping website. In addition, Study 1 sampled the data of an individual user using Bayesian Optimization. We are also interested in seeing the effect of the sampling method (Bayesian Optimization vs. random sampling) on relative designs created using a similar experimental protocol. Specifically, we wanted to address the following questions:
+       </p>
+       <ol class="list-no-style">
+        <li id="list21" label="(1)">
+         Can relative design acquisition capture individual visual preferences of users and be controlled by a design parameter
+         <em>
+          γ
+         </em>
+         (the quality) in a scenario where there is a visual context?
+         <br/>
+        </li>
+        <li id="list22" label="(2)">
+         Does the sampling method affect the efficacy of relative design acquisition?
+         <br/>
+        </li>
+       </ol>
+      </section>
+      <section id="sec-21">
+       <p>
+        <em>
+         <span class="section-number">
+          3.2.2
+         </span>
+         Participants.
+        </em>
+        To address the questions raised, we conducted a study with an additional 16 participants all of which did not participate in Study 1. We recruited 13 males and 3 females with an average age of 20.9 (
+        <font color="#000000">
+         <em>
+          sd
+         </em>
+         = 0.9
+        </font>
+        ) within our institution using opportunity sampling. None of the participants had any visual impairments.
+       </p>
+      </section>
+      <section id="sec-22">
+       <p>
+        <em>
+         <span class="section-number">
+          3.2.3
+         </span>
+         Task.
+        </em>
+        In the first task, the website and the button designs were in a blue color scheme, as shown in Figure
+        <a class="fig" href="#fig7">
+         7
+        </a>
+        a for the absolute rating task and Figure
+        <a class="fig" href="#fig7">
+         7
+        </a>
+        c for the comparative rating task. The design parameters for this task were as follows:
+       </p>
+       <ul class="list-no-style">
+        <li id="list23" label="•">
+         Saturation of the button color – [0.7, 1.0]
+         <br/>
+        </li>
+        <li id="list24" label="•">
+         Value of the button color – [0.7, 1.0]
+         <br/>
+        </li>
+        <li id="list25" label="•">
+         Line width of the button border in black – [0.0, 1.5]
+         <br/>
+        </li>
+       </ul>
+       <p>
+        Here, the hue of the button color was kept constant at 0.572 for the blue hue. The saturation and value were kept in these ranges for an appropriate blue color that was not too dark. The line width range was selected so that it was appropriately thick for a button of that size on a web-page. In addition, the text “Option” inside the button was kept as black with the same font (Serif) and size (15) so the two buttons in the comparative task are semantically the same.
+       </p>
+       <figure id="fig7">
+        <img alt="Figure 7" class="img-responsive" src="3581028_files\chi23345fig8.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 7:
+         </span>
+         <span class="figure-title">
+          (a) Absolute rating interface for the blue button task; (b) absolute rating interface for the green button task; (c) comparative rating interface for the blue button task; (d) comparative rating interface for the green button task.
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+       <p>
+        In the second task, the website and the button designs were in a green color scheme, as shown in Figure
+        <a class="fig" href="#fig7">
+         7
+        </a>
+        b for the absolute rating task and Figure
+        <a class="fig" href="#fig7">
+         7
+        </a>
+        d for the comparative rating task. The design parameters for this task were as follows:
+       </p>
+       <ul class="list-no-style">
+        <li id="list26" label="•">
+         Saturation of the button border color – [0.0, 1.0]
+         <br/>
+        </li>
+        <li id="list27" label="•">
+         Line width of the button border – [0.1, 3.0]
+         <br/>
+        </li>
+        <li id="list28" label="•">
+         Transparency of the text in the button – [0.3, 1.0]
+         <br/>
+        </li>
+        <li id="list29" label="•">
+         Transparency of the button background – [0.0, 0.2]
+         <br/>
+        </li>
+       </ul>
+       <p>
+        Here, the hue and value of the border color were kept constant at 0.361 and 0.7 respectively and the background color was kept constant at the hue, saturation, and value of 0.222, 1.00, and 0.68 respectively. The line width range was selected so that it ranged from thin to thick; the range of the text transparency was picked so that it was always visible; and the transparency range of the button background in green was chosen so that it remained light. The text “Option” inside the button was kept at constant font (Serif) and size (15).
+       </p>
+       <p>
+        Specifically, the ranges for the above parameters in both tasks were constrained as our primary consideration is a more practical design scenario where there would be constraints based on website layout and the color scheme. This would restrict for instance the sizes of the buttons as well as the hues of the buttons.
+       </p>
+       <figure id="fig8">
+        <img alt="Figure 8" class="img-responsive" src="3581028_files\chi23345fig10.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 8:
+         </span>
+         <span class="figure-title">
+          <font color="#000000">
+           The procedure of Study 2 for each of the four conditions, showing the tutorial, the sampling phase, and the comparative rating phase. The darker orange color represents an absolute rating and the lighter orange color represents a comparative rating. The numbers within the boxes show the number of trials performed.
+          </font>
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+      </section>
+      <section id="sec-23">
+       <p>
+        <em>
+         <span class="section-number">
+          3.2.4
+         </span>
+         Procedure.
+        </em>
+        <font color="#000000">
+         Study 2 had 2 × 2 × 2 conditions: 1) the blue and green button tasks; 2) the sampling method based on Bayesian Optimization or random sampling; and 3)
+         <em>
+          γ
+         </em>
+         = 0.6 or
+         <em>
+          γ
+         </em>
+         = 0.9. The first two conditions were balanced equally across the 16 participants. The relative designs generated through the two gammas were randomly presented to the participant during each task.
+        </font>
+        Participants were given the prompt of judging the button based on the quality of whether it would attract the most customers within a context of a shopping website. Each condition involved two phases separated by a 3 minute break - 1) the sampling phase that involved only absolute rating tasks; and 2) the comparative rating phase which only involved comparative rating tasks. We started each condition with a tutorial detailing the task followed by 10 absolute ratings and 1 comparative rating to calibrate the user's preferences to different designs.
+       </p>
+       <p>
+        For each condition, the task was initiated with the sampling phase involving absolute ratings of button designs. For Bayesian Optimization, the task was initialized with 5 random samples and followed by 50 iterations of absolute ratings on designs generated iteratively. For random sampling, there were 55 iterations of absolute ratings based on randomly generated button designs.
+       </p>
+       <p>
+        After the absolute ratings, participants were asked to take a 3-minute break. Then we generated relative designs and presented them to the participant in a randomized order during the comparative rating phase. For each sampling method, we divided the 50 designs with the absolute ratings into 5 groups of 10 designs each (note the initial 5 random samples were excluded). Then for each group, we took the 3 best designs in absolute rating, resulting in 3 × 5 = 15 reference designs for each task. For each reference design, relative designs were generated using all the data collected during the first absolute rating phase with the quality design parameter set to
+        <em>
+         γ
+        </em>
+        = 0.6 and
+        <em>
+         γ
+        </em>
+        = 0.9. Then, these comparisons were randomly shuffled and presented to the participant, resulting in 2 × 15 = 30 comparative rating tasks in total. The study finished with a short post-study questionnaire, which used the same protocol as in Study 1.
+        <font color="#000000">
+         Figure
+         <a class="fig" href="#fig8">
+          8
+         </a>
+         illustrates the procedure of this study.
+        </font>
+        Each participant was compensated £10 for their participation and the whole session lasted approximately 45 minutes.
+       </p>
+      </section>
+      <section id="sec-24">
+       <p>
+        <em>
+         <span class="section-number">
+          3.2.5
+         </span>
+         Quantitative Results.
+        </em>
+        <mytag>
+        </mytag>
+       </p>
+       <div class="table-responsive" id="tab2">
+        <div class="table-caption">
+         <span class="table-number">
+          Table 2:
+         </span>
+         <span class="table-title">
+          Mean and standard variations for the blue and green tasks for the two
+          <em>
+           γ
+          </em>
+          and sampling conditions.
+         </span>
+        </div>
+        <table class="table">
+         <tbody>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td colspan="4" style="text-align:center;">
+            <em>
+             γ
+            </em>
+            = 0.6
+           </td>
+           <td colspan="4" style="text-align:center;border-right: 2pt solid #000000;">
+            <em>
+             γ
+            </em>
+            = 0.9
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td colspan="2" style="text-align:center;">
+            BO
+           </td>
+           <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+            Random
+           </td>
+           <td colspan="2" style="text-align:center;">
+            BO
+           </td>
+           <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+            Random
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Blue
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.649
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.286
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.290
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.658
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.111
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.629
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.437
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.883
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Green
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.031
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.365
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.747
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.824
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.398
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.753
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            5.298
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.849
+           </td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+       <figure id="fig9">
+        <img alt="Figure 9" class="img-responsive" src="3581028_files\chi23345fig11.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 9:
+         </span>
+         <span class="figure-title">
+          Comparative rating box-and-whiskers plot for the (a) blue button task and (b) the green button task for each condition. The whiskers representing the first or third quartile ± 1.5 IQR.
+         </span>
+        </figcaption>
+       </figure>
+       <div class="table-responsive" id="tab3">
+        <div class="table-caption">
+         <span class="table-number">
+          Table 3:
+         </span>
+         <span class="table-title">
+          Correlation and
+          <em>
+           p
+          </em>
+          -values from the Pearson's Correlation Test for each of the 2 × 2 conditions of
+          <em>
+           γ
+          </em>
+          and sampling method for each of the blue and green button tasks.
+         </span>
+        </div>
+        <table class="table">
+         <tbody>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td colspan="4" style="text-align:center;">
+            <em>
+             γ
+            </em>
+            = 0.6
+           </td>
+           <td colspan="4" style="text-align:center;border-right: 2pt solid #000000;">
+            <em>
+             γ
+            </em>
+            = 0.9
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td colspan="2" style="text-align:center;">
+            BO
+           </td>
+           <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+            Random
+           </td>
+           <td colspan="2" style="text-align:center;">
+            BO
+           </td>
+           <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+            Random
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            <em>
+             ρ
+            </em>
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            <em>
+             p
+            </em>
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            <em>
+             ρ
+            </em>
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            <em>
+             p
+            </em>
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            <em>
+             ρ
+            </em>
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            <em>
+             p
+            </em>
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            <em>
+             ρ
+            </em>
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            <em>
+             p
+            </em>
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Blue
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            -0.394
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            &lt; 0.0001
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            -0.318
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            &lt; 0.0001
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            -0.102
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            0.116
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            -0.055
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            0.398
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Green
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            -0.314
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            &lt; 0.0001
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            -0.350
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            &lt; 0.0001
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            -0.077
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            0.237
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            -0.112
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            0.082
+           </td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+       <p>
+        We first analyze the distribution of comparative ratings for the designs for each task and sampling method. Table
+        <a class="tbl" href="#tab2">
+         2
+        </a>
+        shows the means and standard deviations for each of the conditions of sampling method and gammas for both the blue and green button tasks. Figures
+        <a class="fig" href="#fig9">
+         9
+        </a>
+        a and b show the box and whiskers plots for the two tasks. A repeated measures two-way ANOVA was performed with the within-subjects fixed factors of the design parameter
+        <em>
+         γ
+        </em>
+        (the quality) and sampling method (Bayesian Optimization or random sampling) for both the blue and green button tasks with the dependent variable being the users’ comparative ratings. None of the analyses violated sphericity by Mauchly's test. For the blue button task,
+        <em>
+         γ
+        </em>
+        was statistically significant (
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{1, 15} = 99.18, p &lt; 0.0001, \eta _P^2 = 0.869$
+         </span>
+        </span>
+        ) and the sampling method was statistically significant (
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{1, 15} = 7.569, p=0.0149, \eta _P^2 = 0.335$
+         </span>
+        </span>
+        ) in determining the comparative rating. For the green button task,
+        <em>
+         γ
+        </em>
+        was statistically significant (
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{1, 15} = 156.16, p &lt; 0.0001, \eta _P^2 = 0.912$
+         </span>
+        </span>
+        ) and the sampling method was statistically significant (
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{1, 15} = 9.336, p=0.000801, \eta _P^2 = 0.384$
+         </span>
+        </span>
+        ) in determining the comparative rating.
+        <font color="#000000">
+         For both tasks, the interaction of
+         <em>
+          γ
+         </em>
+         and sampling method was insignificant.
+        </font>
+        Therefore, this analysis suggests that
+        <em>
+         γ
+        </em>
+        is effective at controlling the quality of the relative design in the scenario with a visual context of a website. However, random sampling yielded less strongly preferred comparisons towards the reference design in this experiment.
+       </p>
+       <p>
+        To analyze why random sampling did not work as well in the comparative ratings we examined the relationship between the reference design absolute rating and the comparative ratings based on that reference design. We used Pearson's correlation to identify any significant correlation between the absolute rating of the reference design and the resulting comparative rating for each of the 2 × 2 conditions of
+        <em>
+         γ
+        </em>
+        and the sampling method for each of the blue and green button tasks. Table
+        <a class="tbl" href="#tab3">
+         3
+        </a>
+        shows the correlations and
+        <em>
+         p
+        </em>
+        -values. The analysis reveals that for
+        <em>
+         γ
+        </em>
+        = 0.6, there is a statistically significant negative correlation in the absolute rating of the reference design and the corresponding comparative rating. This suggests that when the absolute rating is higher for the reference design, there is more of a tendency for individuals to pick the reference design over the relative one for
+        <em>
+         γ
+        </em>
+        = 0.6. This postulates that participants were more able to discern their preferences on relative design quality to a more optimally attractive reference design as opposed to one that is not. Further, this implies that relative design acquisition would be less effective on reference designs that are not optimal with respect to the design objective in question.
+       </p>
+      </section>
+      <section id="sec-25">
+       <p>
+        <em>
+         <span class="section-number">
+          3.2.6
+         </span>
+         Questionnaire Results.
+        </em>
+        For the blue button task, 14 participants mentioned a combination of light blue colors for the readability of the text, and 11 participants mentioned the thickness of the border, with the preference being not too thick. For the green button task, 14 participants mentioned the readability of the text with a darker text color, and 9 participants mentioned a light green filling was preferable. For the border, 9 participants preferred a thin to medium border, and only 1 participant disliked the border. Only 1 participant (P6) explicitly mentioned using the context to match the colors of the chair and the button in the blue button task. For the blue button task, 5 participants added amendments after reviewing the designs, and for the green button task, 7 participants added amendments.
+       </p>
+      </section>
+      <section id="sec-26">
+       <p>
+        <em>
+         <span class="section-number">
+          3.2.7
+         </span>
+         Discussion.
+        </em>
+        Overall, this study shows that both sampling methods are effective in generating relative interface designs, even in the visual context of a website. There is a large effect size for the comparative ratings for the two
+        <em>
+         γ
+        </em>
+        conditions for both the blue and green button tasks. Correlation analyses suggest that relative design acquisition performs worse when comparisons are carried out with non-optimal visual reference designs. This indicates a guideline in that relative design acquisition may not work as well when the reference design is not a good approximation of the optimum in visual interface applications. In the questionnaire, it was found that there was a good amount of consensus in picking lighter colors for text readability with medium borders in the blue button task and a light filling with a medium border and darker text in the green button task.
+       </p>
+      </section>
+     </section>
+     <section id="sec-27">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.3
+         </span>
+         Study 3: Relative Designs for a Group of Users
+        </h3>
+       </div>
+      </header>
+      <section id="sec-28">
+       <p>
+        <em>
+         <span class="section-number">
+          3.3.1
+         </span>
+         Goals.
+        </em>
+        Both Study 1 and Study 2 showed that relative design acquisition was effective in generating relative designs in both the visual context-free and visual context-present scenarios. However, each of the studies focused on relative designs generated for each user. In Study 3 we want to examine if our proposed method can create controllable relative designs for a more general population of users. In addition, we are curious to see how the
+        <em>
+         γ
+        </em>
+        controlling the quality of designs impacts the decision time of individuals in deciding which design is more visually appealing. Specifically, we want to address the following questions:
+       </p>
+       <ol class="list-no-style">
+        <li id="list30" label="(1)">
+         Can relative design acquisition create relative designs that capture the visual preferences of a wider group and be controlled by
+         <em>
+          γ
+         </em>
+         in a variety of tasks?
+         <br/>
+        </li>
+        <li id="list31" label="(2)">
+         How does
+         <em>
+          γ
+         </em>
+         affect the decision of individuals to select which design is more visually appealing for different tasks?
+         <br/>
+        </li>
+       </ol>
+      </section>
+      <section id="sec-29">
+       <p>
+        <em>
+         <span class="section-number">
+          3.3.2
+         </span>
+         Participants.
+        </em>
+        <mytag>
+        </mytag>
+       </p>
+       <figure id="fig10">
+        <img alt="Figure 10" class="img-responsive" src="3581028_files\chi23345fig13.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 10:
+         </span>
+         <span class="figure-title">
+          <font color="#000000">
+           Aggregate blue button (a), and green button designs (b), context-free button (c), and context-free text (d) designs generated, with the reference design and the relative designs for
+           <em>
+            γ
+           </em>
+           = 0.9, 0.6, 0.3. Note here that the reference designs were generated as near-optimal designs as described in Section
+           <a class="sec" href="#sec-30">
+            3.3.3
+           </a>
+           .
+          </font>
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+        To address the questions raised, we conducted a study with an additional 24 participants—all of which did not participate in Study 1 or Study 2. We recruited 16 males and 8 females with an average age of 22.3 (
+        <font color="#000000">
+         <em>
+          sd
+         </em>
+         = 2.0
+        </font>
+        ) using opportunity sampling within our institution. There was one participant with an unspecified visual impairment.
+       </p>
+      </section>
+      <section id="sec-30">
+       <p>
+        <em>
+         <span class="section-number">
+          3.3.3
+         </span>
+         Task.
+        </em>
+        Each subject had four tasks to perform: 1) the blue button task with a shopping website context; 2) the green button task with a shopping website context; 3) the context-free button task; and 4) the context-free text task. In each task participants compare two designs side by side. To generate the reference and relative designs for each of the tasks, we first aggregate all the data we have collected in Study 1 and Study 2 for each of the tasks to create a GP for the population of users. Specifically, we used the data collected for the
+        <em>
+         γ
+        </em>
+        = 0.6 scenarios for both the context-free button and text tasks, and the data collected from the random sampling scenarios for both the green and blue button tasks. These datasets were chosen because they provide the most distinct optima for the four tasks. The reference and relative designs from the aggregated data are shown in Figure
+        <a class="fig" href="#fig10">
+         10
+        </a>
+        .
+       </p>
+       <p>
+        To generate the reference designs which should be near-optimal, we maximized over the posterior means of the Gaussian Process created from the aggregate data. For the context-free button task, we generated 5 distinct optima using the L-BFGS-B optimization algorithm to maximize the posterior mean, and retrieved the posterior mean ratings for each of the distinct optima. However, for the other three tasks, there was only 1 distinct optimum found. To generate 5 visually semi-optimal designs, we applied uniform noise in range (0, 0.2) to each of the design parameters, and used the Gaussian Process to obtain the posterior mean ratings. Using each of the 5 semi-optimal reference designs for each task and the posterior mean ratings, we generated 3 relative designs for each of
+        <em>
+         γ
+        </em>
+        ∈ {0.3, 0.6, 0.9}, yielding for each task 5 × 3 × 3 = 45 comparisons. The interfaces, design parameters, and prompts were the same in this study as the previous two studies.
+       </p>
+      </section>
+      <section id="sec-31">
+       <p>
+        <em>
+         <span class="section-number">
+          3.3.4
+         </span>
+         Procedure.
+        </em>
+        To counterbalance between the four different task conditions, the two tasks that are visual context-present were paired, and the other two visual context-free tasks were also paired. Each task started with a tutorial with 10 randomized comparative ratings of the interface designs of which the participant was asked to rate which option they preferred more. The decision time was also recorded for each comparison, where the decision time was defined as when the task first started until when the participant had finalized the slider. This was followed by a task of 45 iterations of comparative ratings. The four tasks were equally counterbalanced for all 16 participants. The study finished with a short post-study questionnaire, which used the same protocol as in Study 1 and Study 2, except it now included all four design scenarios. Each participant was compensated £10 for their participation and the entire study took around 30 minutes per participant.
+       </p>
+      </section>
+      <section id="sec-32">
+       <p>
+        <em>
+         <span class="section-number">
+          3.3.5
+         </span>
+         Quantitative Results.
+        </em>
+        <mytag>
+        </mytag>
+       </p>
+       <div class="table-responsive" id="tab4">
+        <div class="table-caption">
+         <span class="table-number">
+          Table 4:
+         </span>
+         <span class="table-title">
+          Mean and standard variations of the comparative ratings for the four tasks and the three
+          <em>
+           γ
+          </em>
+          conditions.
+         </span>
+        </div>
+        <table class="table">
+         <tbody>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td colspan="2" style="text-align:center;">
+            <em>
+             γ
+            </em>
+            = 0.3
+           </td>
+           <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+            <em>
+             γ
+            </em>
+            = 0.6
+           </td>
+           <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+            <em>
+             γ
+            </em>
+            = 0.9
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Blue
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.793
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.620
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.598
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.655
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.979
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.003
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Green
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            0.902
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.279
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.223
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.957
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.722
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.277
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Button
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.162
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.490
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.327
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.442
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.549
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.373
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Text
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.724
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.715
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.051
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.629
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.739
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.619
+           </td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+       <figure id="fig11">
+        <img alt="Figure 11" class="img-responsive" src="3581028_files\chi23345fig14.jpg"/>
+        <figcaption>
+         <span class="figure-number">
+          Figure 11:
+         </span>
+         <span class="figure-title">
+          Comparative rating box-and-whiskers plot for (a) the blue button task, (b) the green button task, (c) the context-free button task, and (d) the context-free text task.
+         </span>
+        </figcaption>
+       </figure>
+       <div class="table-responsive" id="tab5">
+        <div class="table-caption">
+         <span class="table-number">
+          Table 5:
+         </span>
+         <span class="table-title">
+          Mean and standard variations of the decision times in seconds for the four tasks and the three
+          <em>
+           γ
+          </em>
+          conditions.
+         </span>
+        </div>
+        <table class="table">
+         <tbody>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td colspan="2" style="text-align:center;">
+            <em>
+             γ
+            </em>
+            = 0.3
+           </td>
+           <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+            <em>
+             γ
+            </em>
+            = 0.6
+           </td>
+           <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+            <em>
+             γ
+            </em>
+            = 0.9
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Mean
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            SD
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Blue
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.014
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.666
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.331
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.002
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.697
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.519
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Green
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.886
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            1.329
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.130
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.396
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.586
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.189
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Button
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.249
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.085
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.397
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.356
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.522
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.488
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Text
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.344
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.188
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.151
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            2.840
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            4.376
+           </td>
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            3.118
+           </td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+       <p>
+        We first analyze the comparison ratings for each of the tasks. The box-and-whiskers plots for the four tasks are shown in Figures
+        <a class="fig" href="#fig11">
+         11
+        </a>
+        a to d respectively. A repeated measures one-way ANOVA was performed with the within-subjects factor of
+        <em>
+         γ
+        </em>
+        for each of the tasks with the comparative rating as the dependent variable. Sphericity was assessed with Mauchly's test, and if violated, the Greenhouse-Geiser correction was applied. For the blue button, green button, and text tasks, there was statistical significance for
+        <em>
+         γ
+        </em>
+        (
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{1.51, 34.6}=39.93, p &lt; 0.0001, \eta _P^2 = 0.634$
+         </span>
+        </span>
+        ;
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{2, 46} = 47.75, p &lt; 0.0001, \eta _P^2 = 0.621; F_{1.15, 26.5} = 12.32, p = 0.0011, \eta _P^2 = 0.349$
+         </span>
+        </span>
+        respectively). We see that for the visual context-present tasks,
+        <em>
+         γ
+        </em>
+        more effectively controls the comparison ratings. As
+        <em>
+         γ
+        </em>
+        increases, the comparative rating increases so that people are less able to tell which interface design was the visually optimal one (the reference design). For the visual context-free text task,
+        <em>
+         γ
+        </em>
+        is able to control the comparison ratings, but as in Figure
+        <a class="fig" href="#fig11">
+         11
+        </a>
+        c, the variance for
+        <em>
+         γ
+        </em>
+        = 0.3 covers the entire rating range, giving rise to great variability in the preferences for a new group of users. In addition, for the context-free button task,
+        <em>
+         γ
+        </em>
+        has no statistical significance (
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{1.55, 35.7} = 1.661, p = 0.208, \eta _P^2 = 0.0674$
+         </span>
+        </span>
+        ).
+       </p>
+       <p>
+        For decision times, the means and standard deviations for the decision times of the four tasks are shown in Table
+        <a class="tbl" href="#tab5">
+         5
+        </a>
+        . A repeated measures one-way ANOVA was performed with the within-subjects factor of
+        <em>
+         γ
+        </em>
+        and dependent variable of decision time. Sphericity was assessed with Mauchly's test, and if violated, the Greenhouse-Geiser correction was applied. There was statistical significance in the blue button, green button, and context-free text tasks (
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{1.57, 36.2} = 7.618, p = 0.00337, \eta _P^2 = 0.249; F_{1.30, 29.9}=10.16, p=0.00169, \eta _P^2=0.306; F_{1.55, 35.6} = 5.252, p = 0.0156, \eta _P^2 = 0.186$
+         </span>
+        </span>
+        respectively). However, there was no statistical significance in the context-free button task (
+        <span class="inline-equation">
+         <span class="tex">
+          $F_{2, 46}=0.914, p=0.408, \eta _P^2=0.0382$
+         </span>
+        </span>
+        ). The high effect sizes and statistical significance suggest that users take more time to make a comparative rating decision as
+        <em>
+         γ
+        </em>
+        increases for tasks with a clear preference consensus. This illustrates that when designs are similar in quality, individuals have more difficulty deciding on their preferences and take longer to make a decision.
+       </p>
+      </section>
+      <section id="sec-33">
+       <p>
+        <em>
+         <span class="section-number">
+          3.3.6
+         </span>
+         Questionnaire Results.
+        </em>
+        For the blue button task, 18 participants commented on the preference for readability of the text with lighter blue colors. 4 participants commented on the preference for brighter blue colors, while 1 preferred a darker color scheme. In addition, 9 participants commented on preferring a border, with 5 preferring medium to thin borders, and 1 preferring a stronger border. 7 participants made amendments after reviewing the designs in this task.
+       </p>
+       <p>
+        For the green button task, 12 participants explicitly mentioned preferring a darker text for legibility, while only 1 participant stated preferring lighter colored texts. 10 participants also preferred the green filling and 5 mentioned preferring brighter colors for the border. Further, 9 participants made amendments after reviewing the designs in this task.
+       </p>
+       <p>
+        For the context-free button task, there was a wide range of characteristics that different users preferred. For color, 12 participants reported preferring eye-catching or bright colors, 6 participants preferring lighter and more pastel-like colors, and 2 participants preferring dark buttons. 16 participants commented on preferring borders of various widths, and 5 participants preferred smaller buttons as opposed to 2 participants explicitly mentioning a preference for bigger buttons. There were 9 participants that made amendments after reviewing the designs in this task.
+       </p>
+       <p>
+        For the context-free text task, 14 participants commented on preferring larger sizes, whereas 5 participants commented liking texts that were not too big or too small. 18 participants said they preferred darker texts and only 1 participant stated a preference for lighter colors. 4 participants commented on preferring texts with smaller spacing. For this task, there were 8 participants that made amendments after reviewing the designs.
+       </p>
+      </section>
+      <section id="sec-34">
+       <p>
+        <em>
+         <span class="section-number">
+          3.3.7
+         </span>
+         Discussion.
+        </em>
+        This study showed that relative design acquisition is able to take accumulated data cross participants to generate relative designs that are effective for a new population of users, most notably better for the two tasks where there is a visual context. It is important to note that this approach works well in terms of the controllability of
+        <em>
+         γ
+        </em>
+        , notably better for visual context-present settings with the large effect sizes. The questionnaire results showed that there was less consensus in the context-free button task, resulting in the lack of statistical significance for
+        <em>
+         γ
+        </em>
+        in the task. In addition, the decision time corresponds closely to
+        <em>
+         γ
+        </em>
+        with the high statistical significance and large effect sizes. When
+        <em>
+         γ
+        </em>
+        is higher for the visual context-present tasks and the text task, it takes longer on average for participants to make a decision. This reflects a result in decision neuroscience where decision time can be used as a proxy for determining the difficulty of a decision task due to the time for discernment between the two choices [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+         15
+        </a>
+        ]. Therefore, this study illustrates the ability of relative design acquisition to influence the decision behaviour of a new group of users consistently.
+       </p>
+      </section>
+     </section>
+    </section>
+    <section id="sec-35">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         4
+        </span>
+        DISCUSSION
+       </h2>
+      </div>
+     </header>
+     <p>
+      Study 1 shows that relative design acquisition is able to generate visual relative designs catered to individual user preferences for a visual context-free scenario. In addition, relative design acquisition is able to be controlled by a quality parameter
+      <em>
+       γ
+      </em>
+      , as a
+      <em>
+       γ
+      </em>
+      closer to zero yields comparisons where users are more susceptible to favor the reference design and a
+      <em>
+       γ
+      </em>
+      closer to one yields comparisons where users are less able to discern the reference and relative designs. In this way, the design parameter
+      <em>
+       γ
+      </em>
+      enables control over the quality of the relative design in relation to a reference design.
+      <font color="#000000">
+       Our exploration of whether relative design acquisition generates relative designs that capture individual preferences consistently across various times of exposure seems promising. However, further investigation is required to confirm the results for longer term exposure.
+      </font>
+     </p>
+     <p>
+      Study 2 demonstrates that relative design acquisition also extends effectively to a visual context-present scenario in the case of a button design for a shopping website. In this case,
+      <em>
+       γ
+      </em>
+      was also able to control the quality of the relative design generated. Both random sampling and Bayesian optimization yielded effective relative designs that are controllable by
+      <em>
+       γ
+      </em>
+      . However, since random sampling yielded reference designs that were not as optimal (high in absolute rating), this results in higher comparative ratings compared to Bayesian optimization. Study 2 concludes that generating relative designs to a reference design that is not a visual preference optimum may be less effective.
+     </p>
+     <p>
+      Study 3 shows that by aggregating all the data and creating a surrogate model we are able to find effective relative designs to reference designs representing visual optima for a new group of users for certain tasks. It was not a surprise that the context-free button task was not effective as there is a large variation between individuals of what they found visually attractive, as shown in the post-study questionnaire. There was also a substantial variation of user preferences for the context-free text task. In contrast, for the tasks where the visual shopping website context is provided, the comparative ratings demonstrate a consensus with variation in
+      <em>
+       γ
+      </em>
+      . In addition,
+      <em>
+       γ
+      </em>
+      is able to control the decision times for the blue button, green button, and the context-free text task, where a larger
+      <em>
+       γ
+      </em>
+      yields a greater decision time. This has the design implication that when there is a greater gap in the quality of the two visual designs, users may then be able to choose one choice over the other in less time. Moreover, from a decision neuroscience perspective,
+      <em>
+       γ
+      </em>
+      is able to tune the difficulty of a decision task. It would be interesting to explore this direction in the future with a larger set of participants with greater demographic diversity, perhaps in a crowdsourcing setting in a real-world deployment website scenario.
+     </p>
+     <p>
+      Overall, relative design acquisition has proven to be effective in generating relative designs not only catered for individual users, but for new groups of users, notably in visual context-present scenarios. However, in the current
+      <font color="#000000">
+       RDA objective
+      </font>
+      there is no incorporation of
+      <font color="#000000">
+       variance
+      </font>
+      information in the reference design
+      <strong>
+       x
+      </strong>
+      <sup>
+       *
+      </sup>
+      , as it is only represented by a value of the mean
+      <span class="inline-equation">
+       <span class="tex">
+        $\mu = \mathbb {E}[f(\mathbf {x}^*)]$
+       </span>
+      </span>
+      or an estimate of
+      <em>
+       f
+      </em>
+      (
+      <strong>
+       x
+      </strong>
+      <sup>
+       *
+      </sup>
+      ). It would be fruitful to investigate relative design acquisition with an
+      <font color="#000000">
+       RDA objective
+      </font>
+      that incorporates this
+      <font color="#000000">
+       variance
+      </font>
+      information, for example, instead of taking the difference in
+      <em>
+       f
+      </em>
+      (
+      <strong>
+       x
+      </strong>
+      <sup>
+       <em>
+        a
+       </em>
+      </sup>
+      ) and its expected quality, a possibility would be to use a quotient form instead:
+     </p>
+     <div class="table-responsive">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation*} RDA(\mathbf {x}^a | \mathbf {x}^*) = \mathbb {E}_{f(\mathbf {x}^a), f(\mathbf {x}^*)} [|\frac{f(\mathbf {x}^a) - f_l}{f(\mathbf {x}^*) - f_l} - \gamma |] \end{equation*}
+       </span>
+       <br/>
+      </div>
+     </div>
+     <p>
+     </p>
+     <p>
+      Here, the expectation is taken over both the distributions of
+      <em>
+       f
+      </em>
+      (
+      <strong>
+       x
+      </strong>
+      <sup>
+       <em>
+        a
+       </em>
+      </sup>
+      ) and
+      <em>
+       f
+      </em>
+      (
+      <strong>
+       x
+      </strong>
+      <sup>
+       *
+      </sup>
+      ) in the GP, and therefore incorporates the
+      <font color="#000000">
+       variance
+      </font>
+      information of both the reference and relative designs.
+     </p>
+     <p>
+      In terms of applications, it would be interesting to explore relative design acquisition for other interaction and human-in-the-loop tasks where a less subjective design objective function,
+      <font color="#000000">
+       other than user rating, such as reaction time and attention metrics from eye-tracking,
+      </font>
+      can be assessed. Further, it would be useful to assess relative design acquisition for different visual tasks and assess more sensorimotor reactions of users in the presence of two choices of similar and different qualities, as controlled by
+      <em>
+       γ
+      </em>
+      . It may also be fruitful to explore relative design acquisition using a deep learning based paradigm, with techniques taking inspiration from interpolation in a latent space.
+     </p>
+     <p>
+      Although the application with the shopping website may appear limited in scope, the experiments do show that relative designs can be acquired that control user preferences and decision times. We conjecture that relative design acquisition can be applied to different prompts and applications to which it can affect user decisions and choices. However, such investigations are beyond the scope of this paper.
+      <font color="#000000">
+       Future research directions could include investigating the implications of using relative design acquisition for a real-world task and the resulting user experience, such as exploring whether a generated relative design would affect the proportion of clicks on it versus a reference design. It would also be interesting to understand how a changing visual context could affect the capability of the proposed approach to identify preferences, such as setting up an experiment to investigate how different products on an e-commerce website induce effects on the comparative ratings.
+      </font>
+      Further work could also investigate the fine-grained effects of gamma on user decision making, and hence provide guidance on how small the step sizes for gamma can be set to see a particular comparative rating effect for different applications.
+     </p>
+     <section id="sec-36">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.1
+         </span>
+         Ethical Concerns
+        </h3>
+       </div>
+      </header>
+      <p>
+       It is conceivable that relative design acquisition can be used to create dark design patterns, of which the example in Figure
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       can be one such consideration. Dark design patterns are user interface design choices that aim to steer or misdirect users into making unintentional or malicious decisions [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+        3
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+        20
+       </a>
+       ]. For instance, for the blue button and green button tasks, the relative designs generated for
+       <em>
+        γ
+       </em>
+       = 0.3 and
+       <em>
+        γ
+       </em>
+       = 0.6 could potentially serve as dark design patterns as they resemble disabled buttons which could result in possible ethical issues [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+        11
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ]. However, although the reference and relative designs exhibited in our studies may exhibit dark design patterns, steering user choices may not always be for malicious purposes. Take for instance widgets being designed relative to one another to prompt the user to click the widget that gives the most helpful option, such as directing users to the most widely used controls in a image editing application. This is an example of relative design acquisition being used to improve users’ experience. It is important to highlight the ethical purposes of relative design acquisition and that it should be used to guide users to particular decisions, but not to inherently mislead or misrepresent.
+       <font color="#000000">
+        It would be an interesting research direction to see if we could inversely infer if a reference and relative design pair would fall into a dark design pattern, for example, by providing a metric indicating if a generated relative design may lead to a malicious purpose.
+       </font>
+      </p>
+     </section>
+    </section>
+    <section id="sec-37">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         5
+        </span>
+        RELATED WORK
+       </h2>
+      </div>
+     </header>
+     <section id="sec-38">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.1
+         </span>
+         Computational Design in HCI
+        </h3>
+       </div>
+      </header>
+      <p>
+       There has been much work in applying computational approaches and machine learning methods, notably optimization, in human-computer interaction for interface and interaction design tasks. For instance, MenuOptimizer [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+        1
+       </a>
+       ] aims to improve user performance by having the designer assisted during the task of combinatorial optimization of menus. Similarly, the tool DesignScape [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ] suggests layouts to the designer interactively for position, scale, and alignment of elements. Many of these tools have a human-in-the-loop component where the human designer provides feedback to the design tool, which then updates to propose a new design catering to the tastes of the interacting user. Such tools include Sketchplore [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ], a sketching tool which involves real-time design optimization; Forte [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+        6
+       </a>
+       ] where topology optimization is used for fabricating shape design; and a tool by Kapoor et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+        14
+       </a>
+       ] where classification systems are made more intuitive to users based on user feedback on classification behavior. These tools all have the overarching characteristic that human participation during the optimization process helps improve the quality of generated designs. In particular, the main goal of all the above methods is to leverage both computational methods and human feedback in-the-loop to search for optimal designs that maximize some sort of performance metric. In contrast, we aim to find a relative design to a reference design with a controllable quality factor with respect to some objective.
+      </p>
+     </section>
+     <section id="sec-39">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.2
+         </span>
+         Bayesian Optimization in Computational Interaction
+        </h3>
+       </div>
+      </header>
+      <p>
+       Bayesian optimization has been applied extensively in computational design and in human-in-the-loop settings where the objective function is a black-box system (i.e. we do not know the relationship between the user performance and the design parameter beforehand) and expensive to compute, as in the case of user performance to a particular design configuration. Bayesian optimization is a machine learning method that efficiently explores and exploits the design parameter space to find promising new designs based on observations of past design performance. Shahriari et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ] provide a detailed review of the applications and the practical aspects of Bayesian optimization. Relevant applications of Bayesian optimization include Brochu et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+        4
+       </a>
+       ], which used this approach in a preference gallery scenario to allow users to find the optimal parameters for rendering smoke. Another example is Koyama et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+        17
+       </a>
+       ] which used a variant to allow for visual feature optimization in photos with one-dimensional line and two-dimensional planar searches. Finally, Dudley et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+        9
+       </a>
+       ] used Bayesian optimization to optimize interface designs in a crowdsourcing setting, and Piovarci et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ] employed Bayesian optimization for stylus haptic feedback multi-objective optimization. Overall, Bayesian optimization is an effective statistical computational method for interaction design optimization. However, while we take a statistical computational approach to our problem, we do not have the same aim of finding a design optimum. Instead we focus on finding a relative design to a reference design with a specified quality.
+      </p>
+     </section>
+     <section id="sec-40">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.3
+         </span>
+         Interpolation Methods in HCI
+        </h3>
+       </div>
+      </header>
+      <p>
+       The computational approach we take is similar to interpolation methods in machine learning, which have been proposed to find design instances that are a smooth transition from one extreme to the other, such as a rendering a fruit smoothly to morph from an apple to an orange. For instance, in deep learning, there are numerous methods to interpolate over latent spaces, such as variational autoencoders and generative models [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ], and applications to deep feature interpolation in image processing and computer vision [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+        7
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+        33
+       </a>
+       ], as well as in animation [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ]. Recently, Ueno et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ] proposed a method to create continual and gradual style changes of graphic designs with a generative model, which focuses on the idea of interpolation for deep learning based models. Although our approach is similar to that of interpolation methods, it is different in the sense that our quality parameter controls the performance with respect to some design objective and compares it to a reference design. In addition, our method is more geared to, and robust with, applications where user performance feedback is used, such as in human-in-the-loop settings.
+      </p>
+     </section>
+     <section id="sec-41">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.4
+         </span>
+         Perceptual Decision Making
+        </h3>
+       </div>
+      </header>
+      <p>
+       Fundamentally, the purpose of the example to motivate relative design acquisition also presents it as a perceptual decision making problem for humans. In the field of neuroeconomics and decision neuroscience, the effects, factors, and the behavior of decision making have been well researched with respect to sensory inputs being used to create perceptual decisions with discrete categorical variables. Summerfield and Blangero [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ] provide a detailed review of the progress in perceptual decision making in the field of decision neuroscience.
+      </p>
+      <p>
+       In this paper, we focus on the characteristics of decision times when presented with a reference design and a relative design with a specified quality. In the literature, many factors are known to affect decision times. For instance, in a task of reaction-time discrimination of motion direction, elapsed decision time is longer and the decision is less accurate for tasks with less reliable evidence due to the combination of prior information with sensory evidence [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+        12
+       </a>
+       ]. In another task of choosing the direction of a noisy display of moving dots, choice certainty was shown to be inversely correlated with reaction time for human participants [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+        15
+       </a>
+       ]. Other studies with human and rhesus monkey subjects for visual tasks have shown that urgency affects decision times [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+        26
+       </a>
+       ], and that evidence accumulation for decision making has a distinct time-dependent neural firing pattern in the lateral interparietal cortex that affects decision time behavior [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+        8
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ].
+      </p>
+     </section>
+    </section>
+    <section id="sec-42">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         6
+        </span>
+        CONCLUSIONS
+       </h2>
+      </div>
+     </header>
+     <p>
+      This paper has introduced the notion of
+      <em>
+       relative design acquisition
+      </em>
+      and formalized it as a computational design problem. Its efficacy in creating visual interface that can steer users’ choices was then assessed in three separate user studies. The relative design acquisition method has the advantage that the quality of the relative design to the reference design can be controlled by a quality factor, as captured in the design parameter
+      <em>
+       γ
+      </em>
+      .
+     </p>
+     <p>
+      The three user studies showed that relative design acquisition is able to create visual relative designs for both visual context-free and visual context-present scenarios catered to individual users, and that it is robust against different sampling methods. In addition, it is effective in generating reference and relative designs controllable by
+      <em>
+       γ
+      </em>
+      for a new set of users, especially in the context-present scenarios. The gap in the quality of designs also affects users’ decision time.
+     </p>
+     <p>
+      Overall, this method has promise in being a general computational design technique and our formalization of relative design acquisition should be widely applicable to a range of interaction design tasks. The results show that an approach based on statistical models, such as Gaussian Processes, is robust and controllable to wide variations of user preferences. Through the three studies, we observe that relative design acquisition has the potential to be deployed in a variety of settings to guide user choices. For instance, less useful tools in a desktop application can be designed to be suboptimal in their visual appearance, and interface designs with more advanced features can be adjusted in quality depending on user proficiency as in training wheels for a user interface [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ]. Another possible application would be changing the visual appearance of different paths in a maps application to guide users to choosing alternative routes to alleviate overall traffic in an area. The main advantage of systematically generating relative designs of controllable quality means that visual interfaces can be continuously adjusted according to the context at hand.
+     </p>
+    </section>
+   </section>
+   <section class="back-matter">
+    <appendix>
+     <section id="sec-43">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          A
+         </span>
+         APPENDIX: DERIVATION OF ANALYTIC FORM OF THE RDA OBJECTIVE
+        </h2>
+       </div>
+      </header>
+      <p>
+       We here detail how to explicitly derive the RDA objective given a Gaussian Process model of
+       <em>
+        f
+       </em>
+       constructed using data
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {D}$
+        </span>
+       </span>
+       . The only non-deterministic term in the RDA objective is
+       <span class="inline-equation">
+        <span class="tex">
+         $f(x^a) \sim \mathcal {N}(\mu _a, \sigma _a^2)$
+        </span>
+       </span>
+       , which can be determined using the predictive distribution of the Gaussian process at
+       <em>
+        x
+        <sup>
+         a
+        </sup>
+       </em>
+       .
+      </p>
+      <p>
+       Then,
+       <span class="inline-equation">
+        <span class="tex">
+         $f(x^a) -(\gamma (\mu - f_l) + f_l)\sim \mathcal {N}(\mu _a - (\gamma (\mu - f_l) + f_l), \sigma _a^2)$
+        </span>
+       </span>
+       . For notational simplicity, denote
+       <em>
+        K
+       </em>
+       =
+       <em>
+        μ
+        <sub>
+         a
+        </sub>
+       </em>
+       − (
+       <em>
+        γ
+       </em>
+       (
+       <em>
+        μ
+       </em>
+       −
+       <em>
+        f
+        <sub>
+         l
+        </sub>
+       </em>
+       ) +
+       <em>
+        f
+        <sub>
+         l
+        </sub>
+       </em>
+       ). First we need the following derivation: if
+       <span class="inline-equation">
+        <span class="tex">
+         $y \sim \mathcal {N}(\mu, \sigma ^2)$
+        </span>
+       </span>
+       , then:
+      </p>
+      <div class="table-responsive">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{align*} F(y) &amp;= \int y \exp (-\frac{(y-\mu)^2}{2\sigma ^2}) dy \\ &amp;= \int (x + \mu) \exp (-\frac{x^2}{2 \sigma ^2}) dx, x = y - \mu \\ &amp;= \int x \exp (-\frac{x^2}{2\sigma ^2}) dx + \mu \sqrt {2 \pi \sigma ^2} \Phi (\frac{x}{\sigma }) \\ &amp;= \int \sigma ^2 \exp (-a) da + \mu \sqrt {2 \pi \sigma ^2} \Phi (\frac{x}{\sigma }), a = \frac{x^2}{2\sigma ^2} \\ &amp;= -\sigma ^2 \exp (-a) + \mu \sqrt {2 \pi \sigma ^2} \Phi (\frac{x}{\sigma }) + C \\ &amp;= -\sigma ^2 \exp ({-\frac{(y - \mu)^2}{2\sigma ^2}}) + \mu \sqrt {2 \pi \sigma ^2} \Phi (\frac{y - \mu }{\sigma }) + C \\ \end{align*}
+        </span>
+        <br/>
+       </div>
+      </div>
+      <div class="table-responsive">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{align*} \therefore \quad &amp;\mathbb {E}_{f(x^a) \sim \mathcal {N}(\mu _a, \sigma _a^2)} [|f(x^a) - (\gamma (\mu - f_l) + f_l)|] \\ &amp;= \frac{1}{\sqrt {2 \pi \sigma _a^2}}\int _{-\infty }^{\infty } |y| \exp {(-\frac{(y-K)^2}{2\sigma _a^2})} dy \\ &amp;= \frac{1}{\sqrt {2 \pi \sigma _a^2}}(\int _{0}^{\infty } y \exp {(-\frac{(y-K)^2}{2\sigma _a^2})} dy - \int _{-\infty }^{0} y \exp {(-\frac{(y-K)^2}{2\sigma _a^2})} dy) \\ &amp;= \frac{1}{\sqrt {2 \pi \sigma _a^2}} (F(\infty) - F(0) - F(0) + F(-\infty)) \\ &amp;= \frac{1}{\sqrt {2 \pi \sigma _a^2}}(K \sqrt {2\pi \sigma _a^2} +2 \sigma _a^2 \exp {(-\frac{K^2}{2\sigma _a^2})} - 2K \sqrt {2 \pi \sigma _a^2} \Phi (\frac{-K}{\sigma _a})) \end{align*}
+        </span>
+        <br/>
+       </div>
+      </div>
+      <p>
+      </p>
+      <p>
+       Note that here, Φ represents the cumulative distribution function of the Gaussian distribution.
+      </p>
+     </section>
+    </appendix>
+    <section id="ref-001">
+     <header>
+      <div class="title-info">
+       <h2 class="page-brake-head">
+        REFERENCES
+       </h2>
+      </div>
+     </header>
+     <ul class="bibUl">
+      <li id="BibPLXBIB0001" label="[1]">
+       Gilles Bailly, Antti Oulasvirta, Timo Kötzing, and Sabrina Hoppe. 2013. MenuOptimizer: interactive optimization of menu systems. In
+       <em>
+        Proceedings of the 26th annual ACM symposium on User interface software and technology
+       </em>
+       (
+       <em>
+        UIST ’13
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 331–342.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2501988.2502024">
+        https://doi.org/10.1145/2501988.2502024
+       </a>
+      </li>
+      <li id="BibPLXBIB0002" label="[2]">
+       Piotr Bojanowski, Armand Joulin, David Lopez-Pas, and Arthur Szlam. 2018. Optimizing the Latent Space of Generative Networks. In
+       <em>
+        Proceedings of the 35th International Conference on Machine Learning
+       </em>
+       . PMLR, 600–609.
+       <a class="link-inline force-break" href="https://proceedings.mlr.press/v80/bojanowski18a.html">
+        https://proceedings.mlr.press/v80/bojanowski18a.html
+       </a>
+       ISSN: 2640-3498.
+      </li>
+      <li id="BibPLXBIB0003" label="[3]">
+       Harry Brignull. 2013. Dark Patterns: inside the interfaces designed to trick you.
+       <a class="link-inline force-break" href="https://www.theverge.com/2013/8/29/4640308/dark-patterns-inside-the-interfaces-designed-to-trick-you">
+        https://www.theverge.com/2013/8/29/4640308/dark-patterns-inside-the-interfaces-designed-to-trick-you
+       </a>
+      </li>
+      <li id="BibPLXBIB0004" label="[4]">
+       Eric Brochu, Tyson Brochu, and Nando de Freitas. 2010. A Bayesian interactive optimization approach to procedural animation design. In
+       <em>
+        Proceedings of the 2010 ACM SIGGRAPH/Eurographics Symposium on Computer Animation
+       </em>
+       (
+       <em>
+        SCA ’10
+       </em>
+       ). Eurographics Association, Goslar, DEU, 103–112.
+      </li>
+      <li id="BibPLXBIB0005" label="[5]">
+       John M. Carroll and Caroline Carrithers. 1984. Training wheels in a user interface.
+       <em>
+        <em>
+         Commun. ACM
+        </em>
+       </em>
+       27, 8 (Aug. 1984), 800–806.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/358198.358218">
+        https://doi.org/10.1145/358198.358218
+       </a>
+      </li>
+      <li id="BibPLXBIB0006" label="[6]">
+       Xiang ’Anthony’ Chen, Ye Tao, Guanyun Wang, Runchang Kang, Tovi Grossman, Stelian Coros, and Scott E. Hudson. 2018. Forte: User-Driven Generative Design. In
+       <em>
+        Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+       </em>
+       (
+       <em>
+        CHI ’18
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 1–12.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174070">
+        https://doi.org/10.1145/3173574.3174070
+       </a>
+      </li>
+      <li id="BibPLXBIB0007" label="[7]">
+       Ying-Cong Chen, Xiaogang Xu, Zhuotao Tian, and Jiaya Jia. 2019. Homomorphic Latent Space Interpolation for Unpaired Image-To-Image Translation. In
+       <em>
+        2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)
+       </em>
+       . IEEE, Long Beach, CA, USA, 2403–2411.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2019.00251">
+        https://doi.org/10.1109/CVPR.2019.00251
+       </a>
+      </li>
+      <li id="BibPLXBIB0008" label="[8]">
+       Anne K. Churchland, Roozbeh Kiani, and Michael N. Shadlen. 2008. Decision-making with multiple alternatives.
+       <em>
+        <em>
+         Nature Neuroscience
+        </em>
+       </em>
+       11, 6 (June 2008), 693–702.
+       <a class="link-inline force-break" href="https://doi.org/10.1038/nn.2123">
+        https://doi.org/10.1038/nn.2123
+       </a>
+       Number: 6 Publisher: Nature Publishing Group.
+      </li>
+      <li id="BibPLXBIB0009" label="[9]">
+       John J. Dudley, Jason T. Jacques, and Per Ola Kristensson. 2019. Crowdsourcing Interface Feature Design with Bayesian Optimization. In
+       <em>
+        Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems
+       </em>
+       (
+       <em>
+        CHI ’19
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 1–12.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300482">
+        https://doi.org/10.1145/3290605.3300482
+       </a>
+      </li>
+      <li id="BibPLXBIB0010" label="[10]">
+       Joshua Goodman, Gina Venolia, Keith Steury, and Chauncey Parker. 2002. Language modeling for soft keyboards. In
+       <em>
+        Proceedings of the 7th international conference on Intelligent user interfaces
+       </em>
+       (
+       <em>
+        IUI ’02
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 194–195.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/502716.502753">
+        https://doi.org/10.1145/502716.502753
+       </a>
+      </li>
+      <li id="BibPLXBIB0011" label="[11]">
+       Colin M. Gray, Yubo Kou, Bryan Battles, Joseph Hoggatt, and Austin L. Toombs. 2018. The Dark (Patterns) Side of UX Design. In
+       <em>
+        Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+       </em>
+       . Association for Computing Machinery, New York, NY, USA, 1–14.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174108">
+        https://doi.org/10.1145/3173574.3174108
+       </a>
+      </li>
+      <li id="BibPLXBIB0012" label="[12]">
+       Timothy D. Hanks, Mark E. Mazurek, Roozbeh Kiani, Elisabeth Hopp, and Michael N. Shadlen. 2011. Elapsed Decision Time Affects the Weighting of Prior Probability in a Perceptual Decision Task.
+       <em>
+        <em>
+         Journal of Neuroscience
+        </em>
+       </em>
+       31, 17 (April 2011), 6339–6352.
+       <a class="link-inline force-break" href="https://doi.org/10.1523/JNEUROSCI.5613-10.2011">
+        https://doi.org/10.1523/JNEUROSCI.5613-10.2011
+       </a>
+       Publisher: Society for Neuroscience Section: Articles.
+      </li>
+      <li id="BibPLXBIB0013" label="[13]">
+       Florian Kadner, Yannik Keller, and Constantin Rothkopf. 2021. AdaptiFont: Increasing Individuals Reading Speed with a Generative Font Model and Bayesian Optimization. In
+       <em>
+        Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems
+       </em>
+       (
+       <em>
+        CHI ’21
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 1–11.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3411764.3445140">
+        https://doi.org/10.1145/3411764.3445140
+       </a>
+      </li>
+      <li id="BibPLXBIB0014" label="[14]">
+       Ashish Kapoor, Bongshin Lee, Desney Tan, and Eric Horvitz. 2010. Interactive optimization for steering machine classification. In
+       <em>
+        Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+       </em>
+       (
+       <em>
+        CHI ’10
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 1343–1352.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1753326.1753529">
+        https://doi.org/10.1145/1753326.1753529
+       </a>
+      </li>
+      <li id="BibPLXBIB0015" label="[15]">
+       Roozbeh Kiani, Leah Corthell, and Michael N. Shadlen. 2014. Choice certainty is informed by both evidence and decision time.
+       <em>
+        <em>
+         Neuron
+        </em>
+       </em>
+       84, 6 (Dec. 2014), 1329–1342.
+       <a class="link-inline force-break" href="https://doi.org/10.1016/j.neuron.2014.12.015">
+        https://doi.org/10.1016/j.neuron.2014.12.015
+       </a>
+      </li>
+      <li id="BibPLXBIB0016" label="[16]">
+       Yuki Koyama, Issei Sato, and Masataka Goto. 2020. Sequential gallery for interactive visual design optimization.
+       <em>
+        <em>
+         ACM Transactions on Graphics
+        </em>
+       </em>
+       39, 4 (July 2020), 88:88:1–88:88:12.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3386569.3392444">
+        https://doi.org/10.1145/3386569.3392444
+       </a>
+      </li>
+      <li id="BibPLXBIB0017" label="[17]">
+       Yuki Koyama, Issei Sato, Daisuke Sakamoto, and Takeo Igarashi. 2017. Sequential line search for efficient visual design optimization by crowds.
+       <em>
+        <em>
+         ACM Transactions on Graphics
+        </em>
+       </em>
+       36, 4 (July 2017), 48:1–48:11.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3072959.3073598">
+        https://doi.org/10.1145/3072959.3073598
+       </a>
+      </li>
+      <li id="BibPLXBIB0018" label="[18]">
+       David Lindlbauer, Anna Maria Feit, and Otmar Hilliges. 2019. Context-Aware Online Adaptation of Mixed Reality Interfaces. In
+       <em>
+        Proceedings of the 32nd Annual ACM Symposium on User Interface Software and Technology
+       </em>
+       (
+       <em>
+        UIST ’19
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 147–160.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3332165.3347945">
+        https://doi.org/10.1145/3332165.3347945
+       </a>
+      </li>
+      <li id="BibPLXBIB0019" label="[19]">
+       Granit Luzhnica and Eduardo Veas. 2019. Optimising Encoding for Vibrotactile Skin Reading. In
+       <em>
+        Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems
+       </em>
+       (
+       <em>
+        CHI ’19
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 1–14.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300465">
+        https://doi.org/10.1145/3290605.3300465
+       </a>
+      </li>
+      <li id="BibPLXBIB0020" label="[20]">
+       Arunesh Mathur, Gunes Acar, Michael J. Friedman, Eli Lucherini, Jonathan Mayer, Marshini Chetty, and Arvind Narayanan. 2019. Dark Patterns at Scale: Findings from a Crawl of 11K Shopping Websites.
+       <em>
+        <em>
+         Proceedings of the ACM on Human-Computer Interaction
+        </em>
+       </em>
+       3, CSCW (Nov. 2019), 81:1–81:32.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3359183">
+        https://doi.org/10.1145/3359183
+       </a>
+      </li>
+      <li id="BibPLXBIB0021" label="[21]">
+       Arunesh Mathur, Mihir Kshirsagar, and Jonathan Mayer. 2021. What Makes a Dark Pattern... Dark? Design Attributes, Normative Considerations, and Measurement Methods. In
+       <em>
+        Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems
+       </em>
+       (
+       <em>
+        CHI ’21
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 1–18.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3411764.3445610">
+        https://doi.org/10.1145/3411764.3445610
+       </a>
+      </li>
+      <li id="BibPLXBIB0022" label="[22]">
+       Peter O'Donovan, Aseem Agarwala, and Aaron Hertzmann. 2015. DesignScape: Design with Interactive Layout Suggestions. In
+       <em>
+        Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+       </em>
+       (
+       <em>
+        CHI ’15
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 1221–1224.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702149">
+        https://doi.org/10.1145/2702123.2702149
+       </a>
+      </li>
+      <li id="BibPLXBIB0023" label="[23]">
+       Antti Oulasvirta, Niraj Ramesh Dayama, Morteza Shiripour, Maximilian John, and Andreas Karrenbauer. 2020. Combinatorial Optimization of Graphical User Interface Designs.
+       <em>
+        <em>
+         Proc. IEEE
+        </em>
+       </em>
+       108, 3 (March 2020), 434–464.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/JPROC.2020.2969687">
+        https://doi.org/10.1109/JPROC.2020.2969687
+       </a>
+       Conference Name: Proceedings of the IEEE.
+      </li>
+      <li id="BibPLXBIB0024" label="[24]">
+       Antti Oulasvirta, Per Ola Kristensson, Xiaojun Bi, and Andrew Howes. 2018.
+       <em>
+        Computational interaction
+       </em>
+       . Oxford University Press.
+      </li>
+      <li id="BibPLXBIB0025" label="[25]">
+       Michal Piovarči, Danny M. Kaufman, David I. W. Levin, and Piotr Didyk. 2020. Fabrication-in-the-loop co-optimization of surfaces and styli for drawing haptics.
+       <em>
+        <em>
+         ACM Transactions on Graphics
+        </em>
+       </em>
+       39, 4 (Aug. 2020), 116:116:1–116:116:16.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3386569.3392467">
+        https://doi.org/10.1145/3386569.3392467
+       </a>
+      </li>
+      <li id="BibPLXBIB0026" label="[26]">
+       B. A. J. Reddi and R. H. S. Carpenter. 2000. The influence of urgency on decision time.
+       <em>
+        <em>
+         Nature Neuroscience
+        </em>
+       </em>
+       3, 8 (Aug. 2000), 827–830.
+       <a class="link-inline force-break" href="https://doi.org/10.1038/77739">
+        https://doi.org/10.1038/77739
+       </a>
+       Number: 8 Publisher: Nature Publishing Group.
+      </li>
+      <li id="BibPLXBIB0027" label="[27]">
+       Jamie D. Roitman and Michael N. Shadlen. 2002. Response of Neurons in the Lateral Intraparietal Area during a Combined Visual Discrimination Reaction Time Task.
+       <em>
+        <em>
+         Journal of Neuroscience
+        </em>
+       </em>
+       22, 21 (Nov. 2002), 9475–9489.
+       <a class="link-inline force-break" href="https://doi.org/10.1523/JNEUROSCI.22-21-09475.2002">
+        https://doi.org/10.1523/JNEUROSCI.22-21-09475.2002
+       </a>
+       Publisher: Society for Neuroscience Section: ARTICLE.
+      </li>
+      <li id="BibPLXBIB0028" label="[28]">
+       Bobak Shahriari, Kevin Swersky, Ziyu Wang, Ryan P. Adams, and Nando de Freitas. 2016. Taking the Human Out of the Loop: A Review of Bayesian Optimization.
+       <em>
+        <em>
+         Proc. IEEE
+        </em>
+       </em>
+       104, 1 (Jan. 2016), 148–175.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/JPROC.2015.2494218">
+        https://doi.org/10.1109/JPROC.2015.2494218
+       </a>
+       Conference Name: Proceedings of the IEEE.
+      </li>
+      <li id="BibPLXBIB0029" label="[29]">
+       Li Siyao, Shiyu Zhao, Weijiang Yu, Wenxiu Sun, Dimitris Metaxas, Chen Change Loy, and Ziwei Liu. 2021. Deep Animation Video Interpolation in the Wild. In
+       <em>
+        2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)
+       </em>
+       . IEEE, Nashville, TN, USA, 6583–6591.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR46437.2021.00652">
+        https://doi.org/10.1109/CVPR46437.2021.00652
+       </a>
+      </li>
+      <li id="BibPLXBIB0030" label="[30]">
+       C. Summerfield and A. Blangero. 2017. Chapter 12 - Perceptual Decision-Making: What Do We Know, and What Do We Not Know?In
+       <em>
+        Decision Neuroscience
+       </em>
+       , Jean-Claude Dreher and Léon Tremblay (Eds.). Academic Press, San Diego, 149–162.
+       <a class="link-inline force-break" href="https://doi.org/10.1016/B978-0-12-805308-9.00012-9">
+        https://doi.org/10.1016/B978-0-12-805308-9.00012-9
+       </a>
+      </li>
+      <li id="BibPLXBIB0031" label="[31]">
+       Kashyap Todi, Daryl Weir, and Antti Oulasvirta. 2016. Sketchplore: Sketch and Explore with a Layout Optimiser. In
+       <em>
+        Proceedings of the 2016 ACM Conference on Designing Interactive Systems
+       </em>
+       (
+       <em>
+        DIS ’16
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 543–555.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2901790.2901817">
+        https://doi.org/10.1145/2901790.2901817
+       </a>
+      </li>
+      <li id="BibPLXBIB0032" label="[32]">
+       Michihiko Ueno and Shin'ichi Satoh. 2021. Continuous and Gradual Style Changes of Graphic Designs with Generative Model. In
+       <em>
+        26th International Conference on Intelligent User Interfaces
+       </em>
+       . Association for Computing Machinery, New York, NY, USA, 280–289.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3397481.3450666">
+        https://doi.org/10.1145/3397481.3450666
+       </a>
+      </li>
+      <li id="BibPLXBIB0033" label="[33]">
+       Paul Upchurch, Jacob Gardner, Geoff Pleiss, Robert Pless, Noah Snavely, Kavita Bala, and Kilian Weinberger. 2017. Deep Feature Interpolation for Image Content Changes. In
+       <em>
+        2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)
+       </em>
+       . IEEE, Honolulu, HI, 6090–6099.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2017.645">
+        https://doi.org/10.1109/CVPR.2017.645
+       </a>
+      </li>
+      <li id="BibPLXBIB0034" label="[34]">
+       Marc Oliver Wagner, Bernard Yannou, Steffen Kehl, Dominique Feillet, and Jan Eggers. 2003. Ergonomic modelling and optimization of the keyboard arrangement with an ant colony algorithm.
+       <em>
+        <em>
+         Journal of Engineering Design
+        </em>
+       </em>
+       14, 2 (June 2003), 187–208.
+       <a class="link-inline force-break" href="https://doi.org/10.1080/0954482031000091509">
+        https://doi.org/10.1080/0954482031000091509
+       </a>
+      </li>
+     </ul>
+    </section>
+   </section>
+   <section class="footnote" id="foot-001">
+    <div class="bibStrip">
+     <p>
+      Permission to make digital or hard copies of part or all of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for third-party components of this work must be honored. For all other uses, contact the owner/author(s).
+     </p>
+     <p>
+      <em>
+       CHI '23, April 23–28, 2023, Hamburg, Germany
+      </em>
+     </p>
+     <p>
+      © 2023 Copyright held by the owner/author(s).
+      <br/>
+      ACM ISBN 978-1-4503-9421-5/23/04.
+      <br/>
+      DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3581028" target="_blank">
+       https://doi.org/10.1145/3544548.3581028
+      </a>
+     </p>
+    </div>
+   </section>
+  </main>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'869bd58f4a1b3685',t:'MTcxMTMzNzU1MS41ODkwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

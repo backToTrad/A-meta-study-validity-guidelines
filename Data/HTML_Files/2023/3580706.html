@@ -1,0 +1,3319 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   WESPER: Zero-shot and Realtime Whisper to Normal Voice Conversion for Whisper-based Speech Interactions
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3580706_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3580706_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3580706_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3580706_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3580706_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3580706_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3580706_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3580706_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <main>
+   <section class="front-matter">
+    <section>
+     <header class="title-info">
+      <div class="journal-title">
+       <h1>
+        <span class="title">
+         WESPER: Zero-shot and Realtime Whisper to Normal Voice Conversion for Whisper-based Speech Interactions
+        </span>
+        <br/>
+        <span class="subTitle">
+        </span>
+       </h1>
+      </div>
+     </header>
+     <div class="authorGroup">
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-3629-2514" ref="author">
+        <span class="givenName">
+         Jun
+        </span>
+        <span class="surName">
+         Rekimoto
+        </span>
+       </a>
+       , The University of Tokyo, Japan and Sony CSL Kyoto, Japan,
+       <a href="mailto:rekimoto@acm.org">
+        rekimoto@acm.org
+       </a>
+      </div>
+     </div>
+     <br/>
+     <div class="pubInfo">
+      <p>
+       DOI:
+       <a href="https://doi.org/10.1145/3544548.3580706" target="_blank">
+        https://doi.org/10.1145/3544548.3580706
+       </a>
+       <br/>
+       CHI '23:
+       <a href="https://doi.org/10.1145/3544548" target="_blank">
+        Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems
+       </a>
+       , Hamburg, Germany, April 2023
+      </p>
+     </div>
+     <div class="abstract">
+      <p>
+       <small>
+        Recognizing whispered speech and converting it to normal speech creates many possibilities for speech interaction. Because the sound pressure of whispered speech is significantly lower than that of normal speech, it can be used as a semi-silent speech interaction in public places without being audible to others. Converting whispers to normal speech also improves the speech quality for people with speech or hearing impairments. However, conventional speech conversion techniques do not provide sufficient conversion quality or require speaker-dependent datasets consisting of pairs of whispered and normal speech utterances. To address these problems, we propose WESPER, a zero-shot, real-time whisper-to-normal speech conversion mechanism based on self-supervised learning. WESPER consists of a speech-to-unit (STU) encoder, which generates hidden speech units common to both whispered and normal speech, and a unit-to-speech (UTS) decoder, which reconstructs speech from the encoded speech units. Unlike the existing methods, this conversion is user-independent and does not require a paired dataset for whispered and normal speech. The UTS decoder can reconstruct speech in any target speaker's voice from speech units, and it requires only an unlabeled target speaker's speech data. We confirmed that the quality of the speech converted from a whisper was improved while preserving its natural prosody. Additionally, we confirmed the effectiveness of the proposed approach to perform speech reconstruction for people with speech or hearing disabilities.
+       </small>
+      </p>
+     </div>
+     <div class="CCSconcepts">
+      <ccs2012>
+       <small>
+        <span style="font-weight:bold;">
+         CCS Concepts:
+        </span>
+        •
+        <strong>
+         Human-centered computing~Sound-based input / output;
+        </strong>
+        •
+        <strong>
+         Computing methodologies → Neural networks
+        </strong>
+        ; •
+        <strong>
+         Human-centered computing → Interface design prototyping
+        </strong>
+        ; •
+        <strong>
+         Human-centered computing → Mobile devices
+        </strong>
+        ;
+       </small>
+      </ccs2012>
+     </div>
+     <br/>
+     <div class="classifications">
+      <div class="author">
+       <span style="font-weight:bold;">
+        <small>
+         Keywords:
+        </small>
+       </span>
+       <span class="keyword">
+        <small>
+         speech interaction
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         whispered voice
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         whispered voice conversion
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         silent speech
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         artificial intelligence
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         neural networks
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         self-supervised learning
+        </small>
+       </span>
+      </div>
+      <br/>
+      <div class="AcmReferenceFormat">
+       <p>
+        <small>
+         <span style="font-weight:bold;">
+          ACM Reference Format:
+         </span>
+         <br/>
+         Jun Rekimoto. 2023. WESPER: Zero-shot and Realtime Whisper to Normal Voice Conversion for Whisper-based Speech Interactions. In
+         <em>
+          Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems (CHI '23), April 23–28, 2023, Hamburg, Germany.
+         </em>
+         ACM, New York, NY, USA 12 Pages.
+         <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3580706" target="_blank">
+          https://doi.org/10.1145/3544548.3580706
+         </a>
+        </small>
+       </p>
+      </div>
+     </div>
+    </section>
+   </section>
+   <section class="body">
+    <figure id="fig1">
+     <img alt="Figure 1" aria-describedby="fig002" class="img-responsive" src="3580706_files\chi2370fig1.jpg"/>
+     <p id="fig002" style="display:none">
+      WESPER is a real-time whisper-to-normal speech conversion mechanism consisting of a speech-to-unit (STU) encoder that generates common speech units for whispered and normal utterances using self-supervised pre-training, and a unit-to-speech (UTS) decoder that recovers speech from the speech units. It achieves user-independent voice conversion in real time.
+     </p>
+     <figcaption>
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       WESPER is a real-time whisper-to-normal speech conversion mechanism consisting of a speech-to-unit (STU) encoder that generates common speech units for whispered and normal utterances using self-supervised pre-training, and a unit-to-speech (UTS) decoder that recovers speech from the speech units. It achieves user-independent voice conversion in real time.
+      </span>
+     </figcaption>
+    </figure>
+    <section id="sec-2">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         1
+        </span>
+        INTRODUCTION
+       </h2>
+      </div>
+     </header>
+     <p>
+      Although voice interaction systems have been widely deployed, they are typically not easy to use in the presence of other people. Using voice commands in public places may be socially unacceptable, and there is a risk of confidential information being leaked. In addition, speaking during a conference call can be uncomfortable for people in the vicinity and can compromise the confidentiality of a conversation.
+     </p>
+     <p>
+      To overcome these problems, various silent speech input techniques have been developed [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ]; however, these methods require special sensors and have not achieved high accuracy in speech recognition, remaining instead at the level of recognizing predefined commands. Conversion of unconditioned silent speech into normal vocal utterances has also not been achieved.
+     </p>
+     <p>
+      Additionally, silent speech could be employed to capture utterances from people with speech or hearing impairments. However, owing to the above-mentioned limitations, existing methods cannot meet the requirements of practical accessibility aids.
+     </p>
+     <p>
+      In contrast to silent speech, we focus on
+      <em>
+       whispered
+      </em>
+      speech. Whispers are sufficiently low in sound pressure to ensure confidentiality, and whispering is almost equivalent to silent speech. Whispering can be captured with an ordinary microphone and does not require any special sensor configuration. People with speech disorders can still speak in a whisper or with a hoarse voice, although their vocal organs may have been injured or extracted; thus, their voices might be recognized.
+     </p>
+     <p>
+      To address these issues, we propose WESPER, a real-time and zero-shot whisper-to-normal voice conversion method based on self-supervised learning. It is designed to perform speaker independent conversion of whispered speech to normal speech. There is no need for per-user training, and paired datasets of whispered and normal utterances are not required. The proposed architecture consists of a speech-to-unit (STU) encoder that is pre-trained with normal and whispered speeches and a unit-to-speech (UTS) decoder that generates a target voice from speech units (Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      ). By pre-training with (unpaired) whisper and normal voices, the STU can be trained to reduce the difference between normal and whispered utterances and output a common speech unit.
+     </p>
+     <p>
+      The UTS decoder can be trained from the speech data of a specific speaker (without accompanying text labels). If the person's voice is used, a conversion can be performed to restore the whispered voice to the person's normal voice, or even to another person's voice.
+     </p>
+     <p>
+      Because the encoder and decoder operate in a non-autoregressive manner, the entire system operates in real-time. Therefore, when applied to teleconferencing, for example, a conference participant can speak in a whispered voice, which is then converted in real time, and others can listen to the speech played back in a normal voice.
+     </p>
+     <figure id="fig2">
+      <img alt="Figure 2" aria-describedby="fig003" class="img-responsive" src="3580706_files\chi2370fig2.jpg"/>
+      <p id="fig003" style="display:none">
+       WESPER conversion result: Left: whispered speech; Middle: whispered speech converted by WESPER; Right: Normal speech by the same speaker, with the same transcription
+      </p>
+      <figcaption>
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        WESPER conversion result: Left: whispered speech; Middle: whispered speech converted by WESPER; Right: Normal speech by the same speaker, with the same transcription
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+     </p>
+     <p>
+      Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      shows mel-spectrogram examples of whisper-to-normal voice conversion using the proposed method. More conversion results are demonstrated in the accompanying video.
+     </p>
+     <p>
+      The contributions of this study can be summarized as follows.
+     </p>
+     <ul class="list-no-style">
+      <li id="list1" label="•">
+       We propose a real-time, speaker-independent, vocabulary-free whisper-to-normal speech conversion method that can be trained only on unpaired whispers and normal speech.
+       <br/>
+      </li>
+      <li id="list2" label="•">
+       The target voice can be learned by voice samples of a specific speaker without text transcription.
+       <br/>
+      </li>
+      <li id="list3" label="•">
+       We experimentally confirmed an improvement in performance for normal speakers and for dysarthric or hearing-impaired speakers.
+       <br/>
+      </li>
+     </ul>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Research on silent and whispered speech
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          model
+         </th>
+         <th style="text-align:center;">
+          training data
+         </th>
+         <th style="text-align:center;">
+          per-user dataset
+         </th>
+         <th style="text-align:center;">
+          <table>
+           <tbody>
+            <tr>
+             <th style="text-align:center;">
+              conversion to
+             </th>
+            </tr>
+            <tr>
+             <th style="text-align:center;">
+              normal voice
+             </th>
+            </tr>
+           </tbody>
+          </table>
+         </th>
+         <th>
+          <table>
+           <tbody>
+            <tr>
+             <th style="text-align:center;">
+              (whisper)
+             </th>
+            </tr>
+            <tr>
+             <th style="text-align:center;">
+              speech recognition
+             </th>
+            </tr>
+           </tbody>
+          </table>
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <table>
+           <tbody>
+            <tr>
+             <td style="text-align:center;">
+              silent speech
+             </td>
+            </tr>
+            <tr>
+             <td style="text-align:center;">
+              ex.[
+              <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+               3
+              </a>
+              ,
+              <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+               31
+              </a>
+              ,
+              <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+               32
+              </a>
+              ,
+              <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+               50
+              </a>
+              ,
+              <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+               51
+              </a>
+              ,
+              <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+               54
+              </a>
+              ]
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </td>
+         <td style="text-align:center;">
+          <table>
+           <tbody>
+            <tr>
+             <td style="text-align:center;">
+              special paired-dataset for
+             </td>
+            </tr>
+            <tr>
+             <td style="text-align:center;">
+              dedicated sensors
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </td>
+         <td style="text-align:center;">
+          required
+         </td>
+         <td style="text-align:center;">
+          both
+         </td>
+         <td>
+          <table>
+           <tbody>
+            <tr>
+             <td style="text-align:center;">
+              YES
+             </td>
+            </tr>
+            <tr>
+             <td style="text-align:center;">
+              (commands, or characters)
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          Parotoron [
+          <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+           4
+          </a>
+          ]
+         </td>
+         <td style="text-align:center;">
+          paired whisper-normal voice
+         </td>
+         <td style="text-align:center;">
+          required
+         </td>
+         <td style="text-align:center;">
+          YES
+         </td>
+         <td>
+          <table>
+           <tbody>
+            <tr>
+             <td style="text-align:center;">
+              YES
+             </td>
+            </tr>
+            <tr>
+             <td style="text-align:center;">
+              (through voice conversion)
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          DualVoice [
+          <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+           48
+          </a>
+          ]
+         </td>
+         <td style="text-align:center;">
+          <table>
+           <tbody>
+            <tr>
+             <td style="text-align:center;">
+              labeled, unpaired
+             </td>
+            </tr>
+            <tr>
+             <td style="text-align:center;">
+              whisper and normal voice
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </td>
+         <td style="text-align:center;">
+          required
+         </td>
+         <td style="text-align:center;">
+          NO
+         </td>
+         <td>
+          YES
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          SilentVoice [
+          <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+           15
+          </a>
+          ]
+         </td>
+         <td style="text-align:center;">
+          <table>
+           <tbody>
+            <tr>
+             <td style="text-align:center;">
+              labeled
+             </td>
+            </tr>
+            <tr>
+             <td style="text-align:center;">
+              silentvoice (custom)
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </td>
+         <td style="text-align:center;">
+          required
+         </td>
+         <td style="text-align:center;">
+          NO
+         </td>
+         <td>
+          YES
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          CycleGAN-VC [
+          <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+           30
+          </a>
+          ]
+         </td>
+         <td style="text-align:center;">
+          <table>
+           <tbody>
+            <tr>
+             <td style="text-align:center;">
+              unpaired, unlabeled
+             </td>
+            </tr>
+            <tr>
+             <td style="text-align:center;">
+              whisper and normal voice
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </td>
+         <td style="text-align:center;">
+          not required
+         </td>
+         <td style="text-align:center;">
+          YES
+         </td>
+         <td>
+          NO
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          MSpeC-Net [
+          <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+           37
+          </a>
+          ]
+         </td>
+         <td style="text-align:center;">
+          <table>
+           <tbody>
+            <tr>
+             <td style="text-align:center;">
+              paired
+             </td>
+            </tr>
+            <tr>
+             <td style="text-align:center;">
+              whisper-normal voice
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </td>
+         <td style="text-align:center;">
+          required
+         </td>
+         <td style="text-align:center;">
+          YES
+         </td>
+         <td>
+          NO
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          AGAN-W2SC [
+          <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+           16
+          </a>
+          ]
+         </td>
+         <td style="text-align:center;">
+          <table>
+           <tbody>
+            <tr>
+             <td style="text-align:center;">
+              paired
+             </td>
+            </tr>
+            <tr>
+             <td style="text-align:center;">
+              whisper-normal voice
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </td>
+         <td style="text-align:center;">
+          required
+         </td>
+         <td style="text-align:center;">
+          YES
+         </td>
+         <td>
+          NO
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           WESPER
+          </strong>
+          (ours)
+         </td>
+         <td style="text-align:center;">
+          <table>
+           <tbody>
+            <tr>
+             <td style="text-align:center;">
+              unpaired and unlabeled
+             </td>
+            </tr>
+            <tr>
+             <td style="text-align:center;">
+              whisper and normal voice
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </td>
+         <td style="text-align:center;">
+          not required
+         </td>
+         <td style="text-align:center;">
+          YES
+         </td>
+         <td>
+          <table>
+           <tbody>
+            <tr>
+             <td style="text-align:center;">
+              YES
+             </td>
+            </tr>
+            <tr>
+             <td style="text-align:center;">
+              (through voice conversion)
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </section>
+    <section id="sec-3">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         2
+        </span>
+        RELATED WORK
+       </h2>
+      </div>
+     </header>
+     <section id="sec-4">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.1
+         </span>
+         Research on Silent and Whispered Speech
+        </h3>
+       </div>
+      </header>
+      <p>
+       Various studies on silent speech have developed methods to recognize a user's silent utterances or silent commands using various sensor configurations, including lip reading, EMG (Electromyography), and ultrasound [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+        3
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+        50
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+        51
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+        54
+       </a>
+       ]. However, these systems require a special dataset to perform training, which increases the need for special sensors and prevents these technologies from being widely used. Hence, these systems offer limited vocabulary (less than 100 commands are available, typically around 30). Although silent speech recognition has sometimes been identified as a possible approach to help people with dysphonia, these methods cannot interpret unrestricted free speech owing to the vocabulary limitation.
+      </p>
+      <p>
+       Whispered speech has some similar characteristics to silent speech, such as preserving social acceptability in public spaces. However, it can be more widely adopted, given that ordinary microphones can be used.
+      </p>
+      <p>
+       SilentVoice [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+        15
+       </a>
+       ] is a speech interaction technique that uses
+       <em>
+        ingressive speech
+       </em>
+       , an utterance made while inhaling. The amplitude of ingressive speech is low, and it can be considered a variation of silent speech. It requires a microphone-like device placed very close to the mouth, and training is required for users to speak correctly with ingressive speech. A custom corpus of ingressive speech with text transcriptions is also required.
+      </p>
+      <p>
+       Research on whisper voice recognition [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+        6
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+        11
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+        14
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+        18
+       </a>
+       ] has previously been conducted. The Alexa smart speaker supports a
+       <em>
+        whisper mode
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+        23
+       </a>
+       ]. In this mode, when a user whispers to Alexa, Alexa responds in a whisper [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+        10
+       </a>
+       ].
+      </p>
+      <p>
+       DualVoice [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+        48
+       </a>
+       ] has also been proposed as a method to perform end-to-end recognition of whispered voices based on a self-supervised speech recognition system based on wav2vec2.0 [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ] and HuBERT [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ]. They also proposed an interaction technique to distinguish between whispered and normal utterances. WESPER can be combined with DualVoice to selectively convert a user's whispered voice.
+      </p>
+     </section>
+     <section id="sec-5">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.2
+         </span>
+         Speech Conversion
+        </h3>
+       </div>
+      </header>
+      <p>
+       Normal speech conversion technologies have been developed to convert one voiced utterance to another [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+        19
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+        43
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+        46
+       </a>
+       ]; however, the conversion quality of these methods remains unsatisfactory when applied to whisper-to-normal voice conversion.
+      </p>
+      <p>
+       Recently, several machine learning-based whisper-to-normal voice conversion techniques have been investigated [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+        41
+       </a>
+       ]. To compare these techniques, it is important to consider the quality of conversion and the required characteristics of the dataset used for training. A
+       <em>
+        paired whisper-normal voice
+       </em>
+       dataset (i.e. a dataset containing both whispered and normal versions of the same utterance) or a
+       <em>
+        labeled whispered voice
+       </em>
+       dataset (i.e. a dataset containing whispered utterances accompanied by text labels) will require a significant amount of effort to prepare. Conversely, if an
+       <em>
+        un-paired and un-labeled whisper voice
+       </em>
+       dataset is used (i.e. a dataset containing only whisper utterances without corresponding normal versions or labels), the effort required to prepare the dataset is low.
+      </p>
+      <p>
+       Attention-guided generative adversarial network for whisper to normal speech conversion (AGAN-W2SC) is a GAN-based whisper to normal speech conversion [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ]. It converts a whispered voice represented as mel-spectrogram into the corresponding normal speech's mel-spectrogram. It is based on GAN, and the attention-map is used for the conversion. It requires a paired whisper-normal speech dataset. MSpeC-Net [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ] is an autoencoder-based multi-domain voice conversion and supports whisper-to-normal conversion. It also requires a paired whisper-normal voice dataset.
+      </p>
+      <p>
+       Moreover, whispered speech can be converted to text using speech recognition and generate normal speech using text-to-speech methods [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ]. However, this approach requires a labeled dataset for whispered speech recognition, and prosodic information contained in whispered utterances is lost because the intermediate text representation does not convey such information.
+      </p>
+      <p>
+       Parrotron [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+        4
+       </a>
+       ] is a speech conversion system designed to improve the speech of speakers with dysplasia. It is based on an encoder-decoder model that conforms to the text-to-speech system, Tacotron [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+        58
+       </a>
+       ]; however, it differs from Tacotron in that both the input and output data are formatted as mel-spectrograms. It also requires paired source and target speeches, making the construction of the required dataset relatively difficult.
+      </p>
+      <p>
+       Phonetic posteriorgrams (PPGs) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+        55
+       </a>
+       ] are intermediate information obtained from automatic speech recognition. PPGs can be used for many-to-one speaker conversion because they represent the articulation of spoken content speaker independently. To our knowledge, the effects of PPGs on whispered voice have not been investigated. Our method also uses intermediated speech units, but it does not require text-based corpus as in the case of automatic speech recognition (ASR) and PPGs.
+      </p>
+      <p>
+       In contrast, our proposed system requires only samples of unpaired target and source speech, and it does not require accompanying text transcriptions, thus making datasets easy to prepare and independent of the target language.
+      </p>
+      <p>
+       The characteristics of related technologies are summarized in Table
+       <a class="tbl" href="#tab1">
+        1
+       </a>
+       . We also demonstrate whisper to normal conversion examples including NMSE-DiscoGAN [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ], MSpeC-Net [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ], CycleGAN-VC [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ], AGAN-W2SC [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ], and WESPER at
+       <a class="link-inline force-break" href="https://wesperproj.github.io/">
+        https://wesperproj.github.io/
+       </a>
+       .
+      </p>
+     </section>
+     <section id="sec-6">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.3
+         </span>
+         Self Supervised Representation Learning for Speech
+        </h3>
+       </div>
+      </header>
+      <p>
+       Recently, combining pre-training with self-supervised representation learning on unlabeled speech data and fine-tuning on labeled speech data has attracted attention. These systems are primarily intended for speech recognition applications, but they have also been applied to perform speaker, language, and emotion recognition [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+        44
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ].
+      </p>
+      <p>
+       In particular, the pre-training method of hidden-unit BERT (huBERT) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ] is similar to that of the masked language model used in bidirectional encoder representations from transformers (BERT) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+        12
+       </a>
+       ] in natural language processing. It is designed to mask part of the input and estimate the corresponding expression features from the rest of the input. With this pre-training, the model can learn the acoustic properties of the input data and the characteristics of the speech.
+      </p>
+      <p>
+       For use as ASR, after pre-training, fine-tuning is performed on only a small amount of the audio data with text transcriptions. A projection layer and a connectionist temporal classification (CTC) layer [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+        17
+       </a>
+       ] has been added to generate text transcriptions from audio waveforms.
+      </p>
+      <p>
+       As reported in [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ], self-supervised ASR achieved a speech recognition accuracy comparable to conventional state-of-the-art ASRs with fine-tuning only on a small amount of labeled speech data. Therefore, this architecture could be suitable for recognizing whispered voice recognition with limited whispered speech corpora.
+      </p>
+      <p>
+       WESPER is unique in that it uses pre-training to reduce the difference between the latent vectors encoding whispered and normal utterances.
+      </p>
+     </section>
+     <section id="sec-7">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.4
+         </span>
+         Textless-NLP
+        </h3>
+       </div>
+      </header>
+      <p>
+       Recently, text-free speech processing and speech conversion methods have been developed. Through self-supervised learning, these systems derive latent representations from speech data that is not accompanied by text transcriptions. Textless-NLP[
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+        34
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ] and AudioLM [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+        5
+       </a>
+       ] do not use text transcriptions or phoneme symbols in speech processing systems; they use discrete units constructed by self-supervised learning. Soft discrete unit is another approach for textless speech processing [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+        57
+       </a>
+       ].
+      </p>
+      <p>
+       Our proposed method also uses non-discrete vectors as latent speech representations obtained from self-supervised learning and does not explicitly use text transcriptions or phoneme symbols. Our research is unique because we demonstrate that whispered and normal speech can be represented by similar speech units through self-supervised learning. In addition, our method is also designed to work seamlessly with a speech generation system in the later stages.
+      </p>
+     </section>
+    </section>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         3
+        </span>
+        THE WESPER VOICE CONVERSION MODEL
+       </h2>
+      </div>
+     </header>
+     <p>
+      WESPER consists of an STU encoder and a UTS decoder. The STU converts whispered or normal speech into common speech units. The UTS converts common speech units into mel-spectrograms that can be reconstructed as speech by a vocoder. WESPER is characterized by the fact that the common speech units of the same utterance can be similar, although the STU is only pretrained with (un-paired) whispered and normal speech, and it is not trained with a paired set of whispered and normal utterances. The details of each and the method used to train the model are described below.
+     </p>
+     <section id="sec-9">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.1
+         </span>
+         Speech-to-Unit (STU) Encoder
+        </h3>
+       </div>
+      </header>
+      <figure id="fig3">
+       <img alt="Figure 3" aria-describedby="fig004" class="img-responsive" src="3580706_files\chi2370fig3.jpg"/>
+       <p id="fig004" style="display:none">
+        Overview of STU pre-training. Unpaired whispered or normal speech is used for pretraining. The transformer layer is trained by estimating discrete units from the masked input. The projection layer after the transformer layers generates 256-dimensional vectors (one every 20 ms), which are used as common speech units.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 3:
+        </span>
+        <span class="figure-title">
+         Overview of STU pre-training. Unpaired whispered or normal speech is used for pretraining. The transformer layer is trained by estimating discrete units from the masked input. The projection layer after the transformer layers generates 256-dimensional vectors (one every 20 ms), which are used as common speech units.
+        </span>
+       </figcaption>
+      </figure>
+      <figure id="fig4">
+       <img alt="Figure 4" aria-describedby="fig005" class="img-responsive" src="3580706_files\chi2370fig4.jpg"/>
+       <p id="fig005" style="display:none">
+        Comparison of whispered/normal voice differences: The comparison is made using normal speech and speech with whispering transformations. (Above) An STU pre-trained with normal and whispered speeches produced fewer differences than that pre-trained with normal speech only. As the transformer layer deepens, the difference between the two decreases. (Middle) There was a difference in the mel-spectrogram, which decreased with the speech units. (Bottom) UMAP [39] visualizations of differences between whisper and normal voices in mel-spectrogram and speech-unit's space.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 4:
+        </span>
+        <span class="figure-title">
+         Comparison of whispered/normal voice differences: The comparison is made using normal speech and speech with whispering transformations. (Above) An STU pre-trained with normal and whispered speeches produced fewer differences than that pre-trained with normal speech only. As the transformer layer deepens, the difference between the two decreases. (Middle) There was a difference in the mel-spectrogram, which decreased with the speech units. (Bottom) UMAP [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+          39
+         </a>
+         ] visualizations of differences between whisper and normal voices in mel-spectrogram and speech-unit's space.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       The STU encoder takes audio waveform as the input and outputs units. It is based on HuBERT [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ], a self-supervised neural network for speech, which pre-trains a large amount of unlabeled speech in a BERT [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+        12
+       </a>
+       ]-like manner; it learns to recover the relevant parts from partially masked speech features and thereby acquires a speech-language model.
+      </p>
+      <p>
+       For our purpose, we want to generate speech units that are as identical as possible between whispered and normal speech. To achieve this, we pre-trained an STU with a mixture of whispered and normal speech utterances; we used normal English speech with many speakers from the Librispeech 960h dataset [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+        42
+       </a>
+       ]. Librispeech speech data were mechanically converted to a whispered voice using an LPC-based audio conversion tool [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+        60
+       </a>
+       ]. Additionally, we used the wTIMIT speech dataset of normal and whispered speech [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ] with a speech length of 58 h.
+      </p>
+      <p>
+       Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       shows the pre-training process of the STU in detail. Only the unpaired whispered or normal speech is used for pre-training. The transformer layer is trained by estimating discrete units from the masked input. Similar to HuBERT, the discrete target units are first generated by k-means clustering of the input speech data in the first stage, and then by k-means clustering of the outputs of the transformer intermediate layer. In our experiment, we used 100 discrete units. The projection layer after the transformer layers generates a sequence of 256-dimensional vectors (one per 20 ms), which are used as common speech units.
+      </p>
+      <p>
+       In the STU, 12 transformer layers are placed in front of the CNN feature extractor (Figure
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       ). After pre-training, by comparing the output from each layer, we confirmed that (1) the difference in speech unit values between whispered and normal voices decreased with increasing layer depth; (2) the difference decreased when the STU was pre-trained with both whispered and normal speech utterances compared to pre-training with normal speech only (Figure
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       ). Figure
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       (bottom) also shows the UMAP [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+        39
+       </a>
+       ] visualization of whispered and normal speech in mel-spectrogram space and common speech unit space. The corresponding periods of two speeches are connected by lines. As shown in the figure, the differences are reduced in the common speech unit space (except for a few long distances).
+      </p>
+      <p>
+       Although the speech feature values of whispered and normal voices are different, we assume this is addressed through the self-supervised pre-training so that utterances with similar linguistic standpoints are represented with similar units. We speculate that our learning method can extract common pronunciations from both normal and whispered utterances, similar to how self-supervised pre-training methods can extract common pronunciations from the utterances of different speakers in an ASR system.
+      </p>
+      <p>
+       In addition, we can fine-tune the STU with (transcript-attached) wTIMIT and Librispeech datasets by adding a CTC layer [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+        17
+       </a>
+       ] as in [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+        48
+       </a>
+       ]; therefore, STU could be used as an ASR to recognize whispered and normal speeches.
+      </p>
+     </section>
+     <section id="sec-10">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.2
+         </span>
+         UTS Decoder
+        </h3>
+       </div>
+      </header>
+      <p>
+       The UTS decoder takes the speech units generated by the STU as the input and reconstructs the target (normal) speech. It is based on the non-autoregressive text-to-speech (TTS) system FastSpeech2 [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+        49
+       </a>
+       ]. While the original FastSpeech2 includes an embedding layer that takes text or phoneme tokens and transforms them into a sequence of vector embeddings, we can eliminate this layer because UTS takes speech units as direct input. The original FastSpeech2 also includes a duration estimator that estimates the duration of each phoneme token and a length regulator that adjusts the number of internal vectors according to the estimated duration. These parts can also be eliminated for our purpose because the STU generates speech units at a constant rate.
+      </p>
+      <p>
+       When learning the original FastSpeech2, it was necessary to provide the duration of each phoneme in the corpus as a ground truth by an external tool such as Montreal Forced Aligner [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+        38
+       </a>
+       ]. Because of this limitation, FastSpeech2’s learning is language-dependent. Conversely, UTS does not require duration estimation, and UTS can be language-independent.
+      </p>
+      <p>
+       The output of UTS is a mel-spectrogram, as in FastSpeech2. A vocoder (HiFi-GAN [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+        33
+       </a>
+       ]) converts this into an actual speech waveform.
+      </p>
+      <p>
+       In a regular TTS system, the target speech and the corresponding text labels are needed for training. By contrast, the proposed UTS requires only the target speech and no text labels. The target speech is passed through the STU to obtain a sequence of speech units associated with the speech waveform and used to train the UTS (Figure
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       ). In our experiment, the UTS was trained using speech data from a single speaker of LJSpeech [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ], and data from other speakers taken from narration data.
+      </p>
+      <figure id="fig5">
+       <img alt="Figure 5" aria-describedby="fig006" class="img-responsive" src="3580706_files\chi2370fig5.jpg"/>
+       <p id="fig006" style="display:none">
+        Comparison of FastSpeech2 [49] and UTS decoders: FastSpeech2 needs to predict the duration of each phoneme, whereas UTS accepts a common speech unit with the same duration. This eliminates the duration predictor and the length regulator (LR in the figure). Phoneme embedding can also be eliminated because the common speech unit does not consist of discrete tokens.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 5:
+        </span>
+        <span class="figure-title">
+         Comparison of FastSpeech2 [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+          49
+         </a>
+         ] and UTS decoders: FastSpeech2 needs to predict the duration of each phoneme, whereas UTS accepts a common speech unit with the same duration. This eliminates the duration predictor and the length regulator (LR in the figure). Phoneme embedding can also be eliminated because the common speech unit does not consist of discrete tokens.
+        </span>
+       </figcaption>
+      </figure>
+      <figure id="fig6">
+       <img alt="Figure 6" aria-describedby="fig007" class="img-responsive" src="3580706_files\chi2370fig6.jpg"/>
+       <p id="fig007" style="display:none">
+        STU training (1) and UTS training (2): The UTS learns to decode speech units to the target speech using only wave data of the target voice with (frozen) STU. No text labeled dataset is required. Notably, WESPER was not trained on a labeled corpus, but only pre-trained on normal and whispered voices.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 6:
+        </span>
+        <span class="figure-title">
+         STU training (1) and UTS training (2): The UTS learns to decode speech units to the target speech using only wave data of the target voice with (frozen) STU. No text labeled dataset is required. Notably, WESPER was not trained on a labeled corpus, but only pre-trained on normal and whispered voices.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         4
+        </span>
+        SYSTEM CONFIGURATION
+       </h2>
+      </div>
+     </header>
+     <figure id="fig7">
+      <img alt="Figure 7" aria-describedby="fig008" class="img-responsive" src="3580706_files\chi2370fig7.jpg"/>
+      <p id="fig008" style="display:none">
+       WESPER speech input device: (a) headset, (b) array (directional) microphone, and (c) cell phone microphone with pop-protection and soundproofing material.
+      </p>
+      <figcaption>
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        WESPER speech input device: (a) headset, (b) array (directional) microphone, and (c) cell phone microphone with pop-protection and soundproofing material.
+       </span>
+      </figcaption>
+     </figure>
+     <figure id="fig8">
+      <img alt="Figure 8" aria-describedby="fig009" class="img-responsive" src="3580706_files\chi2370fig8.jpg"/>
+      <p id="fig009" style="display:none">
+       Quality of whisper-to-normal conversion: (a) Mean Opinion Scores (MOS) of normal, whispered, and WESPER-converted whispered voices. (b) Hoarse-normal voice rating, and (c) natural prosody rating (s.e.: standard error, *: p &lt; 0.01 by t-test, n.s.: not significant)
+      </p>
+      <figcaption>
+       <span class="figure-number">
+        Figure 8:
+       </span>
+       <span class="figure-title">
+        Quality of whisper-to-normal conversion: (a) Mean Opinion Scores (MOS) of normal, whispered, and WESPER-converted whispered voices. (b) Hoarse-normal voice rating, and (c) natural prosody rating (
+        <tt>
+         s.e.
+        </tt>
+        : standard error,
+        <tt>
+         *
+        </tt>
+        :
+        <em>
+         p
+        </em>
+        &lt; 0.01 by t-test,
+        <tt>
+         n.s.
+        </tt>
+        : not significant)
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+      We designed the WESPER model using the PyTorch framework. The STU is based on HuBERT, and the UTS is based on a modified implementation of FastSpeech2 PyTorch implementation by [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ]. We used Librispeech and wTIMIT (both of which include normal and whispered speech) for pre-training. With a dual NVIDIA R6000, pre-training took 48 h. UTS training took 26 h for each target voice.
+     </p>
+     <p>
+      The total processing time required to perform the conversion was approximately 1/20th of the actual speech duration on a single NVIDIA R6000 and 1/10th on an Apple M1 Max CPU. The actual quality of the conversion is demonstrated in the attached video.
+     </p>
+     <p>
+      We designed two types of interfaces. The first operated in a push-to-talk style, where the user first speaks in a whispered or normal voice while pressing a button. Thereafter, when the button is released, the speech waveform recorded during that time is sent to the speech-conversion neural networks, and the result is immediately played back. The other detected a non-audio period of input speech and automatically converted speech segments without additional user input.
+     </p>
+     <p>
+      Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      shows the current WESPER speech input configurations. We tested with (a) a headset, (b) directional microphone with four arrayed MEMS (Microelectromechanical systems) microphones [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ], and (c) mobile phone microphone with pop-guard to avoid whispering pop noise and soundproofing material to reduce ambient noise.
+     </p>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         5
+        </span>
+        EVALUATION
+       </h2>
+      </div>
+     </header>
+     <p>
+      The WESPER mechanism allows whisper-to-normal conversion independent of the input speaker. Here, we evaluate the conversion quality in three aspects, considering whisper-to-normal conversion and voice reconstruction for people with speech and hearing disorders.
+     </p>
+     <section id="sec-13">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.1
+         </span>
+         Quality of Whisper-to-Normal Conversion
+        </h3>
+       </div>
+      </header>
+      <div class="table-responsive" id="tab2">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 2:
+        </span>
+        <span class="table-title">
+         Whispered voice recognition accuracy of Google Cloud Speech-to-Text [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+          24
+         </a>
+         ] as a reference ASR: The recognition rate of whispered voice in normal ASR was not high; however, when the result of converting whispered voice to normal voice using WESPER was recognized, the recognition rate improved. Notably, WESPER was not trained on labeled data, but it was pre-trained on (un-labeled and unpaired) normal and whispered voices.
+        </span>
+       </div>
+       <table class="table">
+        <thead>
+         <tr>
+          <th style="text-align:center;border-right: 2pt solid #000000;">
+           model
+          </th>
+          <th style="text-align:left;border-right: 2pt solid #000000;">
+           train (finetune)
+          </th>
+          <th style="text-align:right;">
+           test
+          </th>
+          <th style="text-align:right;">
+           WER (%)
+          </th>
+          <th style="text-align:right;">
+           CER (%)
+          </th>
+          <th>
+           BLEU
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Google
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           (trained by Google)
+          </td>
+          <td style="text-align:right;">
+           wTIMIT(N)
+          </td>
+          <td style="text-align:right;">
+           11.55
+          </td>
+          <td style="text-align:right;">
+           4.66
+          </td>
+          <td>
+           0.76
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:right;">
+           wTIMIT(W)
+          </td>
+          <td style="text-align:right;">
+           44.70
+          </td>
+          <td style="text-align:right;">
+           28.38
+          </td>
+          <td>
+           0.34
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:right;">
+           <strong>
+            WESPER[wTIMIT(W)
+           </strong>
+           ]
+          </td>
+          <td style="text-align:right;">
+           <strong>
+            26.68
+           </strong>
+          </td>
+          <td style="text-align:right;">
+           <strong>
+            12.70
+           </strong>
+          </td>
+          <td>
+           <strong>
+            0.52
+           </strong>
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           <table>
+            <tbody>
+             <tr>
+              <td style="text-align:center;">
+               HuBERT
+              </td>
+             </tr>
+             <tr>
+              <td style="text-align:center;">
+               base
+              </td>
+             </tr>
+            </tbody>
+           </table>
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Librispeech
+          </td>
+          <td style="text-align:right;">
+           wTIMIT(N)
+          </td>
+          <td style="text-align:right;">
+           21.06
+          </td>
+          <td style="text-align:right;">
+           8.17
+          </td>
+          <td>
+           0.54
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Librispeech
+          </td>
+          <td style="text-align:right;">
+           wTIMIT(W)
+          </td>
+          <td style="text-align:right;">
+           33.06
+          </td>
+          <td style="text-align:right;">
+           15.45
+          </td>
+          <td>
+           0.38
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           librispeech + wTIMIT(N,W)
+          </td>
+          <td style="text-align:right;">
+           wTIMIT(W)
+          </td>
+          <td style="text-align:right;">
+           <strong>
+            13.75
+           </strong>
+          </td>
+          <td style="text-align:right;">
+           <strong>
+            5.47
+           </strong>
+          </td>
+          <td>
+           <strong>
+            0.70
+           </strong>
+          </td>
+         </tr>
+        </tbody>
+        <tbody>
+         <tr>
+          <td style="text-align:right;">
+           wTIMIT(N):
+          </td>
+          <td style="text-align:left;">
+           wTIMIT [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+            36
+           </a>
+           ] normal voice
+          </td>
+          <td style="text-align:center;">
+          </td>
+          <td style="text-align:right;">
+           wTIMIT(W):
+          </td>
+          <td style="text-align:left;">
+           wTIMIT whisper voice
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:right;">
+           Google:
+          </td>
+          <td style="text-align:left;">
+           Google Cloud Speech-to-Text [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+            24
+           </a>
+           ]
+          </td>
+          <td style="text-align:center;">
+          </td>
+          <td style="text-align:right;">
+           WESPER[•]:
+          </td>
+          <td style="text-align:left;">
+           WESPER converted •
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:right;">
+           HuBERT:
+          </td>
+          <td colspan="4" style="text-align:left;">
+           HuBERT base model, pretrained with Librispeech [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+            42
+           </a>
+           ] + wTIMIT(N,W)
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p>
+       To evaluate the quality of the converted speech, we recruited 50 gender-balanced participants online using the Prolific crowdsourcing system [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ], all of whom were over 18 and fluent in English. Each participant listened to four sets of normal speech, whispered speech, and WESPER-converted whispered speech (12 voices in total) with a web-based user interface and rated the utterances on a 5-point Mean Opinion Score (MOS) and other questionnaires (examples of voices are included in an attached video).
+      </p>
+      <p>
+       We used the LJSpeech-trained WESPER voice as the target voice and the same transcription sentence for all voices to avoid differences in impressions based on sentence content.
+      </p>
+      <p>
+       The results are presented in Figure
+       <a class="fig" href="#fig8">
+        8
+       </a>
+       . Figure
+       <a class="fig" href="#fig8">
+        8
+       </a>
+       (a) shows the results of the MOS evaluation. The WESPER-converted voice showed a score between that of normal and whispered voices. It was confirmed that WESPER conversion improved the MOS of the original whispered speech (
+       <em>
+        p
+       </em>
+       &lt; 0.01 by pairwise t-test, Cohen's d effect size = 0.54). Figure
+       <a class="fig" href="#fig8">
+        8
+       </a>
+       (b) shows the responses to the question “Is this voice hoarse or normal?” and there is a clear improvement in the voices converted with WESPER (
+       <em>
+        p
+       </em>
+       &lt; 0.01). Figure
+       <a class="fig" href="#fig8">
+        8
+       </a>
+       (c) shows the responses to the question “Is the voice using consistent articulation, standard intonation, and prosody?” Here, WESPER and whisper showed almost equal results. Notably, WESPER did not affect the naturalness of the prosody. Considering the speech converted by WESPER is generated by the unit-to-speech module and the vocoder, this result indicates that WESPER can preserve the natural prosody of the original speech.
+      </p>
+      <section id="sec-14">
+       <p>
+        <em>
+         Multiple Stimuli with Hidden Reference and Anchor (MUSHRA) evaluation.
+        </em>
+        <mytag>
+        </mytag>
+       </p>
+       <figure id="fig9">
+        <img alt="Figure 9" aria-describedby="fig010" class="img-responsive" src="3580706_files\chi2370fig9.jpg"/>
+        <p id="fig010" style="display:none">
+         An example of MUSHRA evaluation web interfaces.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 9:
+         </span>
+         <span class="figure-title">
+          An example of MUSHRA evaluation web interfaces.
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+        In addition to the MOS test, we evaluated speech quality using Multiple Stimuli with Hidden Reference and Anchor (MUSHRA). MUSHRA is a method for evaluating the perceived quality of audio as defined by ITU-R Recommendation BS.1534-3 [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+         56
+        </a>
+        ]. MUSHRA uses anchor audio and other audios, and an evaluator is expected to assign ratings (from 0 to 100) to the audio by comparing it to the anchor audio as the reference. For each rating, participants can play each voice as many times as they like. Because of the presence of anchor and hidden reference audio, MUSHRA is considered more reliable than MOS.
+       </p>
+       <p>
+        We recruited 50 gender-balanced, English-speaking participants over the age of 18 via the Internet using the Prolific crowdsourcing system [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+         25
+        </a>
+        ]. We used a javascript-based MUSHRA testing tool [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+         28
+        </a>
+        ] for online evaluation (Figure
+        <a class="fig" href="#fig9">
+         9
+        </a>
+        , the system is available from
+        <a class="link-inline force-break" href="https://github.com/rkmt/mushraJS_prolific">
+         https://github.com/rkmt/mushraJS_prolific
+        </a>
+        ). We used the same whisper-normal voice samples as in the previous MOS test. The participants’ responses are collected over the Internet.
+       </p>
+       <p>
+        The results are presented in Figure
+        <a class="fig" href="#fig10">
+         10
+        </a>
+        . It revalidates the results of the MOS evaluation (
+        <em>
+         p
+        </em>
+        &lt; 0.01 through pairwise t-test, effect size = 0.57).
+       </p>
+       <figure id="fig10">
+        <img alt="Figure 10" aria-describedby="fig011" class="img-responsive" src="3580706_files\chi2370fig10.jpg"/>
+        <p id="fig011" style="display:none">
+         Speech quality evaluation between whispered and WESPER converted voices by MUSHRA (MUltiple Stimuli with Hidden Reference and Anchor). (*: p &lt; 0.01, t-test)
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 10:
+         </span>
+         <span class="figure-title">
+          Speech quality evaluation between whispered and WESPER converted voices by MUSHRA (MUltiple Stimuli with Hidden Reference and Anchor). (
+          <tt>
+           *
+          </tt>
+          :
+          <em>
+           p
+          </em>
+          &lt; 0.01, t-test)
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+       <p>
+        According to these evaluations, we can draw the following conclusions:
+       </p>
+       <ul class="list-no-style">
+        <li id="list4" label="•">
+         WESPER can convert whispered voices to normal voices.
+         <br/>
+        </li>
+        <li id="list5" label="•">
+         Speechdata converted with WESPER had a better MOS than the whispered source voice.
+         <br/>
+        </li>
+        <li id="list6" label="•">
+         WESPER preserved the natural prosody of the source whispered voice.
+         <br/>
+        </li>
+       </ul>
+      </section>
+     </section>
+     <section id="sec-15">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.2
+         </span>
+         Speech Recognition Accuracy
+        </h3>
+       </div>
+      </header>
+      <p>
+       There are two possible ways to use WESPER as a speech recognizer, including speech recognition with WESPER and recognition of speech converted with WESPER by other speech recognizers.
+      </p>
+      <p>
+       In the former method, a WESPER model (based on HuBERT) pre-trained with whispered and normal speech is fine-tuned using the whispered corpus, and text is inferred from the whispered voice. In the latter case, the whispered speech converted by WESPER can control any other speech-enabled device. If the whispered speech can be converted to normal speech, then the existing speech-enabled devices can be used immediately without the need to modify them for whispered speech.
+      </p>
+      <p>
+       Using the existing speech recognizer (google cloud speech-to-text [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ]) as a reference, we measured the speech recognition accuracy of normal speech, whispered speech, and whispered speech converted by WESPER.
+      </p>
+      <p>
+       The wTIMIT corpus was used for the measurements. wTIMIT is a TIMIT-compliant transcription containing both normal and whispered speech with labels. This corpus evaluated the recognition accuracy of whispered speech converted by WESPER using the recognition accuracy of normal and whispered speech as the baseline.
+      </p>
+      <p>
+       The results are summarized in Table
+       <a class="tbl" href="#tab2">
+        2
+       </a>
+       in terms of word error rate (WER) and character error rate (CER), as well as bilingual evaluation understudy (BLEU). As shown in the table, the recognition accuracy was not high when whispered speech was directly recognized (WER=44.70%), but the accuracy improved (WER=26.68%) after conversion with WESPER.
+      </p>
+      <p>
+       When tested with wTIMIT(W), HuBERT-base pre-trained with Librispeech and wTIMIT(N,W) shows better results than the google cloud speech-to-text (HuBERT: WER=33.06%, Google: WER=44.70%). It is speculated that the effect of pre-training with a mixture of whispered and normal speech (but without fine-tuning with whispered voice) may contribute to the accuracy of ASR.
+      </p>
+      <p>
+       Notably, WESPER is not trained with a labeled corpus. It is pre-trained with whispered and normal speeches, which improves the speech recognition accuracy.
+      </p>
+      <p>
+       Therefore, speech recognition via WESPER conversion does not require the preparation of a corpus of whispered speech for specific or unspecified speakers.
+      </p>
+      <figure id="fig11">
+       <img alt="Figure 11" aria-describedby="fig012" class="img-responsive" src="3580706_files\chi2370fig11.jpg"/>
+       <p id="fig012" style="display:none">
+        Speech quality evaluation for people with speech disorders ranked by 5-point MOS: (*: p &lt; 0.01, **: p &lt; 0.05, S1-S5: speakers, VFP: Vocal Fold Polyps, SD: Spasmodic Dysphonia)
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 11:
+        </span>
+        <span class="figure-title">
+         Speech quality evaluation for people with speech disorders ranked by 5-point MOS: (
+         <tt>
+          *
+         </tt>
+         :
+         <em>
+          p
+         </em>
+         &lt; 0.01,
+         <tt>
+          **
+         </tt>
+         :
+         <em>
+          p
+         </em>
+         &lt; 0.05,
+         <tt>
+          S1-S5
+         </tt>
+         : speakers,
+         <tt>
+          VFP
+         </tt>
+         : Vocal Fold Polyps,
+         <tt>
+          SD
+         </tt>
+         : Spasmodic Dysphonia)
+        </span>
+       </figcaption>
+      </figure>
+      <figure id="fig12">
+       <img alt="Figure 12" aria-describedby="fig013" class="img-responsive" src="3580706_files\chi2370fig12.jpg"/>
+       <p id="fig013" style="display:none">
+        Speech quality evaluation for people with vocal disabilities ranked by MUSHRA. (*: p &lt; 0.01, S1-S5: speakers, VFP: Vocal Fold Polyps, SD: Spasmodic Dysphonia)
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 12:
+        </span>
+        <span class="figure-title">
+         Speech quality evaluation for people with vocal disabilities ranked by MUSHRA. (
+         <tt>
+          *
+         </tt>
+         :
+         <em>
+          p
+         </em>
+         &lt; 0.01,
+         <tt>
+          S1-S5
+         </tt>
+         : speakers,
+         <tt>
+          VFP
+         </tt>
+         : Vocal Fold Polyps,
+         <tt>
+          SD
+         </tt>
+         : Spasmodic Dysphonia)
+        </span>
+       </figcaption>
+      </figure>
+      <figure id="fig13">
+       <img alt="Figure 13" aria-describedby="fig014" class="img-responsive" src="3580706_files\chi2370fig13.jpg"/>
+       <p id="fig014" style="display:none">
+        Hoarse-Normal assessments of utterances by people with speech disorders (*: p &lt; 0.01).
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 13:
+        </span>
+        <span class="figure-title">
+         Hoarse-Normal assessments of utterances by people with speech disorders (
+         <tt>
+          *
+         </tt>
+         :
+         <em>
+          p
+         </em>
+         &lt; 0.01).
+        </span>
+       </figcaption>
+      </figure>
+      <figure id="fig14">
+       <img alt="Figure 14" aria-describedby="fig015" class="img-responsive" src="3580706_files\chi2370fig14.jpg"/>
+       <p id="fig015" style="display:none">
+        Speech prosody consistency of utterances by people with speech disorders. (n.s.: not significant)
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 14:
+        </span>
+        <span class="figure-title">
+         Speech prosody consistency of utterances by people with speech disorders. (
+         <tt>
+          n.s.
+         </tt>
+         : not significant)
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-16">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.3
+         </span>
+         Evaluations on Speech Reconstruction for People with Speech Disorders
+        </h3>
+       </div>
+      </header>
+      <p>
+       An important goal of WESPER is the reconstruction of atypical speech of people with speech disorders or hearing impairments. This makes their speech more understandable to people who are not familiar with their individual speech patterns.
+      </p>
+      <p>
+       Dysphonia is an involuntary hoarse, breathy, or strained sounding voice or low volume or pitch. There are various causes, including spasms, polyps of the vocal tract, and other causes. If the vocal cords have been removed because of throat cancer or other causes, the voice becomes extremely difficult to produce. For hearing impairment, even if the vocal cords are not affected, the control of the vocal cords becomes difficult, resulting in dysphonia. Electrolarynx are used to mechanically vibrate the throat as a vocalization for people with vocal cord damage, but the sound produced is artificial, the pitch conversion is deterministic, and there is a large deviation from normal vocalization. The communication deficit caused by dysphonia is a serious problem, and its elimination by voice conversion technology should be of great social value.
+      </p>
+      <p>
+       To investigate the quality of the improvement by WESPER voice conversion, we evaluated the speech utterances of people with two types of speech disorders, as described below.
+      </p>
+      <ul class="list-no-style">
+       <li id="uid32" label="Vocal Fold Polyps (we will refer as VFPs):">
+        VFPs are among the most common benign lesions of the larynx, affecting the quality of voice production.
+        <br/>
+       </li>
+       <li id="uid33" label="Spasmodic Dysphonia (we will refer as SD):">
+        This is also called laryngeal dystonia, SD is another common neurological disorder that affects voice and speech. It is a lifelong condition that causes spasms of the muscles that produce the voice.
+        <br/>
+       </li>
+      </ul>
+      <p>
+       We used the Saarbruecken Voice Database (SVD) corpus [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+        1
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+        45
+       </a>
+       ] to sample utterances from people with VFP and SD. The SVD is a commonly used corpus of voices of people with speech disorders. It contains recordings of vowel utterances and a recording of the German reference sentence “Guten Morgen, wie geht es Ihnen?” (“Good morning, how are you?”). This sentence was used for evaluation.
+      </p>
+      <p>
+       Fifty participants were recruited for the evaluation using the Prolific [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ]. The recruited participants were evenly balanced in terms of gender and were all over the age of 18. The participants were fluent in German in addition to English, as the reference sentence used was in German.
+      </p>
+      <p>
+       The results are presented in Figures
+       <a class="fig" href="#fig11">
+        11
+       </a>
+       ,
+       <a class="fig" href="#fig12">
+        12
+       </a>
+       ,
+       <a class="fig" href="#fig13">
+        13
+       </a>
+       , and
+       <a class="fig" href="#fig14">
+        14
+       </a>
+       . Figure
+       <a class="fig" href="#fig11">
+        11
+       </a>
+       shows the results in terms of MOS. For both SD and VFP, WESPER-converted voices had higher MOS scores (
+       <em>
+        p
+       </em>
+       &lt; 0.01, effect size=0.66) and MUSHRA scores (
+       <em>
+        p
+       </em>
+       &lt; 0.01, effect size=0.79). Figure
+       <a class="fig" href="#fig13">
+        13
+       </a>
+       shows the responses to the question “Is this voice hoarse or normal?” and there is a clear improvement in the WESPER-converted voices compared to the original VFP and SD voices (
+       <em>
+        p
+       </em>
+       &lt; 0.01). Figure
+       <a class="fig" href="#fig14">
+        14
+       </a>
+       shows the answers to the question “Does the voice use consistent articulation, standard intonation, and prosody?”. Here, WESPER-converted and original voices showed nearly equal scores, although WESPER-converted voices showed slightly better scores. It can be assumed that WESPER did not affect the prosody of the original speech.
+      </p>
+      <p>
+       According to these evaluations, we can make the following conclusions.
+      </p>
+      <ul class="list-no-style">
+       <li id="list7" label="•">
+        WESPER-converted voices of people with VFP and SD speech disabilities showed better quality. This suggests that WESPER can improve the quality of the speech of people with these conditions in terms of its intelligibility by people unfamiliar with their individual speech patterns.
+        <br/>
+       </li>
+       <li id="list8" label="•">
+        Similarly, WESPER can improve the naturalness of original VFP and SD speech.
+        <br/>
+       </li>
+       <li id="list9" label="•">
+        WESPER could also preserve the natural prosody of the source speech.
+        <br/>
+       </li>
+      </ul>
+      <p>
+       Notably, this test was performed on German sentences. Although the WESPER pre-training was performed only on English speech and not on German speech, the prosody of the source speech was preserved and its MOSs were improved. Therefore, this result may demonstrate the language-independence ability of the WESPER model. The attached video shows an example of whisper to normal conversion in Japanese. Because wav2vec 2.0, the base model for STU, has also shown language-independent pre-training performance [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+        9
+       </a>
+       ], the language-independent ability of WESPER could be a feature worth evaluating in the future.
+      </p>
+     </section>
+     <section id="sec-17">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.4
+         </span>
+         Speech Reconstruction Evaluation for People with Hearing Impairment
+        </h3>
+       </div>
+      </header>
+      <figure id="fig15">
+       <img alt="Figure 15" aria-describedby="fig016" class="img-responsive" src="3580706_files\chi2370fig15.jpg"/>
+       <p id="fig016" style="display:none">
+        Speech quality evaluation for people with hearing impairment: Speech quality was ranked by 5-point MOS. (S1’-S4’ :speakers, *: p &lt; 0.01, **: p &lt; 0.05)
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 15:
+        </span>
+        <span class="figure-title">
+         Speech quality evaluation for people with hearing impairment: Speech quality was ranked by 5-point MOS. (
+         <tt>
+          S1’-S4’
+         </tt>
+         :speakers,
+         <tt>
+          *
+         </tt>
+         :
+         <em>
+          p
+         </em>
+         &lt; 0.01,
+         <tt>
+          **
+         </tt>
+         :
+         <em>
+          p
+         </em>
+         &lt; 0.05)
+        </span>
+       </figcaption>
+      </figure>
+      <figure id="fig16">
+       <img alt="Figure 16" aria-describedby="fig017" class="img-responsive" src="3580706_files\chi2370fig16.jpg"/>
+       <p id="fig017" style="display:none">
+        Speech quality evaluation for people with hearing impairment: Speech quality was ranked by MUSHRA. (S1’-S4’: speakers, **: p &lt; 0.05)
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 16:
+        </span>
+        <span class="figure-title">
+         Speech quality evaluation for people with hearing impairment: Speech quality was ranked by MUSHRA. (
+         <tt>
+          S1’-S4’
+         </tt>
+         : speakers,
+         <tt>
+          **
+         </tt>
+         :
+         <em>
+          p
+         </em>
+         &lt; 0.05)
+        </span>
+       </figcaption>
+      </figure>
+      <figure id="fig17">
+       <img alt="Figure 17" aria-describedby="fig018" class="img-responsive" src="3580706_files\chi2370fig17.jpg"/>
+       <p id="fig018" style="display:none">
+        Hoarse-Normal assessments of utterances by people with hearing impairment. (*: p &lt; 0.01, **: p &lt; 0.05)
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 17:
+        </span>
+        <span class="figure-title">
+         Hoarse-Normal assessments of utterances by people with hearing impairment. (
+         <tt>
+          *
+         </tt>
+         :
+         <em>
+          p
+         </em>
+         &lt; 0.01,
+         <tt>
+          **
+         </tt>
+         :
+         <em>
+          p
+         </em>
+         &lt; 0.05)
+        </span>
+       </figcaption>
+      </figure>
+      <figure id="fig18">
+       <img alt="Figure 18" aria-describedby="fig019" class="img-responsive" src="3580706_files\chi2370fig18.jpg"/>
+       <p id="fig019" style="display:none">
+        Speech natural prosody consistency by people with hearing impairment. (**: p &lt; 0.05)
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 18:
+        </span>
+        <span class="figure-title">
+         Speech natural prosody consistency by people with hearing impairment. (
+         <tt>
+          **
+         </tt>
+         :
+         <em>
+          p
+         </em>
+         &lt; 0.05)
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       Finally, we evaluated the effect of speech reconstruction by WESPER for people with hearing impairments. People with hearing loss cannot hear their own speech and that of others; therefore, they tend to have difficulty speaking in a way that is easily understood by general speakers. However, because their vocal organs are normal, their speech has different characteristics from that of people with dysphasia.
+      </p>
+      <p>
+       We used the “corpus of deaf speech for acoustic and speech production research” [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+        40
+       </a>
+       ]. Utterances of five speakers (one was a hearing speaker and the other four were hearing impaired) were used. We recruited 50 evaluation participants using Prolific [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ], who were evenly balanced in terms of gender, fluent English speakers, and over the age of 18. We asked the participants to perform a 5-point ranking of each utterance in terms of MOS, hoarse-normal, and natural prosody.
+      </p>
+      <p>
+       The results are presented in Figures
+       <a class="fig" href="#fig15">
+        15
+       </a>
+       ,
+       <a class="fig" href="#fig16">
+        16
+       </a>
+       ,
+       <a class="fig" href="#fig17">
+        17
+       </a>
+       , and
+       <a class="fig" href="#fig18">
+        18
+       </a>
+       . These results indicate that MOS, MUSHRA, and other rating scores were higher for those converted by WESPER (
+       <em>
+        p
+       </em>
+       &lt; 0.05, effect size = 0.45 for MOS,
+       <em>
+        p
+       </em>
+       &lt; 0.05, effect size = 0.21 for MUSHRA), but the degree of improvement was less than for the speakers with voice disorders. In addition, prosody ratings were significantly lower for the speech of the hearing impaired compared to the speech of the hearing speakers. Therefore, these results indicate that people with hearing loss may have difficulty controlling prosody while speaking.
+      </p>
+      <p>
+       The results of all experiments are summarized in Table
+       <a class="tbl" href="#tab3">
+        3
+       </a>
+       .
+      </p>
+      <div class="table-responsive" id="tab3">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 3:
+        </span>
+        <span class="table-title">
+         Summary of Voice Conversion Quality Evaluation (MUSHRA: 100-point score, others:5-point score)
+        </span>
+       </div>
+       <table class="table">
+        <thead>
+         <tr>
+          <th colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           Speaker Type
+          </th>
+          <th style="text-align:center;">
+           MOS
+          </th>
+          <th style="text-align:center;">
+           MUSHRA
+          </th>
+          <th style="text-align:center;">
+           Q1
+          </th>
+          <th style="text-align:center;">
+           Q2
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           Normal
+          </td>
+          <td style="text-align:center;">
+           4.15
+          </td>
+          <td style="text-align:center;">
+           90.01
+          </td>
+          <td style="text-align:center;">
+           4.16
+          </td>
+          <td>
+           3.99
+          </td>
+         </tr>
+         <tr>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           Whisper
+          </td>
+          <td style="text-align:center;">
+           3.27
+          </td>
+          <td style="text-align:center;">
+           51.33
+          </td>
+          <td style="text-align:center;">
+           2.90
+          </td>
+          <td>
+           3.31
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           <strong>
+            WESPER[Whisper]
+           </strong>
+          </td>
+          <td style="text-align:center;">
+           3.79
+          </td>
+          <td style="text-align:center;">
+           63.64
+          </td>
+          <td style="text-align:center;">
+           3.97
+          </td>
+          <td>
+           3.43
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td colspan="5" style="text-align:center;">
+           Speakers with speech disorders
+          </td>
+          <td>
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           VFP
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           S1
+          </td>
+          <td style="text-align:center;">
+           2.72
+          </td>
+          <td style="text-align:center;">
+           19.13
+          </td>
+          <td style="text-align:center;">
+           1.54
+          </td>
+          <td>
+           3.00
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           WESPER[S1]
+          </td>
+          <td style="text-align:center;">
+           3.42
+          </td>
+          <td style="text-align:center;">
+           35.72
+          </td>
+          <td style="text-align:center;">
+           3.78
+          </td>
+          <td>
+           3.24
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           S2
+          </td>
+          <td style="text-align:center;">
+           3.08
+          </td>
+          <td style="text-align:center;">
+           36.66
+          </td>
+          <td style="text-align:center;">
+           2.20
+          </td>
+          <td>
+           3.40
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           WESPER[S2]
+          </td>
+          <td style="text-align:center;">
+           3.96
+          </td>
+          <td style="text-align:center;">
+           57.53
+          </td>
+          <td style="text-align:center;">
+           4.16
+          </td>
+          <td>
+           3.76
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           S3
+          </td>
+          <td style="text-align:center;">
+           3.20
+          </td>
+          <td style="text-align:center;">
+           42.19
+          </td>
+          <td style="text-align:center;">
+           2.00
+          </td>
+          <td>
+           3.26
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           WESPER[S3]
+          </td>
+          <td style="text-align:center;">
+           4.12
+          </td>
+          <td style="text-align:center;">
+           62.74
+          </td>
+          <td style="text-align:center;">
+           4.36
+          </td>
+          <td>
+           3.60
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           SD
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           S4
+          </td>
+          <td style="text-align:center;">
+           2.24
+          </td>
+          <td style="text-align:center;">
+           27.51
+          </td>
+          <td style="text-align:center;">
+           1.20
+          </td>
+          <td>
+           2.36
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           WESPER[S4]
+          </td>
+          <td style="text-align:center;">
+           2.88
+          </td>
+          <td style="text-align:center;">
+           44.45
+          </td>
+          <td style="text-align:center;">
+           3.36
+          </td>
+          <td>
+           2.20
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           S5
+          </td>
+          <td style="text-align:center;">
+           3.54
+          </td>
+          <td style="text-align:center;">
+           49.86
+          </td>
+          <td style="text-align:center;">
+           2.68
+          </td>
+          <td>
+           3.54
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           WESPER[S4]
+          </td>
+          <td style="text-align:center;">
+           3.94
+          </td>
+          <td style="text-align:center;">
+           65.53
+          </td>
+          <td style="text-align:center;">
+           3.90
+          </td>
+          <td>
+           3.64
+          </td>
+         </tr>
+         <tr>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           All
+          </td>
+          <td style="text-align:center;">
+           2.93
+          </td>
+          <td style="text-align:center;">
+           35.20
+          </td>
+          <td style="text-align:center;">
+           1.93
+          </td>
+          <td>
+           3.12
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           WESPER[All]
+          </td>
+          <td style="text-align:center;">
+           3.64
+          </td>
+          <td style="text-align:center;">
+           53.30
+          </td>
+          <td style="text-align:center;">
+           3.89
+          </td>
+          <td>
+           3.29
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td colspan="5" style="text-align:center;">
+           Speakers with hearing impaired
+          </td>
+          <td>
+          </td>
+         </tr>
+         <tr>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           Normal
+          </td>
+          <td style="text-align:center;">
+           3.68
+          </td>
+          <td style="text-align:center;">
+           91.75
+          </td>
+          <td style="text-align:center;">
+           3.76
+          </td>
+          <td>
+           3.75
+          </td>
+         </tr>
+         <tr>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           S1’
+          </td>
+          <td style="text-align:center;">
+           2.30
+          </td>
+          <td style="text-align:center;">
+           43.05
+          </td>
+          <td style="text-align:center;">
+           2.29
+          </td>
+          <td>
+           2.51
+          </td>
+         </tr>
+         <tr>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           WESPER[S1’]
+          </td>
+          <td style="text-align:center;">
+           2.61
+          </td>
+          <td style="text-align:center;">
+           47.47
+          </td>
+          <td style="text-align:center;">
+           2.38
+          </td>
+          <td>
+           2.97
+          </td>
+         </tr>
+         <tr>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           S2’
+          </td>
+          <td style="text-align:center;">
+           1.61
+          </td>
+          <td style="text-align:center;">
+           20.76
+          </td>
+          <td style="text-align:center;">
+           1.74
+          </td>
+          <td>
+           1.84
+          </td>
+         </tr>
+         <tr>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           WESPER[S2’]
+          </td>
+          <td style="text-align:center;">
+           1.93
+          </td>
+          <td style="text-align:center;">
+           20.05
+          </td>
+          <td style="text-align:center;">
+           2.06
+          </td>
+          <td>
+           2.55
+          </td>
+         </tr>
+         <tr>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           S3’
+          </td>
+          <td style="text-align:center;">
+           2.03
+          </td>
+          <td style="text-align:center;">
+           28.30
+          </td>
+          <td style="text-align:center;">
+           2.19
+          </td>
+          <td>
+           2.22
+          </td>
+         </tr>
+         <tr>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           WESPER[S3’]
+          </td>
+          <td style="text-align:center;">
+           2.39
+          </td>
+          <td style="text-align:center;">
+           35.07
+          </td>
+          <td style="text-align:center;">
+           2.39
+          </td>
+          <td>
+           2.93
+          </td>
+         </tr>
+         <tr>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           S4’
+          </td>
+          <td style="text-align:center;">
+           2.38
+          </td>
+          <td style="text-align:center;">
+           35.86
+          </td>
+          <td style="text-align:center;">
+           2.26
+          </td>
+          <td>
+           2.59
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           WESPER[S4’]
+          </td>
+          <td style="text-align:center;">
+           3.06
+          </td>
+          <td style="text-align:center;">
+           41.23
+          </td>
+          <td style="text-align:center;">
+           2.62
+          </td>
+          <td>
+           3.35
+          </td>
+         </tr>
+         <tr>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           All
+          </td>
+          <td style="text-align:center;">
+           2.08
+          </td>
+          <td style="text-align:center;">
+           32.07
+          </td>
+          <td style="text-align:center;">
+           2.28
+          </td>
+          <td>
+           2.12
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;">
+           WESPER[All]
+          </td>
+          <td style="text-align:center;">
+           2.50
+          </td>
+          <td style="text-align:center;">
+           36.21
+          </td>
+          <td style="text-align:center;">
+           2.94
+          </td>
+          <td>
+           2.36
+          </td>
+         </tr>
+        </tbody>
+        <tbody>
+         <tr>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           MOS
+          </td>
+          <td colspan="5" style="text-align:left;border-right: 2pt solid #000000;">
+           Mean Opinion Score
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           MUSHRA
+          </td>
+          <td colspan="5" style="text-align:left;border-right: 2pt solid #000000;">
+           MUltiple Stimuli with Hidden Reference and Anchor
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Q1
+          </td>
+          <td colspan="5" style="text-align:left;border-right: 2pt solid #000000;">
+           <em>
+            ‘Is this voice hoarse or normal?’
+           </em>
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Q2
+          </td>
+          <td colspan="5" style="text-align:left;border-right: 2pt solid #000000;">
+           <em>
+            ‘Is the voice use consistent articulation,
+           </em>
+           standard intonation and prosody?’
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           WESPER[•]
+          </td>
+          <td colspan="5" style="text-align:left;border-right: 2pt solid #000000;">
+           WESPER converted •
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           VFP
+          </td>
+          <td colspan="5" style="text-align:left;border-right: 2pt solid #000000;">
+           Vocal Fold Polyps speakers
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           SD
+          </td>
+          <td colspan="5" style="text-align:left;border-right: 2pt solid #000000;">
+           Spasmodic Dysphonia speakers
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           S1-S5, S1’-S4’
+          </td>
+          <td colspan="5" style="text-align:left;border-right: 2pt solid #000000;">
+           speaker IDs
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </section>
+    </section>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         6
+        </span>
+        DISCUSSIONS
+       </h2>
+      </div>
+     </header>
+     <section id="sec-19">
+      <section id="sec-20">
+       <p>
+        <em>
+         Combination of WESPER and User-Dependent Fine-tuning.
+        </em>
+        The results of the evaluation experiments indicated that the degree of improvement in the speech of people with hearing impairments was less than that of the speech of people with dysphasia. Therefore, we assume that the former has significant prosodic variations. Although the primary purpose of this study was to achieve speaker-independent speech conversion by pre-training alone, we plan to conduct additional experiments to investigate whether the conversion performance can be improved by applying small-scale fine-tuning to each speaker.
+       </p>
+       <p>
+        Even in this case, we believe that speech pairs are necessary, but text transcription is not required. A pair of whispered and hoarse speech utterances and normal speech converted to a common speech unit by STU can be used instead of text transcription, as in the case of ASR fine-tuning.
+       </p>
+      </section>
+      <section id="sec-21">
+       <p>
+        <em>
+         Audio Input Device Suitable for Whispered Speech.
+        </em>
+        As demonstrated in this study, whispered or hoarse voices can be converted into normal voices. In practice, the selection of an appropriate audio input device would be important. We are currently testing our proposed approach with normal headsets and a directional array microphone (designed for smart speakers), and have obtained good results. For wearable devices, a non-audible murmur (NAM) microphone that detects skin vibrations could be used for inaudible utterances [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+         20
+        </a>
+        ]. Combining with noise reduction techniques such as  [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+         7
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+         61
+        </a>
+        ] is another important future direction.
+       </p>
+       <p>
+        Philips and Dyson are also developing masks that provide powered respiratory ventilation to protect against air pollution and infectious diseases [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+         13
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+         26
+        </a>
+        ]. A microphone can be placed inside such masks to pick up a whispered voice, which would give an effect almost equivalent to silent speech.
+       </p>
+      </section>
+      <section id="sec-22">
+       <p>
+        <em>
+         Human-AI Integration.
+        </em>
+        This research concerns machine-learning techniques for converting the whispered speech of unspecified speakers into normal speech. In practice, however, we established that users noticed that some similar whispered utterances were easily converted to normal speech, whereas others were difficult. They tried to speak by relying on machine learning on the user side. This interaction suggests that machine learning does not only unilaterally extend human capabilities, but that further synergistic effects can be achieved by learning on the human side as well. This can be seen as an actual example of human-AI integration [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+         47
+        </a>
+        ] through vocalization.
+       </p>
+      </section>
+     </section>
+    </section>
+    <section id="sec-23">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         7
+        </span>
+        CONCLUSION
+       </h2>
+      </div>
+     </header>
+     <p>
+      In this study, we proposed WESPER as a mechanism for the real-time conversion of whispered speech into normal speech. We confirmed that a common speech unit can be obtained by self-supervised learning even when the acoustic features of whispered and normal speech are different. Speech reproduction can be learned from speech data of arbitrary target speakers only without using text labels. There is no need to train for each user, nor is there a need for parallel data for whispered and normal speech. From speech units, WESPER can reconstruct utterances of any target speaker and requires only unlabeled speech data from target speakers. We confirmed that the quality of the converted speech is improved and that the prosody of the speech is preserved. Additionally, we reported an evaluation of the results of reconstructing speech utterances of people with speech disorders and hearing impairments.
+     </p>
+    </section>
+   </section>
+   <section class="back-matter">
+    <section id="sec-24">
+     <header>
+      <div class="title-info">
+       <h2>
+        ACKNOWLEDGMENTS
+       </h2>
+      </div>
+     </header>
+     <p>
+      We are grateful to the reviewers for their valuable comments. This work was supported by JST Moonshot R&amp;D Grant Number JPMJMS2012, JST CREST Grant Number JPMJCR17A3, the commissioned research by NICT Japan, and The University of Tokyo Human Augmentation Research Initiative.
+     </p>
+    </section>
+    <section id="ref-001">
+     <header>
+      <div class="title-info">
+       <h2 class="page-brake-head">
+        REFERENCES
+       </h2>
+      </div>
+     </header>
+     <ul class="bibUl">
+      <li id="BibPLXBIB0001" label="[1]">
+       A. Al-Nasheri, G. Muhammad, M. Alsulaiman, and Z. Ali. 2017. Investigation of Voice Pathology Detection and Classification on Different Frequency Regions Using Correlation Functions.
+       <em>
+        <em>
+         Journal of Voice
+        </em>
+       </em>
+       (2017).
+       <a class="link-inline force-break" href="https://doi.org/10.1016/j.jvoice.2016.01.014">
+        https://doi.org/10.1016/j.jvoice.2016.01.014
+       </a>
+      </li>
+      <li id="BibPLXBIB0002" label="[2]">
+       Alexei Baevski, Henry Zhou, Abdelrahman Mohamed, and Michael Auli. 2020. wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations.
+       <em>
+        <em>
+         arXiv [cs.CL]
+        </em>
+       </em>
+       (June 2020).
+      </li>
+      <li id="BibPLXBIB0003" label="[3]">
+       Abdelkareem Bedri, Himanshu Sahni, Pavleen Thukral, Thad Starner, David Byrd, Peter Presti, Gabriel Reyes, Maysam Ghovanloo, and Zehua Guo. 2015. Toward Silent-Speech Control of Consumer Wearables.
+       <em>
+        <em>
+         Computer
+        </em>
+       </em>
+       48, 10 (2015), 54–62.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/MC.2015.310">
+        https://doi.org/10.1109/MC.2015.310
+       </a>
+      </li>
+      <li id="BibPLXBIB0004" label="[4]">
+       Fadi Biadsy, Ron J. Weiss, Pedro J. Moreno, Dimitri Kanevsky, and Ye Jia. 2019. Parrotron: An End-to-End Speech-to-Speech Conversion Model and its Applications to Hearing-Impaired Speech and Speech Separation.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.1904.04169">
+        https://doi.org/10.48550/ARXIV.1904.04169
+       </a>
+      </li>
+      <li id="BibPLXBIB0005" label="[5]">
+       Zalán Borsos, Raphaël Marinier, Damien Vincent, Eugene Kharitonov, Olivier Pietquin, Matt Sharifi, Olivier Teboul, David Grangier, Marco Tagliasacchi, and Neil Zeghidour. 2022. AudioLM: a Language Modeling Approach to Audio Generation.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2209.03143">
+        https://doi.org/10.48550/ARXIV.2209.03143
+       </a>
+      </li>
+      <li id="BibPLXBIB0006" label="[6]">
+       Heng-Jui Chang, Alexander H Liu, Hung-Yi Lee, and Lin-Shan Lee. 2020. End-to-end Whispered Speech Recognition with Frequency-weighted Approaches and Pseudo Whisper Pre-training. (May 2020). arxiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/2005.01972">
+        2005.01972
+       </a>
+       [cs.CL]
+      </li>
+      <li id="BibPLXBIB0007" label="[7]">
+       Ishan Chatterjee, Maruchi Kim, Vivek Jayaram, Shyamnath Gollakota, Ira Kemelmacher, Shwetak Patel, and Steven M. Seitz. 2022. ClearBuds. In
+       <em>
+        Proceedings of the 20th Annual International Conference on Mobile Systems, Applications and Services
+       </em>
+       . ACM.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3498361.3538933">
+        https://doi.org/10.1145/3498361.3538933
+       </a>
+      </li>
+      <li id="BibPLXBIB0008" label="[8]">
+       Chung-Ming Chien, Jheng-Hao Lin, Chien-yu Huang, Po-chun Hsu, and Hung-yi Lee. 2021. Investigating on Incorporating Pretrained and Learnable Speaker Representations for Multi-Speaker Multi-Style Text-to-Speech. In
+       <em>
+        ICASSP 2021 - 2021 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)
+       </em>
+       . 8588–8592.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ICASSP39728.2021.9413880">
+        https://doi.org/10.1109/ICASSP39728.2021.9413880
+       </a>
+      </li>
+      <li id="BibPLXBIB0009" label="[9]">
+       Alexis Conneau, Alexei Baevski, Ronan Collobert, Abdelrahman Mohamed, and Michael Auli. 2020. Unsupervised Cross-lingual Representation Learning for Speech Recognition.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2006.13979">
+        https://doi.org/10.48550/ARXIV.2006.13979
+       </a>
+      </li>
+      <li id="BibPLXBIB0010" label="[10]">
+       Marius Cotescu, Thomas Drugman, Goeric Huybrechts, Jaime Lorenzo-Trueba, and Alexis Moinet. 2019. Voice Conversion for Whispered Speech Synthesis. (Dec. 2019). arxiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/1912.05289">
+        1912.05289
+       </a>
+       [cs.SD]
+      </li>
+      <li id="BibPLXBIB0011" label="[11]">
+       B. Denby, T. Schultz, K. Honda, T. Hueber, J. M. Gilbert, and J. S. Brumberg. 2010. Silent Speech Interfaces.
+       <em>
+        <em>
+         Speech Commun.
+        </em>
+       </em>
+       52, 4 (April 2010), 270–287.
+       <a class="link-inline force-break" href="https://doi.org/10.1016/j.specom.2009.08.002">
+        https://doi.org/10.1016/j.specom.2009.08.002
+       </a>
+      </li>
+      <li id="BibPLXBIB0012" label="[12]">
+       Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2018. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.1810.04805">
+        https://doi.org/10.48550/ARXIV.1810.04805
+       </a>
+      </li>
+      <li id="BibPLXBIB0013" label="[13]">
+       Dyson. 2022. dyson zone: Air-purifying headphones with active noise cancelling.
+       <a class="link-inline force-break" href="https://www.dyson.co.uk/en">
+        https://www.dyson.co.uk/en
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0014" label="[14]">
+       Joo Freitas, Antnio Teixeira, Miguel Sales Dias, and Samuel Silva. 2016.
+       <em>
+        An Introduction to Silent Speech Interfaces (1st ed.)
+       </em>
+       . Springer Publishing Company, Incorporated.
+      </li>
+      <li id="BibPLXBIB0015" label="[15]">
+       Masaaki Fukumoto. 2018. SilentVoice: Unnoticeable Voice Input by Ingressive Speech. In Proceedings of the 31st Annual ACM Symposium on User Interface Software and Technology (Berlin, Germany) (UIST ’18). Association for Computing Machinery, New York, NY, USA, 237–246.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3242587.3242603">
+        https://doi.org/10.1145/3242587.3242603
+       </a>
+      </li>
+      <li id="BibPLXBIB0016" label="[16]">
+       Teng Gao, Jian Zhou, Huabin Wang, Liang Tao, and Hon Keung Kwan. 2021. Attention-Guided Generative Adversarial Network for Whisper to Normal Speech Conversion.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2111.01342">
+        https://doi.org/10.48550/ARXIV.2111.01342
+       </a>
+      </li>
+      <li id="BibPLXBIB0017" label="[17]">
+       Alex Graves, Santiago Fernández, Faustino Gomez, and Jürgen Schmidhuber. 2006. Connectionist Temporal Classification: Labelling Unsegmented Sequence Data with Recurrent Neural Networks. In Proceedings of the 23rd International Conference on Machine Learning (Pittsburgh, Pennsylvania, USA) (ICML ’06). Association for Computing Machinery, New York, NY, USA, 369–376.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1143844.1143891">
+        https://doi.org/10.1145/1143844.1143891
+       </a>
+      </li>
+      <li id="BibPLXBIB0018" label="[18]">
+       Dorde T. Grozdic and Slobodan T. Jovicic. 2017. Whispered Speech Recognition Using Deep Denoising Autoencoder and Inverse Filtering.
+       <em>
+        <em>
+         IEEE/ACM Trans. Audio, Speech and Lang. Proc.
+        </em>
+       </em>
+       25, 12 (dec 2017), 2313–2322.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/TASLP.2017.2738559">
+        https://doi.org/10.1109/TASLP.2017.2738559
+       </a>
+      </li>
+      <li id="BibPLXBIB0019" label="[19]">
+       Tomoki Hayashi, Wen-Chin Huang, Kazuhiro Kobayashi, and Tomoki Toda. 2021. Non-autoregressive sequence-to-sequence voice conversion.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2104.06793">
+        https://doi.org/10.48550/ARXIV.2104.06793
+       </a>
+      </li>
+      <li id="BibPLXBIB0020" label="[20]">
+       Panikos Heracleous, Yoshitaka Nakajima, Hiroshi Saruwatari, and Kiyohiro Shikano. 2005. A Tissue-Conductive Acoustic Sensor Applied in Speech Recognition for Privacy. In Proceedings of the 2005 Joint Conference on Smart Objects and Ambient Intelligence: Innovative Context-Aware Services: Usages and Technologies (Grenoble, France) (sOc-EUSAI ’05). Association for Computing Machinery, New York, NY, USA, 93–97.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1107548.1107577">
+        https://doi.org/10.1145/1107548.1107577
+       </a>
+      </li>
+      <li id="BibPLXBIB0021" label="[21]">
+       Wei-Ning Hsu, Benjamin Bolte, Yao-Hung Hubert Tsai, Kushal Lakhotia, Ruslan Salakhutdinov, and Abdelrahman Mohamed. 2021. HuBERT: Self-Supervised Speech Representation Learning by Masked Prediction of Hidden Units.
+       <em>
+        <em>
+         IEEE/ACM Trans. Audio, Speech and Lang. Proc.
+        </em>
+       </em>
+       29 (jan 2021), 3451–3460.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/TASLP.2021.3122291">
+        https://doi.org/10.1109/TASLP.2021.3122291
+       </a>
+      </li>
+      <li id="BibPLXBIB0022" label="[22]">
+       Wen-Chin Huang, Tomoki Hayashi, Shinji Watanabe, and Tomoki Toda. 2020. The Sequence-to-Sequence Baseline for the Voice Conversion Challenge 2020: Cascading ASR and TTS.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2010.02434">
+        https://doi.org/10.48550/ARXIV.2010.02434
+       </a>
+      </li>
+      <li id="BibPLXBIB0023" label="[23]">
+       Amazon.com Inc.2018. How Alexa keeps getting smarter.
+       <a class="link-inline force-break" href="https://www.aboutamazon.com/devices/how-alexa-keeps-getting-smarter">
+        https://www.aboutamazon.com/devices/how-alexa-keeps-getting-smarter
+       </a>
+      </li>
+      <li id="BibPLXBIB0024" label="[24]">
+       Google Inc.2020. Google Cloud Speech-to-Text.
+       <a class="link-inline force-break" href="https://cloud.google.com/speech-to-text">
+        https://cloud.google.com/speech-to-text
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0025" label="[25]">
+       Prolific inc.2014. Prolific.
+       <a class="link-inline force-break" href="https://www.prolific.co">
+        https://www.prolific.co
+       </a>
+      </li>
+      <li id="BibPLXBIB0026" label="[26]">
+       Philips Inc.2021. Fresh Air Mask Series 6000.
+       <a class="link-inline force-break" href="https://www.philips.com.sg/c-p/ACM066_01/fresh-air-mask-series-6000">
+        https://www.philips.com.sg/c-p/ACM066_01/fresh-air-mask-series-6000
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0027" label="[27]">
+       Keith Ito and Linda Johnson. 2017. The LJ Speech Dataset.
+       <a class="link-inline force-break" href="https://keithito.com/LJ-Speech-Dataset/">
+        https://keithito.com/LJ-Speech-Dataset/
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0028" label="[28]">
+       jfsantos. 2019. mushraJS.
+       <a class="link-inline force-break" href="https://github.com/jfsantos/mushraJS">
+        https://github.com/jfsantos/mushraJS
+       </a>
+      </li>
+      <li id="BibPLXBIB0029" label="[29]">
+       Hirokazu Kameoka, Takuhiro Kaneko, Kou Tanaka, and Nobukatsu Hojo. 2018. StarGAN-VC: Non-parallel many-to-many voice conversion with star generative adversarial networks.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.1806.02169">
+        https://doi.org/10.48550/ARXIV.1806.02169
+       </a>
+      </li>
+      <li id="BibPLXBIB0030" label="[30]">
+       Takuhiro Kaneko and Hirokazu Kameoka. 2017. Parallel-Data-Free Voice Conversion Using Cycle-Consistent Adversarial Networks.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.1711.11293">
+        https://doi.org/10.48550/ARXIV.1711.11293
+       </a>
+      </li>
+      <li id="BibPLXBIB0031" label="[31]">
+       Arnav Kapur, Shreyas Kapur, and Pattie Maes. 2018. AlterEgo: A Personalized Wearable Silent Speech Interface. In 23rd International Conference on Intelligent User Interfaces (Tokyo, Japan) (IUI ’18). ACM, 43–53.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3172944.3172977">
+        https://doi.org/10.1145/3172944.3172977
+       </a>
+      </li>
+      <li id="BibPLXBIB0032" label="[32]">
+       Naoki Kimura, Michinari Kono, and Jun Rekimoto. 2019. SottoVoce: An Ultrasound Imaging-Based Silent Speech Interaction Using Deep Neural Networks. In Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems (Glasgow, Scotland Uk) (CHI ’19). Association for Computing Machinery, New York, NY, USA, 1–11.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300376">
+        https://doi.org/10.1145/3290605.3300376
+       </a>
+      </li>
+      <li id="BibPLXBIB0033" label="[33]">
+       Jungil Kong, Jaehyeon Kim, and Jaekyoung Bae. 2020. HiFi-GAN: Generative Adversarial Networks for Efficient and High Fidelity Speech Synthesis.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2010.05646">
+        https://doi.org/10.48550/ARXIV.2010.05646
+       </a>
+      </li>
+      <li id="BibPLXBIB0034" label="[34]">
+       Felix Kreuk, Adam Polyak, Jade Copet, Eugene Kharitonov, Tu-Anh Nguyen, Morgane Rivière, Wei-Ning Hsu, Abdelrahman Mohamed, Emmanuel Dupoux, and Yossi Adi. 2021. Textless Speech Emotion Conversion using Discrete and Decomposed Representations.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2111.07402">
+        https://doi.org/10.48550/ARXIV.2111.07402
+       </a>
+      </li>
+      <li id="BibPLXBIB0035" label="[35]">
+       Kushal Lakhotia, Evgeny Kharitonov, Wei-Ning Hsu, Yossi Adi, Adam Polyak, Benjamin Bolte, Tu-Anh Nguyen, Jade Copet, Alexei Baevski, Adelrahman Mohamed, and Emmanuel Dupoux. 2021. Generative Spoken Language Modeling from Raw Audio.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2102.01192">
+        https://doi.org/10.48550/ARXIV.2102.01192
+       </a>
+      </li>
+      <li id="BibPLXBIB0036" label="[36]">
+       Boon Pang Lim. 2010. Computational differences between whispered and non-whispered speech, Ph.D. Thesis, University of Illinois Urbana-Champaign.
+      </li>
+      <li id="BibPLXBIB0037" label="[37]">
+       H. Malaviya, J. Shah, M. Patel, J. Munshi, and H. A. Patil. 2020. Mspec-Net : Multi-Domain Speech Conversion Network. In
+       <em>
+        ICASSP 2020 - 2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)
+       </em>
+       . 7764–7768.
+      </li>
+      <li id="BibPLXBIB0038" label="[38]">
+       Michael McAuliffe, Michaela Socolof, Sarah Mihuc, Michael Wagner, and Morgan Sonderegger. 2017. Montreal Forced Aligner: Trainable Text-Speech Alignment Using Kaldi. 498–502.
+       <a class="link-inline force-break" href="https://doi.org/10.21437/Interspeech.2017-1386">
+        https://doi.org/10.21437/Interspeech.2017-1386
+       </a>
+      </li>
+      <li id="BibPLXBIB0039" label="[39]">
+       Leland McInnes, John Healy, and James Melville. 2018. UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.1802.03426">
+        https://doi.org/10.48550/ARXIV.1802.03426
+       </a>
+      </li>
+      <li id="BibPLXBIB0040" label="[40]">
+       Lisa Lucks Mendel, Sungmin Lee, Monique Pousson, Chhayakanta Patro, Skylar McSorley, Bonny Banerjee, Shamima Najnin, and Masoumeh Heidari Kapourchali. 2017. Corpus of deaf speech for acoustic and speech production research.
+       <em>
+        <em>
+         The Journal of the Acoustical Society of America
+        </em>
+       </em>
+       142, (1)(2017), EL102.
+       <a class="link-inline force-break" href="https://doi.org/10.1121/1.4994288">
+        https://doi.org/10.1121/1.4994288
+       </a>
+      </li>
+      <li id="BibPLXBIB0041" label="[41]">
+       Marco A. Oliveira. 2022. Machine Learning Approaches for Whisper to Normal Speech Conversion: A Survey.
+       <em>
+        <em>
+         U.Porto Journal of Engineering
+        </em>
+       </em>
+       8, 2 (2022), 202–212.
+       <a class="link-inline force-break" href="https://doi.org/10.24840/2183-6493_008.002_0016">
+        https://doi.org/10.24840/2183-6493_008.002_0016
+       </a>
+      </li>
+      <li id="BibPLXBIB0042" label="[42]">
+       Vassil Panayotov, Guoguo Chen, Daniel Povey, and Sanjeev Khudanpur. 2015. Librispeech: An ASR corpus based on public domain audio books. In
+       <em>
+        2015 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)
+       </em>
+       . 5206–5210.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ICASSP.2015.7178964">
+        https://doi.org/10.1109/ICASSP.2015.7178964
+       </a>
+      </li>
+      <li id="BibPLXBIB0043" label="[43]">
+       Santiago Pascual, Antonio Bonafonte, Joan Serrà, and Jose A. Gonzalez. 2018. Whispered-to-voiced Alaryngeal Speech Conversion with Generative Adversarial Networks.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.1808.10687">
+        https://doi.org/10.48550/ARXIV.1808.10687
+       </a>
+      </li>
+      <li id="BibPLXBIB0044" label="[44]">
+       Leonardo Pepino, Pablo Riera, and Luciana Ferrer. 2021. Emotion Recognition from Speech Using Wav2vec 2.0 Embeddings. (April 2021). arxiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/2104.03502">
+        2104.03502
+       </a>
+       [cs.SD]
+      </li>
+      <li id="BibPLXBIB0045" label="[45]">
+       Manfred P̎utzer and William J. Barry. 2016. Saarbruecken voice database.
+       <a class="link-inline force-break" href="https://stimmdb.coli.uni-saarland.de">
+        https://stimmdb.coli.uni-saarland.de
+       </a>
+      </li>
+      <li id="BibPLXBIB0046" label="[46]">
+       Kaizhi Qian, Yang Zhang, Shiyu Chang, Xuesong Yang, and Mark Hasegawa-Johnson. 2019. AutoVC: Zero-Shot Voice Style Transfer with Only Autoencoder Loss. In Proceedings of the 36th International Conference on Machine Learning(Proceedings of Machine Learning Research, Vol. 97), Kamalika Chaudhuri and Ruslan Salakhutdinov (Eds.). PMLR, 5210–5219.
+       <a class="link-inline force-break" href="https://proceedings.mlr.press/v97/qian19c.html">
+        https://proceedings.mlr.press/v97/qian19c.html
+       </a>
+      </li>
+      <li id="BibPLXBIB0047" label="[47]">
+       Jun Rekimoto. 2019. Homo Cyberneticus: The Era of Human-AI Integration.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/arXiv.1911.02637">
+        https://doi.org/10.48550/arXiv.1911.02637
+       </a>
+      </li>
+      <li id="BibPLXBIB0048" label="[48]">
+       Jun Rekimoto. 2022. DualVoice: Speech Interaction That Discriminates between Normal and Whispered Voice Input. In Proceedings of the 35th Annual ACM Symposium on User Interface Software and Technology (Bend, OR, USA) (UIST ’22). Association for Computing Machinery, New York, NY, USA, Article 91, 10 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3526113.3545685">
+        https://doi.org/10.1145/3526113.3545685
+       </a>
+      </li>
+      <li id="BibPLXBIB0049" label="[49]">
+       Yi Ren, Chenxu Hu, Xu Tan, Tao Qin, Sheng Zhao, Zhou Zhao, and Tie-Yan Liu. 2020. FastSpeech 2: Fast and High-Quality End-to-End Text to Speech.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2006.04558">
+        https://doi.org/10.48550/ARXIV.2006.04558
+       </a>
+      </li>
+      <li id="BibPLXBIB0050" label="[50]">
+       Gabriel Reyes, Dingtian Zhang, Sarthak Ghosh, Pratik Shah, Jason Wu, Aman Parnami, Bailey Bercik, Thad Starner, Gregory D. Abowd, and W. Keith Edwards. 2016. Whoosh: Non-Voice Acoustics for Low-Cost, Hands-Free, and Rapid Input on Smartwatches. In
+       <em>
+        Proceedings of the 2016 ACM International Symposium on Wearable Computers (ISWS’16)
+       </em>
+       . ACM, 120–127.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2971763.2971765">
+        https://doi.org/10.1145/2971763.2971765
+       </a>
+      </li>
+      <li id="BibPLXBIB0051" label="[51]">
+       Himanshu Sahni, Abdelkareem Bedri, Gabriel Reyes, Pavleen Thukral, Zehua Guo, Thad Starner, and Maysam Ghovanloo. 2014. The Tongue and Ear Interface: A Wearable System for Silent Speech Recognition. In Proceedings of the 2014 ACM International Symposium on Wearable Computers (Seattle, Washington) (ISWC ’14). ACM, 47–54.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2634317.2634322">
+        https://doi.org/10.1145/2634317.2634322
+       </a>
+      </li>
+      <li id="BibPLXBIB0052" label="[52]">
+       seeed studio. 2019. ReSpeaker USB Mic Array.
+       <a class="link-inline force-break" href="https://wiki.seeedstudio.com/ReSpeaker-USB-Mic-Array/">
+        https://wiki.seeedstudio.com/ReSpeaker-USB-Mic-Array/
+       </a>
+      </li>
+      <li id="BibPLXBIB0053" label="[53]">
+       Nirmesh Shah, Mihir Parmar, Neil Shah, and Hemant Patil. 2018. Novel MMSE DiscoGAN for Cross-Domain Whisper-to-Speech Conversion. Machine Learning. In
+       <em>
+        Speech and Language Processing (MLSLP) Workshop
+       </em>
+       .
+      </li>
+      <li id="BibPLXBIB0054" label="[54]">
+       Ke Sun, Chun Yu, Weinan Shi, Lan Liu, and Yuanchun Shi. 2018. Lip-Interact: Improving Mobile Device Interaction with Silent Speech Commands. In Proceedings of the 31st Annual ACM Symposium on User Interface Software and Technology(Berlin, Germany) (UIST ’18). Association for Computing Machinery, New York, NY, USA, 581–593.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3242587.3242599">
+        https://doi.org/10.1145/3242587.3242599
+       </a>
+      </li>
+      <li id="BibPLXBIB0055" label="[55]">
+       Lifa Sun, Kun Li, Hao Wang, Shiyin Kang, and Helen Meng. 2016. Phonetic posteriorgrams for many-to-one voice conversion without parallel data training. In
+       <em>
+        2016 IEEE International Conference on Multimedia and Expo (ICME)
+       </em>
+       . 1–6.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ICME.2016.7552917">
+        https://doi.org/10.1109/ICME.2016.7552917
+       </a>
+      </li>
+      <li id="BibPLXBIB0056" label="[56]">
+       International Telecommunication Union. 2013. BS.1534 : Method for the subjective assessment of intermediate quality level of audio systems.
+       <a class="link-inline force-break" href="https://www.itu.int/rec/R-REC-BS.1534/en">
+        https://www.itu.int/rec/R-REC-BS.1534/en
+       </a>
+      </li>
+      <li id="BibPLXBIB0057" label="[57]">
+       Benjamin van Niekerk, Marc-Andre Carbonneau, Julian Zaidi, Matthew Baas, Hugo Seute, and Herman Kamper. 2022. A Comparison of Discrete and Soft Speech Units for Improved Voice Conversion. In
+       <em>
+        ICASSP 2022 - 2022 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)
+       </em>
+       . IEEE.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/icassp43922.2022.9746484">
+        https://doi.org/10.1109/icassp43922.2022.9746484
+       </a>
+      </li>
+      <li id="BibPLXBIB0058" label="[58]">
+       Yuxuan Wang, R. J. Skerry-Ryan, Daisy Stanton, Yonghui Wu, Ron J. Weiss, Navdeep Jaitly, Zongheng Yang, Ying Xiao, Zhifeng Chen, Samy Bengio, Quoc V. Le, Yannis Agiomyrgiannakis, Rob Clark, and Rif A. Saurous. 2017. Tacotron: A Fully End-to-End Text-To-Speech Synthesis Model.
+       <em>
+        <em>
+         CoRR
+        </em>
+       </em>
+       abs/1703.10135(2017). arXiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/1703.10135">
+        1703.10135
+       </a>
+       <a class="link-inline force-break" href="http://arxiv.org/abs/1703.10135">
+        http://arxiv.org/abs/1703.10135
+       </a>
+      </li>
+      <li id="BibPLXBIB0059" label="[59]">
+       Cheng Yi, Jianzhong Wang, Ning Cheng, Shiyu Zhou, and Bo Xu. 2020. Applying Wav2vec2.0 to Speech Recognition in Various Low-resource Languages. (Dec. 2020). arxiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/2012.12121">
+        2012.12121
+       </a>
+       [cs.CL]
+      </li>
+      <li id="BibPLXBIB0060" label="[60]">
+       zeta chicken. 2017. toWhisper.
+       <a class="link-inline force-break" href="https://github.com/zeta-chicken/toWhisper">
+        https://github.com/zeta-chicken/toWhisper
+       </a>
+      </li>
+      <li id="BibPLXBIB0061" label="[61]">
+       Qiu-Shi Zhu, Long Zhou, Jie Zhang, Shu-Jie Liu, Yu-Chen Hu, and Li-Rong Dai. 2022. Robust Data2vec: Noise-robust Speech Representation Learning for ASR by Combining Regression and Improved Contrastive Learning.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2210.15324">
+        https://doi.org/10.48550/ARXIV.2210.15324
+       </a>
+      </li>
+     </ul>
+    </section>
+   </section>
+   <section class="footnote" id="foot-001">
+    <div class="bibStrip">
+     <p>
+      Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+      <a href="mailto:permissions@acm.org">
+       permissions@acm.org
+      </a>
+      .
+     </p>
+     <p>
+      <em>
+       CHI '23, April 23–28, 2023, Hamburg, Germany
+      </em>
+     </p>
+     <p>
+      © 2023 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+      <br/>
+      ACM ISBN 978-1-4503-9421-5/23/04…$15.00.
+      <br/>
+      DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3580706" target="_blank">
+       https://doi.org/10.1145/3544548.3580706
+      </a>
+     </p>
+    </div>
+   </section>
+  </main>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'86a01c2dacfc5c7a',t:'MTcxMTM4MjM4Ny4xMjcwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

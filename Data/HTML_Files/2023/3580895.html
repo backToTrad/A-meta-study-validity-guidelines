@@ -1,0 +1,3223 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Enabling Conversational Interaction with Mobile UI using Large Language Models
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3580895_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3580895_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3580895_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3580895_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3580895_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3580895_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3580895_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3580895_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <main>
+   <section class="front-matter">
+    <section>
+     <header class="title-info">
+      <div class="journal-title">
+       <h1>
+        <span class="title">
+         Enabling Conversational Interaction with Mobile UI using Large Language Models
+        </span>
+        <br/>
+        <span class="subTitle">
+        </span>
+       </h1>
+      </div>
+     </header>
+     <div class="authorGroup">
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-9016-038X" ref="author">
+        <span class="givenName">
+         Bryan
+        </span>
+        <span class="surName">
+         Wang
+        </span>
+       </a>
+       , Department of Computer Science, University of Toronto, Canada,
+       <a href="mailto:bryanw@dgp.toronto.edu">
+        bryanw@dgp.toronto.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-9490-2990" ref="author">
+        <span class="givenName">
+         Gang
+        </span>
+        <span class="surName">
+         Li
+        </span>
+       </a>
+       , Google Research, United States,
+       <a href="mailto:leebird@google.com">
+        leebird@google.com
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-7808-5524" ref="author">
+        <span class="givenName">
+         Yang
+        </span>
+        <span class="surName">
+         Li
+        </span>
+       </a>
+       , Google Research, United States,
+       <a href="mailto:yangli@acm.org">
+        yangli@acm.org
+       </a>
+      </div>
+     </div>
+     <br/>
+     <div class="pubInfo">
+      <p>
+       DOI:
+       <a href="https://doi.org/10.1145/3544548.3580895" target="_blank">
+        https://doi.org/10.1145/3544548.3580895
+       </a>
+       <br/>
+       CHI '23:
+       <a href="https://doi.org/10.1145/3544548" target="_blank">
+        Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems
+       </a>
+       , Hamburg, Germany, April 2023
+      </p>
+     </div>
+     <div class="abstract">
+      <p>
+       <small>
+        Conversational agents show the promise to allow users to interact with mobile devices using language. However, to perform diverse UI tasks with natural language, developers typically need to create separate datasets and models for each specific task, which is expensive and effort-consuming. Recently, pre-trained large language models (LLMs) have been shown capable of generalizing to various downstream tasks when prompted with a handful of examples from the target task. This paper investigates the feasibility of enabling versatile conversational interactions with mobile UIs using a single LLM. We designed prompting techniques to adapt an LLM to mobile UIs. We experimented with four important modeling tasks that address various scenarios in conversational interaction. Our method achieved competitive performance on these challenging tasks without requiring dedicated datasets and training, offering a lightweight and generalizable approach to enable language-based mobile interaction.
+       </small>
+      </p>
+     </div>
+     <div class="CCSconcepts">
+      <ccs2012>
+       <small>
+        <span style="font-weight:bold;">
+         CCS Concepts:
+        </span>
+        •
+        <strong>
+         Human-centered computing → Human computer interaction (HCI)
+        </strong>
+        ;
+       </small>
+      </ccs2012>
+     </div>
+     <br/>
+     <div class="classifications">
+      <div class="author">
+       <span style="font-weight:bold;">
+        <small>
+         Keywords:
+        </small>
+       </span>
+       <span class="keyword">
+        <small>
+         Large Language Models
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         Conversational Interaction
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         Mobile UI
+        </small>
+       </span>
+      </div>
+      <br/>
+      <div class="AcmReferenceFormat">
+       <p>
+        <small>
+         <span style="font-weight:bold;">
+          ACM Reference Format:
+         </span>
+         <br/>
+         Bryan Wang, Gang Li, and Yang Li. 2023. Enabling Conversational Interaction with Mobile UI using Large Language Models. In
+         <em>
+          Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems (CHI '23), April 23–28, 2023, Hamburg, Germany.
+         </em>
+         ACM, New York, NY, USA 17 Pages.
+         <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3580895" target="_blank">
+          https://doi.org/10.1145/3544548.3580895
+         </a>
+        </small>
+       </p>
+      </div>
+     </div>
+    </section>
+   </section>
+   <section class="body">
+    <section id="sec-2">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         1
+        </span>
+        INTRODUCTION
+       </h2>
+      </div>
+     </header>
+     <p>
+      Interacting with computing devices using natural language is a long-standing pursuit in human-computer interaction [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ]. Language, as both the input and the output, allows users to efficiently communicate with a computing system and access its functionalities when other I/O modalities are unavailable or cumbersome. The interaction paradigm is particularly useful for users with motor or visual impairments or situationally impaired when occupied by real-world tasks [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ]. Intelligent assistants, e.g., Google Assistants and Siri, have significantly advanced language-based interaction for performing simple daily tasks such as setting a timer. Despite the progress, these assistants still face limitations in supporting conversational interaction in mobile UIs, where many user tasks are performed [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ]. For example, they cannot answer a user's question about specific information displayed on the screen [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ]. Achieving such capabilities requires an agent to have a computational understanding of graphical user interfaces (GUIs), which is absent in existing assistants.
+     </p>
+     <p>
+      Prior research has investigated several important technical building blocks to enable conversational interaction with mobile UIs, including summarizing a mobile screen for users to quickly understand its purpose [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ], mapping language instructions to UI actions [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ] and modeling GUIs so that they are more amenable for language-based interaction [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ]. However, each of them only addresses a limited aspect of conversational interaction and requires considerable effort in curating large-scale datasets and training dedicated models. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ]. Furthermore, there is a broad spectrum of conversational interactions that can occur on mobile UIs, as Todi et al. revealed [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ]. Therefore, it is imperative to develop a lightweight and generalizable approach to realize conversational interaction.
+     </p>
+     <p>
+      Recently, pre-trained large language models (LLMs) such as GPT-3 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ] and PaLM [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ] have demonstrated abilities to adapt themselves to various downstream tasks when being
+      <em>
+       prompted
+      </em>
+      with a handful of examples of the target task. Such generalizability is promising to support diverse conversational interactions without requiring task-specific models and datasets. However, the feasibility of doing so is unclear. Little work has been conducted to understand how LLMs, trained with natural languages, can be adapted to GUIs for interaction tasks. Therefore, we investigate in this paper the viability and the how-to of utilizing LLMs to enable diverse language-based interactions with mobile UIs.
+     </p>
+     <p>
+      We categorized four mobile UI conversational interaction scenarios, which guided our experimental task selection. We developed a set of prompting techniques to prompt LLMs with mobile UIs. Since LLMs only take text tokens as input, we contribute an algorithm to generate the text representation of mobile UIs. Our algorithm uses depth-first search traversal to convert the Android UI's view hierarchy, i.e., the structural data containing detailed properties of UI elements, into HTML syntax. We conducted comprehensive experiments with four pivotal modeling tasks, including
+      <em>
+       Screen Question-Generation
+      </em>
+      ,
+      <em>
+       Screen Summarization
+      </em>
+      ,
+      <em>
+       Screen Question-Answering
+      </em>
+      , and
+      <em>
+       Mapping Instruction to UI Action
+      </em>
+      . The experimental results show that our approach achieves competitive performance using only
+      <em>
+       two data examples
+      </em>
+      per task. Notably, our work is the first to investigate methods to enable the
+      <em>
+       Screen Question-Generation
+      </em>
+      and
+      <em>
+       Screen Question-Answering
+      </em>
+      tasks in literature, setting benchmark performances. Furthermore, the human evaluation of the
+      <em>
+       Screen Summarization
+      </em>
+      task demonstrates that our method generates more accurate screen summaries compared to Screen2Words [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ], the benchmark model trained with tens of thousands of examples. In summary, the evaluation results from a suite of modeling tasks validate the feasibility and effectiveness of our approach in enabling conversational interaction with mobile UIs.
+     </p>
+     <p>
+      More broadly, our study demonstrates LLMs’ potential to fundamentally transform the future workflow of conversational interaction design. Using our prompting method, interaction designers and developers can quickly prototype and test novel language interactions with users, saving time and resources before investing in dedicated datasets and models. Our experiments are based on open-source Android UI datasets, including RICO [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ], Screen2Words [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ], and PixelHelp [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ]. We also open-source the code
+      <a class="fn" href="#fn2" id="foot-fn2">
+       <sup>
+        1
+       </sup>
+      </a>
+      of our algorithm that converts the Android view hierarchy to HTML syntax to allow future work to replicate and build upon our work. Example prompts created using our algorithm can be found in the appendix. In summary, our paper makes the following contributions:
+     </p>
+     <ul class="list-no-style">
+      <li id="list1" label="•">
+       Our work is the first investigation for using LLMs to enable conversational interaction on mobile UIs, which advances the understanding of using LLMs for interaction tasks.
+       <br/>
+      </li>
+      <li id="list2" label="•">
+       We designed a novel method for feeding GUIs to LLMs—that is pre-trained for natural language—and a set of techniques to prompt LLMs to perform a range of conversational tasks on mobile UI screens. These techniques produce competitive performance;
+       <font color="#000000">
+        we open-source the code
+       </font>
+       so others can immediately use them in their work.
+       <br/>
+      </li>
+      <li id="list3" label="•">
+       We experimented with four pivotal modeling tasks, demonstrating the feasibility of our approach in adapting LLMs for conversational GUI interaction and potentially lowering the barriers to developing conversational agents for GUIs.
+       <br/>
+      </li>
+     </ul>
+    </section>
+    <section id="sec-3">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         2
+        </span>
+        RELATED WORK
+       </h2>
+      </div>
+     </header>
+     <section id="sec-4">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.1
+         </span>
+         Bridging GUIs with Natural Language
+        </h3>
+       </div>
+      </header>
+      <p>
+       There has been increasing interest in using machine learning to bridge graphical user interfaces and natural language for use cases such as accessibility and multimodal interaction. For example, Widget Captioning [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+        38
+       </a>
+       ] and Screen Recognition [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+        58
+       </a>
+       ] predict semantically meaningful alt-text labels for GUI components. Screen2Words [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+        50
+       </a>
+       ] took a step further to predict text summaries that concisely describe the entire screen using multimodal learning. Leiva et al. proposed a vision-only approach to generate templated language descriptions of UI screenshots [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ]. Li et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ] uses a transformer-based model to map natural language instructions to mobile UI action sequences. These prior works typically train a model dedicated to the task based on a sizeable dataset collected. In contrast, our work leverages the few-shot learning ability of LLMs to enable language-based UI tasks by providing a small number of examples. To achieve this, we propose a novel method to represent the UI so that an LLM pre-trained for natural language can efficiently process it. Another relevant body of work is to develop a conversational or multimodal agent that can help the user accomplish mobile tasks [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+        33
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ]. For example, SUGILITE [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ] enables users to create task automation on smartphones by user demonstration and perform the tasks through a conversational interface. KITE [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+        33
+       </a>
+       ] helps developers create task-oriented bots templates from existing apps. Our work shows that LLMs can enable versatile language-based interactions when prompted with exemplars for different tasks, lowering the threshold for developing versatile multimodal agents.
+      </p>
+     </section>
+     <section id="sec-5">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.2
+         </span>
+         Prompting Pre-trained Large Language Models
+        </h3>
+       </div>
+      </header>
+      <p>
+       Finetuning pre-trained task-invariant models such as BERT has been a common practice to adapt large models for specific tasks. However, GPT-3 [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+        7
+       </a>
+       ] introduced a new norm for leveraging pre-trained language models for downstream tasks through in-context few-show learning, i.e., prompting. By prompting a pre-trained model with only a few examples, it can generalize to various tasks without updating the parameters in the underlying model. Recently studies have shown that prompting is one of the emergent abilities that appear only when the model size is large enough [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+        52
+       </a>
+       ]. While prompting LLMs may not always outperform benchmark models, it provides a lightweight method to achieve competitive performance on various tasks [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+        7
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+        9
+       </a>
+       ]. When the prompt consists of
+       <em>
+        N
+       </em>
+       pairs of input and output exemplars from the target tasks, it is referred to as
+       <em>
+        N
+       </em>
+       -shot learning, and providing more shots typically improves performance [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+        7
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+        9
+       </a>
+       ]. Additionally, various prompting paradigms have been proposed to elicit logical reasoning from the language model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+        51
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ], which is useful for tasks like solving math problems. For example, Chain-of-Thought prompting [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ] proposes to use the models to generate intermediate results (i.e., a chain of thoughts) before generating the final output. The core idea resembles the divide-and-conquer method in algorithms, which breaks more complicated problems into subproblems that can be solved more easily. Prompting LLMs remains an ongoing research topic in the community. Our work builds upon prior work to contribute a set of prompting techniques designed to adapt LLMs to mobile UIs.
+      </p>
+      <figure id="fig1">
+       <img alt="Figure 1" aria-describedby="fig002" class="img-responsive" src="3580895_files\chi23214fig1.jpg"/>
+       <p id="fig002" style="display:none">
+        The categorization of different types of unit conversation when the user and the agent work collaboratively toward completing user goals on mobile UIs. The categorization has two axes: initiative and purpose. An agent can take the initiative to solicit new information from the user or to provide information to the user and vice versa. Each category features an example task with the desired agent action highlighted. 1. Agent solicits information from user: Screen Question Generation. 2. Agent provides information to user: Screen Summarization. 3: User solicits information from the agent: Screen Question-Answering. 4. User provides information to the agent: Mapping instruction to UI Action.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 1:
+        </span>
+        <span class="figure-title">
+         The categorization of different conversation scenarios when user and agent interact to complete tasks on mobile UIs. The categorization has two axes: initiative and purpose. An agent can take the initiative to solicit new information from the user or to provide information to the user, and vice versa. We included an example task for each category where the agent's action represents the target output from LLMs.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-6">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.3
+         </span>
+         Interactive Applications of Large Language Models
+        </h3>
+       </div>
+      </header>
+      <p>
+       LLMs have been applied to enable a broad range of language-related interactive applications in the HCI community [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+        10
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+        11
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+        20
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+        23
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+        26
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+        42
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+        56
+       </a>
+       ]. For example, Chang et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+        10
+       </a>
+       ] proposed TaleBrush, a generative story ideation tool that uses line sketching interactions with a GPT-based language model for control and sensemaking of a protagonist's fortune in co-created stories. Stylette [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+        23
+       </a>
+       ] allows users to modify web designs with language commands and uses LLMs to infer the corresponding CSS properties. Lee et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ] present CoAuthor, a dataset designed to reveal GPT-3’s capabilities in assisting creative and argumentative writing. Since LLMs can encode a wealth of semantic knowledge, they have also been used to support physical applications. For example, SayCan [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ] extracts and leverages the knowledge priors within LLMs to execute real-world, abstract, long-horizon robot commands. Our work represents the first contribution of applying LLMs to enable conversational interactions on mobile UIs.
+      </p>
+     </section>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         3
+        </span>
+        CONVERSATION FOR MOBILE UI TASKS
+       </h2>
+      </div>
+     </header>
+     <p>
+      Conversational interaction with mobile devices is typically embodied as human users exchanging information with a conversational agent. We developed a conceptual framework categorizing four conversation scenarios between users and agents when performing mobile tasks. Our categorization has two dimensions:
+      <em>
+       Initiative
+      </em>
+      and
+      <em>
+       Purpose
+      </em>
+      . As shown in Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      , a conversation can be mixed-initiative [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ], either initiated by the agent or the user. The purpose of initiated conversation can be either soliciting or providing information. The categorization lays the foundation for determining important modeling tasks to investigate. We focus on studying how LLMs can enable the interaction capabilities of a conversational agent based on a mobile UI, e.g., providing language responses or performing UI actions on behalf of the user. For simplicity, we limit our study to unit conversations which include, at most, a single turn from the user and agent. More complex, multi-turn conversations are beyond the scope of this paper and will be explored in future research, which we discuss in section
+      <a class="sec" href="#sec-47">
+       6.3
+      </a>
+      . We now introduce each conversation category and the associated example modeling tasks, including 1)
+      <em>
+       Screen Question-Generation
+      </em>
+      , 2)
+      <em>
+       Screen Summarization
+      </em>
+      , 3)
+      <em>
+       Screen Question-Answering
+      </em>
+      , and 4)
+      <em>
+       Mapping Instruction to UI Action
+      </em>
+      .
+     </p>
+     <section id="sec-8">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.1
+         </span>
+         Agent-initiated Conversation
+        </h3>
+       </div>
+      </header>
+      <p>
+       When an agent initiates a conversation, it can be either soliciting or providing information essential for the user to perform tasks on a mobile UI.
+      </p>
+      <section id="sec-9">
+       <p>
+        <em>
+         <span class="section-number">
+          3.1.1
+         </span>
+         Agent solicits information from user.
+        </em>
+        Mobile UIs often request users to input information relevant to their goals. For example,
+        <em>
+         destination city
+        </em>
+        or
+        <em>
+         travel dates
+        </em>
+        in the scenario of booking a hotel. On mobile UIs, the information request is typically made through input text fields. A conversational agent should be able to similarly solicit essential information from users using natural language. For example, asking users questions like
+        <em>
+         "Which hotel do you want to search for."
+        </em>
+        or
+        <em>
+         "What is the check-in date of your stay?"
+        </em>
+        We refer to this type of task as
+        <em>
+         Screen Question-Generation
+        </em>
+        since the questions should be generated based on the UI screen contexts.
+       </p>
+      </section>
+      <section id="sec-10">
+       <p>
+        <em>
+         <span class="section-number">
+          3.1.2
+         </span>
+         Agent provides information to user.
+        </em>
+        A key function of GUIs is to convey information to users through visual means. Similarly, conversational agents should be able to articulate the information presented in GUIs using language. Given that UIs contain a vast amount of information and user needs vary [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+         49
+        </a>
+        ], there are numerous ways to deliver screen information. An example is
+        <em>
+         Screen Summarization
+        </em>
+        [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+         50
+        </a>
+        ], which provides a short description of the purpose of the current screen, e.g.,
+        <em>
+         "A list of hotel rooms available at W San Francisco."
+        </em>
+        , or
+        <em>
+         "A step-by-step recipes of butter chicken"
+        </em>
+        . The descriptions can help users quickly understand the UI when visual information is unavailable.
+       </p>
+      </section>
+     </section>
+     <section id="sec-11">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.2
+         </span>
+         User-initiated Conversation
+        </h3>
+       </div>
+      </header>
+      <p>
+       Users can also initiate conversations to request information or proactively provide information for the agent to process.
+      </p>
+      <section id="sec-12">
+       <p>
+        <em>
+         <span class="section-number">
+          3.2.1
+         </span>
+         User solicits information from the agent.
+        </em>
+        Users should be able to solicit screen information from the agent through conversation. When the information request is done through questions such as
+        <em>
+         "What's the rate of the hotel room with a king-size bed?"
+        </em>
+        , the agent should respond with appropriate answers such as
+        <em>
+         "
+         <font style="normal">
+          $
+         </font>
+         330 per night"
+        </em>
+        , based on the information presented on the screen. We call this type of conversational interaction
+        <em>
+         Screen Question-Answering
+        </em>
+        , similar to visual [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+         5
+        </a>
+        ] or text question-answering [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+         45
+        </a>
+        ] but instead based on a mobile UI.
+        <em>
+         Screen Question-Answering
+        </em>
+        is beneficial in situations where there is a large amount of text on a screen, such as search results, making it difficult to locate specific information. It is also useful for individuals with disabilities who rely on screen readers to access screen text. Instead of waiting for the screen reader to scan through all the content on the screen until the relevant information is found, they can simply ask for the needed information.
+       </p>
+      </section>
+      <section id="sec-13">
+       <p>
+        <em>
+         <span class="section-number">
+          3.2.2
+         </span>
+         User provides information to the agent.
+        </em>
+        Users can initiate conversations with the agent by providing new information. After receiving the messages, the agent should respond accordingly based on the current UI context using language and/or mobile actions. A representative task of this type of conversation is
+        <em>
+         Mapping Instruction to UI Action.
+        </em>
+        For example, when a user who is presented with a hotel booking screen says,
+        <em>
+         "Click on the Reserve button to book the Fabulous King room"
+        </em>
+        , the agent should understand the user's intent and the UI contexts in order to click the corresponding button. This type of interaction allows users to control the devices when touch inputs are unavailable [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+         54
+        </a>
+        ].
+       </p>
+       <figure id="fig2">
+        <img alt="Figure 2" aria-describedby="fig003" class="img-responsive" src="3580895_files\chi23214fig2.jpg"/>
+        <p id="fig003" style="display:none">
+         The left shows an example illustrating the proposed prompt structure. A prompt starts with the preamble, which describes the task. Following the preamble, there will be zero or more task exemplars from the target tasks. Each exemplar consists of an input screen HTML, a chain of thoughts (if applicable), and a task-specific output. Additional exemplars are appended to the end of the previous ones. The right shows An illustration of prompting large language models in our use cases. The prompt contains N exemplars from the target tasks. We append the screen HTML of the test screen to the end of the prompt. We then feed the prompt + test screen HTML as input into the LLM. The LLM then generates word tokens in an auto-regressive manner, which helps them capture the exemplars’ pattern to produce task-specific output.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 2:
+         </span>
+         <span class="figure-title">
+          Left: An example illustrating the proposed prompt structure. A prompt starts with the preamble, which describes the task. Following the preamble, there will be zero or more task exemplars from the target tasks. Each exemplar consists of an input screen HTML, a chain of thoughts (if applicable), and a task-specific output. Additional exemplars are appended to the end of the previous ones. Right: An illustration of prompting large language models in our use cases. The prompt contains N exemplars from the target tasks. We append the screen HTML of the test screen to the end of the prompt. We then feed the prompt + test screen HTML as input into the LLM. The LLM then generates word tokens in an auto-regressive manner, which helps them capture the exemplars’ pattern to produce a chain of thoughts (if applicable) and task-specific output.
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+      </section>
+     </section>
+    </section>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         4
+        </span>
+        PROMPTING LARGE-LANGUAGE MODELS FOR MOBILE UI TASKS
+       </h2>
+      </div>
+     </header>
+     <p>
+      We introduce a class of prompting techniques designed to adapt LLMs to mobile UIs to enable conversational interaction. LLMs support in-context few-shot learning via
+      <em>
+       prompting
+      </em>
+      —instead of finetuning or re-training models for each new task, one can prompt an LLM with a few input and output data exemplars from the target task [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ]. For many natural language processing tasks such as question-answering or translation, few-shot prompting performs competitively with benchmark approaches [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ]. However, the methodology for prompting LLMs with mobile UIs has yet to be established and presents several challenges. Firstly, language models can only take text input, while mobile UIs are multimodal, containing text, image, and structural information in their view hierarchy data and screenshots.
+      <font color="#000000">
+       Moreover, directly inputting the view hierarchy data of a mobile screen into LLMs is not feasible as it contains excessive information, such as detailed properties of each UI element, which can easily exceed the input length limits of LLMs.
+      </font>
+      Furthermore, the mobile UIs encapsulate the logic of target user tasks [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ]. Therefore, logical reasoning based on UI contexts is essential for the model to support conversations toward task completion. These unique aspects of mobile UIs pose two open problems for designing prompts:
+     </p>
+     <ol class="list-no-style">
+      <li id="list4" label="(1)">
+       How to represent mobile UIs in texts to leverage the few-shot prompting capability of LLMs?
+       <br/>
+      </li>
+      <li id="list5" label="(2)">
+       How to elicit reasoning based on the mobile UIs when needed?
+       <br/>
+      </li>
+     </ol>
+     <p>
+      We respond to these questions by describing our proposed prompting techniques and their design rationales. Prompting LLMs remains an ongoing research problem. As the first to investigate prompting with mobile UI, we provide a strong baseline approach and encourage future work to build upon our design and further study the open problems.
+     </p>
+     <section id="sec-15">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.1
+         </span>
+         Screen Representation
+        </h3>
+       </div>
+      </header>
+      <section id="sec-16">
+       <p>
+        <em>
+         <span class="section-number">
+          4.1.1
+         </span>
+         Representing View Hierarchy as HTML.
+        </em>
+        There are various ways to represent a mobile UI in text, e.g., concatenating all the text elements on the UI into a token sequence or using natural language sentences to describe UI elements, such as
+        <em>
+         "a menu button in the top left corner."
+        </em>
+        To design our screen representation, we leverage the insight that if a prompt falls within the training data distribution of a language model, it is more likely for few-shot learning to perform. This is because LLMs are trained to predict the subsequent tokens that maximize the probability based on the training data. LLMs’ training data is typically scraped from the web, including both natural language and code. For example, 5% of PaLM's [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+         9
+        </a>
+        ] training data was scraped from GitHub, including 24 common programming languages such as Java, HTML, and Python [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+         9
+        </a>
+        ]. Therefore, we represent a mobile UI in texts by converting its view hierarchy data into HTML syntax. HTML is particularly suitable for representing mobile UIs as it is already a markup language representing web UIs. The conversion is conducted by traversing the view hierarchy tree using a depth-first search. We detail our conversion algorithm in the following sections. Note that since the view hierarchy is not designed to be represented in HTML syntax, a perfect one-to-one conversion does not exist. In contrast, our goal is to make the converted view hierarchy similar to the HTML syntax to generate a data representation closer to the training data distribution.
+       </p>
+      </section>
+      <section id="sec-17">
+       <p>
+        <em>
+         <span class="section-number">
+          4.1.2
+         </span>
+         View Hierarchy Properties.
+        </em>
+        Converting a mobile UI's view hierarchy into HTML syntax can preserve the detailed properties of UI elements and their structural relationship. The view hierarchy is a structural tree representation of the UI where each node, corresponding to a UI element, contains various properties such as the class, visibility-to-user, and the element's bounds. However, using all element properties will result in lengthy HTML text, which may exceed the input length limit of the language model, e.g., 1920 tokens for PaLM and 2048 tokens for GPT-3. Therefore, we use a subset of properties related to the text description of an element:
+       </p>
+       <ul class="list-no-style">
+        <li id="list6" label="•">
+         <tt>
+          class
+         </tt>
+         : Android object type such as
+         <tt>
+          TextView
+         </tt>
+         or
+         <tt>
+          Button
+         </tt>
+         .
+         <br/>
+        </li>
+        <li id="list7" label="•">
+         <tt>
+          text
+         </tt>
+         : element text that is visible to the user.
+         <br/>
+        </li>
+        <li id="list8" label="•">
+         <tt>
+          resource_id
+         </tt>
+         : text identifiers that describe the referenced resource.
+         <br/>
+        </li>
+        <li id="list9" label="•">
+         <tt>
+          content_desc
+         </tt>
+         : content description that describes the element for accessibility purposes, i.e., the alt-text.
+         <br/>
+        </li>
+       </ul>
+      </section>
+      <section id="sec-18">
+       <p>
+        <em>
+         <span class="section-number">
+          4.1.3
+         </span>
+         Class Mapping.
+        </em>
+        We developed heuristics to map the Android classes to HTML tags with similar functionalities. We map
+        <tt>
+         TextView
+        </tt>
+        to the
+        <tt>
+         &lt;p&gt;
+        </tt>
+        tag as they are both used for presenting texts; all button-related classes such as
+        <tt>
+         Button
+        </tt>
+        or
+        <tt>
+         ImageButton
+        </tt>
+        are mapped to
+        <tt>
+         &lt;button&gt;
+        </tt>
+        . We map all image-related classes such as
+        <tt>
+         IMAGEVIEW
+        </tt>
+        to
+        <tt>
+         &lt;img&gt;
+        </tt>
+        , including icons and images. Lastly, we convert the text input class
+        <tt>
+         EDITTEXT
+        </tt>
+        to
+        <tt>
+         &lt;input&gt;
+        </tt>
+        tag. We focus on the most common element classes for simplicity, and the rest of the Android classes, including containers such as
+        <tt>
+         LinearLayout
+        </tt>
+        are mapped to the
+        <tt>
+         &lt;div&gt;
+        </tt>
+        tag.
+       </p>
+      </section>
+      <section id="sec-19">
+       <p>
+        <em>
+         <span class="section-number">
+          4.1.4
+         </span>
+         Text, Resource_Id, and Content Description.
+        </em>
+        We insert the
+        <tt>
+         text
+        </tt>
+        properties of Android elements in between the opening and closing HTML tags, following the standard syntax of texts in HTML. The
+        <tt>
+         resource_id
+        </tt>
+        property contains three entities: package_name, resource_type, and resource_name. Among them, resource_name usually contains additional descriptions of an element's functionality or purpose written by the developers. For example, in the Gmail app, an element with resource_name of
+        <tt>
+         "unread_count_textView"
+        </tt>
+        shows how many emails are unread, whereas a
+        <tt>
+         "date"
+        </tt>
+        means the element shows the date of receiving a mail. Such information helps the model to better understand the screen context. We insert the resource_name tokens that describe each element's purpose as additional identifiers in the
+        <tt>
+         "class"
+        </tt>
+        attributes, which originally contain identifiers linked to a style sheet or used by JavaScript to access the element. Word tokens in resource_name are typically concatenated with underscores, which we replace as spaces when inserting. Lastly, we insert the
+        <tt>
+         content_desc
+        </tt>
+        as the
+        <tt>
+         "alt"
+        </tt>
+        attribute in the HTML tags when the property is present.
+       </p>
+      </section>
+      <section id="sec-20">
+       <p>
+        <em>
+         <span class="section-number">
+          4.1.5
+         </span>
+         Numeric Indexes for Referencing.
+        </em>
+        To help model referencing specific UI elements, we insert numeric indexes to each element as the
+        <tt>
+         "id"
+        </tt>
+        attribute. The indexes are generated with the depth-first search order in the view hierarchy tree. For tasks such as predicting which button to click based on language instructions, the model can refer to elements using numeric indexes, which is more efficient and space-saving than spelling out the complete HTML tag.
+       </p>
+      </section>
+     </section>
+     <section id="sec-21">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.2
+         </span>
+         Chain-of-Thought Prompting
+        </h3>
+       </div>
+      </header>
+      <p>
+       Mobile UIs encapsulate the logic of user tasks [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ]; therefore, it is vital for models to perform reasoning when used for conversational interaction. LLMs have demonstrated abilities to reason [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+        7
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+        9
+       </a>
+       ] as they captured real-world knowledge during training with a large number of texts. Recent work further shows that LLM's reasoning ability can be improved by generating and chaining intermediate results to obtain the final answers, namely, Chain-of-Thought prompting [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ]. The idea is straightforward, i.e., simply appending a chain of thoughts describing intermediate results before the answers in the prompt. The model would then follow the patterns to generate a chain of thoughts during inference. Chain-of-Thought prompting has been shown to be helpful for reasoning tasks. The results are also more interpretable as the model would articulate its thought process before coming up with the answer. However, prior work has not investigated whether it can facilitate reasoning in generating conversations based on mobile UIs. Therefore, we incorporate the method in our experiments.
+       <font color="#000000">
+        Chain-of-Thought prompting has been shown effective for tasks that require the model to reason across multiple steps. In our early investigations, we found that this technique does not improve performance for tasks where the output can be directly obtained from the input screen HTML. Therefore, in our experiments, we only used the technique for
+        <em>
+         Screen Question-Generation
+        </em>
+        whose task setup requires multi-step reasoning.
+       </font>
+      </p>
+     </section>
+     <section id="sec-22">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.3
+         </span>
+         Prompt Structure
+        </h3>
+       </div>
+      </header>
+      <p>
+       We follow a similar prompt structure proposed in [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+        7
+       </a>
+       ]. Each prompt starts with a
+       <em>
+        preamble
+       </em>
+       which explains the prompt's purpose. The preamble is followed by multiple exemplars consisting of the input, a chain of thought (if applicable), and the output for each task. Each exemplar's input is a mobile screen in the HTML syntax. To better leverage few-shot learning while complying with LLM's input length limits, we only show the leaf nodes visible to the users, as non-leaf nodes are usually containers that do not contain textual information. Following the input, a chain of thoughts is provided to elicit logical reasoning from LLMs, if applicable to the task. The output is the desired outcome for the target tasks, e.g., a screen summary or an answer to the question asked by the user. Figure
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       -left shows an example of a 1-shot prompt. Few-shot prompting can be achieved with more than one exemplar included in the prompt. During prediction, we feed the model with the prompt with a new input screen appended at the end. Therefore, for
+       <em>
+        N
+       </em>
+       -shot learning, the prompt will consist of a preamble,
+       <em>
+        N
+       </em>
+       exemplars, and the test screen for prediction, as shown in Figure
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       -right.
+      </p>
+     </section>
+    </section>
+    <section id="sec-23">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         5
+        </span>
+        FEASIBILITY EXPERIMENTS
+       </h2>
+      </div>
+     </header>
+     <p>
+      As shown in Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      , we demonstrate the feasibility of using LLMs to enable conversations on GUIs through experiments with four tasks we introduced in section
+      <a class="sec" href="#sec-7">
+       3
+      </a>
+      : 1)
+      <em>
+       Screen Question-Generation
+      </em>
+      , 2)
+      <em>
+       Screen Summarization
+      </em>
+      , 3)
+      <em>
+       Screen Question-Answering
+      </em>
+      , and 4)
+      <em>
+       Mapping Instruction to UI Action
+      </em>
+      . Following the common practices of few-shot prompting [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ], we select a handful of exemplar data to construct prompts for each task. We then evaluate the effectiveness using task-specific metrics detailed in each experiment. All the studies were conducted with the PaLM model [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ], which performs similarly to other LLMs such as GPT-3 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ]. The PaLM model is trained with a maximum input length of 1920 tokens. Therefore, we limit the number of exemplars in a prompt to be
+      <font color="#000000">
+       two at most
+      </font>
+      , excluding the test screen, to avoid exceeding the length limit. The experiments aim to understand what can be achieved by simply prompting LLMs with a few exemplars from the target tasks and compared to the baseline or benchmark if available.
+     </p>
+     <figure id="fig3">
+      <img alt="Figure 3" aria-describedby="fig004" class="img-responsive" src="3580895_files\chi23214fig3.jpg"/>
+      <p id="fig004" style="display:none">
+       This figure shows a Gmail UI screen with 4 bounding boxes on it. Each bounding box is associated with an experimental task tested in the feasibility study. The search bar is associated with the Screen Question-Generation task, as the agent should ask, “What do you want to search for in the email folder?”. The full screen is associated with the screen summary as the agent should summarize it as “Primary folder of the Gmail app showing mails recently received”. The latest email's title is associated with the Screen Question-Answering as the user asks, “what's the title of the newest mail?” and the agent should respond with “Important policy changes for Google Account”. A mail sender is associated with the Mapping instruction to UI Action task as the user commands “Open the mail sent by YouTube,” The agent should predict the element to click on it.
+      </p>
+      <figcaption>
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        An illustration of the four UI modeling tasks we experimented on a single mobile UI. The tasks include
+        <em>
+         Screen Question-Generation
+        </em>
+        ,
+        <em>
+         Screen Summarization
+        </em>
+        ,
+        <em>
+         Screen Question-Answering
+        </em>
+        , and
+        <em>
+         Mapping Instruction to UI Action
+        </em>
+        . Each task is associated with a conversation category described in Section
+        <a class="sec" href="#sec-7">
+         3
+        </a>
+        . Bounding boxes on the mobile UI highlight elements relevant to the example conversational interactions from each task.
+       </span>
+      </figcaption>
+     </figure>
+     <figure id="fig4">
+      <img alt="Figure 4" aria-describedby="fig005" class="img-responsive" src="3580895_files\chi23214fig4.jpg"/>
+      <p id="fig005" style="display:none">
+       Example screen questions generated by the LLM. Left: The LLM can utilize screen contexts to generate grammatically-correct questions relevant to each input field on the mobile UI, while the template approach falls short. For example, for a text field asking about credit card numbers, the LLM generates a question asking, “What's your credit card number while the Template approach asks, “What is the account info main input field?” Right: We observed that the LLM could use its prior knowledge to combine multiple related input fields to ask a single question. The example shows the LLM combining the minimum and maximum prices fields into a single question asking about the price range.
+      </p>
+      <figcaption>
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Example screen questions generated by the LLM. Left: The LLM can utilize screen contexts to generate grammatically-correct questions relevant to each input field on the mobile UI, while the template approach falls short. Right: We observed that the LLM could use its prior knowledge to combine multiple related input fields to ask a single question. The example shows the LLM combining the minimum and maximum prices fields into a single question asking about the price range. Elements relevant to each question are highlighted in corresponding colors and numbered indexes.
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+     </p>
+     <section id="sec-24">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.1
+         </span>
+         Screen Question-Generation
+        </h3>
+       </div>
+      </header>
+      <section id="sec-25">
+       <p>
+        <em>
+         <span class="section-number">
+          5.1.1
+         </span>
+         Task Formulation.
+        </em>
+        Given a mobile UI screen, the goal of screen question-generation is to synthesize coherent, grammatically-correct natural language questions relevant to the UI elements requiring user input. The task occurs when the agent requests user input to proceed on the UI.
+       </p>
+      </section>
+      <section id="sec-26">
+       <p>
+        <em>
+         <span class="section-number">
+          5.1.2
+         </span>
+         Prompt Construction.
+        </em>
+        Figure
+        <a class="fig" href="#fig2">
+         2
+        </a>
+        shows an example prompt we used to generate questions. We use a preamble of
+        <em>
+         "Given a screen, the agent needs to identify the elements requiring user input and generates corresponding questions."
+        </em>
+        . We used chain-of-thought techniques to generate three intermediate results 1) input fields count, 2) screen summary, and 3) input enumeration. The input field counts were fed with a ground truth count extracted from the screen HTML. We found this step essential to prevent the model from omitting some input elements and only generating a subset of questions. Next, we asked the model to summarize the screen's purpose, which produces the screen context that helps provide details in the generated questions. Subsequently, the model enumerates which elements are asking for what information. After the chain of thoughts, the model generates the questions, enclosed by
+        <tt>
+         &lt;SOQ&gt;
+        </tt>
+        and
+        <tt>
+         &lt;EOQ&gt;
+        </tt>
+        tokens, representing start-of-question and end-of-question, respectively. The tokens are used as delimiters for conveniently parsing the questions from the output texts generated by the model. We use similar ways to insert special tokens for parsing model output in the rest of the experiments. An example prompt can be found in appendix
+        <a class="sec" href="#sec-55">
+         A.1
+        </a>
+        .
+       </p>
+      </section>
+      <section id="sec-27">
+       <p>
+        <em>
+         <span class="section-number">
+          5.1.3
+         </span>
+         Experimental Setup.
+        </em>
+        We aim to understand the quality of LLMs for natural language generation based on UI elements. Since there is currently no existing dataset for screen question generation, we followed the common practice of evaluating language generation quality with human ratings. We randomly sampled 400 test screens from the RICO dataset [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+         12
+        </a>
+        ]. Each of these screens contains at least one
+        <tt>
+         EditText
+        </tt>
+        element, representing the text input field for users to enter information on the UI. We randomly selected another two screens from the RICO dataset as exemplars to include in the prompt. An
+        <tt>
+         EditText
+        </tt>
+        element represents an input field for the user to enter information, and we generate questions for every input field. We generate questions from the test screens using a prompt constructed with two exemplars. Some screens contain multiple input fields, and sometimes several of them are relevant and can be asked collectively. For example, three fields asking for the birth year, month, and date can be combined into a single question as
+        <em>
+         "when is your birthday?"
+        </em>
+        . Combining questions can lead to a more efficient conversation between an agent and a user. Therefore, we include an exemplar that combines relevant questions in the prompt to see if the model will also learn to combine relevant questions.
+       </p>
+       <p>
+        We compare LLM's results with a rule-based approach that uses words in
+        <tt>
+         resource_id
+        </tt>
+        , referred to as
+        <em>
+         res_tokens
+        </em>
+        , to fill in the template of
+        <em>
+         "What is {res_tokens}?"
+        </em>
+        . We use
+        <em>
+         res_token
+        </em>
+        instead of
+        <em>
+         text
+        </em>
+        because most text input fields are blank by default, and
+        <em>
+         res_token
+        </em>
+        contains the most meaningful description of an input field. We recruited 17 raters who work as professional data labelers at Google to provide ratings. To ensure the quality of the labels, a group of quality audits sampled and reviewed  5% of the total number of questions answered by every rater. We provided a UI screenshot of a mobile UI and a generated question for each labeling task. The
+        <tt>
+         EditText
+        </tt>
+        element associated with the question is highlighted with a bounding box. We solicited human ratings on whether the questions were grammatically correct and relevant to the input fields for which they were generated. In addition to the human-labeled language quality, we automatically examined how well LLMs can cover all the elements that need to generate questions. The evaluation metrics include the following:
+       </p>
+       <ul class="list-no-style">
+        <li id="list10" label="•">
+         <strong>
+          Grammar Correctness
+         </strong>
+         : How correct is the grammar of a generated question? Are the sentences intelligible and plausible? This metric tests the language generation quality in general and is rated on a 5-point Likert scale with 1 as completely incorrect and 5 as completely correct.
+         <br/>
+        </li>
+        <li id="list11" label="•">
+         <strong>
+          UI Relevance
+         </strong>
+         : Whether a generated question is relevant to the highlighted UI element. This metric tests whether the connection between a UI element and a question is correctly established by the model, which is rated on a binary scale as either relevant or not relevant.
+         <br/>
+        </li>
+        <li id="list12" label="•">
+         <strong>
+          Question Coverage
+         </strong>
+         : How well can the model identify the elements on the screen that need question generation? This metric is automatically computed by comparing the indices of ground truth input elements with those identified by the model within the chain of thoughts.
+         <br/>
+        </li>
+       </ul>
+       <div class="table-responsive" id="tab1">
+        <div class="table-caption">
+         <span class="table-number">
+          Table 1:
+         </span>
+         <span class="table-title">
+          Grammar correctness, UI relevance, and question coverage results from the screen question-generation experiment.
+         </span>
+        </div>
+        <table class="table">
+         <thead>
+          <tr>
+           <th style="text-align:left;">
+            Method
+           </th>
+           <th style="text-align:center;">
+            Grammar
+           </th>
+           <th style="text-align:center;">
+            Relevance
+           </th>
+           <th style="text-align:center;">
+            Coverage F1
+           </th>
+          </tr>
+         </thead>
+         <tbody>
+          <tr>
+           <td style="text-align:left;">
+            Template
+           </td>
+           <td style="text-align:center;">
+            3.60 (
+            <em>
+             σ
+            </em>
+            =0.69)
+           </td>
+           <td style="text-align:center;">
+            84.1%
+           </td>
+           <td style="text-align:center;">
+            100%
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;">
+            LLM
+           </td>
+           <td style="text-align:center;">
+            4.98 (
+            <em>
+             σ
+            </em>
+            =0.07)
+           </td>
+           <td style="text-align:center;">
+            92.8%
+           </td>
+           <td style="text-align:center;">
+            95.9%
+           </td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+      </section>
+      <section id="sec-28">
+       <p>
+        <em>
+         <span class="section-number">
+          5.1.4
+         </span>
+         Results.
+        </em>
+        We evaluated 931 questions for both the LLMs and the template-based approach. Three different human raters examined each question to obtain aggregated scores. Table
+        <a class="tbl" href="#tab1">
+         1
+        </a>
+        shows the results of our evaluation. Our approach achieves an almost perfect average score of 4.98 on grammar correctness, while the rule-based approach receives a 3.6 average rating. A Mann–Whitney U test shows that the difference between the two methods is statistically significant (p &lt; 0.0001). LLMs also generate 8.7% more relevant questions compared to the baseline. In terms of questions coverage, our approach achieves an F1 score of 95.9% (precision = 95.4%, recall = 96.3%). Since the rule-based method iterates through every input field to generate questions, its question coverage is naturally 100%. Altogether, the results show that our approach can precisely identify input elements and generate relevant questions that are intelligible. We further analyzed the model behaviors, and our results revealed interesting emergent abilities of LLMs. When generating a question for a field, the model considers both the input field element and the
+        <em>
+         screen context
+        </em>
+        (information from other screen objects). For example, Figure
+        <a class="fig" href="#fig4">
+         4
+        </a>
+        shows how the model leveraged screen contexts to generate four questions for the input fields on a credit card register screen. While the baseline outputs use the
+        <em>
+         ref_tokens
+        </em>
+        to convey somewhat relevant information, they are less intelligible than the LLM output and do not articulate the specific information requested by the fields. In contrast, all four questions generated by LLM are grammatically correct and ask for relevant information. For Question 3 in Figure
+        <a class="fig" href="#fig4">
+         4
+        </a>
+        , the LLM additionally uses the texts above the input field to ask for the
+        <em>
+         "last 4 digits of SSN"
+        </em>
+        . The model also blends the screen contexts into the generated questions. For instance, Question 2 asks for "credit card expiration date," while the texts above did not mention the word "credit." We also observed that the model exhibits the behavior of combining relevant fields into a single question on three test screens. For example, Figure
+        <a class="fig" href="#fig4">
+         4
+        </a>
+        shows the model can combine two input elements asking for minimum and maximum values for price into a single question
+        <em>
+         "What is the price range?"
+        </em>
+        . In practice, combining questions can lead to more efficient communication between users and agents.
+       </p>
+       <div class="table-responsive" id="tab2">
+        <div class="table-caption">
+         <span class="table-number">
+          Table 2:
+         </span>
+         <span class="table-title">
+          Screen summarization performance on automatic metrics.
+         </span>
+        </div>
+        <table class="table">
+         <thead>
+          <tr>
+           <th style="text-align:left;">
+            Model
+           </th>
+           <th style="text-align:center;">
+            BLEU-1
+           </th>
+           <th style="text-align:center;">
+            BLEU-2
+           </th>
+           <th style="text-align:center;">
+            BLEU-3
+           </th>
+           <th style="text-align:center;">
+            BLEU-4
+           </th>
+           <th style="text-align:center;">
+            CIDEr
+           </th>
+           <th style="text-align:center;">
+            ROUGE-L
+           </th>
+           <th style="text-align:center;">
+            METEOR
+           </th>
+          </tr>
+         </thead>
+         <tbody>
+          <tr>
+           <td style="text-align:left;">
+            0-shot LLM
+           </td>
+           <td style="text-align:center;">
+            7.8
+           </td>
+           <td style="text-align:center;">
+            6.4
+           </td>
+           <td style="text-align:center;">
+            5.9
+           </td>
+           <td style="text-align:center;">
+            5.7
+           </td>
+           <td style="text-align:center;">
+            1.5
+           </td>
+           <td style="text-align:center;">
+            3.4
+           </td>
+           <td style="text-align:center;">
+            4.5
+           </td>
+          </tr>
+          <tr>
+           <td style="text-align:left;">
+            1-shot LLM
+           </td>
+           <td style="text-align:center;">
+            42.3
+           </td>
+           <td style="text-align:center;">
+            21.1
+           </td>
+           <td style="text-align:center;">
+            14.8
+           </td>
+           <td style="text-align:center;">
+            12.1
+           </td>
+           <td style="text-align:center;">
+            40.9
+           </td>
+           <td style="text-align:center;">
+            28.9
+           </td>
+           <td style="text-align:center;">
+            15.3
+           </td>
+          </tr>
+          <tr>
+           <td style="text-align:left;">
+            2-shot LLM
+           </td>
+           <td style="text-align:center;">
+            45.0
+           </td>
+           <td style="text-align:center;">
+            25.1
+           </td>
+           <td style="text-align:center;">
+            17.6
+           </td>
+           <td style="text-align:center;">
+            14.1
+           </td>
+           <td style="text-align:center;">
+            39.9
+           </td>
+           <td style="text-align:center;">
+            33.0
+           </td>
+           <td style="text-align:center;">
+            17.7
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;">
+            Screen2Words [
+            <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+             50
+            </a>
+            ]
+           </td>
+           <td style="text-align:center;">
+            65.5
+           </td>
+           <td style="text-align:center;">
+            45.8
+           </td>
+           <td style="text-align:center;">
+            32.4
+           </td>
+           <td style="text-align:center;">
+            25.1
+           </td>
+           <td style="text-align:center;">
+            61.3
+           </td>
+           <td style="text-align:center;">
+            48.6
+           </td>
+           <td style="text-align:center;">
+            29.5
+           </td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+      </section>
+     </section>
+     <section id="sec-29">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.2
+         </span>
+         Screen Summarization
+        </h3>
+       </div>
+      </header>
+      <section id="sec-30">
+       <p>
+        <em>
+         <span class="section-number">
+          5.2.1
+         </span>
+         Task Formulation.
+        </em>
+        Screen summarization was proposed in [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+         50
+        </a>
+        ] as the automatic generation of descriptive language overviews that cover essential functionalities of mobile screens. The task helps users quickly understand the purpose of a mobile UI, which is particularly useful when the UI is not visually accessible.
+       </p>
+      </section>
+      <section id="sec-31">
+       <p>
+        <em>
+         <span class="section-number">
+          5.2.2
+         </span>
+         Prompt Construction.
+        </em>
+        We use a preamble of
+        <em>
+         "Given a screen, summarize its purpose."
+        </em>
+        We did not use chain-of-thought prompting as no intermediate result is needed to be generated for the task. We used
+        <em>
+         N
+        </em>
+        pairs of screen HTML and corresponding summary following the preamble, where
+        <em>
+         N
+        </em>
+        = 0, 1, 2 represents
+        <em>
+         N
+        </em>
+        -shot learning. The output summaries are enclosed by special tags &lt;SOS&gt; and &lt;EOS&gt;, meaning the start and end of a summary, respectively. An example prompt can be found in appendix
+        <a class="sec" href="#sec-56">
+         A.2
+        </a>
+        .
+       </p>
+      </section>
+      <section id="sec-32">
+       <p>
+        <em>
+         <span class="section-number">
+          5.2.3
+         </span>
+         Experiment Setup.
+        </em>
+        We use the Screen2Words dataset [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+         50
+        </a>
+        ] to test LLM's ability to summarize screens. The dataset contains human-labeled summaries for more than 24k mobile UI screens, each with five summary labels. To gauge the quality of our approach, we test the performance of using LLMs to summarize screens with Screen2Words’ test set, consisting of 4310 screens from 1254 unique apps, which was used by the benchmark. We randomly sampled two screens from the dataset and one of their corresponding summaries as the exemplars for prompt construction. We use the same automatic metrics reported in the original paper, including BLEU, CIDEr, ROUGE-L, and METEOR.
+        <font color="#000000">
+         As prior work [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+          14
+         </a>
+         ,
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+          50
+         </a>
+         ] has found that automatic scores may not correlate well with human perception of summary quality, we additionally conducted a human evaluation to solicit subjective feedback on the summaries generated by both LLM and the benchmark model Screen2Words [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+          50
+         </a>
+         ]. We recruited 37 annotators using the same process specified in section
+         <a class="sec" href="#sec-27">
+          5.1.3
+         </a>
+         . We presented annotators with a mobile UI screen and two screen summaries during the labeling process. To avoid bias, we randomly assigned the summaries generated by LLM and Screen2Words to be either Summary 1 or Summary 2, without revealing which summary was generated by which model. We instructed annotators to choose the summary that best
+         <em>
+          accurately
+         </em>
+         summarizes the mobile screen. The annotators were given three options: (a) Summary 1, (b) Summary 2, and (c) Equal or Very Similar. They were instructed to choose the third option only when it was difficult to judge the differences between the quality of the two summaries. The rating study was conducted on the full test dataset, with each screen receiving three ratings from different annotators.
+        </font>
+       </p>
+       <figure id="fig5">
+        <img alt="Figure 5" aria-describedby="fig006" class="img-responsive" src="3580895_files\chi23214fig5.jpg"/>
+        <p id="fig006" style="display:none">
+         Annotator vote distribution across all test screens. LLM summaries are more accurate than the benchmark model for 64.1% of screen across the test set. This choice is unanimous between three labelers for more than half of the screens (52.8 %).
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 5:
+         </span>
+         <span class="figure-title">
+          Annotator vote distribution across all test screens. LLM summaries are more accurate than those of the benchmark model for 64.1% of screens across the test set. This choice is unanimous between three labelers for more than half of the screens (52.8 %).
+         </span>
+        </figcaption>
+       </figure>
+       <figure id="fig6">
+        <img alt="Figure 6" aria-describedby="fig007" class="img-responsive" src="3580895_files\chi23214fig6.jpg"/>
+        <p id="fig007" style="display:none">
+         Example summaries generated by prompting the LLM with 2 exemplars (2-shot learning). The LLM is likelier to use specific texts on the screen to compose summaries (top-left and bottom-right). Moreover, the LLM is more likely to generate more extended summaries that leverage multiple vital elements on the screen (top-right). We also observed that the LLM would use its prior knowledge to help summarize the screens. For example, the bottom-right shows the LLM had inferred the screen is for the London Tube system from the station names displayed on the screen.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 6:
+         </span>
+         <span class="figure-title">
+          Example summaries generated by prompting the LLM with two exemplars (2-shot learning). The LLM is likelier to use specific texts on the screen to compose summaries (top-left and bottom-right). Moreover, the LLM is more likely to generate more extended summaries that leverage multiple vital elements on the screen (top-right). We also observed that the LLM would use its prior knowledge to help summarize the screens. For example, the bottom-right shows the LLM had inferred the screen is for the London Tube system from the station names displayed on the screen. UI elements relevant to the highlighted phrases in the summaries are called out by bounding boxes with corresponding colors.
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+      </section>
+      <section id="sec-33">
+       <p>
+        <em>
+         <span class="section-number">
+          5.2.4
+         </span>
+         Results.
+        </em>
+        Table
+        <a class="tbl" href="#tab2">
+         2
+        </a>
+        shows the results of screen summarization on automatic metrics. The model could not generate meaningful summaries in the zero-shot setting (not providing any exemplar). This result is expected as the LLM's training data may not have covered the task of screen summarization. When provided with the model one exemplar, the performance significantly boosted across all metrics. More examples in the prompt provide marginally higher scores.
+        <font color="#000000">
+         The average length of summaries generated by our two-shot LLM model was 7.15 words (STD=2.68). In comparison, the average length of summaries generated by the benchmark model was 6.64 (STD=1.98). Additionally, the LLM used a significantly larger number of unique words, at 3062, compared to the 645 unique words used by the benchmark model. The results indicate that LLM is capable of generating longer summaries with a wider range of language. When evaluating these models against automatic metrics, LLM generally scored less than the benchmark model. This is expected because the benchmark model was trained with the Screen2Words dataset, and the automatic metrics are based on token matching. A model trained on the dataset could achieve high scores by prioritizing the high-frequency words in the dataset. However, many high-frequency words and phrases, such as "display of," "screen’, and "app", in the Screen2Words dataset do not meaningfully contribute to the summarization accuracy. As a result, a specialized model that learned to prioritize these frequent words may score well by synthesizing generic summaries, indicating the limitations of existing evaluation metrics.
+        </font>
+       </p>
+       <p>
+        In contrast, our human evaluation revealed that LLM generates summaries with higher perceived quality than those generated by the benchmark model, Screen2Words. Among all the human annotations, 63.5% of them rated LLM summaries as more accurate, while 28.6% voted for benchmark model summaries. Moreover, 7.9% of annotations indicated that LLM and Screen2Words generate summaries with equal or very similar accuracy. We further examine the annotator agreement across all individual screens. As shown in Figure
+        <a class="fig" href="#fig5">
+         5
+        </a>
+        , LLM summaries are deemed as more accurate for 64.1% of screens according to the majority vote (&gt; 2 votes). Remarkably, LLM summaries were rated as more accurate unanimously by three annotators for 52.8 % of screens. However, our study also showed the LLMs summaries are not always better than the benchmark model, whose summaries received unanimous votes for 20.5% of screens. The results suggest that improving our approach may involve incorporating visual information [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+         3
+        </a>
+        ] (as Screen2Words does), as current language models do not have access to this type of information. Therefore, our approach may not perform well for screens without texts and have a strong focus on visuals.
+       </p>
+       <div class="table-responsive" id="tab3">
+        <div class="table-caption">
+         <span class="table-number">
+          Table 3:
+         </span>
+         <span class="table-title">
+          The LLM's performance on the screen QA task.
+         </span>
+        </div>
+        <table class="table">
+         <thead>
+          <tr>
+           <th style="text-align:left;">
+            Model
+           </th>
+           <th style="text-align:center;">
+            Exact Matches
+           </th>
+           <th style="text-align:center;">
+            Contains GT
+           </th>
+           <th style="text-align:center;">
+            Sub-String of GT
+           </th>
+           <th style="text-align:center;">
+            Micro-F1
+           </th>
+          </tr>
+         </thead>
+         <tbody>
+          <tr>
+           <td style="text-align:left;">
+            0-shot LLM
+           </td>
+           <td style="text-align:center;">
+            30.7%
+           </td>
+           <td style="text-align:center;">
+            6.5%
+           </td>
+           <td style="text-align:center;">
+            5.6%
+           </td>
+           <td style="text-align:center;">
+            31.2%
+           </td>
+          </tr>
+          <tr>
+           <td style="text-align:left;">
+            1-shot LLM
+           </td>
+           <td style="text-align:center;">
+            65.8%
+           </td>
+           <td style="text-align:center;">
+            10%
+           </td>
+           <td style="text-align:center;">
+            7.8%
+           </td>
+           <td style="text-align:center;">
+            62.9%
+           </td>
+          </tr>
+          <tr>
+           <td style="text-align:left;">
+            2-shot LLM
+           </td>
+           <td style="text-align:center;">
+            66.7%
+           </td>
+           <td style="text-align:center;">
+            12.6%
+           </td>
+           <td style="text-align:center;">
+            5.2%
+           </td>
+           <td style="text-align:center;">
+            64.8%
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;">
+            DistilBERT [
+            <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+             47
+            </a>
+            ]
+           </td>
+           <td style="text-align:center;">
+            36.0%
+           </td>
+           <td style="text-align:center;">
+            8.5%
+           </td>
+           <td style="text-align:center;">
+            9.9%
+           </td>
+           <td style="text-align:center;">
+            37.2%
+           </td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+       <p>
+        Figure
+        <a class="fig" href="#fig6">
+         6
+        </a>
+        shows example screens with summaries annotated by human labelers and the output from both Screen2Words and the LLM model. We found that the LLM is more likely to use specific texts on the screen to compose summaries, such as San Francisco (top-left) and Tiramisu Cake Pop (bottom-left), while the Screen2Words dataset and the benchmark model output tend to be more generic. Moreover, the LLM is more likely to generate more extended summaries that leverage multiple vital elements on the screen. For example, the top-right screen shows that the LLM composes a longer summary by leveraging the app name, the send file button, and the recipient fax button:
+        <em>
+         "FaxFile app screen where a user can select a file to send via fax and pick recipients."
+        </em>
+        We also observed that the LLM's prior knowledge is beneficial for screen summarization. For example, the bottom-right photo shows a station search results page for London's tube system. The LLM predicts
+        <em>
+         "Search results for a subway stop in the London tube system."
+        </em>
+        However, the input HTML does not contain the words
+        <em>
+         "London"
+        </em>
+        nor
+        <em>
+         "tube."
+        </em>
+        Therefore, the model has utilized its prior knowledge about the station names, learned from large language datasets, to infer that they belong to the London Tube. This type of summary may not have been generated if the model is trained only on the Screen2Words dataset and shows the benefit of leveraging LLM's prior knowledge for summarizing UIs.
+       </p>
+       <figure id="fig7">
+        <img alt="Figure 7" aria-describedby="fig008" class="img-responsive" src="3580895_files\chi23214fig7.jpg"/>
+        <p id="fig008" style="display:none">
+         Left: Example results from the screen QA experiment. The LLM significantly outperforms the off-the-shelf QA model DistillBert (Baseline). Right: Example of the three metrics used to assess the LLM's performance on screen QA, including Exact Match, Contains Ground Truth, and Sub-String of Ground Truth. For each question, the UI element related to its ground truth is highlighted with a bounding box that has the corresponding color and question index.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 7:
+         </span>
+         <span class="figure-title">
+          Left: Example results from the screen QA experiment. The LLM significantly outperforms the off-the-shelf QA model DistillBert (Baseline). Right: Example of the three metrics used to assess the LLM's performance on screen QA, including Exact Match, Contains Ground Truth, and Sub-String of Ground Truth. For each example question, the UI element related to its ground truth is highlighted with a bounding box with the corresponding color and question index.
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+      </section>
+     </section>
+     <section id="sec-34">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.3
+         </span>
+         Screen Question-Answering (QA)
+        </h3>
+       </div>
+      </header>
+      <section id="sec-35">
+       <p>
+        <em>
+         <span class="section-number">
+          5.3.1
+         </span>
+         Task Formulation.
+        </em>
+        Given a mobile UI and an open-ended question asking for information regarding the UI, the model should provide the correct answer. We focus on factual questions, which require answers based on facts presented on the screen.
+       </p>
+      </section>
+      <section id="sec-36">
+       <p>
+        <em>
+         <span class="section-number">
+          5.3.2
+         </span>
+         Prompt Construction.
+        </em>
+        We use a preamble of
+        <em>
+         "Given a screen and a question, provide the answer based on the screen information."
+        </em>
+        . We did not use chain-of-thought prompting as no intermediate result is needed to be generated for the task. In our experiments,
+        <em>
+         N
+        </em>
+        sets of screen HTML and question-answer pairs follow the preamble, where
+        <em>
+         N
+        </em>
+        = 0, 1, 2 represents
+        <em>
+         N
+        </em>
+        -shot learning. The output answers are enclosed by special tags &lt;SOA&gt; and &lt;EOA&gt;, meaning the start and end of an answer, respectively. The prompt we used in the study can be found in appendix
+        <a class="sec" href="#sec-57">
+         A.3
+        </a>
+        .
+       </p>
+      </section>
+      <section id="sec-37">
+       <p>
+        <em>
+         <span class="section-number">
+          5.3.3
+         </span>
+         Experiment Setup.
+        </em>
+        We use a dataset of 300 human-labeled question-answer pairs from 121 unique screens in the RICO dataset [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+         12
+        </a>
+        ]. It is a preliminary dataset obtained from the authors of an on-going large-scale data collection for screen question-answering [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+         18
+        </a>
+        ]. The data labeling process involves two stages: question annotation and answer annotation. For question annotation, the annotators were asked to frame questions given a screenshot as the context. The annotators were expected to compose questions that only inquire about information that requires no logical reasoning and can be directly read off from the screen. After that, another set of annotators answers the previously annotated questions given the associated screenshots. We randomly held out three screens for prompt construction. The three screens were associated with 12 QA pairs, and we randomly sampled one pair from each screen as exemplars to include in the prompt. In the remaining 288 question-answer pairs, 57 ground truth answers are not present in the view hierarchy data. This is expected because the labeling is based on screenshots instead of view hierarchies, and many screens in the RICO dataset contain inaccurate view hierarchy data [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+         29
+        </a>
+        ]. In this work, we focus on the answers that are present in the view hierarchy data, and incorporating screenshot information in the LLM will be a critical direction to investigate in the future.
+       </p>
+       <p>
+        Since the answers are generated instead of retrieved from screen HTML, some correct answers may not completely match the labels. For example,
+        <em>
+         "2.7.3"
+        </em>
+        versus
+        <em>
+         "version 2.7.3"
+        </em>
+        . Therefore, we report performances on four metrics: 1)
+        <em>
+         Exact Matches
+        </em>
+        : the predicted answer is identical to the ground truth. 2)
+        <em>
+         Contains GT
+        </em>
+        : the answer is longer than the ground truth and fully contains it. 3)
+        <em>
+         Sub-String of GT
+        </em>
+        : the answer is a sub-string of the ground truth. 4)
+        <em>
+         Micro-F1
+        </em>
+        : the micro F1 scores, calculated based on the number of shared words between the predicted answer and the ground truth across the entire dataset. We consider
+        <em>
+         Exact Match
+        </em>
+        answers correct, and those fall within
+        <em>
+         Contains GT
+        </em>
+        and
+        <em>
+         Sub-String of GT
+        </em>
+        relevant. The three metrics are exclusive to each other, and examples of each can be found in Figure
+        <a class="fig" href="#fig7">
+         7
+        </a>
+        -right. We compare the LLM with an off-the-shelf text QA model DistilBERT [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+         47
+        </a>
+        ]. We use the
+        <tt>
+         distilbert-base-cased-distilled-squad
+        </tt>
+        implementation on
+        <tt>
+         huggingface.co
+        </tt>
+        , which achieved 79.6% Exact Match and 87.0% F1 score on the SQuAD dataset [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+         45
+        </a>
+        ]. Unlike existing QA models that extract answers from the input text, the LLM may generate answers in aliases equivalent to the ground truth, for example, 9/15 and September 15th. However, our metrics, which rely on string matching, may not detect these aliases and could result in under-reported scores for our approach.
+       </p>
+      </section>
+      <section id="sec-38">
+       <p>
+        <em>
+         <span class="section-number">
+          5.3.4
+         </span>
+         Results.
+        </em>
+        Table
+        <a class="tbl" href="#tab3">
+         3
+        </a>
+        shows the QA results of different settings. Unlike screen summarization, we found that the LLM can already perform screen QA with the zero-shot setting. 30.7% of the generated answers match exactly with the ground truth, 6.5% answers contain the ground truth, and 5.6% answers are sub-strings of the ground truth. The zero-shot performance might be because the training data of LLMs already contain many QA-related data from the internet. Therefore, the model had already learned to perform question-answering. The off-the-shelf DistillBert model achieves 36% Exact Match, 8.5% Contains GT scores, and 9.9% Contains GT scores, slightly better than the zero-shot performance of LLMs. DistillBert model performs much poorly on our tasks compared to standard question-answering benchmarks, which might be because it was not trained with HTML data. Similar to screen summarization, by providing a single exemplar, the performance boosted significantly, achieving 65.8% Exact Match, 10% Contains GT, and 7.8% Sub-String of GT–summing up to 83.6% answers relevant to the ground truth. 1-shot LLM achieved a 62.9% Micro-F1 score, significantly outperforming the baseline's score of 37.2%. Once again, we observed that the 2-shot setting provided only a modest performance improvement, with relevant answers reaching 84.5% and Micro-F1 achieving 64.8%. Figure
+        <a class="fig" href="#fig7">
+         7
+        </a>
+        -left shows example QA results from our experiment using 2-shot learning. The LLM can effectively understand the screen and generate a correct or relevant answer. For the shown screen, the LLM correctly answers Q1, Q2, and Q4. For Q3, the LLM generates an answer containing the ground truth "Dec 23rd, 2016" but includes the time within the day "4:50" am. In contrast, the baseline model trained with standard text question-answering corpus only managed to answer Q4 correctly; for Q3, its answer only contains "2016", a sub-string of the ground truth. Q2 shows that the baseline model sometimes incorrectly retrieves HTML code from the input screen.
+       </p>
+      </section>
+     </section>
+     <section id="sec-39">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.4
+         </span>
+         Mapping Instruction to UI Action
+        </h3>
+       </div>
+      </header>
+      <section id="sec-40">
+       <p>
+        <em>
+         <span class="section-number">
+          5.4.1
+         </span>
+         Task Formulation.
+        </em>
+        Given a mobile UI screen and natural language instruction to control the UI, the model needs to predict the id of the object to perform the instructed action. For example, when instructed with "Open Gmail," the model should correctly identify the Gmail icon on the home screen. This task is useful for controlling mobile apps using language input such as voice access.
+       </p>
+      </section>
+      <section id="sec-41">
+       <p>
+        <em>
+         <span class="section-number">
+          5.4.2
+         </span>
+         Prompt Construction.
+        </em>
+        We use a preamble of
+        <em>
+         "Given a screen, an instruction, predict the id of the UI element to perform the instruction."
+        </em>
+        . The preamble is followed by
+        <em>
+         N
+        </em>
+        exemplars consisting of the screen HTML, instruction, and ground truth id. Here
+        <em>
+         N
+        </em>
+        = 0, 1, 2 representing
+        <em>
+         N
+        </em>
+        -shot learning. We did not use chain-of-thought prompting as no intermediate result is needed to be generated for the task. The output answers are enclosed by special tags &lt;SOI&gt; and &lt;EOI&gt;, meaning the start and end of the predicted element id, respectively. An example prompt can be found in appendix
+        <a class="sec" href="#sec-58">
+         A.4
+        </a>
+        .
+       </p>
+      </section>
+      <section id="sec-42">
+       <p>
+        <em>
+         <span class="section-number">
+          5.4.3
+         </span>
+         Experiment Setup.
+        </em>
+        We use the PixelHelp dataset [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+         37
+        </a>
+        ], which contains 187 multi-step instructions for performing everyday tasks on Google Pixel phones, such as switching Wi-Fi settings or checking emails. We randomly sampled one screen from each unique app package in the dataset as prompt modules. We then randomly sampled from the prompt modules to construct the final prompts. We conducted experiments under two conditions: 1) in-app and 2) cross-app. In the former, the prompt contains a prompt module from the same app package as the test screen, while in the latter, it does not. Following the original paper, we report the percentage of partial matches and complete matches of target element sequences.
+       </p>
+       <div class="table-responsive" id="tab4">
+        <div class="table-caption">
+         <span class="table-number">
+          Table 4:
+         </span>
+         <span class="table-title">
+          Mapping Instruction to UI Action Results
+         </span>
+        </div>
+        <table class="table">
+         <thead>
+          <tr>
+           <th style="text-align:left;">
+            Model
+           </th>
+           <th style="text-align:center;">
+            Partial
+           </th>
+           <th style="text-align:center;">
+            Complete
+           </th>
+          </tr>
+         </thead>
+         <tbody>
+          <tr>
+           <td style="text-align:left;">
+            0-shot LLM
+           </td>
+           <td style="text-align:center;">
+            1.29
+           </td>
+           <td style="text-align:center;">
+            0.00
+           </td>
+          </tr>
+          <tr>
+           <td style="text-align:left;">
+            1-shot LLM (cross-app)
+           </td>
+           <td style="text-align:center;">
+            74.69
+           </td>
+           <td style="text-align:center;">
+            31.67
+           </td>
+          </tr>
+          <tr>
+           <td style="text-align:left;">
+            2-shot LLM (cross-app)
+           </td>
+           <td style="text-align:center;">
+            75.28
+           </td>
+           <td style="text-align:center;">
+            34.44
+           </td>
+          </tr>
+          <tr>
+           <td style="text-align:left;">
+            1-shot LLM (in-app)
+           </td>
+           <td style="text-align:center;">
+            78.35
+           </td>
+           <td style="text-align:center;">
+            40.00
+           </td>
+          </tr>
+          <tr>
+           <td style="text-align:left;">
+            2-shot LLM (in-app)
+           </td>
+           <td style="text-align:center;">
+            80.36
+           </td>
+           <td style="text-align:center;">
+            45.00
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;">
+            Seq2Act [
+            <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+             37
+            </a>
+            ]
+           </td>
+           <td style="text-align:center;">
+            89.21
+           </td>
+           <td style="text-align:center;">
+            70.59
+           </td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+      </section>
+      <section id="sec-43">
+       <p>
+        <em>
+         <span class="section-number">
+          5.4.4
+         </span>
+         Results.
+        </em>
+        Our experimental results (Table
+        <a class="tbl" href="#tab4">
+         4
+        </a>
+        ) show that the 0-shot setting cannot perform the task with nearly zero partial or complete accuracy. In the cross-app condition, one-shot prompting significantly achieves 74.69 partial and 31.67 complete, meaning  75% of elements associated with the instructions were correctly predicted, and more than 30% tasks are entirely correct. The 2-shot setting offers incremental boosts for both metrics. In the in-app condition, both the 1-shot and 2-shot settings achieve higher scores than their counterparts in the cross-app condition. Our best-performing setting is the 2-shot LLM &amp; in-app, which achieves 80.36 partial and 45.0 complete accuracy scores. Our approach underperforms the benchmark results from the Seq2Act model [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+         37
+        </a>
+        ], which was trained on several dedicated datasets with hundreds of thousands of examples. We do not expect prompting LLMs to consistently outperform benchmarks across all tasks, as the model can only view a handful of data examples and does not update its underlying parameters [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+         7
+        </a>
+        ]. Nevertheless, our approach still demonstrated competitive performances for the task using only two examples.
+       </p>
+      </section>
+     </section>
+    </section>
+    <section id="sec-44">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         6
+        </span>
+        DISCUSSIONS AND FUTURE WORK
+       </h2>
+      </div>
+     </header>
+     <p>
+      In this section, we discuss the implications of our investigation, the limitations of our approach, and how future work can build upon our work.
+     </p>
+     <section id="sec-45">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.1
+         </span>
+         Implications for Language-Based Interaction
+        </h3>
+       </div>
+      </header>
+      <p>
+       An important takeaway from our studies is that
+       <em>
+        prototyping novel language interactions on mobile UIs can be as easy as designing a data exemplar
+       </em>
+       . As a result, an interaction designer can rapidly create functioning mock-ups to test new ideas with end users. Moreover, developers and researchers can explore different possibilities of a target task before investing significant efforts into developing new datasets and models. For example, as discussed in Section
+       <a class="sec" href="#sec-29">
+        5.2
+       </a>
+       , the summaries in the Screen2Words dataset follow a particular sentence structure, while there are many other ways to summarize a screen. Our approach can allow researchers to quickly inspect various types of summaries and how they work in different scenarios before spending efforts developing dedicated datasets and models.
+      </p>
+      <p>
+       The conversational interaction enabled by our approach is beneficial for accessibility. It can also be blended with other input/output modalities, such as touch input and screen readers, to offer new possibilities for multi-modal interaction. Another use case of our approach is
+       <em>
+        end-user prompting
+       </em>
+       . When a conversational agent fails to understand or carry out the tasks associated with the user's commands, prior work has leveraged programming by demonstration technique that asks users to provide tasks demonstrations to teach the agent [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ].
+       <font color="#000000">
+        Our work could augment these techniques to allow users to teach the model by prompting. With the assistance of our algorithm, users only need to provide examples of the desired output, such as which button to click given a language command. For more complex prompts, such as ones using Chain-of-Thought prompting, future work can explore using LLMs to assist users in prompt writing.
+       </font>
+      </p>
+     </section>
+     <section id="sec-46">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.2
+         </span>
+         Feasibility Experiments
+        </h3>
+       </div>
+      </header>
+      <p>
+       <font color="#000000">
+        Our approach showed promising results on each task in the feasibility experiments. Notably, our work contributes to the literature as the first to investigate methods to enable
+       </font>
+       <em>
+        <font color="#000000">
+         Screen Question-Generation
+        </font>
+       </em>
+       <font color="#000000">
+        and
+       </font>
+       <em>
+        <font color="#000000">
+         Screen Question-Answering
+        </font>
+       </em>
+       <font color="#000000">
+        . Moreover, our approach can generate screen summaries that are more accurate than the benchmark model, according to the human evaluation of the
+       </font>
+       <em>
+        <font color="#000000">
+         Screen Summarization
+        </font>
+       </em>
+       <font color="#000000">
+        task. Although our method underperformed the benchmark for the
+       </font>
+       <em>
+        <font color="#000000">
+         Mapping Instruction to UI Action
+        </font>
+       </em>
+       <font color="#000000">
+        task, it is worth noting that our method still achieved competitive accuracy with only two examples instead of extensive modeling on dedicated datasets like the benchmark. One possible reason for the underperformance is that LLMs are trained to generate text instead of selecting (predicting) an element id, and finetuning LLMs can potentially significantly boost the accuracy of this task. As the first work in this direction, our work offers a set of new techniques and findings for using LLMs to enable conversational interaction. A natural next step is further examining these techniques by integrating them into an actual conversational agent.
+       </font>
+      </p>
+     </section>
+     <section id="sec-47">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.3
+         </span>
+         Extending to Multi-Screen, Multi-Turn Conversational Interaction
+        </h3>
+       </div>
+      </header>
+      <p>
+       <font color="#000000">
+        We focus on unit conversation tasks involving single-turn interactions in this work. Future research can build upon our techniques to enable multi-screen [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+         8
+        </a>
+        ] and multi-turn [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+         30
+        </a>
+        ] conversational interactions. Multi-screen interactions can allow the agent to carry out complex tasks across various screens. For example, to help a user book a hotel room, an agent could start by asking which hotel the user wants to book and then search for that hotel (Figure
+        <a class="fig" href="#fig1">
+         1
+        </a>
+        -1:
+        <em>
+         Screen Question-Generation
+        </em>
+        ). Once the search results are obtained, the agent could announce a summary of the search result page (Figure
+        <a class="fig" href="#fig1">
+         1
+        </a>
+        -2:
+        <em>
+         Screen Summary
+        </em>
+        ). After that, the user could then ask for specific information from the search results, such as the room rates (Figure
+        <a class="fig" href="#fig1">
+         1
+        </a>
+        -3:
+        <em>
+         Screen Question-Answering
+        </em>
+        ), and finally, the user could command the agent to book the desired room (Figure
+        <a class="fig" href="#fig1">
+         1
+        </a>
+        -4:
+        <em>
+         Mapping Instruction to UI Actions
+        </em>
+        ). Multi-turn interactions can enable the agent to ask for clarifications on ambiguous cases [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+         32
+        </a>
+        ] or recover from errors. For example, given the screen in Figure
+        <a class="fig" href="#fig3">
+         3
+        </a>
+        with two emails sent from Google Play, if the user says,
+        <em>
+         "Open the email sent by Google Play"
+        </em>
+        , our current approach would likely select one of them directly without clarifying with the users. A sophisticated agent should identify ambiguity and ask the user for clarification, such as,
+        <em>
+         "Do you mean the one sent on Dec. 4th or Nov. 12th?"
+        </em>
+        To achieve multi-screen and multi-turn interactions with the proposed approach, future work will need to investigate methods to store and represent past screens and interactions as contexts [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+         43
+        </a>
+        ]
+       </font>
+       .
+      </p>
+     </section>
+     <section id="sec-48">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.4
+         </span>
+         Shots, Input Lengths, and Model Performance
+        </h3>
+       </div>
+      </header>
+      <p>
+       Our findings indicate that the first prompt exemplar usually significantly boosts LLM performance in mobile UI tasks. In contrast, the inclusion of a second example only results in a marginal improvement. Previous research by Reynolds and McDonell [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+        46
+       </a>
+       ] suggests that the effectiveness of few-shot prompting lies within guiding LLMs to locate specific task locations in the model's existing space of learned tasks. Therefore, the first shot may be the most helpful, and additional examples may provide only marginal benefits in narrowing the model's focus. Relevantly, language models often have input length constraints, which limit the number of exemplars that can be included in the prompt. The length of a screen HTML has a considerable variance, depending on how much information was conveyed through the view hierarchy and the inherent complexity of the screen. Future work could explore approaches to prevent exceeding the input length limit. One potential approach is to dynamically select prompt screens with different lengths. When the test screen HTML is lengthy, shorter prompt screens could be selected. However, it is unclear whether imbalanced lengths between prompt and test screens would lead to inferior performances. Future research could investigate the trade-off between the number of shots, the length of each shot, and their impact on the model's performance in different UI tasks.
+      </p>
+      <p>
+       As modeling techniques advance, the input length restrictions of language models would likely be lifted [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+        57
+       </a>
+       ], allowing for more information to be included in prompts. Another direction for future work is to develop methods for condensing screen HTML into a more concise syntax while still achieving comparable performance. In addition, to enable real-time applications, future research may investigate strategies such as model distillation [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ] and model compression [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+        15
+       </a>
+       ] for more efficient inference of LLMs.
+      </p>
+     </section>
+     <section id="sec-49">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.5
+         </span>
+         Screen Representation
+        </h3>
+       </div>
+      </header>
+      <p>
+       Mobile UI screens contain multiple modalities, including pixels, texts, and even audio when media content is present. A limitation of our investigation is that we only use the view hierarchy information, which is converted to an HTML representation, and leave other modalities unused. This limitation is imposed by the type of input expected by LLMs. While our studies showed LLMs could perform decently on various UI tasks, they could fail in cases requiring information not present in the view hierarchy but available as pixels. For instance, many icons or images on UI screens have missing captions or alt texts (text description of a visual element), and LLMs may not be able to perform tasks based on these elements. Moreover, visual information is particularly crucial for some apps, e.g., photo editing tools, and our approach may fall short of enabling conversational interaction based on these apps. Many models have started using multiple modalities, including visual and text information of UIs [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+        8
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+        38
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+        50
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+        58
+       </a>
+       ]. Future work could exploit these prior models to generate missing captions or alt-text of elements, which can lead to more comprehensive screen information in the HTML input to LLMs. Our approach can also be extended by leveraging large-scale vision language models such as Flamingo [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+        4
+       </a>
+       ] to encode a screen's visual and structural information for few-shot learning.
+      </p>
+     </section>
+     <section id="sec-50">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.6
+         </span>
+         Steerability and Reliability of LLM Predictions
+        </h3>
+       </div>
+      </header>
+      <p>
+       Our experiments uncovered several promising capabilities of LLMs for mobile UI tasks. For example, the model showcased the behavior of question combination, i.e., merging relevant input fields into a single question, in the
+       <em>
+        Screen Question-Generation
+       </em>
+       task. Furthermore, our study shows that the model can utilize its embedded prior knowledge to provide additional information in the
+       <em>
+        Screen Summarization
+       </em>
+       task. While these capabilities are intriguing and potentially useful, there is currently a lack of direct controls for steering LLMs in terms of when and how these behaviors should occur. Additionally, LLMs, as other natural language generation models, could sometimes produce unintended text, known as hallucinations [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+        19
+       </a>
+       ]. This means that the model may produce incorrect or irrelevant information. Our current method does not explicitly address this issue. As the research surrounding LLMs develops, it is crucial to find ways to improve the steerability and reliability of their predictions and behaviors, especially when incorporating LLMs into user-facing technology.
+      </p>
+     </section>
+     <section id="sec-51">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.7
+         </span>
+         Generalizing Beyond Mobile UIs
+        </h3>
+       </div>
+      </header>
+      <p>
+       This paper focuses on mobile UIs, but the proposed approach with LLMs can also be applied to other UI types, such as web UIs [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+        1
+       </a>
+       ] (which are already in HTML syntax) and popular UI systems like iOS and macOS that possess view hierarchy data or equivalence. However, for more sophisticated and feature-rich UIs like video editors, a direct adaptation of our approach may be challenging due to the difficulty in representing key features in text format and ensuring the representation complies with model length constraints, as highlighted in the previous discussions. Nonetheless, our research provides a solid foundation for further studies to build upon and develop innovative methods that enable language interaction with graphical user interfaces.
+      </p>
+     </section>
+    </section>
+    <section id="sec-52">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         7
+        </span>
+        CONCLUSION
+       </h2>
+      </div>
+     </header>
+     <p>
+      We investigated the feasibility of prompting LLMs to enable various conversational interactions on mobile UIs. By categorizing the conversation scenarios between users and agents during mobile tasks, we identified four crucial UI tasks to study. We proposed a suite of prompting techniques for adapting LLMs to mobile UIs. We conducted extensive experiments with the four selected tasks to evaluate the effectiveness of our approach. The results showed that compared to traditional machine learning pipelines that consist of expensive data collection and model training, one could rapidly realize novel language-based interactions using LLMs while achieving competitive performance.
+     </p>
+    </section>
+   </section>
+   <section class="back-matter">
+    <section id="sec-53">
+     <header>
+      <div class="title-info">
+       <h2>
+        ACKNOWLEDGMENTS
+       </h2>
+      </div>
+     </header>
+     <p>
+      We thank the anonymous reviewers for their valuable feedback during the R&amp;R process that enhanced the paper's quality. We appreciate the discussions and feedback from our team members Chin-Yi Cheng and Tao Li. We also acknowledge the early-stage feedback from Michael Terry and Minsuk Chang. Special thanks to the Google Data Compute team for their invaluable assistance in data collection.
+     </p>
+    </section>
+    <appendix>
+     <section id="sec-54">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          A
+         </span>
+         EXAMPLE PROMPTS FOR FEASIBILITY EXPERIMENTS TASKS
+        </h2>
+       </div>
+      </header>
+      <p>
+       We show the prompt examples used in each task from the feasibility experiments. For screen summarization, screen QA, and mapping instruction to UI action, we include 1-shot prompts for simplicity. For the screen question-generation study, we include the 2-shot prompt–one exemplar uses question combination (the second screen), and the other does not. Both exemplars contain a chain of thoughts consisting of intermediate results.
+      </p>
+      <section id="sec-55">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           A.1
+          </span>
+          Screen Question-Generation
+         </h3>
+        </div>
+       </header>
+       <p>
+        <span class="inline-equation">
+         <img alt="" class="img-responsive" src="3580895_files\chi23214img1.svg"/>
+        </span>
+       </p>
+      </section>
+      <section id="sec-56">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           A.2
+          </span>
+          Screen Summarization
+         </h3>
+        </div>
+       </header>
+       <p>
+        <span class="inline-equation">
+         <img alt="" class="img-responsive" src="3580895_files\chi23214img2.svg"/>
+        </span>
+       </p>
+      </section>
+      <section id="sec-57">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           A.3
+          </span>
+          Screen Question-Answering
+         </h3>
+        </div>
+       </header>
+       <p>
+        <span class="inline-equation">
+         <img alt="" class="img-responsive" src="3580895_files\chi23214img3.svg"/>
+        </span>
+       </p>
+      </section>
+      <section id="sec-58">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           A.4
+          </span>
+          Mapping Instruction to UI Action
+         </h3>
+        </div>
+       </header>
+       <p>
+        <span class="inline-equation">
+         <img alt="" class="img-responsive" src="3580895_files\chi23214img4.svg"/>
+        </span>
+       </p>
+      </section>
+     </section>
+    </appendix>
+    <section id="ref-001">
+     <header>
+      <div class="title-info">
+       <h2 class="page-brake-head">
+        REFERENCES
+       </h2>
+      </div>
+     </header>
+     <ul class="bibUl">
+      <li id="BibPLXBIB0001" label="[1]">
+       Adept. 2022.
+       <em>
+        ACT-1: Transformer for Actions
+       </em>
+       .
+       <a class="link-inline force-break" href="https://www.adept.ai/act">
+        https://www.adept.ai/act
+       </a>
+      </li>
+      <li id="BibPLXBIB0002" label="[2]">
+       Michael Ahn, Anthony Brohan, Noah Brown, Yevgen Chebotar, Omar Cortes, Byron David, Chelsea Finn, Chuyuan Fu, Keerthana Gopalakrishnan, Karol Hausman, Alex Herzog, Daniel Ho, Jasmine Hsu, Julian Ibarz, Brian Ichter, Alex Irpan, Eric Jang, Rosario Jauregui Ruano, Kyle Jeffrey, Sally Jesmonth, Nikhil J Joshi, Ryan Julian, Dmitry Kalashnikov, Yuheng Kuang, Kuang-Huei Lee, Sergey Levine, Yao Lu, Linda Luu, Carolina Parada, Peter Pastor, Jornell Quiambao, Kanishka Rao, Jarek Rettinghouse, Diego Reyes, Pierre Sermanet, Nicolas Sievers, Clayton Tan, Alexander Toshev, Vincent Vanhoucke, Fei Xia, Ted Xiao, Peng Xu, Sichun Xu, Mengyuan Yan, and Andy Zeng. 2022. Do As I Can, Not As I Say: Grounding Language in Robotic Affordances.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2204.01691">
+        https://doi.org/10.48550/ARXIV.2204.01691
+       </a>
+      </li>
+      <li id="BibPLXBIB0003" label="[3]">
+       Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr, Yana Hasson, Karel Lenc, Arthur Mensch, Katie Millican, Malcolm Reynolds, Roman Ring, Eliza Rutherford, Serkan Cabi, Tengda Han, Zhitao Gong, Sina Samangooei, Marianne Monteiro, Jacob Menick, Sebastian Borgeaud, Andrew Brock, Aida Nematzadeh, Sahand Sharifzadeh, Mikolaj Binkowski, Ricardo Barreira, Oriol Vinyals, Andrew Zisserman, and Karen Simonyan. 2022. Flamingo: a Visual Language Model for Few-Shot Learning.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2204.14198">
+        https://doi.org/10.48550/ARXIV.2204.14198
+       </a>
+      </li>
+      <li id="BibPLXBIB0004" label="[4]">
+       Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr, Yana Hasson, Karel Lenc, Arthur Mensch, Katie Millican, Malcolm Reynolds, Roman Ring, Eliza Rutherford, Serkan Cabi, Tengda Han, Zhitao Gong, Sina Samangooei, Marianne Monteiro, Jacob Menick, Sebastian Borgeaud, Andrew Brock, Aida Nematzadeh, Sahand Sharifzadeh, Mikolaj Binkowski, Ricardo Barreira, Oriol Vinyals, Andrew Zisserman, and Karen Simonyan. 2022. Flamingo: a Visual Language Model for Few-Shot Learning.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2204.14198">
+        https://doi.org/10.48550/ARXIV.2204.14198
+       </a>
+      </li>
+      <li id="BibPLXBIB0005" label="[5]">
+       Stanislaw Antol, Aishwarya Agrawal, Jiasen Lu, Margaret Mitchell, Dhruv Batra, C Lawrence Zitnick, and Devi Parikh. 2015. Vqa: Visual question answering. In
+       <em>
+        Proceedings of the IEEE international conference on computer vision
+       </em>
+       . 2425–2433.
+      </li>
+      <li id="BibPLXBIB0006" label="[6]">
+       Richard A Bolt. 1980. “Put-that-there” Voice and gesture at the graphics interface. In
+       <em>
+        Proceedings of the 7th annual conference on Computer graphics and interactive techniques
+       </em>
+       . 262–270.
+      </li>
+      <li id="BibPLXBIB0007" label="[7]">
+       Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. 2020. Language Models are Few-Shot Learners. arxiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/2005.14165">
+        2005.14165
+       </a>
+       [cs.CL]
+      </li>
+      <li id="BibPLXBIB0008" label="[8]">
+       Andrea Burns, Deniz Arsan, Sanjna Agrawal, Ranjitha Kumar, Kate Saenko, and Bryan A. Plummer. 2022. A Dataset for Interactive Vision-Language Navigation with Unknown Command Feasibility.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2202.02312">
+        https://doi.org/10.48550/ARXIV.2202.02312
+       </a>
+      </li>
+      <li id="BibPLXBIB0009" label="[9]">
+       Aakanksha Chowdhery, Sharan Narang, Jacob Devlin, Maarten Bosma, Gaurav Mishra, Adam Roberts, Paul Barham, Hyung Won Chung, Charles Sutton, Sebastian Gehrmann,
+       <em>
+        et al.
+       </em>
+       2022. Palm: Scaling language modeling with pathways.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2204.02311">
+          2204.02311
+         </a>
+        </em>
+       </em>
+       (2022).
+      </li>
+      <li id="BibPLXBIB0010" label="[10]">
+       John Joon Young Chung, Wooseok Kim, Kang Min Yoo, Hwaran Lee, Eytan Adar, and Minsuk Chang. 2022. TaleBrush: Visual Sketching of Story Generation with Pretrained Language Models. In Extended Abstracts of the 2022 CHI Conference on Human Factors in Computing Systems(New Orleans, LA, USA) (CHI EA ’22). Association for Computing Machinery, New York, NY, USA, Article 172, 4 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3491101.3519873">
+        https://doi.org/10.1145/3491101.3519873
+       </a>
+      </li>
+      <li id="BibPLXBIB0011" label="[11]">
+       Hai Dang, Lukas Mecke, Florian Lehmann, Sven Goller, and Daniel Buschek. 2022. How to Prompt? Opportunities and Challenges of Zero- and Few-Shot Learning for Human-AI Interaction in Creative Applications of Generative Models.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2209.01390">
+        https://doi.org/10.48550/ARXIV.2209.01390
+       </a>
+      </li>
+      <li id="BibPLXBIB0012" label="[12]">
+       Biplab Deka, Zifeng Huang, Chad Franzen, Joshua Hibschman, Daniel Afergan, Yang Li, Jeffrey Nichols, and Ranjitha Kumar. 2017. Rico: A Mobile App Dataset for Building Data-Driven Design Applications. In
+       <em>
+        Proceedings of the 30th Annual Symposium on User Interface Software and Technology
+       </em>
+       (
+       <em>
+        UIST ’17
+       </em>
+       ).
+      </li>
+      <li id="BibPLXBIB0013" label="[13]">
+       Asbjørn Følstad and Petter Bae Brandtzæg. 2017. Chatbots and the new world of HCI.
+       <em>
+        <em>
+         interactions
+        </em>
+       </em>
+       24, 4 (2017), 38–42.
+      </li>
+      <li id="BibPLXBIB0014" label="[14]">
+       Tanya Goyal, Junyi Jessy Li, and Greg Durrett. 2022. News Summarization and Evaluation in the Era of GPT-3.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2209.12356">
+        https://doi.org/10.48550/ARXIV.2209.12356
+       </a>
+      </li>
+      <li id="BibPLXBIB0015" label="[15]">
+       Song Han, Huizi Mao, and William J. Dally. 2015. Deep Compression: Compressing Deep Neural Networks with Pruning, Trained Quantization and Huffman Coding.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.1510.00149">
+        https://doi.org/10.48550/ARXIV.1510.00149
+       </a>
+      </li>
+      <li id="BibPLXBIB0016" label="[16]">
+       Geoffrey Hinton, Oriol Vinyals, and Jeff Dean. 2015. Distilling the Knowledge in a Neural Network.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.1503.02531">
+        https://doi.org/10.48550/ARXIV.1503.02531
+       </a>
+      </li>
+      <li id="BibPLXBIB0017" label="[17]">
+       Eric Horvitz. 1999. Principles of mixed-initiative user interfaces. In
+       <em>
+        Proceedings of the SIGCHI conference on Human Factors in Computing Systems
+       </em>
+       . 159–166.
+      </li>
+      <li id="BibPLXBIB0018" label="[18]">
+       Yu-Chung Hsiao, Fedir Zubach, Maria Wang, and Chen Jindong. 2022. ScreenQA: Large-Scale Question-Answer Pairs over Mobile App Screenshots.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2209.08199">
+        https://doi.org/10.48550/ARXIV.2209.08199
+       </a>
+      </li>
+      <li id="BibPLXBIB0019" label="[19]">
+       Ziwei Ji, Nayeon Lee, Rita Frieske, Tiezheng Yu, Dan Su, Yan Xu, Etsuko Ishii, Yejin Bang, Andrea Madotto, and Pascale Fung. 2022. Survey of Hallucination in Natural Language Generation.
+       <em>
+        <em>
+         ACM Comput. Surv.
+        </em>
+       </em>
+       (nov 2022).
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3571730">
+        https://doi.org/10.1145/3571730
+       </a>
+       Just Accepted.
+      </li>
+      <li id="BibPLXBIB0020" label="[20]">
+       Ellen Jiang, Kristen Olson, Edwin Toh, Alejandra Molina, Aaron Donsbach, Michael Terry, and Carrie J Cai. 2022. PromptMaker: Prompt-Based Prototyping with Large Language Models. In Extended Abstracts of the 2022 CHI Conference on Human Factors in Computing Systems (New Orleans, LA, USA) (CHI EA ’22). Association for Computing Machinery, New York, NY, USA, Article 35, 8 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3491101.3503564">
+        https://doi.org/10.1145/3491101.3503564
+       </a>
+      </li>
+      <li id="BibPLXBIB0021" label="[21]">
+       Ellen Jiang, Edwin Toh, Alejandra Molina, Kristen Olson, Claire Kayacik, Aaron Donsbach, Carrie J Cai, and Michael Terry. 2022. Discovering the Syntax and Strategies of Natural Language Programming with Generative Language Models. In Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems (New Orleans, LA, USA) (CHI ’22). Association for Computing Machinery, New York, NY, USA, Article 386, 19 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3491102.3501870">
+        https://doi.org/10.1145/3491102.3501870
+       </a>
+      </li>
+      <li id="BibPLXBIB0022" label="[22]">
+       Clare-Marie Karat, John Vergo, and David Nahamoo. 2002. Conversational interface technologies. In
+       <em>
+        The human-computer interaction handbook: fundamentals, evolving technologies and emerging applications
+       </em>
+       . 169–186.
+      </li>
+      <li id="BibPLXBIB0023" label="[23]">
+       Tae Soo Kim, DaEun Choi, Yoonseo Choi, and Juho Kim. 2022. Stylette: Styling the Web with Natural Language. In Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems (New Orleans, LA, USA) (CHI ’22). Association for Computing Machinery, New York, NY, USA, Article 5, 17 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3491102.3501931">
+        https://doi.org/10.1145/3491102.3501931
+       </a>
+      </li>
+      <li id="BibPLXBIB0024" label="[24]">
+       Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. 2022. Large Language Models are Zero-Shot Reasoners.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2205.11916">
+        https://doi.org/10.48550/ARXIV.2205.11916
+       </a>
+      </li>
+      <li id="BibPLXBIB0025" label="[25]">
+       Mina Lee, Percy Liang, and Qian Yang. 2022. CoAuthor: Designing a Human-AI Collaborative Writing Dataset for Exploring Language Model Capabilities. In Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems (New Orleans, LA, USA) (CHI ’22). Association for Computing Machinery, New York, NY, USA, Article 388, 19 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3491102.3502030">
+        https://doi.org/10.1145/3491102.3502030
+       </a>
+      </li>
+      <li id="BibPLXBIB0026" label="[26]">
+       Yoonjoo Lee, John Joon Young Chung, Tae Soo Kim, Jean Y Song, and Juho Kim. 2022. Promptiverse: Scalable Generation of Scaffolding Prompts Through Human-AI Hybrid Knowledge Graph Annotation. In Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems (New Orleans, LA, USA) (CHI ’22). Association for Computing Machinery, New York, NY, USA, Article 96, 18 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3491102.3502087">
+        https://doi.org/10.1145/3491102.3502087
+       </a>
+      </li>
+      <li id="BibPLXBIB0027" label="[27]">
+       Yoonjoo Lee, Tae Soo Kim, Minsuk Chang, and Juho Kim. 2022. Interactive Children's Story Rewriting Through Parent-Children Interaction. In
+       <em>
+        Proceedings of the First Workshop on Intelligent and Interactive Writing Assistants (In2Writing 2022)
+       </em>
+       . 62–71.
+      </li>
+      <li id="BibPLXBIB0028" label="[28]">
+       Luis A. Leiva, Asutosh Hota, and Antti Oulasvirta. 2022. Describing UI Screenshots in Natural Language.
+       <em>
+        <em>
+         ACM Trans. Intell. Syst. Technol.
+        </em>
+       </em>
+       14, 1, Article 19 (nov 2022), 28 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3564702">
+        https://doi.org/10.1145/3564702
+       </a>
+      </li>
+      <li id="BibPLXBIB0029" label="[29]">
+       Gang Li, Gilles Baechler, Manuel Tragut, and Yang Li. 2022. Learning to Denoise Raw Mobile UI Layouts for Improving Datasets at Scale. In Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems (New Orleans, LA, USA) (CHI ’22). Association for Computing Machinery, New York, NY, USA, Article 67, 13 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3491102.3502042">
+        https://doi.org/10.1145/3491102.3502042
+       </a>
+      </li>
+      <li id="BibPLXBIB0030" label="[30]">
+       Tao Li, Gang Li, Jingjie Zheng, Purple Wang, and Yang Li. 2022. MUG: Interactive Multimodal Grounding on User Interfaces.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2209.15099">
+        https://doi.org/10.48550/ARXIV.2209.15099
+       </a>
+      </li>
+      <li id="BibPLXBIB0031" label="[31]">
+       Toby Jia-Jun Li, Amos Azaria, and Brad A Myers. 2017. SUGILITE: creating multimodal smartphone automation by demonstration. In
+       <em>
+        Proceedings of the 2017 CHI conference on human factors in computing systems
+       </em>
+       . 6038–6049.
+      </li>
+      <li id="BibPLXBIB0032" label="[32]">
+       Toby Jia-Jun Li, Jingya Chen, Haijun Xia, Tom M Mitchell, and Brad A Myers. 2020. Multi-modal repairs of conversational breakdowns in task-oriented dialogs. In
+       <em>
+        Proceedings of the 33rd Annual ACM Symposium on User Interface Software and Technology
+       </em>
+       . 1094–1107.
+      </li>
+      <li id="BibPLXBIB0033" label="[33]">
+       Toby Jia-Jun Li, Igor Labutov, Xiaohan Nancy Li, Xiaoyi Zhang, Wenze Shi, Wanling Ding, Tom M. Mitchell, and Brad A. Myers. 2018. APPINITE: A Multi-Modal Interface for Specifying Data Descriptions in Programming by Demonstration Using Natural Language Instructions. In
+       <em>
+        2018 IEEE Symposium on Visual Languages and Human-Centric Computing (VL/HCC)
+       </em>
+       . 105–114.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/VLHCC.2018.8506506">
+        https://doi.org/10.1109/VLHCC.2018.8506506
+       </a>
+      </li>
+      <li id="BibPLXBIB0034" label="[34]">
+       Toby Jia-Jun Li, Lindsay Popowski, Tom Mitchell, and Brad A Myers. 2021. Screen2vec: Semantic embedding of gui screens and gui components. In
+       <em>
+        Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems
+       </em>
+       . 1–15.
+      </li>
+      <li id="BibPLXBIB0035" label="[35]">
+       Toby Jia-Jun Li, Marissa Radensky, Justin Jia, Kirielle Singarajah, Tom M. Mitchell, and Brad A. Myers. 2019. PUMICE: A Multi-Modal Agent That Learns Concepts and Conditionals from Natural Language and Demonstrations. In Proceedings of the 32nd Annual ACM Symposium on User Interface Software and Technology (New Orleans, LA, USA) (UIST ’19). Association for Computing Machinery, New York, NY, USA, 577–589.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3332165.3347899">
+        https://doi.org/10.1145/3332165.3347899
+       </a>
+      </li>
+      <li id="BibPLXBIB0036" label="[36]">
+       Toby Jia-Jun Li and Oriana Riva. 2018. Kite: Building Conversational Bots from Mobile Apps. In Proceedings of the 16th Annual International Conference on Mobile Systems, Applications, and Services(Munich, Germany) (MobiSys ’18). Association for Computing Machinery, New York, NY, USA, 96–109.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3210240.3210339">
+        https://doi.org/10.1145/3210240.3210339
+       </a>
+      </li>
+      <li id="BibPLXBIB0037" label="[37]">
+       Yang Li, Jiacong He, Xin Zhou, Yuan Zhang, and Jason Baldridge. 2020. Mapping Natural Language Instructions to Mobile UI Action Sequences. In
+       <em>
+        Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics
+       </em>
+       . Association for Computational Linguistics, Online, 8198–8210.
+       <a class="link-inline force-break" href="https://doi.org/10.18653/v1/2020.acl-main.729">
+        https://doi.org/10.18653/v1/2020.acl-main.729
+       </a>
+      </li>
+      <li id="BibPLXBIB0038" label="[38]">
+       Yang Li, Gang Li, Luheng He, Jingjie Zheng, Hong Li, and Zhiwei (Wei) Guan. 2020. Widget Captioning: Generating Natural Language Description for Mobile User Interface Elements.
+       <a class="link-inline force-break" href="https://www.aclweb.org/anthology/2020.emnlp-main.443.pdf">
+        https://www.aclweb.org/anthology/2020.emnlp-main.443.pdf
+       </a>
+      </li>
+      <li id="BibPLXBIB0039" label="[39]">
+       Yang Li, Gang Li, Xin Zhou, Mostafa Dehghani, and Alexey Gritsenko. 2021. VUT: Versatile UI Transformer for Multi-Modal Multi-Task User Interface Modeling.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2112.05692">
+          2112.05692
+         </a>
+        </em>
+       </em>
+       (2021).
+      </li>
+      <li id="BibPLXBIB0040" label="[40]">
+       Yang Li, Gang Li, Xin Zhou, Mostafa Dehghani, and Alexey Gritsenko. 2021. VUT: Versatile UI Transformer for Multi-Modal Multi-Task User Interface Modeling.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2112.05692">
+        https://doi.org/10.48550/ARXIV.2112.05692
+       </a>
+      </li>
+      <li id="BibPLXBIB0041" label="[41]">
+       Evan Zheran Liu, Kelvin Guu, Panupong Pasupat, Tianlin Shi, and Percy Liang. 2018. Reinforcement Learning on Web Interfaces Using Workflow-Guided Exploration. arxiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/1802.08802">
+        1802.08802
+       </a>
+       [cs.AI]
+      </li>
+      <li id="BibPLXBIB0042" label="[42]">
+       Yihe Liu, Anushk Mittal, Diyi Yang, and Amy Bruckman. 2022. Will AI Console Me When I Lose My Pet? Understanding Perceptions of AI-Mediated Email Writing. In Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems (New Orleans, LA, USA) (CHI ’22). Association for Computing Machinery, New York, NY, USA, Article 474, 13 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3491102.3517731">
+        https://doi.org/10.1145/3491102.3517731
+       </a>
+      </li>
+      <li id="BibPLXBIB0043" label="[43]">
+       OpenAI. 2022. CHATGPT: Optimizing language models for dialogue.
+       <a class="link-inline force-break" href="https://openai.com/blog/chatgpt/">
+        https://openai.com/blog/chatgpt/
+       </a>
+      </li>
+      <li id="BibPLXBIB0044" label="[44]">
+       Panupong Pasupat, Tian-Shun Jiang, Evan Liu, Kelvin Guu, and Percy Liang. 2018. Mapping natural language commands to web elements. In
+       <em>
+        Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing
+       </em>
+       . Association for Computational Linguistics, Brussels, Belgium, 4970–4976.
+       <a class="link-inline force-break" href="https://doi.org/10.18653/v1/D18-1540">
+        https://doi.org/10.18653/v1/D18-1540
+       </a>
+      </li>
+      <li id="BibPLXBIB0045" label="[45]">
+       Pranav Rajpurkar, Jian Zhang, Konstantin Lopyrev, and Percy Liang. 2016. Squad: 100,000+ questions for machine comprehension of text.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1606.05250">
+          1606.05250
+         </a>
+        </em>
+       </em>
+       (2016).
+      </li>
+      <li id="BibPLXBIB0046" label="[46]">
+       Laria Reynolds and Kyle McDonell. 2021. Prompt Programming for Large Language Models: Beyond the Few-Shot Paradigm.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2102.07350">
+        https://doi.org/10.48550/ARXIV.2102.07350
+       </a>
+      </li>
+      <li id="BibPLXBIB0047" label="[47]">
+       Victor Sanh, Lysandre Debut, Julien Chaumond, and Thomas Wolf. 2019. DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.1910.01108">
+        https://doi.org/10.48550/ARXIV.1910.01108
+       </a>
+      </li>
+      <li id="BibPLXBIB0048" label="[48]">
+       Zhanna Sarsenbayeva, Niels van Berkel, Chu Luo, Vassilis Kostakos, and Jorge Goncalves. 2017. Challenges of situational impairments during interaction with mobile devices. In
+       <em>
+        Proceedings of the 29th Australian Conference on Computer-Human Interaction
+       </em>
+       . 477–481.
+      </li>
+      <li id="BibPLXBIB0049" label="[49]">
+       Kashyap Todi, Luis A. Leiva, Daniel Buschek, Pin Tian, and Antti Oulasvirta. 2021. Conversations with GUIs. In
+       <em>
+        Proceedings of the ACM SIGCHI Conference on Designing Interactive Systems
+       </em>
+       (
+       <em>
+        DIS ’21’
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3461778.3462124">
+        https://doi.org/10.1145/3461778.3462124
+       </a>
+      </li>
+      <li id="BibPLXBIB0050" label="[50]">
+       Bryan Wang, Gang Li, Xin Zhou, Zhourong Chen, Tovi Grossman, and Yang Li. 2021. Screen2Words: Automatic Mobile UI Summarization with Multimodal Learning. In The 34th Annual ACM Symposium on User Interface Software and Technology (Virtual Event, USA) (UIST ’21). Association for Computing Machinery, New York, NY, USA, 498–510.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3472749.3474765">
+        https://doi.org/10.1145/3472749.3474765
+       </a>
+      </li>
+      <li id="BibPLXBIB0051" label="[51]">
+       Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, and Denny Zhou. 2022. Rationale-Augmented Ensembles in Language Models.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2207.00747">
+        https://doi.org/10.48550/ARXIV.2207.00747
+       </a>
+      </li>
+      <li id="BibPLXBIB0052" label="[52]">
+       Jason Wei, Yi Tay, Rishi Bommasani, Colin Raffel, Barret Zoph, Sebastian Borgeaud, Dani Yogatama, Maarten Bosma, Denny Zhou, Donald Metzler,
+       <em>
+        et al.
+       </em>
+       2022. Emergent abilities of large language models.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2206.07682">
+          2206.07682
+         </a>
+        </em>
+       </em>
+       (2022).
+      </li>
+      <li id="BibPLXBIB0053" label="[53]">
+       Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Brian Ichter, Fei Xia, Ed Chi, Quoc Le, and Denny Zhou. 2022. Chain of Thought Prompting Elicits Reasoning in Large Language Models.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2201.11903">
+        https://doi.org/10.48550/ARXIV.2201.11903
+       </a>
+      </li>
+      <li id="BibPLXBIB0054" label="[54]">
+       Jacob O Wobbrock. 2019. Situationally aware mobile devices for overcoming situational impairments. In
+       <em>
+        Proceedings of the ACM SIGCHI Symposium on Engineering Interactive Computing Systems
+       </em>
+       . 1–18.
+      </li>
+      <li id="BibPLXBIB0055" label="[55]">
+       Jason Wu, Xiaoyi Zhang, Jeff Nichols, and Jeffrey P Bigham. 2021. Screen Parsing: Towards Reverse Engineering of UI Models from Screenshots. In The 34th Annual ACM Symposium on User Interface Software and Technology (Virtual Event, USA) (UIST ’21). Association for Computing Machinery, New York, NY, USA, 470–483.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3472749.3474763">
+        https://doi.org/10.1145/3472749.3474763
+       </a>
+      </li>
+      <li id="BibPLXBIB0056" label="[56]">
+       Tongshuang Wu, Michael Terry, and Carrie Jun Cai. 2022. AI Chains: Transparent and Controllable Human-AI Interaction by Chaining Large Language Model Prompts. In Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems (New Orleans, LA, USA) (CHI ’22). Association for Computing Machinery, New York, NY, USA, Article 385, 22 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3491102.3517582">
+        https://doi.org/10.1145/3491102.3517582
+       </a>
+      </li>
+      <li id="BibPLXBIB0057" label="[57]">
+       Manzil Zaheer, Guru Guruganesh, Avinava Dubey, Joshua Ainslie, Chris Alberti, Santiago Ontanon, Philip Pham, Anirudh Ravula, Qifan Wang, Li Yang, and Amr Ahmed. 2020. Big Bird: Transformers for Longer Sequences. (2020).
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2007.14062">
+        https://doi.org/10.48550/ARXIV.2007.14062
+       </a>
+      </li>
+      <li id="BibPLXBIB0058" label="[58]">
+       Xiaoyi Zhang, Lilian de Greef, Amanda Swearngin, Samuel White, Kyle Murray, Lisa Yu, Qi Shan, Jeffrey Nichols, Jason Wu, Chris Fleizach, Aaron Everitt, and Jeffrey P Bigham. 2021. Screen Recognition: Creating Accessibility Metadata for Mobile Applications from Pixels. In Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems (Yokohama, Japan) (CHI ’21). Association for Computing Machinery, New York, NY, USA, Article 275, 15 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3411764.3445186">
+        https://doi.org/10.1145/3411764.3445186
+       </a>
+      </li>
+      <li id="BibPLXBIB0059" label="[59]">
+       Denny Zhou, Nathanael Schärli, Le Hou, Jason Wei, Nathan Scales, Xuezhi Wang, Dale Schuurmans, Olivier Bousquet, Quoc Le, and Ed Chi. 2022. Least-to-Most Prompting Enables Complex Reasoning in Large Language Models.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.2205.10625">
+        https://doi.org/10.48550/ARXIV.2205.10625
+       </a>
+      </li>
+     </ul>
+    </section>
+   </section>
+   <section class="footnote" id="foot-001">
+    <header>
+     <div class="title-info">
+      <h2>
+       FOOTNOTE
+      </h2>
+     </div>
+    </header>
+    <p id="fn1">
+     <a href="#foot-fn1">
+      <sup>
+       ⁎
+      </sup>
+     </a>
+     Work done during an internship at Google Research.
+    </p>
+    <p id="fn2">
+     <a href="#foot-fn2">
+      <sup>
+       1
+      </sup>
+     </a>
+     <a class="link-inline force-break" href="https://github.com/google-research/google-research/tree/master/llm4mobile">
+      https://github.com/google-research/google-research/tree/master/llm4mobile
+     </a>
+    </p>
+    <div class="bibStrip">
+     <p>
+      <img alt="CC-BY license image" class="img-responsive" src="3580895_files\ccby.jpg"/>
+      <br/>
+      This work is licensed under a
+      <a href="https://creativecommons.org/licenses/by/4.0/">
+       Creative Commons Attribution International 4.0 License
+      </a>
+      .
+     </p>
+     <p>
+      <em>
+       CHI '23, April 23–28, 2023, Hamburg, Germany
+      </em>
+     </p>
+     <p>
+      © 2023 Copyright held by the owner/author(s).
+      <br/>
+      ACM ISBN 978-1-4503-9421-5/23/04.
+      <br/>
+      DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3580895" target="_blank">
+       https://doi.org/10.1145/3544548.3580895
+      </a>
+     </p>
+    </div>
+   </section>
+  </main>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'869d9abe2e0e65cf',t:'MTcxMTM1NjExNC4wMjQwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

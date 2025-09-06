@@ -1,0 +1,4277 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Effective 2D Stroke-based Gesture Augmentation for RNNs
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3581358_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3581358_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3581358_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3581358_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3581358_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3581358_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3581358_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3581358_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <main>
+   <section class="front-matter">
+    <section>
+     <header class="title-info">
+      <div class="journal-title">
+       <h1>
+        <span class="title">
+         Effective 2D Stroke-based Gesture Augmentation for RNNs
+        </span>
+        <br/>
+        <span class="subTitle">
+        </span>
+       </h1>
+      </div>
+     </header>
+     <div class="authorGroup">
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-7037-3513" ref="author">
+        <span class="givenName">
+         Mykola
+        </span>
+        <span class="surName">
+         Maslych
+        </span>
+       </a>
+       , Interactive Systems and User Experience Lab, University of Central Florida, United States,
+       <a href="mailto:maslychm@knights.ucf.edu">
+        maslychm@knights.ucf.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-5615-2597" ref="author">
+        <span class="givenName">
+         Eugene
+        </span>
+        <span class="givenName">
+         Matthew
+        </span>
+        <span class="surName">
+         Taranta
+        </span>
+       </a>
+       , Interactive Systems and User Experience Lab, University of Central Florida, United States,
+       <a href="mailto:etaranta@gmail.com">
+        etaranta@gmail.com
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-4357-1650" ref="author">
+        <span class="givenName">
+         Mostafa
+        </span>
+        <span class="surName">
+         Aldilati
+        </span>
+       </a>
+       , University of Central Florida, United States,
+       <a href="mailto:mad51@knights.ucf.edu">
+        mad51@knights.ucf.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0003-1186-4130" ref="author">
+        <span class="givenName">
+         Joseph
+        </span>
+        <span class="givenName">
+         J.
+        </span>
+        <span class="surName">
+         Laviola
+        </span>
+       </a>
+       , University of Central Florida, United States,
+       <a href="mailto:jjl@cs.ucf.edu">
+        jjl@cs.ucf.edu
+       </a>
+      </div>
+     </div>
+     <br/>
+     <div class="pubInfo">
+      <p>
+       DOI:
+       <a href="https://doi.org/10.1145/3544548.3581358" target="_blank">
+        https://doi.org/10.1145/3544548.3581358
+       </a>
+       <br/>
+       CHI '23:
+       <a href="https://doi.org/10.1145/3544548" target="_blank">
+        Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems
+       </a>
+       , Hamburg, Germany, April 2023
+      </p>
+     </div>
+     <div class="abstract">
+      <p>
+       <small>
+        Recurrent neural networks (RNN) require large training datasets from which they learn new class models. This limitation prohibits their use in custom gesture applications where only one or two end user samples are given per gesture class. One common way to enhance sparse datasets is to use data augmentation to synthesize new samples. Although there are numerous known techniques, they are often treated as standalone approaches when in reality they are often complementary. We show that by intelligently chaining augmentation techniques together that simulate different gesture production variability types, such as those affecting the temporal and spatial qualities of a gesture, we can significantly increase RNN accuracy without sacrificing training time. Through experimentation on four public stroke-based 2D gesture datasets, we show that RNNs trained with our data augmentation chaining technique achieves state-of-the-art recognition accuracy in both writer-dependent and writer-independent test scenarios.
+       </small>
+      </p>
+     </div>
+     <div class="CCSconcepts">
+      <ccs2012>
+       <small>
+        <span style="font-weight:bold;">
+         CCS Concepts:
+        </span>
+        •
+        <strong>
+         Human-centered computing → Gestural input
+        </strong>
+        ; •
+        <strong>
+         Human-centered computing → User interface programming
+        </strong>
+        ; •
+        <strong>
+         Theory of computation → Pattern matching
+        </strong>
+        ;
+       </small>
+      </ccs2012>
+     </div>
+     <br/>
+     <div class="classifications">
+      <div class="author">
+       <span style="font-weight:bold;">
+        <small>
+         Keywords:
+        </small>
+       </span>
+       <span class="keyword">
+        <small>
+         datasets
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         neural networks
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         gesture recognition and customization
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         data augmentation
+        </small>
+       </span>
+      </div>
+      <br/>
+      <div class="AcmReferenceFormat">
+       <p>
+        <small>
+         <span style="font-weight:bold;">
+          ACM Reference Format:
+         </span>
+         <br/>
+         Mykola Maslych, Eugene Matthew Taranta, Mostafa Aldilati, and Joseph J. Laviola. 2023. Effective 2D Stroke-based Gesture Augmentation for RNNs. In
+         <em>
+          Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems (CHI '23), April 23–28, 2023, Hamburg, Germany.
+         </em>
+         ACM, New York, NY, USA 13 Pages.
+         <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3581358" target="_blank">
+          https://doi.org/10.1145/3544548.3581358
+         </a>
+        </small>
+       </p>
+      </div>
+     </div>
+    </section>
+   </section>
+   <section class="body">
+    <figure id="fig1">
+     <img alt="Figure 1" aria-describedby="fig002" class="img-responsive" src="3581358_files\chi23667fig1.jpg"/>
+     <p id="fig002" style="display:none">
+      Figure 1 shows an illustration of the various augmentation techniques applied to the “delete” symbol from the dollar one dataset. 12 different trajectories are demonstrated where each trajectory displays the effect of applying one of the augmentation techniques to it.
+     </p>
+     <figcaption>
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       <strong>
+        Examples of gesture augmentation technique applied to the "delete" symbol from
+        <font style="normal">
+         $
+        </font>
+        1 −
+        <em>
+         GDS
+        </em>
+        dataset
+       </strong>
+      </span>
+     </figcaption>
+    </figure>
+    <section id="sec-2">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         1
+        </span>
+        INTRODUCTION
+       </h2>
+      </div>
+     </header>
+     <p>
+      Gestural interfaces present an intuitive way to interact with software, such as through swipes on mobile devices and application-specific shortcuts. However, for general acceptance, they require high classification accuracy. User tolerance for errors towards gestural interfaces in the presence of a reliable alternative input method was found to be approximately 40% [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ], and it was indicated that gesture recognizer accuracy should be much greater than 90% to "appear indistinguishable from a perfect system" [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ]. Such accuracy is possible with predefined gestures using robust recognizers trained with lots of data, but more difficult with custom gestures where only a few samples per gesture are given. One common approach that overcomes this limitation are k-NN based pattern matching algorithms [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+       73
+      </a>
+      ]. However, the draw back of k-NN recognizers is that they rely on manual feature extraction or resample each input trajectory to a constant number of points, which limits their robustness to variability.
+     </p>
+     <p>
+      Approaches based on recurrent neural networks (RNNs) are more robust to gesture variability, allow for variable-length inputs, and require no hand-crafted feature extraction [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ]. However, RNNs have two shortcomings which prevent their adoption as the go-to for customizable gesture recognizers: (1) they require a large amount of data to outperform alternative approaches, and (2) with a large number of samples, they take long to train. Data augmentation techniques [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+       75
+      </a>
+      ] offer a solution to the lack of training samples problem. However, solutions to the significant training time for RNNs have not been previously explored. Because RNN training time depends primarily on the number of training samples, the two issues are related. The more data is used for training, the higher the resulting recognition accuracy will be, but at the cost of a longer training time.
+     </p>
+     <p>
+      In this work we evaluate the effectiveness of various data augmentation approaches on training highly accurate RNN gesture recognition systems. We show that highly accurate custom gesture recognition is possible with just one or two original training samples per class, given that appropriate augmentation techniques are used to generate more samples. We tested each technique applied separately and in combinations with others in writer-dependent and writer-independent experiments which simulate real-world use-cases. We also introduce multiple augmentation
+      <em>
+       chaining
+      </em>
+      methods which outperform the alternative approaches in the literature. These chaining methods apply a sequence of augmentation methods from different categories to the data, which works better than applying a single or only a few categories of variability at a time. Lastly, we show that it is possible to train an RNN gesture recognizer with no original validation data, by generating a synthetic validation dataset which helps with selecting a good training stopping point before the model is overfit.
+     </p>
+    </section>
+    <section id="sec-3">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         2
+        </span>
+        RELATED WORK
+       </h2>
+      </div>
+     </header>
+     <section id="sec-4">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.1
+         </span>
+         Gesture recognition and customization
+        </h3>
+       </div>
+      </header>
+      <p>
+       Early stroke gesture classification algorithms relying on hand-crafted features go back to Rubine's 1991 [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+        48
+       </a>
+       ] recognizer, with its original feature set later being expanded [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+        5
+       </a>
+       ] and adapted for 3D gestures [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+        51
+       </a>
+       ]. The features are extracted from training samples (templates), and candidate gestures are classified using a linear classifier [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+        48
+       </a>
+       ], support vector machines (SVM) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+        63
+       </a>
+       ], linear discriminant classifiers (LDA) or other classical machine learning approaches. This allowed the end user to specify gestures by example and to associate them with software functions, thereby enabling
+       <em>
+        gesture customization
+       </em>
+       . User preference for customizable gesture interfaces was also explored. For example, Nacenta et al. found that user-designed gestures are more memorable than pre-designed gesture sets [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+        41
+       </a>
+       ], which can be helpful when gestures are used as shortcuts for opening applications or speed dialing [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+        10
+       </a>
+       ].
+      </p>
+      <p>
+       Another popular class of gesture recognizers is the
+       <font style="normal">
+        $
+       </font>
+       -family [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+        1
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+        66
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+        73
+       </a>
+       ], and those inspired by them [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+        58
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+        62
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+        64
+       </a>
+       ]. These approaches focus on ease-of-implementation and rapid prototyping for gesture customization. They utilize local cost functions, such as euclidean distance (ED) for points or the inner product (IP) for vectors to measure the degree of dissimilarity between a new input and each of the templates. Some perform pairwise comparisons [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+        1
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+        58
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+        73
+       </a>
+       ], others use dynamic time warping (DTW) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+        62
+       </a>
+       ], and some are articulation-invariant, representing gestures as point clouds [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+        65
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+        66
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+        68
+       </a>
+       ]. These approaches are direct competition for RNNs, and when it comes to custom gesture recognition, they are considered state-of-the-art; much more work was done in the space than with other approaches. For a survey on 2D stroke gesture recognition we direct the reader to a recent survey by Magrofuoco et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ].
+      </p>
+      <p>
+       Approaches which process a single point at a time and support variable-length and continuous inputs without resampling include Hidden Markov Models (HMMs) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+        26
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+        34
+       </a>
+       ], RNNs [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+        6
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+        7
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ], and continuous dynamic programming (CDP) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+        49
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+        57
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+        61
+       </a>
+       ]. These are relevant because they allow starting the classification process while the input is still being produced by the user. The segmentation problem lies in identifying the gesture starting and ending points within the continuous data sequences containing them. RNN, CDP and other case-specific approaches have been successful in solving this issue [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+        6
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+        8
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+        34
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+        49
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+        57
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+        61
+       </a>
+       ].
+      </p>
+      <p>
+       In this work we are evaluating the usefulness of augmentation techniques for position-based time-series RNN approaches. Relevant work in the space of RNN approaches includes DeepGRU [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ], which consists of an encoder network, attention module, and a classification module. It was shown to achieve and outperform state-of-the-art approaches across many datasets. Similarly, multiple sizes of single-task and multi-task LSTM-based networks were evaluated by Ledda and Spano [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ]. They were trained on synthetic versions of the single-stroke
+       <font style="normal">
+        $
+       </font>
+       1 [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+        73
+       </a>
+       ] and multi-stroke
+       <font style="normal">
+        $
+       </font>
+       N [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+        1
+       </a>
+       ] datasets generated with Gestures a Go Go [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ], and tested on the original dataset's gestures.
+      </p>
+      <p>
+       These approaches work well for cases where customization is not a concern, but related work in this domain reported long training times [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ], which may not be suitable for customization. Another concern with these existing approaches is the amount of original data required for achieving high accuracy. Data sets of such large sizes are not available in real-world customization scenarios, so our solution with chaining the augmentation approaches is distinct in that it works well even with a very limited amount of original training data.
+      </p>
+     </section>
+     <section id="sec-5">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.2
+         </span>
+         Gestural data augmentation
+        </h3>
+       </div>
+      </header>
+      <p>
+       To improve performance of Neural-Network-based approaches, in many fields practitioners and researchers turn to data augmentation, which refers to the practice of synthetically generating samples used for training the models. A slew of techniques have been used for images [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+        11
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+        39
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ], voice [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+        14
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+        50
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+        52
+       </a>
+       ] and video sequences [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+        38
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0081">
+        81
+       </a>
+       ]. Vision-based optical character recognition (OCR) and handwriting recognition methods similarly rely on data augmentation [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+        13
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+        19
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0074">
+        74
+       </a>
+       ]. While the mentioned approaches were not originally designed for gestural data, some of them work with sequential data, so can be applied to gestures.
+      </p>
+      <p>
+       For gestures, there have been methods to improve the classification accuracies through synthesizing new samples, however, they are heavily focused on gesture realism. Leiva et al. introduced a web application called
+       <em>
+        Gestures à Go Go
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ] to produce synthetic samples from real data based on kinematic theory of rapid human movement [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+        44
+       </a>
+       ] and a Sigma-Lognormal (
+       <em>
+        ΣΛ
+       </em>
+       ) model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+        4
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+        45
+       </a>
+       ]. Taranta et al. released
+       <em>
+        Gesture Path Stochastic Resampling
+       </em>
+       (GPSR) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ], which performs resampling, random point removal, and between-point vector normalization to synthesize new samples.
+       <em>
+        Gestures à Go Go
+       </em>
+       and
+       <em>
+        DeepNAG
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ] experimentally found that their methods synthesize gesture which participants take for real ones. However, in data augmentation, gesture realism is not the main goal, so here we focus on the techniques that will result in the biggest accuracy boost, not the beautification of the synthesized gestures.
+      </p>
+      <p>
+       DeepGRU [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ] accuracy results were reported with utilizing random scaling, translations, rotations, and GPSR [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ]. Further, LSTM-based architectures applied local resampling to make the distance between each pair of points constant, and subsequently applied random scaling and translations [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ]. In comparison, authors of
+       <em>
+        DeepNAG
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ] compared their GAN (generative adversarial network) and NAG (non-adversarial generation) approaches with random Gaussian noise and GPSR, and found that their methods improved model accuracy more than the alternatives. Although the above mentioned RNN-based approaches have specified the details of augmentation they applied [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ], it remains unclear whether the best combinations of methods are being utilized. In this work we aim to fill this gap by conducting a series of experiments targeted at studying specifically the various gestural augmentation methods and how they can be combined.
+      </p>
+     </section>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         3
+        </span>
+        METHODS
+       </h2>
+      </div>
+     </header>
+     <section id="sec-7">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.1
+         </span>
+         System overview
+        </h3>
+       </div>
+      </header>
+      <p>
+       All experiments that we conduct in this paper use one of the two pipelines shown in Figure
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       . The pipeline on the left (a, Regular pipeline) represents a usual RNN training pipeline, where an original dataset is split into three sets: training, validation and testing, with no overlap between them. The training set is augmented using augmentation techniques under evaluation. The pipeline on the right (b, Synthetic validation pipeline) differs in that it simulates a scenario where the testing set is extremely limited; this pipeline generates a synthetic validation dataset in place of a real dataset. To optimize the RNN architecture and select parameters for the evaluated augmentation techniques, we use the Regular pipeline. This covers Experiment 1 (Section
+       <a class="sec" href="#sec-12">
+        4.2
+       </a>
+       ) and Experiment 2 (Section
+       <a class="sec" href="#sec-15">
+        4.3
+       </a>
+       ). To measure the performance of our combined augmentation techniques in a scenario which approximates a real-world use-case, we use the Synthetic validation pipeline. We use it in our Experiment 3 (Section
+       <a class="sec" href="#sec-19">
+        4.4
+       </a>
+       ), Experiment 4 (Section
+       <a class="sec" href="#sec-22">
+        4.5
+       </a>
+       ), Experiment 5 (Section
+       <a class="sec" href="#sec-25">
+        4.6
+       </a>
+       ), and in the experiment that we present as part of the discussion (Section
+       <a class="sec" href="#sec-27">
+        5.1
+       </a>
+       ).
+      </p>
+     </section>
+     <section id="sec-8">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.2
+         </span>
+         Data Preprocessing
+        </h3>
+       </div>
+      </header>
+      <p>
+       In this work we are focusing on enabling real-time (mid-gesture) classification, which is achieved by re-using and updating the "hidden state" of the RNN from one point to the next. We use the last hidden state for classification, and due to the limited pre-processing steps that we apply, practitioners can pass a single point at a time to the model and still get a classification result. We ran empirical tests on subsets of the
+       <font style="normal">
+        $
+       </font>
+       1-dataset [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+        73
+       </a>
+       ] and found that only translation of the first trajectory point to the origin resulted in improved performance when combined with data augmentation. This computation does not require parameter extraction and can be easily applied in real-time, by subtracting the value of the first point of the trajectory input from each subsequent point. As a result, the model becomes translation-invariant. However, the scale, rotation, and point count invariances are handled through the data augmentation process. All results are reported with the point representation of trajectories with translation invariance as just described.
+      </p>
+      <figure id="fig2">
+       <img alt="Figure 2" aria-describedby="fig003" class="img-responsive" src="3581358_files\chi23667fig2.jpg"/>
+       <p id="fig003" style="display:none">
+        Figure 2: Two flow graphs (a) and (b) are shown where (a) is the regular pipeline used in Experiment 1 and (b) is the synthetic validation pipeline. 6 components are presented in (a): Dataset, Train, Validation, Test, Augmented Train, RNN, Save Accuracy. Dataset flows to Train, Test, and Validation. Train flows to Augmented Train which then flows to RNN with an action of Train Using Augmented Set. Test flows to RNN with an action of Test at lowest validation loss. And finally, RNN flows to Save Accuracy. (b) also consists of: Dataset, Train, Augmented Validation, Test, Augmented Train, RNN, Save Accuracy. Dataset flows into both Train and Test. Train flows to both Augmented Train and Augmented Validation which then flows to RNN. Augmented Train also flows to RNN with an action of Train using the augmented set. Test flows to RNN with an action of Test at lowest validation loss. Finally, RNN flows to Save Accuracy.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 2:
+        </span>
+        <span class="figure-title">
+         <strong>
+          Overview of the evaluation pipeline. Left (a): Regular pipeline, used in Experiment 1 (Section
+          <a class="sec" href="#sec-12">
+           4.2
+          </a>
+          ) and Experiment 2 (Section
+          <a class="sec" href="#sec-15">
+           4.3
+          </a>
+          ); right (b): Synthetic validation pipeline used in Experiment 3 (Section
+          <a class="sec" href="#sec-19">
+           4.4
+          </a>
+          ), Experiment 4 (Section
+          <a class="sec" href="#sec-22">
+           4.5
+          </a>
+          ), Experiment 5 (Section
+          <a class="sec" href="#sec-25">
+           4.6
+          </a>
+          ), and in the test presented in Discussion (Section
+          <a class="sec" href="#sec-27">
+           5.1
+          </a>
+          ). Pipeline (b) generates a synthetic validation dataset for cases where original data set is extremely limited.
+         </strong>
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+      <p>
+       Our approach is different from most literature on gestures, where some commonly removed variability categories include translation, rotation, scale, and point count variabilities. In those cases, an entire gesture's trajectory is available at classification time, and to achieve partial invariance, the trajectory can be resampled to a fixed number of points, rotated by an indicative angle [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ], its bounding box scaled to a fixed size, and its centroid translated to the origin. Instead of scaling and translating, trajectories can also be z-normalized. Alternatively, after the uniform resampling step, the trajectories can be represented by normalized direction vectors, which helps deal with scaling and translation. Rotation around the first vector [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+        64
+       </a>
+       ] can also be applied to help with rotation invariance. Since our goal is mid-gesture classification, where the full trajectory is not available at classification time, we apply only limited preprocessing and show that our model is still able to learn other variability categories through the process of augmentation.
+      </p>
+     </section>
+     <section id="sec-9">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.3
+         </span>
+         Data Augmentation Techniques
+        </h3>
+       </div>
+      </header>
+      <p>
+       We are interested in data augmentation from the perspective of model classification accuracy, not beautification of synthesized gestures. Even the simplest changes to the original gesture trajectory, such as applying rotations, translations or scaling are valid augmentation techniques — as long as the new data improves the model performance.
+      </p>
+      <p>
+       In Section
+       <a class="sec" href="#sec-5">
+        2.2
+       </a>
+       we provided an overview of the data augmentation approaches used in research and practice. In this section, we summarize the approaches selected for evaluation. To find augmentation techniques which could potentially be used for gestures, we searched the literature for specifically gesture-related data augmentation and synthetic data generation approaches, as well as for those approaches which were not originally intended for gestures, but could be applied to sequential data (for example, techniques originally designed for non-gesture time-series data such as video or voice). Table
+       <a class="tbl" href="#tab1">
+        1
+       </a>
+       provides a summary of the identified approaches with citations to their respective sources
+       <a class="fn" href="#fn1" id="foot-fn1">
+        <sup>
+         1
+        </sup>
+       </a>
+       .
+      </p>
+      <p>
+       For our main evaluation in Experiments 1, 2 and 3, we only focus on augmentation methods that can be described by simple transformations and require a single original sample per class. In Experiment 4, we also compare our best combined augmentation method to two alternative gesture generation methods: GPSR [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ] and Sigma-Lognormal (
+       <em>
+        ΣΛ
+       </em>
+       ) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+        4
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+        45
+       </a>
+       ] methods. We considered including DeepNAG in Experiment 4, but training a deep generative model requires thousands of original samples in the first place, and this amount of data is not available in a customization scenario, therefore we only evaluated approaches that can generate new samples without pre-training a model. Fusion and averaging methods [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+        15
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0077">
+        77
+       </a>
+       ] were also excluded because they require more original samples per class than afforded in our experiments. Lastly, augmentation using
+       <em>
+        random translations
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ] was also not used because our pre-processing steps make our model translation-invariant.
+      </p>
+      <div class="table-responsive" id="tab1">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 1:
+        </span>
+        <span class="table-title">
+         <strong>
+          Gesture augmentation techniques selected for evaluation.
+         </strong>
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            Technique Name
+           </strong>
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           <strong>
+            Reference
+           </strong>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            (1)
+           </strong>
+           Noise (Uniform/Gaussian/Perlin)
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+            12
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+            36
+           </a>
+           ]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            (2)
+           </strong>
+           Scaling
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+            28
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+            35
+           </a>
+           ]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            (3)
+           </strong>
+           Rotation
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+            11
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+            28
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+            35
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+            53
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+            73
+           </a>
+           ]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            (4)
+           </strong>
+           Slanting (shearing)
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+            11
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+            17
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+            46
+           </a>
+           ]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            (5)
+           </strong>
+           Camera direction change (perspective)
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+            47
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0071">
+            71
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0078">
+            78
+           </a>
+           ]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            (6)
+           </strong>
+           Spatial resampling
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+            28
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+            66
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+            73
+           </a>
+           ]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            (7)
+           </strong>
+           Temporal resampling
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+            33
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+            55
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0076">
+            76
+           </a>
+           ]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            (8)
+           </strong>
+           Temporal jitter
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+            18
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0081">
+            81
+           </a>
+           ]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            (9)
+           </strong>
+           Time stretching (point duplication)
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+            24
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+            54
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+            72
+           </a>
+           ]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            (10)
+           </strong>
+           Frame skipping
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+            20
+           </a>
+           ]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            (11)
+           </strong>
+           Bezier and spline deformation
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+            16
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+            31
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+            69
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0077">
+            77
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0079">
+            79
+           </a>
+           ]
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            (12)
+           </strong>
+           Random erasing (replacing with 0s)
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           [
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+            53
+           </a>
+           ,
+           <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0080">
+            80
+           </a>
+           ]
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p>
+       The following list is a detailed description of each of the techniques in the order they are presented in the table.
+      </p>
+      <ol class="list-no-style">
+       <li id="list1" label="(1)">
+        <strong>
+         Noise:
+        </strong>
+        Different kinds of random noise can be added to sequence data, including uniform, Gaussian [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+         36
+        </a>
+        ] and Perlin [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+         12
+        </a>
+        ] noises. Adding random noise to training data allows the model to learn a more robust representation.
+        <br/>
+       </li>
+       <li id="list2" label="(2)">
+        <strong>
+         Scaling:
+        </strong>
+        Scaling each feature (dimension) by a percentage of its own bounding box generates synthetic data which helps the trained model perform better with test samples of varying scales. This is valuable for models which are not scale-invariant. There are examples of scaling being successfully applied in training trajectory-based gesture RNNs [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+         28
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+         35
+        </a>
+        ].
+        <br/>
+       </li>
+       <li id="list3" label="(3)">
+        <strong>
+         Rotation:
+        </strong>
+        Rotating 2D trajectories around their centroids allows the trained model to account for when users input gestures at different angles. This approach has been successfully applied in both nearest-neighbor [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+         73
+        </a>
+        ] and RNN approaches [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+         28
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+         35
+        </a>
+        ].
+        <br/>
+       </li>
+       <li id="list4" label="(4)">
+        <strong>
+         Shearing:
+        </strong>
+        Shearing is a transformation that results in "stretching" of the original trajectory along a line in the trajectories’ coordinate system. Points which lie farther from the origin are affected more. To the best of our knowledge, this augmentation technique has not been tested with RNN-based gesture recognizers, however it has been extensively used in the field of handwriting recognition [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+         17
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+         46
+        </a>
+        ].
+        <br/>
+       </li>
+       <li id="list5" label="(5)">
+        <strong>
+         Perspective change:
+        </strong>
+        Changing the perspective on the gesture trajectory can be thought of as pointing a camera at the trajectory from a different angle. This technique is often used with 3D skeletal data to achieve view-invariance [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+         47
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0071">
+         71
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0078">
+         78
+        </a>
+        ]. When working with 2D gestures drawn on an
+        <em>
+         XY
+        </em>
+        coordinate plane, perspective change refers to rotating the trajectory around the
+        <em>
+         X
+        </em>
+        and
+        <em>
+         Y
+        </em>
+        axes. In practice this is done by adding a third dimension to the 2D data and multiplying the points of an original trajectory by the
+        <em>
+         X
+        </em>
+        and
+        <em>
+         Y
+        </em>
+        rotation matrices.
+        <br/>
+       </li>
+       <li id="list6" label="(6)">
+        <strong>
+         Spatial resampling:
+        </strong>
+        Spatially resampling the trajectory refers to generating a list of distance intervals and using such a list to sample points along the original trajectory. The resulting points form a trajectory which looks similar to the original, but with modified distances between subsequent points. Uniform spatial resampling fixes the number of points to describe a trajectory to a constant, which forces the between-point intervals along the original path to be equal for a given gesture. Such uniform approach has been extensively used in k-nearest-neighbor classifiers to account for variability in gesture completion time and point counts [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+         32
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+         58
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+         73
+        </a>
+        ]. An alternative approach to uniform gesture resampling was used with LSTMs [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+         28
+        </a>
+        ], where the intervals’ length was fixed to a constant value.
+        <br/>
+       </li>
+       <li id="list7" label="(7)">
+        <strong>
+         Temporal resampling:
+        </strong>
+        Temporal resampling is similar to spatial resampling in a sense that a list of intervals is generated, except the intervals are in the time domain. By assuming that the sampling rate in the original data is constant, it is possible to extract the velocity information of the trajectory without the actual timestamps. Sampling at the generated interval lengths along such a velocity profile produces points along the original gesture path. Data augmentation methods similar in concept have been used with noticeable performance gains in LSTM-based full-body skeleton human action recognition tasks [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+         33
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+         55
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0076">
+         76
+        </a>
+        ].
+        <br/>
+       </li>
+       <li id="list8" label="(8)">
+        <strong>
+         Temporal jitter:
+        </strong>
+        Resampling with temporal jitter (frame jitter) was applied to gestural video data  [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+         18
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0081">
+         81
+        </a>
+        ]. The idea is to sample frames at indices
+        <em>
+         i
+        </em>
+        ±
+        <em>
+         r
+        </em>
+        position, where r is random offset for each new index (for example, when
+        <em>
+         i
+        </em>
+        = 5 and
+        <em>
+         r
+        </em>
+        = 2 keep each 5
+        <sub>
+         <em>
+          th
+         </em>
+        </sub>
+        ±
+        <em>
+         rand
+         <sub>
+          i
+         </sub>
+        </em>
+        (− 2, 2) point). This approach can be though of as a special case of temporal resampling with varying intervals.
+        <br/>
+       </li>
+       <li id="list9" label="(9)">
+        <strong>
+         Time stretching:
+        </strong>
+        Through duplicating a random subset of points in the trajectory we can simulate a scenario where software samples faster than hardware, resulting in repeated sampling of the same value. Point duplication method has been used for generating synthetic datasets for DTW algorithms [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+         24
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+         54
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+         72
+        </a>
+        ], and it could potentially be useful for training RNNs to have robust performance under noisy sampling. This technique can also be thought of as a special case of temporal resampling with allowing for zero-length intervals.
+        <br/>
+       </li>
+       <li id="list10" label="(10)">
+        <strong>
+         Frame skipping:
+        </strong>
+        The opposite of point duplication is the complete removal of some of the points from the trajectory. In this way, frame skipping has the opposite effect from point duplication, each point has a non-zero chance of being deleted. This approach was mentioned in a survey on human action recognition [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+         20
+        </a>
+        ] and could be useful for improving robustness to noise in gesture classification RNNs.
+        <br/>
+       </li>
+       <li id="list11" label="(11)">
+        <strong>
+         Bezier and Spline deformation:
+        </strong>
+        Many approaches which use Bezier curves and splines were proposed for synthetic data generation for drawings [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+         16
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0077">
+         77
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0079">
+         79
+        </a>
+        ] and gestures [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+         31
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+         69
+        </a>
+        ]. The generation steps consist of finding reasonable control points (knots), then perturbing them, and finally fitting the new points to a spline curve. To learn more about the implementation details of such approaches, we direct the reader to the cited literature in the
+        <em>
+         Bezier and spline deformation
+        </em>
+        row of Table
+        <a class="tbl" href="#tab1">
+         1
+        </a>
+        .
+        <br/>
+       </li>
+       <li id="list12" label="(12)">
+        <strong>
+         Random Erasing:
+        </strong>
+        Sometimes a system can lose tracking of where the user pointer/pen tip is, resulting in some trajectory points being recorded as 0s. This can be dealt with by filtering out such values, but an alternative way is to train a model to handle this kind of input. Loosely inspired by an augmentation method for CNNs, where blocks of image pixels are "blacked-out" [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+         53
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0080">
+         80
+        </a>
+        ], we replace some of the trajectory with values of 0 in hopes for the model to learn a potentially lossy trajectory representations.
+        <br/>
+       </li>
+      </ol>
+     </section>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         4
+        </span>
+        EVALUATION
+       </h2>
+      </div>
+     </header>
+     <section id="sec-11">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.1
+         </span>
+         RNN model and implementation details
+        </h3>
+       </div>
+      </header>
+      <p>
+       We tried to make our RNN architecture as generic as possible, while keeping in mind a few requirements. The model has to be (1) as small as possible with (2) no sacrifice in performance
+       <a class="fn" href="#fn2" id="foot-fn2">
+        <sup>
+         2
+        </sup>
+       </a>
+       , and (3) easily modifiable in size (add/remove layers, neurons per layer). The first and second requirements ensure that the model fits the customization requirement: the user will benefit from high classification accuracy and short model training times. The third requirement allows us to quickly scale up the model if that is required. We started our implementation by creating a model similar to ST-S [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ], and then progressively decreased its size during the implementation of augmentation techniques, until further reduction in size was hurting performance. During this phase, we utilized only a subset of the 1-GDS [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+        73
+       </a>
+       ] dataset, which is one of the limitations of our work, however classification results in our Evaluation Section
+       <a class="sec" href="#sec-19">
+        4.4
+       </a>
+       show that the model works well for multiple datasets. As part of this process, we ran an informal test to find a trade-off between training time (which depended on the number of synthesized samples) and accuracy, and found that 300 synthetic samples per class worked well for all augmentation techniques. At first, we had ReLU [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+        42
+       </a>
+       ] layers in the
+       <em>
+        classifier
+       </em>
+       (see Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       ), but replacing them with batch normalization [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+        23
+       </a>
+       ] and aggressive dropout [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ] values yielded better results than using non-linear layers. Our resulting model is modest in size and consists of two components: a double GRU layer, connected to a stack of three Linear layers.
+      </p>
+      <figure id="fig3">
+       <img alt="Figure 3" aria-describedby="fig004" class="img-responsive" src="3581358_files\chi23667fig3.jpg"/>
+       <p id="fig004" style="display:none">
+        Figure 3: A diagram of the neural network architecture used in evaluation of the different augmentation techniques is shown. The encoder consists of two Gated Recurrent Units (GRUs) layers and the classifier comprises three feed-forward linear layers which predict the class label. A green circle shows the output of the feed-forward layer.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 3:
+        </span>
+        <span class="figure-title">
+         <strong>
+          RNN Architecture used in the evaluation of augmentation techniques.
+         </strong>
+         <em>
+          Encoder
+         </em>
+         <strong>
+          consists of two gated recurrent unit (GRU) [
+          <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+           9
+          </a>
+          ] layers and the
+         </strong>
+         <em>
+          classifier
+         </em>
+         <strong>
+          consists of three stacked feed-forward linear layers with batch normalization [
+          <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+           23
+          </a>
+          ] and dropout [
+          <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+           21
+          </a>
+          ] between them. The input is a sequence of 2D vectors of arbitrary length x = (
+          <em>
+           x
+          </em>
+          <sub>
+           0
+          </sub>
+          ,
+          <em>
+           x
+          </em>
+          <sub>
+           1
+          </sub>
+          ,...,
+          <em>
+           x
+          </em>
+          <sub>
+           <em>
+            L
+           </em>
+           − 1
+          </sub>
+          ) and the output ŷ is the predicted class label.
+         </strong>
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+      <p>
+       We implemented our model using PyTorch Lightning
+       <a class="fn" href="#fn3" id="foot-fn3">
+        <sup>
+         3
+        </sup>
+       </a>
+       , a wrapper around the PyTorch framework [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+        43
+       </a>
+       ]. The model takes raw unprocessed (no normalization, no standardization, no filtering) input trajectories from the evaluated datasets. We utilized the Adam optimizer [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ] with learning rate set to 10
+       <sup>
+        − 3
+       </sup>
+       , batch size of 512, and Cross Entropy Loss criterion. During the development and for timing the trial runs we used a machine running Windows 10 with a single NVIDIA GeForce GTX 1080 GPU, Intel Core-i7 7700K processor and 16 GB RAM. We ran the repeated experiments in parallel (8 at a time) on a GPU cluster (single GPU per experiment). Reference implementation of the model and augmentation techniques will be available with the camera-ready version.
+      </p>
+      <p>
+       Earlier in Section
+       <a class="sec" href="#sec-9">
+        3.3
+       </a>
+       we listed all individual augmentation techniques that we implemented. To find optimal parameters for each one of them, we utilized a subset of the
+       <font style="normal">
+        $
+       </font>
+       1-GDS dataset and ran a series of iterative searches over the ranges of possible parameters. To reduce the number of variables in our evaluation, we used these parameters across all our further experiments and datasets. For exact parameters, please refer to the supplementary material and to the reference implementation
+       <a class="fn" href="#fn4" id="foot-fn4">
+        <sup>
+         4
+        </sup>
+       </a>
+       .
+      </p>
+     </section>
+     <section id="sec-12">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.2
+         </span>
+         Experiment 1: Performance of individual techniques
+        </h3>
+       </div>
+      </header>
+      <section id="sec-13">
+       <p>
+        <em>
+         <span class="section-number">
+          4.2.1
+         </span>
+         Experiment 1 Setup:
+        </em>
+        Part one of our evaluation is dedicated to testing the effect of individual augmentation techniques applied to the data. The question it answers is to what extent synthetic data generated by each augmentation techniques represents the real data. This experiment is similar to a standard writer-independent experiment protocol used widely in the gesture customization literature [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+         58
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+         62
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+         66
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+         73
+        </a>
+        ], where a very small number of original training samples are used to train a recognizer. We used the
+        <font style="normal">
+         $
+        </font>
+        1 dataset for this experiment. The variables we varied were the number of training participants and the augmentation technique. In this writer-independent experiment, a single sample per gesture class was sampled from
+        <em>
+         p
+        </em>
+        random participants and these gestures were used as seed samples to create an augmented training set (300 synthetic samples per class). The validation set consisted of all available data of two random participants different from the training participants, and the testing set consisted of two more randomly selected participants, different from both the training and validation sets. The sizes of the resulting sets (train:val:test) were 4800+
+        <em>
+         X
+        </em>
+        :960:960, where
+        <em>
+         X
+        </em>
+        denotes the number of original train seed samples. The resulting augmented training dataset was used to train the RNN model and test accuracy is saved at the point of lowest validation loss. We ran this experiment 300 times varying
+        <em>
+         p
+        </em>
+        of 1 and 2, then averaged the results.
+       </p>
+      </section>
+      <section id="sec-14">
+       <p>
+        <em>
+         <span class="section-number">
+          4.2.2
+         </span>
+         Experiment 1 Results:
+        </em>
+        <mytag>
+        </mytag>
+       </p>
+       <figure id="fig4">
+        <img alt="Figure 4" aria-describedby="fig005" class="img-responsive" src="3581358_files\chi23667fig4.jpg"/>
+        <p id="fig005" style="display:none">
+         Figure 4: Two bar plots are displayed where each bin illustrates the accuracy of each of the augmentation techniques. The left bar plot highlights the accuracies for one participant with Gaussian Noise being the best (77.72 percent) while the right bar plot shows the accuracies for training samples from 2 participants with Gaussian Noise (86.82 percent) performing best.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 4:
+         </span>
+         <span class="figure-title">
+          <strong>
+           Experiment 1: accuracy results for a writer-independent experiment (train with one participant, test with another) over varying augmentation technique and the number of training participants. A single original sample per participant per class used as a seed samples for generating synthetic samples. Bars indicate a 95% confidence interval.
+          </strong>
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+        A plot for visual comparisons and exact values of the Experiment 1 results can be found in Figure
+        <a class="fig" href="#fig4">
+         4
+        </a>
+        . With a single training participant and a single training sample per class, the baseline (no augmentation applied) for all other scores is 70.29%. All augmentation techniques boosted the model accuracy, except for
+        <em>
+         erasing
+        </em>
+        , which decreased the accuracy to 65.67% and was therefore excluded from further evaluation.
+        <em>
+         Gaussian
+        </em>
+        augmentation gave the largest improvement to the RNN, resulting in accuracy of 77.72%. With a single training sample from two participants, the
+        <em>
+         baseline
+        </em>
+        increased to 82.48%, and
+        <em>
+         Gaussian
+        </em>
+        scored at 86.82%. Performance gains from the rest of the techniques were smaller, but
+        <em>
+         Frame skipping
+        </em>
+        ,
+        <em>
+         Shearing
+        </em>
+        ,
+        <em>
+         Rotations
+        </em>
+        and
+        <em>
+         Perspective change
+        </em>
+        all increased accuracy by more than 4%. Interestingly, with two training participants,
+        <em>
+         Frame index jitter
+        </em>
+        and
+        <em>
+         Bezier and Spline deformation
+        </em>
+        techniques decreased the model accuracy from 82.48% down to 81.64% and 81.56% respectively. It is possible that these techniques do not add enough variability to the data so that the presence of additional original training samples in itself boosts accuracy more.
+       </p>
+       <p>
+        This experiment paints a high-level picture of what accuracies can be expected when using individual augmentation techniques. However, we want to improve the classification scores further by combining the effect of multiple techniques to synthesize new gesture trajectories. This leads us to our next experiment, where to a gesture trajectory we apply multiple augmentation techniques one after another.
+       </p>
+      </section>
+     </section>
+     <section id="sec-15">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.3
+         </span>
+         Experiment 2: Chaining multiple techniques
+        </h3>
+       </div>
+      </header>
+      <section id="sec-16">
+       <p>
+        <em>
+         <span class="section-number">
+          4.3.1
+         </span>
+         Setup.
+        </em>
+        In the first part of the evaluation we studied the effect of the applying individual augmentation techniques on classification performance. The next question is whether applying multiple augmentation techniques (from now on we will refer to this process as
+        <em>
+         chaining
+        </em>
+        ) to the same synthetic sample yields a classification accuracy boost. As a specific example: is applying a chain of
+        <em>
+         Rotate
+        </em>
+        →
+        <em>
+         Scale
+        </em>
+        →
+        <em>
+         Perspective
+        </em>
+        →
+        <em>
+         Gaussian
+        </em>
+        transformations better than applying only one of them? Further, if the order in which techniques are chained has impact on how the chain performs, all permutations of all combinations of 11 different techniques make up
+        <span class="inline-equation">
+         <span class="tex">
+          $T=\sum _{i=1}^{11}11!/(11-i)!=108,505,111$
+         </span>
+        </span>
+        possible chains. Even further, optimal parameters for techniques may be chain-dependent, which together with the fact that computing a good accuracy average for a chain requires 300 model training runs
+        <a class="fn" href="#fn5" id="foot-fn5">
+         <sup>
+          5
+         </sup>
+        </a>
+        , means that an iterative search for the best augmentation chain is not practical. To partially deal with this issue, we fix the parameters for individual techniques, making it possible to directly compare two chains to one another. Using this method we can show, for example, that a chain under the name "
+        <em>
+         rotate scale perspective gaussian
+        </em>
+        " in Figure
+        <a class="fig" href="#fig5">
+         5
+        </a>
+        outperforms each of the individual techniques that we compared in this experiment. More similar examples are presented in the same figure.
+       </p>
+      </section>
+      <section id="sec-17">
+       <p>
+        <em>
+         <span class="section-number">
+          4.3.2
+         </span>
+         Categories of variability introduced by augmentation.
+        </em>
+        To reduce the search space of possible chains, we decided to chain together those techniques which through their transformations added variability from different categories to the trajectories. In the nearest-neighbor gesture recognition literature, pre-processing steps reduce and remove specific variability categories [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+         32
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+         58
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+         64
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+         66
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+         68
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+         73
+        </a>
+        ]. For example,
+        <em>
+         Noise
+        </em>
+        can be removed by filtering;
+        <em>
+         orientation
+        </em>
+        variability, by rotating by an indicative angle [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+         32
+        </a>
+        ];
+        <em>
+         scale
+        </em>
+        , by re-scaling the bounding box; and
+        <em>
+         point count
+        </em>
+        , by resampling trajectories to be represented by a fixed number of points. We also included
+        <em>
+         shape
+        </em>
+        variability, that we define as "change in trajectory shape, noticeable even after scaling, rotating and perfectly overlapping the synthetic trajectory on top of the original". For example, GPSR, noise, and Bezier-based augmentation modifies the gesture shape in such a way. On the other hand, resampling and point duplication - does not (unless extremely low resample count is used). Table
+        <a class="tbl" href="#tab2">
+         2
+        </a>
+        summarizes the categories of variability for the techniques which performed above the baseline in Experiment 1 (Section
+        <a class="sec" href="#sec-12">
+         4.2
+        </a>
+        ).
+       </p>
+       <div class="table-responsive" id="tab2">
+        <div class="table-caption">
+         <span class="table-number">
+          Table 2:
+         </span>
+         <span class="table-title">
+          <strong>
+           Categories of variability for individual techniques which outperformed the baseline. Check-marks indicates that the given augmentation technique adds variability from a given category.
+          </strong>
+         </span>
+        </div>
+        <table class="table">
+         <tbody>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            <strong>
+             Technique
+            </strong>
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            <strong>
+             Noise
+            </strong>
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            <strong>
+             Scale
+            </strong>
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            <strong>
+             Pt. Cnt
+            </strong>
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            <strong>
+             Shape
+            </strong>
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            <strong>
+             Orient.
+            </strong>
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Gaussian
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Uniform
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Scaling
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Spat. rsmpl.
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Temp. rsmpl.
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Frame skip
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Point dupl.
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Frame jitter
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Bezier deform.
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Rotate
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Shear
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+          </tr>
+          <tr style="border-bottom: 2pt solid #000000;">
+           <td style="text-align:left;border-right: 2pt solid #000000;">
+            Persp. change
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+           <td style="text-align:center;border-right: 2pt solid #000000;">
+            ✓
+           </td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+      </section>
+      <section id="sec-18">
+       <p>
+        <em>
+         <span class="section-number">
+          4.3.3
+         </span>
+         Results for selected chains.
+        </em>
+        <mytag>
+        </mytag>
+       </p>
+       <figure id="fig5">
+        <img alt="Figure 5" aria-describedby="fig006" class="img-responsive" src="3581358_files\chi23667fig5.jpg"/>
+        <p id="fig006" style="display:none">
+         Figure 5: A bar plot is shown where each bin represents the testing accuracy for selected chains of augmentation techniques with the gaussian-frame-skip-spatial-perspective-rotate-scale technique outperforming all the other tested techniques with an accuracy of 86.35 percent and rotate-scale-perspective-temporal having the lowest accuracy of 79.10 percent in Experiment 2.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 5:
+         </span>
+         <span class="figure-title">
+          <strong>
+           Experiment 2: Accuracies for selected chains in a writer-independent experiment on the GDS dataset. Bars indicate a 95% confidence interval.
+          </strong>
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+        Given that the full chaining space is large and can not be tested easily, we formed some simple chains which combined techniques from multiple categories, and then modified them as we observed patterns in model accuracies. We used some guiding principles based on our early experimentation. We observed that those chains that added transformations from the same category multiple times generally performed worse than those that did it once. This means that we generally want to apply a single variability category once. We also noticed that presence of all five of the categories generally gave better performance than when fewer than five categories were present. We also observed that
+        <em>
+         Gaussian noise
+        </em>
+        applied before
+        <em>
+         spatial resampling
+        </em>
+        gave better performance than when it was applied after it, and similarly for
+        <em>
+         frame skipping
+        </em>
+        . This means that the order of applied techniques is important and we should maximize the accuracy be preserving orders that worked well. Guided by these observations, we used trial-and-error and arrived at a chain "
+        <em>
+         gaussian frame-skip spatial perspective rotate scale
+        </em>
+        " (All Variability Chain or AVC) which in our testing outperformed other chains that we tested. Results of this experiment can be found in Figure
+        <a class="fig" href="#fig5">
+         5
+        </a>
+        . We decided to use AVC in the next experiment, where we pit it against alternative data augmentation techniques in a real-world-like writer-dependent scenario, over multiple datasets.
+       </p>
+      </section>
+     </section>
+     <section id="sec-19">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.4
+         </span>
+         Experiment 3: Customization scenario
+        </h3>
+       </div>
+      </header>
+      <section id="sec-20">
+       <p>
+        <em>
+         <span class="section-number">
+          4.4.1
+         </span>
+         Experiment setup.
+        </em>
+        A writer-dependent test with a very limited number of original training samples simulates a real-world scenario where a user inputs only a few gestures per class as examples. Validation data, used to gauge if at a particular training epoch the model performs as expected, is also not available in such cases. To deal with this issue, we generate a synthetic validation dataset using the same augmentation process as for training, but double the number of synthetic samples. Without this step the models performed worse due to overfitting.
+       </p>
+       <p>
+        Our writer-dependent experiment had the following protocol: select
+        <em>
+         k
+        </em>
+        original samples per class from a single participant, and use them as seed samples to generate an augmented training set with 300 synthetic samples per class; use the same original samples to generate a synthetic validation set with 600 synthetic samples per class; use the remaining original samples which were not used for training and form a test dataset (no overlap between train, validation and test sets); train the model using the training and report the test accuracy from the model which had the lowest validation loss. We repeated this experiment for each participant in the dataset, 30 times per participant, for each evaluated augmentation technique.
+       </p>
+       <p>
+        To evaluate performance of AVC, we used
+        <em>
+         None
+        </em>
+        augmentation, and also the best-performing individual augmentation technique from Experiment 1 (Section
+        <a class="sec" href="#sec-12">
+         4.2
+        </a>
+        ):
+        <em>
+         Gaussian
+        </em>
+        ;
+        <em>
+         Simple
+        </em>
+        (
+        <em>
+         Rotate
+        </em>
+        →
+        <em>
+         scale
+        </em>
+        →
+        <em>
+         gaussian
+        </em>
+        ) chain is common in RNN gesture literature [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+         28
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+         35
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+         36
+        </a>
+        ]; AVC applies
+        <em>
+         gaussian
+        </em>
+        →
+        <em>
+         frame-skip
+        </em>
+        →
+        <em>
+         spatial
+        </em>
+        →
+        <em>
+         perspective
+        </em>
+        →
+        <em>
+         rotate
+        </em>
+        →
+        <em>
+         scale
+        </em>
+        .
+       </p>
+      </section>
+      <section id="sec-21">
+       <p>
+        <em>
+         <span class="section-number">
+          4.4.2
+         </span>
+         Experiment Results.
+        </em>
+        <mytag>
+        </mytag>
+       </p>
+       <figure id="fig6">
+        <img alt="Figure 6" aria-describedby="fig007" class="img-responsive" src="3581358_files\chi23667fig6.jpg"/>
+        <p id="fig007" style="display:none">
+         Figure 6: Four bar plots are shown where each bar plot is made up of 4 bins and each bin corresponds to the testing accuracy with different technique (None, Gaussian, Simple, and AVC in this order). Each bar plot corresponds to a different dataset (lemarchand, eds2, eds1, gds) in this order in a writer-dependent experiment with a single original training sample per class.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 6:
+         </span>
+         <span class="figure-title">
+          <strong>
+           Experiment 3: Writer-dependent experiment with a single training sample per class across GDS, EDS1, EDS2 and Lemarchand datasets.
+          </strong>
+          <em>
+           None
+          </em>
+          <strong>
+           is no augmentation;
+          </strong>
+          <em>
+           Simple
+          </em>
+          <strong>
+           chain is (
+          </strong>
+          <em>
+           rotate
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           scale
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           gaussian
+          </em>
+          <strong>
+           );
+          </strong>
+          <em>
+           Gaussian
+          </em>
+          <strong>
+           is random Gaussian Noise; AVC chain is
+          </strong>
+          <em>
+           gaussian
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           frame-skip
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           spatial
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           perspective
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           rotate
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           scale
+          </em>
+          <strong>
+           . Confidence interval bars are 95%.
+          </strong>
+         </span>
+        </figcaption>
+       </figure>
+       <figure id="fig7">
+        <img alt="Figure 7" aria-describedby="fig008" class="img-responsive" src="3581358_files\chi23667fig7.jpg"/>
+        <p id="fig008" style="display:none">
+         Figure 7: Four bar plots are shown where each bar plot is made up of 4 bins and each bin corresponds to the testing accuracy with different technique (None, Gaussian, Simple, and AVC in this order). Each bar plot corresponds to a different dataset (lemarchand, eds2, eds1, gds) in this order in a writer-dependent experiment with two original training samples per class.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 7:
+         </span>
+         <span class="figure-title">
+          <strong>
+           Experiment 3: Writer-dependent experiment with two training sample per class across GDS, EDS1, EDS2 and Lemarchand datasets.
+          </strong>
+          <em>
+           None
+          </em>
+          <strong>
+           is no augmentation;
+          </strong>
+          <em>
+           Simple
+          </em>
+          <strong>
+           chain is (
+          </strong>
+          <em>
+           rotate
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           scale
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           gaussian
+          </em>
+          <strong>
+           );
+          </strong>
+          <em>
+           Gaussian
+          </em>
+          <strong>
+           is random Gaussian Noise; AVC chain is
+          </strong>
+          <em>
+           gaussian
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           frame-skip
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           spatial
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           perspective
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           rotate
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           scale
+          </em>
+          <strong>
+           . Confidence interval bars are 95%.
+          </strong>
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+        We ran this writer-dependent test protocol on four single-stroke 2D gestural datasets commonly used as benchmarks in the literature:
+        <font style="normal">
+         $
+        </font>
+        1-GDS [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+         73
+        </a>
+        ], EDS1 [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+         70
+        </a>
+        ], EDS2 [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+         70
+        </a>
+        ], and Lemarchand [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+         60
+        </a>
+        ]. Figure
+        <a class="fig" href="#fig6">
+         6
+        </a>
+        and Figure
+        <a class="fig" href="#fig7">
+         7
+        </a>
+        show the results for the writer-dependent experiment with synthetic validation data over 1 and 2 original training samples, respectively. For every dataset and the number of original training samples per class,
+        <em>
+         AVC
+        </em>
+        chain boosts the performance over
+        <em>
+         Gaussian
+        </em>
+        augmentation the most.
+        <em>
+         Simple
+        </em>
+        chain also improves recognizer accuracies and in most cases outperforms augmentaiton using
+        <em>
+         Gaussian
+        </em>
+        noise.
+       </p>
+      </section>
+     </section>
+     <section id="sec-22">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.5
+         </span>
+         Experiment 4: Alternative approaches in customization scenario
+        </h3>
+       </div>
+      </header>
+      <section id="sec-23">
+       <p>
+        <em>
+         <span class="section-number">
+          4.5.1
+         </span>
+         Experiment Setup.
+        </em>
+        We are interested in how existing alternative gesture synthesis methods compare to our
+        <em>
+         AVC
+        </em>
+        chain in a customization scenario. As introduced in Section
+        <a class="sec" href="#sec-5">
+         2.2
+        </a>
+        , more complex methods for generating synthetic gestures are available, namely Gestures à Go Go [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+         30
+        </a>
+        ], GPSR [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+         59
+        </a>
+        ] and DeepNAG [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+         36
+        </a>
+        ]. Gestures à Go Go extracts per-trajectory reconstruction parameters and passes them to a Sigma-Lognormal (
+        <em>
+         ΣΛ
+        </em>
+        ) model where these parameters are used to synthesize a new trajectory. GPSR first spatially resamples the original trajectory using intervals of random lengths, then removes a small number of points, and lastly normalizes the distances between the remaining points to synthesize new samples. These two methods require only a single original sample per class to produce new trajectories so they are applicable in a customization scenario. DeepNAG, on the contrary, needs thousands of original samples to generate new samples, and its generative model has to be trained anew for each dataset. The amount of data it requires is not available in the customization context, so we only included Gestures à Go Go and GPSR in this experiment.
+       </p>
+       <p>
+        Both Gestures à Go Go and GPSR take user-defined parameters that influence how variable the synthesized trajectories will look like. To generate synthetic samples with Gestures à Go Go, we used a public API
+        <a class="fn" href="#fn6" id="foot-fn6">
+         <sup>
+          6
+         </sup>
+        </a>
+        that was released together with the original paper, and set the parameters to those recommended in the method's publication:
+        <em>
+         shape variability
+        </em>
+        to 1,
+        <em>
+         length variability
+        </em>
+        to 1,
+        <em>
+         same timestamps
+        </em>
+        to false. To generate synthetic samples with GPSR, we implemented the algorithm locally and set the
+        <em>
+         variance
+        </em>
+        parameter to 0.25 according to the method's publication. We set the
+        <em>
+         resample count
+        </em>
+        parameter to a random number between half of the original trajectory length and double the original length, and
+        <em>
+         remove count
+        </em>
+        to a random number between 2 and 6. We used the respective parameters for Gestures à Go Go and GPSR to generate 300 synthetic trajectories per original sample in the
+        <font style="normal">
+         $
+        </font>
+        1-GDS dataset, and ran a writer-dependent experiment with synthetic validation pipeline.
+       </p>
+       <figure id="fig8">
+        <img alt="Figure 8" aria-describedby="fig009" class="img-responsive" src="3581358_files\chi23667fig8.jpg"/>
+        <p id="fig009" style="display:none">
+         Figure 8: a horizontal bar plot comparing the testing accuracies of 4 augmentation techniques: None, Gestures a Go Go, GPSR, and AVC chain from top to bottom with the AVC chain scoring the highest testing accuracy of 96.98 percent, followed by GPSR at 93.92 percent, then None at 90.56 percent, and lastly Gestures a Go Go at 82.60 percent.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 8:
+         </span>
+         <span class="figure-title">
+          <strong>
+           Experiment 4: Writer-dependent experiment with a single training sample per class.
+           <font style="normal">
+            $
+           </font>
+           1-GDS dataset, synthetic validation pipeline. Bars represent a 95% confidence interval.
+          </strong>
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+      </section>
+      <section id="sec-24">
+       <p>
+        <em>
+         <span class="section-number">
+          4.5.2
+         </span>
+         Experiment Results.
+        </em>
+        Figure
+        <a class="fig" href="#fig8">
+         8
+        </a>
+        shows the results for the writer-dependent experiment where we compared two alternative gesture synthesis approaches to our
+        <em>
+         AVC
+        </em>
+        chain.
+        <em>
+         AVC
+        </em>
+        chain outperformed both GPSR and Gestures à Go Go methods, with a notable difference. From no augmentation, GPSR improved the accuracy up to 93.92% (by approximately 3.5%). Interestingly, augmenting the dataset using Gestures à Go actually decreased the RNN accuracy by approximately 8%, reducing the average accuracy to 82.6%. A possible explanation for this method performing poorly is that it does not produce enough variability to cover the gesture variability present in the test set, and the RNN overfits as a result.
+       </p>
+      </section>
+     </section>
+     <section id="sec-25">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.6
+         </span>
+         Experiment 5: Synthetic training set size VS training time VS accuracy
+        </h3>
+       </div>
+      </header>
+      <p>
+       Recognizer training time is an important consideration in customization. Training times should be as short as possible since that will eliminate the waiting on the user's end. Unfortunately, RNNs are slow to train, and the training times increase when the training set size is increased. Prior research reported training times ranging from 10 minutes to several hours [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ], and since the reduction of training time is one of the focal points of our work, we conducted an experiment where we varied the training set size. We used the
+       <em>
+        AVC
+       </em>
+       chain to generate a variable number of synthetic samples for a writer-dependent experiment with Synthetic Validation pipeline and ran this experiment on Pop!_OS
+       <a class="fn" href="#fn7" id="foot-fn7">
+        <sup>
+         7
+        </sup>
+       </a>
+       <a class="fn" href="#fn8" id="foot-fn8">
+        <sup>
+         8
+        </sup>
+       </a>
+       with an Nvidia GTX1080 graphics card.
+      </p>
+      <figure id="fig9">
+       <img alt="Figure 9" aria-describedby="fig010" class="img-responsive" src="3581358_files\chi23667fig9.jpg"/>
+       <p id="fig010" style="display:none">
+        Figure 9: Two figures are shown. The top figure shows the test accuracy increasing as the synthetic number of samples increases until it plateaus to about 97 percent when the number of synthetic samples is about 512. The bottom figure showcases the train time increasing from 10 seconds to about 50 seconds as the number of synthetic samples increases from 2 to 2048.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 9:
+        </span>
+        <span class="figure-title">
+         <strong>
+          Writer-dependent experiment with varying the number of synthetic samples per class with
+          <font style="normal">
+           $
+          </font>
+          1-GDS dataset (using synthetic validation pipeline). Top: training accuracy given varying synthetic training set size, bottom: training time (in seconds) given varying synthetic training set size.
+         </strong>
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+      <p>
+       Our results show that with a single synthetic sample per class (total train set size of 32), training time is 9 seconds on average, with 64 synthetic samples per class (total train set size of 1040), the training time increases to 20 seconds (see Figure
+       <a class="fig" href="#fig9">
+        9
+       </a>
+       ). We tested up to 2048 synthetic samples per class, which brought the total training set size up to 32874, and found that the model took 50 seconds to train with this train set size. The model accuracy reached 97% and stopped improving with values larger than 512 synthetic samples per class, which is close to 300 - a hyper-parameter value for the number of synthetic samples per class that we chose for our previous experiments.
+      </p>
+     </section>
+    </section>
+    <section id="sec-26">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         5
+        </span>
+        DISCUSSION AND FUTURE WORK
+       </h2>
+      </div>
+     </header>
+     <p>
+      The goal of this work is to improve the user experience with gestural interfaces through improving the performance of RNNs used for recognition. With RNNs, the two primary concerns are recognition accuracy and training time. Training time depends on the architecture and training set size. In Experiment 1 (Section
+      <a class="sec" href="#sec-12">
+       4.2
+      </a>
+      ), we saw many individual augmentation methods which are not mutually exclusive. Because each of them adds variability from different categories, they can be combined into
+      <em>
+       chains
+      </em>
+      of augmentation. We used this and were able to boost the RNN model performance while keeping the synthetic dataset limited in size.
+     </p>
+     <section id="sec-27">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.1
+         </span>
+         Performance due to augmentation chaining
+        </h3>
+       </div>
+      </header>
+      <p>
+       Through the process we followed in our Experiment 2 (Section
+       <a class="sec" href="#sec-15">
+        4.3
+       </a>
+       ), we arrived at our
+       <em>
+        AVC
+       </em>
+       chain, which outperformed the tested alternatives across four 2D gesture datasets in a writer-dependent experiment (Section
+       <a class="sec" href="#sec-19">
+        4.4
+       </a>
+       ) and also alternative methods designed specifically for gesture synthesis (Section
+       <a class="sec" href="#sec-22">
+        4.5
+       </a>
+       ). This confirms that chaining multiple augmentation methods based on variability categories can considerably boost the RNN model performance when compared to other augmentation methods.
+      </p>
+      <figure id="fig10">
+       <img alt="Figure 10" aria-describedby="fig011" class="img-responsive" src="3581358_files\chi23667fig10.jpg"/>
+       <p id="fig011" style="display:none">
+        Figure 10: A bar plot showcasing the testing accuracy of 3 augmentation techniques (None, Gaussian, AVC in this order) for an increasing number of training samples per class from 4 participants. Across all numbers of original training samples, the AVC chain outperforms the alternatives.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 10:
+        </span>
+        <span class="figure-title">
+         <strong>
+          Writer-independent experiment with 4 training participants over a varying count of original training samples per participant on the
+          <font style="normal">
+           $
+          </font>
+          1-GDS dataset.
+         </strong>
+         <em>
+          None
+         </em>
+         <strong>
+          is no augmentation;
+         </strong>
+         <em>
+          Gaussian
+         </em>
+         <strong>
+          is random Gaussian Noise; AVC chain is
+         </strong>
+         <em>
+          gaussian
+         </em>
+         <strong>
+          →
+         </strong>
+         <em>
+          frame-skip
+         </em>
+         <strong>
+          →
+         </strong>
+         <em>
+          spatial
+         </em>
+         <strong>
+          →
+         </strong>
+         <em>
+          perspective
+         </em>
+         <strong>
+          →
+         </strong>
+         <em>
+          rotate
+         </em>
+         <strong>
+          →
+         </strong>
+         <em>
+          scale
+         </em>
+         <strong>
+          . Confidence intervals are 95%.
+         </strong>
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+      <section id="sec-28">
+       <p>
+        <em>
+         <span class="section-number">
+          5.1.1
+         </span>
+         Chaining augmentation reduces the amount of required data.
+        </em>
+        To our knowledge, the exact experiment protocol we performed was only used with nearest-neighbor methods, that have been considered the state-of-the-art for gesture customization. For example, on the
+        <font style="normal">
+         $
+        </font>
+        1-GDS dataset, the
+        <font style="normal">
+         $
+        </font>
+        1 algorithm is 97.1% accurate in a writer-dependent experiment with a single training participant. In the same experiment, our
+        <em>
+         AVC
+        </em>
+        augmentation method achieves 96.98% accuracy (see Figure
+        <a class="fig" href="#fig6">
+         6
+        </a>
+        ). Other work where RNNs were trained on gestural data include thousands of original samples in the training dataset. For example, thousands of original
+        <font style="normal">
+         $
+        </font>
+        1-GDS samples, processed using Gestures à Go were used to train a large multi-modal LSTM network and the achieved accuracy was 97.11% [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+         28
+        </a>
+        ]. In another experiment, a GRU-based [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+         36
+        </a>
+        ] network trained with 50% of
+        <font style="normal">
+         $
+        </font>
+        1-GDS and augmentation using a non-adversarial generation approach was 94% accurate. To have a more direct comparison to these testing protocols, we used the
+        <em>
+         AVC
+        </em>
+        augmentation chain with only 1.33% of all available data (a single training sample per class from 4 participants) and found that RNN achieves over 95% accuracy. Using 5.33% (four training samples per class from 4 participants), yields 97% accuracy (see Figure
+        <a class="fig" href="#fig10">
+         10
+        </a>
+        ). This highlights that our approach of combining multiple categories of variability boosts recognition accuracy of RNNs beyond what was previously achieved without requiring nearly as much data as alternative appoaches.
+       </p>
+      </section>
+      <section id="sec-29">
+       <p>
+        <em>
+         <span class="section-number">
+          5.1.2
+         </span>
+         Training time based on training set size.
+        </em>
+        The training times we report are lower than those reported in the gesture recognition literature using RNNs [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+         28
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+         35
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+         36
+        </a>
+        ]. This could be due to a combination of factors: the hardware, the choice of operating system, the deep learning framework. The GTX1080 that we used was released in 2016 and is not a fast card by modern standards, especially among hardware that is specialized for deep learning. Despite this, we were able to achieve low training times, partially thanks to early stopping
+        <a class="fn" href="#fn9" id="foot-fn9">
+         <sup>
+          9
+         </sup>
+        </a>
+        function that tracks validation set loss values and stops the training when loss has not decreased for a set number of epochs. Still, we believe it is possible to reduce the training time further and we plan to work on this in the future.
+       </p>
+      </section>
+      <section id="sec-30">
+       <p>
+        <em>
+         <span class="section-number">
+          5.1.3
+         </span>
+         Variability in synthesized gestural data.
+        </em>
+        Synthetic training data that combines multiple variability categories allows us to reduce the training time since fewer samples are needed to represent the same amount of variability in data. However, it is possible to further reduce the training time. Potential directions for future work in the area include: decreasing model size, pruning the training set to exclude samples which don't contribute to variability, and utilizing transfer learning. Further, additional training data can be collected while the system is already in use, and because RNNs have a constant inference time, user experience will not degrade from additional data. As a result, the user will benefit from a robust customizable gesture recognizer which is quick to train. In future work, we plan to explore each of these directions.
+       </p>
+       <figure id="fig11">
+        <img alt="Figure 11" aria-describedby="fig012" class="img-responsive" src="3581358_files\chi23667fig11.jpg"/>
+        <p id="fig012" style="display:none">
+         Figure 11: Two illustrations are demonstrated. The one on the left showcases the 16 different gestures from the one dollar dataset for three different subjects. The one on the right displays those same gestures (3 trajectories) augmented with the AVC chain augmentation technique.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 11:
+         </span>
+         <span class="figure-title">
+          <strong>
+           Left: original 2D gesture samples from
+           <font style="normal">
+            $
+           </font>
+           1-GDS from 3 different subjects (no transformations applied). Right: three synthetic gesture trajectories per class generated through the
+          </strong>
+          <em>
+           AVC
+          </em>
+          <strong>
+           chain augmentation (
+          </strong>
+          <em>
+           gaussian
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           frame-skip
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           spatial
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           perspective
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           rotate
+          </em>
+          <strong>
+           →
+          </strong>
+          <em>
+           scale
+          </em>
+          <strong>
+           ).
+          </strong>
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+       <p>
+        Visual inspection of the trajectories synthesized by the
+        <em>
+         AVC
+        </em>
+        chain reveals that the overall gesture shapes are recognizable, although the trajectories look very noisy (see Figure
+        <a class="fig" href="#fig11">
+         11
+        </a>
+        ). The impact of Gaussian noise is most pronounced, followed by rotations. The effect of spatial resampling is not obvious from a visual observation, however given that presence of point count modification methods is the main difference between the
+        <em>
+         AVC
+        </em>
+        chain and
+        <em>
+         Simple
+        </em>
+        chain (
+        <em>
+         Rotate
+        </em>
+        →
+        <em>
+         scale
+        </em>
+        →
+        <em>
+         gaussian
+        </em>
+        ), the performance gains when using the
+        <em>
+         AVC
+        </em>
+        chain must come from frame skipping and spatial resampling methods. Such methods are underexplored in the RNN gesture recognition literature, and based on our results, they deserve more attention and may reveal more performance gains if studied further.
+       </p>
+       <p>
+        When it comes to gestures, there are many sources of variability that contribute towards the overall gesture trajectory. The input devices have various screen sizes and can be held at different angles. The user can be right or left-handed, have different vision or motor abilities. Environment also plays a role, since if the user is moving while using gesture shortcuts, the produced trajectories will be more noisy. Lastly, the precision of the device's sensor and the sampling rate also have an impact on trajectory. With a limited training set, the goal of augmentation is to cover the entire space of the possible variability that will be encountered during the use of the system. Thus modeling the potential sources of variability can help inform practitioners what is expected during use and therefore what augmentation parameters to use. Figure
+        <a class="fig" href="#fig11">
+         11
+        </a>
+        shows that even though the variability in original gestures on the left side is different from the variability of trajectories synthesized using the
+        <em>
+         AVC
+        </em>
+        chain, the additional noise helps the RNN generalize and perform better on the test data. From a practical standpoint, this means that practitioners should side with as much variability as possible, as long as the test accuracy is not decreased.
+       </p>
+      </section>
+     </section>
+     <section id="sec-31">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.2
+         </span>
+         Recommendations for practitioners
+        </h3>
+       </div>
+      </header>
+      <p>
+       When generating synthetic data for training gesture recognition RNNs, it is best to combine multiple data augmentation methods by applying them one after the other to the original gestures. An augmentation chain of
+       <em>
+        Gaussian Noise → Frame Skipping → Spatial Resampling → Perspective Change → Rotation → Scaling
+       </em>
+       works well in practice and can be readily used for generating a synthetic dataset which will improve a 2D gesture recognizer's performance. In general, as much variability as possible should be added as long as performance on the test set improves. Supplementary material to this paper contains the exact values of the parameters used with our augmentation methods, and a reference implementation for researchers and practitioners is available at
+       <a class="link-inline force-break" href="https://github.com/maslychm/gesture_augmentation">
+        https://github.com/maslychm/gesture_augmentation
+       </a>
+       .
+      </p>
+     </section>
+     <section id="sec-32">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.3
+         </span>
+         Limitations and Future Work
+        </h3>
+       </div>
+      </header>
+      <p>
+       The first limitation of this work is that the RNN model architecture and the individual augmentation techniques parameters were optimized on a single datset (
+       <font style="normal">
+        $
+       </font>
+       1-GDS). This leads us to question the generalizability of the AVC augmentaiton method we created. Through additional writer-dependent experiments on three more datsets which are widely-used in the gesture recognition space (EDS1 [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+        70
+       </a>
+       ], EDS2 [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+        70
+       </a>
+       ], Lemarchand [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+        60
+       </a>
+       ]), we confirmed that the
+       <em>
+        AVC
+       </em>
+       chain method still outperforms the alternatives when used in combination with our RNN architecture. However, we did not explore the interaction effects between test accuracy, model size, and the number of classes in the dataset. Further improvements in the classification accuracy may be discovered by exploring these parameters. In future work we also plan to further evaluate writer-independent performance across additional datasets, including datasets with handwritten sybmols, 3D gesture datasets and other modalities.
+      </p>
+      <p>
+       A second limitation is that because of the huge search space in the possible chains in Experiment 2 (Section
+       <a class="sec" href="#sec-15">
+        4.3
+       </a>
+       ), it is possible that a better chaining strategy exists which would lead to even higher classification accuracies. As part of future work, we plan to explore various parameter space search methods that would help with automating the chaining process. It is also possible to combine GPSR and Gestures à Go with other augmentation methods. Utilizing these methods in combination with the ones we evaluated may improve the recognizer performance further, so in future work we plan to include them in our evaluation.
+      </p>
+      <p>
+       Lastly, as mentioned in the Discussion (Section
+       <a class="sec" href="#sec-30">
+        5.1.3
+       </a>
+       ), modeling the sources of variability may better inform the choice of parameters for augmentation chains. Additionally, measuring the distributions between real and augmented data may aid in understanding why certain variability improves the recognition performance. For this, previous efforts have used Euclidean [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+        73
+       </a>
+       ], Inner Product [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+        62
+       </a>
+       ] and Cloud distances [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+        66
+       </a>
+       ], as well as custom-defined accuracy variability measures [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+        67
+       </a>
+       ]. All the mentioned approaches, however, resample the trajectories to a fixed length and through this process remove certain variability that we found to improve performance, such as high frequency noise and point count. Future work should find a way to aggregate multiple distance measures and define custom variability measures that will help inform augmentation methods and parameters choices. For example, using forward modeling could be a viable alternative to this approach. Additionally, such knowledge will help generate more realistic looking samples through the augmentation process, which we leave to future work.
+      </p>
+     </section>
+    </section>
+    <section id="sec-33">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         6
+        </span>
+        CONCLUSION
+       </h2>
+      </div>
+     </header>
+     <p>
+      In this work we implemented and evaluated a number of augmentation techniques for gestural data as applied to training Recurrent Neural Networks. We combined some of these techniques into chains on the basis of different categories of variability which techniques add to the data. These chains apply the augmentation techniques sequentially in a specific order, and we found a chain that performed better than the rest in our evaluation. We called this chain the "All Variability Chain" (AVC) and tested it on four widely-used single-stroke 2D gesture datasets, finding that it outperforms all tested alternatives. Researchers and practitioners will benefit from this new simple-to-implement data augmentation method which will boost their RNNs recognition accuracy. End users will benefit from improved RNN-based gesture recognition systems enabled by methods evaluated in this work.
+     </p>
+    </section>
+   </section>
+   <section class="back-matter">
+    <section id="sec-34">
+     <header>
+      <div class="title-info">
+       <h2>
+        ACKNOWLEDGMENTS
+       </h2>
+      </div>
+     </header>
+     <p>
+      This work is supported in part by NSF Award IIS-1917728, Northrop Grumman., Unknot.id, and the Florida High Tech Corridor Council Industry Matching Research Program. We also thank the anonymous reviewers for their insightful feedback and the ISUE lab members for their support.
+     </p>
+    </section>
+    <section id="ref-001">
+     <header>
+      <div class="title-info">
+       <h2 class="page-brake-head">
+        REFERENCES
+       </h2>
+      </div>
+     </header>
+     <ul class="bibUl">
+      <li id="BibPLXBIB0001" label="[1]">
+       Lisa Anthony and Jacob O. Wobbrock. 2010. A lightweight multistroke recognizer for user interface prototypes. In
+       <em>
+        Proceedings of Graphics Interface 2010
+       </em>
+       (
+       <em>
+        GI ’10
+       </em>
+       ). Canadian Information Processing Society, CAN, 245–252.
+      </li>
+      <li id="BibPLXBIB0002" label="[2]">
+       Lisa Anthony and Jacob O Wobbrock. 2012.
+       <font style="normal">
+        $
+       </font>
+       n-protractor: A fast and accurate multistroke recognizer. In
+       <em>
+        Proceedings of Graphics Interface 2012
+       </em>
+       (
+       <em>
+        GI ’12
+       </em>
+       ). Graphics Interface Conference 2012, Toronto, Ontario, Canada, 117–120.
+      </li>
+      <li id="BibPLXBIB0003" label="[3]">
+       Ahmed Sabbir Arif and Wolfgang Stuerzlinger. 2014. User adaptation to a faulty unistroke-based text entry technique by switching to an alternative gesture set. In
+       <em>
+        Proceedings of Graphics Interface 2014
+       </em>
+       (
+       <em>
+        GI ’14
+       </em>
+       ). Canadian Information Processing Society, CAN, 183–192.
+      </li>
+      <li id="BibPLXBIB0004" label="[4]">
+       Ujjwal Bhattacharya, Réjean Plamondon, Souvik Dutta Chowdhury, Pankaj Goyal, and Swapan K. Parui. 2017. A Sigma-Lognormal Model-Based Approach to Generating Large Synthetic Online Handwriting Sample Databases.
+       <em>
+        <em>
+         International Journal on Document Analysis and Recognition (IJDAR)
+        </em>
+       </em>
+       20, 3 (Sept. 2017), 155–171.
+       <a class="link-inline force-break" href="https://doi.org/10.1007/s10032-017-0287-5">
+        https://doi.org/10.1007/s10032-017-0287-5
+       </a>
+      </li>
+      <li id="BibPLXBIB0005" label="[5]">
+       Rachel Blagojevic, Samuel Hsiao-Heng Chang, and Beryl Plimmer. 2010. The Power of Automatic Feature Selection: Rubine on Steroids.
+       <em>
+        <em>
+         SBIM
+        </em>
+       </em>
+       10(2010), 79–86.
+      </li>
+      <li id="BibPLXBIB0006" label="[6]">
+       Ariel Caputo, Andrea Giachetti, Simone Soso, Deborah Pintani, Andrea D'Eusanio, Stefano Pini, Guido Borghi, Alessandro Simoni, Roberto Vezzani, Rita Cucchiara, Andrea Ranieri, Franca Giannini, Katia Lupinetti, Marina Monti, Mehran Maghoumi, Joseph J. LaViola Jr, Minh-Quan Le, Hai-Dang Nguyen, and Minh-Triet Tran. 2021. SHREC 2021: Skeleton-based Hand Gesture Recognition in the Wild.
+       <em>
+        <em>
+         Computers &amp; Graphics
+        </em>
+       </em>
+       99 (Oct. 2021), 201–211.
+       <a class="link-inline force-break" href="https://doi.org/10.1016/j.cag.2021.07.007">
+        https://doi.org/10.1016/j.cag.2021.07.007
+       </a>
+      </li>
+      <li id="BibPLXBIB0007" label="[7]">
+       F. M. Caputo, S. Burato, G. Pavan, T. Voillemin, H. Wannous, J. P. Vandeborre, M. Maghoumi, E. M. Taranta II, A. Razmjoo, J. J. LaViola Jr., F. Manganaro, S. Pini, G. Borghi, R. Vezzani, R. Cucchiara, H. Nguyen, M. T. Tran, and A. Giachetti. 2019. Online Gesture Recognition. In
+       <em>
+        Eurographics Workshop on 3D Object Retrieval
+       </em>
+       . The Eurographics Association, Department of Computer Science, University of Verona, Italy, 10 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.2312/3dor.20191067">
+        https://doi.org/10.2312/3dor.20191067
+       </a>
+      </li>
+      <li id="BibPLXBIB0008" label="[8]">
+       Yineng Chen, Xiaojun Su, Feng Tian, Jin Huang, Xiaolong (Luke) Zhang, Guozhong Dai, and Hongan Wang. 2016. Pactolus: A Method for Mid-Air Gesture Segmentation within EMG. In
+       <em>
+        Proceedings of the 2016 CHI Conference Extended Abstracts on Human Factors in Computing Systems
+       </em>
+       (
+       <em>
+        CHI EA ’16
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 1760–1765.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2851581.2892492">
+        https://doi.org/10.1145/2851581.2892492
+       </a>
+      </li>
+      <li id="BibPLXBIB0009" label="[9]">
+       Kyunghyun Cho, Bart van Merrienboer, Çaglar Gülçehre, Fethi Bougares, Holger Schwenk, and Yoshua Bengio. 2014. Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation.
+       <em>
+        <em>
+         CoRR
+        </em>
+       </em>
+       abs/1406.1078(2014), 15 pages. arXiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/1406.1078">
+        1406.1078
+       </a>
+       <a class="link-inline force-break" href="http://arxiv.org/abs/1406.1078">
+        http://arxiv.org/abs/1406.1078
+       </a>
+      </li>
+      <li id="BibPLXBIB0010" label="[10]">
+       Sung-Jung Cho, Eunseok Choi, Won-Chul Bang, Jing Yang, Junil Sohn, Dong Yoon Kim, Young-Bum Lee, and Sangryong Kim. 2006. Two-stage Recognition of Raw Acceleration Signals for 3-D Gesture-Understanding Cell Phones. In Tenth International Workshop on Frontiers in Handwriting Recognition, Guy Lorette (Ed.). Université de Rennes 1, Suvisoft, La Baule (France).
+       <a class="link-inline force-break" href="https://hal.inria.fr/inria-00103854">
+        https://hal.inria.fr/inria-00103854
+       </a>
+       <a class="link-inline force-break" href="http://www.suvisoft.com">
+        http://www.suvisoft.com
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0011" label="[11]">
+       Ekin D. Cubuk, Barret Zoph, Jonathon Shlens, and Quoc V. Le. 2019. RandAugment: Practical automated data augmentation with a reduced search space.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.1909.13719">
+        https://doi.org/10.48550/ARXIV.1909.13719
+       </a>
+      </li>
+      <li id="BibPLXBIB0012" label="[12]">
+       Kenny Davila, Stephanie Ludi, and Richard Zanibbi. 2014. Using Off-Line Features and Synthetic Data for On-Line Handwritten Math Symbol Recognition. In
+       <em>
+        2014 14th International Conference on Frontiers in Handwriting Recognition
+       </em>
+       . IEEE, Hersonissos, Greece, 323–328.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ICFHR.2014.61">
+        https://doi.org/10.1109/ICFHR.2014.61
+       </a>
+      </li>
+      <li id="BibPLXBIB0013" label="[13]">
+       Yousef Elarian, Radwan Abdel-Aal, Irfan Ahmad, Mohammad Tanvir Parvez, and Abdelmalek Zidouri. 2014. Handwriting Synthesis: Classifications and Techniques.
+       <em>
+        <em>
+         International Journal on Document Analysis and Recognition (IJDAR)
+        </em>
+       </em>
+       17, 4 (Dec. 2014), 455–469.
+       <a class="link-inline force-break" href="https://doi.org/10.1007/s10032-014-0231-x">
+        https://doi.org/10.1007/s10032-014-0231-x
+       </a>
+      </li>
+      <li id="BibPLXBIB0014" label="[14]">
+       Raul Fernandez, Andrew Rosenberg, Alexander Sorin, Bhuvana Ramabhadran, and Ron Hoory. 2017. Voice-Transformation-Based Data Augmentation for Prosodic Classification. In
+       <em>
+        2017 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)
+       </em>
+       . 5530–5534.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ICASSP.2017.7953214">
+        https://doi.org/10.1109/ICASSP.2017.7953214
+       </a>
+      </li>
+      <li id="BibPLXBIB0015" label="[15]">
+       Germain Forestier, François Petitjean, Hoang Anh Dau, Geoffrey I. Webb, and Eamonn Keogh. 2017. Generating Synthetic Time Series to Augment Sparse Datasets. In
+       <em>
+        2017 IEEE International Conference on Data Mining (ICDM)
+       </em>
+       . 865–870.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ICDM.2017.106">
+        https://doi.org/10.1109/ICDM.2017.106
+       </a>
+       ISSN: 2374-8486.
+      </li>
+      <li id="BibPLXBIB0016" label="[16]">
+       Donatien Grolaux, Jean Vanderdonckt, Thanh-Diane Nguyen, and Iyad Khaddam. 2020. SketchADoodle: Touch-surface Multi-stroke Gesture Handling by Bézier Curves.
+       <em>
+        <em>
+         Proceedings of the ACM on Human-Computer Interaction
+        </em>
+       </em>
+       4, EICS (June 2020), 1–30.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3397875">
+        https://doi.org/10.1145/3397875
+       </a>
+      </li>
+      <li id="BibPLXBIB0017" label="[17]">
+       T.M. Ha and H. Bunke. 1997. Off-Line, Handwritten Numeral Recognition by Perturbation Method.
+       <em>
+        <em>
+         IEEE Transactions on Pattern Analysis and Machine Intelligence
+        </em>
+       </em>
+       19, 5 (May 1997), 535–539.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/34.589216">
+        https://doi.org/10.1109/34.589216
+       </a>
+      </li>
+      <li id="BibPLXBIB0018" label="[18]">
+       Shangchen Han, Beibei Liu, Randi Cabezas, Christopher D. Twigg, Peizhao Zhang, Jeff Petkau, Tsz-Ho Yu, Chun-Jung Tai, Muzaffer Akbay, Zheng Wang, Asaf Nitzan, Gang Dong, Yuting Ye, Lingling Tao, Chengde Wan, and Robert Wang. 2020. MEgATrack: Monochrome Egocentric Articulated Hand-Tracking for Virtual Reality.
+       <em>
+        <em>
+         ACM Transactions on Graphics
+        </em>
+       </em>
+       39, 4 (July 2020), 87:87:1–87:87:13.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3386569.3392452">
+        https://doi.org/10.1145/3386569.3392452
+       </a>
+      </li>
+      <li id="BibPLXBIB0019" label="[19]">
+       Taihei Hayashi, Keiji Gyohten, Hidehiro Ohki, and Toshiya Takami. 2018. A Study of Data Augmentation for Handwritten Character Recognition Using Deep Learning. In
+       <em>
+        2018 16th International Conference on Frontiers in Handwriting Recognition (ICFHR)
+       </em>
+       . 552–557.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ICFHR-2018.2018.00102">
+        https://doi.org/10.1109/ICFHR-2018.2018.00102
+       </a>
+      </li>
+      <li id="BibPLXBIB0020" label="[20]">
+       Samitha Herath, Mehrtash Harandi, and Fatih Porikli. 2017. Going deeper into action recognition: A survey.
+       <em>
+        <em>
+         Image and Vision Computing
+        </em>
+       </em>
+       60 (April 2017), 4–21.
+       <a class="link-inline force-break" href="https://doi.org/10.1016/j.imavis.2017.01.010">
+        https://doi.org/10.1016/j.imavis.2017.01.010
+       </a>
+      </li>
+      <li id="BibPLXBIB0021" label="[21]">
+       Geoffrey E. Hinton, Nitish Srivastava, Alex Krizhevsky, Ilya Sutskever, and Ruslan Salakhutdinov. 2012. Improving neural networks by preventing co-adaptation of feature detectors.
+       <em>
+        <em>
+         CoRR
+        </em>
+       </em>
+       abs/1207.0580(2012), 18 pages. arXiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/1207.0580">
+        1207.0580
+       </a>
+       <a class="link-inline force-break" href="http://arxiv.org/abs/1207.0580">
+        http://arxiv.org/abs/1207.0580
+       </a>
+      </li>
+      <li id="BibPLXBIB0022" label="[22]">
+       Alexander Hoelzemann, Nimish Sorathiya, and Kristof Van Laerhoven. 2021. Data Augmentation Strategies for Human Activity Data Using Generative Adversarial Neural Networks.
+       <em>
+        <em>
+         2021 IEEE International Conference on Pervasive Computing and Communications Workshops and other Affiliated Events (PerCom Workshops)
+        </em>
+       </em>
+       (2021).
+       <a class="link-inline force-break" href="https://doi.org/10.1109/PerComWorkshops51409.2021.9431046">
+        https://doi.org/10.1109/PerComWorkshops51409.2021.9431046
+       </a>
+      </li>
+      <li id="BibPLXBIB0023" label="[23]">
+       Sergey Ioffe and Christian Szegedy. 2015. Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift, In
+       <em>
+        ICML’15: Proceedings of the 32nd International Conference on International Conference on Machine Learning
+       </em>
+       .
+       <em>
+        <em>
+         CoRR
+        </em>
+       </em>
+       37, 448–456. arXiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/1502.03167">
+        1502.03167
+       </a>
+       <a class="link-inline force-break" href="http://arxiv.org/abs/1502.03167">
+        http://arxiv.org/abs/1502.03167
+       </a>
+      </li>
+      <li id="BibPLXBIB0024" label="[24]">
+       Brian Kenji Iwana and Seiichi Uchida. 2021. An Empirical Survey of Data Augmentation for Time Series Classification with Neural Networks.
+       <em>
+        <em>
+         PLoS ONE
+        </em>
+       </em>
+       16, 7 (July 2021), e0254841.
+       <a class="link-inline force-break" href="https://doi.org/10.1371/journal.pone.0254841">
+        https://doi.org/10.1371/journal.pone.0254841
+       </a>
+      </li>
+      <li id="BibPLXBIB0025" label="[25]">
+       Maria Karam and m. c. schraefel. 2006. Investigating user tolerance for errors in vision-enabled gesture-based interactions. In
+       <em>
+        Proceedings of the working conference on Advanced visual interfaces
+       </em>
+       (
+       <em>
+        AVI ’06
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 225–232.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1133265.1133309">
+        https://doi.org/10.1145/1133265.1133309
+       </a>
+      </li>
+      <li id="BibPLXBIB0026" label="[26]">
+       Jungsoo Kim, Jiasheng He, Kent Lyons, and Thad Starner. 2007. The Gesture Watch: A Wireless Contact-free Gesture based Wrist Interface. In
+       <em>
+        2007 11th IEEE International Symposium on Wearable Computers
+       </em>
+       . IEEE, Boston, MA, USA, 15–22.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ISWC.2007.4373770">
+        https://doi.org/10.1109/ISWC.2007.4373770
+       </a>
+       ISSN: 2376-8541.
+      </li>
+      <li id="BibPLXBIB0027" label="[27]">
+       Diederik P. Kingma and Jimmy Ba. 2015. Adam: A Method for Stochastic Optimization, In
+       <em>
+        3rd International Conference on Learning Representations, ICLR, San Diego, CA, USA, May 7-9, 2015, Conference Track Proceedings
+       </em>
+       .
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1412.6980">
+          1412.6980
+         </a>
+        </em>
+       </em>
+       3, 1, 15 pages.
+       <a class="link-inline force-break" href="http://arxiv.org/abs/1412.6980">
+        http://arxiv.org/abs/1412.6980
+       </a>
+      </li>
+      <li id="BibPLXBIB0028" label="[28]">
+       Emanuele Ledda and Lucio Davide Spano. 2021. Applying Long-Short Term Memory Recurrent Neural Networks for Real-Time Stroke Recognition. In
+       <em>
+        Companion of the 2021 ACM SIGCHI Symposium on Engineering Interactive Computing Systems
+       </em>
+       (
+       <em>
+        EICS ’21
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 50–55.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3459926.3464754">
+        https://doi.org/10.1145/3459926.3464754
+       </a>
+      </li>
+      <li id="BibPLXBIB0029" label="[29]">
+       Hyeon-Kyu Lee and J.H. Kim. 1999. An HMM-based threshold model approach for gesture recognition.
+       <em>
+        <em>
+         IEEE Transactions on Pattern Analysis and Machine Intelligence
+        </em>
+       </em>
+       21, 10 (Oct. 1999), 961–973.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/34.799904">
+        https://doi.org/10.1109/34.799904
+       </a>
+       Conference Name: IEEE Transactions on Pattern Analysis and Machine Intelligence.
+      </li>
+      <li id="BibPLXBIB0030" label="[30]">
+       Luis A. Leiva, Daniel Martín-Albo, and Réjean Plamondon. 2016. Gestures à Go Go: Authoring Synthetic Human-Like Stroke Gestures Using the Kinematic Theory of Rapid Movements.
+       <em>
+        <em>
+         ACM Transactions on Intelligent Systems and Technology
+        </em>
+       </em>
+       7, 2 (Jan. 2016), 1–29.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2799648">
+        https://doi.org/10.1145/2799648
+       </a>
+      </li>
+      <li id="BibPLXBIB0031" label="[31]">
+       Jiajun Li, Jianguo Tao, Liang Ding, Haibo Gao, Zongquan Deng, Yang Luo, and Zhandong Li. 2018. A New Iterative Synthetic Data Generation Method for CNN Based Stroke Gesture Recognition.
+       <em>
+        <em>
+         Multimedia Tools and Applications
+        </em>
+       </em>
+       77, 13 (July 2018), 17181–17205.
+       <a class="link-inline force-break" href="https://doi.org/10.1007/s11042-017-5285-6">
+        https://doi.org/10.1007/s11042-017-5285-6
+       </a>
+      </li>
+      <li id="BibPLXBIB0032" label="[32]">
+       Yang Li. 2010. Protractor: A Fast and Accurate Gesture Recognizer. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (Atlanta, Georgia, USA) (CHI ’10). Association for Computing Machinery, New York, NY, USA, 2169–2172.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1753326.1753654">
+        https://doi.org/10.1145/1753326.1753654
+       </a>
+      </li>
+      <li id="BibPLXBIB0033" label="[33]">
+       Jun Liu, Amir Shahroudy, Dong Xu, and Gang Wang. 2016. Spatio-Temporal LSTM with Trust Gates for 3D Human Action Recognition. In
+       <em>
+        Computer Vision – ECCV 2016
+       </em>
+       (
+       <em>
+        Lecture Notes in Computer Science
+       </em>
+       ), Bastian Leibe, Jiri Matas, Nicu Sebe, and Max Welling (Eds.). Springer International Publishing, Cham, 816–833.
+       <a class="link-inline force-break" href="https://doi.org/10.1007/978-3-319-46487-9_50">
+        https://doi.org/10.1007/978-3-319-46487-9_50
+       </a>
+       REVIEW FOR SURE.
+      </li>
+      <li id="BibPLXBIB0034" label="[34]">
+       Xiao-Hui Liu and Chin-Seng Chua. 2010. Rejection of non-meaningful activities for HMM-based activity recognition system.
+       <em>
+        <em>
+         Image and Vision Computing
+        </em>
+       </em>
+       28, 6 (June 2010), 865–871.
+       <a class="link-inline force-break" href="https://doi.org/10.1016/j.imavis.2009.11.001">
+        https://doi.org/10.1016/j.imavis.2009.11.001
+       </a>
+      </li>
+      <li id="BibPLXBIB0035" label="[35]">
+       Mehran Maghoumi and Joseph J. LaViola. 2019. DeepGRU: Deep Gesture Recognition Utility. In
+       <em>
+        Advances in Visual Computing
+       </em>
+       . Vol. 11844. Springer International Publishing, Cham, 16–31.
+       <a class="link-inline force-break" href="https://doi.org/10.1007/978-3-030-33720-9_2">
+        https://doi.org/10.1007/978-3-030-33720-9_2
+       </a>
+      </li>
+      <li id="BibPLXBIB0036" label="[36]">
+       Mehran Maghoumi, Eugene Matthew Taranta, and Joseph LaViola. 2021. DeepNAG: Deep Non-Adversarial Gesture Generation. In
+       <em>
+        26th International Conference on Intelligent User Interfaces
+       </em>
+       . ACM, College Station TX USA, 213–223.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3397481.3450675">
+        https://doi.org/10.1145/3397481.3450675
+       </a>
+      </li>
+      <li id="BibPLXBIB0037" label="[37]">
+       Nathan Magrofuoco, Paolo Roselli, and Jean Vanderdonckt. 2022. Two-dimensional Stroke Gesture Recognition: A Survey.
+       <em>
+        <em>
+         Comput. Surveys
+        </em>
+       </em>
+       54, 7 (Sept. 2022), 1–36.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3465400">
+        https://doi.org/10.1145/3465400
+       </a>
+      </li>
+      <li id="BibPLXBIB0038" label="[38]">
+       Ross Messing, Chris Pal, and Henry Kautz. 2009. Activity Recognition Using the Velocity Histories of Tracked Keypoints. In
+       <em>
+        2009 IEEE 12th International Conference on Computer Vision
+       </em>
+       . 104–111.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ICCV.2009.5459154">
+        https://doi.org/10.1109/ICCV.2009.5459154
+       </a>
+      </li>
+      <li id="BibPLXBIB0039" label="[39]">
+       Agnieszka Mikołajczyk and Michał Grochowski. 2018. Data augmentation for improving deep learning in image classification problem. In
+       <em>
+        2018 International Interdisciplinary PhD Workshop (IIPhDW)
+       </em>
+       . 117–122.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/IIPHDW.2018.8388338">
+        https://doi.org/10.1109/IIPHDW.2018.8388338
+       </a>
+      </li>
+      <li id="BibPLXBIB0040" label="[40]">
+       Francisco J. Moreno-Barea, José M. Jerez, and Leonardo Franco. 2020. Improving Classification Accuracy Using Data Augmentation on Small Data Sets.
+       <em>
+        <em>
+         Expert Systems with Applications
+        </em>
+       </em>
+       161 (Dec. 2020), 113696.
+       <a class="link-inline force-break" href="https://doi.org/10.1016/j.eswa.2020.113696">
+        https://doi.org/10.1016/j.eswa.2020.113696
+       </a>
+      </li>
+      <li id="BibPLXBIB0041" label="[41]">
+       Miguel A. Nacenta, Yemliha Kamber, Yizhou Qiang, and Per Ola Kristensson. 2013. Memorability of pre-designed and user-defined gesture sets. In
+       <em>
+        Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+       </em>
+       (
+       <em>
+        CHI ’13
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 1099–1108.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2466142">
+        https://doi.org/10.1145/2470654.2466142
+       </a>
+      </li>
+      <li id="BibPLXBIB0042" label="[42]">
+       Vinod Nair and Geoffrey E. Hinton. 2010. Rectified Linear Units Improve Restricted Boltzmann Machines. In
+       <em>
+        Proceedings of the 27th International Conference on Machine Learning (ICML-10)
+       </em>
+       . Omnipress, Haifa, Israel, 807–814.
+       <a class="link-inline force-break" href="https://icml.cc/Conferences/2010/papers/432.pdf">
+        https://icml.cc/Conferences/2010/papers/432.pdf
+       </a>
+      </li>
+      <li id="BibPLXBIB0043" label="[43]">
+       Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, Alban Desmaison, Andreas Kopf, Edward Yang, Zachary DeVito, Martin Raison, Alykhan Tejani, Sasank Chilamkurthy, Benoit Steiner, Lu Fang, Junjie Bai, and Soumith Chintala. 2019. PyTorch: An Imperative Style, High-Performance Deep Learning Library. In
+       <em>
+        Advances in Neural Information Processing Systems 32
+       </em>
+       , H. Wallach, H. Larochelle, A. Beygelzimer, F. d'Alché-Buc, E. Fox, and R. Garnett (Eds.). Curran Associates, Inc., Vancouver, Canada, 8024–8035.
+       <a class="link-inline force-break" href="http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf">
+        http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf
+       </a>
+      </li>
+      <li id="BibPLXBIB0044" label="[44]">
+       Réjean Plamondon. 1995. A kinematic theory of rapid human movements: Part I. Movement representation and generation.
+       <em>
+        <em>
+         Biological cybernetics
+        </em>
+       </em>
+       72, 4 (1995), 295–307.
+      </li>
+      <li id="BibPLXBIB0045" label="[45]">
+       Réjean Plamondon and Moussa Djioua. 2006. A multi-level representation paradigm for handwriting stroke generation.
+       <em>
+        <em>
+         Human movement science
+        </em>
+       </em>
+       25, 4-5 (2006), 586–607.
+      </li>
+      <li id="BibPLXBIB0046" label="[46]">
+       Robert Powalka. 1993. Experiments With Applying Slant Counteraction to Script Recognition.
+      </li>
+      <li id="BibPLXBIB0047" label="[47]">
+       Hossein Rahmani and Ajmal Mian. 2016. 3D Action Recognition from Novel Viewpoints. In
+       <em>
+        2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)
+       </em>
+       . IEEE, Las Vegas, NV, USA, 1506–1515.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2016.167">
+        https://doi.org/10.1109/CVPR.2016.167
+       </a>
+      </li>
+      <li id="BibPLXBIB0048" label="[48]">
+       Dean Rubine. 1991. Specifying Gestures by Example.
+       <em>
+        <em>
+         ACM SIGGRAPH Computer Graphics
+        </em>
+       </em>
+       25, 4 (July 1991), 329–337.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/127719.122753">
+        https://doi.org/10.1145/127719.122753
+       </a>
+      </li>
+      <li id="BibPLXBIB0049" label="[49]">
+       Yasushi Sakurai, Christos Faloutsos, and Masashi Yamamuro. 2007. Stream Monitoring under the Time Warping Distance. In
+       <em>
+        2007 IEEE 23rd International Conference on Data Engineering
+       </em>
+       . IEEE, Istanbul, 1046–1055.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ICDE.2007.368963">
+        https://doi.org/10.1109/ICDE.2007.368963
+       </a>
+      </li>
+      <li id="BibPLXBIB0050" label="[50]">
+       Jan Schlüter and Thomas Grill. 2015. Exploring Data Augmentation for Improved Singing Voice Detection with Neural Networks.. In
+       <em>
+        ISMIR
+       </em>
+       . 121–126.
+      </li>
+      <li id="BibPLXBIB0051" label="[51]">
+       Jia Sheng. 2003. A study of adaboost in 3d gesture recognition.
+       <em>
+        <em>
+         Department of Computer Science, University of Toronto
+        </em>
+       </em>
+       1 (2003), 7 pages.
+      </li>
+      <li id="BibPLXBIB0052" label="[52]">
+       Arash Shilandari, H. Marvi, and H. Khosravi. 2021. Speech Emotion Recognition Using Data Augmentation Method by Cycle-Generative Adversarial Networks.
+       <a class="link-inline force-break" href="https://doi.org/10.20944/PREPRINTS202104.0651.V1">
+        https://doi.org/10.20944/PREPRINTS202104.0651.V1
+       </a>
+      </li>
+      <li id="BibPLXBIB0053" label="[53]">
+       Connor Shorten and Taghi M. Khoshgoftaar. 2019. A Survey on Image Data Augmentation for Deep Learning.
+       <em>
+        <em>
+         Journal of Big Data
+        </em>
+       </em>
+       6, 1 (July 2019), 60.
+       <a class="link-inline force-break" href="https://doi.org/10.1186/s40537-019-0197-0">
+        https://doi.org/10.1186/s40537-019-0197-0
+       </a>
+      </li>
+      <li id="BibPLXBIB0054" label="[54]">
+       Clifford K. F. So and George Baciu. 2006. Hypercube sweeping algorithm for subsequence motion matching in large motion databases. In
+       <em>
+        Proceedings of the 2006 ACM international conference on Virtual reality continuum and its applications
+       </em>
+       (
+       <em>
+        VRCIA ’06
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 221–228.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1128923.1128960">
+        https://doi.org/10.1145/1128923.1128960
+       </a>
+      </li>
+      <li id="BibPLXBIB0055" label="[55]">
+       Sijie Song, Cuiling Lan, Junliang Xing, Wenjun Zeng, and Jiaying Liu. 2016. An End-to-End Spatio-Temporal Attention Model for Human Action Recognition from Skeleton Data.
+       <em>
+        <em>
+         arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1611.06067 [cs]">
+          1611.06067 [cs]
+         </a>
+        </em>
+       </em>
+       (Nov. 2016).
+       <a class="link-inline force-break" href="http://arxiv.org/abs/1611.06067">
+        http://arxiv.org/abs/1611.06067
+       </a>
+       arXiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/1611.06067">
+        1611.06067
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0056" label="[56]">
+       Odongo Steven Eyobu and Dong Seog Han. 2018. Feature Representation and Data Augmentation for Human Activity Classification Based on Wearable IMU Sensor Data Using a Deep LSTM Neural Network.
+       <em>
+        <em>
+         Sensors
+        </em>
+       </em>
+       18, 9 (Sept. 2018), 2892.
+       <a class="link-inline force-break" href="https://doi.org/10.3390/s18092892">
+        https://doi.org/10.3390/s18092892
+       </a>
+      </li>
+      <li id="BibPLXBIB0057" label="[57]">
+       Jingren Tang, Hong Cheng, Yang Zhao, and Hongliang Guo. 2018. Structured dynamic time warping for continuous hand trajectory gesture recognition.
+       <em>
+        <em>
+         Pattern Recognition
+        </em>
+       </em>
+       80 (Aug. 2018), 21–31.
+       <a class="link-inline force-break" href="https://doi.org/10.1016/j.patcog.2018.02.011">
+        https://doi.org/10.1016/j.patcog.2018.02.011
+       </a>
+      </li>
+      <li id="BibPLXBIB0058" label="[58]">
+       Eugene M. Taranta and Joseph J. LaViola. 2015. Penny pincher: a blazing fast, highly accurate
+       <font style="normal">
+        $
+       </font>
+       -family recognizer. In
+       <em>
+        Proceedings of the 41st Graphics Interface Conference
+       </em>
+       (
+       <em>
+        GI ’15
+       </em>
+       ). Canadian Information Processing Society, CAN, 195–202.
+      </li>
+      <li id="BibPLXBIB0059" label="[59]">
+       Eugene M. Taranta, Mehran Maghoumi, Corey R. Pittman, and Joseph J. LaViola. 2016. A Rapid Prototyping Approach to Synthetic Data Generation for Improved 2D Gesture Recognition. In
+       <em>
+        Proceedings of the 29th Annual Symposium on User Interface Software and Technology
+       </em>
+       (
+       <em>
+        UIST ’16
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 873–885.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2984511.2984525">
+        https://doi.org/10.1145/2984511.2984525
+       </a>
+      </li>
+      <li id="BibPLXBIB0060" label="[60]">
+       Eugene M. Taranta, Andrés N. Vargas, and Joseph J. LaViola. 2016. Streamlined and accurate gesture recognition with Penny Pincher.
+       <em>
+        <em>
+         Computers &amp; Graphics
+        </em>
+       </em>
+       55 (April 2016), 130–142.
+       <a class="link-inline force-break" href="https://doi.org/10.1016/j.cag.2015.10.011">
+        https://doi.org/10.1016/j.cag.2015.10.011
+       </a>
+      </li>
+      <li id="BibPLXBIB0061" label="[61]">
+       Eugene M. Taranta II, Corey R. Pittman, Mehran Maghoumi, Mykola Maslych, Yasmine M. Moolenaar, and Joseph J. Laviola Jr. 2021. Machete: Easy, Efficient, and Precise Continuous Custom Gesture Segmentation.
+       <em>
+        <em>
+         ACM Transactions on Computer-Human Interaction
+        </em>
+       </em>
+       28, 1 (Jan. 2021), 5:1–5:46.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3428068">
+        https://doi.org/10.1145/3428068
+       </a>
+      </li>
+      <li id="BibPLXBIB0062" label="[62]">
+       Eugene M. Taranta II, Amirreza Samiei, Mehran Maghoumi, Pooya Khaloo, Corey R. Pittman, and Joseph J. LaViola Jr.2017. Jackknife: A Reliable Recognizer with Few Samples and Many Modalities. In
+       <em>
+        Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+       </em>
+       (
+       <em>
+        CHI ’17
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 5850–5861.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3026002">
+        https://doi.org/10.1145/3025453.3026002
+       </a>
+      </li>
+      <li id="BibPLXBIB0063" label="[63]">
+       Eugene M. Taranta II, Thaddeus K. Simons, Rahul Sukthankar, and Joseph J. Laviola Jr.2015. Exploring the Benefits of Context in 3D Gesture Recognition for Game-Based Virtual Environments.
+       <em>
+        <em>
+         ACM Transactions on Interactive Intelligent Systems
+        </em>
+       </em>
+       5, 1 (March 2015), 1:1–1:34.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2656345">
+        https://doi.org/10.1145/2656345
+       </a>
+      </li>
+      <li id="BibPLXBIB0064" label="[64]">
+       Jean Vanderdonckt, Paolo Roselli, and Jorge Luis Pérez-Medina. 2018. !FTL, an Articulation-Invariant Stroke Gesture Recognizer with Controllable Position, Scale, and Rotation Invariances. In
+       <em>
+        Proceedings of the 20th ACM International Conference on Multimodal Interaction
+       </em>
+       (
+       <em>
+        ICMI ’18
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 125–134.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3242969.3243032">
+        https://doi.org/10.1145/3242969.3243032
+       </a>
+      </li>
+      <li id="BibPLXBIB0065" label="[65]">
+       Radu-Daniel Vatavu. 2017. Improving Gesture Recognition Accuracy on Touch Screens for Users with Low Vision. In Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems (Denver, Colorado, USA) (CHI ’17). Association for Computing Machinery, New York, NY, USA, 4667–4679.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025941">
+        https://doi.org/10.1145/3025453.3025941
+       </a>
+      </li>
+      <li id="BibPLXBIB0066" label="[66]">
+       Radu-Daniel Vatavu, Lisa Anthony, and Jacob O. Wobbrock. 2012. Gestures as Point Clouds: A
+       <font style="normal">
+        $
+       </font>
+       P Recognizer for User Interface Prototypes. In
+       <em>
+        Proceedings of the 14th ACM International Conference on Multimodal Interaction
+       </em>
+       (
+       <em>
+        ICMI ’12
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 273–280.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2388676.2388732">
+        https://doi.org/10.1145/2388676.2388732
+       </a>
+      </li>
+      <li id="BibPLXBIB0067" label="[67]">
+       Radu-Daniel Vatavu, Lisa Anthony, and Jacob O. Wobbrock. 2013. Relative accuracy measures for stroke gestures. In
+       <em>
+        Proceedings of the 15th ACM on International conference on multimodal interaction
+       </em>
+       (
+       <em>
+        ICMI ’13
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 279–286.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2522848.2522875">
+        https://doi.org/10.1145/2522848.2522875
+       </a>
+      </li>
+      <li id="BibPLXBIB0068" label="[68]">
+       Radu-Daniel Vatavu, Lisa Anthony, and Jacob O. Wobbrock. 2018.
+       <font style="normal">
+        $
+       </font>
+       Q: A Super-Quick, Articulation-Invariant Stroke-Gesture Recognizer for Low-Resource Devices. In
+       <em>
+        Proceedings of the 20th International Conference on Human-Computer Interaction with Mobile Devices and Services
+       </em>
+       (
+       <em>
+        MobileHCI ’18
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 1–12.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3229434.3229465">
+        https://doi.org/10.1145/3229434.3229465
+       </a>
+      </li>
+      <li id="BibPLXBIB0069" label="[69]">
+       R. D. Vatavu, S. G. Pentiuc, L. Grisoni, and C. Chaillou. 2008. Modeling Shapes for Pattern Recognition: A Simple Low-Cost Spline-based Approach.
+       <em>
+        <em>
+         Advances in Electrical and Computer Engineering
+        </em>
+       </em>
+       8, 1(2008), 67–71.
+       <a class="link-inline force-break" href="https://doi.org/10.4316/aece.2008.01012">
+        https://doi.org/10.4316/aece.2008.01012
+       </a>
+      </li>
+      <li id="BibPLXBIB0070" label="[70]">
+       Radu-Daniel Vatavu, Daniel Vogel, Géry Casiez, and Laurent Grisoni. 2011. Estimating the Perceived Difficulty of Pen Gestures. In
+       <em>
+        Human-Computer Interaction – INTERACT 2011
+       </em>
+       (
+       <em>
+        Lecture Notes in Computer Science
+       </em>
+       ), Pedro Campos, Nicholas Graham, Joaquim Jorge, Nuno Nunes, Philippe Palanque, and Marco Winckler (Eds.). Springer, Berlin, Heidelberg, 89–106.
+       <a class="link-inline force-break" href="https://doi.org/10.1007/978-3-642-23771-3_9">
+        https://doi.org/10.1007/978-3-642-23771-3_9
+       </a>
+      </li>
+      <li id="BibPLXBIB0071" label="[71]">
+       Raviteja Vemulapalli, Felipe Arrate, and Rama Chellappa. 2014. Human Action Recognition by Representing 3D Skeletons as Points in a Lie Group. In
+       <em>
+        2014 IEEE Conference on Computer Vision and Pattern Recognition
+       </em>
+       . IEEE, Columbus, OH, USA, 588–595.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2014.82">
+        https://doi.org/10.1109/CVPR.2014.82
+       </a>
+      </li>
+      <li id="BibPLXBIB0072" label="[72]">
+       Qingsong Wen, Liang Sun, Xiaomin Song, Jing Gao, Xue Wang, and Huan Xu. 2021. Time Series Data Augmentation for Deep Learning: A Survey. In
+       <em>
+        IJCAI
+       </em>
+       .
+       <a class="link-inline force-break" href="https://doi.org/10.24963/ijcai.2021/631">
+        https://doi.org/10.24963/ijcai.2021/631
+       </a>
+       Augmentation, Time Series.
+      </li>
+      <li id="BibPLXBIB0073" label="[73]">
+       Jacob O. Wobbrock, Andrew D. Wilson, and Yang Li. 2007. Gestures without Libraries, Toolkits or Training: A
+       <font style="normal">
+        $
+       </font>
+       1 Recognizer for User Interface Prototypes. In
+       <em>
+        Proceedings of the 20th Annual ACM Symposium on User Interface Software and Technology
+       </em>
+       (
+       <em>
+        UIST ’07
+       </em>
+       ). Association for Computing Machinery, New York, NY, USA, 159–168.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1294211.1294238">
+        https://doi.org/10.1145/1294211.1294238
+       </a>
+      </li>
+      <li id="BibPLXBIB0074" label="[74]">
+       Sebastien C Wong, Adam Gatt, Victor Stamatescu, and Mark D McDonnell. 2016. Understanding data augmentation for classification: when to warp?. In
+       <em>
+        2016 international conference on digital image computing: techniques and applications (DICTA)
+       </em>
+       . IEEE, 1–6.
+      </li>
+      <li id="BibPLXBIB0075" label="[75]">
+       Xinyu Yang, Zhenguo Zhang, Xu Cui, and Rong-yi Cui. 2021. A Time Series Data Augmentation Method Based on Dynamic Time Warping.
+       <em>
+        <em>
+         2021 International Conference on Computer Communication and Artificial Intelligence (CCAI)
+        </em>
+       </em>
+       (2021).
+       <a class="link-inline force-break" href="https://doi.org/10.1109/CCAI50917.2021.9447507">
+        https://doi.org/10.1109/CCAI50917.2021.9447507
+       </a>
+      </li>
+      <li id="BibPLXBIB0076" label="[76]">
+       Yong Du, Wei Wang, and Liang Wang. 2015. Hierarchical recurrent neural network for skeleton based action recognition. In
+       <em>
+        2015 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)
+       </em>
+       . IEEE, Boston, MA, USA, 1110–1118.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2015.7298714">
+        https://doi.org/10.1109/CVPR.2015.7298714
+       </a>
+      </li>
+      <li id="BibPLXBIB0077" label="[77]">
+       Qian Yu, Yongxin Yang, Feng Liu, Yi-Zhe Song, Tao Xiang, and Timothy M. Hospedales. 2017. Sketch-a-Net: A Deep Neural Network that Beats Humans.
+       <em>
+        <em>
+         International Journal of Computer Vision
+        </em>
+       </em>
+       122, 3 (May 2017), 411–425.
+       <a class="link-inline force-break" href="https://doi.org/10.1007/s11263-016-0932-3">
+        https://doi.org/10.1007/s11263-016-0932-3
+       </a>
+      </li>
+      <li id="BibPLXBIB0078" label="[78]">
+       Pengfei Zhang, Cuiling Lan, Junliang Xing, Wenjun Zeng, Jianru Xue, and Nanning Zheng. 2017. View Adaptive Recurrent Neural Networks for High Performance Human Action Recognition from Skeleton Data. In
+       <em>
+        2017 IEEE International Conference on Computer Vision (ICCV)
+       </em>
+       . IEEE, Venice, 2136–2145.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ICCV.2017.233">
+        https://doi.org/10.1109/ICCV.2017.233
+       </a>
+      </li>
+      <li id="BibPLXBIB0079" label="[79]">
+       Ying Zheng, Hongxun Yao, Xiaoshuai Sun, Shengping Zhang, Sicheng Zhao, and Fatih Porikli. 2021. Sketch-Specific Data Augmentation for Freehand Sketch Recognition.
+       <em>
+        <em>
+         Neurocomputing
+        </em>
+       </em>
+       456 (Oct. 2021), 528–539.
+       <a class="link-inline force-break" href="https://doi.org/10.1016/j.neucom.2020.05.124">
+        https://doi.org/10.1016/j.neucom.2020.05.124
+       </a>
+      </li>
+      <li id="BibPLXBIB0080" label="[80]">
+       Zhun Zhong, Liang Zheng, Guoliang Kang, Shaozi Li, and Yi Yang. 2020. Random Erasing Data Augmentation.
+       <em>
+        <em>
+         Proceedings of the AAAI Conference on Artificial Intelligence
+        </em>
+       </em>
+       34, 07 (April 2020), 13001–13008.
+       <a class="link-inline force-break" href="https://doi.org/10.1609/aaai.v34i07.7000">
+        https://doi.org/10.1609/aaai.v34i07.7000
+       </a>
+       Number: 07.
+      </li>
+      <li id="BibPLXBIB0081" label="[81]">
+       Guangming Zhu, Liang Zhang, Peiyi Shen, and Juan Song. 2017. Multimodal Gesture Recognition Using 3-D Convolution and Convolutional LSTM.
+       <em>
+        <em>
+         IEEE Access
+        </em>
+       </em>
+       5(2017), 4517–4524.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ACCESS.2017.2684186">
+        https://doi.org/10.1109/ACCESS.2017.2684186
+       </a>
+      </li>
+     </ul>
+    </section>
+   </section>
+   <section class="footnote" id="foot-001">
+    <header>
+     <div class="title-info">
+      <h2>
+       FOOTNOTE
+      </h2>
+     </div>
+    </header>
+    <p id="fn1">
+     <a href="#foot-fn1">
+      <sup>
+       1
+      </sup>
+     </a>
+     This table does not identify the
+     <em>
+      first
+     </em>
+     mention or use of each technique, but instead lists the most relevant (subjectively) references for each technique's usage.
+    </p>
+    <p id="fn2">
+     <a href="#foot-fn2">
+      <sup>
+       2
+      </sup>
+     </a>
+     As compared to the larger model that we started with
+    </p>
+    <p id="fn3">
+     <a href="#foot-fn3">
+      <sup>
+       3
+      </sup>
+     </a>
+     <a class="link-inline force-break" href="https://www.pytorchlightning.ai/">
+      https://www.pytorchlightning.ai/
+     </a>
+    </p>
+    <p id="fn4">
+     <a href="#foot-fn4">
+      <sup>
+       4
+      </sup>
+     </a>
+     <a class="link-inline force-break" href="https://github.com/maslychm/gesture_augmentation">
+      https://github.com/maslychm/gesture_augmentation
+     </a>
+    </p>
+    <p id="fn5">
+     <a href="#foot-fn5">
+      <sup>
+       5
+      </sup>
+     </a>
+     Note that an individual run randomly selects 1 out of 30 samples per class across 10 participants.
+    </p>
+    <p id="fn6">
+     <a href="#foot-fn6">
+      <sup>
+       6
+      </sup>
+     </a>
+     <a class="link-inline force-break" href="https://g3.prhlt.upv.es/">
+      https://g3.prhlt.upv.es/
+     </a>
+    </p>
+    <p id="fn7">
+     <a href="#foot-fn7">
+      <sup>
+       7
+      </sup>
+     </a>
+     <a class="link-inline force-break" href="https://pop.system76.com/">
+      https://pop.system76.com/
+     </a>
+    </p>
+    <p id="fn8">
+     <a href="#foot-fn8">
+      <sup>
+       8
+      </sup>
+     </a>
+     At the time of this writing, the Windows implementation of PyTorch DataLoader did not support multiple workers for batch loading, which caused the training time graph to spike at 32 synthetic samples per class, so we switched to a linux-based OS for this experiment.
+    </p>
+    <p id="fn9">
+     <a href="#foot-fn9">
+      <sup>
+       9
+      </sup>
+     </a>
+     <a class="link-inline force-break" href="https://pytorch-lightning.readthedocs.io/en/stable/common/early_stopping.html">
+      https://pytorch-lightning.readthedocs.io/en/stable/common/early_stopping.html
+     </a>
+    </p>
+    <div class="bibStrip">
+     <p>
+      Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+      <a href="mailto:permissions@acm.org">
+       permissions@acm.org
+      </a>
+      .
+     </p>
+     <p>
+      <em>
+       CHI '23, April 23–28, 2023, Hamburg, Germany
+      </em>
+     </p>
+     <p>
+      © 2023 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+      <br/>
+      ACM ISBN 978-1-4503-9421-5/23/04…$15.00.
+      <br/>
+      DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3581358" target="_blank">
+       https://doi.org/10.1145/3544548.3581358
+      </a>
+     </p>
+    </div>
+   </section>
+  </main>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'869bd566ce40372c',t:'MTcxMTMzNzU0NS4xODgwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

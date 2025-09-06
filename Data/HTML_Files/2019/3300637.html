@@ -1,0 +1,4262 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Understanding and Mitigating Worker Biases in the Crowdsourced Collection of Subjective Judgments
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300637_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300637_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300637_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300637_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300637_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300637_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300637_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300637_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Understanding and Mitigating Worker Biases in the Crowdsourced Collection of Subjective Judgments
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Christoph
+      </span>
+      <span class="surName">
+       Hube
+      </span>
+      , L3S Research Center, Germany,
+      <a href="mailto:hube@l3s.de">
+       hube@l3s.de
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Besnik
+      </span>
+      <span class="surName">
+       Fetahu
+      </span>
+      , Leibniz University of Hannover, Germany,
+      <a href="mailto:fetahu@l3s.de">
+       fetahu@l3s.de
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Ujwal
+      </span>
+      <span class="surName">
+       Gadiraju
+      </span>
+      , Leibniz University of Hannover, Germany,
+      <a href="mailto:gadiraju@l3s.de">
+       gadiraju@l3s.de
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300637" target="_blank">
+       https://doi.org/10.1145/3290605.3300637
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Crowdsourced data acquired from tasks that comprise a subjective component (e.g. opinion detection, sentiment analysis) is potentially affected by the inherent bias of crowd workers who contribute to the tasks. This can lead to biased and noisy ground-truth data, propagating the undesirable bias and noise when used in turn to train machine learning models or evaluate systems. In this work, we aim to understand the influence of workers’ own opinions on their performance in the subjective task of bias detection. We analyze the influence of workers’ opinions on their annotations corresponding to different topics. Our findings reveal that workers with strong opinions tend to produce biased annotations. We show that such bias can be mitigated to improve the overall quality of the data collected. Experienced crowd workers also fail to distance themselves from their own opinions to provide unbiased annotations.
+      </small>
+     </p>
+    </div>
+    <div class="classifications">
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Christoph Hube, Besnik Fetahu, and Ujwal Gadiraju. 2019. Understanding and Mitigating Worker Biases in the Crowdsourced Collection of Subjective Judgments. In
+        <em>
+         CHI Conference on Human Factors in Computing Systems Proceedings (CHI 2019), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 12 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300637" target="_blank">
+         https://doi.org/10.1145/3290605.3300637
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Microtask crowdsourcing provides remarkable opportunities to acquire human input at scale for a variety of purposes [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ] including the creation of ground-truth data and the evaluation of systems. A survey of crowdsourcing tasks on Amazon's Mechanical Turk [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ] revealed that one of the most popular tasks is that of
+     <em>
+      interpretation and analysis
+     </em>
+     (IA) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ]. In many scenarios, such interpretation tasks may be prone to biases of workers. These biases are subject to various factors, such as cultural background of workers, personal opinion on a topic, ideological, or other group memberships of a person.
+    </p>
+    <p>
+     Such factors are well studied from the language point of view and the use of language to express statements on a given subject at hand [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+      38
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+      46
+     </a>
+     ]. For instance, sociolinguistic studies show
+     <em>
+      gender biases
+     </em>
+     in English language in terms of authority (e.g. how a person is addressed,
+     <em>
+      title + firstname + lastname
+     </em>
+     ) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+      38
+     </a>
+     ] or in terms of over-lexicalization [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+      46
+     </a>
+     ] (e.g.
+     <em>
+      young married woman
+     </em>
+     ). Language bias and bias in language use occurs in various contexts, e.g. journalism [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ]. Subjective language [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ] can be seen as a subproblem of language bias (e.g.
+     <em>
+      framing, opinions
+     </em>
+     etc.), which often is presented through subtle linguistic cues that carry an implicit sentiment [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+      48
+     </a>
+     ] and often are deliberately used in order to convey a specific stance towards a subject. Thus, differentiating between
+     <em>
+      neutrally
+     </em>
+     phrased and
+     <em>
+      opinionated
+     </em>
+     statements is subject to the worker's ideological memberships.
+    </p>
+    <p>
+     Studies [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ] show that the political or ideological stance of a person can influence the perception and interpretation of facts. In interpretation tasks such as distinguishing between opinions and facts, worker awareness of possible biases that may be introduced due to their personal or ideological stances is crucial in providing noise free judgments. For example, surveys
+     <a class="fn" href="#fn1" id="foot-fn1">
+      <sup>
+       1
+      </sup>
+     </a>
+     show that only 23% of the U.S population who identify politically with the Republican party believe that humans have an influence in climate change.
+    </p>
+    <p>
+     Several natural language understanding tasks that rely on crowdsourced labeling are prone to worker biases. For instance, Yano et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+      54
+     </a>
+     ] showed that in determining biased language in text corresponding to the news genre, a pivotal quality concern is the actual political stances of the workers. Here, the perceived bias of labelers was found to vary depending on their political stance. Other examples of ground-truth acquisition through crowdsourcing where workers biases may lead to subjective judgments include
+     <em>
+      opinion detection
+     </em>
+     ,
+     <em>
+      sentiment analysis
+     </em>
+     etc. In general, the ability to mitigate biased judgments from workers is crucial in reducing noisy labels and creating higher quality data. To this end, we address the following research questions:
+    </p>
+    <p>
+     <strong>
+      RQ#1:
+     </strong>
+     How does a worker's personal opinion influence their performance on tasks including a subjective component?
+    </p>
+    <p>
+     <strong>
+      RQ#2:
+     </strong>
+     How can worker bias stemming from strong personal opinions be mitigated within subjective tasks?
+    </p>
+    <p>
+     <strong>
+      RQ#3:
+     </strong>
+     How does a worker's experience influence their capability to distance themselves from their opinion?
+    </p>
+    <p>
+     Based on the aforementioned observations in prior works, that suggest an influence of personal stances in subjective labeling tasks we construct the following hypotheses:
+    </p>
+    <p>
+     <strong>
+      H#1:
+     </strong>
+     Workers are more likely to make a misclassification if such a classification is in line with their personal opinion.
+    </p>
+    <p>
+     <strong>
+      H#2:
+     </strong>
+     Experienced workers are relatively less susceptible to exhibiting bias.
+    </p>
+    <p>
+     The main contributions of our work in this paper are:
+    </p>
+    <ul class="list-no-style">
+     <li id="list1" label="•">
+      A novel measure for worker bias in subjective tasks based on misclassification rates and workers’ opinions.
+      <br/>
+     </li>
+     <li id="list2" label="•">
+      Novel techniques for mitigating systemic worker bias stemming from personal opinions.
+      <br/>
+     </li>
+     <li id="list3" label="•">
+      Revealing the impact of such systemic worker bias on aggregated ground-truth labels.
+      <br/>
+     </li>
+    </ul>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED LITERATURE
+      </h2>
+     </div>
+    </header>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Bias in Crowdsourcing Data Acquisition
+       </h3>
+      </div>
+     </header>
+     <p>
+      Recent works have explored task related factors such as complexity and clarity that can influence and arguably bias the nature of task-related outcomes [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ]. Work environments (i.e., the hardware and software affordances at the disposal of workers) have also shown to influence and bias task related outcomes such as completion time and work quality [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ]. Eickhoff studied the prevalence of cognitive biases (ambiguity effect, anchoring, bandwagon and decoy effect) as a source of noise in crowdsourced data curation, annotation and evaluation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ]. Gadiraju et al. showed that some crowd workers exhibit inflated self-assessments due to a cognitive bias [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ]. Crowdsourcing tasks are often susceptible to participation biases. This can be further exacerbated by incentive schemes [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ]. Other demographic attributes can also become a source of biased judgments. It has also been found that American and Indian workers differed in their perceptions of non-monetary benefits of participation. Indian workers valued self-improvement benefits, whereas American workers valued emotional benefits [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ]. Newell and Ruths showed that intertask effects could be a source of systematic bias in crowdsourced tasks [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ]. Other works revealed a significant impact of task order on task outcomes [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ]. Zhuang and Young [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ] explore the impact of
+      <em>
+       in-batch
+      </em>
+      annotation bias, where items in a batch influence the labelling outcome of other items within the batch.
+     </p>
+     <p>
+      These prior works have explored biases from various standpoints; task framing and design, demographic attributes, platforms for participation and so forth. In contrast, we aim to analyze and mitigate the bias in subjective labeling tasks stemming from personal opinions of workers using the example task of
+      <em>
+       bias detection
+      </em>
+      .
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Subjective Annotations through Crowdsourcing
+       </h3>
+      </div>
+     </header>
+     <p>
+      For many tasks such as detecting subjective statements in text (i.e., text pieces reflecting opinions), or biased and framing issues that are often encountered in political discourse [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ], the quality of the ground-truth is crucial.
+     </p>
+     <p>
+      Yano et al.
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      showed the impact of crowd worker biases in annotating statements (without their context) where the labels corresponded to the political biases, e.g.
+      <em>
+       very liberal
+      </em>
+      ,
+      <em>
+       very conservative
+      </em>
+      ,
+      <em>
+       no bias
+      </em>
+      , etc. Their study shows that crowd workers who identify themselves as
+      <em>
+       moderates
+      </em>
+      perceive less bias, whereas conservatives perceive more bias in both ends of the spectrum (
+      <em>
+       very liberal
+      </em>
+      and
+      <em>
+       very conservative
+      </em>
+      ). In a similar study, Iyyer et al.
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      showed the impact of the workers in annotating statements with their corresponding political ideology. In nearly 30% of the cases, it was found that workers annotate statements with the presence of a bias, however, without necessarily being clear in the political leaning (e.g. liberal or conservative). While it is difficult to understand the exact factors that influence workers in such cases, possible reasons may be their lack of domain knowledge, i.e., with respect to the stances with which different political ideologies are represented on a given topic, or it may be due to the political leanings of the workers themselves. Such aspects remain largely unexplored and given their prevalence they represent an important family of quality control concerns in ground-truth generation through crowdsourcing.
+     </p>
+     <p>
+      In this work, we take a step towards addressing these unresolved quality concerns of crowdsourcing for such subjective tasks by disentangling bias induced through strong personal opinions or stances.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Mitigation of Bias
+       </h3>
+      </div>
+     </header>
+     <p>
+      In large batches that consist of several similar tasks, Ipeirotis et al. showed that it is possible to use statistical methods and eliminate systematic bias [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ]. The authors relied on synthetic experiments to do so. In other related work, Faltings et al. propose a game theoretic incentive scheme to counter the anchoring effect bias among workers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ]. Wauthier and Jordan [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ] propose a machine learning model, which accounts for bias in a labelling task, where the labels are obtained through crowdsourcing. Here, the task is to predict labels, where consensus among the labellers is missing. Our work addresses the case where complete agreement among labellers, may still lead to a biased label. We explore various approaches to mitigate such undesirable bias, stemming from personal stances of workers.
+     </p>
+     <p>
+      Kamar et al. introduced and evaluated probabilistic models for identifying and correcting task-dependent bias [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ]. Other lines of work [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ], rightly assume different expertise among the crowdsourcing workers, and thus propose models that improve over the
+      <em>
+       majority voting
+      </em>
+      label aggregation scheme. Such approaches are suitable for cases where there is disagreement among the workers. However in subjective tasks, the presence of varying ideological backgrounds of workers means that it is possible to observe biased labels with complete agreement among the workers, rendering such models inapplicable.
+     </p>
+     <p>
+      Raykar et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ] introduce an approach for combining labels provided by multiple types of annotators (experts and novices) to obtain a final high quality label. In contrast to their work, we aim to mitigate the effects of worker bias during the annotation process directly via interventions.
+     </p>
+    </section>
+   </section>
+   <section id="sec-7">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       METHOD AND EXPERIMENTAL SETUP
+      </h2>
+     </div>
+    </header>
+    <p>
+     In our study of crowd worker bias we focus on the task of labeling biased statements, a task that has found prominence in recent times to create ground truth data and evaluate methods for
+     <em>
+      bias detection in text
+     </em>
+     ([
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+      44
+     </a>
+     ]). We chose this task as an experimental lens due to its inherent susceptibility to worker subjectivity. In this task, workers are presented with statements pertaining to controversial topics and asked to decide whether the statement is “neutral” or “opinionated”. All statements revolve around a set of specific controversial topics wherein workers can be assumed to have diverging opinions. During the course of the task, we ask workers for their own opinion on each of the topics. Given this information, we define a measure of worker bias and investigate different approaches to mitigate potential bias.
+    </p>
+    <div class="table-responsive" id="tab1">
+     <div class="table-caption">
+      <span class="table-number">
+       Table 1:
+      </span>
+      <span class="table-title">
+       The controversial topics chosen for this study together with the main statements and one example statement each from the corresponding Wikipedia articles.
+      </span>
+     </div>
+     <table class="table">
+      <thead>
+       <tr>
+        <th style="text-align:left;">
+        </th>
+        <th>
+        </th>
+        <th>
+        </th>
+       </tr>
+       <tr>
+        <th style="text-align:left;">
+         <strong>
+          Topic
+         </strong>
+        </th>
+        <th style="text-align:center;">
+         <strong>
+          Main Statement
+         </strong>
+        </th>
+        <th style="text-align:center;">
+         <strong>
+          Example Statement
+         </strong>
+        </th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr>
+        <td style="text-align:left;">
+         Abortion
+        </td>
+        <td style="text-align:center;">
+         Abortion should be legal.
+        </td>
+        <td style="text-align:center;">
+         An abortion is the murder of a human baby embryo or fetus from the uterus.
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:left;">
+         Feminism
+        </td>
+        <td style="text-align:center;">
+         Women have to fight for equal rights.
+        </td>
+        <td style="text-align:center;">
+         Feminists impose pressure on traditional women by denigrating the role of a traditional housewife.
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:left;">
+         Global Warming
+        </td>
+        <td style="text-align:center;">
+         Global warming is a real problem caused by humanity.
+        </td>
+        <td style="text-align:center;">
+         The global warming theory is perpetuated only for financial and ideological reasons.
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:left;">
+         Gun Control
+        </td>
+        <td style="text-align:center;">
+         Citizens should have free access to guns.
+        </td>
+        <td style="text-align:center;">
+         In some countries such as the United States, gun control may be legislated at either a federal level or a local state level.
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:left;">
+         LGBT Rights
+        </td>
+        <td style="text-align:center;">
+         Homosexual couples should have the same rights as heterosexual couples.
+        </td>
+        <td style="text-align:center;">
+         There are many inspiring activists who fight for gay rights.
+        </td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Statement Extraction
+       </h3>
+      </div>
+     </header>
+     <p>
+      We chose 5 controversial and widely discussed topics from US politics (Abortion, Feminism, Global Warming, Gun Control, and LGBT Rights) from Wikipedia's
+      <em>
+       List of controversial issues
+      </em>
+      <a class="fn" href="#fn2" id="foot-fn2">
+       <sup>
+        2
+       </sup>
+      </a>
+      . We chose these popular and controversial topics so that a majority of crowd workers (from USA) could arguably have some basic understanding of the topic and an opinion.
+     </p>
+     <p>
+      For each of the chosen topics we selected a main statement that reflects the central pro/contra aspect of the controversy, e.g. “Abortion should be legal”. We extracted biased statements from the English Wikipedia using the approach introduced by [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ] and [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ] for articles that cover the given topics, e.g.
+      <em>
+       LGBT rights by country or territory
+      </em>
+      for LGBT rights. The approach relies on “POV” tags in comments for Wikipedia article revisions, which are added by Wikipedia editors for statements violating the NPOV principle
+      <a class="fn" href="#fn3" id="foot-fn3">
+       <sup>
+        3
+       </sup>
+      </a>
+      . In this context Wikipedia provides an explanation of opinionated statements. By extracting statements that have been removed or modified for POV reasons, we obtained a set of biased statements for each topic. The strength of the opinionated words in a statement has been addressed in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ], but is beyond the scope of our work.
+     </p>
+     <p>
+      Authors of this paper acted as experts to validate that all statements in the final set contain explicit bias according to Wikipedia's definition. Where necessary, we modified the statements briefly to make them comprehensible out of context. We removed phrases that where irrelevant or confusing (for example, we removed the phrase “resulting or caused by its death” from the statement “An abortion is the murder of a human baby embryo or fetus from the uterus resulting or caused by its death.”) and replaced very specific words to make the statements clearer and easier to understand (for example, we replaced “misandry” with “hate against men”).
+     </p>
+     <p>
+      We split the resulting set of biased statements into pro statements that support the main statement for this topic and contra statements that oppose the main statement. Additionally, we extracted neutral statements from the latest versions of the articles. We followed the process of open coding to ensure that the statements were reliably identified as pro, contra and neutral [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ]. We iteratively coded the resulting statements as either ‘pro’, ‘contra’, or ‘neutral’ until unanimous agreement was reached on each statement, thereby forming the ground truth for our experimental tasks.
+     </p>
+    </section>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Crowdsourcing Task Design
+       </h3>
+      </div>
+     </header>
+     <p>
+      We manually selected 6 of the extracted statements for each topic; 2 pro, 2 contra, and 2 neutral statements. Our final statement set contains 30 extracted statements and 5 main statements. Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      shows the main statements and an extracted example statement for each topic.
+     </p>
+     <p>
+      Workers were asked to label each of the 30 extracted statements as either “neutral” or “opinionated”. We also provided a third option, “I don't know”, which workers were encouraged to select in case they were not sure (see Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      ).
+     </p>
+     <figure id="fig1">
+      <img alt="" class="img-responsive" longdesc="" src="3300637_files\chi2019407fig1.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        Example statement labeling task corresponding to the topic of ‘
+        <em>
+         Feminism
+        </em>
+        ’.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      We also gathered each worker's opinion corresponding to each topic from the statement group. We presented the main statement for each topic, and gathered responses from workers on a 5-point Likert scale ranging from
+      <em>
+       1: Strongly Disagree
+      </em>
+      to
+      <em>
+       5: Strongly Agree
+      </em>
+      (see Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      ).
+     </p>
+     <figure id="fig2">
+      <img alt="" class="img-responsive" longdesc="" src="3300637_files\chi2019407fig2.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        Example main statement to gather workers stances on the topic of ‘
+        <em>
+         Gun Control
+        </em>
+        ’.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Study Design
+       </h3>
+      </div>
+     </header>
+     <p>
+      In our study we analyze worker behavior under different conditions with the goal of mitigating worker bias. We consider the following variations.
+     </p>
+     <p>
+      <strong>
+       Standard Bias Labeling Task (Baseline)
+      </strong>
+      . In this condition, we consider the standard bias labeling task as introduced in Section
+      <a class="sec" href="#sec-9">
+       3
+      </a>
+      , without an explicit method or attempt for bias mitigation. Although it is now common practice to deploy crowdsourcing jobs with quality control mechanisms embedded in them [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ], it is still uncommon to control for biases stemming from worker opinions. Thus, we consider the more typical setting which is devoid of any form of bias control as a baseline condition for further comparisons.
+     </p>
+     <p>
+      <strong>
+       Social Projection (SoPro)
+      </strong>
+      .
+     </p>
+     <p>
+      Two popular methods to induce honest reporting in the absence of a ground-truth are the Bayesian truth serum method (BTS) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ] and the peer-prediction method [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ]. In a related study, Shaw et al. found that when workers think about the responses that other workers give then they work more objectively [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ]. We draw inspiration from such truth-inducing methods as well as from the theory of social projection [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ] and aim to analyze the effect of social projection on mitigating biases stemming from worker opinions. In this condition workers are asked to label statements according to how they believe the majority of other workers would label them. We modified the task title and descriptions to adequately describe this condition. Apart from these minor changes, the task was identical to the baseline condition.
+     </p>
+     <p>
+      <strong>
+       Awareness Reminder (AwaRe)
+      </strong>
+      . Recent work has reflected on the importance of creating an awareness of existing biases in order to alleviate the biases [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ]. We aim to analyze the impact of creating an awareness of biases stemming from personal opinions among workers, on their capability of being objective. In this condition we encouraged workers to reflect on the controversial nature of the topics in the task, and the potential bias that could be induced by their personal opinions on their judgments. We explore whether workers who are explicitly made aware of the subjective component in the task, go on to be more careful while making judgments.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="" src="3300637_files\chi2019407fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Message snippets serve as reminders to create awareness of potential biases in the
+        <em>
+         AwaRe
+        </em>
+        condition.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      We appended a message in the task description to create awareness among workers and presented 6 reminders at random intervals within the task bearing the identical message. To ensure that workers read or acknowledge the reminders, we created an interaction where workers were asked to type “YES” if they understood what was expected of them and “NO” otherwise. Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      depicts the message snippet that serves as a reminder.
+     </p>
+     <p>
+      <strong>
+       Personalized Nudges (PerNu)
+      </strong>
+      .
+     </p>
+     <p>
+      Similar to the
+      <em>
+       AwaRe
+      </em>
+      condition, here we investigate whether workers can deliberately influence the results of the task by distancing themselves from their personal opinions. In this condition, we first gather responses from workers on the main statements pertaining to each of the topics as shown in Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      . Using this knowledge of worker stances on a given topic (gathered on a 5-point Likert scale), we present personalized instructions to workers alongside each statement that is to be labeled. For example, if a worker strongly agrees with a main statement that ‘
+      <em>
+       Citizens should have free access to guns
+      </em>
+      ’, then the worker receives a personalized instruction drawing attention to his potential bias while judging all statements related to ‘
+      <em>
+       Gun Control
+      </em>
+      ’, as shown in the Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      . Note that the personalized instructions are phrased according to the degree of agreement or disagreement of the workers with the main statement.
+     </p>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="" src="3300637_files\chi2019407fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Example personalized instruction to workers who strongly agree that citizen should have free access to guns, on statements related to ‘
+        <em>
+         Gun Control
+        </em>
+        ’ in
+        <em>
+         PerNu
+        </em>
+        condition.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Experimental Setup
+       </h3>
+      </div>
+     </header>
+     <p>
+      For each task variation we deployed a job on FigureEight
+      <a class="fn" href="#fn4" id="foot-fn4">
+       <sup>
+        4
+       </sup>
+      </a>
+      , a primary crowdsourcing platform, and acquired responses from 120 workers. Each crowdsourcing job contained a task description including a brief explanation of “neutral” and “opinionated” statements. We also provided some labeling examples for both classes. To ensure reliability of responses, we restricted participation of workers on the platform to Level 1 or above (2, 3). FigureEight workers are awarded level badges based on their accuracy across several test questions across hundreds of tasks of different types. Level 3 workers are the workers of the highest quality, followed by Level 2 and Level 1. In a multiple choice question, workers were asked to provide their FigureEight contributor level (1, 2 or 3). We also included two attention check questions to filter out inattentive workers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ]. All job units (statements to label, main statements for opinion, attention checks, and contributor level question) appear in a random order to control for ordering effects. Workers who participated in one condition were not allowed to complete tasks in any other condition to avoid potential learning effects. Workers were allowed to submit their responses only after completing the full set of units. Since the chosen topics focus on USA politics, we restricted participation on the platform to workers from the USA to avoid effects of domain knowledge. We compensated each worker at a fixed hourly rate of 7.5 USD based on our estimates of task completion time.
+     </p>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Measuring Worker Bias
+       </h3>
+      </div>
+     </header>
+     <p>
+      For each topic, we split workers into the 5 worker categories:
+      <em>
+       strong opposer
+      </em>
+      ,
+      <em>
+       opposer
+      </em>
+      ,
+      <em>
+       undecided
+      </em>
+      ,
+      <em>
+       supporter
+      </em>
+      ,
+      <em>
+       strong supporter
+      </em>
+      .
+     </p>
+     <p>
+      This categorization is based on the worker opinions of the main statement corresponding to a topic (gathered on a 5-point Likert scale), with
+      <em>
+       strong opposer
+      </em>
+      referring to ‘Strongly Disagree’ and
+      <em>
+       strong supporter
+      </em>
+      to ‘Strongly Agree’. We refer to the workers of the category
+      <em>
+       strong opposer
+      </em>
+      as
+      <em>
+       strong opposers
+      </em>
+      , and likewise for the other categories.
+     </p>
+     <p>
+      To measure worker bias, we focus on the misclassifications, i.e. the worker labels that do not coincide with the given ground-truth classes. We argue that incorrectly labeled statements can serve as indicators of worker bias. Given our task design, there are three different forms of misclassifications:
+     </p>
+     <ul class="list-no-style">
+      <li id="list4" label="•">
+       A pro-statement labeled as neutral (
+       <em>
+        pro → neut
+       </em>
+       ).
+       <br/>
+      </li>
+      <li id="list5" label="•">
+       A contra-statement labeled as neutral (
+       <em>
+        con → neut
+       </em>
+       ).
+       <br/>
+      </li>
+      <li id="list6" label="•">
+       A neutral statement labeled as opinionated (
+       <em>
+        neut → op
+       </em>
+       ).
+       <br/>
+      </li>
+     </ul>
+     <p>
+      We first compute the misclassification rates for all types of misclassifications and all worker categories. The misclassification rate for a specific misclassification type is defined as the fraction of the number of misclassifications for a statement type (”pro”, ”contra”, or ”neutral”) and the number of all judgments for statements of the same type. To assure that the bias measure is robust across different task variations, we normalize the misclassification rates for each worker category by computing the z-scores of each value.
+     </p>
+     <p>
+      According to hypothesis
+      <strong>
+       H#1
+      </strong>
+      , due to the bias stemming from a worker's personal opinions a (strong) supporter of topic
+      <tt>
+       t
+      </tt>
+      is more likely to label a pro statement of topic
+      <tt>
+       t
+      </tt>
+      as neutral, while a (strong) opposer of topic
+      <tt>
+       t
+      </tt>
+      is more likely to label a contra statement of topic
+      <tt>
+       t
+      </tt>
+      as neutral.
+     </p>
+     <p>
+      If hypothesis
+      <strong>
+       H#1
+      </strong>
+      holds, then (strong) supporters should be more likely to misclassify pro statements as being neutral compared to contra statements, i.e. the
+      <em>
+       pro → neut
+      </em>
+      misclassification rate should be comparatively higher than the
+      <em>
+       con → neut
+      </em>
+      misclassification rate. For (strong) opposers we should observe an opposing trend, where the
+      <em>
+       con → neut
+      </em>
+      misclassification rate should be higher than the
+      <em>
+       pro → neut
+      </em>
+      misclassification rate.
+     </p>
+     <p>
+      To test
+      <strong>
+       H#1
+      </strong>
+      , we define bias for a worker category as the difference between the normalized
+      <em>
+       pro → neut
+      </em>
+      and the normalized
+      <em>
+       con → neut
+      </em>
+      values for this category. The following equation presents our measure for computing worker bias:
+     </p>
+     <div class="table-responsive" id="eq1">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} \begin{split} bias_{w_x} = \frac{\Big (m_{pro}(w_x) - \frac{\sum _{w_{i} \in w} m_{pro}(w_i)}{|w|}\Big)}{\sigma } \\ - \frac{\Big (m_{con}(w_x) - \frac{\sum _{w_{i} \in w} m_{con}(w_i)}{|w|}\Big)}{\sigma } \\ = zscore(m_{pro}(w_x)) - zscore(m_{con}(w_x)) \end{split} \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (mid1)
+       </span>
+      </div>
+     </div>
+     <p>
+      \eqno1
+     </p>
+     <div class="table-responsive">
+      <div class="display-equation">
+       <img alt="" class="img-responsive" src="3300637_files\chi2019407display2.svg"/>
+       <br/>
+      </div>
+     </div>
+     where
+     <em>
+      m
+      <sub>
+       pro
+      </sub>
+     </em>
+     (
+     <em>
+      w
+      <sub>
+       x
+      </sub>
+     </em>
+     ) is the
+     <em>
+      pro → neut
+     </em>
+     misclassification rate,
+     <em>
+      m
+      <sub>
+       con
+      </sub>
+     </em>
+     (
+     <em>
+      w
+      <sub>
+       x
+      </sub>
+     </em>
+     ) is the
+     <em>
+      con → neut
+     </em>
+     misclassification rate for worker category
+     <em>
+      w
+      <sub>
+       x
+      </sub>
+     </em>
+     , and
+     <em>
+      w
+     </em>
+     is the set of worker categories.
+     <p>
+     </p>
+     <p>
+      Relatively high positive values show that workers are more likely to regard a
+      <em>
+       pro
+      </em>
+      statement as neutral compared to a contra statement and therefore indicate pro bias. At the same time, relatively low negative values show that workers are more likely to regard a
+      <em>
+       contra
+      </em>
+      statement as neutral compared to a pro statement and therefore indicate contra bias. If
+      <strong>
+       H#1
+      </strong>
+      holds, we should observe a tendency towards pro bias for (strong) supporters and a tendency towards contra bias for (strong) opposers.
+     </p>
+     <p>
+      Note that a high misclassification rate alone does not necessarily indicate worker bias. It is possible that workers of a specific category generally perform badly in labeling opinionated statements. We therefore consider the misclassification rates for both
+      <em>
+       pro → neut
+      </em>
+      and
+      <em>
+       con → neut
+      </em>
+      . The
+      <em>
+       neut → op
+      </em>
+      misclassification rate has no direct relation to worker bias since we cannot attribute a pro or contra bias to it.
+     </p>
+    </section>
+   </section>
+   <section id="sec-13">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       RESULTS AND ANALYSIS
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this section, we present the results of our study. We analyze and compare worker performance and bias in the 4 different variations described earlier.
+    </p>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Worker Categories
+       </h3>
+      </div>
+     </header>
+     <p>
+      For each condition, we first filtered out workers who did not pass at least one of the two attention check questions. In case of the
+      <em>
+       AwaRe
+      </em>
+      condition, we additionally filtered out workers who did not enter ‘YES’ in response to all the reminder snippets. This leaves us with 102 workers in the
+      <em>
+       Baseline
+      </em>
+      condition, 106 workers in the
+      <em>
+       SoPro
+      </em>
+      , 93 workers in the
+      <em>
+       AwaRe
+      </em>
+      , and 72 workers in the
+      <em>
+       PerNu
+      </em>
+      condition.
+     </p>
+     <p>
+      Worker distributions across categories for each condition and each topic are provided in the appendix (Figure
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      ).
+     </p>
+    </section>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Worker Performance
+       </h3>
+      </div>
+     </header>
+     <p>
+      Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      shows the overall results for each condition. On average, workers perform well across all conditions with average misclassification rates of 0.20 (
+      <em>
+       Baseline
+      </em>
+      ), 0.18 (
+      <em>
+       SoPro
+      </em>
+      ), 0.15 (
+      <em>
+       AwaRe
+      </em>
+      ), and 0.23 (
+      <em>
+       PerNu
+      </em>
+      ). We found a significant difference in worker performance between the conditions;
+      <em>
+       p = 2.3e-12, F(3, 10709)=19.13
+      </em>
+      using a one-way ANOVA. Post-hoc Tukey-HSD test revealed a sig. diff. between Baseline and AwaRe
+      <em>
+       (p = 0.001)
+      </em>
+      with a small effect size (Hedge's
+      <em>
+       g = 0.12
+      </em>
+      ).
+     </p>
+     <p>
+      We measure inter-worker agreement using Fleiss’ Kappa and Krippendorff's
+      <em>
+       α
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ]. For both measures, the agreement values of all the other conditions are higher compared to the
+      <em>
+       Baseline
+      </em>
+      with the highest agreement observed in the
+      <em>
+       AwaRe
+      </em>
+      condition using Fleiss’ Kappa and the
+      <em>
+       SoPro
+      </em>
+      condition according to Krippendorff's
+      <em>
+       α
+      </em>
+      . The generally low to moderate inter-worker agreement is consistent with expected agreement in similar tasks [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ].
+     </p>
+     <div class="table-responsive" id="tab2">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 2:
+       </span>
+       <span class="table-title">
+        Worker performance, agreement, and average task completion time (TCT) across all conditions.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;">
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:left;">
+         </th>
+         <th style="text-align:right;">
+          <strong>
+           Baseline
+          </strong>
+         </th>
+         <th style="text-align:right;">
+          <strong>
+           SoPro
+          </strong>
+         </th>
+         <th style="text-align:right;">
+          <strong>
+           AwaRe
+          </strong>
+         </th>
+         <th style="text-align:right;">
+          <strong>
+           PerNu
+          </strong>
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\#$
+           </span>
+          </span>
+          workers
+         </td>
+         <td style="text-align:right;">
+          102
+         </td>
+         <td style="text-align:right;">
+          106
+         </td>
+         <td style="text-align:right;">
+          93
+         </td>
+         <td style="text-align:right;">
+          72
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\#$
+           </span>
+          </span>
+          judgments
+         </td>
+         <td style="text-align:right;">
+          3060
+         </td>
+         <td style="text-align:right;">
+          3180
+         </td>
+         <td style="text-align:right;">
+          2790
+         </td>
+         <td style="text-align:right;">
+          2160
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\#$
+           </span>
+          </span>
+          misclassifications
+         </td>
+         <td style="text-align:right;">
+          618
+         </td>
+         <td style="text-align:right;">
+          565
+         </td>
+         <td style="text-align:right;">
+          424
+         </td>
+         <td style="text-align:right;">
+          502
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          Misclassification Rate
+         </td>
+         <td style="text-align:right;">
+          0.20
+         </td>
+         <td style="text-align:right;">
+          0.18
+         </td>
+         <td style="text-align:right;">
+          0.15
+         </td>
+         <td style="text-align:right;">
+          0.23
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          Fleiss’ Kappa
+         </td>
+         <td style="text-align:right;">
+          0.33
+         </td>
+         <td style="text-align:right;">
+          0.43
+         </td>
+         <td style="text-align:right;">
+          0.49
+         </td>
+         <td style="text-align:right;">
+          0.33
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          Krippendorff's
+          <em>
+           α
+          </em>
+         </td>
+         <td style="text-align:right;">
+          0.34
+         </td>
+         <td style="text-align:right;">
+          0.44
+         </td>
+         <td style="text-align:right;">
+          0.38
+         </td>
+         <td style="text-align:right;">
+          0.33
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          TCT (in mins)
+         </td>
+         <td style="text-align:right;">
+          7.00
+         </td>
+         <td style="text-align:right;">
+          7.37
+         </td>
+         <td style="text-align:right;">
+          9.13
+         </td>
+         <td style="text-align:right;">
+          8.88
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      The average task completion time (TCT) for workers in the
+      <em>
+       Baseline
+      </em>
+      and
+      <em>
+       SoPro
+      </em>
+      is ~7 mins. In case of the
+      <em>
+       AwaRe
+      </em>
+      and the
+      <em>
+       PerNu
+      </em>
+      condition we observe higher task completion times of ~9 mins, which can partly be attributed to the additional information snippets that we confront workers with in both conditions. A one-way ANOVA showed a significant difference in TCT across interventions;
+      <em>
+       p = 0.012
+      </em>
+      ,
+      <em>
+       F(3,356)=3.73
+      </em>
+      . Post-hoc Tukey-HSD test revealed a significant difference between TCT w.r.t.
+      <em>
+       Baseline
+      </em>
+      and
+      <em>
+       AwaRe
+      </em>
+      (
+      <em>
+       p = 0.025
+      </em>
+      ) with a medium effect size (Hedge's
+      <em>
+       g = 0.44
+      </em>
+      ).
+     </p>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="" src="3300637_files\chi2019407fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        Misclassification rates for all conditions, worker categories: ssup =
+        <em>
+         strong supporters
+        </em>
+        , sup =
+        <em>
+         supporters
+        </em>
+        , und =
+        <em>
+         undecided
+        </em>
+        , opp =
+        <em>
+         opposers
+        </em>
+        , sopp =
+        <em>
+         strong opposers
+        </em>
+        . Misclassification types: pro as neutral, neutral as opinionated, contra as neutral.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      illustrates the misclassification rates per worker category for each misclassification type and each condition. We refer to the different types of misclassifications as introduced in Section
+      <a class="sec" href="#sec-12">
+       3
+      </a>
+      . Workers selected the ”I don't know” option in only 2.8% of cases. We did not consider these to be misclassifications. Using Welch's T-test, we found that workers in all categories and across all conditions label a pro statement as being neutral significantly more often than they label a contra statement as neutral;
+      <em>
+       t
+      </em>
+      (1424) = 18.781,
+      <em>
+       p
+      </em>
+      &lt; .001. We also found a large effect size; Hedge's
+      <em>
+       g
+      </em>
+      = 0.70.
+     </p>
+     <p>
+      The rate of neutral statements being misclassified as opinionated appears to be consistent among different worker categories in the
+      <em>
+       Baseline
+      </em>
+      condition. In the
+      <em>
+       SoPro
+      </em>
+      and
+      <em>
+       PerNu
+      </em>
+      conditions (strong) supporters exhibit a lower misclassification rate for (
+      <em>
+       neut → op
+      </em>
+      ), while in the
+      <em>
+       AwaRe
+      </em>
+      condition (strong) opposers exhibit a lower misclassification rate. Across all conditions we did not find correlation between worker categories and the accuracy of judging neutral statements.
+     </p>
+    </section>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Worker Bias
+       </h3>
+      </div>
+     </header>
+     <div class="table-responsive" id="tab3">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 3:
+       </span>
+       <span class="table-title">
+        Normalized misclassification rates (z-score) and worker bias for all worker categories and all conditions. For the bias column, positive values indicate pro bias, negative values indicate contra bias. Total bias is the sum of the absolute bias values. The introduced mitigation approaches achieve lower (total) bias values compared to the baseline.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;">
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:center;">
+         </th>
+         <th colspan="3" style="text-align:center;">
+          <strong>
+           Baseline
+          </strong>
+          <hr/>
+         </th>
+         <th colspan="3" style="text-align:center;">
+          <strong>
+           SoPro
+          </strong>
+          <hr/>
+         </th>
+         <th colspan="3" style="text-align:center;">
+          <strong>
+           AwaRe
+          </strong>
+          <hr/>
+         </th>
+         <th colspan="3" style="text-align:center;">
+          <strong>
+           PerNu
+          </strong>
+          <hr/>
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:center;">
+         </th>
+         <th style="text-align:center;">
+          pro → neut
+         </th>
+         <th style="text-align:center;">
+          con → neut
+         </th>
+         <th style="text-align:center;">
+          bias
+         </th>
+         <th style="text-align:center;">
+          pro → neut
+         </th>
+         <th style="text-align:center;">
+          con → neut
+         </th>
+         <th style="text-align:center;">
+          bias
+         </th>
+         <th style="text-align:center;">
+          pro → neut
+         </th>
+         <th style="text-align:center;">
+          con → neut
+         </th>
+         <th style="text-align:center;">
+          bias
+         </th>
+         <th style="text-align:center;">
+          pro → neut
+         </th>
+         <th style="text-align:center;">
+          con → neut
+         </th>
+         <th style="text-align:center;">
+          bias
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           strong supporter
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          1.26
+         </td>
+         <td style="text-align:center;">
+          -1.36
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2.62
+         </td>
+         <td style="text-align:center;">
+          -0.01
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -1.08
+         </td>
+         <td style="text-align:center;">
+          1.07
+         </td>
+         <td style="text-align:center;">
+          -1.72
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -1.20
+         </td>
+         <td style="text-align:center;">
+          -0.52
+         </td>
+         <td style="text-align:center;">
+          1.16
+         </td>
+         <td style="text-align:center;">
+          -0.64
+         </td>
+         <td>
+          1.80
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           supporter
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          -1.00
+         </td>
+         <td style="text-align:center;">
+          -0.08
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -0.93
+         </td>
+         <td style="text-align:center;">
+          -0.30
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -0.79
+         </td>
+         <td style="text-align:center;">
+          0.49
+         </td>
+         <td style="text-align:center;">
+          0.21
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -0.50
+         </td>
+         <td style="text-align:center;">
+          0.71
+         </td>
+         <td style="text-align:center;">
+          0.13
+         </td>
+         <td style="text-align:center;">
+          -0.40
+         </td>
+         <td>
+          0.53
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           undecided
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          1.13
+         </td>
+         <td style="text-align:center;">
+          -0.18
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.30
+         </td>
+         <td style="text-align:center;">
+          -1.21
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.98
+         </td>
+         <td style="text-align:center;">
+          -2.19
+         </td>
+         <td style="text-align:center;">
+          1.23
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.40
+         </td>
+         <td style="text-align:center;">
+          -1.17
+         </td>
+         <td style="text-align:center;">
+          0.64
+         </td>
+         <td style="text-align:center;">
+          1.90
+         </td>
+         <td>
+          -1.26
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           opposer
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          -0.39
+         </td>
+         <td style="text-align:center;">
+          -0.15
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -0.25
+         </td>
+         <td style="text-align:center;">
+          -0.32
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -0.53
+         </td>
+         <td style="text-align:center;">
+          0.20
+         </td>
+         <td style="text-align:center;">
+          0.63
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -0.67
+         </td>
+         <td style="text-align:center;">
+          1.29
+         </td>
+         <td style="text-align:center;">
+          -0.15
+         </td>
+         <td style="text-align:center;">
+          0.05
+         </td>
+         <td>
+          -0.20
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           strong opposer
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          -0.99
+         </td>
+         <td style="text-align:center;">
+          1.76
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -2.75
+         </td>
+         <td style="text-align:center;">
+          1.83
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1.41
+         </td>
+         <td style="text-align:center;">
+          0.42
+         </td>
+         <td style="text-align:center;">
+          -0.34
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.96
+         </td>
+         <td style="text-align:center;">
+          -1.31
+         </td>
+         <td style="text-align:center;">
+          -1.79
+         </td>
+         <td style="text-align:center;">
+          -0.91
+         </td>
+         <td>
+          -0.88
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           total bias
+          </strong>
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          7.85
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          4.37
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+          4.00
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td style="text-align:center;">
+         </td>
+         <td>
+          4.47
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      We measure worker bias as the difference between the normalized misclassification rates for pro and contra statements. The normalized misclassification rates and the resulting bias for all worker categories are presented in Table
+      <a class="tbl" href="#tab3">
+       3
+      </a>
+      . High positive values indicate pro bias and low negative values indicate contra bias. A bias value close to 0 indicates that the group of workers is not biased to either the pro or contra side. For the sake of convenience while making comparisons across conditions, we use the notion of
+      <em>
+       total bias
+      </em>
+      , which is the sum of the absolute bias values in each condition.
+     </p>
+     <div class="table-responsive" id="tab4">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 4:
+       </span>
+       <span class="table-title">
+        Misclassification rates for random worker samples across worker categories.
+        <em>
+         <em>
+          all
+         </em>
+        </em>
+        = all workers,
+        <em>
+         <em>
+          strong
+         </em>
+        </em>
+        = strong supporters/strong opposers,
+        <span class="inline-equation">
+         <span class="tex">
+          $\overline{strong}$
+         </span>
+        </span>
+        = without strong supporters/strong opposers. Sample sizes N = 3, 5. Lowest misclassification rates are highlighted for each condition. Including only workers with a
+        <em>
+         <em>
+          strong
+         </em>
+        </em>
+        opinion leads to higher misclassification rates.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;">
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:left;">
+         </th>
+         <th style="text-align:center;">
+         </th>
+         <th colspan="2" style="text-align:center;">
+          <strong>
+           Baseline
+          </strong>
+          <hr/>
+         </th>
+         <th colspan="2" style="text-align:center;">
+          <strong>
+           SoPro
+          </strong>
+          <hr/>
+         </th>
+         <th colspan="2" style="text-align:center;">
+          <strong>
+           AwaRe
+          </strong>
+          <hr/>
+         </th>
+         <th colspan="2" style="text-align:center;">
+          <strong>
+           PerNu
+          </strong>
+          <hr/>
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:left;">
+         </th>
+         <th style="text-align:center;">
+         </th>
+         <th style="text-align:center;">
+          pro → neut
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          con → neut
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          pro → neut
+         </th>
+         <th style="text-align:center;">
+          con → neut
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          pro → neut
+         </th>
+         <th style="text-align:center;">
+          con → neut
+         </th>
+         <th style="text-align:center;">
+          pro → neut
+         </th>
+         <th>
+          con → neut
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;">
+          <strong>
+           N=3
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            all
+           </em>
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          0.272
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.042
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.255
+         </td>
+         <td style="text-align:center;">
+          0.033
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           0.223
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          0.018
+         </td>
+         <td style="text-align:center;">
+          0.349
+         </td>
+         <td>
+          <strong>
+           0.114
+          </strong>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            strong
+           </em>
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          0.353
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.141
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.267
+         </td>
+         <td style="text-align:center;">
+          0.060
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.236
+         </td>
+         <td style="text-align:center;">
+          0.035
+         </td>
+         <td style="text-align:center;">
+          0.420
+         </td>
+         <td>
+          0.0348
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\overline{strong}$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           0.267
+          </strong>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           0.037
+          </strong>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           0.249
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           0.028
+          </strong>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.251
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           0.015
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           0.329
+          </strong>
+         </td>
+         <td>
+          0.115
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+          <strong>
+           N=5
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            all
+           </em>
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          0.242
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.017
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           0.224
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          0.011
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           0.192
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          0.005
+         </td>
+         <td style="text-align:center;">
+          0.329
+         </td>
+         <td>
+          0.068
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           <em>
+            strong
+           </em>
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          0.326
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.121
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.228
+         </td>
+         <td style="text-align:center;">
+          0.015
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.210
+         </td>
+         <td style="text-align:center;">
+          0.016
+         </td>
+         <td style="text-align:center;">
+          0.405
+         </td>
+         <td>
+          <strong>
+           0.023
+          </strong>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;">
+         </td>
+         <td style="text-align:center;">
+          <span class="inline-equation">
+           <span class="tex">
+            $\overline{strong}$
+           </span>
+          </span>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           0.237
+          </strong>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           0.014
+          </strong>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           0.224
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           0.009
+          </strong>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.230
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           0.003
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           0.308
+          </strong>
+         </td>
+         <td>
+          0.069
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      First, we will focus on the
+      <em>
+       Baseline
+      </em>
+      condition to analyze results in the absence of a bias mitigation approach. We found that the misclassification rates for pro statements are similarly high for all worker categories, with the largest rate for
+      <em>
+       strong supporters
+      </em>
+      (1.26). In case of contra statements we found a larger gap between
+      <em>
+       strong supporters
+      </em>
+      (-1.36) and
+      <em>
+       strong opposers
+      </em>
+      (1.76), meaning that
+      <em>
+       strong opposers
+      </em>
+      are significantly more likely to misclassify a contra statement as neutral compared to
+      <em>
+       strong supporters
+      </em>
+      . We conducted a one-way ANOVA to investigate the effect of the worker category on the
+      <em>
+       con → neut
+      </em>
+      misclassification rate. We found a significant difference between the 5 worker categories at the
+      <em>
+       p
+      </em>
+      &lt; 0.05 level;
+      <em>
+       F
+      </em>
+      (4, 509) = 2.85. Post-hoc comparisons using the Tukey-HSD test revealed a significant difference between
+      <em>
+       strong supporters
+      </em>
+      and
+      <em>
+       strong opposers
+      </em>
+      at the
+      <em>
+       p
+      </em>
+      &lt; 0.05 level with a medium effect size; Hedge's
+      <em>
+       g = 0.54
+      </em>
+      .
+     </p>
+     <p>
+      The bias measure shows that strong supporters exhibit pro bias (2.62) and strong opposers exhibit contra bias (-2.75). We do not observe this in case of the other worker categories.
+     </p>
+    </section>
+    <section id="sec-17">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Bias Mitigation
+       </h3>
+      </div>
+     </header>
+     <p>
+      As depicted in Table
+      <a class="tbl" href="#tab3">
+       3
+      </a>
+      , we see that the total bias for all three mitigation approaches is reduced compared to
+      <em>
+       Baseline
+      </em>
+      with
+      <em>
+       AwaRe
+      </em>
+      achieving the lowest score. A one-way ANOVA revealed a significant effect of our interventions on the total bias meaure;
+      <em>
+       p
+      </em>
+      = 0.0002,
+      <em>
+       F
+      </em>
+      (3, 1784) = 6.57. Post-hoc Tukey-HSD test revealed a significant difference between
+      <em>
+       Baseline
+      </em>
+      and
+      <em>
+       AwaRe
+      </em>
+      (
+      <em>
+       p =0.036
+      </em>
+      ) with a small effect size (Hedge's
+      <em>
+       g = 0.19
+      </em>
+      ), significant difference between
+      <em>
+       AwaRe
+      </em>
+      and
+      <em>
+       PerNu
+      </em>
+      (p = 0.001) with a slightly larger effect size (Hedge's g = 0.30), and significant difference between
+      <em>
+       SoPro
+      </em>
+      and
+      <em>
+       PerNu
+      </em>
+      (
+      <em>
+       p = 0.022
+      </em>
+      ) with a small effect size (Hedge's
+      <em>
+       g = 0.19
+      </em>
+      ).
+     </p>
+     <p>
+      Using
+      <em>
+       Wilcoxon signed-rank
+      </em>
+      tests we found that in the case of
+      <em>
+       con
+      </em>
+      →
+      <em>
+       neut
+      </em>
+      ,
+      <em>
+       AwaRe
+      </em>
+      performs significantly better against
+      <em>
+       Baseline
+      </em>
+      (
+      <em>
+       p
+      </em>
+      &lt; .05, effect size: Hedge's
+      <em>
+       g=0.24
+      </em>
+      ) and
+      <em>
+       PerNu
+      </em>
+      (
+      <em>
+       p
+      </em>
+      &lt; .01, effect size: Hedge's
+      <em>
+       g=0.72
+      </em>
+      ). In the case of
+      <em>
+       pro
+      </em>
+      →
+      <em>
+       neut
+      </em>
+      the misclassification rates do not show any significant difference, apart from
+      <em>
+       AwaRe
+      </em>
+      being significantly better than
+      <em>
+       PerNu
+      </em>
+      (
+      <em>
+       p
+      </em>
+      &lt; .01, effect size: Hedge's
+      <em>
+       g=0.45
+      </em>
+      ). To control for Type-I error inflation in our multiple comparisons, we used the Holm-Bonferroni correction for family-wise error rate (FWER) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ], at the significance Level of
+      <em>
+       α
+      </em>
+      &lt; .05.
+     </p>
+     <p>
+      <strong>
+       SoPro
+      </strong>
+      In this condition we found that the normalized
+      <em>
+       pro → neut
+      </em>
+      misclassification rate for
+      <em>
+       strong supporters
+      </em>
+      drops to -0.01 leading to a decrease in bias compared to the
+      <em>
+       Baseline
+      </em>
+      . Additionally, we found that the
+      <em>
+       pro → neut
+      </em>
+      misclassification rate increases to 1.83 for
+      <em>
+       strong opposers
+      </em>
+      , leading to a drop in bias for
+      <em>
+       strong opposers
+      </em>
+      (0.42). This
+      <em>
+       sopp
+      </em>
+      bias value is closest to 0 for all conditions. Interestingly, we observe a change in bias for the undecided worker category from 1.30 to -2.19.
+     </p>
+     <p>
+      <strong>
+       AwaRe
+      </strong>
+      For this condition, we found that the
+      <em>
+       pro → neut
+      </em>
+      misclassification rate for strong supporters drops further to -1.72 when compared to the
+      <em>
+       Baseline
+      </em>
+      and
+      <em>
+       SoPro
+      </em>
+      conditions. This leads to a small bias that is closer to 0 when compared to the other conditions. For strong opposers we see a bias drop compared to the
+      <em>
+       Baseline
+      </em>
+      , from -2.75 to -1.31. The consequent total bias in the
+      <em>
+       AwaRe
+      </em>
+      condition was found to be the lowest across all conditions.
+     </p>
+     <p>
+      <strong>
+       PerNu
+      </strong>
+      In this case we note that we obtain the highest total bias score amongst our proposed approaches. We still see a non-significant drop in bias for both
+      <em>
+       strong supporters
+      </em>
+      and
+      <em>
+       strong opposers
+      </em>
+      compared to the
+      <em>
+       Baseline
+      </em>
+      .
+     </p>
+    </section>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Impact of Worker Categories on Resulting Quality
+       </h3>
+      </div>
+     </header>
+     <p>
+      An important element in the creation of high-quality ground-truth using crowdsourcing is a diversity of opinion that can manifest from acquiring multiple independent judgments from workers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ]. One of the simplest methods used for aggregating multiple judgments in crowdsourced tasks is majority voting [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ]. In the absence of gold-standard data, and especially for subjective tasks, majority voting or a variation of the algorithm is arguably a popular aggregation technique. Thus, to analyze the potential impact of worker categories on the resulting quality of aggregated judgments, we consider majority voting.
+     </p>
+     <p>
+      Consider a typical microtask crowdsourcing platform; task completion is generally driven by a self-selection process where workers pick and complete tasks they wish to [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ]. Various factors ranging from worker motivation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ] to marketplace dynamics such as task availability [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ], dictate which workers end up self-selecting and completing a given task from the available group of workers at any given point in time. Based on our findings pertaining to worker categories, we know that strong supporters and strong opposers correspond to the most systemic bias (see
+      <em>
+       Baseline
+      </em>
+      condition in Table
+      <a class="tbl" href="#tab3">
+       3
+      </a>
+      ). To measure the impact of workers from different categories on the average quality of aggregated judgments, we carry out simulations consisting of randomly selected workers from all categories. To this end, considering all worker categories, we ran 10,000 simulations of acquiring judgments from randomly teamed worker combinations with
+      <em>
+       N=3
+      </em>
+      and
+      <em>
+       N=5
+      </em>
+      for each of the 30 statements. Requesters often use 3 or 5 workers to gather redundant judgments and ensure quality. This is also recommended practice on FigureEight. Thus, this setting replicates standard crowdsourcing task configurations of obtaining multiple judgments from workers and assigning a label after aggregation.
+     </p>
+     <p>
+      To investigate the impact of strong supporters and strong opposers on the resulting quality, we consider three grouping strategies. ‘
+      <em>
+       all
+      </em>
+      ’ considers the set of all workers (here N=3 or N=5 workers are picked at random from the entire pool of all workers), ‘
+      <em>
+       strong
+      </em>
+      ’ is the set of workers who exhibited a strong bias; strong supporters for
+      <em>
+       pro → neut
+      </em>
+      and strong opposers for
+      <em>
+       con → neut
+      </em>
+      (here N=3 or N=5 workers are picked at random from the subset of strong supporters and strong opposers), and ‘
+      <span class="inline-equation">
+       <span class="tex">
+        $\overline{strong}$
+       </span>
+      </span>
+      ’ is the set of workers present in
+      <em>
+       all
+      </em>
+      after filtering out all workers from the
+      <em>
+       strong
+      </em>
+      subset. Table
+      <a class="tbl" href="#tab4">
+       4
+      </a>
+      presents the average
+      <em>
+       pro → neut
+      </em>
+      and
+      <em>
+       con → neut
+      </em>
+      misclassification rates for worker groups across the 10,000 runs in each of the conditions.
+     </p>
+     <p>
+      When randomly selecting worker samples from the full set of workers (
+      <em>
+       all
+      </em>
+      ), we see that the total misclassification rates drop as compared to the average misclassification rates per worker in Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      . This shows that groups of workers achieve higher accuracy, even when workers with strong opinions are included.
+     </p>
+     <p>
+      In the
+      <em>
+       Baseline
+      </em>
+      scenario, the misclassification rate of the
+      <em>
+       strong
+      </em>
+      worker group exhibits higher misclassification rate when compared to
+      <span class="inline-equation">
+       <span class="tex">
+        $\overline{strong}$
+       </span>
+      </span>
+      . We assess the significance of the misclassification rate through the Kruskal-Wallis test, which yields a significant difference with
+      <em>
+       p
+      </em>
+      &lt; .01. This result is intuitive as the presence of workers in the end of both extremes (
+      <em>
+       ssup
+      </em>
+      and
+      <em>
+       sopp
+      </em>
+      ), adds to the amount of biased judgments collected for a given subjective task.
+     </p>
+    </section>
+    <section id="sec-19">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Effects of Worker Level
+       </h3>
+      </div>
+     </header>
+     <p>
+      Workers on the FigureEight platform can earn three different Level badges based on their accuracy and experience over time. In the FigureEight job settings, Level 1 is described as “All qualified contributors”, Level 2 as a “Smaller group of more experienced, higher accuracy contributors”, and Level 3 as the “Smallest group of most experienced, highest accuracy contributors”. We acquired self-reported worker Levels in our study. This allows us the opportunity to analyze potential correlations between worker performance/bias and the worker experience as represented by the worker level.
+     </p>
+     <figure id="fig6">
+      <img alt="" class="img-responsive" longdesc="" src="3300637_files\chi2019407fig6.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 6:
+       </span>
+       <span class="figure-title">
+        No. of workers per worker Level for all conditions.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      shows the distributions of workers of each Level across the different conditions. In all conditions, Level 3 workers are the largest group of workers. There were more Level 1 workers than Level 2 workers in the
+      <em>
+       Baseline
+      </em>
+      condition, while for the other two conditions the number of Level 2 workers is higher.
+     </p>
+     <div class="table-responsive" id="tab5">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 5:
+       </span>
+       <span class="table-title">
+        Misclassification rates and bias for each worker Level and specific worker categories and orientations. The
+        <strong>
+         total
+        </strong>
+        shows the overall misclassification rate for workers of the given level. For each condition, we highlight the highest pos. bias score for
+        <strong>
+         ssup
+        </strong>
+        and the highest neg. bias score for
+        <strong>
+         sopp
+        </strong>
+        across the worker levels. The results show that no single level group clearly outperforms the other level groups across conditions.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;">
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+         <th>
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:center;">
+         </th>
+         <th colspan="3" style="text-align:center;">
+          <strong>
+           Baseline
+          </strong>
+          <hr/>
+         </th>
+         <th colspan="3" style="text-align:center;">
+          <strong>
+           SoPro
+          </strong>
+          <hr/>
+         </th>
+         <th colspan="3" style="text-align:center;">
+          <strong>
+           AwaRe
+          </strong>
+          <hr/>
+         </th>
+         <th colspan="3" style="text-align:center;">
+          <strong>
+           PerNu
+          </strong>
+          <hr/>
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:center;">
+         </th>
+         <th style="text-align:center;">
+          Level 1
+         </th>
+         <th style="text-align:center;">
+          Level 2
+         </th>
+         <th style="text-align:center;">
+          Level 3
+         </th>
+         <th style="text-align:center;">
+          Level 1
+         </th>
+         <th style="text-align:center;">
+          Level 2
+         </th>
+         <th style="text-align:center;">
+          Level 3
+         </th>
+         <th style="text-align:center;">
+          Level 1
+         </th>
+         <th style="text-align:center;">
+          Level 2
+         </th>
+         <th style="text-align:center;">
+          Level 3
+         </th>
+         <th style="text-align:center;">
+          Level 1
+         </th>
+         <th style="text-align:center;">
+          Level 2
+         </th>
+         <th style="text-align:center;">
+          Level 3
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+          <strong>
+           total
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          0.21
+         </td>
+         <td style="text-align:center;">
+          0.19
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.19
+         </td>
+         <td style="text-align:center;">
+          0.20
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.21
+         </td>
+         <td style="text-align:center;">
+          0.15
+         </td>
+         <td style="text-align:center;">
+          0.21
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.14
+         </td>
+         <td style="text-align:center;">
+          0.15
+         </td>
+         <td style="text-align:center;">
+          0.21
+         </td>
+         <td style="text-align:center;">
+          0.20
+         </td>
+         <td>
+          0.25
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          ssup pro
+         </td>
+         <td style="text-align:center;">
+          0.29
+         </td>
+         <td style="text-align:center;">
+          0.40
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.32
+         </td>
+         <td style="text-align:center;">
+          0.29
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.44
+         </td>
+         <td style="text-align:center;">
+          0.26
+         </td>
+         <td style="text-align:center;">
+          0.14
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.24
+         </td>
+         <td style="text-align:center;">
+          0.29
+         </td>
+         <td style="text-align:center;">
+          0.35
+         </td>
+         <td style="text-align:center;">
+          0.47
+         </td>
+         <td>
+          0.37
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          ssup con
+         </td>
+         <td style="text-align:center;">
+          0.11
+         </td>
+         <td style="text-align:center;">
+          0.09
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.05
+         </td>
+         <td style="text-align:center;">
+          0.02
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.13
+         </td>
+         <td style="text-align:center;">
+          0.07
+         </td>
+         <td style="text-align:center;">
+          0.03
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.04
+         </td>
+         <td style="text-align:center;">
+          0.03
+         </td>
+         <td style="text-align:center;">
+          0.17
+         </td>
+         <td style="text-align:center;">
+          0.17
+         </td>
+         <td>
+          0.25
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          ssup bias
+         </td>
+         <td style="text-align:center;">
+          0.97
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           2.45
+          </strong>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.52
+         </td>
+         <td style="text-align:center;">
+          1.04
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           2.37
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          -0.60
+         </td>
+         <td style="text-align:center;">
+          -0.04
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           0.48
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          -0.58
+         </td>
+         <td style="text-align:center;">
+          -1.32
+         </td>
+         <td style="text-align:center;">
+          -0.84
+         </td>
+         <td>
+          <strong>
+           1.11
+          </strong>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          sopp pro
+         </td>
+         <td style="text-align:center;">
+          0.23
+         </td>
+         <td style="text-align:center;">
+          0.21
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.33
+         </td>
+         <td style="text-align:center;">
+          0.46
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.28
+         </td>
+         <td style="text-align:center;">
+          0.38
+         </td>
+         <td style="text-align:center;">
+          0.43
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.19
+         </td>
+         <td style="text-align:center;">
+          0.33
+         </td>
+         <td style="text-align:center;">
+          0.33
+         </td>
+         <td style="text-align:center;">
+          0.50
+         </td>
+         <td>
+          0.21
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          sopp con
+         </td>
+         <td style="text-align:center;">
+          0.25
+         </td>
+         <td style="text-align:center;">
+          0.21
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.14
+         </td>
+         <td style="text-align:center;">
+          0.11
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.28
+         </td>
+         <td style="text-align:center;">
+          0.08
+         </td>
+         <td style="text-align:center;">
+          0.21
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          0.06
+         </td>
+         <td style="text-align:center;">
+          0.20
+         </td>
+         <td style="text-align:center;">
+          0.17
+         </td>
+         <td style="text-align:center;">
+          0.00
+         </td>
+         <td>
+          0.24
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          sopp bias
+         </td>
+         <td style="text-align:center;">
+          -2.55
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           -2.97
+          </strong>
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -1.21
+         </td>
+         <td style="text-align:center;">
+          1.49
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          <strong>
+           -2.57
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          2.0
+         </td>
+         <td style="text-align:center;">
+          0.86
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          -1.22
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           -1.65
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          <strong>
+           -1.39
+          </strong>
+         </td>
+         <td style="text-align:center;">
+          1.71
+         </td>
+         <td>
+          -0.62
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      Table
+      <a class="tbl" href="#tab5">
+       5
+      </a>
+      shows the average misclassification rates for the different approaches and the corresponding worker levels. Overall, the results vary. While we see high bias values for level 2 workers for
+      <em>
+       Baseline
+      </em>
+      and
+      <em>
+       SoPro
+      </em>
+      , the bias values for
+      <em>
+       AwaRe
+      </em>
+      and
+      <em>
+       PerNu
+      </em>
+      are mixed. We computed a non-parametric
+      <em>
+       Kruskal-Wallis
+      </em>
+      test to asses the correlation between the worker level and their misclassification rates for
+      <em>
+       pro
+      </em>
+      and
+      <em>
+       con
+      </em>
+      statements. In this case, we do not distinguish between
+      <em>
+       ssup
+      </em>
+      and
+      <em>
+       sopp
+      </em>
+      . The test revealed that none of the bias differences between worker levels are significant. As a consequence, we do not control for worker level in our bias analysis.
+     </p>
+    </section>
+    <section id="sec-20">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Implication of Strong Supporters and Strong Opposers on Resulting Quality
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our findings show that the strong supporters and strong opposers are most susceptible to systemic bias due to their strong opinions. Let us consider the impact of a
+      <em>
+       ssup
+      </em>
+      or
+      <em>
+       sopp
+      </em>
+      contributing to a task where multiple judgments are aggregated using majority voting. In such a setting,
+      <em>
+       ssup
+      </em>
+      or
+      <em>
+       sopp
+      </em>
+      can bias a task outcome if there is a majority of either
+      <em>
+       ssup
+      </em>
+      s or
+      <em>
+       sopp
+      </em>
+      s in the cohort of workers annotating the same statement. To quantify the possible implication, we draw random samples of
+      <em>
+       k
+      </em>
+      workers (
+      <em>
+       k
+      </em>
+      = 1...102) from the
+      <em>
+       Baseline
+      </em>
+      condition and assess the fraction of resulting biased outcomes for each
+      <em>
+       k
+      </em>
+      , averaged across 10,000 iterations. Our findings are presented in Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      . We note that if 3 judgments are collected for each statement, over 17% of the statements end up with a biased label. With 5 judgments, over 15% end up with a biased label. This converges to around 10% around
+      <em>
+       k=60
+      </em>
+      . Requesters seldom gather so many judgments on a single statement, especially in large-scale jobs where costs are an important trade-off. This shows that the presence of
+      <em>
+       ssup
+      </em>
+      or
+      <em>
+       sopp
+      </em>
+      can be undesirable if their susceptibility to their opinions and the resulting bias is not mitigated.
+     </p>
+     <figure id="fig7">
+      <img alt="" class="img-responsive" longdesc="" src="3300637_files\chi2019407fig7.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        Ratio of statements whose labels are provided by a majority of biased workers after
+        <em>
+         k
+        </em>
+        workers (random worker samples from the
+        <em>
+         Baseline
+        </em>
+        condition, averaged over 10
+        <em>
+         K
+        </em>
+        iterations). ‘
+        <em>
+         k
+        </em>
+        ’ is split between even and odd for readability. In case of a tie there is no majority of biased workers.
+       </span>
+      </div>
+     </figure>
+     <figure id="fig8">
+      <img alt="" class="img-responsive" longdesc="" src="3300637_files\chi2019407fig8.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 8:
+       </span>
+       <span class="figure-title">
+        No. of workers for each topic, condition, and worker category.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+   </section>
+   <section id="sec-21">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Intuitively, workers belonging to the extreme categories (
+     <em>
+      ssup
+     </em>
+     and
+     <em>
+      sopp
+     </em>
+     ) exhibit systematic bias stemming from their personal opinions. We found evidence of this, where
+     <em>
+      ssup
+     </em>
+     and
+     <em>
+      sopp
+     </em>
+     provided biased judgments inline with their stance on a given topic. Table
+     <a class="tbl" href="#tab3">
+      3
+     </a>
+     shows that
+     <em>
+      ssup
+     </em>
+     and
+     <em>
+      sopp
+     </em>
+     have the highest biased scores as a consequence of their unbalanced misclassification rates for pro and contra statements. This finding supports hypothesis
+     <strong>
+      H#1
+     </strong>
+     .
+    </p>
+    <p>
+     <strong>
+      Impact on Resulting Ground-Truth Quality.
+     </strong>
+     . Our findings suggest that negative effects on the created annotations due to biased workers can be effectively canceled out by increasing redundancy. By including non-biased workers in the ground-truth creation, misclassifications stemming from personal opinions can be averted. Importantly, the biggest threat to introducing systemic bias is having a group with a large majority of biased workers contributing to a task.
+    </p>
+    <p>
+     <strong>
+      Implications of Bias.
+     </strong>
+     . If we opt for a majority voting label aggregation scheme, even for fairly simple tasks with binary outcomes (i.e,
+     <em>
+      “opinonated”
+     </em>
+     or
+     <em>
+      “neutral”
+     </em>
+     ) the amount of judgments needed to overcome bias is very high. Figure
+     <a class="fig" href="#fig7">
+      7
+     </a>
+     shows that if we consider
+     <em>
+      odd
+     </em>
+     numbers of judgments (less than 5), more than 20% of task units end up with a group of workers who are susceptible towards their strong stance (
+     <em>
+      ssup
+     </em>
+     or
+     <em>
+      sopp
+     </em>
+     ). To reduce the amount of statements which end up with a majority of workers in the extreme categories, the number of judgments needs to be extremely high, i.e, more than 40. Contrary, in the case of
+     <em>
+      even
+     </em>
+     number of judgments, this ratio is lower due to the fact that often we end up with a tie, and thus cannot employ the majority voting scheme. Therefore, in such cases we may end up with a large portion of statements without a clear aggregated label.
+    </p>
+    <p>
+     <strong>
+      Bias Mitigation.
+     </strong>
+     . To avoid biased judgments, we aim to mitigate bias through social projection (
+     <em>
+      SoPro
+     </em>
+     ) or by making workers aware of their possible inclinations towards a topic (
+     <em>
+      AwaRe
+     </em>
+     and
+     <em>
+      PerNu
+     </em>
+     ).
+    </p>
+    <p>
+     Our analysis results show that all three approaches reduce the total bias and average bias for workers with extreme opinions when compared to the
+     <em>
+      Baseline
+     </em>
+     . Additionally,
+     <em>
+      SoPro
+     </em>
+     and
+     <em>
+      AwaRe
+     </em>
+     lead to an improvement in general worker performance by reducing the overall number of misclassifications, therefore increasing the quality of resulting ground-truth labels in general. We achieve the highest total bias reduction rate of 49% with the
+     <em>
+      AwaRe
+     </em>
+     approach as well as the highest bias reduction for
+     <em>
+      ssup
+     </em>
+     s. For
+     <em>
+      sopp
+     </em>
+     s the
+     <em>
+      SoPro
+     </em>
+     approach receives the highest reduction and might therefore be the preferred approach for situations with a large number of
+     <em>
+      sopp
+     </em>
+     s. Another trade-off is the task completion time (TCT). The average TCT for
+     <em>
+      AwaRe
+     </em>
+     is significantly higher in our analysis compared to the
+     <em>
+      Baseline
+     </em>
+     , while the increase for
+     <em>
+      SoPro
+     </em>
+     is not significant.
+    </p>
+    <p>
+     We note that the most sophisticated approach
+     <em>
+      PerNu
+     </em>
+     provides significantly worse results for both bias and general worker performance. This behaviour can possibly be explained through the theory of
+     <em>
+      central
+     </em>
+     and
+     <em>
+      peripheral
+     </em>
+     persuasion from marketing research [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ]. The
+     <em>
+      AwaRe
+     </em>
+     approach falls into the category of
+     <em>
+      peripheral
+     </em>
+     persuasion, where general reminder snippets increase worker awareness regarding the potential bias entailing the task. In contrast,
+     <em>
+      PerNu
+     </em>
+     can be seen as a
+     <em>
+      central
+     </em>
+     persuasion technique, where personalized instructions are provided at the statement level, thus, actively and directly informing workers while they make their judgments. According to [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ], peripheral persuasion techniques are most suitable in inflicting attitude change when compared to central persuasion ones. We will investigate this further in our future work.
+    </p>
+    <p>
+     <strong>
+      Worker Level Effects
+     </strong>
+     . Our results across different worker levels show that there is no significant difference in bias scores between workers with varying experience. This shows that filtering by levels is not a reliable strategy for mitigating worker bias. As a consequence, due to the lack of support we reject hypothesis
+     <strong>
+      H#2
+     </strong>
+     . We note that Level 1 and 2 workers appear to be more receptive of treatment interventions provided by the different bias mitigating approaches. However, further qualitative studies are needed to establish this.
+    </p>
+   </section>
+   <section id="sec-22">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       CONCLUSIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Systematic bias stemming from worker opinions can be a major problem in subjective labeling tasks. We showed that crowdsourced ground-truth annotations are susceptible to potentially biased workers who tend to produce systematically biased and noisy labels.
+    </p>
+    <p>
+     Our results show that judgments of workers who have extreme personal stances (i.e.
+     <em>
+      strong supporters
+     </em>
+     or
+     <em>
+      strong opposers
+     </em>
+     ) pertaining to a particular topic, show a significant tendency to be influenced by their opinions. We found that performance or experience indicators like worker levels, do not play a significant role in reducing misclassification rates, making such indicators unreliable in mitigating systemic biases stemming from opinions in subjective tasks.
+    </p>
+    <p>
+     To mitigate such aforementioned worker bias, we proposed interventions based on social projection and making workers aware of their personal stances and potential biases, thus encouraging them to set aside their personal opinions during the course of task completion. Our approaches,
+     <em>
+      SoPro
+     </em>
+     and
+     <em>
+      AwaRe
+     </em>
+     provide significant improvement in terms of both worker bias reduction and general worker performance. Finally, we found that the
+     <em>
+      PerNu
+     </em>
+     approach, which actively provides the worker with personalized bias-related feedback during the task completion, does not provide any improvement over the other bias mitigation approaches.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <appendix>
+    <section id="sec-23">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         A
+        </span>
+        WORKER DISTRIBUTIONS ACROSS CATEGORIES
+       </h2>
+      </div>
+     </header>
+     <p>
+      Figure
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      shows the distributions of workers across worker categories. There is a tendency towards
+      <em>
+       ssup
+      </em>
+      s and
+      <em>
+       sup
+      </em>
+      s for all topics except Gun Control, where the tendency is more towards
+      <em>
+       sopp
+      </em>
+      s and
+      <em>
+       opp
+      </em>
+      s. This suggests that workers on FigureEight tend to be more liberal in their views on average, with Abortion, Feminism, Global Warming, and LGBT Rights being traditionally supported by liberals in the US. Our findings are inline with similar observations in  [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ], where the task was to assess how biased a statement is w.r.t liberal vs. conservative bias.
+     </p>
+    </section>
+    <section id="sec-24">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+        </span>
+        Acknowledgments
+       </h2>
+      </div>
+     </header>
+     <p>
+      This work is partially supported by the ERC Advanced Grant ALEXANDRIA (grant no. 339233), DESIR (grant no. 731081), AFEL (grant no. 687916), DISKOW (grant no. 60171990) and SimpleML (grant no. 01IS18054).
+     </p>
+    </section>
+   </appendix>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Alan Aipe and Ujwal Gadiraju. 2018. SimilarHITs: Revealing the Role of Task Similarity in Microtask Crowdsourcing. In
+      <em>
+       Proceedings of the 29th on Hypertext and Social Media
+      </em>
+      . ACM, 115–122.
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Ricardo Baeza-Yates. 2018. Bias on the web.
+      <em>
+       <em>
+        Commun. ACM
+       </em>
+      </em>
+      61, 6 (2018), 54–61.
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      W Lance Bennett. 2016.
+      <em>
+       News: The politics of illusion
+      </em>
+      . University of Chicago Press.
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Maxwell T Boykoff and Jules M Boykoff. 2004. Balance as bias: global warming and the US prestige press.
+      <em>
+       <em>
+        Global environmental change
+       </em>
+      </em>
+      14, 2 (2004), 125–136.
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Róger Brown. 1960. Gilman.
+      <em>
+       <em>
+        The Pronouns of the Power and Solidarity
+       </em>
+      </em>
+      (1960).
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Carrie J Cai, Shamsi T Iqbal, and Jaime Teevan. 2016. Chain reactions: The impact of order on microtask chains. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 3143–3154.
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Lydia B Chilton, John J Horton, Robert C Miller, and Shiri Azenkot. 2010. Task search in a human computation market. In
+      <em>
+       Proceedings of the ACM SIGKDD workshop on human computation
+      </em>
+      . ACM, 1–9.
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Djellel Eddine Difallah, Michele Catasta, Gianluca Demartini, Panagiotis G. Ipeirotis, and Philippe Cudré-Mauroux. 2015. The Dynamics of Micro-Task Crowdsourcing: The Case of Amazon MTurk. In
+      <em>
+       Proceedings of the 24th International Conference on World Wide Web, WWW 2015, Florence, Italy, May 18-22, 2015
+      </em>
+      . 238–247.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2736277.2741685" target="_blank">
+       https://doi.org/10.1145/2736277.2741685
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Carsten Eickhoff. 2018. Cognitive Biases in Crowdsourcing. In
+      <em>
+       Proceedings of the Eleventh ACM International Conference on Web Search and Data Mining
+      </em>
+      . ACM, 162–170.
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Carsten Eickhoff and Arjen P de Vries. 2013. Increasing cheat robustness of crowdsourcing tasks.
+      <em>
+       <em>
+        Information retrieval
+       </em>
+      </em>
+      16, 2 (2013), 121–137.
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Boi Faltings, Radu Jurca, Pearl Pu, and Bao Duy Tran. 2014. Incentives to counter bias in human computation. In
+      <em>
+       Second AAAI conference on human computation and crowdsourcing
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Gavan J Fitzsimons, J Wesley Hutchinson, Patti Williams, Joseph W Alba, Tanya L Chartrand, Joel Huber, Frank R Kardes, Geeta Menon, Priya Raghubir, J Edward Russo,
+      <em>
+       et al.
+      </em>
+      2002. Non-conscious influences on consumer choice.
+      <em>
+       <em>
+        Marketing Letters
+       </em>
+      </em>
+      13, 3 (2002), 269–279.
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Roger Fowler. 2013.
+      <em>
+       Language in the News: Discourse and Ideology in the Press
+      </em>
+      . Routledge.
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Liye Fu, Cristian Danescu-Niculescu-Mizil, and Lillian Lee. 2016. Tie-breaker: Using language models to quantify gender bias in sports journalism.
+      <em>
+       <em>
+        arXiv preprint arXiv:1607.03895
+       </em>
+      </em>
+      (2016).
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Ujwal Gadiraju, Alessandro Checco, Neha Gupta, and Gianluca Demartini. 2017. Modus operandi of crowd workers: The invisible role of microtask work environments.
+      <em>
+       <em>
+        Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies
+       </em>
+      </em>
+      1, 3 (2017), 49.
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Ujwal Gadiraju, Besnik Fetahu, Ricardo Kawase, Patrick Siehndel, and Stefan Dietze. 2017. Using worker self-assessments for competence-based pre-selection in crowdsourcing microtasks.
+      <em>
+       <em>
+        ACM Transactions on Computer-Human Interaction (TOCHI)
+       </em>
+      </em>
+      24, 4(2017), 30.
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Ujwal Gadiraju, Ricardo Kawase, and Stefan Dietze. 2014. A taxonomy of microtasks on the web. In
+      <em>
+       25th ACM Conference on Hypertext and Social Media, HT ’14, Santiago, Chile, September 1-4, 2014
+      </em>
+      . 218–223.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2631775.2631819" target="_blank">
+       https://doi.org/10.1145/2631775.2631819
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Ujwal Gadiraju, Ricardo Kawase, Stefan Dietze, and Gianluca Demartini. 2015. Understanding malicious behavior in crowdsourcing platforms: The case of online surveys. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 1631–1640.
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Ujwal Gadiraju, Jie Yang, and Alessandro Bozzon. 2017. Clarity is a worthwhile quality: On the role of task clarity in microtask crowdsourcing. In
+      <em>
+       Proceedings of the 28th ACM Conference on Hypertext and Social Media
+      </em>
+      . ACM, 5–14.
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Stephan Greene and Philip Resnik. 2009. More than words: Syntactic packaging and implicit sentiment. In
+      <em>
+       Proceedings of human language technologies: The 2009 annual conference of the north american chapter of the association for computational linguistics
+      </em>
+      . Association for Computational Linguistics, 503–511.
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Sture Holm. 1979. A simple sequentially rejective multiple test procedure.
+      <em>
+       <em>
+        Scandinavian journal of statistics
+       </em>
+      </em>
+      (1979), 65–70.
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      David S Holmes. 1968. Dimensions of projection.
+      <em>
+       <em>
+        Psychological bulletin
+       </em>
+      </em>
+      69, 4 (1968), 248.
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      David S Holmes. 1978. Projection as a defense mechanism.
+      <em>
+       <em>
+        Psychological Bulletin
+       </em>
+      </em>
+      85, 4 (1978), 677.
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Tobias Hossfeld, Christian Keimel, Matthias Hirth, Bruno Gardlo, Julian Habigt, Klaus Diepold, and Phuoc Tran-Gia. 2014. Best practices for QoE crowdtesting: QoE assessment with crowdsourcing.
+      <em>
+       <em>
+        IEEE Transactions on Multimedia
+       </em>
+      </em>
+      16, 2 (2014), 541–558.
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Christoph Hube and Besnik Fetahu. 2018. Detecting Biased Statements in Wikipedia. In
+      <em>
+       Companion of the The Web Conference 2018 on The Web Conference 2018
+      </em>
+      . International World Wide Web Conferences Steering Committee, 1779–1786.
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Christoph Hube and Besnik Fetahu. 2018. Neural Based Statement Classification for Biased Language.
+      <em>
+       <em>
+        arXiv preprint arXiv:1811.05740
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Nguyen Quoc Viet Hung, Nguyen Thanh Tam, Lam Ngoc Tran, and Karl Aberer. 2013. An evaluation of aggregation techniques in crowdsourcing. In
+      <em>
+       International Conference on Web Information Systems Engineering
+      </em>
+      . Springer, 1–15.
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Panagiotis G Ipeirotis, Foster Provost, and Jing Wang. 2010. Quality management on amazon mechanical turk. In
+      <em>
+       Proceedings of the ACM SIGKDD workshop on human computation
+      </em>
+      . ACM, 64–67.
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Mohit Iyyer, Peter Enns, Jordan Boyd-Graber, and Philip Resnik. 2014. Political ideology detection using recursive neural networks. In
+      <em>
+       Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)
+      </em>
+      , Vol. 1. 1113–1122.
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Ayush Jain, Akash Das Sarma, Aditya Parameswaran, and Jennifer Widom. 2017. Understanding workers, developing effective tasks, and enhancing marketplace dynamics: a study of a large crowdsourcing marketplace.
+      <em>
+       <em>
+        Proceedings of the VLDB Endowment
+       </em>
+      </em>
+      10, 7 (2017), 829–840.
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Ling Jiang, Christian Wagner, and Bonnie Nardi. 2015. Not Just in it for the Money: A Qualitative Investigation of Workers’ Perceived Benefits of Micro-task Crowdsourcing. In
+      <em>
+       System Sciences (HICSS), 2015 48th Hawaii International Conference on
+      </em>
+      . IEEE, 773–782.
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Ece Kamar, Ashish Kapoor, and Eric Horvitz. 2015. Identifying and accounting for task-dependent bias in crowdsourcing. In
+      <em>
+       Third AAAI Conference on Human Computation and Crowdsourcing
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      David R. Karger, Sewoong Oh, and Devavrat Shah. 2011. Iterative Learning for Reliable Crowdsourcing Systems. In
+      <em>
+       Advances in Neural Information Processing Systems 24: 25th Annual Conference on Neural Information Processing Systems 2011. Proceedings of a meeting held 12-14 December 2011, Granada, Spain.
+      </em>
+      1953–1961.
+      <a class="link-inline force-break" href="http://papers.nips.cc/paper/4396-iterative-learning-for-reliable-crowdsourcing-systems">
+       http://papers.nips.cc/paper/4396-iterative-learning-for-reliable-crowdsourcing-systems
+      </a>
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Nicolas Kaufmann, Thimo Schulze, and Daniel Veit. 2011. More than fun and money. Worker Motivation in Crowdsourcing-A Study on Mechanical Turk.. In
+      <em>
+       AMCIS
+      </em>
+      , Vol. 11. 1–11.
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Aniket Kittur, Jeffrey V Nickerson, Michael Bernstein, Elizabeth Gerber, Aaron Shaw, John Zimmerman, Matt Lease, and John Horton. 2013. The future of crowd work. In
+      <em>
+       Proceedings of the 2013 conference on Computer supported cooperative work
+      </em>
+      . ACM, 1301–1318.
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Klaus Krippendorff. 2011. Computing Krippendorff's alpha-reliability. (2011).
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Qiang Liu, Jian Peng, and Alexander T. Ihler. 2012. Variational Inference for Crowdsourcing. In
+      <em>
+       Advances in Neural Information Processing Systems 25: 26th Annual Conference on Neural Information Processing Systems 2012. Proceedings of a meeting held December 3-6, 2012, Lake Tahoe, Nevada, United States.
+      </em>
+      701–709.
+      <a class="link-inline force-break" href="http://papers.nips.cc/paper/4627-variational-inference-for-crowdsourcing">
+       http://papers.nips.cc/paper/4627-variational-inference-for-crowdsourcing
+      </a>
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      John Lyons. 1970. New horizons in linguistics, Volume. (1970).
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Catherine C Marshall and Frank M Shipman. 2013. Experiences surveying the crowd: Reflections on methods, participation, and reliability. In
+      <em>
+       Proceedings of the 5th Annual ACM Web Science Conference
+      </em>
+      . ACM, 234–243.
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Nolan Miller, Paul Resnick, and Richard Zeckhauser. 2005. Eliciting informative feedback: The peer-prediction method.
+      <em>
+       <em>
+        Management Science
+       </em>
+      </em>
+      51, 9 (2005), 1359–1373.
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      Edward Newell and Derek Ruths. 2016. How one microtask affects another. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 3155–3166.
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      Dražen Prelec. 2004. A Bayesian truth serum for subjective data.
+      <em>
+       <em>
+        science
+       </em>
+      </em>
+      306, 5695 (2004), 462–466.
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Vikas C. Raykar, Shipeng Yu, Linda H. Zhao, Anna Jerebko, Charles Florin, Gerardo Hermosillo Valadez, Luca Bogoni, and Linda Moy. 2009. Supervised Learning from Multiple Experts: Whom to Trust when Everyone Lies a Bit. In
+      <em>
+       Proceedings of the 26th Annual International Conference on Machine Learning
+      </em>
+      (
+      <em>
+       ICML ’09
+      </em>
+      ). ACM, New York, NY, USA, 889–896.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1553374.1553488" target="_blank">
+       https://doi.org/10.1145/1553374.1553488
+      </a>
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      Marta Recasens, Cristian Danescu-Niculescu-Mizil, and Dan Jurafsky. 2013. Linguistic Models for Analyzing and Detecting Biased Language.. In
+      <em>
+       ACL (1)
+      </em>
+      . 1650–1659.
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      Jakob Rogstadius, Vassilis Kostakos, Aniket Kittur, Boris Smus, Jim Laredo, and Maja Vukovic. 2011. An assessment of intrinsic and extrinsic motivation on task performance in crowdsourcing markets.
+      <em>
+       <em>
+        ICWSM
+       </em>
+      </em>
+      11(2011), 17–21.
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      Suzanne Romaine
+      <em>
+       et al.
+      </em>
+      2000.
+      <em>
+       Language in society: An introduction to sociolinguistics
+      </em>
+      . Oxford University Press.
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      Dietram A Scheufele. 1999. Framing as a theory of media effects.
+      <em>
+       <em>
+        Journal of communication
+       </em>
+      </em>
+      49, 1 (1999), 103–122.
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      Gün R Semin and Klaus Fiedler. 1988. The cognitive functions of linguistic categories in describing persons: Social cognition and language.
+      <em>
+       <em>
+        Journal of personality and Social Psychology
+       </em>
+      </em>
+      54, 4(1988), 558.
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      Aaron D Shaw, John J Horton, and Daniel L Chen. 2011. Designing incentives for inexpert human raters. In
+      <em>
+       Proceedings of the ACM 2011 conference on Computer supported cooperative work
+      </em>
+      . ACM, 275–284.
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      Anselm L Strauss. 1987.
+      <em>
+       Qualitative analysis for social scientists
+      </em>
+      . Cambridge University Press.
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      James Surowiecki. 2005.
+      <em>
+       The wisdom of crowds
+      </em>
+      . Anchor.
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Fabian L. Wauthier and Michael I. Jordan. 2011. Bayesian Bias Mitigation for Crowdsourcing. In
+      <em>
+       Advances in Neural Information Processing Systems 24: 25th Annual Conference on Neural Information Processing Systems 2011. Proceedings of a meeting held 12-14 December 2011, Granada, Spain.
+      </em>
+      1800–1808.
+      <a class="link-inline force-break" href="http://papers.nips.cc/paper/4311-bayesian-bias-mitigation-for-crowdsourcing">
+       http://papers.nips.cc/paper/4311-bayesian-bias-mitigation-for-crowdsourcing
+      </a>
+     </li>
+     <li id="BibPLXBIB0053" label="[53]">
+      Janyce Wiebe, Theresa Wilson, Rebecca Bruce, Matthew Bell, and Melanie Martin. 2004. Learning subjective language.
+      <em>
+       <em>
+        Computational linguistics
+       </em>
+      </em>
+      30, 3 (2004), 277–308.
+     </li>
+     <li id="BibPLXBIB0054" label="[54]">
+      Tae Yano, Philip Resnik, and Noah A Smith. 2010. Shedding (a thousand points of) light on biased language. In
+      <em>
+       Proceedings of the NAACL HLT 2010 Workshop on Creating Speech and Language Data with Amazon's Mechanical Turk
+      </em>
+      . Association for Computational Linguistics, 152–158.
+     </li>
+     <li id="BibPLXBIB0055" label="[55]">
+      Honglei Zhuang and Joel Young. 2015. Leveraging In-Batch Annotation Bias for Crowdsourced Active Learning. In
+      <em>
+       Proceedings of the Eighth ACM International Conference on Web Search and Data Mining, WSDM 2015, Shanghai, China, February 2-6, 2015
+      </em>
+      . 243–252.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2684822.2685301" target="_blank">
+       https://doi.org/10.1145/2684822.2685301
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="http://www.people-press.org/2007/01/24/global-warming-a-divide-on-causes-and-solutions">
+     http://www.people-press.org/2007/01/24/global-warming-a-divide-on-causes-and-solutions
+    </a>
+   </p>
+   <p id="fn2">
+    <a href="#foot-fn2">
+     <sup>
+      2
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="https://en.wikipedia.org/wiki/Wikipedia:List_of_controversial_issues">
+     https://en.wikipedia.org/wiki/Wikipedia:List_of_controversial_issues
+    </a>
+   </p>
+   <p id="fn3">
+    <a href="#foot-fn3">
+     <sup>
+      3
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="https://en.wikipedia.org/wiki/Wikipedia:Neutral_point_of_view">
+     https://en.wikipedia.org/wiki/Wikipedia:Neutral_point_of_view
+    </a>
+   </p>
+   <p id="fn4">
+    <a href="#foot-fn4">
+     <sup>
+      4
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="http://www.figure-eight.com/">
+     http://www.figure-eight.com/
+    </a>
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Association for Computing Machinery.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300637" target="_blank">
+      https://doi.org/10.1145/3290605.3300637
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8757c20abc254d6a',t:'MTcxMzMwODA3NS4wMzUwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

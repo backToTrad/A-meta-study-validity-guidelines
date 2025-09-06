@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Painting with CATS: Camera-Aided Texture Synthesis
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300287_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300287_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300287_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300287_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300287_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300287_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300287_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300287_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Painting with CATS: Camera-Aided Texture Synthesis
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Ticha
+      </span>
+      <span class="surName">
+       Sethapakdi
+      </span>
+      , Carnegie Mellon University, USA,
+      <a href="mailto:tsethapa@cs.cmu.edu">
+       tsethapa@cs.cmu.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       James
+      </span>
+      <span class="surName">
+       Lewis McCann
+      </span>
+      , Carnegie Mellon University, USA,
+      <a href="mailto:jmccann@cs.cmu.edu">
+       jmccann@cs.cmu.edu
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300287" target="_blank">
+       https://doi.org/10.1145/3290605.3300287
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       We present CATS, a digital painting system that synthesizes textures from live video in real-time, short-cutting the typical brush- and texture- gathering workflow. Through the use of boundary-aware texture synthesis, CATS produces strokes that are non-repeating and blend smoothly with each other. This allows CATS to produce paintings that would be difficult to create with traditional art supplies or existing software. We evaluated the effectiveness of CATS by asking artists to integrate the tool into their creative practice for two weeks; their paintings and feedback demonstrate that CATS is an expressive tool which can be used to create richly textured paintings.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Interactive systems and tools
+       </strong>
+       ; •
+       <strong>
+        Computing methodologies → Graphics systems and interfaces
+       </strong>
+       ; •
+       <strong>
+        Computer systems organization → Real-time systems
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        art; creativity support; digital painting
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Ticha Sethapakdi and James Lewis McCann. 2019. Painting with CATS: Camera-Aided Texture Synthesis. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 9 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300287" target="_blank">
+         https://doi.org/10.1145/3290605.3300287
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <figure id="fig1">
+    <img alt="" class="img-responsive" longdesc="The CATS interface and hardware setup (computer, drawing tablet, webcam) alongside two paintings made using the CATS system. The first painting is of a cat using gouache textures and the second is of a girl draped in cloth." src="3300287_files\chi201957fig1.jpg"/>
+    <div class="figure-caption">
+     <span class="figure-number">
+      Figure 1:
+     </span>
+     <span class="figure-title">
+      The CATS interface (a) and hardware setup (b). Real-world textures, captured by an external camera, are applied to the canvas as the user paints. With CATS, artists can produce texture-rich paintings not easily achievable through purely digital or traditional means (c, d).
+     </span>
+    </div>
+   </figure>
+   <figure id="fig2">
+    <img alt="" class="img-responsive" longdesc="Red paint blobs, some from photographs, one created using stamping-based painting, the other created using CATS." src="3300287_files\chi201957fig2.jpg"/>
+    <div class="figure-caption">
+     <span class="figure-number">
+      Figure 2:
+     </span>
+     <span class="figure-title">
+      A comparison between normal stamping based approaches and stroke matching behavior in CATS. An exemplar image (a) is chosen to fill in the pink target regions (c) in image (b). (d) shows what a stamping-based approach would produce, while (e) shows the result using CATS. In (d), stamping causes the exemplar texture to be unrecognizable due to the overlaps between stamps. The blended effect of (a) and (b) in (e) is a result of the underlying image correspondence algorithm used for texture synthesis.
+     </span>
+    </div>
+   </figure>
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     A popular approach to creating visual art is digital painting. Digital painting interfaces have evolved significantly since their inception in the 1970s from programs like SuperPaint [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ], MacPaint [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ], and Kid Pix [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+      11
+     </a>
+     ]. Much like in traditional media, digital painting programs now equip artists with a diverse set of tools and brushes so they can produce expressive paintings. One of the most used tools for digital painting is, of course, the paintbrush. Unlike real-world brushes, which have preset sizes and shapes, digital brushes are highly modular and can be specifically tailored to an artist's needs. There exist many ways to customize a digital brush; for example, changing the brush color, shape, size, and opacity. While there exists a wealth of built-in brush presets and online assets, artists often make their own brushes to achieve specific results. Whereas in traditional media artists have the freedom to easily incorporate almost any material they can find into their work, digital media often requires artists to go through several steps before they can use their own materials for painting. Applications like Adobe Capture [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ] simplify this workflow by allowing users to use their phone camera to quickly make creative assets.
+    </p>
+    <p>
+     The world is rich with colors, textures, and patterns. To leverage this, we have developed a system (Fig.
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     ) that empowers artists by allowing them to immediately paint with anything they see without the need for specialized hardware. To do so, we needed an effective method for handling the behavior of brush strokes made from live video. Commercial painting systems commonly use a “stamping” approach, which stamps the brush image along the path the user painted. Adobe Photoshop, for example, has a ‘pattern stamp’ brush that allows the user to use any picture as a stamp image. Stamping has the advantage of being intuitive to use and produces easily controllable results. For solid colors and simple patterns, stamping is an adequate technique – however, it cannot preserve the fidelity of irregular or complex textures (Fig.
+     <a class="fig" href="#fig2">
+      2
+     </a>
+     d) and creates obvious seams at stroke boundaries which can make strokes appear artificial. Since we wish to allow artists to paint with arbitrary textures, a stamping-based solution would not suffice. Instead, we choose to use
+     <em>
+      real-time texture synthesis
+     </em>
+     for stroke creation (Fig.
+     <a class="fig" href="#fig2">
+      2
+     </a>
+     e).
+    </p>
+    <p>
+     Texture synthesis behaves in a similar manner to watercolor, which blends strokes in a cohesive and organic way. Another unique characteristic of traditional mediums like watercolor is the potential for “happy accidents”, which can produce desirable outcomes users might not have thought of themselves. Happy accidents can be more powerful when combined with the correction capabilities, such as undoing, that digital media provides. Our system tries to strike a balance between controllability and unpredictability by making strokes both stochastic and correctable.
+    </p>
+    <section id="sec-3">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Guiding Principles
+       </h3>
+      </div>
+     </header>
+     <p>
+      CATS is a painting system that combines the strengths of digital and traditional approaches. Based on our comparisons of traditional and digital media, we prioritized the following features:
+     </p>
+     <ol class="list-no-style">
+      <li id="list1" label="(1)">
+       <em>
+        Intuitive creation of brush assets
+       </em>
+       , through synthesizing textures from live video in real-time. This makes brush creation and modification as simple as pointing a camera.
+       <br/>
+      </li>
+      <li id="list2" label="(2)">
+       <em>
+        Support for correction
+       </em>
+       , through standard correction functions and a
+       <em>
+        paint-drying
+       </em>
+       mechanism, which gives users a small window of time to make adjustments to the stroke texture after it is painted.
+       <br/>
+      </li>
+      <li id="list3" label="(3)">
+       <em>
+        Production of organic strokes
+       </em>
+       , through enforcing cohesiveness between new and existing strokes.
+       <br/>
+      </li>
+      <li id="list4" label="(4)">
+       <em>
+        Support for “happy accidents”
+       </em>
+       , through incorporating elements of randomization.
+       <br/>
+      </li>
+     </ol>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="12 textured strokes with the thumbnail of the exemplar used to create each one on top." src="3300287_files\chi201957fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Brush strokes produced by CATS using exemplars of various textures and sizes.
+       </span>
+      </div>
+     </figure>
+    </section>
+   </section>
+   <section id="sec-4">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     CATS builds upon previous work in texture-based painting, integrated painting and capture systems, and efficient texture synthesis.
+    </p>
+    <p>
+     Graphics researchers have studied texture synthesis for many years as a batch process [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+      9
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ], though some preliminary work does focus on painting [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ]. More recently, RealBrush [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+      15
+     </a>
+     ] demonstrated how to leverage texture synthesis to recreate the appearance and interaction behavior of scanned brush strokes. Brushables [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ] takes this a step further by allowing users to paint with complex input textures that respect user-specified boundaries and directions. These are just a few examples of how texture synthesis can add richness to authored images.
+    </p>
+    <p>
+     The idea of integrating capture and painting is also not a new one. Adobe Capture [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ] is a mobile app that allows users to convert pictures into palettes, patterns, and brush shapes for later use in desktop painting tools. Researchers have also developed tangible user interfaces (TUIs) for painting and capture. I/O Brush is a TUI that allows people to use objects as ink through a paintbrush-like device [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+      19
+     </a>
+     ]. FingerDraw is a mobile application that allows users to paint using colors and textures picked from a finger-worn device [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ]. UnicrePaint is another TUI that allows people to use physical objects as a stylus for painting [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ]. These applications demonstrate the power of using real world objects to make the painting experience more engaging. We expand on these ideas in CATS, making the capture and painting process simultaneous, and using texture synthesis to allow users to produce richer paintings.
+    </p>
+    <p>
+     CATS would not be effective without efficient texture synthesis algorithms. We build on the ideas of Barnes et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ] and Lefebvre et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ]. PatchMatch [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ] is a patch-based, randomized image correspondence algorithm that works at interactive speeds. It is the basis of the Content-Aware Fill function in Adobe Photoshop CS5 [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2
+     </a>
+     ].
+    </p>
+    <p>
+     Lefebvre et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ] presents an efficient parallel texture synthesis solution that allows for intuitive user control over texture variability. To achieve this they use the notion of
+     <em>
+      coordinate jitter
+     </em>
+     , which perturbs exemplar coordinates at each level of synthesis to attain variation. Our texture synthesis solution aims to produce high-quality results efficiently by leveraging the framework of Lefebvre et al.’s approach, with refinements made in the style of PatchMatch. Using texture synthesis during painting grants each painted stroke an ‘awareness’ of the area around it. This creates visual coherence between new and existing strokes, which is not achievable through stamping-based approaches (Fig.
+     <a class="fig" href="#fig2">
+      2
+     </a>
+     ).
+    </p>
+   </section>
+   <section id="sec-5">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       SYSTEM FEATURES
+      </h2>
+     </div>
+    </header>
+    <p>
+     The CATS system runs on a standard computer with a connected webcam and drawing tablet (Fig.
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     ). The interface is equipped with a combination of familiar painting functions and functions specific to the CATS system.
+    </p>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Exemplar Management
+       </h3>
+      </div>
+     </header>
+     <p>
+      The
+      <em>
+       exemplar
+      </em>
+      is the texture that is used as paint for the brush (Fig.
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ). By default, the exemplar is the current webcam feed, which means that the user can change the exemplar at any time by moving the camera or the objects it is observing. When capturing the exemplar, the camera exposure and white balance are typically locked to avoid video fluctuations resulting from changing lighting conditions. CATS allows users to manipulate the exemplar in various ways:
+     </p>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="Fabric examplar and brush strokes created using them." src="3300287_files\chi201957fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Demonstration of cropping. Exemplar and stroke before (a,b) and after (c,d) cropping to the desired region of interest.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <section id="sec-7">
+      <p>
+       <em>
+        Cropping.
+       </em>
+       The user can specify which portion of the exemplar to paint with by cropping it to a region of interest (Fig.
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       ).
+      </p>
+     </section>
+     <section id="sec-8">
+      <p>
+       <em>
+        Eyedropping.
+       </em>
+       In standard painting programs the eyedropper tool allows users to grab the color of a specific pixel on the screen. In CATS, the eyedropper lets the user grab a small portion of the canvas to use as the exemplar.
+      </p>
+     </section>
+     <section id="sec-9">
+      <p>
+       <em>
+        Texture Swatches.
+       </em>
+       CATS also allows users to save and restore exemplars from a library. Saved exemplars are referred to as ‘swatches’.
+      </p>
+     </section>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Brush Control
+       </h3>
+      </div>
+     </header>
+     <p>
+      Similar to normal painting systems, users have control over basic brush parameters. The brush used in CATS is a soft-edged brush.
+     </p>
+     <section id="sec-11">
+      <p>
+       <em>
+        Brush size and opacity.
+       </em>
+       Like a standard painting program, CATS allows users to adjust the brush size and opacity. Opacity can be adjusted manually while brush size can be adjusted manually or through pen pressure.
+      </p>
+      <figure id="fig5">
+       <img alt="" class="img-responsive" longdesc="(Left) Fabric exemplar (Right CATS strokes created using the fabric exemplar with varying levels of texture perturbation" src="3300287_files\chi201957fig5.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 5:
+        </span>
+        <span class="figure-title">
+         Jitter decreases the coherence of synthesized strokes.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-12">
+      <p>
+       <em>
+        Brush jitter.
+       </em>
+       Strokes also have a jitter parameter that affects how much structure from the original texture is maintained (Fig.
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       ).
+      </p>
+     </section>
+    </section>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Auxiliary Functions
+       </h3>
+      </div>
+     </header>
+     <p>
+      CATS has support for stroke correction as well as canvas and exemplar management.
+     </p>
+     <section id="sec-14">
+      <p>
+       <em>
+        Wet paint.
+       </em>
+       Strokes have a ‘dryness’ parameter that determines how quickly the stroke is committed to the canvas. As a stroke is ‘drying’ users can make adjustments to the exemplar. Once a stroke is completely dry, it is committed to canvas and no further adjustments can be made.
+      </p>
+     </section>
+     <section id="sec-15">
+      <p>
+       <em>
+        Erase/Undo.
+       </em>
+       Users can erase strokes or undo previous actions.
+      </p>
+     </section>
+     <section id="sec-16">
+      <p>
+       <em>
+        Loading/Saving Canvases.
+       </em>
+       Users may load and save canvases. The loading functionality for canvases allows users to import a sketch or photograph as a painting base.
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-17">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       SYNTHESIS APPROACH
+      </h2>
+     </div>
+    </header>
+    <figure id="fig6">
+     <img alt="" class="img-responsive" longdesc="Diagram representing the texture synthesis solution; a paint stroke has small regions pointing into the exemplar texture" src="3300287_files\chi201957fig6.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 6:
+      </span>
+      <span class="figure-title">
+       Our texture synthesis solution fills paint region
+       <em>
+        P
+       </em>
+       such that each patch of
+       <em>
+        P
+       </em>
+       , after blending with
+       <em>
+        C
+       </em>
+       , is close to some patch of
+       <em>
+        E
+       </em>
+       .
+      </span>
+     </div>
+    </figure>
+    <figure id="fig7">
+     <img alt="" class="img-responsive" longdesc="Data flow diagram representing the hole filling procedure. There are 3 regions: the finest level, middle level, and coarsest level. Each region has a set of modules representing functions and variables, with arrows showing the direction data is being passed in." src="3300287_files\chi201957fig7.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 7:
+      </span>
+      <span class="figure-title">
+       The hole filling procedure. Parameters to the hole filling function are the inputs to the finest level. Downsampling is used to provide canvas and exemplar inputs to the coarse levels from the fine levels, while upsampling is used to initialize the fine levels’ ANN from the coarse levels’. The coarsest level's ANN is initialized with random tiling coordinates.
+      </span>
+     </div>
+    </figure>
+    <p>
+     When a user paints a stroke in CATS they are specifying a mask that indicates which pixels should receive paint. The objective of CATS’ texture synthesis is to build a texture image,
+     <em>
+      T
+     </em>
+     , so that when the texture image is blended with the canvas,
+     <em>
+      C
+     </em>
+     , using the paint mask,
+     <em>
+      P
+     </em>
+     , patches in the resulting composite are as close as possible to the exemplar,
+     <em>
+      E
+     </em>
+     :
+    </p>
+    <div class="table-responsive" id="eq1">
+     <div class="display-equation">
+      <span class="tex mytex">
+       \begin{equation} T \equiv \underset{T}{\mathrm{argmin}}\; \mathrm{pd}(P(T-C)+C, E) \end{equation}
+      </span>
+      <br/>
+      <span class="equation-number">
+       (1)
+      </span>
+     </div>
+    </div>
+    Where the closeness-to-exemplar is measured with a patch distance function, pd, which sums the minimum distance between each 5 × 5 patch in the blended image and its closest patch in the exemplar:
+    <div class="table-responsive" id="eq2">
+     <div class="display-equation">
+      <span class="tex mytex">
+       \begin{equation} \mathrm{pd}(A,B) \equiv \sum _{x_a,y_a} \min _{x_b,y_b} \sum _{0\le i, j \le 5} (A(x_a+i,y_a+j) - B(x_b+i,y_b+j))^2 \end{equation}
+      </span>
+      <br/>
+      <span class="equation-number">
+       (2)
+      </span>
+     </div>
+    </div>
+    <p>
+    </p>
+    <p>
+     In other words, we can think of the stroke as cutting a (soft-edged) ‘hole’ in the canvas, and the texture synthesis algorithm as trying to fill this hole with patches that look similar to the exemplar (Fig.
+     <a class="fig" href="#fig6">
+      6
+     </a>
+     ).
+    </p>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Hole Filling
+       </h3>
+      </div>
+     </header>
+     <p>
+      Hole-filling is a well-studied use case for texture synthesis. We adopted the framework described in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ] and [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ], and created a real-time implementation by combining ideas from Lefebvre et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ] and Barnes et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ]. These previous works showed that a straightforward way to minimize the objective function above (Equation
+      <a class="eqn" href="#eq1">
+       1
+      </a>
+      ) is to find, for each pixel in the target image
+      <em>
+       P
+      </em>
+      (
+      <em>
+       T
+      </em>
+      −
+      <em>
+       C
+      </em>
+      ) +
+      <em>
+       C
+      </em>
+      , the closest patch in
+      <em>
+       E
+      </em>
+      , and to average these patches to produce a new texture image
+      <em>
+       T
+      </em>
+      . Unfortunately, searching for the nearest patch in
+      <em>
+       E
+      </em>
+      is quite computationally expensive, so we follow previous work in using two acceleration strategies. First, we replace the true nearest patch information with an
+      <em>
+       approximate nearest neighbor field
+      </em>
+      (ANN) that stores the location of the closest exemplar patch found using randomized search. And, second, our approach works at multiple scales, using the solutions of smaller, low resolution versions of the problem to initialize larger, high resolution problems.
+     </p>
+     <p>
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300287_files\chi201957img1.svg"/>
+      </span>
+     </p>
+     <p>
+      Algorithm 1 and Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      present an overview of the hole filling process used by CATS. The hole filling procedure works recursively, solving the problem on a smaller image, and using this solution, along with some jitter, to initialize the ANN at the current scale. At the smallest scale, the ANN is filled with a tiled version of the exemplar.
+     </p>
+     <p>
+      Once the ANN has been initialized, our algorithm refines it by iterating
+      <em>
+       Set Target
+      </em>
+      ,
+      <em>
+       Random Search
+      </em>
+      , and
+      <em>
+       Propagate
+      </em>
+      steps. This is done five times at coarse scales and only twice on the two finer levels to save processing time.
+     </p>
+     <section id="sec-19">
+      <p>
+       <em>
+        Set Target.
+       </em>
+       The level's target texture is set by blending exemplar patches from the current ANN field. For each pixel
+       <em>
+        p
+       </em>
+       in the canvas, the set of overlapping patches
+       <em>
+        O
+       </em>
+       is obtained. The ANN is used to retrieve the set of nearest neighbors
+       <em>
+        N
+       </em>
+       for all patches in
+       <em>
+        O
+       </em>
+       . The RGB average is computed for the pixels in
+       <em>
+        N
+       </em>
+       overlapping
+       <em>
+        p
+       </em>
+       . This value is then alpha blended with
+       <em>
+        p
+       </em>
+       to produce the final result.
+      </p>
+     </section>
+     <section id="sec-20">
+      <p>
+       <em>
+        Random Search.
+       </em>
+       The method tries to improve
+      </p>
+      <p>
+       ANN(
+       <em>
+        x
+       </em>
+       ,
+       <em>
+        y
+       </em>
+       ) by randomly sampling successively larger regions around ANN(
+       <em>
+        x
+       </em>
+       ,
+       <em>
+        y
+       </em>
+       ). If the RGB distance between the randomly chosen patch and the target patch is less than the current best distance, that means a better match was found and the ANN and best distance are updated accordingly.
+      </p>
+     </section>
+     <section id="sec-21">
+      <p>
+       <em>
+        Propagate.
+       </em>
+       Our method uses the jump-flooding procedure from Lefebvre et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+        13
+       </a>
+       ] for content propagation. The method tries to improve ANN(
+       <em>
+        x
+       </em>
+       ,
+       <em>
+        y
+       </em>
+       ) using the known values of ANN(
+       <em>
+        x
+       </em>
+       + step,
+       <em>
+        y
+       </em>
+       ), ANN(
+       <em>
+        x
+       </em>
+       − step,
+       <em>
+        y
+       </em>
+       ), ANN(
+       <em>
+        x
+       </em>
+       ,
+       <em>
+        y
+       </em>
+       + step), and ANN(
+       <em>
+        x
+       </em>
+       ,
+       <em>
+        y
+       </em>
+       − step), where step follows some sequence of integers. The method looks at the exemplar patch at ANN(
+       <em>
+        x
+       </em>
+       +
+       <em>
+        a
+       </em>
+       ,
+       <em>
+        y
+       </em>
+       +
+       <em>
+        b
+       </em>
+       ) − (
+       <em>
+        a
+       </em>
+       ,
+       <em>
+        b
+       </em>
+       ) and checks whether the RGB distance is less than the current best distance, updating the ANN and best distance when appropriate.
+      </p>
+     </section>
+    </section>
+    <section id="sec-22">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Paint-drying
+       </h3>
+      </div>
+     </header>
+     <p>
+      Rather than copying the synthesized texture to the canvas immediately, our algorithm may instead allow the stroke to slowly “dry”, copying only a portion of the currently synthesized texture,
+      <em>
+       T
+      </em>
+      , to the canvas.
+     </p>
+     <p>
+      Specifically, on each frame, the next paint mask
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{P}$
+       </span>
+      </span>
+      and canvas
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{C}$
+       </span>
+      </span>
+      are determined by the drying amount
+      <em>
+       d
+      </em>
+      as follows:
+     </p>
+     <div class="table-responsive" id="eq3">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{align} \hat{P} &amp; \equiv \max (0,P-d) \end{align}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (3)
+       </span>
+      </div>
+     </div>
+     <div class="table-responsive" id="eq4">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{align} \hat{C} &amp; \equiv \frac{(P-\hat{P}) \cdot T + (1-P)\cdot C}{1-\hat{P}} \end{align}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (4)
+       </span>
+      </div>
+     </div>
+     <p>
+     </p>
+     <p>
+      The equation for
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{C}$
+       </span>
+      </span>
+      follows from the observation that the overall appearance of the composition (i.e.,
+      <em>
+       P
+      </em>
+      (
+      <em>
+       T
+      </em>
+      −
+      <em>
+       C
+      </em>
+      ) +
+      <em>
+       C
+      </em>
+      ) should not change during paint drying.
+     </p>
+    </section>
+    <section id="sec-23">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Performance
+       </h3>
+      </div>
+     </header>
+     <p>
+      On a 2017 MacBook Pro with a 3.1 GHz Intel Core i7 processor, Radeon Pro 560 4GB GPU, and 16 GB of RAM, the full
+      <tt>
+       fillHole()
+      </tt>
+      function runs at 35 frames per second on a 1 megapixel canvas with a 256 × 256 exemplar.
+     </p>
+     <figure id="fig8">
+      <img alt="" class="img-responsive" longdesc="3 rows of paintings created by the artists. Row 1 col 1: an abstract painting with gravel and floating brown shoes Row 1 col 2: a gouache landscape painting of falling stars Row 2 col 1: a painting of a man embracing a woman Row 2 col 2: a stylized painting of a singing tomato wearing fishnet stockings Row 3 col 1: a stylized portrait of a boy with a halo Row 3 col 2: an abstract landscape with a dragon in the sky Row 3 col 3: an abstract painting of a girl" src="3300287_files\chi201957fig8.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 8:
+       </span>
+       <span class="figure-title">
+        A selection of CATS paintings, in order of completion, by Rain Du (row 1), Constance Ye (row 2), and Ming Lu (row 3) alongside a subset of the exemplars used to make them. The paintings in Fig.
+        <a class="fig" href="#fig1">
+         1
+        </a>
+        were also created by Du and Ye, respectively. Exemplars are absent for some paintings because swatches were not saved during those sessions.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+   </section>
+   <section id="sec-24">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       USER STUDY
+      </h2>
+     </div>
+    </header>
+    <p>
+     To understand how CATS would fit into an artist's workflow, we conducted a user study with 3 local artists with distinct artistic styles. The artists were recruited through word-of-mouth and we had no associations with them prior to the study. The study took place over a period of 2 weeks. We installed the CATS system on the artists’ personal laptops and gave each artist a Logitech HD webcam to use for capture. Laptops were Mac models from 2014, 2015, and 2017. The artists were instructed to use the tool for approximately 1-2 hours each day, make at least 2 finished paintings, and note down thoughts and feedback as they come to mind. We also asked that 1 painting is made entirely in CATS; they were permitted to use other software for the remaining paintings, provided that most of the work was completed in CATS. In addition to encouraging the artists to contact us with any questions they might have during the process, we also provided them with a user guide of the system as a supplemental aid. Artists were compensated
+     <font style="normal">
+      $
+     </font>
+     150 if they completed 2 paintings or
+     <font style="normal">
+      $
+     </font>
+     200 if they completed greater than 2 paintings.
+    </p>
+    <figure id="fig9">
+     <img alt="" class="img-responsive" longdesc="A row of 3 paintings. Painting 1: a girl with golden hair in a forest Painting 2: a woman wearing a dress with flowers Painting 3: a child with their arms raised and a landscape flowing out of their body" src="3300287_files\chi201957fig9.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 9:
+      </span>
+      <span class="figure-title">
+       Paintings made prior to the study by Rain Du (left; digital), Constance Ye (middle; traditional), and Ming Lu (right; digital).
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     The artists who participated in this study were Rain Du, Constance Ye, and Ming Lu. All artists had experience in both digital and traditional painting mediums, with varying levels of comfort. Sample paintings made by the artists prior to the study are shown in Fig.
+     <a class="fig" href="#fig9">
+      9
+     </a>
+     . Du was more comfortable with digital than traditional, Ye was more comfortable with traditional than digital, while Lu felt equally comfortable with both.
+    </p>
+    <p>
+     We scheduled individual check-in meetings with the artists after 2 days, after 1 week, and after 2 weeks of starting the study. During the first two check-in meetings we would review and discuss any new paintings, answer questions the artists might have about the system, and make suggestions on what techniques they could try. In the final check-in meeting we discussed the overall experience with the tool and asked the the artists to fill out a survey based on the Creativity Support Index (CSI) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ] for additional feedback.
+    </p>
+    <p>
+     Below is a synthesis of the conversations we had with the artists over the course of the study. Because CATS is a nonstandard painting system we first discuss its learning curve and what artists found most challenging about the system. Once artists familiarized themselves with the system we then examine the different ways each artist used the tool. Finally, we discuss the artists’ overall impressions of what the system enables them to create.
+    </p>
+    <section id="sec-25">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Learnability
+       </h3>
+      </div>
+     </header>
+     <p>
+      As with any new program, each artist had to go through an adjustment period. Ye thought the learning curve for CATS was fairly steep and that it took her a few days before she could create work that looked right to her. She then added that it was not “too bad” as there was not much to learn or memorize due to its simple controls. Du felt like the learning curve came from finding a comfortable way to work. She initially experimented with creating abstract paintings using textures from everyday objects, both of which were outside her normal comfort zone. After almost two weeks of using CATS, she transitioned to creating representational pieces with a gouache palette setup – and she was finally able to feel comfortable with the system and produce work she was very satisfied with. Lu seemed to have the shortest acclimation time of the three, taking roughly 4-5 hours to get used to the system. She commented that CATS reminded her a lot of when she started out with painting, allowing her to experiment often and get more free with her strokes.
+     </p>
+     <p>
+      A common theme that arose during the adjustment period was the controllability of the system. Artists found that CATS made it difficult to achieve very specific results due to the decisions made by the stroke matching algorithm. Lu would feel slightly disappointed when textures did not come out the way she was expecting – however, she added that it was not necessarily a “bad thing”. One related remark by Ye harkens back to the notion of making creative systems that support “happy accidents”:
+     </p>
+     <blockquote>
+      <p>
+       <em>
+        “I think it's good to have some things be a little out of your control. It's like how in watercolor you can't control it too much so you just roll with it; this tool does what it wants so you roll with it and it's pretty cool.”
+       </em>
+      </p>
+     </blockquote>
+    </section>
+    <section id="sec-26">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Techniques
+       </h3>
+      </div>
+     </header>
+     <p>
+      Even with the same materials or the same piece of software, artists often have disparate ways of working. This is no different in CATS. To begin with, all artists had very distinct brush function preferences. Du regularly used the eyedropping function to make swatches from her canvas, especially during the final adjustment stages when she mostly aimed to “make what's already [on the canvas] blend more naturally”. Du said she adjusted brush size the least, while Lu continually adjusted brush size as it felt more natural for her. Lu was also the only one who made changes to the stroke dryness, utilizing it for stroke adjustment. As she often used a low dryness setting, she found it “really cool to watch [strokes] change so violently”. Of the three, Lu used swatches the least. Ye, on the other hand, said she used swatches “religiously” and always worked with maximum jitter (but noted she was not sure how much of a difference it made). It is worth considering whether these preferences arose as a result of the artists selecting the most suitable settings for the exemplars they were using – for example since Du liked using gouache exemplars, using the eyedropper for swatch-making might have made sense to her because it would feel akin to having a paint palette.
+     </p>
+     <p>
+      Feedback also suggested that the artists’ preferred exemplars might have influenced their workflow and informed what they prioritized in their paintings. Du said her workflow in CATS felt similar to her normal one, where she gives the most priority to value and hue. With the gouache palette, her texture of choice, she said she did not have to consider textures too carefully as it already had a “texture which [she] thinks is pretty nice, and does not need much deliberate control to ‘get the texture right’ ”. Since Ye liked using patterned cloth textures, she gave more priority to matching the tones of textures to ensure that the painting would not look too “garish”.
+     </p>
+     <p>
+      In our own use of CATS we experimented a lot with capture modalities – such as creating elaborate mounting and lighting rigs or moving the camera while painting. However, we found that our artists did not report doing this and preferred to use simpler approaches. Both Du and Lu would hold the camera and point to exemplars with one hand, while drawing with the other. Ye, on the other hand, kept the camera on the tripod and only moved it when she needed to get closer to the exemplar. We suspect that their decision to not experiment with more complex capture modalities is due to a combination of not having the appropriate setup equipment, or possibly the cognitive load required to paint and move the camera at the same time. Furthermore, this raises the question of whether removing the ‘live capture’ aspect of CATS would significantly alter the user experience.
+     </p>
+    </section>
+    <section id="sec-27">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Exploration
+       </h3>
+      </div>
+     </header>
+     <p>
+      The idea of “play” was frequently brought up in discussions. All artists described the program as being fun to play around with and often took an exploratory approach to their paintings. Artists reported that much time was spent finding textures to use for their paintings, which frequently led them to experiment with unconventional materials. For example, Ye tried using a tissue box as the background for her first painting in Fig.
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      and was surprised at how nicely the textures turned out. Lu also reported that a lot of the “interesting” textures came from her pointing at random objects in her room and “finding out that [she] liked [them] a lot”. To create her first painting in Fig
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      , Du took a ‘plein-air’ approach and explored her neighborhood with the CATS system in tow – using textures such as gravel, street signs, and railroad tracks.
+     </p>
+     <p>
+      In addition to experimenting with textures artists also experimented with brush settings. Lu seemed to experiment the most with the settings, often trying different permutations of parameters such as stroke dryness and jitter in order to understand how they interact with each other. She stated:
+     </p>
+     <blockquote>
+      <p>
+       <em>
+        “When you play around with the settings you get interesting effects in how they work in conjunction with each other.”
+       </em>
+      </p>
+     </blockquote>
+    </section>
+    <section id="sec-28">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Uniqueness of Results
+       </h3>
+      </div>
+     </header>
+     <p>
+      As CATS is a new approach to painting, we hoped that it would enable users to create unique artwork. When asked about the reproducibility of CATS paintings, all artists agreed the paintings they made are not easily reproducible using other means. Lu particularly liked how she was able to create backgrounds which looked like organic patterns and thought the textures in CATS looked like “something [she] made”, rather than something that can simply be found online. Ye said she would not have been able to make the same paintings using a different painting program as it would “feel like so much effort”. She added:
+     </p>
+     <blockquote>
+      <p>
+       <em>
+        “It's hard to imagine how you can make a painting like this in Photoshop because you would have to copy/paste things over and over and it wouldn't look smooth...[CATS] blends together the edges, which makes [the strokes] look so coherent.”
+       </em>
+      </p>
+     </blockquote>
+     <p>
+      While artists initially felt the stroke matching behavior made it difficult to achieve specific results, they ultimately enjoyed how strokes ‘blended’ together. Lu appreciated the presence of texture “even in the most blended areas”. Du described the blending of textures in CATS as “magical” and stated that if she had done the paintings in a different painting program they “wouldn't look as natural”. She elaborated by saying that in normal painting programs, if you painted two strokes it is easy to tell that two strokes were painted whereas in CATS, the strokes blend seamlessly together in a manner similar to watercolor. Even for the paintings that used gouache exemplars, Du expressed doubts whether she could recreate them using purely traditional media. She argued that the ability to undo and correct is critical because “every stroke matters”.
+     </p>
+    </section>
+    <section id="sec-29">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Summary of Survey Results
+       </h3>
+      </div>
+     </header>
+     <p>
+      Based on CSI survey results, one artist agreed that CATS allowed her to be expressive and creative while the other two strongly agreed. All artists strongly agreed that the work they produced was worth the effort required to produce it. All artists agreed that the system disappeared and they were able to concentrate on the activity. All artists agreed that they were engaged in the activity and said they would do it again.
+     </p>
+     <p>
+      When asked whether they would use CATS in their own work, Ye stated that she would use CATS again to create more textured artwork while Du and Lu said they would use CATS again if its features could be included in the programs they typically use. Du wished “some features can be incorporated into other programs for digital art” and cited the texture matching and blending behaviors as examples. Indeed, artists experimented with mixed methods to create their paintings – for example Fig.
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      d, Fig.
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      top-right, and Fig.
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      middle-left are paint-overs of images while Fig.
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      c and Fig.
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      d used Photoshop for minor adjustments. Lu believed CATS “could add some texture to the background and places of lower interest/contrast in a drawing, allowing a viewer to use their imagination to fill in the details.”
+     </p>
+    </section>
+   </section>
+   <section id="sec-30">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     One of the challenges many artists face when trying a new painting system is loosening their hold of familiar methods. Artists often develop specific ways of working which can complicate the process of transitioning to new mediums. CATS, at its core, is a rather unorthodox digital painting system: it encourages the use of textures when most artists are accustomed to using solid colors and does not give its users complete control over outputs. From the results of our study, it is evident that CATS breaks expectations, creates confusion, and, in the process, inspires delight. Because of the ways in which it deviates from standard painting programs, CATS allows for the creation of unique paintings not easily achievable using conventional methods.
+    </p>
+    <p>
+     The artists frequently reported enjoying the way CATS blended textures together. However, CATS only tries to stitch fragments together in a logical way without synthesizing transitions between textures. An interesting direction to take for the future would be to consider how to support real-time texture-preserving blending. One potential approach would be to incorporate an image melding [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ] solution to blend brush strokes. Another interesting future effort would be to generate brush shapes. Currently the system only uses a circular brush which may not be effective for certain textures. It would be interesting to consider how to generate different brush shapes from textures and produce convincing boundary effects, as explored by Ritter et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ]. Finally, as noted by the artists, CATS can be enriched with a larger set of painting functions. Adding features such as panning and zooming, a layer hierarchy, and clipping masks can provide users with more flexibility in their painting process.
+    </p>
+    <p>
+     We have presented CATS, a novel digital painting system that synthesizes texture from live video in real time. By capturing textures from live video, CATS accelerates the texture creation workflow and encourages an exploratory approach to painting. User study results demonstrate that artists could produce texture rich paintings that could not easily be made through purely digital or traditional means. This opens an exciting new avenue for using computation to facilitate the creative process and produce new materials for art creation.
+    </p>
+   </section>
+   <section id="sec-31">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We thank the contributing artists for their participation and honest feedback. Special thanks to Nancy Pollard, Jessica Hodgins, Scott Hudson, and Jennifer Jacobs for their advice and technical discussions.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      [n. d.]. Adobe Capture.
+      <a class="link-inline force-break" href="https://www.adobe.com/products/capture.html">
+       https://www.adobe.com/products/capture.html
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Adobe. 2010. Content-Aware Fill.
+      <a class="link-inline force-break" href="https://research.adobe.com/project/content-aware-fill/">
+       https://research.adobe.com/project/content-aware-fill/
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Bill Atkinson. [n. d.]. MacPaint.
+      <a class="link-inline force-break" href="https://archive.org/details/mac_Paint_2">
+       https://archive.org/details/mac_Paint_2
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Connelly Barnes, Dan B. Goldman, Eli Shechtman, and Adam Finkelstein. 2011. The PatchMatch Randomized Matching Algorithm for Image Manipulation.
+      <em>
+       <em>
+        Commun. ACM
+       </em>
+      </em>
+      54, 11 (Nov. 2011), 103–110.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2018396.2018421" target="_blank">
+       https://doi.org/10.1145/2018396.2018421
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Connelly Barnes, Eli Shechtman, Adam Finkelstein, and Dan B Goldman. 2009. PatchMatch: A Randomized Correspondence Algorithm for Structural Image Editing. In
+      <em>
+       ACM SIGGRAPH 2009 Papers
+      </em>
+      (
+      <em>
+       SIGGRAPH ’09
+      </em>
+      ). ACM, New York, NY, USA, Article 24, 11 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1576246.1531330" target="_blank">
+       https://doi.org/10.1145/1576246.1531330
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Erin A. Carroll and Celine Latulipe. 2009. The Creativity Support Index. In
+      <em>
+       CHI ’09 Extended Abstracts on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI EA ’09
+      </em>
+      ). ACM, New York, NY, USA, 4009–4014.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1520340.1520609" target="_blank">
+       https://doi.org/10.1145/1520340.1520609
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Soheil Darabi, Eli Shechtman, Connelly Barnes, Dan B. Goldman, and Pradeep Sen. 2012. Image Melding: Combining Inconsistent Images Using Patch-based Synthesis.
+      <em>
+       <em>
+        ACM Trans. Graph.
+       </em>
+      </em>
+      31, 4, Article 82 (July 2012), 10 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2185520.2185578" target="_blank">
+       https://doi.org/10.1145/2185520.2185578
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Olga Diamanti, Connelly Barnes, Sylvain Paris, Eli Shechtman, and Olga Sorkine-Hornung. 2015. Synthesis of Complex Image Appearance from Limited Exemplars.
+      <em>
+       <em>
+        ACM Transactions on Graphics
+       </em>
+      </em>
+      34, 2 (2015).
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Charles Han, Eric Risser, Ravi Ramamoorthi, and Eitan Grinspun. 2008. Multiscale Texture Synthesis. In
+      <em>
+       ACM SIGGRAPH 2008 Papers
+      </em>
+      (
+      <em>
+       SIGGRAPH ’08
+      </em>
+      ). ACM, New York, NY, USA, Article 51, 8 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1399504.1360650" target="_blank">
+       https://doi.org/10.1145/1399504.1360650
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Anuruddha Hettiarachchi, Suranga Nanayakkara, Kian Peen Yeo, Roy Shilkrot, and Pattie Maes. 2013. FingerDraw: More Than a Digital Paintbrush. In
+      <em>
+       Proceedings of the 4th Augmented Human International Conference
+      </em>
+      (
+      <em>
+       AH ’13
+      </em>
+      ). ACM, New York, NY, USA, 1–4.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2459236.2459237" target="_blank">
+       https://doi.org/10.1145/2459236.2459237
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Craig Hickman. [n. d.]. Kid Pix - The Early Years.
+      <a class="link-inline force-break" href="http://red-green-blue.com/kid-pix-the-early-years/">
+       http://red-green-blue.com/kid-pix-the-early-years/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Mami Kosaka and Kaori Fujinami. 2016. UnicrePaint: Digital Painting Through Physical Objects for Unique Creative Experiences. In
+      <em>
+       Proceedings of the TEI ’16: Tenth International Conference on Tangible, Embedded, and Embodied Interaction
+      </em>
+      (
+      <em>
+       TEI ’16
+      </em>
+      ). ACM, New York, NY, USA, 475–481.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2839462.2856553" target="_blank">
+       https://doi.org/10.1145/2839462.2856553
+      </a>
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Sylvain Lefebvre and Hugues Hoppe. 2005. Parallel Controllable Texture Synthesis. In
+      <em>
+       ACM SIGGRAPH 2005 Papers
+      </em>
+      (
+      <em>
+       SIGGRAPH ’05
+      </em>
+      ). ACM, New York, NY, USA, 777–786.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1186822.1073261" target="_blank">
+       https://doi.org/10.1145/1186822.1073261
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Sylvain Lefebvre and Hugues Hoppe. 2006. Appearance-space Texture Synthesis. In
+      <em>
+       ACM SIGGRAPH 2006 Papers
+      </em>
+      (
+      <em>
+       SIGGRAPH ’06
+      </em>
+      ). ACM, New York, NY, USA, 541–548.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1179352.1141921" target="_blank">
+       https://doi.org/10.1145/1179352.1141921
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Jingwan Lu, Connelly Barnes, Stephen DiVerdi, and Adam Finkelstein. 2013. RealBrush: Painting with Examples of Physical Media.
+      <em>
+       <em>
+        ACM Trans. Graph.
+       </em>
+      </em>
+      32, 4, Article 117 (July 2013), 12 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2461912.2461998" target="_blank">
+       https://doi.org/10.1145/2461912.2461998
+      </a>
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      M. Lukáč, J. Fišer, P. Asente, J. Lu, E. Shechtman, and D. Sýkora. 2015. Brushables: Example-based Edge-aware Directional Texture Painting.
+      <em>
+       <em>
+        Comput. Graph. Forum
+       </em>
+      </em>
+      34, 7 (Oct. 2015), 257–267.
+      <a class="link-inline force-break" href="https://doi.org/10.1111/cgf.12764" target="_blank">
+       https://doi.org/10.1111/cgf.12764
+      </a>
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Michal Lukáč, Jakub Fišer, Jean-Charles Bazin, Ondřej Jamriška, Alexander Sorkine-Hornung, and Daniel Sýkora. 2013. Painting by Feature: Texture Boundaries for Example-based Image Creation.
+      <em>
+       <em>
+        ACM Trans. Graph.
+       </em>
+      </em>
+      32, 4, Article 116 (July 2013), 8 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2461912.2461956" target="_blank">
+       https://doi.org/10.1145/2461912.2461956
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Lincoln Ritter, Wilmot Li, Brian Curless, Maneesh Agrawala, and David Salesin. 2006. Painting with Texture. In
+      <em>
+       Proceedings of the 17th Eurographics Conference on Rendering Techniques
+      </em>
+      (
+      <em>
+       EGSR ’06
+      </em>
+      ). Eurographics Association, Aire-la-Ville, Switzerland, Switzerland, 371–376.
+      <a class="link-inline force-break" href="https://doi.org/10.2312/EGWR/EGSR06/371-376" target="_blank">
+       https://doi.org/10.2312/EGWR/EGSR06/371-376
+      </a>
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Kimiko Ryokai, Stefan Marti, and Hiroshi Ishii. 2004. I/O Brush: Drawing with Everyday Objects As Ink. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’04
+      </em>
+      ). ACM, New York, NY, USA, 303–310.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/985692.985731" target="_blank">
+       https://doi.org/10.1145/985692.985731
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Richard Shoup. [n. d.]. SuperPaint.
+      <a class="link-inline force-break" href="https://web.archive.org/web/20020110013554">
+       https://web.archive.org/web/20020110013554
+      </a>
+      <a class="link-inline force-break" href="http://www.rgshoup.com/prof/SuperPaint/">
+       http://www.rgshoup.com/prof/SuperPaint/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Yonatan Wexler, Eli Shechtman, and Michal Irani. 2007. Space-Time Completion of Video.
+      <em>
+       <em>
+        IEEE Trans. Pattern Anal. Mach. Intell.
+       </em>
+      </em>
+      29, 3 (March 2007), 463–476.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TPAMI.2007.60" target="_blank">
+       https://doi.org/10.1109/TPAMI.2007.60
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300287" target="_blank">
+      https://doi.org/10.1145/3290605.3300287
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'87582aad1b4492a8',t:'MTcxMzMxMjM2MS4wMDIwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

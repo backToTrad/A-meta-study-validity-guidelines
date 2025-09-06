@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Saliency Deficit and Motion Outlier Detection in Animated Scatterplots
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300771_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300771_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300771_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300771_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300771_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300771_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300771_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300771_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Saliency Deficit and Motion Outlier Detection in Animated Scatterplots
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Rafael
+      </span>
+      <span class="surName">
+       Veras
+      </span>
+      , University of Ontario Institute of Technology, Canada,
+      <a href="mailto:rafaveguim@gmail.com">
+       rafaveguim@gmail.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Christopher
+      </span>
+      <span class="surName">
+       Collins
+      </span>
+      , University of Ontario Institute of Technology, Canada,
+      <a href="mailto:christopher.collins@uoit.ca">
+       christopher.collins@uoit.ca
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300771" target="_blank">
+       https://doi.org/10.1145/3290605.3300771
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       We report the results of a crowdsourced experiment that measured the accuracy of motion outlier detection in multivariate, animated scatterplots. The targets were outliers either in speed or direction of motion, and were presented with varying levels of saliency in dimensions that are irrelevant to the task of motion outlier detection (e.g., color, size, position). We found that participants had trouble finding the outlier when it lacked irrelevant salient features and that visual channels contribute unevenly to the odds of an outlier being correctly detected. Direction of motion contributes the most to accurate detection of speed outliers, and position contributes the most to accurate detection of direction outliers. We introduce the concept of saliency deficit in which item importance in the data space is not reflected in the visualization due to a lack of saliency. We conclude that motion outlier detection is not well supported in multivariate animated scatterplots.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Empirical studies in visualization
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Rafael Veras and Christopher Collins. 2019. Saliency Deficit and Motion Outlier Detection in Animated Scatterplots. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 12 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300771" target="_blank">
+         https://doi.org/10.1145/3290605.3300771
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <figure id="fig1">
+    <img alt="" class="img-responsive" longdesc="" src="3300771_files\chi2019541fig1.jpg"/>
+    <div class="figure-caption">
+     <span class="figure-number">
+      Figure 1:
+     </span>
+     <span class="figure-title">
+      Feature distributions in a typical direction stimuli. Values are sampled from independent distributions. The target point (marked in red) receives an outlying value in the relevant dimension (either direction or speed). Depending on the condition, the target can have mean or maximum (salient) values in the irrelevant dimensions. For instance, in the condition
+      <em>
+       +color
+      </em>
+      , the target has salient color. The scatterplot in the bottom left is the first frame; the arrows in the bottom right represent the displacement between the initial and final frames, which is animated.
+     </span>
+    </div>
+   </figure>
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this paper, we investigate questions related to the independence of visual dimensions in animated scatterplots. We often seek to encode data in as many visual variables as possible, and this strategy has been extended to scatterplots with the use of color, size, and motion. Here we question the accuracy of the basic task of motion outlier detection in the complex scenes formed by animated multivariate scatterplots. Does the saliency of non-motion features impact the detection of motion outliers? Can we put motion outliers in a state where they are hard to detect by simply changing their color, size, or position? If so, in visualizations where observing change is a relevant task the variations in data point saliency will hinder or amplify the local perception of change, turning the encoding unreliable.
+    </p>
+    <p>
+     The perception literature has abundant studies on the performance of search tasks in static and moving scenes [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+      33
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ]. However, psychology studies are difficult to comprehend by non-experts and their low level makes it difficult to extract implications to visualization design. Nonetheless, these controlled experiments produced general results that support useful rules of thumb; for instance, targets among uniform distractors are much easier to detect than when the distractors have high variance [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ]. This rule captures well the results of “pre-attention” experiments with single and conjunction static features (e.g., color), and with motion components (speed and direction). Detection of speed and direction outliers in displays where no other features compete is considered efficient, and the effects of speed on direction and vice-versa are well studied [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ]. However, detecting speed and direction targets in scenes where many other channels are used is not well studied.
+    </p>
+    <p>
+     In the second edition of his book, Ware warned that studies on perceptual independence among three or more visual channels were rare [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+      34
+     </a>
+     ]. Almost 15 year later, our understanding of these interactions and their implications to visualization is insufficient, and fewer are the studies that involve motion in visualization. Progress recently has been made in revising rankings of encoding effectiveness [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+      22
+     </a>
+     ]. While these have great practical application, they do not seek to explain the fundamental phenomena driving performance results.
+    </p>
+    <p>
+     Among the powerful concepts that may help us unveil the roots of problems in the visual mapping of data is visual saliency. In this paper we contribute an experiment aimed at measuring the gap in motion outlier detection accuracy between salient and non-salient outliers. We simulate animated scatterplots that contain either a speed outlier or a direction outlier. Then we vary the number of static features that, in addition to motion, are salient in these outliers.
+    </p>
+    <p>
+     We find that motion outliers that have additional salient features are much more likely to be correctly identified than non-salient outliers. Our results show that motion is not immune from interference of other dimensions and suggest that motion outlier detection is unreliable in multivariate animated scatterplots. We proceed to define the notion of
+     <em>
+      saliency deficit
+     </em>
+     : a state where the saliency profile in a visualization scene impairs the effectiveness of a visualization task; and suggest that saliency deficit models can help the automatic identification of saliency-boosting opportunities in visualizations.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <figure id="fig2">
+     <img alt="" class="img-responsive" longdesc="" src="3300771_files\chi2019541fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 2:
+      </span>
+      <span class="figure-title">
+       Snapshot of the interface for the speed task. The direction task asked ”Select the point that moves in the most deviant direction.”
+      </span>
+     </div>
+    </figure>
+    <p>
+     In this research we are interested in the role saliency plays in motion outlier identification. While this question has wide-ranging applications, we constrain our investigation to animated scatterplots. In this section we will review the related work in perception for information visualization, the use of animated scatterplots, and the recent trend of developing empirical perception models for visualization.
+    </p>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Perception
+       </h3>
+      </div>
+     </header>
+     <p>
+      Visual attention research investigates the limits of attention of the human visual system and has produced a number of theories that explain the mechanisms of visual information processing (see Healey and Enns [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ] for a review). Feature integration theory proposes that scenes are initially processed as many separable basic dimensions (e.g., color, motion, orientation), which are later integrated to form more complex objects [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ]. Without focused attention, features remain separated. As a consequence of this mechanism, searches for basic features occur in parallel and are fast, while searches for conjunction features, which involve more than one dimension (e.g., a red circle in a scene with red squares and blue circles), occur serially and thus slow down as the number of objects present in the scene increase. Visual search experiments usually ask participants to determine whether a target is present in a scene with distractors, and the number of distractors is manipulated. Reaction times (RT) and accuracy are recorded, and results are summarized as the slope of the linear relationship between the response and the number of distractors. Parallel searches have slope close to 0. Frequently, the term “popout” is used to describe the easy identification of targets in these searches.
+     </p>
+     <p>
+      While many experiments corroborate feature integration theory, other experiments found that some conjunction searches are too efficient to be serial searches. For instance, motion-shape targets can be detected in parallel, suggesting the existence of a
+      <em>
+       motion filtering process
+      </em>
+      , which effectively subsets the scene, reducing the search task to a simple feature search on moving items [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ]. Aiming at explaining these problematic cases, the theory of guided search posits that the goals of the viewer play a large role in visual search, with activation maps (“heatmap” representations of the visual space storing the likelihood of locations containing a target) being constructed with bottom-up and top-down information. Top-down processes are cognitive, driven by users tasks and goals, while bottom-up processes are driven by sensory information. Guided search theory suggests that the difference in performance between single feature and conjunction tasks is due to the amount of guidance that bottom-up processes can provide [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ]. Thus top-down guidance is the reason “fast” conjunction searches exist.
+     </p>
+     <p>
+      The impact of color on motion discrimination is well studied. Both hue and luminance have been shown to independently enable
+      <em>
+       apparent motion
+      </em>
+      of simple objects when they are displayed in different positions in successive frames, prompting debate as to whether or not color and motion are processed by separate pathways [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ]. Croner and Albright [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ] found that hue saliency and luminance saliency aid the discrimination of motion direction; that is, participants detect more accurately targets moving in the same direction among distractors moving in random directions when the targets have distinct hue or luminance, which may suggest that color segmentation of the scene occurs prior to motion discrimination, a process opposite to the motion filtering mentioned above.
+     </p>
+     <p>
+      The statistical saliency model (SSM) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ] seeks to explain motion popout phenomena with a simple statistical measure that quantifies the saliency of targets with respect to the distractors in the scene. The SSM explains the following asymmetries in motion popout phenomena: a) searching for a moving target among still distractors is easier than searching for a still target among moving distractors; b) searching for a fast target among slow targets is easier than the opposite; c) adding variability in speed when searching for a unique motion direction has little effect, while adding variability in direction when searching for a unique speed makes the search task more difficult. The SSM is compelling because calculation of the saliency of objects is trivial and efficient, and because it has been shown to explain search results in experiments where dimensions other than motion are examined. We review this model in more detail in Section
+      <a class="sec" href="#sec-6">
+       3
+      </a>
+      .
+     </p>
+     <p>
+      We enumerate the following challenges in transferring the existing perception knowledge to the problem addressed in this work:
+     </p>
+     <ul class="list-no-style">
+      <li id="uid4" label="1">
+       In the perception experiments cited above, targets are chosen arbitrarily. In our experiment, targets are outliers in the statistical sense. We ask whether outlierness as a statistical property is preserved through the visual mapping.
+       <br/>
+      </li>
+      <li id="uid5" label="2">
+       Motion outlier detection in scatterplots is not a conjunction task. While the conjunction of motion and other dimensions is well studied, our problem is defined as a basic feature search in the presence of many irrelevant dimensions.
+       <br/>
+      </li>
+      <li id="uid6" label="3">
+       The dimensions in our stimuli encode continuous data attributes, while in perception studies they are often discretized to some degree (e.g., moving / still, fast / slow, bright / dim) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+        6
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+        23
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+        33
+       </a>
+       ].
+       <br/>
+      </li>
+     </ul>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Animated Scatterplots
+       </h3>
+      </div>
+     </header>
+     <p>
+      Scatterplots are one of the most effective visualizations because they employ position along a common scale, which was found to be the representation with which people can most accurately perform visual judgments [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ]. Less important dimensions are commonly mapped to color, size, and shape. Gleicher et al. demonstrated that people can accurately compare means in multiclass scatterplots despite the addition of one discrete irrelevant cue (shape) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ]. This work shows that people can comfortably extract a summary statistic confined to a single dimension in the presence of an irrelevant dimension. Here, we investigate whether another summary statistic (outlierness) can be extracted from
+      <em>
+       motion
+      </em>
+      in correlated scatterplots with more than one irrelevant dimension (color, size). A key difference is that our scatterplots do not feature discrete dimensions that would enable the visual segmentation of the scene.
+     </p>
+     <p>
+      Szafir et al. argue that ensemble coding allows us to visually extract statistical information from scatterplots, such as outliers and statistical summaries, but acknowledge that attentional control may be problematic when multiple variables are encoded simultaneously, although the empirical basis is still lacking [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ]. Robertson et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ] found that animated scatterplots were not superior to static trend visualizations in analytical tasks (error rates) focused on trajectories. Huber and Healey [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ] devised precise discriminability lower limits for motion (in displays with no competing visual channels): a target-distractor difference of a least 20 degrees is necessary for direction oddballs to be detected accurately; for speed, the difference needs to be at least 0.43 degrees of visual angle. Our outliers satisfy these conditions (Section 4).
+     </p>
+     <p>
+      Albeit designed to devise guidelines for notification design, Bartram et al.’s study of visual cues came to conclusions that relate to visualization design. Subjects were asked to perform a task in a window while glyphs overloaded with various encodings were scattered in the periphery [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ]. The authors measured how accurately subjects could detect change in the glyphs. Motion was found to be the most reliable cue, better than changes in shape and color. They concluded that motion “does not seem to interfere with existing color and form coding” and that motion detection is effective even in visual periphery and with small amplitudes.
+     </p>
+     <p>
+      Etemadpour et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ] used motion as a solution to clutter on the assumption that motion does not suffer interference from other channels. They reported a large improvement in the accuracy of ranking cluster density when motion was used as an encoding for cluster density. The improvements were relative to scatterplots where density was not explicitly encoded (implicitly encoded as position); plus, density is necessarily correlated to position, which makes motion-position a double encoding for density. Similarly, animated scatterplot matrices that encoded density with flickering were found superior to conventional ones in density judgement tasks [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ].
+     </p>
+    </section>
+   </section>
+   <section id="sec-6">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       SALIENCY
+      </h2>
+     </div>
+    </header>
+    <p>
+     The statistical saliency model (SSM) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ] is a model of visual search based on the intuition that the visual system is interested in unusual things. Rosenholtz represents a visual scene in an appropriate feature space and then computes the saliency of a target as the number of standard deviations between its feature value and the mean of distractors. For a 1-D feature, this corresponds to a simple z-score, while for a higher number of dimensions, the saliency value is given by the Mahalanobis distance. Their model can be seen as a formalization of Duncan and Humphreys’ [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ] rule of thumb that states that search is easier when target-distractor similarity decreases, or when distractor-distractor similarity increases.
+    </p>
+    <p>
+     The use of search tasks and reaction times as proxies for attention relies on the premise that search for salient items should be faster than search for items that do not draw attention. Rosenholtz's study of visual search is directly relevant to motion outlier detection in visualization, and to ranking, indirectly, if we assume that ranking points defaults to finding the most outlying point in increasingly narrow search spaces. For our purposes, however, the existing empirical validation of the SSM is limited. First, the scenes used to test it are usually distractor arrays of constant density (as in a uniform grid) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ]; second, no more than two features (speed and direction of motion) are varied. In information visualization displays, especially scatterplots, the x and y positions of points are commonly correlated, forming point clouds with varying density and levels of occlusion, and the points may be overloaded with multiple visual encodings, such as color, size, and shape [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+      31
+     </a>
+     ].
+    </p>
+    <p>
+     A subsequent paper demonstrates how the SSM predicts asymmetries in colour search in the presence of non-neutral backgrounds [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ]. The model is also the foundation for the feature congestion model of visual clutter [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ], where separate pixel-level saliency maps of color and contrast luminance are linearly combined to produce clutter maps for raster images. The maps can be further aggregated to produce a scalar measure of overall display clutter.
+    </p>
+    <p>
+     Critically, it is not clear how low-level dimensions should be composed for the calculation of saliency in complex visualizations. In Rosenholtz's study of motion outlier detection [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ] it was suggested that the Mahalanobis distance should be calculated on the 2D space formed by speed and direction of motion, whereas in the feature congestion model saliency is calculated as a linear combination of 1D saliencies. It is likely that the latter is the appropriate method in a scene where motion and static features are varied, in which case we need to learn the dimension coefficients.
+    </p>
+    <p>
+     The pixel-level saliency maps employed in the feature congestion model and in many other saliency models [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ] are not compelling for visualization applications because they operate after rendering, a late stage of the visualization pipeline, and because they are commonly tuned for natural images [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ]. Recently, saliency models for data visualization were proposed [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ] that owe their performance mostly to accurate predictions of fixations on text elements (e.g., labels) in static visualizations.
+    </p>
+    <p>
+     In the next section we will explain how we created stimuli with salient and non-salient targets following SSM's definition of saliency.
+    </p>
+   </section>
+   <section id="sec-7">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       EXPERIMENTAL DESIGN
+      </h2>
+     </div>
+    </header>
+    <p>
+     We designed an experiment to find whether saliency predicts accuracy of motion outlier detection tasks in animated multivariate scatterplots. In particular, we investigate whether saliency in irrelevant dimensions influences accuracy. Irrelevant dimensions are those that are not part of the task; for instance, when participants are instructed to find the fastest point, all dimensions (color, size, etc.) but speed are irrelevant.
+    </p>
+    <p>
+     The experiment is split into two
+     <em>
+      tasks
+     </em>
+     , a direction task and a speed task. The former asks participants to select the point with the most deviant direction, the latter asks them to select the fastest point. Throughout this paper we will refer to visual channels as
+     <em>
+      dimensions
+     </em>
+     , and to specific values in these dimensions as
+     <em>
+      features
+     </em>
+     . We'll also call direction and speed the
+     <em>
+      relevant dimensions
+     </em>
+     in their respective tasks. Each animated scatterplot (a
+     <em>
+      scene
+     </em>
+     ) we produced has 12
+     <em>
+      conditions
+     </em>
+     , where only the target is varied: a baseline where the target has no irrelevant salient features, plus five instances where it holds a single irrelevant salient feature (position, color, size, direction/speed, or size increase); a second baseline where the target has five irrelevant salient features at once, plus five instances where one irrelevant feature is held out. Thus, half the stimuli follows a one-at-a-time design, and the other half follows a hold-one-out design. We call these condition groups
+     <em>
+      saliency-deficient
+     </em>
+     and
+     <em>
+      saliency-charged
+     </em>
+     . We use the following notation to refer to individual conditions: in the saliency-deficient group,
+     <em>
+      +
+     </em>
+     conditions refer to the added irrelevant salient feature. For example,
+     <em>
+      +position
+     </em>
+     refers to a stimulus where the only irrelevant salient feature is position. In the saliency-charged group,
+     <em>
+      -
+     </em>
+     conditions refer to the removed irrelevant salient feature. For example,
+     <em>
+      -position
+     </em>
+     refers to a stimulus where only position
+     <em>
+      is not
+     </em>
+     salient. In all stimuli, the target has outlying value in the relevant dimension.
+    </p>
+    <p>
+     The reader may question why we do not vary dataset size, correlation, or the parameters of the sampling distribution. When distribution and dataset size are manipulated, the fundamental quantity that is being varied is the saliency of the target. For instance, a scene with more point spread results in less target saliency, and the same with a more crowded scene. As our goal is to find the effect of saliency on accuracy and we are already varying saliency by manipulating visual features, varying the factors in question would be redundant. Therefore, we see no reason in increasing the complexity of the experiment by adding these additional variables.
+    </p>
+    <p>
+     We generated ten different scenes per task, across 12 scene conditions, for a total of 120 stimuli per task. We collected 20 judgments of each stimulus for a total of 2400 judgments collected for each task, 200 per task-condition. We are interested in measuring the differences in error rates between the saliency-deficit and the saliency-charged baselines, and the impact of introducing or removing features.
+    </p>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Stimuli
+       </h3>
+      </div>
+     </header>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Feature ranges. When speed is the task, the target is assigned an outlying distance value and mean or salient value for the other features. When direction is the task, the target receives an outlying direction. The color spectrum is defined by matplotlib's Viridis colormap.
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr>
+         <td>
+          <img alt="" class="img-responsive" src="3300771_files\chi2019541img1.svg"/>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      We wrote a procedure for generating realistic stimuli inspired by animated scatterplots of the Gapminder data. The Gapminder plots map an often correlated pair of variables to the
+      <em>
+       x
+      </em>
+      and
+      <em>
+       y
+      </em>
+      coordinates, use size to encode a time-varying quantitative variable (usually population), and map a categorical variable (continent) to color. In our scenes, we simulate instead a
+      <em>
+       continuous
+      </em>
+      variable mapped to color because it allows fine-grained control of the saliency.
+     </p>
+     <p>
+      A scene has 50 data points and is composed of two frames that are linearly interpolated to produce the animation. We decomposed motion into distance, which determines how much the point moves in the 2D plane (Euclidean distance), and direction. We sampled the features for the initial frame and calculated the positions in the final frame based on sampled values for distance and direction.
+      <em>
+       x
+      </em>
+      <sub>
+       1
+      </sub>
+      and
+      <em>
+       y
+      </em>
+      <sub>
+       1
+      </sub>
+      are sampled from a multivariate normal distribution with correlation 0.7. The values for color, size increase, and distance are sampled from independent normal distributions. Direction (angle) is sampled from a beta distribution (
+      <em>
+       α
+      </em>
+      = 9.55,
+      <em>
+       β
+      </em>
+      = 10) that has shape similar to a normal, but produces values that are more concentrated around the mean. This pattern was chosen to preserve the correlation of the plot; that is, the point cloud,
+      <em>
+       as a whole
+      </em>
+      , should be moving in a well-defined direction. Due to the animation duration being constant for all points, distance is effectively a measure of speed.
+     </p>
+     <p>
+      After all points are sampled, a target is selected according to the condition. If position is salient, then we select the point with the highest Mahalanobis distance (i.e, the most distant from the center of the point cloud); otherwise, the point
+      <em>
+       closest
+      </em>
+      to the center is selected. If color is salient, we assign to the target the maximum color in the color range; otherwise, we assign it the mean color. This pattern is followed for all the other irrelevant visual dimensions.
+     </p>
+     <p>
+      All targets are outliers detectable through the interquartile range method (Tukey's fences, k=1.5); thus, an analyst using boxplots to analyze the distributions of speed and direction would clearly identify the target as an outlier (positioned beyond a boxplot's whiskers). We produced outliers by assigning to targets a constant value outside the sampled distribution range. On average, direction and speed outlier values were 3.11 and 3.82 standard deviations from the mean. For comparison with Huber and Healey's discriminability thresholds, in average, the trajectory of speed outliers was 0.95 degrees of subtended visual angle longer (40% higher) than that of the next fastest point on a 113ppi laptop screen (e.g., Macbook Pro 13in.) at typing distance (20in.). The difference between direction outliers and the next most deviant points was 52 arc degrees (43% higher), in average.
+     </p>
+     <p>
+      Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      lists the dimension ranges for the sampled points, as well as the mean and salient values. We use the inverted version of matplotlib's Viridis colormap [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ], where higher values are darker (bright points on a white background would not ”pop out”). Viridis was found to have superior performance, measured in time and accuracy of relative similarity judgments, in comparison with other popular colormaps [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ]. We chose the direction range again respecting the principle that the plot trend shouldn't be overly disrupted. The size range was chosen so as to not cause too much occlusion. In addition, the render order on the screen (from largest to smallest) also reduced occlusion. We inspected the stimuli to make sure that the targets were not occluded. Size increase is a multiplier of the initial size. Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      displays a scene for the direction task in the saliency-deficient baseline condition. The target moves in an outlying direction but has average values for speed, color, size and position. All stimuli are provided in the supplemental materials.
+     </p>
+    </section>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Procedure
+       </h3>
+      </div>
+     </header>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="" src="3300771_files\chi2019541fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Flow diagram illustrating the sequence of screens in the study interface. Participants could replay the animations twice. Blank screens were place in-between replays.
+       </span>
+      </div>
+     </figure>
+     <p>
+      We presented the stimuli embedded in the Mechanical Turk interface (Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      ). The page presented the first frame of the animation until the play button was pressed. After the end of the animation, the visualization was stationed in the second frame, allowing participants to select the target and submit the response or replay the animation up to two times before submission. The animation duration was 500 milliseconds. When play was pressed the second or third time the points faded to a blank screen then reappeared in their first frame positions before the animation took place. This sequence is illustrated in Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      . The variable number of views was introduced as a measure to mitigate errors due to interruptions, as these can be a problem in crowdsourced studies where we have no control over the environment. The number of views was capped at three to prevent the task becoming too easy to the extent no differences can be detected between the conditions. Trials were published as two separate groups of HITs on Mechanical Turk (speed and direction). Within each group, trials appeared in random order. Participants were not limited in the number of tasks they could complete. We recorded time, accuracy and number of views.
+     </p>
+     <p>
+      Participants were instructed to find the fastest point (”find the fastest point”) in the speed task and the most deviant point (”find the point that has the most unique trajectory compared to the rest”) in the direction task. Therefore, the task is to “find the maximum”, with all targets being outliers. This mitigates the risk of participants not comprehending the outlierness concept or the study being affected by different notions of what an outlier is. Participants had the opportunity to perform test trials, as it is common on MTurk, but these trials did not provide feedback.
+     </p>
+    </section>
+   </section>
+   <section id="sec-10">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       EXPERIMENT RESULTS
+      </h2>
+     </div>
+    </header>
+    <figure id="fig4">
+     <img alt="" class="img-responsive" longdesc="" src="3300771_files\chi2019541fig4.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 4:
+      </span>
+      <span class="figure-title">
+       Distribution of accuracy for each condition. For each stimulus, accuracy is calculated over 20 judgments. There are 10 stimuli per condition, one for each scene.
+      </span>
+     </div>
+    </figure>
+    <p>
+     We collected 4800 observations from 67 participants, who performed an average of 71.6 tasks (
+     <em>
+      sd
+     </em>
+     = 42.4). The median completion time was 10.3s. Figure
+     <a class="fig" href="#fig4">
+      4
+     </a>
+     displays the accuracy distribution per task-condition. Accuracy is calculated per stimulus (a scene-condition pair) as the ratio correct/incorrect. In the following sections we examine the odds of a participant selecting the outlier and which features contributed most to incorrect selections.
+    </p>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Channel Contributions
+       </h3>
+      </div>
+     </header>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="" src="3300771_files\chi2019541fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        Estimates for the effect of irrelevant salient features on the odds of a speed (top) and direction (bottom) outlier being identified. Binary covariates and multiplicative coefficients. Red denotes statistical significance (
+        <em>
+         p
+        </em>
+        &lt; .05).
+       </span>
+      </div>
+     </figure>
+     <p>
+      We used the R package lme4 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ] to fit a pair of generalized linear mixed models (GLMM), one for each task (speed and direction). We specified the models with a binary response variable (correct = [true, false]) and five binary covariates [salient, non-salient]: position, color, size, speed/direction, and size increase. This model is also known as a binomial logistic regression. In order to account for scene-specific and participant-specific effects, we inserted the variables
+      <em>
+       scene
+      </em>
+      and
+      <em>
+       subject
+      </em>
+      as random effects. As such, the random impact from scenes that happen to be more or less difficult, or participants that are more or less accurate, is reduced. Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      shows the data, and Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      shows the model estimates. Below we discuss the main findings.
+     </p>
+     <section id="sec-12">
+      <p>
+       <em>
+        Motion outlier detection is not well supported.
+       </em>
+       We observed a mean accuracy lower than 25% in the condition
+       <em>
+        baseline-deficient
+       </em>
+       in both tasks. This condition is where the motion outlier does not have salient features other than motion. Low accuracy suggests subjects were mostly unable to separate motion from other dimensions in order to correctly identify the motion outlier. In other words, motion detection in multivariate scatterplots suffers interference from irrelevant dimensions.
+      </p>
+     </section>
+     <section id="sec-13">
+      <p>
+       <em>
+        Accuracy depends on saliency of irrelevant features.
+       </em>
+       We recorded higher accuracy in most conditions where the motion outlier had irrelevant salient features. In particular, subjects achieved averages of 78.5% and 58.5% accuracy in the
+       <em>
+        baseline-charged
+       </em>
+       condition, in the speed and direction tasks, respectively. Removing one salient feature at a time generally caused a drop in accuracy; conversely, adding one salient feature generally increased accuracy, but not by much, especially in the direction task, which suggests that in crowded displays motion outliers can only reliably be extracted if they have multiple salient features. More generally, animated scatterplots may reliably support only the detection of
+       <em>
+        global
+       </em>
+       outliers.
+      </p>
+     </section>
+     <section id="sec-14">
+      <p>
+       <em>
+        Direction plays the largest role in the speed task.
+       </em>
+       The fitted model indicates that direction saliency accounts for an increase of 4.7 times in the odds of correct speed outlier detection, which corresponds to a shift in probability from 0.19 (intercept) to 0.52. This result is somewhat aligned with previous findings that direction variability degrades searching for a unique speed. Targets with salient direction might have allowed subjects to segment the scene, cancelling some of the noise that impacts accuracy.
+      </p>
+     </section>
+     <section id="sec-15">
+      <p>
+       <em>
+        Position plays the largest role in the direction task accuracy.
+       </em>
+       Position is estimated to account for an increase of 3.2 times in the odds for the direction task, which is equivalent to a shift in probability from 0.10 (intercept) to 0.26. This result is not trivial: while targets in salient positions (surrounded with blank space) are more visible, they are arguably more difficult to compare, due to their distance from other points. In addition, this result highlights the effect of clutter on this task. Our sampling process produces a point cloud with a high density center. Points with low spatial saliency are located in these cluttered regions.
+      </p>
+     </section>
+     <section id="sec-16">
+      <p>
+       <em>
+        Size and color have small influence in the direction task.
+       </em>
+       Both size and color contributed modestly to the outcome. We found no evidence of difference between the odds estimate for these dimensions, as their confidence intervals largely overlap. In general, we observe a precedence of spatial attributes (position, speed, and direction) over form attributes (color and size).
+      </p>
+     </section>
+     <section id="sec-17">
+      <p>
+       <em>
+        Size makes no difference in the speed task.
+       </em>
+       We found that size and size increase did not alter the odds of correct detection in the speed task (these variables have odds ratio approximately 1). This is in contrast to a small, but significant effect in the direction task. It is possible that this can be explained by larger points being perceived as moving slower, which would degrade the performance relative to the baseline; however, our model did not point to a negative effect. It is also plausible that the distribution of values mapped to size did not produce enough saliency. Weber's law predicts a non linear relation between area change and perceived area change, which may have caused points with maximum area to appear closer to the mean and less salient.
+      </p>
+     </section>
+    </section>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Which features mislead?
+       </h3>
+      </div>
+     </header>
+     <figure id="fig6">
+      <img alt="" class="img-responsive" longdesc="" src="3300771_files\chi2019541fig6.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 6:
+       </span>
+       <span class="figure-title">
+        Left: estimates for the effect of feature saliency on the number of times a non-target is selected (erroneously). Right: interaction plot depicting the modulation of the effect of speed and direction by irrelevant features.
+       </span>
+      </div>
+     </figure>
+     <p>
+      When examining the incorrect choices of participants one would normally expect that the points they selected are close to the target in speed or direction; that is, more incorrect selections should be recorded for faster or more deviant points. This expectation was contradicted by the low correlations we observed between task dimensions and selection counts: 0.23 for speed and 0.28 for direction. The correlations were calculated on the subset of non-target points with selection count greater than 0. This suggests that incorrect selections are not necessarily due to the proximity to the outlier value in the target dimension; that is, irrelevant dimensions may be leading participants to make mistakes.
+     </p>
+     <p>
+      To find which dimensions play a role in the number of times a non-target point is selected we fit generalized linear models (GLM) to the subset of 1,530 non-target points that were selected at least once. Since the observed response variable—selection count—is skewed and lies in the interval (1, ∞) we set the models with a Gamma response variable. The covariates are saliency measures (SSM) on speed/direction and on all other dimensions. We use the saliency measure here because unlike targets, which were made either salient or not, non-target features lie within a saliency spectrum. Likewise, we split position saliency into saliency in the first frame (
+      <em>
+       xy
+      </em>
+      <sub>
+       1
+      </sub>
+      ) and in the second frame (
+      <em>
+       xy
+      </em>
+      <sub>
+       2
+      </sub>
+      ).
+     </p>
+     <p>
+      We included terms for interactions of all saliency measures with speed/direction. In order to make the estimates comparable and easier to interpret we standardized all covariates (zero-mean and unit-variance). In Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      , the effects are multiplicative; that is,
+      <em>
+       y
+      </em>
+      =
+      <em>
+       β
+      </em>
+      <sub>
+       0
+      </sub>
+      ×
+      <em>
+       β
+      </em>
+      <sub>
+       1
+      </sub>
+      <em>
+       x
+      </em>
+      <sub>
+       1
+      </sub>
+      ×
+      <em>
+       β
+      </em>
+      <sub>
+       2
+      </sub>
+      <em>
+       x
+      </em>
+      <sub>
+       2
+      </sub>
+      ×
+      <em>
+       β
+      </em>
+      <sub>
+       12
+      </sub>
+      <em>
+       x
+      </em>
+      <sub>
+       1
+      </sub>
+      <em>
+       x
+      </em>
+      <sub>
+       2
+      </sub>
+      ..., where
+      <em>
+       β
+      </em>
+      <sub>
+       0
+      </sub>
+      is the intercept,
+      <em>
+       β
+       <sub>
+        i
+       </sub>
+      </em>
+      are fixed effects,
+      <em>
+       β
+       <sub>
+        ij
+       </sub>
+      </em>
+      is an interaction term, and
+      <em>
+       x
+       <sub>
+        i
+       </sub>
+      </em>
+      are dimension values. The interaction plots in Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      depict the curve that represents the relationship between speed/direction and the response variable (count), and how this curve is changed as a function of the interacting variable. Below we report the main findings.
+     </p>
+     <section id="sec-19">
+      <p>
+       <em>
+        Position and direction saliencies boost the effect of speed.
+       </em>
+       In the speed task, the model estimates reveal, not surprisingly, that speed is a confuser and that the interactions of speed with direction saliency and position saliency in the first frame are significant. The interaction terms are positive: the misleading effect of speed increases as a function of the saliency of these irrelevant dimensions. In Figure
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       (top right), this is shown as an increase in slope: when the values of either direction saliency or position saliency increase by one standard deviation, the effect of speed on the response becomes steeper. In practice, this indicates that fast points moving from blank regions and in unique directions tend to be mistaken for true speed outliers. This result is aligned with the channel contributions observed in the previous section: position and direction have the highest impact on the odds of a target being correctly identified.
+      </p>
+     </section>
+     <section id="sec-20">
+      <p>
+       <em>
+        Position saliency in the first frame and color saliency boost the effect of direction.
+       </em>
+       In the direction task we found that the misleading effect of direction saliency is boosted by position saliency in the first frame. In Figure
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       (bottom right) this is seen as a slope increase when the value of
+       <em>
+        saliency_xy1
+       </em>
+       increases. Color saliency also interacts with direction, but to a lesser extent. In addition, we found that the effect of speed is significant and independent from that of direction. Considering the results above, it appears that position saliency in the first frame is consistently a major factor for selection. Motion outliers that are inside the point cloud might be overlooked if there is a confuser departing from a salient position.
+      </p>
+     </section>
+     <section id="sec-21">
+      <p>
+       <em>
+        Position saliency in the second frame degrades the effect of direction.
+       </em>
+       Surprisingly, we found that position saliency in the second frame has a negative interaction with direction. This appears in Figure
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       as a decrease in the slope of the curve when
+       <em>
+        saliency_xy2
+       </em>
+       increases. Participants are thus less likely to erroneously select a point moving in a salient direction the more salient its final position. We hypothesize that this effect may be due to points moving out of the cloud clearly having direction perpendicular to the trend. As participants were instructed to select “the point that moves in the most deviant direction”, they may have been looking for points that were in the opposite direction of the mean. Points moving in the opposite direction would likely be inside the cloud, not moving out of it.
+      </p>
+     </section>
+    </section>
+    <section id="sec-22">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Replays
+       </h3>
+      </div>
+     </header>
+     <figure id="fig7">
+      <img alt="" class="img-responsive" longdesc="" src="3300771_files\chi2019541fig7.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        Distribution of number of views divided by task and condition.
+       </span>
+      </div>
+     </figure>
+     <p>
+      In this section we examine the number of times participants viewed the animation before selecting their answers. We analyze the distribution of correct and incorrect selections across the three possible values for number of views. Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      shows this distribution split by task, condition, and whether the trial was completed correctly. Due to the study being deployed on Mechanical Turk, we are unable to separate divided attention from task difficulty as the cause for replays. A reproduction of this experiment in a controlled setting is necessary for establishing a causal relationship.
+     </p>
+     <p>
+      Overall, we observe the prevalence of a V-shaped distribution, suggesting that participants were more likely to watch the animation either the minimum or maximum allowed times. In the saliency charged group, speed task, we see a clear pattern of correct answers coming more often from 1-view judgments. This pattern is not present in the direction task. In the saliency deficient group we observe the opposite pattern: correct judgments are more likely to come from 3-view judgments, with a few exceptions; namely, targets with salient position in the direction and speed tasks and with salient direction in the speed task seem to require less effort than targets in the other deficient conditions. These patterns are consistent with the coefficients found in the above analyses, suggesting task difficulty may be behind them. We also see the V-shaped symmetrical pattern in incorrect answers, especially in the direction tasks, suggesting confidence in wrong selections.
+     </p>
+    </section>
+   </section>
+   <section id="sec-23">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We found that motion outlier detection is unreliable in multivariate animated scatterplots. The accuracy of motion outlier detection is degraded in the absence of other salient cues. This suggests a level of interference of spatial (position) and form (color, size) encodings over motion, and between the individual components of motion (speed and direction). Furthermore, we found evidence that while people were selecting outliers based on the relevant features (speed, direction), irrelevant features may have acted as “boosters,” leading people to select the wrong target. We hypothesize that this may be due to people's attention getting caught by near-outliers that have high global saliency; since the animation is short, they would not have enough time to revise a first impression.
+    </p>
+    <p>
+     We found spatial saliency, which is closely tied to clutter, to have a large impact on accuracy in both speed and direction tasks. Here, we emphasize the distinction between occlusion and clutter. We inspected the stimuli for occlusion and adjusted the z-order of elements to prevent small points hiding under larger points. Instead of an effect due to inability to
+     <em>
+      see
+     </em>
+     the targets, we believe the effect is due to a difficulty of
+     <em>
+      allocating attention
+     </em>
+     , in the sense of feature congestion: as the feature space becomes crowded there is less chance for a single object to stand out [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ].
+    </p>
+    <p>
+     The results suggest that it may be possible to predict scenes where outlier detection is difficult on the basis of saliency measurements. A linear model with a binary response variable and feature saliency coefficients such as the one we fit can output the odds of correct detection given a “scene.” A linear model of saliency (for clutter measurement) was used also by Rosenholtz et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ]. A threat to the generality of this approach is the fact that the statistical saliency model is invariant to scale (due to the use of Mahalonobis distance); for instance, points mapped to a very narrow color range yield the same saliency values as if they were mapped to a wide color range.
+    </p>
+    <p>
+     At a more general level, the results expose a failure of mapping data outliers to visual outliers, which we refer to as a
+     <em>
+      saliency deficit
+     </em>
+     . A data point or a group of data points is saliency deficient when its importance in the data space is not reflected in the visualization due to a lack of saliency. Saliency deficit is thus a condition of imbalance between data and visual importance. In Kindlmann and Scheidegger's algebraic model [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ], such a failure is classified as a violation to the visual-data correspondence principle: important changes in the data should yield important visual changes.
+    </p>
+    <p>
+     The notion of saliency deficit is task dependent: here we examined motion outlier detection, but it is possible that other tasks in other visualization types may suffer from the same problem. Interference between visual channels is not new in visualization research, which often points to the theory of separable and integral dimensions [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+      11
+     </a>
+     ]. When a pair of visual dimensions is integral, information from an individual dimension cannot be accessed easily. However, these studies have been traditionally restricted to the task of class-separation and with static features. For instance, in a point cloud with varying hue and size, it's not easy to separate points based on each dimension independently.
+    </p>
+    <p>
+     It is plausible that the mechanism behind saliency deficit depends on the number of visual channels employed. That is, the more visual channels, the harder it becomes to perform tasks that rely on saliency along a single dimension. This sends us back to the feature congestion model of clutter, which predicts difficulty in creating salient targets within a crowded feature space. In order to assert this mechanism with confidence, further research needs to examine this effect with a variable number of visual channels.
+    </p>
+   </section>
+   <section id="sec-24">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       LIMITATIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We would like to see the present experiment extended in many ways. We controlled the outlierness of the targets, animation speed, and the distribution of the features and their correlation in order to isolate the effect of feature saliency. This imposes limitations on the scope of inference of the experiment. It is plausible that interactions exist between the controlled factors and the response variables; in particular, as the outlierness of the target increases, the effect of other features probably decreases. The effect of animation speed may be complex: fast transitions may make tasks more difficult, but studies in the topic of change blindness have found that large changes can also go undetected when introduced gradually [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+      29
+     </a>
+     ].
+    </p>
+    <p>
+     We have investigated only positive outliers. Due to a known asymmetry in motion target detection—it is easier to find fast targets among slow distractors than the inverse—we cannot extend our conclusions to slow outliers.
+    </p>
+    <p>
+     As stated in Discussion, we would like to measure accuracy in an experiment where the number of irrelevant dimensions is manipulated. This could generate insights on the number of dimensions beyond which some tasks start to lose accuracy. Likewise, it would be interesting to measure the effect of motion on other encodings. Finally, it is possible that the estimates for size and color do not generalize to other ranges. In particular, the color saliency may vary depending on the direction of the colormap (bright to dark or inverse) and the background.
+    </p>
+   </section>
+   <section id="sec-25">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We reported the results of a controlled experiment designed to test the effect of irrelevant visual dimensions on the accuracy of motion outlier detection in multivariate animated scatterplots. We found that color, size, position, speed, and direction influence the accuracy with which people detect the fastest or the most deviant data point. In particular, we found that spatial visual dimensions, such as position, speed, and direction have larger influence than form attributes, such as color and size. Mean accuracy in detection of speed outliers was higher than 75% only when targets had multiple salient features. When detecting direction outliers, mean accuracy was never higher than 30% when targets lacked salient features.
+    </p>
+    <p>
+     These results suggest a saliency deficit effect that prevents motion targets from being detected accurately when their overall saliency is low; as a consequence, animated scatterplots should be used with caution if outlier detection is a critical task. We believe saliency deficit may affect tasks in other multivariate visualizations. Models of task accuracy that rely on foundational variables, such as saliency, in conjunction with models of user intent may inform the introduction of automated interventions when the predicted accuracy of a task given a plot is low.
+    </p>
+   </section>
+   <section id="sec-26">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGEMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We acknowledge the support of the Natural Sciences and Engineering Research Council of Canada (NSERC) and Fundação CAPES (9078-13-4/Ciência sem Fronteiras).
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Lyn Bartram, Colin Ware, and Tom Calvert. 2003. Moticons:: detection, distraction and task.
+      <em>
+       <em>
+        Int. Journal of Human-Computer Studies
+       </em>
+      </em>
+      58, 5 (2003), 515–545.
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Douglas Bates, Martin Mächler, Ben Bolker, and Steve Walker. 2015. Fitting linear mixed-effects models using lme4.
+      <em>
+       <em>
+        Journal of Statistical Software
+       </em>
+      </em>
+      67, 1 (2015), 1–48.
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Zoya Bylinskii, Tilke Judd, Ali Borji, Laurent Itti, Frédo Durand, Aude Oliva, and Antonio Torralba. [n. d.]. MIT Saliency Benchmark.
+      <a class="link-inline force-break" href="http://saliency.mit.edu/">
+       http://saliency.mit.edu/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Zoya Bylinskii, Nam Wook Kim, Peter O'Donovan, Sami Alsheikh, Spandan Madan, Hanspeter Pfister, Fredo Durand, Bryan Russell, and Aaron Hertzmann. 2017. Learning visual importance for graphic designs and data visualizations. In
+      <em>
+       Proc. 30th ACM Symp. on User Interface Software and Technology
+      </em>
+      . ACM, 57–69.
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Helen Chen, Sophie Engle, Alark Joshi, Eric D Ragan, Beste F Yuksel, and Lane Harrison. 2018. Using Animation to Alleviate Overdraw in Multiclass Scatterplot Matrices. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 417.
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Lisa J Croner and Thomas D Albright. 1997. Image segmentation enhances discrimination of motion in visual noise.
+      <em>
+       <em>
+        Vision Research
+       </em>
+      </em>
+      37, 11 (1997), 1415–1427.
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      M Dick, S Ullman, and D Sagi. 1987. Parallel and serial processes in motion detection.
+      <em>
+       <em>
+        Science
+       </em>
+      </em>
+      237, 4813 (July 1987), 400–402.
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      J. Duncan and G. W. Humphreys. 1989. Visual search and stimulus similarity.
+      <em>
+       <em>
+        Psychological Review
+       </em>
+      </em>
+      96, 3 (1989), 433–458.
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Ronak Etemadpour and Angus Graeme Forbes. 2017. Density-based motion.
+      <em>
+       <em>
+        Information Visualization
+       </em>
+      </em>
+      16, 1 (2017), 3–20.
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Ronak Etemadpour, Paul Murray, and Angus Graeme Forbes. 2014. Evaluating density-based motion for big data visual analytics. In
+      <em>
+       Proc. of the IEEE Int. Conf. on Big Data
+      </em>
+      . IEEE, 451–460.
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Wendell R Garner. 2014.
+      <em>
+       The processing of Information and Structure
+      </em>
+      . Psychology Press.
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      M. Gleicher, M. Correll, C. Nothelfer, and S. Franconeri. 2013. Perception of average value in multiclass scatterplots.
+      <em>
+       <em>
+        IEEE Trans. on Visualization and Computer Graphics
+       </em>
+      </em>
+      19, 12 (Dec. 2013), 2316–2325.
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Christopher Healey and James Enns. 2011. Attention and Visual Memory in Visualization and Computer Graphics.
+      <em>
+       <em>
+        IEEE Trans. on Visualization and Computer Graphics
+       </em>
+      </em>
+      (July 2011), 1–20.
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Jeffrey Heer and Michael Bostock. 2010. Crowdsourcing graphical perception: using Mechanical Turk to assess visualization design. In
+      <em>
+       Proc. SIGCHI Conf. on Human Factors in Computing Systems
+      </em>
+      . 203–212.
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Daniel E Huber and Christopher G Healey. 2005. Visualizing data with motion. In
+      <em>
+       Visualization, 2005. VIS 05. IEEE
+      </em>
+      . IEEE, 527–534.
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Tilke Judd, Frédo Durand, and Antonio Torralba. 2012.
+      <em>
+       A Benchmark of Computational Models of Saliency to Predict Human Fixations
+      </em>
+      . Technical Report MIT-CSAIL-TR-2012-001.
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Younghoon Kim and Jeffrey Heer. 2018. Assessing effects of task and data distribution on the effectiveness of visual encodings.
+      <em>
+       <em>
+        Computer Graphics Forum (Proc. EuroVis)
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Gordon Kindlmann and Carlos Scheidegger. 2014. An algebraic process for visualization design.
+      <em>
+       <em>
+        IEEE Trans. on Visualization and Computer Graphics
+       </em>
+      </em>
+      20, 12 (2014), 2181–2190.
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Yang Liu and Jeffrey Heer. 2018. Somewhere over the rainbow: An empirical assessment of quantitative colormaps. In
+      <em>
+       Proc. SIGCHI Conf. on Human Factors in Computing Systems
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Laura E Matzen, Michael J Haass, Kristin M Divis, Zhiyuan Wang, and Andrew T Wilson. 2018. Data Visualization Saliency Model: A Tool for Evaluating Abstract Data Visualizations.
+      <em>
+       <em>
+        IEEE Transactions on Visualization &amp; Computer Graphics
+       </em>
+      </em>
+      1 (2018), 563–573.
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Peter McLeod, Jon Driver, and Jennie Crisp. 1988. Visual search for a conjunction of movement and form is parallel.
+      <em>
+       <em>
+        Nature
+       </em>
+      </em>
+      332, 6160 (1988), 154.
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      D. Moritz, C. Wang, G. Nelson, H. Lin, A. M. Smith, B. Howe, and J. Heer. 2019. Formalizing visualization design knowledge as constraints: actionable and extensible models in Draco.
+      <em>
+       <em>
+        IEEE Trans. on Visualization and Computer Graphics
+       </em>
+      </em>
+      (2019).
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Thomas V Papathomas, Andrei Gorea, and Bela Julesz. 1991. Two carriers for motion perception: color and luminance.
+      <em>
+       <em>
+        Vision Research
+       </em>
+      </em>
+      31, 11 (1991), 1883–1892.
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      George Robertson, Roland Fernandez, Danyel Fisher, Bongshin Lee, and John Stasko. 2008. Effectiveness of animation in trend visualization.
+      <em>
+       <em>
+        IEEE Trans. on Visualization and Computer Graphics
+       </em>
+      </em>
+      14, 6 (2008), 1325–1332.
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Ruth Rosenholtz. 1999. A simple saliency model predicts a number of motion popout phenomena.
+      <em>
+       <em>
+        Vision Research
+       </em>
+      </em>
+      39(1999), 3157–3163.
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Ruth Rosenholtz, Yuanzhen Li, Jonathan Mansfield, and Zhenlan Jin. 2005. Feature Congestion: A Measure of Display Clutter. In
+      <em>
+       Proc. of the SIGCHI Conf. on Human Factors in Computing Systems
+      </em>
+      . 761–770.
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Ruth Rosenholtz, Yuanzhen Li, and Lisa Nakano. 2007. Measuring visual clutter.
+      <em>
+       <em>
+        Journal of Vision
+       </em>
+      </em>
+      7, 2 (2007), 17.1–22.
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Ruth Rosenholtz, Allen L. Nagy, and Nicole R. Bell. 2004. The effect of background color on asymmetries in color search.
+      <em>
+       <em>
+        Journal of Vision
+       </em>
+      </em>
+      4, 3 (March 2004), 224–240.
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Daniel J. Simons, Steven L. Franconeri, and Rebecca L. Reimer. 2000. Change blindness in the absence of a visual disruption.
+      <em>
+       <em>
+        Perception
+       </em>
+      </em>
+      29, 10 (2000), 1143–1154.
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Nathaniel Smith and Stéfan van der Walt. 2015. A better default colormap for Matplotlib.
+      <a class="link-inline force-break" href="https://youtu.be/xAoljeRJ3lU">
+       https://youtu.be/xAoljeRJ3lU
+      </a>
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Danielle Albers Szafir, Steve Haroz, Michael Gleicher, and Steven Franconeri. 2016. Four types of ensemble coding in data visualizations.
+      <em>
+       <em>
+        Journal of Vision
+       </em>
+      </em>
+      16, 5 (2016), 11.
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Anne M Treisman and Garry Gelade. 1980. A feature-integration theory of attention.
+      <em>
+       <em>
+        Cognitive Psychology
+       </em>
+      </em>
+      12, 1 (1980), 97–136.
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Adrian Von Mühlenen and Hermann J Müller. 2000. Perceptual integration of motion and form information: evidence of parallel-continuous processing.
+      <em>
+       <em>
+        Perception &amp; Psychophysics
+       </em>
+      </em>
+      62, 3 (2000), 517–531.
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Colin Ware. 2004.
+      <em>
+       Information Visualization: Perception for Design (2
+       <sup>
+        nd
+       </sup>
+       ed.)
+      </em>
+      . Morgan Kaufmann Publishers Inc., San Francisco.
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Jeremy M Wolfe. 1998. What can 1 million trials tell us about visual search?
+      <em>
+       <em>
+        Psychological Science
+       </em>
+      </em>
+      9, 1 (1998), 33–39.
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300771" target="_blank">
+      https://doi.org/10.1145/3290605.3300771
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'875846adbafd4d94',t:'MTcxMzMxMzUwNy43OTkwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

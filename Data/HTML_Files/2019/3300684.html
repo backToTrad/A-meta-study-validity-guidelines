@@ -1,0 +1,3081 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Trilaterate: A Fabrication Pipeline to Design and 3D Print Hover-, Touch-, and Force-Sensitive Objects
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300684_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300684_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300684_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300684_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300684_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300684_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300684_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300684_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Trilaterate: A Fabrication Pipeline to Design and 3D Print Hover-, Touch-, and Force-Sensitive Objects
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Martin
+      </span>
+      <span class="surName">
+       Schmitz
+      </span>
+      , TU Darmstadt, Germany,
+      <a href="mailto:schmitz@tk.tu-darmstadt.de">
+       schmitz@tk.tu-darmstadt.de
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Martin
+      </span>
+      <span class="surName">
+       Stitz
+      </span>
+      , TU Darmstadt, Germany,
+      <a href="mailto:martin.stitz@protonmail.com">
+       martin.stitz@protonmail.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Florian
+      </span>
+      <span class="surName">
+       Müller
+      </span>
+      , TU Darmstadt, Germany,
+      <a href="mailto:florian.mueller@tk.informatik.tu-darmstadt.de">
+       florian.mueller@tk.informatik.tu-darmstadt.de
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Markus
+      </span>
+      <span class="surName">
+       Funk
+      </span>
+      , TU Darmstadt, Germany,
+      <a href="mailto:makufunk@hotmail.com">
+       makufunk@hotmail.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Max
+      </span>
+      <span class="surName">
+       Mühlhäuser
+      </span>
+      , TU Darmstadt, Germany,
+      <a href="mailto:max@informatik.tu-darmstadt.de">
+       max@informatik.tu-darmstadt.de
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300684" target="_blank">
+       https://doi.org/10.1145/3290605.3300684
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Hover, touch, and force are promising input modalities that get increasingly integrated into screens and everyday objects. However, these interactions are often limited to flat surfaces and the integration of suitable sensors is time-consuming and costly. To alleviate these limitations, we contribute
+       <em>
+        Trilaterate
+       </em>
+       : A fabrication pipeline to 3D print custom objects that detect the 3D position of a finger hovering, touching, or forcing them by combining multiple capacitance measurements via capacitive trilateration. Trilaterate places and routes actively-shielded sensors inside the object and operates on consumer-level 3D printers. We present technical evaluations and example applications that validate and demonstrate the wide applicability of Trilaterate.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Interaction devices
+       </strong>
+       ; •
+       <strong>
+        Hardware → Tactile and hand-based interfaces
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        3D printing
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        capacitive sensing
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        hover
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        touch
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        force
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Martin Schmitz, Martin Stitz, Florian Müller, Markus Funk, and Max Mühlhäuser. 2019. Trilaterate: A Fabrication Pipeline to Design and 3D Print Hover-, Touch-, and Force-Sensitive Objects. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 13 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300684" target="_blank">
+         https://doi.org/10.1145/3290605.3300684
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <figure id="fig1">
+    <img alt="" class="img-responsive" longdesc="" src="3300684_files\chi2019454fig1.jpg"/>
+    <div class="figure-caption">
+     <span class="figure-number">
+      Figure 1:
+     </span>
+     <span class="figure-title">
+      Trilaterate is a fabrication pipeline that enables users to 3D print hover-, touch-, and force-sensitive objects.
+     </span>
+    </div>
+   </figure>
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Interaction through touch has become one of the most common input modalities. Alongside the popularity of touchscreens (e.g. smartphones, monitors, or tablets), touch sensing is increasingly being integrated into everyday objects, such as watches, desk lamps, or hobs.
+    </p>
+    <p>
+     However, conventional touch sensing is often constrained to contact detection at a few predefined locations (e.g. touch to toggle a desk lamp) or rectangular touchpanels, that are fundamentally limited to developable surfaces. Therefore, research has explored touch sensing on more complex surfaces using, for instance, electric field tomography [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+      64
+     </a>
+     ] or time domain reflectometry [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+      63
+     </a>
+     ]. While applicable to a wide variety of objects, these approaches often require additional assembly or only detect whether there is a touch or not. That is, they neglect the force exerted while touching, which has been identified as a promising additional input dimension by research and industry to enrich the expressiveness of touch. Hence, various approaches utilize resistive [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+      40
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+      41
+     </a>
+     ], optical [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+      61
+     </a>
+     ], acoustic [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ], or capacitive [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+      31
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+      47
+     </a>
+     ] sensors to capture force input. However, these approaches are still often limited to developable surfaces, require time-consuming assembly, sense interactions only at a few dedicated areas, or require considerable effort to route and connect electronics.
+    </p>
+    <p>
+     In this paper, we contribute
+     <em>
+      Trilaterate
+     </em>
+     : a fabrication pipeline to create custom 3D-printed objects that recognize a continuous 3D position of a finger hovering above, touching on or pressing inside them at various levels (see Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     ). By distributing multiple capacitive sensors in the object, we estimate the finger's position in 3D space using capacitive trilateration as proposed by Zimmerman et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+      66
+     </a>
+     ]. Using this approach, Trilaterate does not require a distinct sensor for each interactive area but instead covers the whole surface and surrounding of the object. Also, it automatically embeds and routes electrodes in a wide variety of 3D objects. Fabricated objects consist of compressible and conductive structures and are created in a single pass with consumer-level 3D printers and materials. Finally, a sensor board has to be only connected to the outside of the object.
+    </p>
+    <p>
+     Using multi-material 3D printing, Trilaterate strives to enable users to fabricate a wide variety of hover-, touch-, and force-sensitive 3D objects that provide more expressive and interactions with less assembly effort. By printing all sensing structures in a single pass, we contribute to the vision of interactive devices that are printed all at once rather than being assembled [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+      62
+     </a>
+     ].
+    </p>
+    <p>
+     In summary, this paper contributes:
+    </p>
+    <ol class="list-no-style">
+     <li id="list1" label="(1)">
+      A fabrication pipeline to autogenerate and 3D print trilateration sensors off-the-shelf in a single pass.
+      <br/>
+     </li>
+     <li id="list2" label="(2)">
+      A combination of 3D printing and capacitive trilateration to sense force, touch and hover with 3D objects.
+      <br/>
+     </li>
+     <li id="list3" label="(3)">
+      An evaluation of the 3D position and force accuracy.
+      <br/>
+     </li>
+    </ol>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     This paper is situated in 3D proximity input, deformation input and digital fabrication of interactive 3D objects.
+    </p>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        3D Proximity Input
+       </h3>
+      </div>
+     </header>
+     <p>
+      Prior research has investigated the combination of multiple capacitive measurements for 3D hovering input. Fundamental works by Smith et al. and Zimmerman et al. allow sensing of hand geometry [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ], 3D finger position [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+       66
+      </a>
+      ], and hand gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ]. More recently, research has continued to explore sensing of 3D gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ], objects [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ], or hand posture [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ]. Such sensing is also combined with screens to detect gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ], grasp [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ], or fine-grained hovering [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ]. While widely used, they utilize fixed-form sensors that need to be assembled to the objects or placed in the environment, which is time-consuming. Further, a broader variety of objects are supported by Trilaterate as sensors are not of fixed form but are dynamically generated according to the geometry of the object.
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Deformation Input
+       </h3>
+      </div>
+     </header>
+     <p>
+      Prior works explore deformation-based input as a compelling and engaging input modality. Deformation sensing can be achieved by embedding sensors into objects [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+       57
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+       61
+      </a>
+      ], by conductive foams [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ], or by using optical sensing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ]. Other approaches employ resistive [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ], capacitive [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ], or piezoelectric foils [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ]. While many of these approaches capture deformations in high fidelity, they require additional assembly steps inside the object or on its surface or are only applicable on developable surfaces.
+     </p>
+     <p>
+      Regarding fabrication, Bächer et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ] are probably most closely related to our approach. They contribute a computational approach to design and reconstruct complex deformations in 3D-printed objects by using resistive sensing. However, objects must be manually equipped with wires which are not routed to the same location. Moreover, they focus entirely on global deformation sensing, i.e. the shape of an object is deformed at a global scale (e.g. bending an arm). In contrast, we focus on hover, touch, and local force sensing on the surface of an object without globally deforming it. Also, Trilaterate objects are printed in a single pass and require further assembly only outside of the object.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Digital Fabrication of Interactive 3D Objects
+       </h3>
+      </div>
+     </header>
+     <p>
+      Many works embed electrical components in non-interactive objects to make them interactive. This can be achieved by mounting capacitive [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ] and acoustic [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ] sensors, or by embedding cameras [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ], accelerometers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ] and mobile devices [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. While these approaches require only a few components, they need assembly effort or only work with objects that are hollow and can be opened after printing.
+     </p>
+     <p>
+      Another stream of research is investigating how digital fabrication can be used to create customized interactive elements. This includes the creation of input and output functions in 3D-printed objects by light pipes [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ], by manually filling internal pipes with media after printing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ], or by pipes transmitting sound [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ]. Other approaches print touch-sensitive objects using a conductive spray [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ], conductive plastic [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ] or conductive ink [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ]. In order to achieve a high resolution, these approaches require many sensors, which each need to be connected with a single conducting trace. As there is only limited routing space inside the 3D object, this often limits the maximal resolution to a few distinct interactive areas. In contrast, Trilaterate covers a broader area of an object with fewer sensors at comparable accuracy. That is, fewer traces need to be routed in the object, which eases the design, fabrication, and assembly.
+     </p>
+     <p>
+      Moreover, 3D printing is investigated for the fine-grained design of deformation behavior of non-interactive objects [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ] or the production of soft objects [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ]. Vázquez et al. provide 3D-printed pneumatic controls that can detect various deformations, but require airtight hardware [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ].
+     </p>
+     <p>
+      Adding to this body of research, Trilaterate objects are entirely 3D-printed and require less assembly effort while sensing hover, touch, and force on non-developable objects.
+     </p>
+    </section>
+   </section>
+   <section id="sec-7">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       Trilaterate Overview
+      </h2>
+     </div>
+    </header>
+    <p>
+     This section introduces the sensing principle underlying our approach and describes the Trilaterate fabrication pipeline to create objects using an existing 3D model.
+    </p>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Sensing Principle
+       </h3>
+      </div>
+     </header>
+     <p>
+      A Trilaterate object is a 3D-printed material composite, which consists of three primary functional structures (see Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      A):
+     </p>
+     <ol class="list-no-style">
+      <li id="list4" label="(1)">
+       <em>
+        Electrodes
+       </em>
+       and
+       <em>
+        traces
+       </em>
+       , i.e. conducting paths to electrodes, are fully 3D-printed in the object and used for capacitive sensing. They are made of a conductive polymer and connected to a sensor board.
+       <br/>
+      </li>
+      <li id="list5" label="(2)">
+       <em>
+        Shields
+       </em>
+       encapsulate all non-sensitive areas of electrodes and conducting traces to prevent them from being influenced by stray capacitance except in a predefined spherical segment of detection. They are printed with the same conductive polymer as electrodes and traces but are electrically separated from them.
+       <br/>
+      </li>
+      <li id="list6" label="(3)">
+       All insulating parts of the object are defined as
+       <em>
+        padding
+       </em>
+       . It is a dielectric structure that is made of either rigid or flexible material. In the latter case, it allows the 3D-printed object to deform in order to detect force.
+       <br/>
+      </li>
+     </ol>
+     <figure id="fig2">
+      <img alt="" class="img-responsive" longdesc="" src="3300684_files\chi2019454fig2.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        The principle of capacitive trilateration in 2D: The capacitance measured at a single electrode implies a finger on the circular arc in its segment with distance
+        <em>
+         d
+         <sub>
+          i
+         </sub>
+        </em>
+        (B). For 2D, at least three electrodes need to be combined to estimate the position of the finger at the intersection point of all circles.
+       </span>
+      </div>
+     </figure>
+     <p>
+      As illustrated in Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      , the electrodes are distributed in the object so that the interaction of a finger can be detected. For each electrode, the capacitance is continuously measured for a predefined spherical segment, i.e. a conical portion of a sphere (see Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      A). Assuming a human finger, the capacitance
+      <em>
+       c
+       <sub>
+        e
+       </sub>
+      </em>
+      measured at an electrode
+      <em>
+       e
+      </em>
+      equals a distance
+      <em>
+       d
+       <sub>
+        e
+       </sub>
+      </em>
+      in the spherical segment where a finger might be expected. Hence, the combined capacitances of multiple electrodes can be used to trilaterate the finger position at the intersection of the boundaries of all spherical segments (see Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      B).
+     </p>
+     <p>
+      As trilateration requires exact distance measurements, the traces are actively shielded to only be sensitive at the electrode itself. To that end, the shield is driven at the same voltage potential of the electrodes and traces. Hence, no capacitive coupling occurs between shield and trace. Further, any external interference is coupled to the shield with minimal interaction with the traces.
+     </p>
+     <p>
+      Of note is, that Trilaterate supports sensing on thin and perforated surfaces as the trilateration principle, compared to prior approaches (cf. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ]), decouples the object surface from the electrodes. That is, the electrodes may also be placed below a fine-grained 3D-printed object (see Figure
+      <a class="fig" href="#fig9">
+       9
+      </a>
+      D). Using our setup, such objects may have a size of up to 65 × 56 × 40 mm. By varying the size of the electrodes or the sensitivity of the sensor, this range may be further extended.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="" src="3300684_files\chi2019454fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        The Trilaterate fabrication pipeline: Electrodes and conducting traces are created automatically in the 3D model using a graphical application. After 3D printing, the object is connected to the sensor board and can be used for interaction.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Fabrication Pipeline
+       </h3>
+      </div>
+     </header>
+     <p>
+      As illustrated in Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      , the Trilaterate fabrication pipeline consists of three steps to create an interactive object:
+     </p>
+     <p>
+      <em>
+       1. Generating Sensing Structures
+      </em>
+      . First, a user loads a volumetric 3D model into the Trilaterate object generator. Second, the application automatically creates and places the required electrodes (see Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      B). Third, it routes all necessary traces and shields to the bottom of the object (specified by the user), so that no assembly inside the object is necessary (see Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      C). Users may specify individual properties (sensors size, trace thickness, etc.) or direct the creation of the electrodes by selecting a subvolume of the object in the 3D view of the generator.
+     </p>
+     <p>
+      <em>
+       2. Printing
+      </em>
+      . The object generator is able to export printer-ready fabrication files for conductive structures and insulating padding. They are processed with the printer-specific slicing software and then 3D-printed (see Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      D).
+     </p>
+     <p>
+      <em>
+       3. Sensing User Input
+      </em>
+      . To connect the object to the sensor board, the user attaches shielded wires to its bottom (see Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      E). If desired, the generator application supports ending all traces in a regularly-spaced grid (e.g. to connect standard pin headers). After a per-user calibration, the sensor board sends the measurement to a host computer for processing.
+     </p>
+    </section>
+   </section>
+   <section id="sec-10">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       GENERATING SENSING STRUCTURES
+      </h2>
+     </div>
+    </header>
+    <p>
+     Trilaterate utilizes multiple capacitive electrodes to trilaterate a human finger. Applying this approach to complex 3D-printable models raises two main challenges: First, electrodes need to be distributed inside the limited volume of the object such that interactions with the whole object can be sensed through trilateration. Second, the electrodes need to be connected through conducting traces to the sensor board without interfering with other electrodes or traces.
+    </p>
+    <p>
+     In the following, we contribute a spherical electrode layout and an algorithm to fully-automatically place electrodes for trilateration in volumetric 3D models. We further report on the routing of traces from electrodes to the sensor board and on the implementation details.
+    </p>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Electrode Layout
+       </h3>
+      </div>
+     </header>
+     <p>
+      Capacitive electrodes are commonly implemented as planar plates of conductive material connected to a capacitive sensor through a thin trace. While plates are well suited when the sensing direction is known, the sensing direction for our approach is unknown at the design time. As the electrodes need to be equally sensitive in all direction, we generate spherical electrodes (see the spheres in Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      A).
+     </p>
+     <p>
+      Since the whole conductive material connected to a sensor acts as a capacitive electrode to a varying degree, the traces are shielded actively to restrict the sensitive area to the electrodes. In order to direct the sensitivity of an electrode in a particular direction, it can also be partly shielded. As depicted in Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      A, the shield may be extended to cover a configurable spherical segment around the electrode. That is, a user may vary the aperture angle of the spherical segment using the Trilaterate object generator (see Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      ). As a consequence, the electrode is only sensitive in directions without a shield. If a higher precision in an area is required, more electrodes can be placed and directed towards it by selecting a subvolume in the object generator.
+     </p>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Electrode Placement
+       </h3>
+      </div>
+     </header>
+     <p>
+      Finding a suitable distribution of a limited set of electrodes inside the (sub) volume of the object is essential for assuring a uniform sensitivity across the whole object. Also, the distribution must ensure that each surface point of the object is as close as possible to at least four electrodes required for trilateration in 3D space. However, the number of electrodes that can be placed in the object is limited by its volume, wiring constraints, and the number of sensor channels available.
+     </p>
+     <p>
+      Therefore, we propose an algorithm called
+      <em>
+       Remove Least Utility
+      </em>
+      : It fills the volume of the object entirely with electrodes and then iteratively removes all electrodes whose absence would degrade the expected sensing performance of the object the least for a given set of surface points
+      <em>
+       S
+      </em>
+      (see Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      B).
+     </p>
+     <p>
+      <em>
+       Surface Points
+      </em>
+      . As we want to sense across the whole surface of the object uniformly, we define the set of surface points
+      <em>
+       S
+      </em>
+      as follows: The object is partitioned into a set of uniformly sized voxels that resembles the volume of the object. All voxels intersecting with the surface of the object are marked as a surface point
+      <em>
+       s
+      </em>
+      ∈
+      <em>
+       S
+      </em>
+      .
+     </p>
+     <p>
+      A naive approach would resemble surface points by vertices. However, this would prioritize higher tesselated regions of the object. Nevertheless, users may disable or prioritize sensing in some regions of the object by adjusting
+      <em>
+       S
+      </em>
+      or by changing the size of the voxel itself.
+     </p>
+     <p>
+      <em>
+       Initial Electrode Configuration
+      </em>
+      . As the algorithm is based on iteratively removing electrode, an initial electrode configuration
+      <em>
+       E
+      </em>
+      needs to be generated in the 3D object. To that end, electrodes are created at each voxel that is not a surface point. To avoid unwanted electrical connections, an adjustable safety distance is kept between electrodes. That is, all voxels inside the safety distance of an already created electrode are blocked.
+     </p>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="" src="3300684_files\chi2019454fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        The electrodes
+        <em>
+         E
+        </em>
+        are distributed in a pyramid object with dashed surface points
+        <em>
+         S
+        </em>
+        . |
+        <em>
+         E
+        </em>
+        | electrode configurations are computed, each time removing a single electrode
+        <em>
+         e
+        </em>
+        from the set. By comparing the performance
+        <em>
+         P
+        </em>
+        (
+        <em>
+         E
+         <sub>
+          e
+         </sub>
+        </em>
+        ) of each electrode configuration
+        <em>
+         E
+         <sub>
+          e
+         </sub>
+        </em>
+        , the electrode
+        <em>
+         e
+        </em>
+        whose removal still leads to the best overall performance is removed from the object.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      <em>
+       Performance Heuristic
+      </em>
+      . In order to estimate the expected performance of an electrode configuration
+      <em>
+       E
+      </em>
+      , a heuristic for a set of surface points
+      <em>
+       S
+      </em>
+      is required. As trilateration in 3D requires at least four electrodes, we employ the sum of squared distances to the nearest four electrodes with respect to a single surface point
+      <em>
+       s
+      </em>
+      :
+     </p>
+     <div class="table-responsive">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation*} d4_s(E) = \sum _{e \in E^{\prime }} d(s, e)^2 \end{equation*}
+       </span>
+       <br/>
+      </div>
+     </div>
+     where
+     <em>
+      E
+     </em>
+     ′ = {
+     <em>
+      e
+     </em>
+     |
+     <em>
+      e
+     </em>
+     ∈
+     <em>
+      E
+     </em>
+     ,
+     <em>
+      e
+     </em>
+     one of the four nearest points to
+     <em>
+      s
+     </em>
+     }. This also takes into account that the nearest electrodes contribute the most sensitive measurements.
+     <p>
+     </p>
+     <p>
+      As illustrated in Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      , the performance
+      <em>
+       P
+      </em>
+      (
+      <em>
+       E
+      </em>
+      ) of an electrode configuration
+      <em>
+       E
+      </em>
+      is then defined as the sum of sums of all inverted squared distances for all surface points:
+     </p>
+     <div class="table-responsive">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation*} P(E) = \sum _{s \in S} \frac{1}{d4_s(E)} \end{equation*}
+       </span>
+       <br/>
+      </div>
+     </div>
+     That is, smaller distances result in higher sums, and, thus, a better configuration
+     <em>
+      E
+     </em>
+     results in a better performance
+     <em>
+      P
+     </em>
+     (
+     <em>
+      E
+     </em>
+     ).
+     <p>
+     </p>
+     <p>
+      <em>
+       Culling
+      </em>
+      . Let
+      <em>
+       E
+      </em>
+      be the set of all electrodes in an iteration. To determine which electrode to remove in each iteration, the algorithm proceeds as follows: For all electrodes in
+      <em>
+       E
+      </em>
+      the estimated performance
+      <em>
+       P
+      </em>
+      (
+      <em>
+       E
+       <sub>
+        e
+       </sub>
+      </em>
+      ) of the electrode configuration
+      <em>
+       E
+       <sub>
+        e
+       </sub>
+      </em>
+      without
+      <em>
+       e
+      </em>
+      , i.e.
+      <em>
+       E
+       <sub>
+        e
+       </sub>
+      </em>
+      =
+      <em>
+       E
+      </em>
+      \{
+      <em>
+       e
+      </em>
+      }, is computed. That is, the algorithm creates a copy of the current set of electrodes with one electrode removed and calculates the expected performance.
+     </p>
+     <p>
+      Finally, the electrode
+      <em>
+       e
+      </em>
+      ′ whose absence still results in the best overall performance
+      <span class="inline-equation">
+       <span class="tex">
+        $P(E_{e^{\prime }})$
+       </span>
+      </span>
+      is removed. That is,
+      <span class="inline-equation">
+       <span class="tex">
+        $E_{e^{\prime }}$
+       </span>
+      </span>
+      is used as the set of electrodes for the next iteration. The algorithm terminates when the number of electrodes equals the available input channels (eight in our case) or when the expected overall performance
+      <span class="inline-equation">
+       <span class="tex">
+        $P(E_{e^{\prime }})$
+       </span>
+      </span>
+      falls below a configurable threshold. Since the algorithm does not exclusively optimize the electrode positions but considers their effect on all surface points, it implicitly optimizes the spatial coverage of the surface with electrodes.
+     </p>
+    </section>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Routing of Traces
+       </h3>
+      </div>
+     </header>
+     <p>
+      In order to connect the sensor board, traces and shields need to be routed to the bottom of the object (see Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      C). To that end, the voxelization of the object is transformed into a traversable graph structure where each voxel is represented as a node and two nodes whose voxels are neighbors are connected via an edge. Then, Trilaterate finds the shortest routes for traces in this graph using the A* algorithm (cf. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ]) and the Manhattan distance as the heuristic to determine which voxel to expand next. A voxel is only used once by a single trace because all traces need to be electrically separated. As a result of our evaluation, voxels that are in the line of sight between electrodes and surface points are downgraded for routing (but not forbidden to support narrow passages). Also, the sequence of routing traces is an important factor for (1) trace length and (2) whether an electrode is connected at all. As all permutations cannot be reasonably tested, we employ the Lin-Kernighan heuristic to decide which electrode should be routed next. If an electrode cannot be connected (e.g. due to lack of space), the user is asked to reduce the number of electrodes.
+     </p>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="" src="3300684_files\chi2019454fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        The Trilaterate object generator enables users to configure properties (e.g. the width of sensing structures) of the autogeneration (A). Users can assess the expected sensing performance with respect to the surface of the object (B).
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Generating Printer-Ready Models
+       </h3>
+      </div>
+     </header>
+     <p>
+      As multi-material 3D printing requires distinct 3D models for insulating and conductive materials, all conductive structures are removed from the 3D model of the object by using boolean subtraction based on constructive solid geometry. Before printing, users may assess the expected accuracy, i.e. a surface point is colored red if more than four electrodes are in line-of-sight of it, in the 3D view of the object generator (see Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      B). The positions of the electrodes inside the volume and the position of their respective trace ends are shown in the object generator and saved to a configuration file. After printing, the file is used in sensing to map each measurement to the position of an electrode.
+     </p>
+    </section>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Implementation Details
+       </h3>
+      </div>
+     </header>
+     <p>
+      The object generator (see Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      ) is written in Python and OpenSCAD. It calculates the distribution of electrodes inside the volume of the object selected by the user and routes the traces from those electrodes to interface points at the bottom of the object. The tool employs a plugin mechanism to change different distribution and routing strategies easily. Also, users may optionally configure various properties (e.g. the size and thickness of electrodes, traces, shielding, or padding). These parameters, the electrode positions, and the trace paths are automatically passed to OpenSCAD scripts inside the object generator to create the printer-ready files.
+     </p>
+    </section>
+   </section>
+   <section id="sec-16">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       PRINTING
+      </h2>
+     </div>
+    </header>
+    <p>
+     In the following, we detail on the setup and guidelines to 3D print objects using the generated printer-ready models.
+    </p>
+    <section id="sec-17">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Setup
+       </h3>
+      </div>
+     </header>
+     <p>
+      We decided to implement our approach using consumer-level 3D printers and materials as this makes it accessible to a broader audience. We used standard multi-material FDM 3D printers (BCN3D Sigma and Prusa MK3 MMU2) and commercially available printing materials. The conductive structures consist of carbon-doped Proto-pasta Conductive PLA (cPLA) with a volume resistivity of 30 – 115
+      <em>
+       Ω
+      </em>
+      cm. We printed conductive and insulating material with a 0.4 mm thick nozzle at a temperature of 230 °C. We used a heated bed (40 °C), the cooling fan and retraction (5 mm at 20 mm/s).
+     </p>
+     <p>
+      Depending on the use case, the padding can be printed either with rigid PLA (only hover and touch) or flexible TPU (also force). We utilized Verbatim PLA at 210 °C for rigid objects and NinjaFlex TPU, a Polyurethane composition (material shore hardness 85A), at 230 °C for deformable objects. We experienced an infill density of 20 %, i.e. deformability of up to 1/5 of the original thickness, for the padding to result in adequate sensing performance. The density may be adjusted to vary the deformability (e.g. to fit a use case).
+     </p>
+    </section>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Guidelines for Generating &amp; Printing
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our tests revealed the following guidelines:
+     </p>
+     <p>
+      <em>
+       Electrode Trace Ratio
+      </em>
+      . The most important parameter apart from maximizing electrode size is the diameter of the traces of the electrode. As a general rule, these should be made as wide as possible without causing the entire trace to be wider than the electrode itself. Having wider traces both lowers the chance of a printing artifact interrupting the electrical connection as well as reducing the electrical resistance, resulting in higher capacitive sensitivity. For our setup, the voxels used for routing have an edge length of 11 mm.
+     </p>
+     <p>
+      <em>
+       Shield Width
+      </em>
+      . The width of the shielding is less important because small holes in it do not affect the electric field between traces and shielding in our tests. For our setup, a shielding width of two nozzle widths (0.8 mm) proved to provide sufficient shielding and conductivity. The shielding must be electrically separated from traces and electrodes.
+     </p>
+     <p>
+      <em>
+       Spacing Between Materials
+      </em>
+      . The conductive structures are generated based on the parameters above and are then subtracted from the model of the object. However, our tests revealed that both models should be separated by a small margin to improve the printing quality. To that end, the object generator computes all conductive structures with an increased thickness (in our case 0.1 mm) for subtraction. The original model is used for printing.
+     </p>
+    </section>
+   </section>
+   <section id="sec-19">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       SENSING USER INPUT
+      </h2>
+     </div>
+    </header>
+    <p>
+     Using the capacitances measured at all electrode, distances to the finger can be calculated and combined into a 3D position estimate using trilateration. By examining the relation of the 3D position estimate to the surface of the object, the interaction type (i.e. hover, touch, or force) is determined. This process requires three steps, as detailed in the following:
+    </p>
+    <section id="sec-20">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        1. Capacitance to Distance
+       </h3>
+      </div>
+     </header>
+     <p>
+      Using the measured capacitance
+      <em>
+       C
+      </em>
+      and the parallel plate model
+      <span class="inline-equation">
+       <span class="tex">
+        $C = \epsilon \frac{A}{d}$
+       </span>
+      </span>
+      , the distance of a finger to each electrode can be estimated by
+      <span class="inline-equation">
+       <span class="tex">
+        $d = \epsilon \frac{A}{C}$
+       </span>
+      </span>
+      . While
+      <em>
+       A
+      </em>
+      and ϵ are constant during sensing, the capacitance
+      <em>
+       C
+      </em>
+      measured by each electrode directly relates to a distance
+      <em>
+       d
+      </em>
+      (cf. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+       66
+      </a>
+      ]). Instead of the parallel plate model, other capacitor models can be employed to compute these distances.
+     </p>
+     <p>
+      As the measured capacitances differ in their magnitude due to variations in the environment, trace length, and print quality, a reference capacitance
+      <em>
+       c
+       <sub>
+        r
+       </sub>
+      </em>
+      (
+      <em>
+       e
+      </em>
+      ) with a known distance
+      <em>
+       d
+       <sub>
+        r
+       </sub>
+      </em>
+      (
+      <em>
+       e
+      </em>
+      ) is required for every electrode
+      <em>
+       e
+      </em>
+      to obtain absolute distances. All reference capacitances are recorded during a calibration: The user is instructed to touch randomly-distributed points on the surface that are highlighted on the 3D model of the object on a screen. All distances are computed relative to these references.
+     </p>
+     <p>
+      Using the reference capacitance
+      <em>
+       c
+       <sub>
+        r
+       </sub>
+      </em>
+      (
+      <em>
+       e
+      </em>
+      ) and its distance
+      <em>
+       d
+       <sub>
+        r
+       </sub>
+      </em>
+      (
+      <em>
+       e
+      </em>
+      ) of an electrode
+      <em>
+       e
+      </em>
+      combined with the measured capacitance
+      <em>
+       c
+       <sub>
+        m
+       </sub>
+      </em>
+      (
+      <em>
+       e
+      </em>
+      ), the distance
+      <em>
+       d
+       <sub>
+        m
+       </sub>
+      </em>
+      (
+      <em>
+       e
+      </em>
+      ) is calculated as follows:
+     </p>
+     <div class="table-responsive">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation*} d_m(e) = d_r(e) * c_r(e) * \frac{1}{c_m(e)} \end{equation*}
+       </span>
+       <br/>
+      </div>
+     </div>
+     <p>
+     </p>
+    </section>
+    <section id="sec-21">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        2. Distance to 3D Position
+       </h3>
+      </div>
+     </header>
+     <p>
+      Once the distances of the finger to the electrodes are known, the 3D point of interaction can be calculated via trilateration. As the distance values are noisy and hence exhibit jitter, there does not exist a single position in space that has the exact distances to all electrodes. This position rather has to be approximated via an optimization algorithm. We employ a BFGS-based optimization algorithm that shifts a point
+      <em>
+       p
+      </em>
+      in 3D space such as to minimize the value of a loss function. As the loss function
+      <em>
+       L
+      </em>
+      , we use the mean squared differences between the Euclidean distance of the point
+      <em>
+       p
+      </em>
+      towards an electrode
+      <em>
+       e
+      </em>
+      and the measured distance
+      <em>
+       d
+       <sub>
+        m
+       </sub>
+      </em>
+      (
+      <em>
+       e
+      </em>
+      ):
+     </p>
+     <div class="table-responsive">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation*} L(p) = \frac{1}{|E|} * \sum _{e \in E} (||p - e|| - d_m(e))^2 \end{equation*}
+       </span>
+       <br/>
+      </div>
+     </div>
+     <p>
+     </p>
+     <p>
+      That is, the algorithm shifts the point
+      <em>
+       p
+      </em>
+      in space in order to minimize the deviation between the model-based distance ||
+      <em>
+       p
+      </em>
+      −
+      <em>
+       e
+      </em>
+      || and its measured distance
+      <em>
+       d
+       <sub>
+        m
+       </sub>
+      </em>
+      (
+      <em>
+       e
+      </em>
+      ) for all electrodes
+      <em>
+       e
+      </em>
+      ∈
+      <em>
+       E
+      </em>
+      . After convergence, the algorithm returns a 3D position
+      <em>
+       p
+       <sub>
+        i
+       </sub>
+      </em>
+      which represents the least deviation between actual and measured distances with respect to the loss function.
+     </p>
+     <p>
+      While, in general, four distances are required to estimate a 3D position, an arbitrary number of electrodes may contribute to the estimation. However, if an electrode is blocked by a trace or shield (i.e. its value is implausibly small), it is excluded from the estimation.
+     </p>
+    </section>
+    <section id="sec-22">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        3. 3D Position to Interaction Type
+       </h3>
+      </div>
+     </header>
+     <p>
+      The type of interaction is obtained by determining the distance ||
+      <em>
+       p
+       <sub>
+        i
+       </sub>
+      </em>
+      −
+      <em>
+       s
+      </em>
+      || of the 3D position of interaction
+      <em>
+       p
+       <sub>
+        i
+       </sub>
+      </em>
+      towards the nearest point
+      <em>
+       s
+      </em>
+      on the surface of the object. If the position lies outside of the object, the interaction is classified as hover. If the position lies on the surface (within a narrow threshold), it is classified as touch. If the position lies within the object, it is classified as force. For hover and force, the distance ||
+      <em>
+       p
+       <sub>
+        i
+       </sub>
+      </em>
+      −
+      <em>
+       s
+      </em>
+      || is used as the level of intensity.
+     </p>
+    </section>
+    <section id="sec-23">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Implementation Details
+       </h3>
+      </div>
+     </header>
+     <p>
+      <em>
+       Sensor Board
+      </em>
+      . The 3D-printed object is connected to a sensor board. It receives the capacitance measurements of the connected electrodes and forwards them to a host computer. The developed sensor board consists of an Arduino Nano V3 used for the serial connection to the host computer, as well as multiple capacitive sensing ICs. We employ single capacitance sensors (TI FDC1004 with active shielding) in loading mode [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ], as this mode offers a more uniform sensitivity in all directions compared to the transmit-receive mode that measures between two points. To be able to control multiple FDC1004 chips on the same I2C bus, we use a TI TCA9548A I2C multiplexer. The sensor supports sample rates of up to 400Hz, with lower sampling rates offering higher sensitivity. As lower sampling rates offer higher sensitivity (i.e. increased accuracy over long distances), we opted out for a sampling rate of 100Hz. Additionally, the Arduino applies a low pass filter to the sensor values to further increase accuracy.
+     </p>
+     <p>
+      All measurements of all channels of the connected FDC1004 sensors are triggered in series. As our sensor board currently uses a total of eight input channels, this results in a minimal refresh frequency of 12.5Hz (
+      <span class="inline-equation">
+       <span class="tex">
+        $\frac{1s}{100Hz} * 8$
+       </span>
+      </span>
+      ) and a maximal refresh frequency of 50 Hz (
+      <span class="inline-equation">
+       <span class="tex">
+        $\frac{1s}{400Hz} * 8$
+       </span>
+      </span>
+      ). The capacitance values are then forwarded to the interaction detector on the host PC.
+     </p>
+     <p>
+      <em>
+       Interaction Detection
+      </em>
+      . The detector tool calculates the interaction position and type (i.e. hover, touch, or force) using the measurements. It is written in Python and provides all interaction events alongside with the 3D model and the 3D position to other application via an API. The detector tool displays the model of the object. As soon as a finger is detected, a fingertip-sized red sphere visualizes the position of the finger (see Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      F). Further, the detector is used for calibration. To that end, it displays marking dots on the model of the object that need to be touched by the user (takes approx. 1.5 s per electrode).
+     </p>
+    </section>
+   </section>
+   <section id="sec-24">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       EVALUATION
+      </h2>
+     </div>
+    </header>
+    <p>
+     To evaluate our approach, we conducted quantitative evaluations on the sensing of 3D position and force. While research frequently utilizes mechanical apparatuses to evaluate capacitive sensing (cf. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+      66
+     </a>
+     ]), we opted out for a user study with 12 participants (9m, 3f, mean age 27.3) to account for inter-individual differences in users’ capacitive responses.
+    </p>
+    <figure id="fig6">
+     <img alt="" class="img-responsive" longdesc="" src="3300684_files\chi2019454fig6.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 6:
+      </span>
+      <span class="figure-title">
+       Distribution of eight electrodes inside the pyramid (A) and seven target positions, marked on the object (B).
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <section id="sec-25">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        3D Position
+       </h3>
+      </div>
+     </header>
+     <p>
+      Since a proper 3D position estimate is crucial for the quality of touch and hover input, we evaluated both in a single study. We were interested in the effects of the following two factors on 3D-printed capacitive trilateration: (1) the
+      <em>
+       coverage
+      </em>
+      , i.e. the number of electrodes that cover a surface point without being shielded by another trace or shield, and (2) the
+      <em>
+       distance
+      </em>
+      , i.e the mean distance of all electrodes to the respective surface point. To that end, we generated a pyramid (length 8 cm, height 6 cm, ground to earth) with eight electrodes and distributed seven target positions on the surface (see Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      ) such that they cover all combinations of the independent variables
+      <em>
+       coverage
+      </em>
+      (high vs. low) and
+      <em>
+       distance
+      </em>
+      (near vs. far): Positions 2, 3 and 4 are
+      <em>
+       near
+      </em>
+      electrodes (mean distance &lt; 11.24 mm) and
+      <em>
+       highly
+      </em>
+      covered (up to four electrodes). Position 1 is also
+      <em>
+       highly
+      </em>
+      covered, but the electrodes are
+      <em>
+       far
+      </em>
+      distant (mean distance 14.34 mm). Positions 5, 6, and 7 are
+      <em>
+       lowly
+      </em>
+      covered (only two to three electrodes) because the electrodes are partially blocked by traces and shields from the viewpoint of the position. In contrast to position 5 and 7, position 6 is
+      <em>
+       nearer
+      </em>
+      to the electrodes (mean distance 15.01 mm vs. 20 mm).
+     </p>
+     <p>
+      While the shape of the object is commonly an important factor for capacitive sensing, the trilateration approach is independent of the non-interactive, insulating surface that covers the electrodes, as the differences in measurements are accounted for through the calibration. Since an informal test confirmed this assumption, we did not investigate the effect of object shape and opted out for the pyramid shape in order to make it easier for the participants to localize the target positions.
+     </p>
+     <p>
+      <em>
+       Setup &amp; Task
+      </em>
+      . To be able to perform tests with multiple participants in a repeatable and comparable way, the object was fixed on a wooden plate (see Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      ). Participants received an introduction to the system before exploring it freely until they felt comfortable. Then, they calibrated the system by touching randomly-generated positions on the pyramid surface. Between tests performed by the same participant, the system was not recalibrated. Each participant was instructed to repeatedly touch the seven target positions ten times per position (counterbalanced using Balanced Latin Square), leading to a total of 840 samples. All target positions were marked on the object to give the participants an exact reference (see Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      B). Further, the position to be touched next was highlighted on a virtual model shown on screen. While touching the position, the participant triggered the data recording with a key press.
+     </p>
+     <div class="table-responsive" id="tab1">
+      <table class="table">
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+          Target position
+         </td>
+         <td style="text-align:center;">
+          1
+         </td>
+         <td style="text-align:center;">
+          2
+         </td>
+         <td style="text-align:center;">
+          3
+         </td>
+         <td style="text-align:center;">
+          4
+         </td>
+         <td style="text-align:center;">
+          5
+         </td>
+         <td style="text-align:center;">
+          6
+         </td>
+         <td style="text-align:center;">
+          7
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          Avg. electrode dist.
+         </td>
+         <td style="text-align:center;">
+          14.34
+         </td>
+         <td style="text-align:center;">
+          11.76
+         </td>
+         <td style="text-align:center;">
+          10.05
+         </td>
+         <td style="text-align:center;">
+          11.91
+         </td>
+         <td style="text-align:center;">
+          19.91
+         </td>
+         <td style="text-align:center;">
+          15.01
+         </td>
+         <td style="text-align:center;">
+          20.09
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          Coverage
+         </td>
+         <td style="text-align:center;">
+          4
+         </td>
+         <td style="text-align:center;">
+          4
+         </td>
+         <td style="text-align:center;">
+          4
+         </td>
+         <td style="text-align:center;">
+          4
+         </td>
+         <td style="text-align:center;">
+          3
+         </td>
+         <td style="text-align:center;">
+          3
+         </td>
+         <td style="text-align:center;">
+          3
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          Avg. error [mm]
+         </td>
+         <td style="text-align:center;">
+          44.67
+         </td>
+         <td style="text-align:center;">
+          16.98
+         </td>
+         <td style="text-align:center;">
+          10.42
+         </td>
+         <td style="text-align:center;">
+          14
+         </td>
+         <td style="text-align:center;">
+          55.24
+         </td>
+         <td style="text-align:center;">
+          28.91
+         </td>
+         <td style="text-align:center;">
+          37.83
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          SD [mm]
+         </td>
+         <td style="text-align:center;">
+          15.1
+         </td>
+         <td style="text-align:center;">
+          3.77
+         </td>
+         <td style="text-align:center;">
+          3.13
+         </td>
+         <td style="text-align:center;">
+          3.73
+         </td>
+         <td style="text-align:center;">
+          6.27
+         </td>
+         <td style="text-align:center;">
+          6.85
+         </td>
+         <td style="text-align:center;">
+          5.68
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <figure id="fig7">
+      <img alt="" class="img-responsive" longdesc="" src="3300684_files\chi2019454fig7.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        Positional 3D errors with standard deviations (SD) per target position (top) and condition (bottom).
+       </span>
+      </div>
+     </figure>
+     <p>
+      <em>
+       Results &amp; Discussion
+      </em>
+      . As the dependent variable, we analyzed the measurement error, i.e. the Euclidean distance between a target position and the measured 3D point reported by the system, using a two-way repeated measures ANOVA. When significant effects were revealed, we used Bonferroni corrected pairwise t-tests for post-hoc analysis. We report and classify the effect size
+      <em>
+       η
+      </em>
+      <sup>
+       2
+      </sup>
+      according to [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ].
+     </p>
+     <p>
+      The analysis revealed that the
+      <em>
+       distance
+      </em>
+      of electrodes had a highly significant (
+      <em>
+       F
+      </em>
+      <sub>
+       1, 11
+      </sub>
+      = 105.44,
+      <em>
+       p
+      </em>
+      &lt; .001 ,
+      <em>
+       η
+      </em>
+      <sup>
+       2
+      </sup>
+      = .587) influence on the 3D position estimate with a large effect size. Post-hoc tests confirmed significantly smaller errors for the near distance conditions compared to the far conditions (see Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      ). Moreover, we found that the
+      <em>
+       coverage
+      </em>
+      of electrodes had a significant (
+      <em>
+       F
+      </em>
+      <sub>
+       1, 11
+      </sub>
+      = 11.23,
+      <em>
+       p
+      </em>
+      &lt; .05 ,
+      <em>
+       η
+      </em>
+      <sup>
+       2
+      </sup>
+      = .071) influence on the 3D position estimate with a medium effect size. Post-hoc tests confirmed significantly smaller errors for the high coverage condition compared to the low coverage condition. Further, we found an interaction effect with a small effect size between the factors (
+      <em>
+       F
+      </em>
+      <sub>
+       1, 11
+      </sub>
+      = 7.4,
+      <em>
+       p
+      </em>
+      &lt; .05 ,
+      <em>
+       η
+      </em>
+      <sup>
+       2
+      </sup>
+      = .044).
+     </p>
+     <p>
+      The analysis shows that electrodes should be placed as near as possible to the surface of the object. Also, coverage of at least four electrodes is crucial for a lower error. Hence, the routing algorithm should avoid voxels that are in line-of-sight between a surface point and other electrodes.
+     </p>
+    </section>
+    <section id="sec-26">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Force
+       </h3>
+      </div>
+     </header>
+     <p>
+      The same participants continued the previous study to assess force accuracy (without recalibration). As we wanted to evaluate the force accuracy without interference by non-linear deformation effects of the flexible structure, we opted out for position 3 (see Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      B). The central location of this position allows for a linear and continuous deformation.
+     </p>
+     <figure id="fig8">
+      <img alt="" class="img-responsive" longdesc="" src="3300684_files\chi2019454fig8.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 8:
+       </span>
+       <span class="figure-title">
+        Mean force levels for a target force level across all participants. Error bars show the standard deviation.
+       </span>
+      </div>
+     </figure>
+     <figure id="fig9">
+      <img alt="" class="img-responsive" longdesc="" src="3300684_files\chi2019454fig9.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 9:
+       </span>
+       <span class="figure-title">
+        Five example applications fabricated with Trilaterate (image quality of C is due to the capture through HoloLens).
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      The object allows for a maximal deformation at target position 3 of approx. 5 mm with moderate force. However, in contrast to the position tests, there is no fixed reference scale for the subjective force exerted by a participant. Each participant can perceive the applied force differently or is not at all able to exert the maximum force of another participant. Therefore, each participant sets an individual force scale by first applying a maximum and then a minimum force, confirming each by pressing a key. The test samples are then taken by asking the participant to set a specific target force level (10 % to 90 % in 20 % steps) displayed on a screen and confirm it by pressing a key. The current force applied by the participant is displayed as a reference. Each participant was instructed to set each force level seven times.
+     </p>
+     <p>
+      The results of the force tests across all participants are depicted in Figure
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      . For 10 % target force, the system reported in average
+      <span class="inline-equation">
+       <span class="tex">
+        $13.12\%\space (SD\space 3.17\%)$
+       </span>
+      </span>
+      . The average for 30 % target force was
+      <span class="inline-equation">
+       <span class="tex">
+        $31.25\%\space (SD\space 4.7\%)$
+       </span>
+      </span>
+      and
+      <span class="inline-equation">
+       <span class="tex">
+        $48.41\%\space (SD\space 3.77\%)$
+       </span>
+      </span>
+      for 50 % target force. For higher target forces of 70 % and 90 %, the system reported
+      <span class="inline-equation">
+       <span class="tex">
+        $68.36\%\space (SD\space 10.15\%)$
+       </span>
+      </span>
+      and
+      <span class="inline-equation">
+       <span class="tex">
+        $88.61\%\space (SD\space 10.78\%)$
+       </span>
+      </span>
+      . Of note is, that the mean distance between target and measured force level is
+      <span class="inline-equation">
+       <span class="tex">
+        $1.8\%\space (SD\space 0.76\%)$
+       </span>
+      </span>
+      . That is, the participants hit the desired force level in average within 1.8 %. On a scale of 5 mm (0 % – 100 %), 1.8 % corresponds to a distance resolution of 0.09 mm (5 mm * 0.018).
+     </p>
+     <p>
+      In summary, our results show that for highly covered, near distance conditions, multiple 3D positions and levels of force applied by users can be reliably distinguished.
+     </p>
+    </section>
+   </section>
+   <section id="sec-27">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       EXAMPLE APPLICATIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     To demonstrate the practical feasibility of Trilaterate, we fabricated five interactive example prototypes.
+    </p>
+    <p>
+     <em>
+      Educational Aid
+     </em>
+     . 3D objects are often useful to learn visual-spatial content. As an example, we printed a Matterhorn mountain (PLA padding) that illustrates its geological 3D structure. Users can hover and touch different areas to obtain geographic information (see Figure
+     <a class="fig" href="#fig9">
+      9
+     </a>
+     A).
+    </p>
+    <p>
+     Further, we designed a cubic platform on which non-interactive single-material objects of any 3D-printable complexity can be placed (see Figure
+     <a class="fig" href="#fig9">
+      9
+     </a>
+     B). By combining the 3D models of the platform and the object on it, interactions on the latter are also detected. As an example, we created a molecule learning environment that highlights atoms and displays their name when touched. In general, the platform could be reused for any kind of cost-effective 3D-printable objects.
+    </p>
+    <p>
+     <em>
+      PyARmid
+     </em>
+     . Augmented Reality is often criticized as lacking haptics and input richness [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ]. Using Trilaterate, haptic objects for Augmented Reality can be rapidly created. As illustrated in Figure
+     <a class="fig" href="#fig9">
+      9
+     </a>
+     C, we implemented an exploration application of the Egyptian pyramids for the Microsoft HoloLens, that shows a textured overlay on top of a 3D-printed pyramid (TPU padding). By hovering, a virtual sun can be moved around the pyramid. The user can touch one side of the pyramid to take a look at its internal structure and press harder to see further into the pyramid.
+    </p>
+    <p>
+     <em>
+      Making 3D Scans Interactive
+     </em>
+     . 3D scanning allows easy digitization of the physical world. Using the previously described platform, even complex real-world objects can be made interactive. As an example, we scanned and 3D-printed a person (PLA padding) as a tangible interactive avatar for friends or family that is highly personalized (see Figure
+     <a class="fig" href="#fig9">
+      9
+     </a>
+     D). For instance, by touching the avatar of a person, a pre-defined greeting is sent to the mobile device of the person.
+    </p>
+    <p>
+     <em>
+      Shut the Duck up
+     </em>
+     . To demonstrate the use of Trilaterate for more expressive touch interaction in everyday devices, we implemented an alarm clock (see Figure
+     <a class="fig" href="#fig9">
+      9
+     </a>
+     E) that is shaped like a rubber duck (TPU padding). The duck is equipped with a speaker and allows listening to different alarm sounds by hovering around it. A touch selects the respective sound. An alarm is set by pressing the duck's body until the desired alarm time is said via the speaker. Pressing harder changes the time faster. After an alarm has been set, the user can hover the duck for easily accessible, eyes-free function (e.g. to say the remaining time to sleep out loud). When the alarm goes off, a firm press deactivates the alarm.
+    </p>
+   </section>
+   <section id="sec-28">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        9
+       </span>
+       Discussion &amp; Limitations
+      </h2>
+     </div>
+    </header>
+    <p>
+     This paper presents results on 3D-printed sensing on non-developable surfaces. However, it currently has limitations that must be considered during fabrication and sensing.
+    </p>
+    <section id="sec-29">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Object Size &amp; Geometry
+       </h3>
+      </div>
+     </header>
+     <p>
+      If not used with a sensing platform, an object must be able to accommodate at least four electrodes required for trilateration. Hence, a minimum of 4 cm³ closed volume is required (i.e. four electrodes sized Ø 9 mm at the edges of a rectangular cuboid with perpendicular traces). For slim objects, the thinnest section must at least fit as many voxels in the horizontal plane as electrodes as this space is required for routing. Placement may not succeed for small structures (e.g. hairs). The maximal volume of an object to be covered is limited by the number of electrodes supported by the sensor board, and the sensing distance of an electrode (in our case, the maximum sensing distance is 10 cm for a Ø 9 mm electrode). While the exact limits depend on the shape of the object, the maximum object size for our setup is ca. 10 × 10 × 10 cm³. However, multiple boards can be multiplexed for more channels.
+     </p>
+     <p>
+      Since distance and coverage are important factors, they pose implications on suitable 3D models: (1) Objects with highly varying curvatures (e.g. a set of hairs) may result in too distant electrodes. (2) Objects whose parts are connected by a constriction (cf. an hourglass) are challenging to route. As 3D printing advances, the resolution is likely to improve, enabling more accurate placement and routing.
+     </p>
+    </section>
+    <section id="sec-30">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Distance Resolution &amp; Accuracy
+       </h3>
+      </div>
+     </header>
+     <p>
+      For our setup, the sensing resolution is 0.5 fF steps at -15 pF to +15 pF input range. The usable input range between the minimal self-capacitance and the maximal capacitance of a direct touch for an electrode of Ø 9 mm is 12.84 fF (25670 steps). As this input range is not uniformly distributed across all distances due to the inversely proportional relation, the resolution for force, touch, and hover input varies. While we experienced a resolution of less than 1 mm for distances less than 5 cm, the resolution decreases to 4 mm for a distance of 10 cm, which still can be considered sufficient for hovering.
+     </p>
+     <p>
+      The achievable accuracy may be further influenced by several factors: First, the choice of the capacitor model that transforms a capacitance to a distance. We employ the parallel plate model as each spherical electrode is actively shielded into a particular direction and a finger is commonly modeled as a plate (cf. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ]) However, the sensing equations can be adapted to a more elaborate model for the electric field between a finger and a shielded spherical electrode.
+     </p>
+     <p>
+      Second, the relative permittivity of the dielectric between electrode and finger is often constant as only a single dielectric (e.g. air) is involved. In our case, the relative permittivity is, in general, distance-dependent as with increasing distance, the ratio of printed TPU padding to air changes. While we experienced this effect to be negligible as the padding's infill density is only 20 % and, hence, consists of 80 % air, a more physically correct permittivity estimation that considers the air gap could result in more accurate position estimation.
+     </p>
+    </section>
+    <section id="sec-31">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Scalability
+       </h3>
+      </div>
+     </header>
+     <p>
+      For our setup, traces should be printed with a width of at least 3 mm to guarantee proper conductivity (nozzle diameter 0.4 mm). To ensure proper shielding, we found that the shield should be two times the nozzle width (0.8 mm for our setup). Using a safety distance of 1.2 mm between shield and trace (filled with insulating material) and 0.6 mm to other traces at both sides, the minimal width of a trace including shield is in our case 8.2 mm. Currently, the routing requires an object with a flat bottom (min. size 3.5 × 3.5cm²). However, traces may be routed to multiple, non-flat locations.
+     </p>
+     <p>
+      In contrast to prior fabrication approaches (cf. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ]), Trilaterate uses a central sensing structure rather than placing sensors on the surface. As a result, it covers a larger sensing area with fewer electrodes. For instance, four half shielded Trilaterate electrodes close to each other cover the whole surface of a hemisphere
+      <em>
+       H
+      </em>
+      =
+      <em>
+       r
+      </em>
+      <sup>
+       2
+      </sup>
+      *2
+      <em>
+       π
+      </em>
+      with r = 70 mm (which is a pessimistic estimate concerning the maximal sensing distance of 10 cm). To achieve a comparable accuracy (±13.8 mm), previous approaches (cf. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ]) need electrodes sized
+      <em>
+       A
+      </em>
+      = (2*13.8 mm)
+      <sup>
+       2
+      </sup>
+      . To cover the whole hemispherical surface
+      <em>
+       H
+      </em>
+      , [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ] would require
+      <span class="inline-equation">
+       <span class="tex">
+        $\frac{H}{A} \approx$
+       </span>
+      </span>
+      40 distinct electrodes, implying 40 instead of just four traces. These many traces imply not only a considerable routing effort in often limited object volumes but are also prone to stray capacitances without active shields.
+     </p>
+    </section>
+    <section id="sec-32">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Environmental Noise, Multi-Finger &amp; Multi-Force
+       </h3>
+      </div>
+     </header>
+     <p>
+      We did not find, that environmental electromagnetic noise affects the sensing as the electrodes are shielded and also covered by insulating material. However, a whole hand, a differently-sized finger (e.g. index vs. thumb), or multiple fingers next to each other alter the distance measurements, resulting in a wrong position estimate as the system expects a single stretched-out finger pose. Nevertheless, multiple fingers may be tracked if a distinct set of electrodes handles a single finger. While simultaneously sensing force, touch, and hover, a stretched out finger pose is required. When disabling hover input, other finger poses are possible.
+     </p>
+     <p>
+      Moreover, the measured force does not equal the physical force, as the latter is dependent on the physical properties of the padding and is not focused in this paper. However, Hooke's law and the 3D structure of the padding may be combined to map the position of a finger to a physical force.
+     </p>
+    </section>
+   </section>
+   <section id="sec-33">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        10
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     This paper has presented Trilaterate: a fabrication pipeline to create customizable 3D-printed objects that recognize the 3D position of a finger floating above, touching on or forcing in a 3D object. Trilaterate objects consist of compressible material and embedded conductive electrodes, which are generated inside the object, and are 3D-printed without requiring further assembly in their inside. By measuring the capacitance with several different electrodes, the 3D position of the finger in space can be estimated through trilateration.
+    </p>
+    <p>
+     Trilaterate aims to become a valuable asset to researchers, makers, and even end users to create interactive objects rapidly. Based on our approach, future work could investigate interactions performed with multiple fingers or hands.
+    </p>
+   </section>
+   <section id="sec-34">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        11
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We thank Andre Pfeifer, Carsten Englert, Sebastian Günther, and Jan Riemann for their valuable support. We also thank the anonymous reviewers for their valuable comments and suggestions. This work was funded by the German Research Foundation (grant number 326979514).
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      F. Aezinia, Y. Wang, and B. Bahreyni. 2011. Touchless Capacitive Sensor for Hand Gesture Detection. In
+      <em>
+       2011 IEEE SENSORS
+      </em>
+      . 546–549.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/ICSENS.2011.6127321" target="_blank">
+       https://doi.org/10.1109/ICSENS.2011.6127321
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      F. Aezinia, Y. Wang, and B. Bahreyni. 2012. Three Dimensional Touchless Tracking of Objects Using Integrated Capacitive Sensors.
+      <em>
+       <em>
+        IEEE Transactions on Consumer Electronics
+       </em>
+      </em>
+      58, 3 (Aug. 2012), 886–890.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TCE.2012.6311332" target="_blank">
+       https://doi.org/10.1109/TCE.2012.6311332
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Moritz Bächer, Benjamin Hepp, Fabrizio Pece, Paul G. Kry, Bernd Bickel, Bernhard Thomaszewski, and Otmar Hilliges. 2016. DefSense: Computational Design of Customized Deformable Input Devices. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 3806–3816.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858354" target="_blank">
+       https://doi.org/10.1145/2858036.2858354
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Bernd Bickel, Moritz Bächer, Miguel a. Otaduy, Hyunho Richard Lee, Hanspeter Pfister, Markus Gross, and Wojciech Matusik. 2010. Design and Fabrication of Materials with Desired Deformation Behavior.
+      <em>
+       <em>
+        ACM Transactions on Graphics
+       </em>
+      </em>
+      29, 4 (July 2010), 1.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1833351.1778800" target="_blank">
+       https://doi.org/10.1145/1833351.1778800
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Mark Billinghurst and Ivan Poupyrev. 2008. Tangible Augmented Reality. In
+      <em>
+       SIGGRAPH Asia ’08
+      </em>
+      . ACM Press, New York, New York, USA, 1–10.
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Eric Brockmeyer, Ivan Poupyrev, and Scott Hudson. 2013. PAPILLON: Designing Curved Display Surfaces with Printed Optics. In
+      <em>
+       Proceedings of the 26th Annual ACM Symposium on User Interface Software and Technology - UIST ’13
+      </em>
+      . ACM Press, New York, New York, USA, 457–462.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2501988.2502027" target="_blank">
+       https://doi.org/10.1145/2501988.2502027
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Jesse Burstyn, Nicholas Fellion, Paul Strohmeier, and Roel Vertegaal. 2015.
+      <em>
+       PrintPut: Resistive and Capacitive Input Widgets for Interactive 3D Prints
+      </em>
+      . Vol. 9296. Springer International Publishing, Cham.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/978-3-319-22701-6" target="_blank">
+       https://doi.org/10.1007/978-3-319-22701-6
+      </a>
+      Series Title: Lecture Notes in Computer Science Publication Title: INTERACT 2015.
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      W. Chang, K. E. Kim, H. Lee, J. K. Cho, B. S. Soh, J. H. Shim, G. Yang, S. Cho, and J. Park. 2006. Recognition of Grip-Patterns by Using Capacitive Touch Sensors. In
+      <em>
+       2006 IEEE International Symposium on Industrial Electronics
+      </em>
+      , Vol. 4. 2936–2941.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/ISIE.2006.296083" target="_blank">
+       https://doi.org/10.1109/ISIE.2006.296083
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Jacob Cohen. 1988.
+      <em>
+       Statistical Power Analysis for the Behavioral Sciences
+      </em>
+      . Routledge.
+      <a class="link-inline force-break" href="https://doi.org/10.4324/9780203771587" target="_blank">
+       https://doi.org/10.4324/9780203771587
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Christoph Endres, Tim Schwartz, and Christian A. Müller. 2011. ”Geremin”: 2D Microgestures for Drivers Based on Electric Field Sensing. In
+      <em>
+       Proceedings of the 16th International Conference on Intelligent User Interfaces
+      </em>
+      (
+      <em>
+       IUI ’11
+      </em>
+      ). ACM, New York, NY, USA, 327–330.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1943403.1943457" target="_blank">
+       https://doi.org/10.1145/1943403.1943457
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Kentaro Go, Katsutoshi Nonaka, Koji Mitsuke, and Masayuki Morisawa. 2012. Object Shape and Touch Sensing on Interactive Tables with Optical Fiber Sensors. In
+      <em>
+       Proceedings of the Sixth International Conference on Tangible, Embedded and Embodied Interaction - TEI ’12
+      </em>
+      . ACM Press, New York, New York, USA, 123.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2148131.2148158" target="_blank">
+       https://doi.org/10.1145/2148131.2148158
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Nan-wei Gong, Jürgen Steimle, Simon Olberding, Steve Hodges, Nicholas Edward Gillian, Yoshihiro Kawahara, and Joseph A. Paradiso. 2014. PrintSense: A Versatile Sensing Technique to Support Multimodal Flexible Surface Interaction. In
+      <em>
+       Proceedings of the 32nd Annual ACM Conference on Human Factors in Computing Systems - CHI ’14
+      </em>
+      . ACM Press, New York, New York, USA, 1407–1410.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2556288.2557173" target="_blank">
+       https://doi.org/10.1145/2556288.2557173
+      </a>
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Daniel Groeger and Jürgen Steimle. 2018. ObjectSkin: Augmenting Everyday Objects with Hydroprinted Touch Sensors and Displays.
+      <em>
+       <em>
+        Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies
+       </em>
+      </em>
+      1, 4 (Jan. 2018), 134:1–134:23.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3161165" target="_blank">
+       https://doi.org/10.1145/3161165
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Daniel Gröger, Elena Chong Loo, and Jürgen Steimle. 2016. HotFlex: Post-Print Customization of 3D Prints Using Embedded State Change. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 420–432.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858191" target="_blank">
+       https://doi.org/10.1145/2858036.2858191
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Tobias Grosse-Puppendahl, Andreas Braun, Felix Kamieth, and Arjan Kuijper. 2013. Swiss-Cheese Extended: An Object Recognition Method for Ubiquitous Interfaces Based on Capacitive Proximity Sensing. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’13
+      </em>
+      ). ACM, New York, NY, USA, 1401–1410.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2466186" target="_blank">
+       https://doi.org/10.1145/2470654.2466186
+      </a>
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Tobias Grosse-Puppendahl, Christian Holz, Gabe Cohn, Raphael Wimmer, Oskar Bechtold, Steve Hodges, Matthew S. Reynolds, and Joshua R. Smith. 2017. Finding Common Ground: A Survey of Capacitive Sensing in Human-Computer Interaction. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 3293–3315.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025808" target="_blank">
+       https://doi.org/10.1145/3025453.3025808
+      </a>
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Tobias Alexander Große-Puppendahl. 2015.
+      <em>
+       Capacitive Sensing and Communication for Ubiquitous Interaction and Environmental Perception
+      </em>
+      . Ph.D. Dissertation. Technische Universität Darmstadt, Darmstadt.
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Fabian Hennecke, Franz Berwein, and Andreas Butz. 2011. Optical Pressure Sensing for Tangible User Interfaces. In
+      <em>
+       Proceedings of the ACM International Conference on Interactive Tabletops and Surfaces - ITS ’11
+      </em>
+      . ACM Press, New York, New York, USA, 45.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2076354.2076362" target="_blank">
+       https://doi.org/10.1145/2076354.2076362
+      </a>
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Ken Hinckley, Seongkook Heo, Michel Pahud, Christian Holz, Hrvoje Benko, Abigail Sellen, Richard Banks, Kenton O'Hara, Gavin Smyth, and William Buxton. 2016. Pre-Touch Sensing for Mobile Interaction. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 2869–2881.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858095" target="_blank">
+       https://doi.org/10.1145/2858036.2858095
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Jonathan Hook, Thomas Nappey, Steve Hodges, Peter Wright, and Patrick Olivier. 2014. Making 3D Printed Objects Interactive Using Wireless Accelerometers. In
+      <em>
+       Proceedings of the Extended Abstracts of the 32Nd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI EA ’14
+      </em>
+      ). ACM, New York, NY, USA, 1435–1440.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2559206.2581137" target="_blank">
+       https://doi.org/10.1145/2559206.2581137
+      </a>
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Scott E. Hudson. 2014. Printing Teddy Bears: A Technique for 3D Printing of Soft Interactive Objects. In
+      <em>
+       Proceedings of the 32nd Annual ACM Conference on Human Factors in Computing Systems - CHI ’14
+      </em>
+      . ACM Press, New York, New York, USA, 459–468.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2556288.2557338" target="_blank">
+       https://doi.org/10.1145/2556288.2557338
+      </a>
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Yoshio Ishiguro and Ivan Poupyrev. 2014. 3D Printed Interactive Speakers. In
+      <em>
+       Proceedings of the 32nd Annual ACM Conference on Human Factors in Computing Systems - CHI ’14
+      </em>
+      . ACM Press, New York, New York, USA, 1733–1742.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2556288.2557046" target="_blank">
+       https://doi.org/10.1145/2556288.2557046
+      </a>
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Kunihiro Kato and Homei Miyashita. 2016. 3D Printed Physical Interfaces That Can Extend Touch Devices. In
+      <em>
+       Proceedings of the 29th Annual Symposium on User Interface Software and Technology - UIST ’16 Adjunct
+      </em>
+      . ACM Press, New York, New York, USA, 47–49.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2984751.2985700" target="_blank">
+       https://doi.org/10.1145/2984751.2985700
+      </a>
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Gierad Laput, Eric Brockmeyer, Scott E. Hudson, and Chris Harrison. 2015. Acoustruments: Passive, Acoustically-Driven, Interactive Controls for Handheld Devices. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems - CHI ’15
+      </em>
+      . ACM Press, New York, New York, USA, 2161–2170.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702414" target="_blank">
+       https://doi.org/10.1145/2702123.2702414
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Mathieu Le Goc, Stuart Taylor, Shahram Izadi, and Cem Keskin. 2014. A Low-Cost Transparent Electric Field Sensor for 3D Interaction on Mobile Devices. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’14
+      </em>
+      ). ACM, New York, NY, USA, 3167–3170.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2556288.2557331" target="_blank">
+       https://doi.org/10.1145/2556288.2557331
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      David Ledo, Fraser Anderson, Ryan Schmidt, Lora Oehlberg, Saul Greenberg, and Tovi Grossman. 2017. Pineal: Bringing Passive Objects to Life with Embedded Mobile Devices. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 2583–2593.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025652" target="_blank">
+       https://doi.org/10.1145/3025453.3025652
+      </a>
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Chia-Hsun Lee and Ted Selker. 2004. iSphere: A Proximity-Based 3D Input Device. In
+      <em>
+       ACM SIGGRAPH 2004 Posters
+      </em>
+      (
+      <em>
+       SIGGRAPH ’04
+      </em>
+      ). ACM, New York, NY, USA, 72–.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1186415.1186499" target="_blank">
+       https://doi.org/10.1145/1186415.1186499
+      </a>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Simon J Leigh, Robert J Bradley, Christopher P Purssell, Duncan R Billson, and David a Hutchins. 2012. A Simple, Low-Cost Conductive Composite Material for 3D Printing of Electronic Sensors.
+      <em>
+       <em>
+        PLoS ONE
+       </em>
+      </em>
+      7, 11 (Nov. 2012), e49365.
+      <a class="link-inline force-break" href="https://doi.org/10.1371/journal.pone.0049365" target="_blank">
+       https://doi.org/10.1371/journal.pone.0049365
+      </a>
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Tamotsu Murakami and Naomasa Nakajima. 1994. Direct and Intuitive Input Device for 3-D Shape Deformation. In
+      <em>
+       Conference Companion on Human Factors in Computing Systems - CHI ’94
+      </em>
+      . ACM Press, New York, New York, USA, 233–236.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/259963.260449" target="_blank">
+       https://doi.org/10.1145/259963.260449
+      </a>
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Satoshi Nakamaru, Ryosuke Nakayama, Ryuma Niiyama, and Yasuaki Kakehi. 2017. FoamSense: Design of Three Dimensional Soft Sensors with Porous Materials. In
+      <em>
+       Proceedings of the 30th Annual ACM Symposium on User Interface Software and Technology - UIST ’17
+      </em>
+      . ACM Press, New York, New York, USA, 437–447.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3126594.3126666" target="_blank">
+       https://doi.org/10.1145/3126594.3126666
+      </a>
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Vinh Nguyen, Pramod Kumar, Sang Ho Yoon, Ansh Verma, and Karthik Ramani. 2015. SOFTii: Soft Tangible Interface for Continuous Control of Virtual Objects with Pressure-Based Input. In
+      <em>
+       Proceedings of the Ninth International Conference on Tangible, Embedded, and Embodied Interaction - TEI ’14
+      </em>
+      . ACM Press, New York, New York, USA, 539–544.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2677199.2687898" target="_blank">
+       https://doi.org/10.1145/2677199.2687898
+      </a>
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Hyunjoo Oh, Tung D. Ta, Ryo Suzuki, Mark D. Gross, Yoshihiro Kawahara, and Lining Yao. 2018. PEP (3D Printed Electronic Papercrafts): An Integrated Approach for 3D Sculpting Paper-Based Electronic Devices. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, 441:1–441:12.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174015" target="_blank">
+       https://doi.org/10.1145/3173574.3174015
+      </a>
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Simon Olberding, Sergio Soto Ortega, Klaus Hildebrandt, and Jürgen Steimle. 2015. Foldio: Digital Fabrication of Interactive and Shape-Changing Objects With Foldable Printed Electronics. In
+      <em>
+       Proceedings of the 28th Annual ACM Symposium on User Interface Software &amp; Technology - UIST ’15
+      </em>
+      . ACM Press, New York, New York, USA, 223–232.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2807442.2807494" target="_blank">
+       https://doi.org/10.1145/2807442.2807494
+      </a>
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Makoto Ono, Buntarou Shizuki, and Jiro Tanaka. 2013. Touch &amp; Activate: Adding Interactivity to Existing Objects Using Active Acoustic Sensing. In
+      <em>
+       Proceedings of the 26th Annual ACM Symposium on User Interface Software and Technology - UIST ’13
+      </em>
+      . ACM Press, New York, New York, USA, 31–40.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2501988.2501989" target="_blank">
+       https://doi.org/10.1145/2501988.2501989
+      </a>
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Makoto Ono, Buntarou Shizuki, and Jiro Tanaka. 2015. Sensing Touch Force Using Active Acoustic Sensing. In
+      <em>
+       Proceedings of the Ninth International Conference on Tangible, Embedded, and Embodied Interaction - TEI ’15
+      </em>
+      . ACM Press, New York, New York, USA, 355–358.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2677199.2680585" target="_blank">
+       https://doi.org/10.1145/2677199.2680585
+      </a>
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      M Pakanen, A Colley, and J Häkkilä. 2014. Squeezy Bracelet - Designing a Wearable Communication Device for Tactile Interaction. In
+      <em>
+       Proceedings of the 8th Nordic Conference on Human-Computer Interaction Fun, Fast, Foundational - NordiCHI ’14
+      </em>
+      . ACM Press, New York, New York, USA, 305–314.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2639189.2639238" target="_blank">
+       https://doi.org/10.1145/2639189.2639238
+      </a>
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Julian Panetta, Qingnan Zhou, Luigi Malomo, Nico Pietroni, Paolo Cignoni, and Denis Zorin. 2015. Elastic Textures for Additive Fabrication.
+      <em>
+       <em>
+        ACM Transactions on Graphics
+       </em>
+      </em>
+      34, 4 (2015), 135:1–135:12.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2766937" target="_blank">
+       https://doi.org/10.1145/2766937
+      </a>
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Jesús Pérez, Bernhard Thomaszewski, Stelian Coros, Bernd Bickel, José A. Canabal, Robert Sumner, and Miguel A. Otaduy. 2015. Design and Fabrication of Flexible Rod Meshes.
+      <em>
+       <em>
+        ACM Transactions on Graphics
+       </em>
+      </em>
+      34, 4 (July 2015), 138:1–138:12.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2766998" target="_blank">
+       https://doi.org/10.1145/2766998
+      </a>
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Parinya Punpongsanon, Daisuke Iwai, and Kosuke Sato. 2015. Projection-Based Visualization of Tangential Deformation of Nonrigid Surface by Deformation Estimation Using Infrared Texture.
+      <em>
+       <em>
+        Virtual Reality
+       </em>
+      </em>
+      19, 1 (March 2015), 45–56.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/s10055-014-0256-y" target="_blank">
+       https://doi.org/10.1007/s10055-014-0256-y
+      </a>
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Christian Rendl, Patrick Greindl, Michael Haller, Martin Zirkl, Barbara Stadlober, and Paul Hartmann. 2012. PyzoFlex: Printed Piezoelectric Pressure Sensing Foil. In
+      <em>
+       Proceedings of the 25th Annual ACM Symposium on User Interface Software and Technology - UIST ’12
+      </em>
+      . ACM Press, New York, New York, USA, 509.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2380116.2380180" target="_blank">
+       https://doi.org/10.1145/2380116.2380180
+      </a>
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      Christian Rendl, Michael Haller, Shahram Izadi, David Kim, Sean Fanello, Patrick Parzer, Christoph Rhemann, Jonathan Taylor, Martin Zirkl, Gregor Scheipl, and Thomas Rothländer. 2014. FlexSense: A Transparent Self-Sensing Deformable Surface. In
+      <em>
+       Proceedings of the 27th Annual ACM Symposium on User Interface Software and Technology - UIST ’14
+      </em>
+      . ACM Press, New York, New York, USA, 129–138.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2642918.2647405" target="_blank">
+       https://doi.org/10.1145/2642918.2647405
+      </a>
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      Munehiko Sato, Ivan Poupyrev, and Chris Harrison. 2012. Touché: Enhancing Touch Interaction on Humans, Screens, Liquids, and Everyday Objects. In
+      <em>
+       Proceedings of the 2012 ACM Annual Conference on Human Factors in Computing Systems - CHI ’12
+      </em>
+      . ACM Press, New York, New York, USA, 483.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2207676.2207743" target="_blank">
+       https://doi.org/10.1145/2207676.2207743
+      </a>
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Valkyrie Savage, Colin Chang, and Björn Hartmann. 2013. Sauron: Embedded Single-Camera Sensing of Printed Physical User Interfaces. In
+      <em>
+       Proceedings of the 26th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’13
+      </em>
+      ). ACM Press, New York, New York, USA, 447–456.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2501988.2501992" target="_blank">
+       https://doi.org/10.1145/2501988.2501992
+      </a>
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      Valkyrie Savage, Ryan Schmidt, Tovi Grossman, George Fitzmaurice, and Björn Hartmann. 2014. A Series of Tubes: Adding Interactivity to 3D Prints Using Internal Pipes. In
+      <em>
+       Proceedings of the 27th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’14
+      </em>
+      ). ACM Press, New York, New York, USA, 3–12.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2642918.2647374" target="_blank">
+       https://doi.org/10.1145/2642918.2647374
+      </a>
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      Martin Schmitz, Martin Herbers, Niloofar Dezfuli, Sebastian Günther, and Max Mühlhäuser. 2018. Off-Line Sensing: Memorizing Interactions in Passive 3D-Printed Objects. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, 182:1–182:8.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3173756" target="_blank">
+       https://doi.org/10.1145/3173574.3173756
+      </a>
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      Martin Schmitz, Mohammadreza Khalilbeigi, Matthias Balwierz, Roman Lissermann, Max Mühlhäuser, and Jürgen Steimle. 2015. Capricate: A Fabrication Pipeline to Design and 3D Print Capacitive Touch Sensors for Interactive Objects. In
+      <em>
+       Proceedings of the 28th Annual ACM Symposium on User Interface Software &amp; Technology
+      </em>
+      (
+      <em>
+       UIST ’15
+      </em>
+      ). ACM Press, New York, New York, USA, 253–258.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2807442.2807503" target="_blank">
+       https://doi.org/10.1145/2807442.2807503
+      </a>
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      Martin Schmitz, Jürgen Steimle, Jochen Huber, Niloofar Dezfuli, and Max Mühlhäuser. 2017. Flexibles: Deformation-Aware 3D-Printed Tangibles for Capacitive Touchscreens. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 1001–1014.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025663" target="_blank">
+       https://doi.org/10.1145/3025453.3025663
+      </a>
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      Christian Schumacher, Bernd Bickel, Jan Rys, Steve Marschner, Chiara Daraio, and Markus Gross. 2015. Microstructures to Control Elasticity in 3D Printing.
+      <em>
+       <em>
+        ACM Transactions on Graphics
+       </em>
+      </em>
+      34, 4 (July 2015), 136:1–136:13.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2766926" target="_blank">
+       https://doi.org/10.1145/2766926
+      </a>
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      Ronit Slyper, Ivan Poupyrev, and Jessica Hodgins. 2011. Sensing Through Structure: Designing Soft Silicone Sensors. In
+      <em>
+       Proceedings of the Fifth International Conference on Tangible, Embedded, and Embodied Interaction - TEI ’11
+      </em>
+      . ACM Press, New York, New York, USA, 213–220.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1935701.1935744" target="_blank">
+       https://doi.org/10.1145/1935701.1935744
+      </a>
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      J. Smith, T. White, C. Dodge, J. Paradiso, N. Gershenfeld, and D. Allport. 1998. Electric Field Sensing for Graphical Interfaces.
+      <em>
+       <em>
+        IEEE Computer Graphics and Applications
+       </em>
+      </em>
+      18, 3 (May 1998), 54–60.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/38.674972" target="_blank">
+       https://doi.org/10.1109/38.674972
+      </a>
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      J. R. Smith. 1996. Field Mice: Extracting Hand Geometry from Electric Field Measurements.
+      <em>
+       <em>
+        IBM Systems Journal
+       </em>
+      </em>
+      35, 3.4 (1996), 587–608.
+      <a class="link-inline force-break" href="https://doi.org/10.1147/sj.353.0587" target="_blank">
+       https://doi.org/10.1147/sj.353.0587
+      </a>
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Joshua Reynolds Smith. 1999. Electric Field Imaging. PhD Thesis. Massachusetts Institute of Technology.
+     </li>
+     <li id="BibPLXBIB0053" label="[53]">
+      Jürgen Steimle, Andreas Jordt, and Pattie Maes. 2013. Flexpad: Highly Flexible Bending Interactions for Projected Handheld Displays. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems - CHI ’13
+      </em>
+      . ACM Press, New York, New York, USA, 237–246.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2470688" target="_blank">
+       https://doi.org/10.1145/2470654.2470688
+      </a>
+     </li>
+     <li id="BibPLXBIB0054" label="[54]">
+      Yuta Sugiura, Masahiko Inami, and Takeo Igarashi. 2012. A Thin Stretchable Interface for Tangential Force Measurement. In
+      <em>
+       Proceedings of the 25th Annual ACM Symposium on User Interface Software and Technology - UIST ’12
+      </em>
+      . ACM Press, New York, New York, USA, 529.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2380116.2380182" target="_blank">
+       https://doi.org/10.1145/2380116.2380182
+      </a>
+     </li>
+     <li id="BibPLXBIB0055" label="[55]">
+      Yuta Sugiura, Gota Kakehi, Anusha Withana, Calista Lee, Daisuke Sakamoto, Maki Sugimoto, Masahiko Inami, and Takeo Igarashi. 2011. Detecting Shape Deformation of Soft Objects Using Directional Photoreflectivity Measurement. In
+      <em>
+       Proceedings of the 24th Annual ACM Symposium on User Interface Software and Technology - UIST ’11
+      </em>
+      . ACM Press, New York, New York, USA, 509.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2047196.2047263" target="_blank">
+       https://doi.org/10.1145/2047196.2047263
+      </a>
+     </li>
+     <li id="BibPLXBIB0056" label="[56]">
+      Giovanni Maria Troiano, Esben Warming Pedersen, and Kasper Hornbæk. 2015. Deformable Interfaces for Performing Music. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems - CHI ’15
+      </em>
+      . ACM Press, New York, New York, USA, 377–386.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702492" target="_blank">
+       https://doi.org/10.1145/2702123.2702492
+      </a>
+     </li>
+     <li id="BibPLXBIB0057" label="[57]">
+      Karen Vanderloock, Vero Vanden Abeele, Johan A.K. Suykens, and Luc Geurts. 2013. The Skweezee System: Enabling the Design and the Programming of Squeeze Interactions. In
+      <em>
+       Proceedings of the 26th Annual ACM Symposium on User Interface Software and Technology - UIST ’13
+      </em>
+      . ACM Press, New York, New York, USA, 521–530.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2501988.2502033" target="_blank">
+       https://doi.org/10.1145/2501988.2502033
+      </a>
+     </li>
+     <li id="BibPLXBIB0058" label="[58]">
+      Marynel Vázquez, Eric Brockmeyer, Ruta Desai, Chris Harrison, and Scott E. Hudson. 2015. 3D Printing Pneumatic Device Controls with Variable Activation Force Capabilities. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems - CHI ’15
+      </em>
+      . ACM Press, New York, New York, USA, 1295–1304.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702569" target="_blank">
+       https://doi.org/10.1145/2702123.2702569
+      </a>
+     </li>
+     <li id="BibPLXBIB0059" label="[59]">
+      Johnty Wang, Nicolas Alessandro, Sidney Fels, and Bob Pritchard. 2011. SQUEEZY: Extending a Multi-Touch Screen with Force Sensing Objects for Controlling Articulatory Synthesis. In
+      <em>
+       Proceedings of the International Conference on New Interfaces for Musical Expression
+      </em>
+      . Oslo, Norway, 531–532.
+     </li>
+     <li id="BibPLXBIB0060" label="[60]">
+      Chihiro Watanabe, Alvaro Cassinelli, Yoshihiro Watanabe, and Masatoshi Ishikawa. 2014. Generic Method for Crafting Deformable Interfaces to Physically Augment Smartphones. In
+      <em>
+       Proceedings of the Extended Abstracts of the 32nd Annual ACM Conference on Human Factors in Computing Systems - CHI EA ’14
+      </em>
+      . ACM Press, New York, New York, USA, 1309–1314.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2559206.2581307" target="_blank">
+       https://doi.org/10.1145/2559206.2581307
+      </a>
+     </li>
+     <li id="BibPLXBIB0061" label="[61]">
+      Martin Weigel and Jürgen Steimle. 2017. DeformWear: Deformation Input on Tiny Wearable Devices.
+      <em>
+       <em>
+        Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies
+       </em>
+      </em>
+      1, 2 (June 2017), 1–23.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3090093" target="_blank">
+       https://doi.org/10.1145/3090093
+      </a>
+     </li>
+     <li id="BibPLXBIB0062" label="[62]">
+      Karl Willis, Eric Brockmeyer, Scott Hudson, and Ivan Poupyrev. 2012. Printed Optics: 3D Printing of Embedded Optical Elements for Interactive Devices. In
+      <em>
+       Proceedings of the 25th Annual ACM Symposium on User Interface Software and Technology - UIST ’12
+      </em>
+      . ACM Press, New York, New York, USA, 589.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2380116.2380190" target="_blank">
+       https://doi.org/10.1145/2380116.2380190
+      </a>
+     </li>
+     <li id="BibPLXBIB0063" label="[63]">
+      Raphael Wimmer and Patrick Baudisch. 2011. Modular and Deformable Touch-Sensitive Surfaces Based on Time Domain Reflectometry. In
+      <em>
+       Proceedings of the 24th Annual ACM Symposium on User Interface Software and Technology - UIST ’11
+      </em>
+      . ACM Press, New York, New York, USA, 517–526.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2047196.2047264" target="_blank">
+       https://doi.org/10.1145/2047196.2047264
+      </a>
+     </li>
+     <li id="BibPLXBIB0064" label="[64]">
+      Yang Zhang, Gierad Laput, and Chris Harrison. 2017. Electrick: Low-Cost Touch Sensing Using Electric Field Tomography. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 1–14.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025842" target="_blank">
+       https://doi.org/10.1145/3025453.3025842
+      </a>
+     </li>
+     <li id="BibPLXBIB0065" label="[65]">
+      Yan Zhao, Yuta Sugiura, Mitsunori Tada, and Jun Mitani. 2017. InsTangible: A Tangible User Interface Combining Pop-up Cards with Conductive Ink Printing. In Entertainment Computing – ICEC 2017(Lecture Notes in Computer Science), Nagisa Munekata, Itsuki Kunita, and Junichi Hoshino (Eds.). Springer International Publishing, 72–80.
+     </li>
+     <li id="BibPLXBIB0066" label="[66]">
+      Thomas G. Zimmerman, Joshua R. Smith, Joseph a. Paradiso, David Allport, and Neil Gershenfeld. 1995. Applying Electric Field Sensing to Human-Computer Interfaces. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems - CHI ’95
+      </em>
+      . ACM Press, New York, New York, USA, 280–287.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/223904.223940" target="_blank">
+       https://doi.org/10.1145/223904.223940
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300684" target="_blank">
+      https://doi.org/10.1145/3290605.3300684
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'875824a1eaf130c3',t:'MTcxMzMxMjExMy4zNDAwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

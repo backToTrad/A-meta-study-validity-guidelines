@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Pinpoint: A PCB Debugging Pipeline Using Interruptible Routing and Instrumentation
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300278_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300278_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300278_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300278_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300278_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300278_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300278_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300278_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Pinpoint: A PCB Debugging Pipeline Using Interruptible Routing and Instrumentation
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Evan
+      </span>
+      <span class="surName">
+       Strasnick
+      </span>
+      , Stanford University, USA,
+      <a href="mailto:estrasni@stanford.edu">
+       estrasni@stanford.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Sean
+      </span>
+      <span class="surName">
+       Follmer
+      </span>
+      , Stanford University, USA,
+      <a href="mailto:sfollmer@stanford.edu">
+       sfollmer@stanford.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Maneesh
+      </span>
+      <span class="surName">
+       Agrawala
+      </span>
+      , Stanford University, USA,
+      <a href="mailto:maneesh@cs.stanford.edu">
+       maneesh@cs.stanford.edu
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300278" target="_blank">
+       https://doi.org/10.1145/3290605.3300278
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Difficulties in accessing, isolating, and iterating on the components and connections of a printed circuit board (PCB) create unique challenges in PCB debugging. Manual probing methods are slow and error prone, and even dedicated PCB testing equipment remains limited by its inability to modify the circuit during testing. We present Pinpoint, a tool that facilitates in-circuit PCB debugging through techniques such as programmatically probing signals, dynamically disconnecting components and subcircuits to test in isolation, and splicing in new elements to explore potential modifications. Pinpoint automatically instruments a PCB design and generates designs for a physical jig board that interfaces the user's PCB to our custom testing hardware and to software tools. We evaluate Pinpoint's ability to facilitate the debugging of various PCB issues by instrumenting and testing different classes of boards, as well as by characterizing its technical limitations and by soliciting feedback through a guided exploration with PCB designers.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Human computer interaction (HCI)
+       </strong>
+       ; •
+       <strong>
+        Hardware → Bug detection, localization and diagnosis
+       </strong>
+       ;
+       <em>
+        PCB design and layout;
+       </em>
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        printed circuit board
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        PCB
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        debugging
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        design tool
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        jig
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        in-circuit testing
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        design-for-test
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        instrumentation
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Evan Strasnick, Sean Follmer, and Maneesh Agrawala. 2019. Pinpoint: A PCB Debugging Pipeline Using Interruptible Routing and Instrumentation. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 11 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300278" target="_blank">
+         https://doi.org/10.1145/3290605.3300278
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <figure id="fig1">
+    <img alt="" class="img-responsive" longdesc="(Left) Automation instrumentation of a circuit design with interruptible “jumper pads.” (Right) Overview of Pinpoint's hardware and software elements." src="3300278_files\chi201948fig1.jpg"/>
+    <div class="figure-caption">
+     <span class="figure-number">
+      Figure 1:
+     </span>
+     <span class="figure-title">
+      Pinpoint provides designers with new PCB debugging capabilities. (A) First, Pinpoint automatically instruments a circuit design with “jumper pads” that enable programmatic control over each connection. (B) It then produces designs for a jig interface between the user's PCB (the Device Under Test, DUT) and Pinpoint's custom testing hardware (the control board). A graphical interface enables debugging features such as probing, isolating parts of the circuit, and authoring functional tests.
+     </span>
+    </div>
+   </figure>
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Printed circuit boards (PCBs) are typically the final realization of a circuit design due to robustness, compactness, and ease of mass production, but pose significant challenges in debugging. Bugs can fall into several classes:
+     <em>
+      Construction errors
+     </em>
+     involve a mismatch between the design and the constructed circuit. These include continuity problems (short circuits and open circuits), faulty components, and fabrication defects [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ].
+     <em>
+      Conceptual errors
+     </em>
+     result from a mismatch between specification and design – for example, routing components incorrectly or operating them outside of their rated conditions. Errors of
+     <em>
+      noise
+     </em>
+     involve external interference with an otherwise correct design. Noise can result from interactions between subcircuits, e.g. drawing current causes fluctuations on a voltage supply, or can enter the circuit from an outside source, e.g. through capacitive or inductive coupling.
+    </p>
+    <p>
+     In particular, debugging in a PCB context is complicated by difficulties in
+     <em>
+      accessing
+     </em>
+     ,
+     <em>
+      isolating
+     </em>
+     , and
+     <em>
+      iterating
+     </em>
+     on the elements and connections of the circuit. Construction errors are typically invisible and inaccessible, hidden beneath or within surface-mounted components, and manually probing exposed pins or pads to observe signals is slow and error prone. Testing a fully assembled board (“in-circuit testing”) is limited in that many fundamental tests require isolating parts of the circuit to test (e.g. checking component values), but the designer cannot modify the fixed connections on the board. Similarly, after identifying a conceptual issue, the designer typically cannot explore potential solutions or iterate on the design without refabricating the board.
+    </p>
+    <p>
+     The manual tools commonly used to debug PCBs (oscilloscope, multimeter, etc.) are versatile, but alone offer limited support for
+     <em>
+      test-oriented
+     </em>
+     debugging. As in software debugging, functional tests can help to quickly identify unexpected behaviors of the circuit. However, while researchers have developed a powerful ecosystem of tools for software debugging, many PCB designers lack access to an effective
+     <em>
+      test infrastructure
+     </em>
+     . Dedicated test platforms – such as a flying-probe or bed-of-nails tester – interface signals on the board with software tools, enabling designers to programmatically define tests that save time, reduce errors, and provide opportunities for automation. However, due to cost, test platforms are typically only used by professional teams for projects at scale, leaving makers, researchers, and independent designers without access to effective debugging methods. More importantly, these testers remain limited by their inability to isolate and modify parts of the circuit during testing. They cannot, for example, remove a component to verify its resistance, explore an alternative configuration, or perform integration testing as subcircuits are combined.
+    </p>
+    <p>
+     We present Pinpoint, a tool providing designers with a range of new in-circuit PCB testing methods at low-cost. Pinpoint improves
+     <em>
+      access
+     </em>
+     by enabling users to quickly visualize and record signals from any instrumented point on the board. It can programmatically connect and disconnect components and subcircuits, enabling the designer to temporarily
+     <em>
+      isolate
+     </em>
+     circuit elements, and new elements can be spliced into the circuit to
+     <em>
+      iterate
+     </em>
+     and test modifications. Finally, Pinpoint supports a test-oriented workflow through the injection of test signals, automatic detection of common issues, and authoring of functional tests.
+    </p>
+    <p>
+     Pinpoint enables these interactions via three primary components, shown in Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     . It first automatically instruments a PCB design with “jumper pads” (paired test pads joined by a relay connection, Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     .A), as well as generates a new “jig board” design that serves as a “bed-of-nails”-style interface to the device under test (DUT). Once connected, Pinpoint's custom testing hardware can probe the DUT, inject signals, isolate components, and splice in new elements (Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     .B). Finally, a graphical user interface provides access to test features, such as visualizing signals, authoring unit tests, and automatically scanning for common issues (Figure
+     <a class="fig" href="#fig5">
+      5
+     </a>
+     ). We evaluate Pinpoint's ability to facilitate the debugging of various PCB issues by instrumenting and testing different classes of boards, as well as by characterizing its technical limitations and by soliciting feedback through a guided exploration with PCB designers.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     State of the art PCB debugging tools automate electrical checks for construction errors (“fault detection”) as well as facilitate functional testing [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ]. These tests can be performed before placing components (“bare board tests”) or after (“in-circuit tests”). Common test equipment includes flying probe testers, which use actuated contacts to serially probe test sites, and bed-of-nails fixtures, which use fixed contacts laid out to mate with exposed test regions on a DUT. Imaging-based methods also enable optical, thermal, and x-ray detection of construction errors [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ]. Software-based testing platforms, such as LabVIEW [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ], provide sophisticated data acquisition and functional testing interfaces but require significant manual instrumentation.
+    </p>
+    <p>
+     As manually authoring tests becomes laborious for large circuits, Automated Test Pattern Generation (ATPG) can assist designers by generating checks for anticipated faults [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ]. However, ATPG introduces new complexity, typically requiring an abstracted “fault model” for the target circuit. Pinpoint avoids this complexity by generating common tests without a fault model, while providing a high-level authoring interface for user-defined tests.
+    </p>
+    <p>
+     Other in-circuit testing methods leverage Built-In Self Test (BIST) capabilities designed into components, such as the widely adopted JTAG standard [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+      15
+     </a>
+     ]. JTAG enables a “boundary scan” approach, where designers use an added debug port to configure built-in test cells of an integrated circuit (IC) on the board. JTAG provides the greatest utility to IC manufacturers, while end-user designers must write specific tests for each JTAG-enabled IC on their board to leverage its capabilities. Boundary scan techniques remain limited by the inability to modify the circuit under test.
+    </p>
+    <p>
+     Many students, independent designers, and hobbyist makers have turned to DIY methods for affordable testing solutions. For example, some have modified CNC tools (such as a 3D printer) to act as a flying probe tester [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2
+     </a>
+     ]. Prototyping-oriented test platforms like the Digilent Electronics Explorer [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ] allow makers to connect sites on a breadboard to tools like oscilloscopes and logic analyzers. Pinpoint draws inspiration from examples of DIY bed-of-nails fixtures. While currently makers manually design these fixtures for each project, Pinpoint automates jig design generation.
+    </p>
+    <p>
+     Inspired by the spread of maker practices, research communities have identified new computational support needs in electronic design [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ]. These emerging tools have primarily targeted the prototyping stage (e.g. the breadboard), where low cost, fast iteration, and hands-on construction offer a novice-friendly platform for tinkering and learning-by-doing [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+      29
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ]. Many of these systems share motivations with Pinpoint, such as the Toastboard [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+      11
+     </a>
+     ], which instruments a breadboard to facilitate signal visualization and functional testing, Bifröst [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ], which links electrical events to code execution, and CurrentViz [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+      31
+     </a>
+     ], which augments the breadboard with in-circuit current detection. However, while many bugs can be found in the breadboard stage, new issues surface in the transition to the PCB (e.g construction errors, misrouting of components), and the PCB's added difficulties in access, isolation, and iteration create additional barriers to debugging that demand research attention.
+    </p>
+    <p>
+     Other tools have explored new debugging techniques beyond the prototyping stage of hardware design. For example, BoardLab reduces the designer's cognitive load when probing a PCB by highlighting the probe's location within the design file [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ]. Other systems improve debugging by facilitating iteration, either through rapid fabrication techniques [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ] or by leveraging interactively reconfigurable hardware [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ]. Pinpoint intervenes in each of the design, fabrication, and debugging stages to more holistically address these and other core difficulties.
+    </p>
+   </section>
+   <section id="sec-4">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       An Example Debugging Session Using Pinpoint
+      </h2>
+     </div>
+    </header>
+    <p>
+     We present an example PCB design workflow to illustrate the use of Pinpoint in debugging common issues: A student, Elle, is designing a handheld game controller, consisting of a potentiometer-based thumbstick that reports position along a horizontal axis and a capacitive button that detects a finger press (Figure
+     <a class="fig" href="#fig2">
+      2
+     </a>
+     ).
+    </p>
+    <figure id="fig2">
+     <img alt="" class="img-responsive" longdesc="A game controller PCB designed using Pinpoint." src="3300278_files\chi201948fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 2:
+      </span>
+      <span class="figure-title">
+       A game controller PCB designed using Pinpoint, featuring a thumbstick and capacitive button.
+      </span>
+     </div>
+    </figure>
+    <figure id="fig3">
+     <img alt="" class="img-responsive" longdesc="(Left) Game controller schematic before and after instrumentation. (Center) Game controller board before and after instrumentation. (Right) The fabricated and assembled game controller and jig." src="3300278_files\chi201948fig3.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 3:
+      </span>
+      <span class="figure-title">
+       Game controller schematic (A) and board (B) before (top) and after (bottom) instrumentation on all signals. (C) The top and bottom (mirrored for clarity) of the instrumented game controller PCB with added jumper pads (callout). (D) The corresponding jig board generated by Pinpoint. (E) The jig board mates to the DUT with each pogo pin probing a pad.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Board Creation
+       </h3>
+      </div>
+     </header>
+     <p>
+      Elle uses a circuit design tool to create a schematic then to lay out and route components on a board. Before sending her design for fabrication, she runs Pinpoint's instrumentation script, which automatically splices jumper pads (paired test pads) into the signals on her schematic (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      .A) and board (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      .B). The pads lie on the underside of the board, and divide each signal in two so that Pinpoint can dynamically open and close connections.
+     </p>
+     <p>
+      Elle fabricates her board, along with a second design generated by Pinpoint during instrumentation, called the “jig board” (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      .D). The jig board interfaces her instrumented PCB (the device under test, or DUT) with Pinpoint's custom testing hardware (the “control board”). Elle assembles the jig board by soldering pogo pins into the provided through-holes, mounts it onto the DUT with screws (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      .E), then connects the control board to the jig board and to her PC.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Debugging with Pinpoint
+       </h3>
+      </div>
+     </header>
+     <section id="sec-7">
+      <p>
+       <em>
+        Probing Signals.
+       </em>
+       When trying out her controller, Elle quickly notices a problem with the thumbstick, which consistently reports a movement to the right. She first uses the built-in oscilloscope in Pinpoint's debugging interface (Figure
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       ) to probe the output of the thumbstick, finding that it reads at 0V. She can set Pinpoint's two probes on any instrumented signals by clicking on their diagrammatic representations in the schematic, so she does not need to track which pin on her board carries which signal.
+      </p>
+     </section>
+     <section id="sec-8">
+      <p>
+       <em>
+        Automatic Detection of Construction Errors.
+       </em>
+       Wondering if the error lies in her construction of the board, Elle then uses Pinpoint to automatically scan her board for potential continuity issues. Pinpoint automates these routine checks, checking all pairs of signals for unintended connections. Elle's results indicate that there may be a short circuit between the output of the thumbstick and the adjacent ground pin. After removing a solder bridge hidden beneath the component, the thumbstick now responds to her inputs.
+      </p>
+     </section>
+     <section id="sec-9">
+      <p>
+       <em>
+        Subcircuit Isolation.
+       </em>
+       While the thumbstick seems responsive, Elle next notices that it occasionally makes small inputs in random directions. She probes the input voltage (VCC), and finds significant noise on the supply. Hoping to localize the source, Elle uses Pinpoint to temporarily isolate parts of the circuit without desoldering, clicking on jumper pads to open and close connections on her board (Figure
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       ). When she disconnects the capacitive sensor from the power line, the noise disappears. Elle quickly recognizes the sensor as the source of the noise and updates her design to include an additional decoupling capacitor.
+      </p>
+      <figure id="fig4">
+       <img alt="" class="img-responsive" longdesc="Opening circuit connections by toggling jumper pads to localize a source of noise in the circuit." src="3300278_files\chi201948fig4.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 4:
+        </span>
+        <span class="figure-title">
+         Pinpoint uses interruptible jumper pads to isolate parts of the circuit, e.g. to localize issues. Noise on the circuit's VCC line disappears when opening the indicated VCC and GND connections to the capacitive sensing component.
+        </span>
+       </div>
+      </figure>
+      <figure id="fig5">
+       <img alt="" class="img-responsive" longdesc="Pinpoint's debugging interface." src="3300278_files\chi201948fig5.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 5:
+        </span>
+        <span class="figure-title">
+         Pinpoint's debugging interface. An oscilloscope view (top left) probes and injects signals. Users author and run tests via the command line below. On the right, the circuit is shown in linked board and schematic representations. Signals clicked in one representation will highlight in the other, as well as on a visual indication of corresponding ports to splice in circuits.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-10">
+      <p>
+       <em>
+        Functional Testing and Test Signal Injection.
+       </em>
+       Elle has also noticed that her capacitive button does not respond to her touch. She loads a collection of unit tests saved from the last circuit she designed with the same sensor – some tests that she authored herself and some imported from component libraries. These tests leverage probing, subcircuit isolation, and signal injection to check properties of a signal (e.g. voltage, frequency, period) or of a board (e.g. continuity between two points). She imports and runs an in-circuit functional test designed by the component manufacturer to verify whether the sensor is properly configured and in working condition. The test isolates the sensing circuit, injects a 3.3V signal at the output of the component, and records to observe characteristic peaks in the response. The test reports no issue, indicating that Elle's sensor is functional.
+      </p>
+     </section>
+     <section id="sec-11">
+      <p>
+       <em>
+        Circuit Splicing.
+       </em>
+       Elle then decides to try adjusting the sensitivity of her circuit, which is determined by the value of a capacitor,
+       <em>
+        C
+        <sub>
+         s
+        </sub>
+       </em>
+       , on the board. Instead of fabricating a new board or desoldering this component, she temporarily disconnects it by clicking on the surrounding jumper pads to interrupt the connections at those points. She then splices in a breadboarded circuit – where she can quickly place different capacitors – by connecting jumper wires to highlighted ports on Pinpoint's control board (Figure
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       ). She experiments with different capacitors on the breadboard and finds that .1
+       <em>
+        μ
+       </em>
+       F works better in her circuit than the manufacturer suggested value of 10 nF. She additionally splices in a decoupling capacitor over the power and ground connections of the sensing IC to verify that it mitigates the noise she identified earlier.
+      </p>
+      <p>
+       Finally, having verified the solutions to her current bugs, Elle designs a revised version of her game controller. Once assembled, she repeats the unit tests from before to quickly verify the board's construction. With debugging finished, she then ties the two ends of each jumper pad together with a bit of solder to leave her board in a connected state.
+      </p>
+      <figure id="fig6">
+       <img alt="" class="img-responsive" longdesc="Using Pinpoint to splice external circuits into the instrumented DUT." src="3300278_files\chi201948fig6.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 6:
+        </span>
+        <span class="figure-title">
+         Pinpoint enables designers to splice external circuits into instrumented sites on the DUT. Here, the designer splices in a breadboard to rapidly explore capacitor values.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+      <p>
+       With respect to the previously identified challenges in PCB debugging, Pinpoint improved Elle's
+       <em>
+        access
+       </em>
+       via programmatic signal probing, enabled
+       <em>
+        isolation
+       </em>
+       of components to perform in-circuit functional tests, and facilitated
+       <em>
+        iteration
+       </em>
+       through spliced-in circuit modifications.
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-12">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       IMPLEMENTATION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Pinpoint includes an instrumentation algorithm used during circuit design; fabrication techniques to create a test setup during circuit construction; custom testing hardware (“control board”) that probes sites, injects signals, and interrupts connections; and a debugging interface used in testing. We adopted several design constraints, informed by our own experiences and by formative interviews conducted with PCB designers: low cost, rapid assembly, minimal impact on the designer's workflow, and few added board requirements (e.g. required free space, changes to original layout).
+    </p>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Circuit Design Instrumentation
+       </h3>
+      </div>
+     </header>
+     <p>
+      Pinpoint's instrumentation stage is written as a User Language Program for the EAGLE circuit design tool [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ]. It automatically adds interruptible connections as jumper pads across all signals in the designer's board (up to a maximum (16) supported by the hardware). Designers can instead specify which signals to instrument, as well as whether the connections should be normally-open (i.e. they solder the pads together when finished debugging) or normally-closed (i.e. they sever the connections as needed for a debugging session). We describe our instrumentation algorithm as follows:
+     </p>
+     <figure id="fig7">
+      <img alt="" class="img-responsive" longdesc="Algorithm to instrument a circuit design such that each element on a net can be individually isolated." src="3300278_files\chi201948fig7.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        Pinpoint introduces jumper pads with interruptible connections to enable the isolation of each element on a given net. Each pad connects on one end to a circuit element, and the remaining open ends are tied together.
+       </span>
+      </div>
+     </figure>
+     <figure id="fig8">
+      <img alt="" class="img-responsive" longdesc="Instrumenting a net with only two elements requires only a single jumper pad." src="3300278_files\chi201948fig8.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 8:
+       </span>
+       <span class="figure-title">
+        A net with two components has only two states: connected or disconnected. Pinpoint needs only a single test pad to instrument nets in this configuration.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      (1)
+      <strong>
+       Splice jumper pads into nets on the schematic.
+      </strong>
+      Pinpoint places jumper pads so as to enable any combination of connections to each
+      <em>
+       element
+      </em>
+      (component or subcircuit) on a given
+      <em>
+       net
+      </em>
+      (electrical connection shared by a set of components). We satisfy this requirement with a specific topology: each jumper pad connects on one end to a single element, and the other ends of all pads on the net are connected together (Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      ). We modify the schematic as follows:
+     </p>
+     <p>
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300278_files\chi201948img1.svg"/>
+      </span>
+     </p>
+     <p>
+      Thus, a net with
+      <em>
+       n
+      </em>
+      elements requires
+      <em>
+       n
+      </em>
+      jumper pads for full instrumentation. However, as shown in Figure
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      , the case where
+      <em>
+       n
+      </em>
+      = 2 requires only a single pad to either connect or disconnect the components. We reduce the total number of added pads by using a single splice in these cases.
+     </p>
+     <p>
+      (2)
+      <strong>
+       Remove problematic board traces.
+      </strong>
+      Unlike in the schematic, Pinpoint must consider both the topology and the geometry of connections on the board layout to enable individual element isolation. While we aim to minimize deviation from the designer's original routing, many layouts require the removal or addition of traces, e.g. as shown in Figure
+      <a class="fig" href="#fig9">
+       9
+      </a>
+      , where the signal is routed “through” component 2. To preserve portions of the original routing while ensuring correctness, Pinpoint removes only wire segments incident upon elements, then routes with the remaining segments in place. Our limitations section describes in greater detail the considerations in preserving parts of the original routing.
+     </p>
+     <figure id="fig9">
+      <img alt="" class="img-responsive" longdesc="Pinpoint must often make alterations to existing routing of traces to support individual isolation of components." src="3300278_files\chi201948fig9.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 9:
+       </span>
+       <span class="figure-title">
+        In many cases, adding jumper pads using only the designer's original routing cannot support the individual isolation of each component, as in (A), where elements 1 and 3 cannot be connected with 2 disconnected. Instead, Pinpoint must add new routes as in (B).
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      (3)
+      <strong>
+       Lay out new jumper pads.
+      </strong>
+      To minimally impact the electrical properties of the circuit, placement of jumper pads should minimize the lengths of traces and number of vias required to route the resulting circuit. We define a cost function which weights free space on the board, distance from the original trace, and additional vias required in routing, then use a simulated annealing process to approximate the best available location for the new pad. Our current implementation uses a greedy approach for faster instrumentation, optimizing the location of one pad before considering the next. However, switching to a global cost minimization across all new pad locations could further optimize the result.
+     </p>
+     <p>
+      (4)
+      <strong>
+       Route new connections.
+      </strong>
+      We finalize the instrumentation using EAGLE's default autorouter to connect the new pads into the circuit. The designer can adjust routing as desired once the instrumentation is complete.
+     </p>
+    </section>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Jig Fabrication
+       </h3>
+      </div>
+     </header>
+     <p>
+      After instrumentation, Pinpoint adds #4-40 mounting holes in free space on the board design, then generates a jig board design that routes pogo pin slots (above jumper pads on the DUT) to a header row (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      .D). The designer assembles the jig by soldering in pogo pins, and connects it to the control board with a ribbon cable. As a lower-cost, rapid alternative, the designer can instead laser cut a jig template and inserts pogo pins into friction-fit holes, connecting them to the control board with female jumper wires.
+     </p>
+    </section>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        The control board
+       </h3>
+      </div>
+     </header>
+     <p>
+      Pinpoint's custom testing hardware (Figure
+      <a class="fig" href="#fig10">
+       10
+      </a>
+      ) serves to multiplex sites on the DUT for probing or signal injection, as well as to toggle connections across jumper pads. A dual-channel USB oscilloscope (Bitscope BS05 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ]) captures data from up to two signals on the DUT and transmits the traces via serial connection to the debugging interface. The BS05 also provides an arbitrary waveform generator with interpolation of up to 1024 user-defined points. Pinpoint probes signals by multiplexing these channels (2x data capture, 1x signal injection) to any of up to 32 sites on an instrumented board (16 jumper pads, 2 ends per pad). We use three ADG732 32:1 analog multiplexers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ] (one for each channel), controlled by a Teensy 3.6 microcontroller [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ] over USB serial connection.
+     </p>
+     <p>
+      The limits of Pinpoint's measurement capabilities are primarily set by specifications of the chosen oscilloscope. The BS05 has a 20 MHz analog bandwidth with a precision of 5 mV for signals below 1 MHz, and 20 mV at full bandwidth. It has a maximum sampling rate of 20 MSps on a timebase ranging from 1
+      <em>
+       μ
+      </em>
+      s/Div to 100 ms/Div. While it can be configured for a wide voltage range, our control board circuits are designed for 0-3.3V signals. These values lend themselves well to mixed signals in the 1 MHz range and below.
+     </p>
+     <p>
+      The control board also houses 16 optically-coupled solid-state relays (TLP241 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ]) that switch instrumented connections on the DUT. Each relay bridges the two sides of a jumper pad, such that closing the relay connects the two ends of the signal. Solid-state relays are faster, smaller, and more reliable than mechanical relays, at the cost of a more measurable impact on electrical properties of the circuit. However, optically-coupled relays offer better isolation between the circuit under test and control signals. The control board also breaks out the two sides of each relay to header pins beneath the ribbon cable. By connecting to these pins, designers can splice in external circuits on either side of a jumper pad.
+     </p>
+     <p>
+      The control board's integrated components cost approximately
+      <font style="normal">
+       $
+      </font>
+      25 total (100x quantity). The microcontroller and USB oscilloscope were obtained for
+      <font style="normal">
+       $
+      </font>
+      30 and
+      <font style="normal">
+       $
+      </font>
+      110 respectively.
+     </p>
+     <figure id="fig10">
+      <img alt="" class="img-responsive" longdesc="Diagram of Pinpoint's control board." src="3300278_files\chi201948fig10.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 10:
+       </span>
+       <span class="figure-title">
+        The control board is Pinpoint's custom testing hardware. Analog multiplexers switched by a microcontroller connect a USB oscilloscope and waveform generator to sites on the DUT to probe and inject signals. Solid state relays open and close the DUT's instrumented connections.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Debugging Interface
+       </h3>
+      </div>
+     </header>
+     <p>
+      Pinpoint's graphical interface (Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      ) controls probing, signal injection, interruptible connections, and test logic via USB serial communication with the control board. Metadata and images imported from the instrumentation stage enable the designer to interact with a linked representation of their board and schematic.
+     </p>
+     <p>
+      Designers can create test signals either by configuring standard waveforms (sine, square, triangle, sawtooth), manually specifying interpolated points in a CSV, or recording an observed signal from the board (e.g. to test the system's response to a problematic input).
+     </p>
+     <p>
+      Tests involve opening/closing connections on the board, injecting test signals, and then probing the result. For example, to check whether a resistor is well soldered on the DUT, Pinpoint opens the surrounding jumper pads to isolate the component, sets high and low voltages on one side of the component, and checks for the expected voltages on the other side. The user can author tests within the interface using a simple assertion syntax, or can import them from text files. Pinpoint automates continuity testing by generating a continuity check for each pair of signals on the board.
+     </p>
+    </section>
+   </section>
+   <section id="sec-17">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       TECHNICAL EVALUATION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We evaluate our current implementation of Pinpoint by analyzing its potential impact on the electrical properties of the DUT and by exploring its potential to assist with a range of circuits and bugs.
+    </p>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Electrical Characteristics
+       </h3>
+      </div>
+     </header>
+     <p>
+      Instrumentation of the DUT potentially alters its electrical characteristics through parasitic impedances, which may impact sensitive circuits. The total resistance across a jumper pad in its closed state – measured from the tip of one pogo pin, across the jig, wires, and relay, to the tip of the other pin – is 0.6
+      <em>
+       Ω
+      </em>
+      . The relay circuit itself (measured across pairs of pins on the control board) contributes 0.3
+      <em>
+       Ω
+      </em>
+      ; the remainder of the resistance from the cables and jig can therefore be reduced by using larger wires and traces. The capacitance from pogo tip to pogo tip and across the relay circuit is 300pF, primarily in the off-state junction capacitance of the solid state relays. Finally, as with any oscilloscope, probing itself impacts the DUT. The USB oscilloscope in our implementation has a per-channel impedance of 1M
+      <em>
+       Ω
+      </em>
+      / 10pF.
+     </p>
+     <p>
+      Using these values, designers can calculate the anticipated impact of Pinpoint on sensitive signals. Potential risks of added resistance include: amplification of voltage changes due to transients and leakage current, changes in rise/fall times, disruption of impedance matching, etc. The parasitic capacitance is most likely to impact high frequency (e.g. RF) circuits, feedback-based amplification circuits, etc. Finally, the added traces and connectors could provide vectors for coupling/crosstalk on sensitive signals. Throughout our usage of Pinpoint on both analog and digital signals, we encountered only one breakdown caused by our instrumentation load, when testing Pinpoint's limits on a 16 MHz crystal oscillator sensitive to small changes in capacitance.
+     </p>
+    </section>
+    <section id="sec-19">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Demonstrative Applications
+       </h3>
+      </div>
+     </header>
+     <p>
+      We instrumented and fabricated manufacturer-provided board designs for several representative, commercially available PCBs from SparkFun to explore Pinpoint's utility across different types of bugs and boards. Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      lists relevant parameters of each board, including a description of components instrumented.
+     </p>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Demonstrative Application Board Parameters.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;">
+          Application
+         </th>
+         <th style="text-align:center;">
+          # of Instrumented Sites / # of Possible Sites
+         </th>
+         <th style="text-align:center;">
+          Signal Types
+         </th>
+         <th style="text-align:center;">
+          Instrumented Components
+         </th>
+         <th style="text-align:center;">
+          Representative Debugging Interactions
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+          Accelerometer
+         </td>
+         <td style="text-align:center;">
+          16 / 16
+         </td>
+         <td style="text-align:center;">
+          Analog
+         </td>
+         <td style="text-align:center;">
+          Sensor, power rails, bandwidth capacitors
+         </td>
+         <td style="text-align:center;">
+          Automated continuity checks, splicing in prototyped circuits
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          MP3 Player
+         </td>
+         <td style="text-align:center;">
+          16 / 41
+         </td>
+         <td style="text-align:center;">
+          Mixed
+         </td>
+         <td style="text-align:center;">
+          Control pins, outputs, voltage regulator
+         </td>
+         <td style="text-align:center;">
+          Injecting control signals to bypass software, replacing power sources
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          Alarm Clock
+         </td>
+         <td style="text-align:center;">
+          15 / 42
+         </td>
+         <td style="text-align:center;">
+          Digital
+         </td>
+         <td style="text-align:center;">
+          Physical switches, LED segment control lines
+         </td>
+         <td style="text-align:center;">
+          Transient analysis (oneshot capture), signal record and replay
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          FM Radio
+         </td>
+         <td style="text-align:center;">
+          15 / 74
+         </td>
+         <td style="text-align:center;">
+          Mixed
+         </td>
+         <td style="text-align:center;">
+          Subcircuit boundaries, power rails, board I/O
+         </td>
+         <td style="text-align:center;">
+          Subcircuit integration testing, replacing subcircuits with known working elements, signal record and replay
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <section id="sec-20">
+      <p>
+       <em>
+        Demonstration 1: Accelerometer.
+       </em>
+       We first instrumented all signals on a single analog IC PCB – the ADXL335 3-axis accelerometer [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ]. The value of a capacitor on each channel sets its bandwidth (Figure
+       <a class="fig" href="#fig11">
+        11
+       </a>
+       ).
+      </p>
+      <p>
+       Using Pinpoint, the designer can quickly compare and record outputs from each axis to characterize any errant behaviors. Automatic issue detection can quickly detect solder bridges hidden beneath the small IC package. Splicing in a breadboard enables rapid exploration of different capacitor values to calibrate the bandwidth of each channel.
+      </p>
+      <figure id="fig11">
+       <img alt="" class="img-responsive" longdesc="An analog 3-axis accelerometer instrumented with Pinpoint." src="3300278_files\chi201948fig11.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 11:
+        </span>
+        <span class="figure-title">
+         A fully instrumented analog 3-axis accelerometer PCB. Pinpoint can detect invisible short circuits beneath the small SMD package.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-21">
+      <p>
+       <em>
+        Demonstration 2: MP3 Player.
+       </em>
+       We next selected a digital circuit to demonstrate how Pinpoint can inject signals to send control signals and debug digital logic. The circuit uses the WTV020SD audio playback IC and supports simple controls such as play/pause/next [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+        20
+       </a>
+       ]. We instrumented these control signals, the device's output pins, and the power and ground outputs of the on-board voltage regulator (Figure
+       <a class="fig" href="#fig12">
+        12
+       </a>
+       ).
+      </p>
+      <p>
+       Debugging often requires localizing a fault across a cascade of hardware and software stages. If our device fails to play audio when triggered, we can author tests to determine whether the issue lies in software (we inject control signals directly onto the board, bypassing software), in the routing of input signals to the control pins of the IC (we inject control signals directly to the pins of the IC), in the IC itself (we verify that the “busy” line of the IC goes high as expected when playback is triggered), or in the routing of outputs to a speaker (we verify that expected audio signals are seen on the output pins). Having instrumented the power regulator on the board, we can quickly swap it out for an external source to debug power issues.
+      </p>
+      <figure id="fig12">
+       <img alt="" class="img-responsive" longdesc="A digital MP3 player instrumented with Pinpoint." src="3300278_files\chi201948fig12.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 12:
+        </span>
+        <span class="figure-title">
+         Debugging a digital MP3 player with instrumentation on I/O pins and power supply connections. Pinpoint can author functional tests that trigger playback with injected signals and verify that signals appear on the output.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-22">
+      <p>
+       <em>
+        Demonstration 3: Digital Alarm Clock.
+       </em>
+       Next, we instrumented a circuit with physical controls to explore the use of Pinpoint in debugging interaction events. We chose a digital alarm clock with an on-board microcontroller and various buttons and switches to configure times and alarms [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ]. We instrumented the input elements, as well as the individual control lines for a segment on the digital display (Figure
+       <a class="fig" href="#fig13">
+        13
+       </a>
+       ).
+      </p>
+      <p>
+       Physical switches and buttons can give rise to unique bugs. For example, many input errors result from “bouncing,” i.e. when the switching of a physical element actually creates multiple brief edges during the transition. We can verify that our software works in the absence of bouncing by bypassing the physical switches to inject clean test signals into the microcontroller. Then, we can characterize the bouncing behavior by performing a oneshot capture to record a button press and check it for transient edges. After updating our code to filter the bouncing correctly, we can create a unit test that injects an artificially “bounced” signal.
+      </p>
+      <figure id="fig13">
+       <img alt="" class="img-responsive" longdesc="A digital alarm clock instrumented with Pinpoint." src="3300278_files\chi201948fig13.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 13:
+        </span>
+        <span class="figure-title">
+         A clock with instrumentation on physical input elements. Pinpoint can help analyze switch bouncing by pausing, recording, and replaying button presses.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-23">
+      <p>
+       <em>
+        Demonstration 4: FM Radio.
+       </em>
+       Finally we demonstrate how Pinpoint facilitates integration testing by isolating functional subcircuits on a board. We selected an FM radio tuner with on-board audio amplifier [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ]. Our instrumentation isolated each subcircuit – the FM receiver, audio amplifier, headphone jack, and header pins providing I/O to the board – including the power, ground, and I/O lines of each (Figure
+       <a class="fig" href="#fig14">
+        14
+       </a>
+       ).
+      </p>
+      <p>
+       By isolating each subcircuit, we can debug each in isolation, or test a problematic stage with a working replacement. For example, we can replace the FM receiver with an external audio source to test the audio amplifier, or we can verify the FM receiver by connecting its outputs to an external speaker. We can store a recorded a signal from the FM receiver to use as a unit test of the audio amplifier.
+      </p>
+      <figure id="fig14">
+       <img alt="" class="img-responsive" longdesc="An FM radio tuner instrumented with Pinpoint." src="3300278_files\chi201948fig14.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 14:
+        </span>
+        <span class="figure-title">
+         Debugging an FM Radio tuner with interruptible connections between each subcircuit. Pinpoint can disconnect the FM receiver from the circuit and replace it with a known good audio source to test the audio amplifier subcircuit in isolation.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-24">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       INFORMAL FEEDBACK
+      </h2>
+     </div>
+    </header>
+    <p>
+     To solicit formative critiques of our system from active practitioners, we engaged (6) students and researchers (4 male, ages 21-29) with circuit and PCB development experience in a guided exploration of Pinpoint. Two of these users had provided unstructured interviews in the early needfinding stages of our work. We led each user through a simple debugging task (the game controller, as described in our example scenario) to demonstrate Pinpoint's primary features, then gave them a new faulty board (our analog accelerometer PCB with a bandwidth capacitor shorted to ground) to freely debug in a thinkaloud fashion. To encourage creative problem solving, we instructed users not to find the issue using automated continuity checking.
+    </p>
+    <p>
+     All users isolated the target bug through a variety of strategies. Some opened connections in an exploratory fashion to localize which elements resolved the short when removed from the circuit. Others authored continuity checks for potentially shorted sites. One user spliced cables across different parts of the circuit to identify which connections introduced the short into a probed region.
+    </p>
+    <p>
+     Our users offered appreciative remarks for each of Pinpoint's features, showing particular interest in interactive probing, subcircuit isolation, test signal injection, and splicing of new circuits. Several users attested that Pinpoint would greatly accelerate “the hardest part” of their debugging – localizing the error to a single site – over their current methods (manual probing with an oscilloscope). Some envisioned uses of the tool unplanned by the authors, such as leveraging Pinpoint's hardware interface as a way to quickly break out signals on their board for use with a logic analyzer.
+    </p>
+    <p>
+     The users also mentioned several desired additions, such as swept-frequency tests or the ability to designate pins as having either digital or analog behavior. Many users were particularly interested in the embedding of expert knowledge as context-aware debugging assistance. For example, some mentioned that while Pinpoint
+     <em>
+      empowered
+     </em>
+     them with new testing capabilities, they also expected it to
+     <em>
+      educate
+     </em>
+     them on which tests might prove useful in debugging their issue.
+    </p>
+   </section>
+   <section id="sec-25">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       LIMITATIONS AND FUTURE WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Beyond optimizations to Pinpoint's hardware elements (e.g. using relays optimized for low junction capacitance to reduce parasitic impedance), Pinpoint's most fundamental challenge lies in preserving the original routing of the board design during instrumentation. Because autorouted designs are typically suboptimal, designers often route their boards manually, and could be disincentivized from using Pinpoint if it significantly alters their carefully laid plans or limits their understanding of the board. Improvements to our layout algorithm can increase the total fraction of the original routing that is preserved. However, in many cases, such as in Figure
+     <a class="fig" href="#fig9">
+      9
+     </a>
+     , the original routing does not contain paths necessary to support individual isolation of each component from the circuit. Rather than limit Pinpoint to circuits routed in particular configurations, we allow it to perform rewirings of the board that the designer can subsequently adjust.
+    </p>
+    <section id="sec-26">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Scaling Considerations for Large/Complex Boards
+       </h3>
+      </div>
+     </header>
+     <p>
+      While we expect users to exercise discretion on which signals to instrument in large designs, we can analyze the scalability of our approach for more complex designs than those fabricated as above. We characterize the requirements for
+      <em>
+       fully instrumenting
+      </em>
+      a board in terms of: 1) number of sites and 2) space requirements.
+     </p>
+     <p>
+      While we chose 16 sites of instrumentation in our prototype implementation, we can extend our control board by adding relays/multiplexers (scaling linearly with the number of sites) to support more complex designs. We ran our instrumentation algorithm over representative circuit sets to gather data on the typical number of sites required to instrument different types of PCBs. These included the SparkFun Sensor Kit [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ] (
+      <span class="inline-equation">
+       <span class="tex">
+        $\tilde{x}$
+       </span>
+      </span>
+      = 30, min = 13, max = 66), Arduino Starter Kit [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ] (
+      <span class="inline-equation">
+       <span class="tex">
+        $\tilde{x}$
+       </span>
+      </span>
+      = 14, min = 3, max = 25), and Synthrotek Audio Synthesis boards [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ] (
+      <span class="inline-equation">
+       <span class="tex">
+        $\tilde{x}$
+       </span>
+      </span>
+      = 64.5, min = 15, max = 436).
+     </p>
+     <p>
+      Pinpoint requires space to route added traces and space on the bottom layer of the board for pads. As additional board layers can facilitate routing, pad area is typically the limiting factor. The sum of the areas of each pad (3.9 mm
+      <sup>
+       2
+      </sup>
+      , plus vias if necessary) approximates the required free space on the bottom layer. If needed, the designer can widen the board edges for debugging, then fabricate with the original dimensions for a padless production version. While we currently also add mounting holes (7.3 mm
+      <sup>
+       2
+      </sup>
+      each) in the corners of boards for mating the DUT and jig, other mating methods (such as 3D-printed enclosures) can obviate this requirement.
+     </p>
+     <p>
+      Finally, we consider the implications on scaling of any steps involving manual labor, such as assembling the jig. In addition to the solder-free jig fabrication method described in our Implementation section, we are exploring new methods for creating jigs without assembled elements. For example, we can fabricate the jig as a flexible PCB, which attaches to and interfaces with pads on the DUT via a single sheet of Z-axis conductive transfer tape. Other techniques can also reduce manual soldering across jumper pads when debugging has finished (e.g. using a reflow oven or a conductive ink pen).
+     </p>
+    </section>
+    <section id="sec-27">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        New Opportunities for Pinpoint
+       </h3>
+      </div>
+     </header>
+     <p>
+      Future iterations of Pinpoint can benefit from new debugging modes, such as logic analysis, as well as intelligent design assistance features. For example, using metadata from the user's board designs, Pinpoint could automatically detect and configure for digital, analog, or mixed signal analysis in a context-aware fashion. Pinpoint could also suggest groupings of subcircuits to assist the user in allocating instrumentation sites in large designs.
+     </p>
+     <p>
+      Moving forward, we see potential for Pinpoint not just as a tool but as a platform, to be used in education or research. With the addition of network capabilities, instructors and collaborators can use Pinpoint as a remote debugging lab, authoring tests to quickly diagnose errors in an online help session. In our own lab, we added logging to Pinpoint and have begun using it to study questions of debugging strategies and cognitive models.
+     </p>
+    </section>
+   </section>
+   <section id="sec-28">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Pinpoint facilitates PCB debugging by addressing core issues in access, isolation, and iteration. By automatically instrumenting board designs and simplifying the fabrication of a hardware-software interface, it provides designers with new in-circuit functional testing methods. With continued growth in the space of personal electronic fabrication, we see Pinpoint as an important, yet early, step towards accessible computational support of PCB debugging tasks.
+    </p>
+   </section>
+   <section id="sec-29">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        9
+       </span>
+       ACKNOWLEDGEMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We thank Mathieu LeGoc, Alexa Siu, and Jingyi Li for their guidance. This work was supported by an NDSEG fellowship.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Fraser Anderson, Tovi Grossman, and George Fitzmaurice. 2017. Trigger-Action-Circuits. In
+      <em>
+       Proceedings of the 30th Annual ACM Symposium on User Interface Software and Technology - UIST ’17
+      </em>
+      . ACM Press, New York, New York, USA, 331–342.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3126594.3126637" target="_blank">
+       https://doi.org/10.1145/3126594.3126637
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      apertus. 2018. DIY Flying Probe / Automated Optical Inspection.
+      <a class="link-inline force-break" href="https://www.apertus.org/diy-flying-probe-AOI">
+       https://www.apertus.org/diy-flying-probe-AOI
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Arduino. 2018. Arduino Starter Kit Multi-Language.
+      <a class="link-inline force-break" href="https://store.arduino.cc/usa/arduino-starter-kit">
+       https://store.arduino.cc/usa/arduino-starter-kit
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Autodesk. 2018. EAGLE PCB Design Software.
+      <a class="link-inline force-break" href="https://www.autodesk.com/products/eagle/overview">
+       https://www.autodesk.com/products/eagle/overview
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      BitScope Designs. 2018. BitScope Micro Model 5.
+      <a class="link-inline force-break" href="http://www.bitscope.com/product/BS05/">
+       http://www.bitscope.com/product/BS05/
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Keith Brindley. 1991. Automatic Test Equipment.Elsevier Science. 241 pages.
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Varun Perumal C and Daniel Wigdor. 2015. Printem. In
+      <em>
+       Proceedings of the 28th Annual ACM Symposium on User Interface Software &amp; Technology - UIST ’15
+      </em>
+      . ACM Press, New York, New York, USA, 243–251.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2807442.2807511" target="_blank">
+       https://doi.org/10.1145/2807442.2807511
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Ying Chen and Can Wu. 2017. The hot spot transformation in the research evolution of maker.
+      <em>
+       <em>
+        Scientometrics
+       </em>
+      </em>
+      113, 3 (12 2017), 1307–1324.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/s11192-017-2542-4" target="_blank">
+       https://doi.org/10.1007/s11192-017-2542-4
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Analog Devices. 2018. ADG732 Datasheet and Product Info.
+      <a class="link-inline force-break" href="http://www.analog.com/en/products/adg732.html">
+       http://www.analog.com/en/products/adg732.html
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Digilent. 2018. Electronics Explorer: All-in-one USB Oscilloscope, Multimeter &amp; Workstation.
+      <a class="link-inline force-break" href="https://store.digilentinc.com/electronics-explorer-all-in-one-usb-oscilloscope-multimeter-workstation/">
+       https://store.digilentinc.com/electronics-explorer-all-in-one-usb-oscilloscope-multimeter-workstation/
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Daniel Drew, Julie L. Newcomb, William McGrath, Filip Maksimovic, David Mellis, and Björn Hartmann. 2016. The Toastboard. In
+      <em>
+       Proceedings of the 29th Annual Symposium on User Interface Software and Technology - UIST ’16
+      </em>
+      . ACM Press, New York, New York, USA, 677–686.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2984511.2984566" target="_blank">
+       https://doi.org/10.1145/2984511.2984566
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Dimitris Gizopoulos. 2006.
+      <em>
+       Advances in electronic testing: challenges and methodologies
+      </em>
+      . Vol. 27. Springer.
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Pragun Goyal, Harshit Agrawal, Joseph A. Paradiso, and Pattie Maes. 2013. BoardLab. In
+      <em>
+       Proceedings of the Adjunct Publication of the 26th Annual ACM Symposium on User Interface Software and Technology - UIST ’13 Adjunct
+      </em>
+      . ACM Press, New York, New York, USA, 19–20.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2508468.2514936" target="_blank">
+       https://doi.org/10.1145/2508468.2514936
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Björn Hartmann, Scott R. Klemmer, Michael Bernstein, Leith Abdulla, Brandon Burr, Avi Robinson-Mosher, and Jennifer Gee. 2006. Reflective physical prototyping through integrated design, test, and analysis. In
+      <em>
+       Proceedings of the 19th Annual ACM Symposium on User Interface Software and Technology - UIST ’06
+      </em>
+      . ACM Press, New York, New York, USA, 299.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1166253.1166300" target="_blank">
+       https://doi.org/10.1145/1166253.1166300
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      JTAG Technologies. 2018. Boundary Scan In-Circuit Programming.
+      <a class="link-inline force-break" href="https://www.jtag.com/">
+       https://www.jtag.com/
+      </a>
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Will McGrath, Daniel Drew, Jeremy Warner, Majeed Kazemitabaar, Mitchell Karchemsky, David Mellis, and Björn Hartmann. 2017. Bifröst: Visualizing and Checking Behavior of Embedded Systems Across Hardware and Software. In
+      <em>
+       Proceedings of the 30th Annual ACM Symposium on User Interface Software and Technology - UIST ’17
+      </em>
+      . ACM Press, New York, NY, USA, 299–310.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3126594.3126658" target="_blank">
+       https://doi.org/10.1145/3126594.3126658
+      </a>
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      David A. Mellis, Leah Buechley, Mitchel Resnick, and Björn Hartmann. 2016. Engaging Amateurs in the Design, Fabrication, and Assembly of Electronic Devices. In
+      <em>
+       Proceedings of the 2016 ACM Conference on Designing Interactive Systems - DIS ’16
+      </em>
+      . ACM Press, New York, New York, USA, 1270–1281.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2901790.2901833" target="_blank">
+       https://doi.org/10.1145/2901790.2901833
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      National Instruments. 2017. LabVIEW.
+      <a class="link-inline force-break" href="http://www.ni.com/labview/">
+       http://www.ni.com/labview/
+      </a>
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      PJRC. 2017. Teensy USB Development Board.
+      <a class="link-inline force-break" href="https://www.pjrc.com/teensy/index.html">
+       https://www.pjrc.com/teensy/index.html
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      SparkFun Electronics. 2018. SparkFun Audio-Sound Breakout - WTV020SD.
+      <a class="link-inline force-break" href="https://www.sparkfun.com/products/11125">
+       https://www.sparkfun.com/products/11125
+      </a>
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      SparkFun Electronics. 2018. SparkFun ClockIt.
+      <a class="link-inline force-break" href="https://www.sparkfun.com/products/10930">
+       https://www.sparkfun.com/products/10930
+      </a>
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      SparkFun Electronics. 2018. SparkFun FM Tuner Evaluation Board - Si4703.
+      <a class="link-inline force-break" href="https://www.sparkfun.com/products/12938">
+       https://www.sparkfun.com/products/12938
+      </a>
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      SparkFun Electronics. 2018. SparkFun Sensor Kit.
+      <a class="link-inline force-break" href="https://www.sparkfun.com/products/13754">
+       https://www.sparkfun.com/products/13754
+      </a>
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      SparkFun Electronics. 2018. SparkFun Triple Axis Accelerometer Breakout - ADXL335.
+      <a class="link-inline force-break" href="https://www.sparkfun.com/products/9269">
+       https://www.sparkfun.com/products/9269
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Evan Strasnick, Maneesh Agrawala, and Sean Follmer. 2017. Scanalog: Interactive Design and Debugging of Analog Circuits with Programmable Hardware. In
+      <em>
+       Proceedings of the 30th Annual ACM Symposium on User Interface Software and Technology - UIST ’17
+      </em>
+      . ACM Press, New York, New York, USA, 321–330.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3126594.3126618" target="_blank">
+       https://doi.org/10.1145/3126594.3126618
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Synthrotek. 2018. Synthrotek.
+      <a class="link-inline force-break" href="http://store.synthrotek.com/">
+       http://store.synthrotek.com/
+      </a>
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      M. Tawfik, E. Sancristobal, S. Martin, R. Gil, G. Diaz, A. Colmenar, J. Peire, M. Castro, K. Nilsson, J. Zackrisson, L. Hkansson, and I. Gustavsson. 2013. Virtual Instrument Systems in Reality (VISIR) for Remote Wiring and Measurement of Electronic Circuits on Breadboard.
+      <em>
+       <em>
+        IEEE Transactions on Learning Technologies
+       </em>
+      </em>
+      6, 1 (1 2013), 60–72.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TLT.2012.20" target="_blank">
+       https://doi.org/10.1109/TLT.2012.20
+      </a>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Toshiba. 2018. Photorelays.
+      <a class="link-inline force-break" href="https://toshiba.semicon-storage.com/eu/product/opto/photorelay.html">
+       https://toshiba.semicon-storage.com/eu/product/opto/photorelay.html
+      </a>
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Chiuan Wang, Hsuan-Ming Yeh, Bryan Wang, Te-Yen Wu, Hsin-Ruey Tsai, Rong-Hao Liang, Yi-Ping Hung, and Mike Y. Chen. 2016. CircuitStack. In
+      <em>
+       Proceedings of the 29th Annual Symposium on User Interface Software and Technology - UIST ’16
+      </em>
+      . ACM Press, New York, New York, USA, 687–695.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2984511.2984527" target="_blank">
+       https://doi.org/10.1145/2984511.2984527
+      </a>
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Te-Yen Wu, Mike Y. Chen, Bryan Wang, Jiun-Yu Lee, Hao-Ping Shen, Yu-Chian Wu, Yu-An Chen, Pin-Sung Ku, Ming-Wei Hsu, and Yu-Chih Lin. 2017. CircuitSense. In
+      <em>
+       Proceedings of the 30th Annual ACM Symposium on User Interface Software and Technology - UIST ’17
+      </em>
+      . ACM Press, New York, New York, USA, 311–319.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3126594.3126634" target="_blank">
+       https://doi.org/10.1145/3126594.3126634
+      </a>
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Te-Yen Wu, Hao-Ping Shen, Yu-Chian Wu, Yu-An Chen, Pin-Sung Ku, Ming-Wei Hsu, Jun-You Liu, Yu-Chih Lin, and Mike Y. Chen. 2017. CurrentViz. In
+      <em>
+       Proceedings of the 30th Annual ACM Symposium on User Interface Software and Technology - UIST ’17
+      </em>
+      . ACM Press, New York, New York, USA, 343–349.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3126594.3126646" target="_blank">
+       https://doi.org/10.1145/3126594.3126646
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300278" target="_blank">
+      https://doi.org/10.1145/3290605.3300278
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'875837560ebabbdf',t:'MTcxMzMxMjg3OS44NDMwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

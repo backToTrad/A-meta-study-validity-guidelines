@@ -1,0 +1,4119 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   DeepSeer: Interactive RNN Explanation and Debugging via State Abstraction
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3580852_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3580852_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3580852_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3580852_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3580852_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3580852_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3580852_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3580852_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <main>
+   <section class="front-matter">
+    <section>
+     <header class="title-info">
+      <div class="journal-title">
+       <h1>
+        <span class="title">
+         <font style="font-variant: small-caps">
+          DeepSeer
+         </font>
+         : Interactive RNN Explanation and Debugging via State Abstraction
+        </span>
+        <br/>
+        <span class="subTitle">
+        </span>
+       </h1>
+      </div>
+     </header>
+     <div class="authorGroup">
+      <div class="author">
+       <a href="https://orcid.org/0000-0003-4559-5426" ref="author">
+        <span class="givenName">
+         Zhijie
+        </span>
+        <span class="surName">
+         Wang
+        </span>
+       </a>
+       , University of Alberta, Canada,
+       <a href="mailto:zhijie.wang@ualberta.ca">
+        zhijie.wang@ualberta.ca
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0003-3666-4020" ref="author">
+        <span class="givenName">
+         Yuheng
+        </span>
+        <span class="surName">
+         Huang
+        </span>
+       </a>
+       , University of Alberta, Canada,
+       <a href="mailto:yuheng18@ualberta.ca">
+        yuheng18@ualberta.ca
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-9267-4229" ref="author">
+        <span class="givenName">
+         Da
+        </span>
+        <span class="surName">
+         Song
+        </span>
+       </a>
+       , University of Alberta, Canada,
+       <a href="mailto:dsong4@ualberta.ca">
+        dsong4@ualberta.ca
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-8621-2420" ref="author">
+        <span class="givenName">
+         Lei
+        </span>
+        <span class="surName">
+         Ma
+        </span>
+       </a>
+       , University of Alberta, Canada,
+       <a href="mailto:ma.lei@acm.org">
+        ma.lei@acm.org
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-5468-9347" ref="author">
+        <span class="givenName">
+         Tianyi
+        </span>
+        <span class="surName">
+         Zhang
+        </span>
+       </a>
+       , Computer Science, Purdue University, United States,
+       <a href="mailto:tianyi@purdue.edu">
+        tianyi@purdue.edu
+       </a>
+      </div>
+     </div>
+     <br/>
+     <div class="pubInfo">
+      <p>
+       DOI:
+       <a href="https://doi.org/10.1145/3544548.3580852" target="_blank">
+        https://doi.org/10.1145/3544548.3580852
+       </a>
+       <br/>
+       CHI '23:
+       <a href="https://doi.org/10.1145/3544548" target="_blank">
+        Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems
+       </a>
+       , Hamburg, Germany, April 2023
+      </p>
+     </div>
+     <div class="abstract">
+      <p>
+       <small>
+        Recurrent Neural Networks (RNNs) have been widely used in Natural Language Processing (NLP) tasks given its superior performance on processing sequential data. However, it is challenging to interpret and debug RNNs due to the inherent complexity and the lack of transparency of RNNs. While many explainable AI (XAI) techniques have been proposed for RNNs, most of them only support local explanations rather than global explanations. In this paper, we present
+        <font style="font-variant: small-caps">
+         DeepSeer
+        </font>
+        , an interactive system that provides both global and local explanations of RNN behavior in multiple tightly-coordinated views for model understanding and debugging. The core of
+        <font style="font-variant: small-caps">
+         DeepSeer
+        </font>
+        is a state abstraction method that bundles semantically similar hidden states in an RNN model and abstracts the model as a finite state machine. Users can explore the global model behavior by inspecting text patterns associated with each state and the transitions between states. Users can also dive into individual predictions by inspecting the state trace and intermediate prediction results of a given input. A between-subjects user study with 28 participants shows that, compared with a popular XAI technique, LIME, participants using
+        <font style="font-variant: small-caps">
+         DeepSeer
+        </font>
+        made a deeper and more comprehensive assessment of RNN model behavior, identified the root causes of incorrect predictions more accurately, and came up with more actionable plans to improve the model performance.
+       </small>
+      </p>
+     </div>
+     <div class="CCSconcepts">
+      <ccs2012>
+       <small>
+        <span style="font-weight:bold;">
+         CCS Concepts:
+        </span>
+        •
+        <strong>
+         Human-centered computing → Interactive systems and tools
+        </strong>
+        ; •
+        <strong>
+         Computing methodologies → Machine learning
+        </strong>
+        ; •
+        <strong>
+         Software and its engineering → Software testing and debugging
+        </strong>
+        ;
+       </small>
+      </ccs2012>
+     </div>
+     <br/>
+     <div class="classifications">
+      <div class="author">
+       <span style="font-weight:bold;">
+        <small>
+         Keywords:
+        </small>
+       </span>
+       <span class="keyword">
+        <small>
+         Explainable AI
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         Model Debugging
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         Recurrent Neural Networks
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         Visualization
+        </small>
+       </span>
+      </div>
+      <br/>
+      <div class="AcmReferenceFormat">
+       <p>
+        <small>
+         <span style="font-weight:bold;">
+          ACM Reference Format:
+         </span>
+         <br/>
+         Zhijie Wang, Yuheng Huang, Da Song, Lei Ma, and Tianyi Zhang. 2023.
+         <font style="font-variant: small-caps">
+          DeepSeer
+         </font>
+         : Interactive RNN Explanation and Debugging via State Abstraction. In
+         <em>
+          Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems (CHI '23), April 23–28, 2023, Hamburg, Germany.
+         </em>
+         ACM, New York, NY, USA 20 Pages.
+         <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3580852" target="_blank">
+          https://doi.org/10.1145/3544548.3580852
+         </a>
+        </small>
+       </p>
+      </div>
+     </div>
+    </section>
+   </section>
+   <section class="body">
+    <figure id="fig1">
+     <img alt="Figure 1" aria-describedby="fig002" class="img-responsive" src="3580852_files\chi23188fig1.jpg"/>
+     <p id="fig002" style="display:none">
+      The interface of DeepSeer
+     </p>
+     <figcaption>
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       <font style="font-variant: small-caps">
+        <strong>
+         DeepSeer
+        </strong>
+       </font>
+       <strong>
+        is an interactive tool for supporting RNN model understanding and debugging via state abstraction.
+       </strong>
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       helps programmers by providing
+       <em>
+        Global Explanations
+       </em>
+       and
+       <em>
+        Local Explanations
+       </em>
+       as a synergistic loop for an RNN model. Programmers can use
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       to quickly understand and identify potential bugs by exploring
+       <em>
+        Global Explanations
+       </em>
+       , then zoom into
+       <em>
+        Local Explanations
+       </em>
+       to contextualize global explanations. Programmers can also debug on a specific instance according to
+       <em>
+        Local Explanations
+       </em>
+       , then validate their debugging hypothesizes by zooming out to compare with
+       <em>
+        Global Explanations
+       </em>
+       .
+      </span>
+     </figcaption>
+    </figure>
+    <p>
+     <font color="#d24d00">
+      WARNING: The toxicity detection example in the usage scenario contains some content that might be distracting.
+     </font>
+    </p>
+    <section id="sec-2">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         1
+        </span>
+        INTRODUCTION
+       </h2>
+      </div>
+     </header>
+     <p>
+      Deep neural networks (DNNs) have been increasingly adopted in practice due to their superior performance on real-world challenging tasks, e.g., self-driving [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ], virtual assistant [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ], and disease diagnosis [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ]. The rapid development of deep learning systems brings opportunities, but also challenges and concerns. One of the major concerns arises from the interpretability of DNNs [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ]. Unlike traditional software whose decision logic is manually programmed in the form of source code, a DNN model includes a large number of neurons connected by non-linear functions, whose weights are automatically learned from training data. The internal states of traditional software can be easily inspected and analyzed by setting breakpoints and checking runtime values. However, the internal states of a DNN model are high-dimensional vectors rather than symbolic values. It is hard to tell what kinds of patterns a DNN model has learned by inspecting these vectors or why the model makes a specific prediction. Therefore, this internal complexity and inscrutability of DNNs lead to significant debugging challenges, as well as concerns about the trustworthiness and reliability of DNNs.
+     </p>
+     <p>
+      Although there is a recently growing interest in improving the interpretability of DNNs in the ML, HCI, and Visualization communities, many existing techniques treat a DNN model as a black box and generate model-agnostic explanations such as feature importance, without revealing the inner workings of the DNN model [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ]. While there are some techniques for visualizing the hidden states in a DNN model, many of them focus on convolutional neural networks (CNNs) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+       57
+      </a>
+      ]. In this work, we are particularly interested in recurrent neural networks (RNNs). Compared with other kinds of DNNs, recurrent neural networks (RNNs) are capable of processing sequential data with variable lengths, such as text and audio. The recurrent architecture affords an internal memory in RNNs, which is proven effective for learning temporal patterns in sequential data. Yet this architecture also poses challenges in visualizing the internal states of RNNs. Unlike CNNs which have a fixed number of layers and neurons in each layer, RNNs are
+      <em>
+       unbounded
+      </em>
+      . Furthermore, instead of treating each layer separately, which is a common practice in CNN visualization, it is important to visualize the dynamics of RNN units, i.e., the temporal patterns embedded in a sequence of hidden states.
+     </p>
+     <p>
+      In this paper, we present
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      , an interactive system that allows model developers to understand and debug RNN models. Our key insight is to treat an RNN model as a stateful system. By clustering and abstracting semantic similar hidden states, an RNN model can be represented as a finite-state machine (FSM), which is much smaller and more navigable compared with the original RNN model. Furthermore, instead of directly visualizing the values of hidden states as in prior work [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ],
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      projects hidden states to a more interpretable representation—the common words and phrases associated with these states. By inspecting the transitions among states, users can quickly identify the temporal patterns learned by the model.
+     </p>
+     <p>
+      To assess the overall usefulness of
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      , we conducted a between-subjects user study with 28 programmers of various levels of expertise in ML and RNNs. Given a pre-trained RNN model, participants were asked to complete a model understanding task followed by a debugging task using either
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      or a popular XAI tool, LIME [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ]. We found that in the model understanding task, participants using
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      provided more insightful answers about the model behavior, pinpointed model limitations more precisely, and gave more useful and diverse suggestions about how to improve the assigned model. Furthermore, in the model debugging task, participants using
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      identified the reasons for the misclassifications more correctly than participants using LIME.
+     </p>
+     <p>
+      In summary, this work makes the following contributions:
+     </p>
+     <ul class="list-no-style">
+      <li id="list1" label="•">
+       <strong>
+        System.
+       </strong>
+       We design and develop an interactive system for understanding and debugging the internal behavior of RNNs. We first leverage the state abstraction method to abstract an RNN model as a finite state machine through bundling semantically similar hidden states. Then we design and implement three tightly-coordinated views: state diagram view, pattern summary view, and instance view to visualize and interpret the internal behavior of an RNN model from different perspectives. We have open-sourced our system on GitHub
+       <a class="fn" href="#fn1" id="foot-fn1">
+        <sup>
+         1
+        </sup>
+       </a>
+       .
+       <br/>
+      </li>
+      <li id="list2" label="•">
+       <strong>
+        Visualizations and interactions.
+       </strong>
+       We propose a set of visualization and interaction designs to facilitate the interpretation and debugging of RNNs at different granularities. Specifically, we combined state diagrams, responsive tooltips, state traces, color highlighting, filtering, instance matching, and pattern summarization to simultaneously show the global model behavior, instance-level explanations, critical patterns, and similar instances.
+       <br/>
+      </li>
+      <li id="list3" label="•">
+       <strong>
+        Evaluation.
+       </strong>
+       A between-subjects user study demonstrates the usefulness of
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       to ML developers when understanding the overall behavior of a model and debugging misclassifications.
+       <br/>
+      </li>
+     </ul>
+    </section>
+    <section id="sec-3">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         2
+        </span>
+        BACKGROUND: RECURRENT NEURAL NETWORKS
+       </h2>
+      </div>
+     </header>
+     <p>
+      Recurrent Neural Networks (RNNs) are a type of deep neural network that is specifically designed for processing sequential input, e.g., text data. In this section, we briefly introduce the basics of it.
+     </p>
+     <p>
+      As shown in Fig.
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      , an RNN model takes sequential inputs {
+      <em>
+       x
+      </em>
+      <sub>
+       1
+      </sub>
+      ,
+      <em>
+       x
+      </em>
+      <sub>
+       2
+      </sub>
+      , …,
+      <em>
+       x
+       <sub>
+        T
+       </sub>
+      </em>
+      }. The RNN model first initializes its hidden state vector
+      <span class="inline-equation">
+       <span class="tex">
+        $h_0\in \mathbb {R}^N$
+       </span>
+      </span>
+      , where
+      <em>
+       N
+      </em>
+      is the dimension of this hidden state vector. At a time step
+      <em>
+       t
+      </em>
+      , the RNN model takes an input
+      <em>
+       x
+       <sub>
+        t
+       </sub>
+      </em>
+      (1 ≤
+      <em>
+       t
+      </em>
+      ≤
+      <em>
+       T
+      </em>
+      ) to update its internal hidden state from the last time step
+      <em>
+       h
+      </em>
+      <sub>
+       <em>
+        t
+       </em>
+       − 1
+      </sub>
+      to the new hidden state
+      <em>
+       h
+       <sub>
+        t
+       </sub>
+      </em>
+      . This process can also be seen as maintaining and updating the “hidden memory” of an RNN model. Therefore, to understand an RNN model, it is important to interpret such “memory” maintained in different hidden states [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ].
+     </p>
+     <figure id="fig2">
+      <img alt="Figure 2" aria-describedby="fig003" class="img-responsive" src="3580852_files\chi23188fig2.jpg"/>
+      <p id="fig003" style="display:none">
+       This figure shows the workflow of a basic recurrent neural network (RNN). At the beginning, an RNN model first initializes a hidden state vector h0. Then at each time step t, the RNN model takes one input xt, and updates the hidden state vector as ht. The output of this RNN model is obtained by transforming the last hidden state vector into y.
+      </p>
+      <figcaption>
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        The workflow of a basic recurrent neural network (RNN). At each time step
+        <em>
+         t
+        </em>
+        , RNN takes an input
+        <em>
+         x
+         <sub>
+          t
+         </sub>
+        </em>
+        to update its hidden state
+        <em>
+         h
+         <sub>
+          t
+         </sub>
+        </em>
+        . The prediction result at time step
+        <em>
+         t
+        </em>
+        (
+        <em>
+         y
+         <sub>
+          t
+         </sub>
+        </em>
+        ) is obtained by processing the hidden state
+        <em>
+         h
+         <sub>
+          t
+         </sub>
+        </em>
+        .
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+     </p>
+     <p>
+      To make a prediction at time step
+      <em>
+       t
+      </em>
+      , an RNN model transforms the hidden state
+      <em>
+       h
+       <sub>
+        t
+       </sub>
+      </em>
+      into the desired output format
+      <em>
+       y
+       <sub>
+        t
+       </sub>
+      </em>
+      . For instance, to perform a classification task, the hidden state
+      <em>
+       h
+       <sub>
+        t
+       </sub>
+      </em>
+      is usually fed into an MLP (multilayer perceptron) network to project
+      <em>
+       h
+       <sub>
+        t
+       </sub>
+      </em>
+      into
+      <span class="inline-equation">
+       <span class="tex">
+        $u_t\in \mathbb {R}^K$
+       </span>
+      </span>
+      , where
+      <em>
+       K
+      </em>
+      is the number of classes. Then a probability distribution
+      <em>
+       p
+       <sub>
+        t
+       </sub>
+      </em>
+      is computed through a “softmax” function:
+     </p>
+     <div class="table-responsive" id="eq1">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} \begin{aligned} p_t &amp;= \text{softmax}(u_t) \\ p_t^i &amp;= \frac{e^{u_t^i}}{\sum _{j=1}^K e^{u_t^j}}\quad \text{for }i=1,\dots,K \end{aligned} \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (1)
+       </span>
+      </div>
+     </div>
+     The prediction result at time step
+     <em>
+      t
+     </em>
+     is further computed by finding a label
+     <em>
+      k
+     </em>
+     which produces the maximum probability
+     <span class="inline-equation">
+      <span class="tex">
+       $p_t^k$
+      </span>
+     </span>
+     .
+     <p>
+     </p>
+     <p>
+      Note that the process of updating the hidden state
+      <em>
+       h
+       <sub>
+        t
+       </sub>
+      </em>
+      can be achieved by different types of RNN units, such as the Elman RNN cell [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ], long short-term memory (LSTM) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ], and gated recurrent unit (GRU) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ]. In our user study sessions, we use GRU, which shows better efficiency compared with other variants. Note that our proposed system only requires access to the hidden states and does not require access to the updating process inside an RNN unit. Therefore, it can be generalized to different types of RNN units.
+     </p>
+    </section>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         3
+        </span>
+        RELATED WORK
+       </h2>
+      </div>
+     </header>
+     <section id="sec-5">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.1
+         </span>
+         Explainable AI
+        </h3>
+       </div>
+      </header>
+      <p>
+       Our work is most related to Explainable AI (XAI), since it promotes model interpretability by abstracting a DNN model as a finite state machine (i.e., a global explanation) and by rendering the state trace of a given instance (i.e., a local explanation). Previous studies have shown that supporting model interpretability can increase user acceptance and trust of the system [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+        17
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+        55
+       </a>
+       ], improve fairness [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+        14
+       </a>
+       ], and improve human-AI team performance [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+        11
+       </a>
+       ]. A good interpretation should be in an interpretable domain [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+        45
+       </a>
+       ], i.e., mapping any of abstract concepts (e.g., numeric vectors) into a domain (e.g., images, texts) that the human can understand. Our work is inspired by this principle—instead of visualizing hidden state values as in some prior work [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ], we map hidden states back to linguistic patterns in the text corpus. In this way, users can easily recognize what patterns an RNN model has learned from the training data.
+      </p>
+      <p>
+       Existing XAI methods can be roughly grouped into two categories: model-agnostic methods and model-aware methods. Model-agnostic methods [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+        39
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+        54
+       </a>
+       ] treat the model to be explained as a black box. LIME [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ] is a well-known technique in this category. Given an input instance, it learns a simpler and interpretable model (also known as a surrogate model), such as a linear regression model, to approximate a complex model using the training data near the given instance. By rendering the feature's importance in the surrogate model, LIME generates a local explanation for the prediction of the given instance. However, these model-agnostic methods usually ignore the internal behavior of a model when generating explanations. Specifically, given an RNN model, they do not take the transitions between different hidden states into account. On one side, this may lead to low-fidelity explanations [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+        52
+       </a>
+       ]. On the other hand, advanced user groups such as model developers may find it insufficient to debug model behavior [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ]. To address this challenge,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       is designed to investigate the internal behavior of an RNN model via a novel finite state machine abstraction.
+      </p>
+      <p>
+       Unlike model-agnostic methods, model-aware methods try to open up the
+       <em>
+        black box
+       </em>
+       of a DNN. Among different model-aware methods, our work is most related to attribution-based methods and influence function methods. Attribution-based methods [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+        56
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+        58
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+        64
+       </a>
+       ] often use activation or gradient information in a DNN model to compute the importance score for input features, e.g., pixels in an image, tokens in a sentence. For example, Karpathy et.al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ] presents a visualization that maps neurons’ activation to individual characters in a sentence. This visualization is only applicable to individual sentences (i.e., local explanations), which becomes hard to interpret with a large number of sentences. Our work differs in a way that we aggregate words and phrases with similar hidden states from many sentences in a finite state diagram while also providing a way to delve into the state trace of individual sentences. Influence function methods [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+        7
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ] compute the influence of an individual training instance based on gradients and identify a set of instances that have a big impact on model predictions. Our design of
+       <em>
+        influential patterns
+       </em>
+       and
+       <em>
+        possible buggy patterns
+       </em>
+       draws inspirations from these methods. Specifically,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       summarizes short text patterns which usually significantly affect model predictions or have led to possible bugs by analyzing the hidden states of training data.
+      </p>
+      <p>
+       We further refer readers to existing surveys and literature reviews [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+        6
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+        44
+       </a>
+       ] for more details about different XAI methods.
+      </p>
+     </section>
+     <section id="sec-6">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.2
+         </span>
+         DNN Debugging, Testing, and Repairing
+        </h3>
+       </div>
+      </header>
+      <p>
+       Several explainable AI techniques have been used to understand and debug model errors [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+        3
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ]. For example, Ribeiro et.al. conducted a user study with 27 participants and showed that the explanations generated by LIME could be used to detect spurious correlations learned by a model. Koh et.al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ] have shown that influence functions can be used to debug domain mismatch. However, Adebayo et.al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+        3
+       </a>
+       ] found that post-hoc model explanations, especially attribution-based methods, are sometimes ineffective for detecting certain kinds of bugs such as label error and out-of-distribution error.
+      </p>
+      <p>
+       In parallel, the Software Engineering (SE) community has developed several techniques by adapting traditional SE techniques to debug, test, and repair DNN models [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+        40
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+        41
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+        62
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+        63
+       </a>
+       ]. DeepRepair [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+        63
+       </a>
+       ] uses a style-transfer-based data augmentation method to repair DNN models. RNNRepair [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+        62
+       </a>
+       ] identifies influential instances for retraining and remediates two types of incorrect predictions at the sample and segment levels. MODE [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+        41
+       </a>
+       ] presents a debugging workflow by first conducting model state differential analysis and then selecting training instances for retraining. LAMP [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+        40
+       </a>
+       ] provides data provenance information by computing the importance of input through automated differentiation. These techniques focus on automating the debugging and retraining pipeline and do not involve humans in the loop. Our work differs from these techniques in two ways. First,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       aims to provide a comprehensive understanding of model behavior by abstracting RNNs as a state diagram and identifying influential patterns, going beyond diagnosing model prediction errors. Second, to enable model developers to diagnose model errors,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       renders the intermediate prediction results of input and provides affordances for investigating how individual words and phrases influence the prediction result, rather than automatically localizing the root cause of a model error.
+      </p>
+     </section>
+     <section id="sec-7">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.3
+         </span>
+         RNN Visualization
+        </h3>
+       </div>
+      </header>
+      <p>
+       Many DNN visualization techniques have been proposed to help users understand and analyze the inner workings of DNN models. The most related visualization techniques to us are those specifically designed for RNNs [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+        43
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ]. Karpathy et.al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ] visualizes which characters in an input sentence the RNN attends to based on the activation function output. Li et.al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+        33
+       </a>
+       ] use a gradient-based salience score, rather than neuron activation, to measure the importance of each word in an input sentence. The salience scores are then visualized in a heatmap. Both visualizations are static and can only visualize the hidden states of a single input at a time. Strobelt et.al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ] extend them by building an interactive visualization approach called LSTMVis. LSTMVis renders individual hidden states in a parallel coordinates plot. It allows users to interactively select specific segments of an input sentence and search for other inputs with similar hidden states. However, given that RNNs typically have hundreds or even thousands of hidden states, visualizing individual hidden states can lead to significant cognitive overhead for users. To address this issue,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       clusters similar hidden states to an abstract state and represents an RNN model as a finite state machine. This significantly reduces the number of states users need to keep track of and also allows
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       to directly visualize the finite state machine to provide a global view of the entire model rather than individual hidden states. Our work is also related to RNNVis [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+        43
+       </a>
+       ]. RNNVis clusters similar hidden states as memory chips and renders text inputs associated with each cluster as word clouds. However, unlike a finite state machine, this design does not capture the transition between hidden states or render longer linguistic patterns beyond common words. Furthermore,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       provides additional features to facilitate model inspection and debugging, e.g., rendering intermediate prediction results, summarizing influential patterns and buggy patterns, etc.
+      </p>
+      <figure id="fig3">
+       <img alt="Figure 3" aria-describedby="fig004" class="img-responsive" src="3580852_files\chi23188fig3.jpg"/>
+       <p id="fig004" style="display:none">
+        This figure shows the interface of DeepSeer, which includes three different views. (A) The first view is the State Diagram View, which locates in the top-left of the interface. This view displays the abstracted states and transitions of an RNN model as a directed graph. (B) The second view is the Pattern Summary View, which locates in the top-right of the interface. This view displays common text patterns learned by an RNN model as a two-column list. The left column displays the influential patterns, where each row is a specific influential pattern. The right column displays the buggy pattern. (C) The third view is the Instance View, which locates at the bottom of the interface. This view displays the raw data as an interactive data grid for users to explore the raw data used to train or test an RNN model. In this data grid, users can scroll to explore different data instances. Users can also filter the data according to specific conditions.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 3:
+        </span>
+        <span class="figure-title">
+         <font style="font-variant: small-caps">
+          <strong>
+           DeepSeer
+          </strong>
+         </font>
+         <strong>
+          , an interactive system for visualizing, understanding, and debugging RNN models. (A) The
+         </strong>
+         <em>
+          State Diagram View
+         </em>
+         displays the abstracted states and transitions of an RNN model.
+         <strong>
+          (B) The
+         </strong>
+         <em>
+          Pattern Summary View
+         </em>
+         displays common text patterns learned by an RNN model.
+         <strong>
+          (C) The
+         </strong>
+         <em>
+          Instance View
+         </em>
+         displays the raw data as an interactive data grid for users to explore data used to train or test an RNN model.
+         <strong>
+          (D)
+         </strong>
+         <em>
+          Intermediate Prediction Results
+         </em>
+         are rendered when users input a new sentence.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+    </section>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         4
+        </span>
+        DESIGN GOALS AND SYSTEM OVERVIEW
+       </h2>
+      </div>
+     </header>
+     <p>
+      In this section, we first summarize the design goals of our system based on a literature review. Then, we present a system overview to discuss how our system design supports each design goal.
+     </p>
+     <section id="sec-9">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.1
+         </span>
+         User Needs and Design Goals
+        </h3>
+       </div>
+      </header>
+      <p>
+       To understand the needs of RNN developers, we perform a literature review of previous papers that have done a formative study of interpreting DL models, have done a user study of existing tools, or have discussed the challenges and opportunities of explaining and debugging DL models. Based on the literature review, we summarize the following design goals for
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       :
+      </p>
+      <p>
+       <strong>
+        G1. Help users understand the overall behavior of an RNN model.
+       </strong>
+       Previous studies have shown that model developers prefer to have a high-level understanding of what has been learned by the model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+        13
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+        43
+       </a>
+       ]. For instance, Kaur et al. surveyed 197 ML developers about the interpretability tool's capabilities, and 61% of responses mentioned the importance of global explanations [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ]. Specifically, Ming et al. highlighted the importance of rendering the semantic information captured by the hidden states of an RNN model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+        43
+       </a>
+       ]. Thus,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       should help model developers understand the overall behavior of an RNN model, especially the semantic information learned by its hidden states.
+      </p>
+      <p>
+       <strong>
+        G2. Help users understand the model decision-making process on a specific input of interest.
+       </strong>
+       When inspecting individual prediction results, especially incorrect ones, model developers wish to understand why the model makes such a prediction on the particular input [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+        5
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ]. For instance, through a formative study with nine ML developers, Hohman et al.  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ] found that users wanted to see how different features contributed to the model's decision. Furthermore, Kahng et al. interviewed fifteen Facebook developers and found that a natural way for them to understand complex models was to inspect the model behavior on individual examples [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+        26
+       </a>
+       ]. The importance of local explanation is also confirmed by the large-scale survey [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ]—65% of respondents considered local explanations important.
+      </p>
+      <p>
+       <strong>
+        G3. Help and assist users in searching for similar data.
+       </strong>
+       Through a user-centered design process with two NLP developers, Liu et al. found that NLP developers typically follow an “exploration-centric” approach to discover and debug errors in an NLP model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+        38
+       </a>
+       ]. That is, developers prefer to inspect and compare predictions among similar input examples to get insights. Therefore, traceability should also be provided to help users easily explore similar examples when debugging a model prediction [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ]. Specifically, Strobelt et al. highlighted that matching similar examples for RNN could help developers validate an interpretation hypothesis [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ].
+      </p>
+      <p>
+       <strong>
+        G4. Help users summarize the common characteristics of input data.
+       </strong>
+       Inspecting individual data points can be tedious and time-consuming, hindering insight discovery. Kahng et al. found that model developers at Facebook often curated subsets of data with common characteristics to understand how a model behaves at high-level categorization [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+        26
+       </a>
+       ]. Furthermore, helping users identify common input characteristics is particularly useful for error analysis. Jin et al. found that ML developers usually needed to examine the characteristics shared by a set of wrong predictions and verify whether error patterns formed by these characteristics make sense [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ]. However, this is often manually done by users based on their domain knowledge. Therefore,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       should support users in identifying and examining common characteristics of inputs, especially mispredicted inputs.
+      </p>
+     </section>
+     <section id="sec-10">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.2
+         </span>
+         System Overview
+        </h3>
+       </div>
+      </header>
+      <p>
+       To support users gaining a high-level understanding of what has been learned by an RNN model (
+       <strong>
+        G1
+       </strong>
+       ), we choose to render an RNN model as a state diagram in which each node is a group of similar hidden states from the RNN model, as shown Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       Ⓐ. Compared with the original RNN model, which has hundreds or thousands of hidden states, the state diagram is much smaller after state clustering and thus more navigable. Furthermore,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       binds each node with the text patterns memorized by the corresponding hidden states to help users interpret the semantic meaning of the hidden states. Compared with an alternative design of directly visualizing the hidden states values [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ], which are high-dimensional arrays and hard to interpret, the state diagram is easier to navigate and inspect.
+      </p>
+      <p>
+       To help users understand the model decision-making process on specific inputs (
+       <strong>
+        G2
+       </strong>
+       ),
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       visualizes the intermediate model prediction result after an RNN model reads each word in an input sentence (Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       Ⓓ). In this way, users can easily see which word sways the decision of the model and contributes more to the final result. To support
+       <strong>
+        G3
+       </strong>
+       ,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       allows users to search input sentences with
+       <em>
+        similar text patterns
+       </em>
+       (i.e., have the same keyword or follow the same regular expression) or with
+       <em>
+        similar model behavior pattern
+       </em>
+       (i.e., have the same state or follow the same state trace) in an instance view (Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       Ⓒ). To help users find common patterns (
+       <strong>
+        G4
+       </strong>
+       ),
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       proactively identifies frequent text patterns that have a high influence on model prediction results, as well as patterns that are shared among incorrect predictions (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       Ⓑ). Such common patterns can also serve as a complementary global explanation method (
+       <strong>
+        G1
+       </strong>
+       ), since it provides more straightforward starting points for investigation if users find a state diagram overwhelming.
+      </p>
+      <figure id="fig4">
+       <img alt="Figure 4" aria-describedby="fig005" class="img-responsive" src="3580852_files\chi23188fig4.jpg"/>
+       <p id="fig005" style="display:none">
+        This figure displays the state diagram view and two kinds of interactions with it. The first is when users hover over a specific state, i.e., state 20 in the figure, they can find that in the training data, there are 25342 times this state is classified as positive, while 40319 times as negative. The second interaction is when users click on a specific state, i.e., state 20 in the figure, they can inspect an information card on the right of the state diagram view, which shows the associated words and phrases of this state.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 4:
+        </span>
+        <span class="figure-title">
+         Interacting with the
+         <em>
+          <strong>
+           State Diagram View
+          </strong>
+         </em>
+         to understand the abstracted states of an RNN model.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         5
+        </span>
+        DESIGN AND IMPLEMENTATION
+       </h2>
+      </div>
+     </header>
+     <section id="sec-12">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.1
+         </span>
+         State Abstraction
+        </h3>
+       </div>
+      </header>
+      <p>
+       To generate a state diagram from an RNN model, we develop a method that clusters semantically related hidden states of the RNN model into an abstract state. Our work is inspired by the model-based analysis of stateful RNNs [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+        15
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+        47
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+        51
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+        61
+       </a>
+       ]. These works apply various techniques to extract interpretable state transition models (e.g., discrete-time Markov chain, automata) from stateful RNNs. By turning complex RNNs into interpretable state transition models, black boxes are turned into more transparent models and thus improve the model interpretability, which also provides the possibility for further analysis. We choose to build on top of a state-of-the-art method, DeepStellar [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ], since it is demonstrated to be effective in various tasks, including adversarial detection [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ], DNN testing [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ], and DNN repair [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+        62
+       </a>
+       ]. Previous work has also shown that abstracted states can make the same prediction as the original RNN model in 97% of test data [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+        62
+       </a>
+       ].
+      </p>
+      <p>
+       To obtain the FSM representation for a trained RNN, we abstract over both the states and the transitions. Appendix
+       <a class="sec" href="#sec-35">
+        A
+       </a>
+       presents the algorithm for state abstraction. Here we briefly summarize how it works. For each instance in the training data, our method first records the intermediate hidden vectors {
+       <em>
+        h
+       </em>
+       <sub>
+        1
+       </sub>
+       ,
+       <em>
+        h
+       </em>
+       <sub>
+        2
+       </sub>
+       , …,
+       <em>
+        h
+        <sub>
+         l
+        </sub>
+       </em>
+       } during inference, where
+       <em>
+        h
+        <sub>
+         i
+        </sub>
+       </em>
+       (1 ≤
+       <em>
+        i
+       </em>
+       ≤
+       <em>
+        l
+       </em>
+       ) is a concrete hidden state of an RNN model.
+       <em>
+        l
+       </em>
+       denotes the number of tokens in a sentence. Our method then applies Principle Component Analysis (PCA) for dimension reduction on all concrete states collected from training data before abstraction. Different from DeepStellar [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ], which uses an interval-based method for states abstraction, our method applies Gaussian Mixture Model (GMM) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+        42
+       </a>
+       ] to cluster similar concrete states. GMM addresses two key limitations in the interval-based method: 1) newly generated hidden vectors can fall outside the interval at test time, resulting in unknown states; 2) the number of states grows exponentially with
+       <em>
+        k
+       </em>
+       dimension and
+       <em>
+        m
+       </em>
+       intervals (
+       <em>
+        m
+        <sup>
+         k
+        </sup>
+       </em>
+       ), and too many states can be hard to visualize. With state abstraction, the model prediction process on a given input can be modeled as a sequence of abstract states. We call this state sequence the
+       <em>
+        trace
+       </em>
+       of model prediction.
+      </p>
+      <p>
+       We conducted a quantitative analysis of the faithfulness of state abstraction. We measured the prediction consistency between the abstracted and original models in the three different NLP tasks from the usage scenario (Section
+       <a class="sec" href="#sec-17">
+        6
+       </a>
+       ) and the user study (Section
+       <a class="sec" href="#sec-22">
+        7.2
+       </a>
+       ). The prediction consistency on the test data is 99%, 97%, and 85%, respectively. This implies that abstracted models can faithfully represent the behavior of RNNs. Appendix
+       <a class="sec" href="#sec-36">
+        B
+       </a>
+       includes the experiment details.
+      </p>
+      <p>
+       Different from the previous work focusing on state abstraction technique itself or using the technique for model testing and repairing, our work is the first to extend this technique for interactive model explanation and debugging with a more accessible user interface. Our work integrates state abstraction into a “human-in-the-loop” approach for the first time to support users in understanding and debugging an RNN model with rich interaction mechanisms. In the following subsections, we will introduce the interactive features of
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       built on top of state abstraction.
+      </p>
+      <figure id="fig5">
+       <img alt="Figure 5" aria-describedby="fig006" class="img-responsive" src="3580852_files\chi23188fig5.jpg"/>
+       <p id="fig006" style="display:none">
+        This figure has two subfigures. The first one shows the influential patterns. The influential patterns identified by this RNN model include “hypocrisy”, “hahaha”, “you are right”, etc. When users click on a specific pattern, i.e., hypocrisy, they can see more influential patterns sharing the same state sequences (13-9-9) with “hypocrisy”. For example, “suck it up” and “racists and”. Another figure shows the buggy patterns, the buggy patterns identified by this RNN model include “...”, “!!!!”, etc.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 5:
+        </span>
+        <span class="figure-title">
+         Interacting with the
+         <em>
+          <strong>
+           Pattern Summary View
+          </strong>
+         </em>
+         in
+         <font style="font-variant: small-caps">
+          DeepSeer
+         </font>
+         to inspect the text patterns learned by an RNN model.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-13">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.2
+         </span>
+         State Diagram View
+        </h3>
+       </div>
+      </header>
+      <p>
+       The
+       <em>
+        State Diagram View
+       </em>
+       visualizes the finite state machine that is abstracted from the given RNN in the previous step. It provides an overview of the model behavior and helps users understand the semantic meanings of its hidden states. Users can navigate through different state nodes to explore what prediction result a state often leads to and how many times this state has been visited. Specifically, each state is color-coded based on how frequently the input instances going through this state have a specific prediction result. The size of a state node is determined by how many input sentences have visited this node during the training time. For example, in Fig.
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       Ⓐ, since the RNN model makes two possible predictions—positive comment or negative comment, all nodes are assigned to two distinct colors—
+       <font color="#2196f3">
+        blue
+       </font>
+       for positive comments and
+       <font color="#f50057">
+        red
+       </font>
+       for negative comments. Since there are fewer red nodes and the red nodes have a much smaller size than blue nodes, one can interpret that the training dataset has more positive comments than negative comments and the RNN model is more likely to make a positive prediction. The width of an edge between two states indicates how frequently this transition has occurred during the training time. The RNN model moves from one state to another state when it reads more words from a given input sentence.
+      </p>
+      <p>
+       When a user hovers the mouse over a state, a tooltip is rendered to provide more details about this state, e.g., the number of training instances that go over this state and is eventually predicted to a specific result (Fig.
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       Ⓐ). When users click on a state, an information card (Fig.
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       Ⓑ) popped up showing the phrases and words that are frequently associated with this state in the training data. This feature allows users to interpret the semantic information memorized by hidden states. Clicking on a state also updates the instance view to filter out the input instances that do not visit this state during model prediction.
+      </p>
+     </section>
+     <section id="sec-14">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.3
+         </span>
+         Pattern Summary View
+        </h3>
+       </div>
+      </header>
+      <p>
+       The
+       <em>
+        Pattern Summary View
+       </em>
+       renders common patterns based on frequent state transitions during the training time. Basically, a frequent subsequence of states is viewed as a pattern, which can be further converted into a sequence of words based on the words or phrases associated with each state.
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       identifies two kinds of patterns:
+       <em>
+        Influential Patterns
+       </em>
+       and
+       <em>
+        Possible Buggy Patterns
+       </em>
+       .
+      </p>
+      <p>
+       <em>
+        Influential Patterns
+       </em>
+       are patterns that change the model's intermediate predictions, e.g., changing from a positive comment to a negative comment after reading certain words in the middle of a given input sentence. To identify influential patterns learned from the training data,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       first identifies the pivoting points (i.e., the point where the intermediate prediction changes) in the state trace of each training instance. Then
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       splits each state trace into subsequences based on the pivoting points. These subsequences are sorted based on their frequency and rendered in a descending order in the pattern summary view.
+      </p>
+      <p>
+       <em>
+        Possible Buggy Patterns
+       </em>
+       are mined only from incorrectly predicted instances from the training data. These patterns indicate the cases where the RNN model does not learn well and thus makes a misprediction. To identify buggy patterns,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       first divides the training data
+       <em>
+        S
+       </em>
+       into two subsets according to the correctness of their prediction results. Let's denote the subset only include correct predictions as
+       <em>
+        S
+        <sub>
+         c
+        </sub>
+       </em>
+       and the subset only include false predictions as
+       <em>
+        S
+        <sub>
+         f
+        </sub>
+       </em>
+       , respectively. Then we use TKS [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+        19
+       </a>
+       ] (Top-K Sequential pattern mining) to mine frequent subsequence patterns from each subset. A subsequence pattern is considered possibly buggy if it only occurs in the misclassified inputs (
+       <em>
+        S
+        <sub>
+         f
+        </sub>
+       </em>
+       ), not in the correctly classified inputs (
+       <em>
+        S
+        <sub>
+         c
+        </sub>
+       </em>
+       ). These buggy patterns are sorted based on their frequency and rendered in a descending order in the pattern summary view.
+      </p>
+      <p>
+       Users can click on a specific pattern to see the top frequent phrases associated with this pattern (Fig.
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       Ⓐ). This pattern summary view allows users to know what patterns the model has learned, and how these patterns would affect the model's predictions. Furthermore,
+       <em>
+        Possible Buggy Patterns
+       </em>
+       allows users to recognize potential prediction risks of an RNN model. Clicking on a pattern will update the instance view to filter out data instances that do not follow the selected pattern.
+      </p>
+      <figure id="fig6">
+       <img alt="Figure 6" aria-describedby="fig007" class="img-responsive" src="3580852_files\chi23188fig6.jpg"/>
+       <p id="fig007" style="display:none">
+        This figure shows the instance view and three different interactions with it. The instance view is a table showing the raw data, the column heads of this table are: index, trace, text, prediction, human label, and correctness. The first interaction with this instance view is that users can filter or sort the data in the instance view by clicking the “FILTERS” button on the top-left of this view. The second interaction is users can view the data distribution, which is right above the table. The third one is that users can search for specific words in this instance view by typing in the text box on the top-right corner of this view.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 6:
+        </span>
+        <span class="figure-title">
+         Interacting with the
+         <em>
+          <strong>
+           Instance View
+          </strong>
+         </em>
+         in
+         <font style="font-variant: small-caps">
+          DeepSeer
+         </font>
+         to explore the data used to train/test an RNN model.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-15">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.4
+         </span>
+         Instance View
+        </h3>
+       </div>
+      </header>
+      <p>
+       The
+       <em>
+        Instance View
+       </em>
+       (Fig.
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       ) is a scrollable data grid of the raw data used to train or test the model. The rows of the data grid are individual data instances, and the columns are:
+       <em>
+        Index
+       </em>
+       ,
+       <em>
+        State Trace
+       </em>
+       ,
+       <em>
+        Text
+       </em>
+       ,
+       <em>
+        Prediction
+       </em>
+       ,
+       <em>
+        Human Label
+       </em>
+       , and
+       <em>
+        Correctness
+       </em>
+       of the data instance. Users can sort and filter the data instances by each column (Fig.
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       Ⓐ). Users can use the
+       <font color="#3f51b5">
+        TRAIN/TEST
+       </font>
+       tab to switch between training and test instances. The distributions of human labels and model prediction results are summarized and rendered on top of this view (Fig.
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       Ⓑ). As users filter the data instances, these distributions are also updated accordingly. Users can also search for specific input data based on keywords or regular expressions (Fig.
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       Ⓒ). The matched results will be
+       <em>
+        highlighted
+       </em>
+       for better visualization. For each instance, its words and states are colored based on the intermediate prediction results. Clicking on a row in the instance view will update the state diagram view to render the state transitions of the selected data instance.
+      </p>
+     </section>
+     <section id="sec-16">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.5
+         </span>
+         Intermediate Prediction Results
+        </h3>
+       </div>
+      </header>
+      <p>
+       The previous sections describe how users can use different views to achieve an overall understanding of the model behavior. Previous studies have shown that it is also important to allow users to inspect and debug model predictions on individual instances [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+        39
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+        56
+       </a>
+       ]. To support instance-level inspection and debugging,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       allows users to enter an input sentence in the text box in Fig.
+       <a class="fig" href="#fig7">
+        7
+       </a>
+       . After clicking on the magnifier button,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       renders the state trace of the model prediction on the given input. Furthermore, each word in the input sentence is colored based on the
+       <em>
+        intermediate prediction result
+       </em>
+       . For example, in Fig.
+       <a class="fig" href="#fig7">
+        7
+       </a>
+       Ⓑ, “
+       <font color="#f44336">
+        red
+       </font>
+       ” and “
+       <font color="#3f51b5">
+        blue
+       </font>
+       ” indicate negative comments and positive comments respectively. RNN typically uses the final hidden state after reading the entire sentence to compute the class probabilities. In
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       , the hidden state after reading each word in a sentence is fed into the output layer to generate intermediate predictions. Through these intermediate predictions, users can inspect how the prediction result has changed over time as the RNN model reads more words in the input sentence. The pattern summary view is also updated with only influential patterns and possible buggy patterns related to the given input sentence. With these supports, users can quickly find suspicious words or phrases when debugging an incorrect model prediction.
+      </p>
+      <figure id="fig7">
+       <img alt="Figure 7" aria-describedby="fig008" class="img-responsive" src="3580852_files\chi23188fig7.jpg"/>
+       <p id="fig008" style="display:none">
+        This figure shows an example of intermediate prediction results in DeepSeer. The top-left component of this figure is a text box, where users can type in a paragraph of text, then click on a magnifier to render the trace and intermediate prediction results of this text. The trace of the input text is plotted right to the text box. And the model's prediction result is shown below the text box, along with the input text colored with different colors according to each word's intermediate results
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 7:
+        </span>
+        <span class="figure-title">
+         <em>
+          <strong>
+           Intermediate prediction results
+          </strong>
+         </em>
+         help users interpret model's prediction when debugging.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+    </section>
+    <section id="sec-17">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         6
+        </span>
+        USAGE SCENARIO
+       </h2>
+      </div>
+     </header>
+     <p>
+      Suppose Alice is a model developer, and she trains a toxicity detection RNN model using the Toxic dataset
+      <a class="fn" href="#fn2" id="foot-fn2">
+       <sup>
+        2
+       </sup>
+      </a>
+      . This model predicts whether a sentence has a positive tone or negative tone. Her model achieves 95% accuracy on the training data but only 89% on the test data. Alice uses
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      to figure out why there is such a performance drift.
+     </p>
+     <section id="sec-18">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.1
+         </span>
+         Visualizing and Understanding an RNN Model
+        </h3>
+       </div>
+      </header>
+      <p>
+       Alice first attends to the
+       <em>
+        state diagram view
+       </em>
+       , which gives her an overview of the trained RNN model as a finite state machine (Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       Ⓐ). In this state diagram, each node represents a group of similar hidden states in the RNN model. A
+       <font color="#2196f3">
+        blue
+       </font>
+       node indicates that the model is more likely to give a
+       <font style="background-color:#3f51b5">
+        <font color="#FFFFFF">
+         Positive
+        </font>
+       </font>
+       intermediate prediction after visiting this state, while a
+       <font color="#f50057">
+        red
+       </font>
+       node indicates that the model is more likely to give a
+       <font style="background-color:#f44336">
+        <font color="#FFFFFF">
+         Negative
+        </font>
+       </font>
+       intermediate prediction. Alice hovers her mouse over a red node named State 39. As shown in Figure
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       , a tooltip then pops up showing that the model makes a negative intermediate prediction 39,948 times while only 5,046 times for positive ones, after visiting this state. When Alice clicks on the node of State 39, an information card is displayed on the right (Figure
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       Ⓐ), showing common words and phrases associated with the state, such as “
+       <font color="#3f51b5">
+        stupid
+       </font>
+       ”, “idiot”, and “stupid and”. Alice glances over several sentences with these words in the
+       <em>
+        instance view
+       </em>
+       below (Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       Ⓒ) to check whether they are
+       <em>
+        hate comments
+       </em>
+       . In this way, Alice confirms that her RNN model indeed learns some meaningful patterns from the training data.
+      </p>
+      <p>
+       While inspecting text patterns associated with each state is helpful, Alice finds it cumbersome to check all states in the state diagram. So she switches to the
+       <em>
+        pattern summary view
+       </em>
+       (Fig.
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       Ⓑ) to understand the model from another perspective. This view shows text patterns that have a significant impact on the model prediction (i.e., influential patterns). Alice finds some interesting patterns such as “more fake news” and “stupid enough to”. When Alice clicks on one of the patterns, “hypocrisy” (Fig.
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       Ⓐ), it is expanded to show a list of other frequent patterns that are associated with the same state sequence, ⑬ → ⑨ → ⑨, sorted by frequency.
+       <a class="fn" href="#fn3" id="foot-fn3">
+        <sup>
+         3
+        </sup>
+       </a>
+       For example, this state sequence also memorizes “suck it up” (12 sentences), “ignorant of” (6 sentences), and “suck and blow” (4 sentences) in the training data. As Alice clicks on each pattern, the
+       <em>
+        instance view
+       </em>
+       is also updated to filter training and test data that does not follow the clicked pattern. Alice is also curious about which text patterns may cause incorrect model predictions. So she switches to the list of possible buggy patterns. These buggy patterns are summarized from misclassified sentences only, rather than the entire training dataset. Alice sees some patterns such as “...”, “!!!”, and “???” (Fig.
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       Ⓑ). It seems that her model learns some spurious correlations between punctuation and prediction results, which may have contributed to many errors. To prevent the model from learning these spurious correlations, Alice plans to remove this punctuation to clean the training data, which may lead to better model performance.
+      </p>
+     </section>
+     <section id="sec-19">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.2
+         </span>
+         Debugging an RNN Model
+        </h3>
+       </div>
+      </header>
+      <p>
+       Now Alice wants to dig into the data and investigates why some sentences are misclassified after having a high-level understanding of the model behavior. So she turns to the
+       <em>
+        instance view
+       </em>
+       (Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       Ⓒ), which shows all training and test data in a paginated table.
+      </p>
+      <p>
+       Alice first notices that the training data is not balanced. There are significantly more positive sentences (92062) than negative ones (7938). Alice then switches to the test data and finds misclassified sentences using the filtering feature on the
+       <em>
+        Correctness
+       </em>
+       column (Figure
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       Ⓐ). She copied a misclassified sentence to the text box and run the instance-level model explanation feature on it (Figure
+       <a class="fig" href="#fig7">
+        7
+       </a>
+       ). Each word in the sentence is colored based on the intermediate prediction result. A state trace is also rendered below.
+      </p>
+      <p>
+       Alice quickly notices a few words that her RNN model considers negative during the prediction, such as “
+       <font color="#f44336">
+        ugly head
+       </font>
+       .” Even though such insulting words have been recognized by the model, this sentence is eventually predicted positive. It seems the model quickly forgets these insulting words after seeing the subsequent words in the sentence. For example, after seeing “
+       <font color="#3f51b5">
+        quarters
+       </font>
+       ”, the intermediate prediction changes from negative to positive.
+      </p>
+      <figure id="fig8">
+       <img alt="Figure 8" aria-describedby="fig009" class="img-responsive" src="3580852_files\chi23188fig8.jpg"/>
+       <p id="fig009" style="display:none">
+        This figure shows the searching results of Alice. When she searches for “quarters”, there are 27 positive predictions while only 1 negative prediction on the training data.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 8:
+        </span>
+        <span class="figure-title">
+         Alice search for “quarters” in the training data.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+      <p>
+       To verify this hypothesis, Alice searches sentences that contain “quarters” in the training set using the keyword search feature in the
+       <em>
+        instance view
+       </em>
+       . Alice finds 27 positive sentences and only 1 negative one that contains “quarters” in the training set (Fig.
+       <a class="fig" href="#fig8">
+        8
+       </a>
+       ). Since many sentences with “quarters” are positive, the model may have learnt a spurious correlation between “quarters” and the positive sentiment. Alice further confirms her hypothesis by looking at the corresponding state,
+       <font color="#3f51b5">
+        State 22
+       </font>
+       , associated with the word “quarters”. Alice finds that
+       <font color="#3f51b5">
+        State 22
+       </font>
+       is a positive state. Therefore, Alice concludes that one reason for this misclassification is data imbalance, where most sentences with “quarters” are labelled as positive. To address this, Alice believes that one possible solution is to collect more data with this keyword to balance her training set and then re-train her model. Furthermore, given that the model quickly forgets an insulting word, Alice also plans to experiment with the long short-memory (LSTM) architecture with the attention mechanism, which can handle information in the memory for a longer time compared with a vanilla RNN.
+      </p>
+     </section>
+    </section>
+    <section id="sec-20">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         7
+        </span>
+        USER STUDY
+       </h2>
+      </div>
+     </header>
+     <p>
+      We conducted a between-subjects study with 28 participants to evaluate the effectiveness and usability of
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      . We used LIME [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ], a well-known tool for interpreting and debugging machine learning models, as a comparison baseline. Though LIME is not specialized for RNNs, it is a widely-used tool to understand and debug models. It has 10.3K stars and 1.7K forks on GitHub
+      <a class="fn" href="#fn4" id="foot-fn4">
+       <sup>
+        4
+       </sup>
+      </a>
+      , and its Python package has been downloaded 16M times on PyPI
+      <a class="fn" href="#fn5" id="foot-fn5">
+       <sup>
+        5
+       </sup>
+      </a>
+      . Therefore we choose it as a more realistic baseline. Given a model prediction, LIME can generate an explanation with importance scores for elements in the input data (e.g., words in an input sentence). To enable a fair comparison, we built an interface for LIME similar to
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      . The interface includes the existing visualizations provided by LIME and also includes the Instance View as in
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      . It does not include the state diagram view and the pattern summary view, which are the novel contributions of
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      . We investigated the following research questions to assess the overall usefulness of
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      compared with LIME:
+     </p>
+     <ul class="list-no-style">
+      <li id="list4" label="•">
+       RQ1: To what extent does
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       enhance users’ understanding of an RNN model compared with a commonly used model explanation and debugging tool?
+       <br/>
+      </li>
+      <li id="list5" label="•">
+       RQ2: To what extent does
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       improve the accuracy of identifying the root cause of a misprediction of an RNN model compared with a commonly used model explanation and debugging tool?
+       <br/>
+      </li>
+     </ul>
+     <section id="sec-21">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          7.1
+         </span>
+         Participants
+        </h3>
+       </div>
+      </header>
+      <p>
+       We recruited 28 participants (5 female and 23 male) through several graduate student mailing lists of the CS department and the ECE department at the University of Alberta.
+       <a class="fn" href="#fn6" id="foot-fn6">
+        <sup>
+         6
+        </sup>
+       </a>
+       All participants had at least basic machine learning background. 15 participants were Ph.D. students, and the rest were Master's students. 23 participants had 2-5 years of machine learning experience, 3 participants had more than 5 years, and 2 participants had about 1 year. Regarding their RNN experience, 9 participants had more than 2 years of experience, 7 participants had 1 year, and 12 participants had less than 1 year. Participants also self-reported their familiarity with developing RNN models in a 7-point Likert scale question. The median is 5, with 1 referring to “
+       <em>
+        I have only heard about RNNs but never used it
+       </em>
+       ” and 7 referring to “
+       <em>
+        I'm able to build an RNN model by myself
+       </em>
+       .” 25 participants said they had not used any debugging tools for DL, while 3 participants said they have used Tensorboard [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+        1
+       </a>
+       ]. The studies were conducted on Zoom. Both
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       and LIME were deployed as web applications that participants could access from their personal computers.
+      </p>
+     </section>
+     <section id="sec-22">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          7.2
+         </span>
+         RNN Models
+        </h3>
+       </div>
+      </header>
+      <p>
+       Since
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       is designed for visualizing and debugging RNN models, we trained two RNN models for two popular ML tasks. For each RNN model, the dimension of a hidden state vector is 256. The first ML task is to predict whether a question asked on Quora is sincere or insincere. It is originally from a featured competition from Kaggle, a popular online machine learning and data science community [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+        50
+       </a>
+       ]. In this task, our RNN model is trained on 100,000 Quora questions, each of which is labeled as sincere or insincere. The training accuracy of this RNN model is 93.93%, and the test accuracy is 89.07%. The second ML task is to predict the topic of a news article from a news corpus called AG's News [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+        20
+       </a>
+       ]. This task is a well-known benchmark for topic classification research [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+        65
+       </a>
+       ]. In this task, our RNN model is trained on 109,886 news articles labeled into four news topics, including “Sports”, “Business”, “World”, and “Science and Technology.” The training accuracy of this RNN model is 91.57%, and the test accuracy is 87.68%.
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       abstracts each RNN model into 40 states. This number is decided empirically to achieve a good balance between accuracy and the cognitive effort of inspecting a state diagram. We further provide a faithfulness analysis of the abstracted model in Appendix
+       <a class="sec" href="#sec-37">
+        C
+       </a>
+       . During a user study session, we randomly assigned one of the two RNN models to a participant to finish the model understanding and debugging tasks. Interface of
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       for each task can be found in Appendix
+       <a class="sec" href="#sec-38">
+        D
+       </a>
+       .
+      </p>
+      <figure id="fig9">
+       <img alt="Figure 9" aria-describedby="fig010" class="img-responsive" src="3580852_files\chi23188fig9.jpg"/>
+       <p id="fig010" style="display:none">
+        This figure shows the participants’ performance on model understanding. It shows that compared with LIME users, DeepSeer users (a) provided more diverse insights, (b) were more likely to use deductive reasoning methods, and (c) came up with more actionable plans for improving the RNN model.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 9:
+        </span>
+        <span class="figure-title">
+         Participants’ performance on model understanding. (A) The number of participants who mention different aspects of model behavior. (B) The number of participants who describe model behavior in different ways. (C) The number of participants who make different suggestions on model improvement.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-23">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          7.3
+         </span>
+         Protocol
+        </h3>
+       </div>
+      </header>
+      <p>
+       We design a between-subjects user study where users experience one condition and one RNN model in each study session. We choose a between-subjects design rather than a within-subjects design since experiencing one condition takes around 60 minutes. Experiencing two conditions in a within-subjects design would require 120 minutes, which is too long and can lead to significant fatigue and frustration. At the beginning of each session, we asked the participants for their permission for recording. Given that this was a between-subjects study, each participant was assigned to only one RNN model in one condition. In each session, participants were only allowed to use the given tool:
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       in the experiment condition or LIME [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ] in the control condition. The assigned RNN models and conditions were counterbalanced across participants. At the beginning of each study session, participants were asked to first watch a 5-min tutorial video of the assigned tool, and then spend 5 minutes familiarizing themselves with the tool. Then, participants were given 30 minutes to use the assigned tool to explore an assigned RNN model and share their understanding of the model behavior through a questionnaire. The questionnaire included three main questions: (1)
+       <em>
+        What insights have you got about the model's performance and behavior?
+       </em>
+       (2)
+       <em>
+        Did you find any bugs or limitations of the RNN model? If yes, what kind of bugs have you found?
+       </em>
+       (3)
+       <em>
+        How will you further improve the model?
+       </em>
+       After filling out the model understanding questionnaire, participants were given 10 minutes to debug 5 incorrect model predictions using the assigned tool. For each incorrect prediction, they were asked to write down why the input data was misclassified and submit their answers through a questionnaire. At the end of the study session, participants were asked to fill out a survey to share their experiences. In particular, the post-study survey included the NASA Task Load Index (TLX) questions [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ] to measure the cognitive load of the study. Each participant received a
+       <font style="normal">
+        $
+       </font>
+       25 Amazon gift card as compensation for their time.
+      </p>
+     </section>
+    </section>
+    <section id="sec-24">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         8
+        </span>
+        USER STUDY RESULTS
+       </h2>
+      </div>
+     </header>
+     <p>
+      This section describes the results of the between-subjects user study. We first present and analyze participants’ performance differences on model understanding and debugging tasks when using
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      and LIME. Then we present participants’ perception on
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      ’s tool features as well as cognitive load. For brevity, we use P1-P14 to denote the participants using
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      , and P15-P28 to denote the participants using LIME [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ].
+     </p>
+     <section id="sec-25">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          8.1
+         </span>
+         RQ1: User Performance on Model Understanding
+        </h3>
+       </div>
+      </header>
+      <p>
+       To evaluate user performance on model understanding, two authors manually assessed and coded participants’ responses and counted the number of correct insights about model behavior shared by participants. Specifically, these two authors had 4 meetings to develop a codebook and resolve labeling inconsistencies. Eventually, 651 codes were generated and categorized into 32 themes. The final Cohen's Kappa score is 0.9061. Note that one insight is considered correct only if both two authors agree.
+      </p>
+      <p>
+       Overall, participants using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       provided more insights (53 vs. 21) than participants using LIME. The mean difference of insights provided per participant (2.3) is statistically significant (Welch's t-test:
+       <em>
+        p
+       </em>
+       = 0.0003). Fig.
+       <a class="fig" href="#fig9">
+        9
+       </a>
+       provides a breakdown of different kinds of insights shared by participants. Participants using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       shared much more insights about
+       <em>
+        global model behavior
+       </em>
+       ,
+       <em>
+        model performance
+       </em>
+       , and
+       <em>
+        buggy behavior
+       </em>
+       . For instance, P12 said, “
+       <em>
+        It looks like the model is placing a lot of weight in the latter half of an input sentence.
+       </em>
+       ” P9 wrote, “
+       <em>
+        this model is often confused by the Business and Science categories.
+       </em>
+       ” Furthermore, participants using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       often referred to text patterns and states when describing model behavior, while participants using LIME mostly referred to specific keywords. P25 said, “
+       <em>
+        it is not easy to summarize patterns [with LIME] when the size of dataset is large and there are many classes.
+       </em>
+       ” Since LIME is designed for local explanations, it is not surprising that only 2 participants using LIME were able to derive global explanations for an assigned RNN model.
+      </p>
+      <div class="table-responsive" id="tab1">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 1:
+        </span>
+        <span class="table-title">
+         The average of responses shared by participants in the model debugging task.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+          </td>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;border-bottom: 2pt solid #000000;">
+           Quora
+          </td>
+          <td colspan="2" style="text-align:center;border-right: 2pt solid #000000;border-bottom: 2pt solid #000000;">
+           AGNews
+          </td>
+          <td colspan="2" style="text-align:center;border-bottom: 2pt solid #000000;">
+           Overall
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:center;">
+           <font style="font-variant: small-caps">
+            DeepSeer
+           </font>
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           LIME
+          </td>
+          <td style="text-align:center;">
+           <font style="font-variant: small-caps">
+            DeepSeer
+           </font>
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           LIME
+          </td>
+          <td style="text-align:center;">
+           <font style="font-variant: small-caps">
+            DeepSeer
+           </font>
+          </td>
+          <td>
+           LIME
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Reasonable explanations provided per participant
+          </td>
+          <td style="text-align:center;">
+           4.3
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           2.7
+          </td>
+          <td style="text-align:center;">
+           4.3
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           1.1
+          </td>
+          <td style="text-align:center;">
+           4.3
+          </td>
+          <td>
+           1.9
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Fault-inducing keywords mentioned per participant
+          </td>
+          <td style="text-align:center;">
+           5.3
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           2.7
+          </td>
+          <td style="text-align:center;">
+           4.6
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           1.4
+          </td>
+          <td style="text-align:center;">
+           4.9
+          </td>
+          <td>
+           2.1
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Non-fault-inducing keywords mentioned per participant
+          </td>
+          <td style="text-align:center;">
+           0.8
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           3.7
+          </td>
+          <td style="text-align:center;">
+           1.0
+          </td>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           3.3
+          </td>
+          <td style="text-align:center;">
+           0.9
+          </td>
+          <td>
+           3.5
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p>
+       Participants using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       also provided more useful and diverse suggestions about model improvement compared with LIME users (Fig.
+       <a class="fig" href="#fig9">
+        9
+       </a>
+       (C)). Note that a suggestion is considered useful if it is related to the root causes of observed model misprediction and is accepted as an effective model improvement mechanism in the ML community. In particular, 5 participants using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       noticed the error pattern of forgetting previous tokens after reading more tokens and suggested adding an attention layer, while only 2 participants using LIME noticed this. P10 wrote, “
+       <em>
+        For many false predictions, the model is likely to give the right prediction at the beginning, but then turns to the wrong direction. Probably we could reduce the length of temporal dependencies with something like the attention mechanism.
+       </em>
+       ” Finally, participants using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       spent 27 min 53 s (
+       <em>
+        σ
+       </em>
+       = 2 min 44 s) on average, while participants using LIME spent 28 min 19 s (
+       <em>
+        σ
+       </em>
+       = 3 min 15 s). We do not observe a significant difference in task completion time.
+      </p>
+     </section>
+     <section id="sec-26">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          8.2
+         </span>
+         RQ2: User Performance on Model Debugging
+        </h3>
+       </div>
+      </header>
+      <p>
+       To evaluate user performance on the model debugging task, we counted the number of reasonable explanations provided by participants over five misclassified sentences. To assess the correctness of participants’ answers, two authors first manually inspected the hidden states of the RNN and also the training data to diagnose the five misclassifications. Their investigation results were used as the ground-truth misclassification explanations. Then, they checked whether the participants’ explanations were consistent with the ground truth.
+      </p>
+      <p>
+       As shown in Table
+       <a class="tbl" href="#tab1">
+        1
+       </a>
+       , participants using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       provided more reasonable explanations for misclassification. Participants using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       provided 4.3 reasonable explanations for 5 misclassified sentences on average, while participants using LIME only provided 1.9 reasonable explanations. The mean difference of 2.4 is statistically significant (Welch's t-test,
+       <em>
+        p
+       </em>
+       &lt; 0.0001).
+      </p>
+      <p>
+       Furthermore, we counted the number of correct fault-inducing keywords mentioned by participants. Participants using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       identified more correct fault-inducing keywords than those using LIME (mean: 4.9 vs. 2.1). The mean difference of 2.8 is statistically significant (Welch's t-test,
+       <em>
+        p
+       </em>
+       &lt; 0.0001). In addition, participants using LIME misrecognized more keywords (mean: 3.5 vs. 0.9) as fault-inducing keywords (Welch's t-test,
+       <em>
+        p
+       </em>
+       &lt; 0.0001). This is because LIME first learns a surrogate sparse linear model to simulate the RNN model and then computes word importance based on the linear model. This sometimes leads to unreliable explanations. Some participants also noticed this during the study. P22 commented, “
+       <em>
+        in some cases, I found that the tool [LIME] did not generate a reliable explanation.
+       </em>
+       ”
+      </p>
+      <p>
+       One interesting observation is that participants using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       were capable of identifying more complex error patterns beyond word patterns. For example, P9 answered, “
+       <em>
+        At the very beginning, ‘football’ indicates the model to predict sports, which is exactly what the model does. But when ‘UK’ appears, the state transits to ‘world’ [related state] and got stuck there.
+       </em>
+       ” None of the LIME users provided such insights, since LIME treats individual words separately and cannot capture the dynamics of the model's decision process.
+      </p>
+      <p>
+       Finally, participants using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       completed this task in an average of 9 min 9 s (
+       <em>
+        σ
+       </em>
+       = 1 min 21 s), while participants using LIME took an average of 9 min 25 s (
+       <em>
+        σ
+       </em>
+       = 0 min 11 s). There is no significant difference in task completion time.
+      </p>
+     </section>
+     <section id="sec-27">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          8.3
+         </span>
+         User Perception and Cognitive Load
+        </h3>
+       </div>
+      </header>
+      <p>
+       Our post-study survey solicited participants’ feedback on all key features of
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       . Overall, participants considered
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       ’s visual encoding and interface intuitive, helpful, and clear. Among 14 participants, 13 of them self-reported that they would like to use
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       when developing and debugging RNN models in the future, while 1 participant stayed neutral. The median is 6.5 on a 7-point Likert scale (1—I don't want to use it at all, 7—I will definitely use it if available). We report participants’ qualitative feedback on the key features of
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       from both post-study survey and user study recordings below.
+      </p>
+      <figure id="fig10">
+       <img alt="Figure 10" aria-describedby="fig011" class="img-responsive" src="3580852_files\chi23188fig10.jpg"/>
+       <p id="fig011" style="display:none">
+        This figure shows the participants’ rating of tool features of DeepSeer on a 7-point Likert scale (1 means strongly disagree and 7 means strongly agree). It shows that all of our tool features are highly appreciated by the participants, especially the state diagram, the instance view, and the intermediate prediction results. The median rating of “the state diagram is useful” is 6. The median rating about “the instance view is useful“ is also 6, while the median rating for “the search feature in the instance view is useful” is 7. The median rating of “the intermediate prediction results are useful” is 6. And 13 out of 14 participants also agreed that they want to use DeepSeer to debug their own models.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 10:
+        </span>
+        <span class="figure-title">
+         Participants’ ratings about
+         <font style="font-variant: small-caps">
+          DeepSeer
+         </font>
+         ’s tool features (1 is “strongly disagree” and 7 is “strongly agree”)
+        </span>
+       </figcaption>
+      </figure>
+      <em>
+       <strong>
+        Intermediate Prediction Results.
+       </strong>
+      </em>
+      All 14 participants using
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      found the on-demand intermediate prediction results provided by
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      useful. The median rating is 7 out of 7. P9 mentioned, “
+      <em>
+       stepping through intermediate predictions help me understand why model makes a wrong prediction. For example, the text is apparently about sports. However, the model goes into state 20 which is not quite related to sports.
+      </em>
+      ” Moreover, participants also liked the color-coding of intermediate prediction results.
+      <p>
+      </p>
+      <p>
+       <em>
+        <strong>
+         State Diagram.
+        </strong>
+       </em>
+       Among 14 participants, 11 of them considered the state diagram in
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       useful. The median rating is 6. P12 commented, “
+       <em>
+        extracting an RNN model as a state diagram is nice, and I think it will also be helpful when interpreting [RNN models] with more complex data such as medical data.
+       </em>
+       ” While the majority of participants did not find the state diagram overwhelming, 3 found it slightly overwhelming and 1 found it very overwhelming. 7 out of 14 participants found it useful to interact with the state diagram, e.g., seeing statistical distribution over states and keywords associated with each state.
+      </p>
+      <p>
+       <em>
+        <strong>
+         Pattern Summaries.
+        </strong>
+       </em>
+       9 out of 14 participants found that seeing the patterns in the pattern summary view and filtering the dataset based on a specific pattern are useful (median rating: 6). P2 mentioned, “
+       <em>
+        it is good for us to see inside of the model and find the bug with possibly buggy patterns.
+       </em>
+       ” In particular, participants also mentioned that the pattern summary view is helpful for debugging. P8 said, “
+       <em>
+        I can click the buggy patterns to check related sentences. This helps me identify why model usually mis-classify [sentences] with these patterns.
+       </em>
+       ”
+      </p>
+      <p>
+       <em>
+        <strong>
+         Searching and Filtering Instances.
+        </strong>
+       </em>
+       Most participants agreed that it is useful to interact with each data instance in the instance view (median rating: 7) and search for similar instances (median rating: 7). P4 mentioned, “
+       <em>
+        I like the colors associated with each label, I feel this helped a lot with looking at examples. I also liked how it clearly showed examples with their true class and prediction. Also, the ability to also filter examples by correctness, prediction, and the true label was very helpful for me.
+       </em>
+       ”
+      </p>
+      <p>
+       <em>
+        <strong>
+         Limitations and Suggestions.
+        </strong>
+       </em>
+       5 out of 14 participants pointed out that it would be better if
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       could provide additional statistical information about model accuracy, e.g., confusion matrix. 1 participant suggested that adding the confidence score for the explanation could help them make more informed decisions. 1 participant found the state diagram mentally demanding. P6 said, “
+       <em>
+        state diagram seemed a bit hard to interpret by just looking at it and probably wouldn't be immediately intuitive to a user opening this application up initially.
+       </em>
+       ”
+      </p>
+      <p>
+       <em>
+        <strong>
+         Cognitive Overhead.
+        </strong>
+       </em>
+       In the post-study survey, participants rated the cognitive load of the study via the NASA TLX questionnaire [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ]. Fig.
+       <a class="fig" href="#fig11">
+        11
+       </a>
+       shows their ratings for the five NASA TLX questions. We found that there was no significant difference when using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       vs. LIME in terms of hurry, performance, effort, and frustration (Welch's t-test:
+       <em>
+        p
+       </em>
+       = 0.7731,
+       <em>
+        p
+       </em>
+       = 0.7244,
+       <em>
+        p
+       </em>
+       = 0.6916, and
+       <em>
+        p
+       </em>
+       = 0.5620). Since
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       renders much more information about model behavior (e.g., a state diagram, a pattern view, on-demand intermediate prediction results), participants using
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       felt more mental demand (median value: 5 vs. 4, Welch's t-test:
+       <em>
+        p
+       </em>
+       = 0.0011).
+      </p>
+      <figure id="fig11">
+       <img alt="Figure 11" aria-describedby="fig012" class="img-responsive" src="3580852_files\chi23188fig11.jpg"/>
+       <p id="fig012" style="display:none">
+        This figure shows the cognitive load of participants when using DeepSeer versus LIME. The cognitive load is measured in five different dimensions, including mental demand, how hurry participants feel during the study, participants’ self-assessment of their performance, participants’ self-assessment of the effort needed to complete the task, and how frustrated participants feel. This figure shows that participants using DeepSeer have a higher cognitive load in terms of mental demand (median rating 5 versus 4). However, DeepSeer users’ cognitive loads in other dimensions are similar to LIME users’.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 11:
+        </span>
+        <span class="figure-title">
+         Participants’ ratings about cognitive load (1 means “strongly disagree” and 7 means“strongly agree”, * means the mean difference is statistically significant.)
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+    </section>
+    <section id="sec-28">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         9
+        </span>
+        DISCUSSION
+       </h2>
+      </div>
+     </header>
+     <section id="sec-29">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          9.1
+         </span>
+         Design Implications
+        </h3>
+       </div>
+      </header>
+      <p>
+       The user study results suggest that
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       helps users achieve a more comprehensive understanding of the assigned model, and perform better on model debugging compared with the baseline tool, LIME [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ]. We believe this is largely attributed to
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       ’s interactive support for explaining the model's global and local behavior. While a few studies have discussed about the importance of global and local explanations [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+        24
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+        45
+       </a>
+       ], our work provides specific insights on how to support global and local explanations in a unified interface for RNN models.
+      </p>
+      <p>
+       In
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       , global explanations are mainly rendered in the
+       <em>
+        State Diagram View
+       </em>
+       and the
+       <em>
+        Pattern Summary View
+       </em>
+       . The abstracted state diagram helps users interpret the hidden states and complex transitions among these states, while the summarized text patterns help users quickly identify either influential or buggy patterns learned by the model. These global explanations boost users’ understanding and debugging process. Despite all the benefits of global explanations, we found it still necessary for participants to have the instance-level explanation to contextualize their understanding of model behavior. In particular, given a specific state or text pattern, user study participants often got curious about how it sounds in different texts. In the post-study survey, they highly appreciated the
+       <em>
+        Intermediate Prediction Results
+       </em>
+       feature.
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       allows users to zoom into local explanations by actively filtering instances based on selected states or patterns, as well as zooming back to the model's global behavior by tracing back to the state diagram. Through these ways, global and local explanations are served as a synergistic loop for model understanding and debugging.
+      </p>
+      <p>
+       Furthermore, we find that users cared about how the given explanations are derived from the internal decision-making process of an RNN model. When using LIME [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ], 4 out of 14 participants using LIME questioned the explanations (highlighted keywords) given by LIME. For instance, P24 commented in the post-study survey,
+       <em>
+        "I hope LIME can provide a reason why some words have a high sincere or insincere score."
+       </em>
+       As a more tangible and actionable solution,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       not only communicates the correlation between specific features in an input to a prediction result, but also communicates the internal decision-making process of a model.
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       renders model's decision-making process in two ways. First, it renders the transition between different internal states of the model in the state diagram view. Second, for an individual prediction, it renders the intermediate prediction results as well as their correspondence to the internal states of a model. By inspecting such a decision-making process, users can better understand how the model arrives at a specific prediction and gain more trust from the generated explanations.
+      </p>
+      <p>
+       As an interactive XAI tool, it is also important to provide users with interpretable explanations, especially for RNN models. Note that a few prior techniques have tried to visualize the decision process of RNN [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ]. However, they usually only directly visualize the value of each hidden state. For instance, LSTMVis [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ] visualizes the change of hidden state values in parallel coordinates. Given that hidden state values are essentially numerical values in a high-dimensional space, it is challenging to interpret their semantic meanings. To address this challenge,
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       bundles hidden states with associated words and phrases in a text corpus and visualizes the transition between them as a state diagram. In this way, the internal decision-making process becomes more interpretable to non-experts.
+      </p>
+     </section>
+     <section id="sec-30">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          9.2
+         </span>
+         Target Users and User Expertise
+        </h3>
+       </div>
+      </header>
+      <p>
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       is designed for any developers who needs to train and debug an RNN model by themselves. They can be experienced ML developers, regular software developers who just started learning RNNs, or students who use RNN in a course project. In the user study, we recruited participants with diverse expertise in RNN, including 4 participants with less than 1 year of RNN experience, 5 with 1 year, 3 with 2—5 years, and 2 with more than 5 years. Our further analysis shows that, while participants with more RNN experience performed slightly better, the difference was not significant (Fig.
+       <a class="fig" href="#fig12">
+        12
+       </a>
+       ). This implies the effectiveness of f
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       is not strongly correlated to their expertise.
+      </p>
+      <figure id="fig12">
+       <img alt="Figure 12" aria-describedby="fig013" class="img-responsive" src="3580852_files\chi23188fig12.jpg"/>
+       <p id="fig013" style="display:none">
+        This figure shows DeepSeer users’ performance on model debugging with various levels of RNN expertise. The median performance of four different RNN experience groups (less than one year, one year, two to five years, and more than five years) are 4.5, 4, 5, and 5, respectively. There is no significant performance difference among different groups.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 12:
+        </span>
+        <span class="figure-title">
+         <font style="font-variant: small-caps">
+          DeepSeer
+         </font>
+         users’ performance on model debugging with various levels of RNN expertise.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-31">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          9.3
+         </span>
+         Generalization to Different ML Tasks and Models
+        </h3>
+       </div>
+      </header>
+      <p>
+       Though our work has only evaluated
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       on sentiment analysis and topic modeling tasks, we believe
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       can generalize to different NLP Tasks as well. To reuse
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       for other tasks, one may consider adapting the color mapping mechanism for abstract states. For example, for machine translation tasks, one can color each state according to the part-of-speech tag. By inspecting each state's color and associated words, users could interpret if an RNN model is translating a sentence correctly.
+      </p>
+      <p>
+       In this work, we focused on RNNs, which is a representative model architecture for processing sequential data. In addition to RNNs, it may be possible to use
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       to interpret RNN variants such as Bidirectional-LSTM [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ] or Transformers [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+        60
+       </a>
+       ]. While the principle of Bidirectional-LSTM is similar to a naive RNN, some adaptions to the state abstraction method are required. For instance, one should consider collecting the model's hidden states when processing the input text in both two directions. Since transformers are permutation-invariant, they process all words in an input sentence at the same time, not sequentially. Therefore, we can no longer bundle a word with a hidden state. However, one can treat the output of each hidden layer as a concrete state. Then the transition can be built among different hidden layers instead of among different words.
+      </p>
+     </section>
+     <section id="sec-32">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          9.4
+         </span>
+         Limitations and Future Work
+        </h3>
+       </div>
+      </header>
+      <p>
+       One limitation of our user study design is that the comparison baseline, LIME [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+        53
+       </a>
+       ], is designed for generating local explanations instead of global explanations. Thus, we cannot directly compare the global explanation effectiveness of
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       to LIME. Besides, LIME is not specialized for RNN. While there are RNN-specific tools, such as LSTMVis [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+        59
+       </a>
+       ] and RNNVis [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+        43
+       </a>
+       ], we failed to run them on our RNN models after several attempts due to version compatibility issues. Both LSTMVis and RNNVis were built years ago on out-of-dated DL frameworks (TensorFlow r0.12 and Torch 7), which can no longer be used to analyze DL models built by later framework versions. Significant efforts are needed to re-implement them. Therefore, we consider such re-implementation out of the scope of this work. An alternative solution can be creating variants of
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       by disabling some key features as baselines, which can help us better attribute the success of
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       to individual features. This is worth investigating in future work.
+      </p>
+      <p>
+       As we are researchers from an R1 university, we do not have access to professional developers and data scientists who build RNN models in their work. Instead, we recruited graduate students who have experience in building RNN models. ML practitioners may share more interesting insights compared with graduate students.
+      </p>
+      <p>
+       Additionally, our user study has only evaluated
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       on RNNs for sentiment analysis and topic classification. To comprehensively investigate the usefulness of
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       , one can consider leveraging
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       to understand and debug RNN models for other tasks, beyond text classification, e.g., machine translation.
+      </p>
+      <p>
+       Furthermore, our current design only supports visualizing and analyzing one RNN model. Once the bugs are identified with the help of
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       , re-training the RNN model is needed. Therefore, a possible future direction is to develop tool support for comparing two or more versions of an RNN model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+        46
+       </a>
+       ]. Besides, one can also improve
+       <font style="font-variant: small-caps">
+        DeepSeer
+       </font>
+       by designing tool support for model tracking [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+        4
+       </a>
+       ] and model selection [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+        10
+       </a>
+       ].
+      </p>
+     </section>
+    </section>
+    <section id="sec-33">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         10
+        </span>
+        CONCLUSION
+       </h2>
+      </div>
+     </header>
+     <p>
+      In this paper, we present a novel system called
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      to help ML developers understand and debug recurrent neural networks.
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      makes use of a state abstraction method that bundles semantically similar hidden states of an RNN model and abstracts it to a finite state machine. Through
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      , users can explore both the model's global and local behavior, and also debug incorrect predictions. We demonstrate
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      ’s usefulness and usability through a between-subjects user study with 28 model developers on two different RNN models. The results show that
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      ’s tightly-coordinated views brought developers a deeper understanding of an RNN model compared with a popular XAI technique, LIME. Furthermore, participants using
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      were able to identify the root causes of more incorrect predictions and provide more actionable plans to improve the RNN model. In the end, we discuss the design implications from
+      <font style="font-variant: small-caps">
+       DeepSeer
+      </font>
+      , and propose several promising future work directions.
+     </p>
+    </section>
+   </section>
+   <section class="back-matter">
+    <section id="sec-34">
+     <header>
+      <div class="title-info">
+       <h2>
+        ACKNOWLEDGMENTS
+       </h2>
+      </div>
+     </header>
+     <p>
+      We would like to thank all anonymous participants in the user study and anonymous reviewers for their valuable feedback. This work was supported in part by Amii RAP program, Canada CIFAR AI Chairs Program, the Natural Sciences and Engineering Research Council of Canada (NSERC No.RGPIN-2021-02549, No.RGPAS-2021-00034, No.DGECR-2021-00019), as well as JSPS KAKENHI Grant No.JP20H04168, JST-Mirai Program Grant No.JPMJMI20B8.
+     </p>
+    </section>
+    <appendix>
+     <section id="sec-35">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          A
+         </span>
+         STATE ABSTRACTION
+        </h2>
+       </div>
+      </header>
+      <p>
+       In this section, we present the technical details of state abstraction for an RNN model. The core idea is to extract all possible hidden states of an RNN model using training data and then group similar hidden states to build a finite state machine (FSM). Algorithm A1 shows the procedure of state abstraction of an RNN model.
+      </p>
+      <p>
+       <span class="inline-equation">
+        <img alt="Algorithm 1" class="img-responsive" src="3580852_files\chi23188img1.svg"/>
+       </span>
+      </p>
+      <p>
+       Algorithm A1 takes two inputs: a trained RNN model
+       <em>
+        R
+       </em>
+       and training data
+       <em>
+        X
+        <sub>
+         train
+        </sub>
+       </em>
+       , as well as two parameters: PCA (principal component analysis) dimension
+       <em>
+        p
+       </em>
+       and number of abstracted states
+       <em>
+        n
+       </em>
+       . Given a trained RNN model, we first iterate through all the training data
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {X}_{train}$
+        </span>
+       </span>
+       to collect all possible hidden states
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {H}$
+        </span>
+       </span>
+       from the RNN model (Line 1:5). Line 3 records all the hidden states
+       <em>
+        H
+       </em>
+       in an RNN model when processing a specific input instance
+       <em>
+        x
+       </em>
+       . Suppose an input instance
+       <em>
+        x
+       </em>
+       has
+       <em>
+        l
+       </em>
+       words, then
+       <em>
+        l
+       </em>
+       different hidden states will be produced when the RNN model processes these
+       <em>
+        l
+       </em>
+       words sequentially. For example, given the sentence “I love Machine Learning”, the RNN model will process four words: “I”, “love”, “machine”, and “learning” sequentially. Therefore, four different hidden state vectors will be produced and recorded when the RNN model processes this sentence.
+      </p>
+      <p>
+       After recording all the hidden states using the training data, we create a PCA model
+       <em>
+        k
+       </em>
+       to reduce the dimension of these hidden states into
+       <em>
+        p
+       </em>
+       (Line 6). Meanwhile, we also obtain a PCA model
+       <em>
+        P
+       </em>
+       . Now we abstract
+       <span class="inline-equation">
+        <span class="tex">
+         $|P(\mathcal {H})|$
+        </span>
+       </span>
+       dimension reduced hidden states into
+       <em>
+        n
+       </em>
+       abstracted states. Different from the prior work [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ], which uses a grid-based method, we adopt a GMM (Gaussian mixture model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+        42
+       </a>
+       ])
+       <em>
+        G
+       </em>
+       to cluster these dimension-reduced hidden states (Line 7). After executing Line 7, we obtain a GMM model
+       <em>
+        G
+       </em>
+       . Our abstracted model
+       <em>
+        As
+       </em>
+       has now been built, which consists of a PCA model
+       <em>
+        P
+       </em>
+       and a GMM model
+       <em>
+        G
+       </em>
+       . Note that both PCA and GMM are implemented with scikit-learn with default parameters except “
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathsf {n\_components}$
+        </span>
+       </span>
+       ”.
+      </p>
+      <p>
+       In our usage scenario and user study, we set the PCA dimension
+       <em>
+        k
+       </em>
+       as 20 and the number of states
+       <em>
+        n
+       </em>
+       as 40. We further show that the abstraction model using this setting can provide consistent predictions compared with the original RNN model in Appendix
+       <a class="sec" href="#sec-36">
+        B
+       </a>
+       .
+      </p>
+     </section>
+     <section id="sec-36">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          B
+         </span>
+         FAITHFULNESS OF STATE ABSTRACTION
+        </h2>
+       </div>
+      </header>
+      <div class="table-responsive" id="tab2">
+       <div class="table-caption">
+        <span class="table-number">
+         Table B1:
+        </span>
+        <span class="table-title">
+         Quantitative comparison between the abstraction model predictions to the original RNN's predictions.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+          </td>
+          <td style="text-align:center;">
+           Prediction consistency on training set
+          </td>
+          <td>
+           Prediction consistency on test set
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Toxic
+          </td>
+          <td style="text-align:center;">
+           99.88%
+          </td>
+          <td>
+           99.88%
+          </td>
+         </tr>
+         <tr>
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           Quora
+          </td>
+          <td style="text-align:center;">
+           97.30%
+          </td>
+          <td>
+           97.04%
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:center;border-right: 2pt solid #000000;">
+           AGNews
+          </td>
+          <td style="text-align:center;">
+           86.28%
+          </td>
+          <td>
+           85.59%
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p>
+       In this section, we show that the abstracted model (i.e., the finite state machine) can make consistent predictions as the original RNN model in three different tasks, one from the usage scenario (Section
+       <a class="sec" href="#sec-17">
+        6
+       </a>
+       ) and the other two from the user study (Section
+       <a class="sec" href="#sec-22">
+        7.2
+       </a>
+       ). We measure the prediction consistency between the finite state machine and the original RNN. Suppose the dataset is
+       <em>
+        X
+       </em>
+       = {
+       <em>
+        x
+       </em>
+       <sub>
+        1
+       </sub>
+       ,
+       <em>
+        x
+       </em>
+       <sub>
+        2
+       </sub>
+       , …,
+       <em>
+        x
+        <sub>
+         N
+        </sub>
+       </em>
+       }, the abstracted model is
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {F}$
+        </span>
+       </span>
+       , and the RNN model is
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {R}$
+        </span>
+       </span>
+       . The prediction consistency can be calculated through Eq.
+       <a class="eqn" href="#eq2">
+        2
+       </a>
+       .
+      </p>
+      <div class="table-responsive" id="eq2">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation} prediction\_consistency=\frac{\sum _{i=1}^N \mathcal {F}(x_i)==R(x_i)}{N} \end{equation}
+        </span>
+        <br/>
+        <span class="equation-number">
+         (2)
+        </span>
+       </div>
+      </div>
+      <p>
+      </p>
+      <p>
+       Table
+       <a class="tbl" href="#tab2">
+        B1
+       </a>
+       shows the prediction consistency of the two models in each task on the training and test data separately. We can see that for the binary classification models (Toxic and Quora), the abstraction models can provide highly consistent predictions (consistency is 99% and 97%) compared with the original RNN models on both training and test data. For the multi-classification model (AGNews), the abstraction model can still provide very consistent predictions (consistency is 86%). These results demonstrate the faithfulness of our state abstraction technique.
+      </p>
+     </section>
+     <section id="sec-37">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          C
+         </span>
+         NUMBER OF ABSTRACTED STATES
+        </h2>
+       </div>
+      </header>
+      <figure id="fig13">
+       <img alt="Figure C1" aria-describedby="fig014" class="img-responsive" src="3580852_files\chi23188fig13.jpg"/>
+       <p id="fig014" style="display:none">
+        This figure shows the prediction consistency w.r.t the different number of states on three different tasks (Toxic, Quora, and AGNews). It can be seen that when the number of states is smaller than 40, the prediction consistency is low. However, when the number of states is larger than 40, there is not much improvement in prediction consistency.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure C1:
+        </span>
+        <span class="figure-title">
+         Prediction consistency w.r.t. the number of states of all three RNN models’ abstracted models.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       During our user study, we set the number of abstracted states to 40. This number is empirically decided to achieve a good balance between the prediction consistency to the original RNN and the cognitive effort of inspecting a state diagram. To further show that this setting will not affect the abstraction model's faithfulness, we report the abstracted models’ prediction consistency w.r.t. the number of states of all three models in Fig.
+       <a class="fig" href="#fig13">
+        C1
+       </a>
+       .
+      </p>
+      <p>
+       As we can see, a lower number of states will lead to a lower prediction consistency. However, when the number of states is larger than 40, the prediction consistency stays largely the same. Therefore, we choose this number of states, 40, throughout our motivating example and user study.
+      </p>
+     </section>
+     <section id="sec-38">
+      <header>
+       <div class="title-info">
+        <h2>
+         <span class="section-number">
+          D
+         </span>
+         ML TASKS
+        </h2>
+       </div>
+      </header>
+      <section id="sec-39">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           D.1
+          </span>
+          ML Task 1: Sentimental Analysis (Quora dataset)
+         </h3>
+        </div>
+       </header>
+       <p>
+        <strong>
+         Task Description:
+        </strong>
+       </p>
+       <p>
+        In this task, participants were given an RNN model trained on the Quora dataset.
+       </p>
+       <p>
+        Quora dataset is collected from quora.com, where each text in the dataset is labeled as “Sincere” or “Insincere”. An insincere question is defined as a question intended to make a statement rather than look for helpful answers.
+       </p>
+       <p>
+        Participants first used the tool to understand the model. They were asked to use the tool to explore the model's behaviours and performance on training data and test data. After exploring, participants were asked to share their findings, e.g., Did they find any insights? Did they find any bugs? How would they improve this model?
+       </p>
+       <p>
+        Then participants were given 5 misclassified sentences. Participants had 10 minutes in total to finish the following task: for each sentence, participants needed to find out why this sentence is misclassified with the help of DeepSeer.
+       </p>
+       <figure id="fig14">
+        <img alt="Figure D2" aria-describedby="fig015" class="img-responsive" src="3580852_files\chi23188fig14.jpg"/>
+        <p id="fig015" style="display:none">
+         This figure displays the interface of DeepSeer on Quora dataset.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure D2:
+         </span>
+         <span class="figure-title">
+          The interface of
+          <font style="font-variant: small-caps">
+           DeepSeer
+          </font>
+          used for ML task 1 (Quora dataset).
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+      </section>
+      <section id="sec-40">
+       <header>
+        <div class="title-info">
+         <h3>
+          <span class="section-number">
+           D.2
+          </span>
+          ML Task 2: Topic Classification (AGNews dataset)
+         </h3>
+        </div>
+       </header>
+       <p>
+        <strong>
+         Task Description:
+        </strong>
+       </p>
+       <p>
+        In this task, participants were given an RNN model trained on the AGNews dataset.
+       </p>
+       <p>
+        AGNews dataset is a collection of news articles. This RNN model classifies each text into different topics, including World, Sports, Business, and Sci/Tech.
+       </p>
+       <p>
+        Participants first used the tool to understand the model. They were asked to use the tool to explore the model's behaviours, and performance on training data and test data. After exploring, participants were asked to share their findings, e.g., Did they find any insights? Did they find any bugs? How would they improve this model?
+       </p>
+       <p>
+        Then participants were given 5 misclassified sentences. Participants had 10 minutes in total to finish the following task: for each sentence, participants needed to find out why this sentence is misclassified with the help of DeepSeer.
+       </p>
+       <figure id="fig15">
+        <img alt="Figure D3" aria-describedby="fig016" class="img-responsive" src="3580852_files\chi23188fig15.jpg"/>
+        <p id="fig016" style="display:none">
+         This figure displays the interface of DeepSeer on AGNews dataset.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure D3:
+         </span>
+         <span class="figure-title">
+          The interface of
+          <font style="font-variant: small-caps">
+           DeepSeer
+          </font>
+          used for ML task 2 (AGNews dataset).
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+      </section>
+     </section>
+    </appendix>
+    <section id="ref-001">
+     <header>
+      <div class="title-info">
+       <h2 class="page-brake-head">
+        REFERENCES
+       </h2>
+      </div>
+     </header>
+     <ul class="bibUl">
+      <li id="BibPLXBIB0001" label="[1]">
+       Martín Abadi, Ashish Agarwal, Paul Barham, Eugene Brevdo, Zhifeng Chen, Craig Citro, Greg S. Corrado, Andy Davis, Jeffrey Dean, Matthieu Devin, Sanjay Ghemawat, Ian Goodfellow, Andrew Harp, Geoffrey Irving, Michael Isard, Yangqing Jia, Rafal Jozefowicz, Lukasz Kaiser, Manjunath Kudlur, Josh Levenberg, Dandelion Mané, Rajat Monga, Sherry Moore, Derek Murray, Chris Olah, Mike Schuster, Jonathon Shlens, Benoit Steiner, Ilya Sutskever, Kunal Talwar, Paul Tucker, Vincent Vanhoucke, Vijay Vasudevan, Fernanda Viégas, Oriol Vinyals, Pete Warden, Martin Wattenberg, Martin Wicke, Yuan Yu, and Xiaoqiang Zheng. 2015. TensorFlow: Large-Scale Machine Learning on Heterogeneous Systems.
+       <a class="link-inline force-break" href="https://www.tensorflow.org/">
+        https://www.tensorflow.org/
+       </a>
+       Software available from tensorflow.org.
+      </li>
+      <li id="BibPLXBIB0002" label="[2]">
+       Amina Adadi and Mohammed Berrada. 2018. Peeking inside the black-box: a survey on explainable artificial intelligence (XAI).
+       <em>
+        <em>
+         IEEE access
+        </em>
+       </em>
+       6(2018), 52138–52160.
+      </li>
+      <li id="BibPLXBIB0003" label="[3]">
+       Julius Adebayo, Michael Muelly, Ilaria Liccardi, and Been Kim. 2020. Debugging Tests for Model Explanations.
+       <em>
+        <em>
+         Advances in Neural Information Processing Systems
+        </em>
+       </em>
+       33 (2020), 700–712.
+      </li>
+      <li id="BibPLXBIB0004" label="[4]">
+       Saleema Amershi, Max Chickering, Steven M Drucker, Bongshin Lee, Patrice Simard, and Jina Suh. 2015. Modeltracker: Redesigning performance analysis tools for machine learning. In
+       <em>
+        Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+       </em>
+       . 337–346.
+      </li>
+      <li id="BibPLXBIB0005" label="[5]">
+       Saleema Amershi, Dan Weld, Mihaela Vorvoreanu, Adam Fourney, Besmira Nushi, Penny Collisson, Jina Suh, Shamsi Iqbal, Paul N Bennett, Kori Inkpen,
+       <em>
+        et al.
+       </em>
+       2019. Guidelines for human-AI interaction. In
+       <em>
+        Proceedings of the 2019 chi conference on human factors in computing systems
+       </em>
+       . 1–13.
+      </li>
+      <li id="BibPLXBIB0006" label="[6]">
+       Alejandro Barredo Arrieta, Natalia Díaz-Rodríguez, Javier Del Ser, Adrien Bennetot, Siham Tabik, Alberto Barbado, Salvador García, Sergio Gil-López, Daniel Molina, Richard Benjamins,
+       <em>
+        et al.
+       </em>
+       2020. Explainable Artificial Intelligence (XAI): Concepts, taxonomies, opportunities and challenges toward responsible AI.
+       <em>
+        <em>
+         Information Fusion
+        </em>
+       </em>
+       58(2020), 82–115.
+      </li>
+      <li id="BibPLXBIB0007" label="[7]">
+       Elnaz Barshan, Marc-Etienne Brunet, and Gintare Karolina Dziugaite. 2020. Relatif: Identifying explanatory training samples via relative influence. In
+       <em>
+        International Conference on Artificial Intelligence and Statistics
+       </em>
+       . PMLR, 1899–1909.
+      </li>
+      <li id="BibPLXBIB0008" label="[8]">
+       David Bau, Bolei Zhou, Aditya Khosla, Aude Oliva, and Antonio Torralba. 2017. Network dissection: Quantifying interpretability of deep visual representations. In
+       <em>
+        Proceedings of the IEEE conference on computer vision and pattern recognition
+       </em>
+       . 6541–6549.
+      </li>
+      <li id="BibPLXBIB0009" label="[9]">
+       Tom Bocklisch, Joey Faulkner, Nick Pawlowski, and Alan Nichol. 2017. Rasa: Open source language understanding and dialogue management.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1712.05181">
+          1712.05181
+         </a>
+        </em>
+       </em>
+       (2017).
+      </li>
+      <li id="BibPLXBIB0010" label="[10]">
+       Markus Bögl, Wolfgang Aigner, Peter Filzmoser, Tim Lammarsch, Silvia Miksch, and Alexander Rind. 2013. Visual analytics for model selection in time series analysis.
+       <em>
+        <em>
+         IEEE transactions on visualization and computer graphics
+        </em>
+       </em>
+       19, 12(2013), 2237–2246.
+      </li>
+      <li id="BibPLXBIB0011" label="[11]">
+       Carrie J Cai, Jonas Jongejan, and Jess Holbrook. 2019. The effects of example-based explanations in a machine learning interface. In
+       <em>
+        Proceedings of the 24th international conference on intelligent user interfaces
+       </em>
+       . 258–262.
+      </li>
+      <li id="BibPLXBIB0012" label="[12]">
+       Kyunghyun Cho, Bart van Merriënboer, Dzmitry Bahdanau, and Yoshua Bengio. 2014. On the Properties of Neural Machine Translation: Encoder–Decoder Approaches. In
+       <em>
+        Proceedings of SSST-8, Eighth Workshop on Syntax, Semantics and Structure in Statistical Translation
+       </em>
+       . 103–111.
+      </li>
+      <li id="BibPLXBIB0013" label="[13]">
+       Arun Das and Paul Rad. 2020. Opportunities and challenges in explainable artificial intelligence (xai): A survey.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/2006.11371">
+          2006.11371
+         </a>
+        </em>
+       </em>
+       (2020).
+      </li>
+      <li id="BibPLXBIB0014" label="[14]">
+       Jonathan Dodge, Q Vera Liao, Yunfeng Zhang, Rachel KE Bellamy, and Casey Dugan. 2019. Explaining models: an empirical study of how explanations impact fairness judgment. In
+       <em>
+        Proceedings of the 24th international conference on intelligent user interfaces
+       </em>
+       . 275–285.
+      </li>
+      <li id="BibPLXBIB0015" label="[15]">
+       Xiaoning Du, Yi Li, Xiaofei Xie, Lei Ma, Yang Liu, and Jianjun Zhao. 2020. Marble: Model-based robustness analysis of stateful deep learning systems. In
+       <em>
+        Proceedings of the 35th IEEE/ACM International Conference on Automated Software Engineering
+       </em>
+       . 423–435.
+      </li>
+      <li id="BibPLXBIB0016" label="[16]">
+       Xiaoning Du, Xiaofei Xie, Yi Li, Lei Ma, Yang Liu, and Jianjun Zhao. 2019. Deepstellar: Model-based quantitative analysis of stateful deep learning systems. In
+       <em>
+        Proceedings of the 2019 27th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering
+       </em>
+       . 477–487.
+      </li>
+      <li id="BibPLXBIB0017" label="[17]">
+       Mary T Dzindolet, Scott A Peterson, Regina A Pomranky, Linda G Pierce, and Hall P Beck. 2003. The role of trust in automation reliance.
+       <em>
+        <em>
+         International journal of human-computer studies
+        </em>
+       </em>
+       58, 6 (2003), 697–718.
+      </li>
+      <li id="BibPLXBIB0018" label="[18]">
+       Jeffrey L Elman. 1990. Finding structure in time.
+       <em>
+        <em>
+         Cognitive science
+        </em>
+       </em>
+       14, 2 (1990), 179–211.
+      </li>
+      <li id="BibPLXBIB0019" label="[19]">
+       Philippe Fournier-Viger, Antonio Gomariz, Ted Gueniche, Espérance Mwamikazi, and Rincy Thomas. 2013. TKS: efficient mining of top-k sequential patterns. In
+       <em>
+        International Conference on Advanced Data Mining and Applications
+       </em>
+       . Springer, 109–120.
+      </li>
+      <li id="BibPLXBIB0020" label="[20]">
+       Antonio Gulli. 2005. AG's corpus of news articles.
+       <a class="link-inline force-break" href="http://groups.di.unipi.it/ gulli/AG_corpus_of_news_articles.html">
+        http://groups.di.unipi.it/ gulli/AG_corpus_of_news_articles.html
+       </a>
+      </li>
+      <li id="BibPLXBIB0021" label="[21]">
+       Sandra G Hart and Lowell E Staveland. 1988. Development of NASA-TLX (Task Load Index): Results of empirical and theoretical research. In
+       <em>
+        Advances in psychology
+       </em>
+       . Vol. 52. Elsevier, 139–183.
+      </li>
+      <li id="BibPLXBIB0022" label="[22]">
+       Jonathan L Herlocker, Joseph A Konstan, and John Riedl. 2000. Explaining collaborative filtering recommendations. In
+       <em>
+        Proceedings of the 2000 ACM conference on Computer supported cooperative work
+       </em>
+       . 241–250.
+      </li>
+      <li id="BibPLXBIB0023" label="[23]">
+       Sepp Hochreiter and Jürgen Schmidhuber. 1997. Long short-term memory.
+       <em>
+        <em>
+         Neural computation
+        </em>
+       </em>
+       9, 8 (1997), 1735–1780.
+      </li>
+      <li id="BibPLXBIB0024" label="[24]">
+       Fred Hohman, Andrew Head, Rich Caruana, Robert DeLine, and Steven M Drucker. 2019. Gamut: A design probe to understand how data scientists understand machine learning models. In
+       <em>
+        Proceedings of the 2019 CHI conference on human factors in computing systems
+       </em>
+       . 1–13.
+      </li>
+      <li id="BibPLXBIB0025" label="[25]">
+       Zhihua Jin, Yong Wang, Qianwen Wang, Yao Ming, Tengfei Ma, and Huamin Qu. 2022. Gnnlens: A visual analytics approach for prediction error diagnosis of graph neural networks.
+       <em>
+        <em>
+         IEEE Transactions on Visualization and Computer Graphics
+        </em>
+       </em>
+       (2022).
+      </li>
+      <li id="BibPLXBIB0026" label="[26]">
+       Minsuk Kahng, Pierre Y Andrews, Aditya Kalro, and Duen Horng Chau. 2017. Activis: Visual exploration of industry-scale deep neural network models.
+       <em>
+        <em>
+         IEEE transactions on visualization and computer graphics
+        </em>
+       </em>
+       24, 1(2017), 88–97.
+      </li>
+      <li id="BibPLXBIB0027" label="[27]">
+       Andrej Karpathy, Justin Johnson, and Li Fei-Fei. 2015. Visualizing and understanding recurrent networks.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1506.02078">
+          1506.02078
+         </a>
+        </em>
+       </em>
+       (2015).
+      </li>
+      <li id="BibPLXBIB0028" label="[28]">
+       Harmanpreet Kaur, Harsha Nori, Samuel Jenkins, Rich Caruana, Hanna Wallach, and Jennifer Wortman Vaughan. 2020. Interpreting Interpretability: Understanding Data Scientists’ Use of Interpretability Tools for Machine Learning. In
+       <em>
+        Proceedings of the 2020 CHI Conference on Human Factors in Computing Systems
+       </em>
+       . 1–14.
+      </li>
+      <li id="BibPLXBIB0029" label="[29]">
+       Been Kim, Martin Wattenberg, Justin Gilmer, Carrie Cai, James Wexler, Fernanda Viegas,
+       <em>
+        et al.
+       </em>
+       2018. Interpretability beyond feature attribution: Quantitative testing with concept activation vectors (tcav). In
+       <em>
+        International conference on machine learning
+       </em>
+       . PMLR, 2668–2677.
+      </li>
+      <li id="BibPLXBIB0030" label="[30]">
+       René F Kizilcec. 2016. How much information? Effects of transparency on trust in an algorithmic interface. In
+       <em>
+        Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+       </em>
+       . 2390–2395.
+      </li>
+      <li id="BibPLXBIB0031" label="[31]">
+       Pang Wei Koh, Kai-Siang Ang, Hubert H. K. Teo, and Percy Liang. 2019. On the Accuracy of Influence Functions for Measuring Group Effects. In
+       <em>
+        Advances in Neural Information Processing Systems 32 (2019)
+       </em>
+       . 5255–5265.
+      </li>
+      <li id="BibPLXBIB0032" label="[32]">
+       Pang Wei Koh and Percy Liang. 2017. Understanding black-box predictions via influence functions. In
+       <em>
+        International Conference on Machine Learning
+       </em>
+       . PMLR, 1885–1894.
+      </li>
+      <li id="BibPLXBIB0033" label="[33]">
+       Jiwei Li, Xinlei Chen, Eduard Hovy, and Dan Jurafsky. 2016. Visualizing and Understanding Neural Models in NLP. In
+       <em>
+        Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies
+       </em>
+       . 681–691.
+      </li>
+      <li id="BibPLXBIB0034" label="[34]">
+       Rongjian Li, Wenlu Zhang, Heung-Il Suk, Li Wang, Jiang Li, Dinggang Shen, and Shuiwang Ji. 2014. Deep learning based imaging data completion for improved brain disease diagnosis. In
+       <em>
+        International conference on medical image computing and computer-assisted intervention
+       </em>
+       . Springer, 305–312.
+      </li>
+      <li id="BibPLXBIB0035" label="[35]">
+       Q Vera Liao, Daniel Gruen, and Sarah Miller. 2020. Questioning the AI: informing design practices for explainable AI user experiences. In
+       <em>
+        Proceedings of the 2020 CHI Conference on Human Factors in Computing Systems
+       </em>
+       . 1–15.
+      </li>
+      <li id="BibPLXBIB0036" label="[36]">
+       Zachary C Lipton. 2018. The Mythos of Model Interpretability: In machine learning, the concept of interpretability is both important and slippery.
+       <em>
+        <em>
+         Queue
+        </em>
+       </em>
+       16, 3 (2018), 31–57.
+      </li>
+      <li id="BibPLXBIB0037" label="[37]">
+       Gang Liu and Jiabao Guo. 2019. Bidirectional LSTM with attention mechanism and convolutional layer for text classification.
+       <em>
+        <em>
+         Neurocomputing
+        </em>
+       </em>
+       337(2019), 325–338.
+      </li>
+      <li id="BibPLXBIB0038" label="[38]">
+       Shusen Liu, Zhimin Li, Tao Li, Vivek Srikumar, Valerio Pascucci, and Peer-Timo Bremer. 2018. Nlize: A perturbation-driven visual interrogation tool for analyzing and interpreting natural language inference models.
+       <em>
+        <em>
+         IEEE transactions on visualization and computer graphics
+        </em>
+       </em>
+       25, 1(2018), 651–660.
+      </li>
+      <li id="BibPLXBIB0039" label="[39]">
+       Scott M Lundberg and Su-In Lee. 2017. A Unified Approach to Interpreting Model Predictions. In
+       <em>
+        Advances in Neural Information Processing Systems 30
+       </em>
+       , I. Guyon, U. V. Luxburg, S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and R. Garnett (Eds.). Curran Associates, Inc., 4765–4774.
+       <a class="link-inline force-break" href="http://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions.pdf">
+        http://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions.pdf
+       </a>
+      </li>
+      <li id="BibPLXBIB0040" label="[40]">
+       Shiqing Ma, Yousra Aafer, Zhaogui Xu, Wen-Chuan Lee, Juan Zhai, Yingqi Liu, and Xiangyu Zhang. 2017. LAMP: data provenance for graph based machine learning algorithms through derivative computation. In
+       <em>
+        Proceedings of the 2017 11th Joint Meeting on Foundations of Software Engineering
+       </em>
+       . 786–797.
+      </li>
+      <li id="BibPLXBIB0041" label="[41]">
+       Shiqing Ma, Yingqi Liu, Wen-Chuan Lee, Xiangyu Zhang, and Ananth Grama. 2018. MODE: automated neural network model debugging via state differential analysis and input selection. In
+       <em>
+        Proceedings of the 2018 26th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering
+       </em>
+       . 175–186.
+      </li>
+      <li id="BibPLXBIB0042" label="[42]">
+       Geoffrey J McLachlan and Kaye E Basford. 1988.
+       <em>
+        Mixture models: Inference and applications to clustering
+       </em>
+       . Vol. 38. M. Dekker New York.
+      </li>
+      <li id="BibPLXBIB0043" label="[43]">
+       Yao Ming, Shaozu Cao, Ruixiang Zhang, Zhen Li, Yuanzhe Chen, Yangqiu Song, and Huamin Qu. 2017. Understanding hidden memories of recurrent neural networks. In
+       <em>
+        2017 IEEE Conference on Visual Analytics Science and Technology (VAST)
+       </em>
+       . IEEE, 13–24.
+      </li>
+      <li id="BibPLXBIB0044" label="[44]">
+       Christoph Molnar. 2020.
+       <em>
+        Interpretable machine learning
+       </em>
+       . Lulu. com.
+      </li>
+      <li id="BibPLXBIB0045" label="[45]">
+       Grégoire Montavon, Wojciech Samek, and Klaus-Robert Müller. 2018. Methods for interpreting and understanding deep neural networks.
+       <em>
+        <em>
+         Digital Signal Processing
+        </em>
+       </em>
+       73 (2018), 1–15.
+      </li>
+      <li id="BibPLXBIB0046" label="[46]">
+       Sugeerth Murugesan, Sana Malik, Fan Du, Eunyee Koh, and Tuan Manh Lai. 2019. Deepcompare: Visual and interactive comparison of deep learning model performance.
+       <em>
+        <em>
+         IEEE computer graphics and applications
+        </em>
+       </em>
+       39, 5 (2019), 47–59.
+      </li>
+      <li id="BibPLXBIB0047" label="[47]">
+       Takamasa Okudono, Masaki Waga, Taro Sekiyama, and Ichiro Hasuo. 2020. Weighted automata extraction from recurrent neural networks via regression on state spaces. In
+       <em>
+        Proceedings of the AAAI Conference on Artificial Intelligence
+       </em>
+       , Vol. 34. 5306–5314.
+      </li>
+      <li id="BibPLXBIB0048" label="[48]">
+       Chris Olah, Arvind Satyanarayan, Ian Johnson, Shan Carter, Ludwig Schubert, Katherine Ye, and Alexander Mordvintsev. 2018. The building blocks of interpretability.
+       <em>
+        <em>
+         Distill
+        </em>
+       </em>
+       3, 3 (2018), e10.
+      </li>
+      <li id="BibPLXBIB0049" label="[49]">
+       Zi Peng, Jinqiu Yang, Tse-Hsun Chen, and Lei Ma. 2020. A first look at the integration of machine learning models in complex autonomous driving systems: A case study on apollo. In
+       <em>
+        Proceedings of the 28th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering
+       </em>
+       . 1240–1250.
+      </li>
+      <li id="BibPLXBIB0050" label="[50]">
+       Quora. 2019. Quora insincere questions classification.
+       <a class="link-inline force-break" href="https://www.kaggle.com/c/quora-insincere-questions-classification/data">
+        https://www.kaggle.com/c/quora-insincere-questions-classification/data
+       </a>
+      </li>
+      <li id="BibPLXBIB0051" label="[51]">
+       Guillaume Rabusseau, Tianyu Li, and Doina Precup. 2019. Connecting weighted automata and recurrent neural networks through spectral learning. In
+       <em>
+        The 22nd International Conference on Artificial Intelligence and Statistics
+       </em>
+       . PMLR, 1630–1639.
+      </li>
+      <li id="BibPLXBIB0052" label="[52]">
+       Amir Hossein Akhavan Rahnama and Henrik Boström. 2019. A study of data and label shift in the LIME framework.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1910.14421">
+          1910.14421
+         </a>
+        </em>
+       </em>
+       (2019).
+      </li>
+      <li id="BibPLXBIB0053" label="[53]">
+       Marco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. 2016. " Why should i trust you?" Explaining the predictions of any classifier. In
+       <em>
+        Proceedings of the 22nd ACM SIGKDD international conference on knowledge discovery and data mining
+       </em>
+       . 1135–1144.
+      </li>
+      <li id="BibPLXBIB0054" label="[54]">
+       Marco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. 2018. Anchors: High-precision model-agnostic explanations. In
+       <em>
+        Proceedings of the AAAI conference on artificial intelligence
+       </em>
+       , Vol. 32.
+      </li>
+      <li id="BibPLXBIB0055" label="[55]">
+       Tobias Schneider, Joana Hois, Alischa Rosenstein, Sabiha Ghellal, Dimitra Theofanou-Fülbier, and Ansgar RS Gerlicher. 2021. ExplAIn Yourself! Transparency for Positive UX in Autonomous Driving. In
+       <em>
+        Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems
+       </em>
+       . 1–12.
+      </li>
+      <li id="BibPLXBIB0056" label="[56]">
+       Ramprasaath R Selvaraju, Michael Cogswell, Abhishek Das, Ramakrishna Vedantam, Devi Pariah, and Dhruv Batra. 2017. Grad-cam: Visual explanations from deep networks via gradient-based localization. In
+       <em>
+        Proceedings of the IEEE international conference on computer vision
+       </em>
+       . 618–626.
+      </li>
+      <li id="BibPLXBIB0057" label="[57]">
+       Karen Simonyan, Andrea Vedaldi, and Andrew Zisserman. 2013. Deep inside convolutional networks: Visualising image classification models and saliency maps.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1312.6034">
+          1312.6034
+         </a>
+        </em>
+       </em>
+       (2013).
+      </li>
+      <li id="BibPLXBIB0058" label="[58]">
+       Daniel Smilkov, Nikhil Thorat, Been Kim, Fernanda Viégas, and Martin Wattenberg. 2017. Smoothgrad: removing noise by adding noise.
+       <em>
+        <em>
+         arXiv preprint arXiv:
+         <a class="link-inline force-break" href="https://arXiv.org/abs/1706.03825">
+          1706.03825
+         </a>
+        </em>
+       </em>
+       (2017).
+      </li>
+      <li id="BibPLXBIB0059" label="[59]">
+       Hendrik Strobelt, Sebastian Gehrmann, Hanspeter Pfister, and Alexander M Rush. 2017. Lstmvis: A tool for visual analysis of hidden state dynamics in recurrent neural networks.
+       <em>
+        <em>
+         IEEE transactions on visualization and computer graphics
+        </em>
+       </em>
+       24, 1(2017), 667–676.
+      </li>
+      <li id="BibPLXBIB0060" label="[60]">
+       Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. 2017. Attention is all you need.
+       <em>
+        <em>
+         Advances in neural information processing systems
+        </em>
+       </em>
+       30 (2017).
+      </li>
+      <li id="BibPLXBIB0061" label="[61]">
+       Gail Weiss, Yoav Goldberg, and Eran Yahav. 2018. Extracting automata from recurrent neural networks using queries and counterexamples. In
+       <em>
+        International Conference on Machine Learning
+       </em>
+       . PMLR, 5247–5256.
+      </li>
+      <li id="BibPLXBIB0062" label="[62]">
+       Xiaofei Xie, Wenbo Guo, Lei Ma, Wei Le, Jian Wang, Lingjun Zhou, Yang Liu, and Xinyu Xing. 2021. RNNrepair: Automatic RNN repair via model-based analysis. In
+       <em>
+        International Conference on Machine Learning
+       </em>
+       . PMLR, 11383–11392.
+      </li>
+      <li id="BibPLXBIB0063" label="[63]">
+       Bing Yu, Hua Qi, Qing Guo, Felix Juefei-Xu, Xiaofei Xie, Lei Ma, and Jianjun Zhao. 2022. DeepRepair: Style-Guided Repairing for Deep Neural Networks in the Real-World Operational Environment.
+       <em>
+        <em>
+         IEEE Transactions on Reliability
+        </em>
+       </em>
+       71, 4 (2022), 1401–1416.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/TR.2021.3096332">
+        https://doi.org/10.1109/TR.2021.3096332
+       </a>
+      </li>
+      <li id="BibPLXBIB0064" label="[64]">
+       Matthew D Zeiler and Rob Fergus. 2014. Visualizing and understanding convolutional networks. In
+       <em>
+        European conference on computer vision
+       </em>
+       . Springer, 818–833.
+      </li>
+      <li id="BibPLXBIB0065" label="[65]">
+       Xiang Zhang, Junbo Zhao, and Yann LeCun. 2015. Character-level convolutional networks for text classification.
+       <em>
+        <em>
+         Advances in neural information processing systems
+        </em>
+       </em>
+       28 (2015).
+      </li>
+     </ul>
+    </section>
+   </section>
+   <section class="footnote" id="foot-001">
+    <header>
+     <div class="title-info">
+      <h2>
+       FOOTNOTE
+      </h2>
+     </div>
+    </header>
+    <p id="fn1">
+     <a href="#foot-fn1">
+      <sup>
+       1
+      </sup>
+     </a>
+     <a class="link-inline force-break" href="https://github.com/momentum-lab-workspace/DeepSeer">
+      https://github.com/momentum-lab-workspace/DeepSeer
+     </a>
+    </p>
+    <p id="fn2">
+     <a href="#foot-fn2">
+      <sup>
+       2
+      </sup>
+     </a>
+     <a class="link-inline force-break" href="https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification">
+      https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification
+     </a>
+    </p>
+    <p id="fn3">
+     <a href="#foot-fn3">
+      <sup>
+       3
+      </sup>
+     </a>
+     This single word, “hypocrisy”, is associated with a sequence of three states, since it is tokenized into three tokens (hypo-, -cri-, -sy) in the training set, each of which is bound to one state. Such a tokenization mechanism is widely used in NLP to address out-of-vocabulary issues.
+    </p>
+    <p id="fn4">
+     <a href="#foot-fn4">
+      <sup>
+       4
+      </sup>
+     </a>
+     <a class="link-inline force-break" href="https://github.com/marcotcr/lime">
+      https://github.com/marcotcr/lime
+     </a>
+    </p>
+    <p id="fn5">
+     <a href="#foot-fn5">
+      <sup>
+       5
+      </sup>
+     </a>
+     <a class="link-inline force-break" href="https://pepy.tech/project/lime">
+      https://pepy.tech/project/lime
+     </a>
+    </p>
+    <p id="fn6">
+     <a href="#foot-fn6">
+      <sup>
+       6
+      </sup>
+     </a>
+     This human-participated study is approved by the university's research ethics office.
+    </p>
+    <div class="bibStrip">
+     <p>
+      Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+      <a href="mailto:permissions@acm.org">
+       permissions@acm.org
+      </a>
+      .
+     </p>
+     <p>
+      <em>
+       CHI '23, April 23–28, 2023, Hamburg, Germany
+      </em>
+     </p>
+     <p>
+      © 2023 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+      <br/>
+      ACM ISBN 978-1-4503-9421-5/23/04…$15.00.
+      <br/>
+      DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3580852" target="_blank">
+       https://doi.org/10.1145/3544548.3580852
+      </a>
+     </p>
+    </div>
+   </section>
+  </main>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'86a078fe0be4373f',t:'MTcxMTM4NjE4OC44NzQwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

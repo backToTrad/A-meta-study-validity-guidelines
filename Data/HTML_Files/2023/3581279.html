@@ -1,0 +1,4394 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   WordGesture-GAN: Modeling Word-Gesture Movement with Generative Adversarial Network
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3581279_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3581279_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3581279_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3581279_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3581279_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3581279_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3581279_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3581279_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <main>
+   <section class="front-matter">
+    <section>
+     <header class="title-info">
+      <div class="journal-title">
+       <h1>
+        <span class="title">
+         WordGesture-GAN: Modeling Word-Gesture Movement with Generative Adversarial Network
+        </span>
+        <br/>
+        <span class="subTitle">
+        </span>
+       </h1>
+      </div>
+     </header>
+     <div class="authorGroup">
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-0173-2153" ref="author">
+        <span class="givenName">
+         Jeremy
+        </span>
+        <span class="surName">
+         Chu
+        </span>
+       </a>
+       , Department of Computer Science, Stony Brook University, United States,
+       <a href="mailto:jerchu@cs.stonybrook.edu">
+        jerchu@cs.stonybrook.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-6765-2578" ref="author">
+        <span class="givenName">
+         Dongsheng
+        </span>
+        <span class="surName">
+         An
+        </span>
+       </a>
+       , Department of Computer Science, Stony Brook University, United States,
+       <a href="mailto:doan@cs.stonybrook.edu">
+        doan@cs.stonybrook.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-8264-3103" ref="author">
+        <span class="givenName">
+         Yan
+        </span>
+        <span class="surName">
+         Ma
+        </span>
+       </a>
+       , Computer Science Department, Stony Brook University, United States,
+       <a href="mailto:yanma1@cs.stonybrook.edu">
+        yanma1@cs.stonybrook.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-8968-846X" ref="author">
+        <span class="givenName">
+         Wenzhe
+        </span>
+        <span class="surName">
+         Cui
+        </span>
+       </a>
+       , Computer Science, Stony Brook University, United States,
+       <a href="mailto:wenzhe.cui@stonybrook.edu">
+        wenzhe.cui@stonybrook.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0003-0752-2090" ref="author">
+        <span class="givenName">
+         Shumin
+        </span>
+        <span class="surName">
+         Zhai
+        </span>
+       </a>
+       , Google, United States,
+       <a href="mailto:zhai@acm.org">
+        zhai@acm.org
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0001-8226-5851" ref="author">
+        <span class="givenName">
+         Xianfeng David
+        </span>
+        <span class="surName">
+         Gu
+        </span>
+       </a>
+       , Department of Computer Science, Stony Brook University, United States,
+       <a href="mailto:gu@cs.stonybrook.edu">
+        gu@cs.stonybrook.edu
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-9716-7709" ref="author">
+        <span class="givenName">
+         Xiaojun
+        </span>
+        <span class="surName">
+         Bi
+        </span>
+       </a>
+       , Department of Computer Science, Stony Brook University, United States,
+       <a href="mailto:xiaojun@cs.stonybrook.edu">
+        xiaojun@cs.stonybrook.edu
+       </a>
+      </div>
+     </div>
+     <br/>
+     <div class="pubInfo">
+      <p>
+       DOI:
+       <a href="https://doi.org/10.1145/3544548.3581279" target="_blank">
+        https://doi.org/10.1145/3544548.3581279
+       </a>
+       <br/>
+       CHI '23:
+       <a href="https://doi.org/10.1145/3544548" target="_blank">
+        Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems
+       </a>
+       , Hamburg, Germany, April 2023
+      </p>
+     </div>
+     <div class="abstract">
+      <p>
+       <small>
+        Word-gesture production models that can synthesize word-gestures are critical to the training and evaluation of word-gesture keyboard decoders. We propose WordGesture-GAN, a conditional generative adversarial network that takes arbitrary text as input to generate realistic word-gesture movements in both spatial (i.e., (
+        <em>
+         x
+        </em>
+        ,
+        <em>
+         y
+        </em>
+        ) coordinates of touch points) and temporal (i.e., timestamps of touch points) dimensions. WordGesture-GAN introduces a Variational Auto-Encoder to extract and embed variations of user-drawn gestures into a Gaussian distribution which can be sampled to control variation in generated gestures. Our experiments on a dataset with 38k gesture samples show that WordGesture-GAN outperforms existing gesture production models including the minimum jerk model [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+         37
+        </a>
+        ] and the style-transfer GAN [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+         31
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+         32
+        </a>
+        ] in generating realistic gestures. Overall, our research demonstrates that the proposed GAN structure can learn variations in user-drawn gestures, and the resulting WordGesture-GAN can generate word-gesture movement and predict the distribution of gestures. WordGesture-GAN can serve as a valuable tool for designing and evaluating gestural input systems.
+       </small>
+      </p>
+     </div>
+     <div class="CCSconcepts">
+      <ccs2012>
+       <small>
+        <span style="font-weight:bold;">
+         CCS Concepts:
+        </span>
+        •
+        <strong>
+         Human-centered computing
+        </strong>
+        ; •
+        <strong>
+         Computing methodologies → Machine learning
+        </strong>
+        ;
+       </small>
+      </ccs2012>
+     </div>
+     <br/>
+     <div class="classifications">
+      <div class="author">
+       <span style="font-weight:bold;">
+        <small>
+         Keywords:
+        </small>
+       </span>
+       <span class="keyword">
+        <small>
+         Machine Learning; Touch/Haptic/Pointing/Gesture; Mobile Devices: Phones/Tablets; Word-Gesture Input
+        </small>
+       </span>
+      </div>
+      <br/>
+      <div class="AcmReferenceFormat">
+       <p>
+        <small>
+         <span style="font-weight:bold;">
+          ACM Reference Format:
+         </span>
+         <br/>
+         Jeremy Chu, Dongsheng An, Yan Ma, Wenzhe Cui, Shumin Zhai, Xianfeng David Gu, and Xiaojun Bi. 2023. WordGesture-GAN: Modeling Word-Gesture Movement with Generative Adversarial Network. In
+         <em>
+          Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems (CHI '23), April 23–28, 2023, Hamburg, Germany.
+         </em>
+         ACM, New York, NY, USA 15 Pages.
+         <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3581279" target="_blank">
+          https://doi.org/10.1145/3544548.3581279
+         </a>
+        </small>
+       </p>
+      </div>
+     </div>
+    </section>
+   </section>
+   <section class="body">
+    <section id="sec-2">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         1
+        </span>
+        INTRODUCTION
+       </h2>
+      </div>
+     </header>
+     <p>
+      A word-gesture [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ] is a continuous stroke defined on a virtual keyboard connecting letters of a given word. Drawing word-gestures over a virtual keyboard is an important alternative to tap-typing for entering text on mobile devices (variously known as Gesture Typing, Swipe Typing, Glide Typing and Shape Writing). It has been widely adopted on major consumer products including Google's Gboard[
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ], Microsoft's SwiftKey[
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ], and iOS's built-in keyboard.
+     </p>
+     <p>
+      This work aims at advancing the state of the art for generative modelling of human word-gesture production. Models that can describe, predict, and simulate human's interaction with computing systems are foundational to developing interface technologies and HCI as an academic field. Situated in an era of symbolic systems as the dominant form of AI, Card, Moran and Newell [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ] developed a set of HCI models from human information processing psychology (such as Fitts’ law) and rule-based modeling (such as GOMS) that helped to establish HCI as a distinct field of research. The recent rise and development in deep learning may drive another wave of progress in HCI modeling. In this paper we use GAN (Generative Adversarial Network), an increasingly popular and successful approach to deep learning, as a tool to model human gesture-typing behavior.
+     </p>
+     <p>
+      Models play three interrelated roles in HCI. First, as a summary of empirical observations or as application of more general theories, models may provide foundational understanding and insights as a vital part of any scientific field. Second, models may generalize and predict interaction behaviors beyond the scope of what lab tests and field studies reveal. Third, models can be used in the design process of user interfaces.
+     </p>
+     <p>
+      Model building is particularly important for language input technologies such as word-gesture input due to the rich rules and variations in word sequences captured by language models that modern text input systems rely on. Since the invention of this technology [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ], various gesture models have been developed and applied to word-gesture system design and evaluation. For example, modeling a gesture-stroke as a series of connected curves, lines, and corners, and assuming the duration of drawing a word-gesture is the sum of time cost for each aiming movement, Cao and Zhai  [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ] and Rick [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ] proposed various
+      <em>
+       time performance models
+      </em>
+      that can predict the duration of drawing word-gestures. Coupled with optimizers, these models have been used to design and search for keyboard layouts for high-efficiency word-gesture input [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ].
+     </p>
+     <figure id="fig1">
+      <img alt="Figure 1" aria-describedby="fig002" class="img-responsive" src="3581279_files\chi23590fig1.jpg"/>
+      <p id="fig002" style="display:none">
+       Examples on a keyboard of user-drawn gestures and simulated gestures from the Minimum Jerk model, a Style Transfer GAN model, and WG-GAN for the word “place”. Two user-drawn gestures, one simulated gesture each from the Minimum Jerk and Style Transfer GAN models, and two simulated gestures from WG-GAN are shown. The dots on the gestures are equally distanced simulated touch points in time. Higher density regions of dots represent slower movement.
+      </p>
+      <figcaption>
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        Examples of user-drawn (orange) and simulated gestures for the word "place" by our WordGesture-GAN (blue), minimum jerk model (red) [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+         37
+        </a>
+        ], and Style-Transfer GAN (purple) [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+         31
+        </a>
+        ]. Dots represent equally spaced touchpoints in time along the gesture. Segments with higher dot density indicate slower movement. As shown, WordGesture-GAN generates movements in both spatial and temporal dimensions, the Minimum Jerk model generates movements in spatial and
+        <em>
+         relative
+        </em>
+        temporal (i.e., assuming the duration of movement of a unit length) dimensions. The original Style-Transfer GAN [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+         31
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+         32
+        </a>
+        ] generates gestures in the spatial dimension only. We have extended it to both spatial and temporal dimensions (See Section 5.1).
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+     </p>
+     <p>
+      In addition to performance models, production models that can synthesize gesture movements are also critical for gestural input technologies. They can augment the dataset used for the training and evaluation of gesture recognizers (or decoders). For example, Quinn and Zhai [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ] proposed a minimum jerk model which models word-gesture movement on the human-motor control principle of minimization of jerk – the third derivative of position. This model can predict the shape, trajectory, and
+      <em>
+       relative
+      </em>
+      movement dynamic (assuming the duration of movement is of a unit length) of word-gesture inputs.
+     </p>
+     <p>
+      Inspired by the style transfer research in image generation, Mehra et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ] proposed a style-transfer GAN that can synthesize gestures by combining learned drawing styles with user reference input. The gesture input dataset augmented by the synthesized gestures significantly improved the accuracy of training word-gesture decoders [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ].
+     </p>
+     <p>
+      In this paper, we design and implement WordGesture-GAN, a Generative Adversarial Network (GAN) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ] based production model for word-gesture input. WordGesture-GAN introduces a Variational Auto-Encoder to extract and embed the variations of user-drawn gestures into a Gaussian distribution, which can be easily sampled to introduce variations back to generated gestures.
+      <font color="#000000">
+       More specifically, WordGesture-GAN introduces variances into the generated gestures by combining a sampled latent code with the prototype shape for a target word as input to the generator. The prototype shape of a word is a set of straight lines connecting the centers of corresponding keys on a virtual keyboard, and the latent code is sampled from a Gaussian distribution. We added the latent code to the input by repeating it along the length of the prototype shape.
+      </font>
+     </p>
+     <p>
+      WordGesture-GAN has the following advantages compared with existing production models. Compared with the minimum jerk model [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ] which is limited to describe the shape and
+      <em>
+       relative
+      </em>
+      movement dynamic of a gesture, WordGesture-GAN is able to generate complete spatial and temporal information of a gesture, described by a vector of (
+      <em>
+       x
+       <sub>
+        i
+       </sub>
+      </em>
+      ,
+      <em>
+       y
+       <sub>
+        i
+       </sub>
+      </em>
+      ,
+      <em>
+       t
+       <sub>
+        i
+       </sub>
+      </em>
+      ), where
+      <em>
+       x
+       <sub>
+        i
+       </sub>
+      </em>
+      and
+      <em>
+       y
+       <sub>
+        i
+       </sub>
+      </em>
+      are coordinates of a touch point and
+      <em>
+       t
+       <sub>
+        i
+       </sub>
+      </em>
+      is its timestamp (Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      ). The data-driven WordGesture-GAN can potentially capture users’ sub-optimal input such as slips in motor control or mental preparation caused pauses or hesitation in gestural movement, in addition to the optimal trajectories predicted from the minimum jerk theory.
+     </p>
+     <p>
+      The WordGesture-GAN model also has improvements over the previous GAN-based production model, referred as style-transfer GAN [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ]. WordGesture-GAN predicts both spatial and temporal information of gesture movements (i.e., a vector of (
+      <em>
+       x
+       <sub>
+        i
+       </sub>
+      </em>
+      ,
+      <em>
+       y
+       <sub>
+        i
+       </sub>
+      </em>
+      ,
+      <em>
+       t
+       <sub>
+        i
+       </sub>
+      </em>
+      ),) while the original style-transfer GAN predicts the spatial information only (i.e., a vector of (
+      <em>
+       x
+       <sub>
+        i
+       </sub>
+      </em>
+      ,
+      <em>
+       y
+       <sub>
+        i
+       </sub>
+      </em>
+      ),). Additionally, WordGesture-GAN adopted a Variational Auto-Encoder to encode the variation of user-drawn gesture into a Gaussian distribution, making it easy to sample. As a result, WordGesture-GAN does not requires user reference gestures to sample input variation when generating gestures for arbitrary words. It is an improvement over Style-Transfer GAN which requires user-drawn reference gestures as input when generating gestures.
+     </p>
+     <p>
+      Our experiment using a data set of 38k word-gesture inputs shows the advantages of WordGesture-GAN over existing gesture production models [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ]. We re-implemented and trained a minimum jerk model [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ], and extended the original style-transfer GAN with explicit style transfer [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ] to simulate movements in both spatial and temporal dimensions, and compared both models with the proposed WordGesture-GAN. The results showed that the gestures generated by WordGesture-GAN more closely resemble the user-drawn gestures, than the gestures generated by the minimum jerk [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ] and style-transfer GAN models [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ], measured by the
+      <em>
+       L
+      </em>
+      <sub>
+       2
+      </sub>
+      and dynamic time warping Wasserstein distances, the Frecher Inception Distance (FID) scores, and the amount of jerk in gestures. As WordGesture-GAN predicts the timestamps of touch points along a trajectory, it can also predict the distribution of duration of a gesture, serving as a performance model. Overall, our research shows that the proposed conditional GAN structure can learn variations in user-drawn gestures, and contributes a production model (WordGesture-GAN) that can generate both spatial and temporal sequences for word-gesture movement, resemble user-drawn gestures, and predict the performance (duration) of word-gesture input. It can serve as a valuable tool for developing gestural input systems.
+     </p>
+    </section>
+    <section id="sec-3">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         2
+        </span>
+        RELATED WORK
+       </h2>
+      </div>
+     </header>
+     <section id="sec-4">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.1
+         </span>
+         Word-Gesture Input
+        </h3>
+       </div>
+      </header>
+      <p>
+       Since first published in 2003 and 2004, word-gesture input [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+        49
+       </a>
+       ] has been widely adopted as a text entry method by various keyboards, including Google's Gboard [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ], Microsoft's SwiftKey [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+        43
+       </a>
+       ], iOS's built-in keyboard, and TouchPal [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+        17
+       </a>
+       ]. This method allows a user to enter text using finger strokes that approximate the shape of a word defined on a virtual keyboard, supports a gradual transition from visually guided tracing to re-called based input, and is well-suited to touch-based or pen-based input. In the past decade, word-gesture based input has been extended to support two-thumb gestural input [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+        4
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+        44
+       </a>
+       ], eyes-free input [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+        52
+       </a>
+       ], and mid-air input [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ]. Word-gesture input paradigm has also been extended beyond text input. For example, previous research has leveraged word-gesture for command input: a user enters a command by drawing a word-gesture corresponding to the command name [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+        1
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+        23
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+        51
+       </a>
+       ]. Given the wide adoption of word-gesture based input technologies, models that assist the development of word-gesture input technologies are of great interest to the keyboard developers and users. There has been a sizable amount of research in modeling word-gesture input, as described next.
+      </p>
+      <p>
+       Word-gesture keyboard implementations typically use language model predictions, using preceding words as priors to decode ambiguous gesture inputs. User testing with test phrases can only test on a small number of unique phrases. Model-based simulations that cover broader text corpus are therefore necessary complements to lab testing for evaluating the performance (in both speed and precision) of word-gesture input systems.
+      </p>
+     </section>
+     <section id="sec-5">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.2
+         </span>
+         Performance Models
+        </h3>
+       </div>
+      </header>
+      <p>
+       Performance models predict the duration for drawing word-gestures. One common approach of predicting duration is to model the gesture movement as a concatenation of a series of aimed movements, and assume the duration is the sum of time cost for these movements. One performance model created using this assumption is the Curves, Lines, and Corners (CLC) model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+        6
+       </a>
+       ], which assumes that the duration is a sum of time costs for drawing straight lines, curves, and corners in the word-gesture. It uses basic action laws to predict the time cost for each of the three elements and adds the time costs up to approximate the duration of drawing a word gesture. Another performance model uses Fitts’ law to predict the time cost of moving a finger or pen between consecutive keys, and adds the time costs up for drawing a word-gesture [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+        39
+       </a>
+       ]. Both of these models have shown initial success in predicting the duration of drawing word-gestures, and have been adopted to design keyboard layouts for word-gesture input [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+        39
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+        41
+       </a>
+       ]. The limitation is that these models provide little information about the trajectories of word-gestures.
+      </p>
+     </section>
+     <section id="sec-6">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.3
+         </span>
+         Production Models
+        </h3>
+       </div>
+      </header>
+      <p>
+       Production models simulate word-gesture input for a given word. Such a model is especially valuable for developing gesture decoders and keyboard layouts as it can generate a large number of word gesture traces for training and testing  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ].
+      </p>
+      <p>
+       The minimum jerk model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ] generates word-gesture movements based on the minimum jerk theory [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+        14
+       </a>
+       ]. The theory suggests that the pathway taken by a person's limbs on a planar surface is guided by minimizing the jerk of the path between two target points, where jerk is the third derivative of position. Using the aforementioned theory, the minimum jerk model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ] generates word-gestures by minimizing the jerk of trajectories between points. The model extracts a set of points called via points that represent key points along a gesture pathway, such as a corner points at letter keys in a gesture, or midway points between said corner points. Using these via points as start and end points of gesture movements, trajectories between adjacent via points are constructed by minimizing a jerk cost function and then are concatenated to generate trajectories. By design, the minimum jerk model predicts an optimal trajectory given a set of points in the sense that the trajectory maximizes smoothness and minimizes effort while still connecting all the via points. While such trajectories may indeed be what a user draws in the latter "total recall" stage of learning of the now familiar word-gestures, for early stages and less familiar word-gestures the user-drawing process is likely to be a combination of recognition and recall, as envisioned in the original research of word-gesture typing [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+        47
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+        48
+       </a>
+       ]. Real gestures are therefore a combination of optimal paths and non-optimal traces. It is often the case due to slips in motor control or thinking of where the next letter for a word that real gestures will deviate off of the optimal path. Since WordGesture-GAN is a data driven model, the model can potentially learn various gesture characteristics from the data itself. Additionally, in the temporal dimension, the minimum jerk model predicts only the
+       <em>
+        relative
+       </em>
+       movement dynamics, assuming that the duration of the movement is of a unit length. In contrast, WordGesture-GAN can generate the timestamps of touchpoints and predict the duration gesture movement.
+      </p>
+      <p>
+       Other works have
+       <font color="#000000">
+        applied deep learning to the task of generating gestures. Maghoumi et al.
+       </font>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ]
+       <font color="#000000">
+        applied a non adversarial architecture to generating drawn, hand, and full body gestures by formulating a dynamic time warping (DTW) inspired loss function to remove the need for a discriminator network.
+       </font>
+       Mehra et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ] formulated word-gesture generation as a problem of style transfer by adopting an LSTM architecture that takes a user reference path and some synthetically generated reference path as a condition in order to generate a new synthetic path. The network is then trained using a GAN architecture. In a later paper by the same authors [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ], they compare the aforementioned implicit style transfer architecture with a new explicit architecture [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ], where reference gesture is encoded to a latent vector space and the encoded style is then used as input to the GAN. The explicit style transfer architecture therefore has more flexibility than the implicit style transfer architecture [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ]. We explain how WordGesture-GAN differs and makes improvements over Style-Transfer GAN in the next section following a brief introduction of GAN. We also re-implemented the Style-Transfer GAN with explicit style transfer [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ] and ran an experiment to compare it with WordGesture-GAN (Section 5).
+      </p>
+     </section>
+     <section id="sec-7">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          2.4
+         </span>
+         Generative Adversarial Networks
+        </h3>
+       </div>
+      </header>
+      <p>
+       Generative Adversarial Networks (GANs)[
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+        15
+       </a>
+       ] have become one of the most popular generative machine learning models in recent years. A GAN is a deep learning architecture where the objective is to optimize a loss function for two networks locked in an adversarial minimax game. The networks can be broadly categorized as the generator and the critic (discriminator). The generator attempts to find a function to generate outputs that are as closely representative of the real data as possible. At the same time, the critic attempts to differentiate the generated outputs of the generator from the real data. One key advantage of this architecture is the ability to use a simple noise distribution, such as Gaussian noise as input to the generator, making it simple to sample for new outputs by inputting randomly generated noise into the generator.
+      </p>
+      <p>
+       Although GAN architectures are able to reconstruct a target dataset with great variety and accuracy, a key downside is that a user has no control over the output of the GAN. The Conditional GAN [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+        33
+       </a>
+       ] addresses this problem. It allows for a user to specify a target category for the output of the GAN, giving some level of control to the user of what the network will output.
+      </p>
+      <p>
+       In the past decade, GANs and Conditional GANs have been widely adopted for problems in multiple domains. The primary domain for GANs has been in computer vision, where they are used to generate new images both with and without conditional inputs [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+        18
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+        19
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+        35
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+        38
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+        46
+       </a>
+       ]. Recently more domains have started to develop GAN architectures for synthesizing realistic examples. Audio synthesis has taken advantage of GANs to synthesize audio with better global structure and at a much faster rate [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+        8
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+        13
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ]. While Transformers have become the primary method of text synthesis, there have been publications using GANs for text synthesis as well, including using a GAN architecture to augment a Transformer [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+        9
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ].
+      </p>
+      <p>
+       Previous research [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ] which formulated gesture generation as a style transfer problem has shown it is feasible to simulate word-gesture movements with GANs. Our work further advances using GANs to simulate word-gestures in the following two aspects. First, the previous work [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ] modeled (
+       <em>
+        x
+        <sub>
+         i
+        </sub>
+       </em>
+       ,
+       <em>
+        y
+        <sub>
+         i
+        </sub>
+       </em>
+       ) (i.e., coordinate) sequences of word-gesture movement only while WordGesture-GAN models sequences of (
+       <em>
+        x
+        <sub>
+         i
+        </sub>
+       </em>
+       ,
+       <em>
+        y
+        <sub>
+         i
+        </sub>
+       </em>
+       ,
+       <em>
+        t
+        <sub>
+         i
+        </sub>
+       </em>
+       ) which includes the temporal information (timestamp
+       <em>
+        t
+        <sub>
+         i
+        </sub>
+       </em>
+       ). Therefore, WordGesture-GAN can model the movement dynamic and gesture production duration, which were omitted in the previous work [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ]. Second, the previous work [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ] models the word-gesture generation as a style transfer problem, which requires user-drawn gestures as input to encode style information and user-drawn gestures (called user reference input) are needed when generating gestures.
+       <font color="#000000">
+        This means sampling gestures for words without any user drawn reference is difficult
+       </font>
+       . WordGesture-GAN moves away from the style-transfer idea and controls the variance of synthesized gestures by sampling from a Gaussian noise model created by a Variational Auto-Encoder. As a result, WordGesture-GAN does not require user-drawn gestures as input (once the generator is trained) to simulate arbitrary word-gestures.
+      </p>
+     </section>
+    </section>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         3
+        </span>
+        Architecture of WordGesture-GAN
+       </h2>
+      </div>
+     </header>
+     <figure id="fig2">
+      <img alt="Figure 2" aria-describedby="fig003" class="img-responsive" src="3581279_files\chi23590fig2.jpg"/>
+      <p id="fig003" style="display:none">
+       Three Components: Variational Encoder, Generator, and Discriminator. The Variational Encoder accepts a user-drawn gesture as input and outputs a gaussian noise vector. It is only used in training. The generator accepts a straight-line prototype for a word and a gaussian noise vector, like the one encoded by the Variational Encoder. The output is a simulated gesture for the word. The Discriminator takes a user-drawn or simulated gesture and attempts to discern whether it is user-drawn.
+      </p>
+      <figcaption>
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        A depiction of the WordGesture-GAN architecture. The word prototype (straight lines connecting letter centroids on a keyboard) and a random Gaussian
+        <font color="#000000">
+         latent code
+        </font>
+        are inputs to the generator. The output of the generator is then fed to the discriminator and the discriminator outputs how realistic the gesture is. The variational encoder generates the Gaussian
+        <font color="#000000">
+         latent code
+        </font>
+        for training the generator only. User-drawn gestures (orange) are not involved when we use the generator to simulate gestures.
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+      We propose a conditional GAN model called WordGesture-GAN to simulate word-gesture movements for a given word. Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      depicts the architecture of WordGesture-GAN which consists of a generator and discriminator. Next, we explain the input, output, and structures of generator and discriminator, and explain the loss functions used in training both components.
+     </p>
+     <figure id="fig3">
+      <img alt="Figure 3" aria-describedby="fig004" class="img-responsive" src="3581279_files\chi23590fig3.jpg"/>
+      <p id="fig004" style="display:none">
+       Two Components: Variational Encoder and Generator. The Variational encoder contains Linear layers and a reparameterization layer. The input is a user-drawn gesture, and the output is a Gaussian noise vector. The Generator consists of four bidirectional LSTM layers, followed by a linear layer and a tanh activation. The input is a concatenation of the word prototype and the latent code. The final output of the generator is a simulated gesture. A final pathway shows an additional step of feeding the output of the generator into the variational encoder to generate a latent code to compare against the input latent code.
+      </p>
+      <figcaption>
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        A depiction of the Generator architecture (green box in Figure
+        <a class="fig" href="#fig2">
+         2
+        </a>
+        ) along with the Variational Encoder architecture (blue box in Figure
+        <a class="fig" href="#fig2">
+         2
+        </a>
+        ). The word prototype (green) acts as the conditional input for the generator. During training, the variational encoder encodes user-drawn gestures (orange) into the Gaussian latent space. The
+        <font color="#000000">
+         resulting
+        </font>
+        <font color="#000000">
+         latent code
+        </font>
+        is repeated along the length of the prototype shape and is concatenated before being fed into the Generator. To ensure the Generator uses the latent code in a meaningful way, we recover the latent code from the simulated gesture using the variational encoder and compare it against the original latent code
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+     </p>
+     <section id="sec-9">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.1
+         </span>
+         Generator
+        </h3>
+       </div>
+      </header>
+      <section id="sec-10">
+       <p>
+        <em>
+         <span class="section-number">
+          3.1.1
+         </span>
+         Input and output.
+        </em>
+        The function of the generator (Figure
+        <a class="fig" href="#fig3">
+         3
+        </a>
+        ) is to generate word-gestures for a given word with randomness in the output. It takes the following two inputs for training.
+       </p>
+       <ul class="list-no-style">
+        <li id="list1" label="•">
+         The target word
+         <em>
+          W
+         </em>
+         . The Generator first converts a target word
+         <em>
+          W
+         </em>
+         into the corresponding word prototype shape, which is a set of straight lines connecting the centers of corresponding keys on a virtual keyboard (e.g., green strokes in Figure
+         <a class="fig" href="#fig2">
+          2
+         </a>
+         ). Each word corresponds to only one word prototype which serves as the representation of the target word in the training process.
+         <font color="#000000">
+          We represented a word with its prototype shape instead of its text format because the former provided basic information about the location and shape of the corresponding word gestures, which could simply the learning process.
+         </font>
+         <br/>
+         To construct word prototypes from a target word
+         <em>
+          W
+         </em>
+         , we use the letter centroids for the word
+         <em>
+          W
+         </em>
+         on a keyboard as the initial set of touch points. Between every two key centers we distribute
+         <em>
+          n
+         </em>
+         −
+         <em>
+          k
+         </em>
+         points so that each key center pair has
+         <span class="inline-equation">
+          <span class="tex">
+           $\frac{n-k}{k}$
+          </span>
+         </span>
+         "between" points, where
+         <em>
+          n
+         </em>
+         is sequence length and
+         <em>
+          k
+         </em>
+         is the number of key centers. Positions of "between" points are determined by uniformly distributing between respective key centers. This process is depicted as the purple box in Figures
+         <a class="fig" href="#fig2">
+          2
+         </a>
+         and
+         <a class="fig" href="#fig3">
+          3
+         </a>
+         . We use
+         <em>
+          n
+         </em>
+         = 128 points in constructing the word prototype.
+         <br/>
+        </li>
+        <li id="list2" label="•">
+         User-drawn gestures for the target word
+         <em>
+          W
+         </em>
+         . The variational encoder component (Figure
+         <a class="fig" href="#fig2">
+          2
+         </a>
+         ) takes user-drawn gestures for the target word
+         <em>
+          W
+         </em>
+         as input (for training), encodes it into a Gaussian
+         <font color="#000000">
+          latent code
+         </font>
+         , and passes it to the generator. In WordGesture-GAN, we represent user-drawn gestures as a sequence of (
+         <em>
+          x
+          <sub>
+           i
+          </sub>
+         </em>
+         ,
+         <em>
+          y
+          <sub>
+           i
+          </sub>
+         </em>
+         ,
+         <em>
+          t
+          <sub>
+           i
+          </sub>
+         </em>
+         ) where
+         <em>
+          x
+          <sub>
+           i
+          </sub>
+         </em>
+         and
+         <em>
+          y
+          <sub>
+           i
+          </sub>
+         </em>
+         represent the
+         <em>
+          x
+         </em>
+         −
+         <em>
+          y
+         </em>
+         coordinates of touch points and
+         <em>
+          t
+          <sub>
+           i
+          </sub>
+         </em>
+         represents how much time passed since the previous point. We set the number of touch points as
+         <em>
+          n
+         </em>
+         = 128, using a fixed length vector to represent each gesture. If a user-drawn gesture has more than
+         <em>
+          n
+         </em>
+         touch points, we uniformly sample
+         <em>
+          n
+         </em>
+         points from the gesture, ensuring the start and end points of the gesture are included. If a user-drawn gesture has less than
+         <em>
+          n
+         </em>
+         touch points, we linearly interpolate between the existing touch points to generate a new sequence of length
+         <em>
+          n
+         </em>
+         . Figure
+         <a class="fig" href="#fig2">
+          2
+         </a>
+         shows an example of a user-drawn gesture for the word
+         <em>
+          found
+         </em>
+         .
+         <br/>
+        </li>
+       </ul>
+       <p>
+        We normalized the coordinates of both user-draw gestures and word prototypes. More specifically, the
+        <em>
+         x
+        </em>
+        and
+        <em>
+         y
+        </em>
+        coordinates of both user-drawn gestures and word prototypes are normalized to be within [-1,1] where -1 is the left/top of the keyboard and 1 is the right/bottom of the keyboard. The unit of timestamps are in seconds to ensure the scale of timestamp values is similar to the scale of coordinates. The output of the generator is a simulated gesture for a word, which is then passed to the discriminator.
+       </p>
+      </section>
+      <section id="sec-11">
+       <p>
+        <em>
+         <span class="section-number">
+          3.1.2
+         </span>
+         Structure.
+        </em>
+        The generator is a multi-layer Bidirectional LSTM that takes both the prototype shape and the
+        <font color="#000000">
+         latent code
+        </font>
+        as input. The LSTM is designed to model data in a sequential manner, which makes it appropriate for generating word-gestures. To provide the
+        <font color="#000000">
+         latent code
+        </font>
+        to the generator it is first repeated along the sequence length and then concatenated with the prototype shape (as shown in Figure
+        <a class="fig" href="#fig3">
+         3
+        </a>
+        ). This method of concatenation follows the method proposed in Bicycle GAN to input a
+        <font color="#000000">
+         latent code
+        </font>
+        alongside a semantic map[
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+         50
+        </a>
+        ].
+       </p>
+       <p>
+        We use a Variational Encoder to encode a user-drawn gesture into a Gaussian
+        <font color="#000000">
+         latent code
+        </font>
+        (Figure
+        <a class="fig" href="#fig3">
+         3
+        </a>
+        ). The encoder is a multi-layer perceptron with two final layers to get the mean and variance representing aspects of the gesture. With these two parameters encoded from the gesture, we can then use the reparamaterization trick as described in the original Variational Auto-Encoder (VAE) paper [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+         20
+        </a>
+        ] to sample from a Gaussian distribution in a way that is differentiable for training. By training the network in this way, we ensure that the Gaussian noise will have some meaningful structure for generation.
+       </p>
+      </section>
+     </section>
+     <section id="sec-12">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.2
+         </span>
+         Discriminator
+        </h3>
+       </div>
+      </header>
+      <section id="sec-13">
+       <p>
+        <em>
+         <span class="section-number">
+          3.2.1
+         </span>
+         Input and output.
+        </em>
+        The discriminator takes either simulated gestures from the generator or user-draw gestures as input and outputs to what degree the input gesture is a user-drawn gesture. Despite the generator being conditional, we avoid using a conditional discriminator as in practice we found that the model performs better when trained with an unconditional discriminator. This is consistent with the findings of previous works[
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+         36
+        </a>
+        ,
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+         50
+        </a>
+        ].
+       </p>
+       <p>
+        The output of the discriminator
+        <em>
+         D
+        </em>
+        (
+        <em>
+         x
+        </em>
+        ) for a gesture
+        <em>
+         x
+        </em>
+        describes how much the discriminator believes the gesture
+        <em>
+         x
+        </em>
+        is user-drawn. a smaller number (e.g.
+        <em>
+         D
+        </em>
+        (
+        <em>
+         x
+        </em>
+        ) &lt; 0) means the gesture is simulated, while a larger number (e.g.
+        <em>
+         D
+        </em>
+        (
+        <em>
+         x
+        </em>
+        ) &gt; 0) means it is user-drawn.
+       </p>
+       <p>
+        The output of the discriminator on the user-drawn and simulated gestures, along with an additional reconstruction loss for the generator, are then used in back propagation to adjust the weights of the full WordGesture-GAN, including both the generator and discriminator following their respective loss functions.
+       </p>
+      </section>
+      <section id="sec-14">
+       <p>
+        <em>
+         <span class="section-number">
+          3.2.2
+         </span>
+         Structure.
+        </em>
+        The discriminator adopts a multi-layer perception structure to output a single value representing how realistic the output is. The discriminator takes
+        <font color="#000000">
+         only the user-drawn or simulated gesture as input
+        </font>
+        . A depiction of the discriminator for this model is given in Figure
+        <a class="fig" href="#fig4">
+         4
+        </a>
+        .
+       </p>
+       <figure id="fig4">
+        <img alt="Figure 4" aria-describedby="fig005" class="img-responsive" src="3581279_files\chi23590fig4.jpg"/>
+        <p id="fig005" style="display:none">
+         A depiction of the Discriminator. The user-drawn/simulated gesture is fed through the Linear layers of the Discriminator, consisting of Linear layers with Leaky ReLU operations between each reducing to a single output. The output is how user-drawn the discriminator believes the gesture is.
+        </p>
+        <figcaption>
+         <span class="figure-number">
+          Figure 4:
+         </span>
+         <span class="figure-title">
+          A depiction of the Discriminator architecture (brown box in Figure
+          <a class="fig" href="#fig2">
+           2
+          </a>
+          ). The input is either a user-drawn gesture or a simulated gesture. The output is a single value representing how realistic the gesture is, where a larger value (e.g. D(x)&gt;0) means it is user-drawn.
+         </span>
+        </figcaption>
+       </figure>
+       <p>
+       </p>
+      </section>
+     </section>
+     <section id="sec-15">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          3.3
+         </span>
+         Loss functions
+        </h3>
+       </div>
+      </header>
+      <section id="sec-16">
+       <p>
+        <em>
+         <span class="section-number">
+          3.3.1
+         </span>
+         Loss function for discriminator.
+        </em>
+        We use the Wasserstein GAN loss [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+         3
+        </a>
+        ] as the loss function for the discriminator. The objective of the discriminator is to minimize the loss function over all words in the training dataset. The loss function for a word
+        <em>
+         y
+        </em>
+        under a particular generator (
+        <em>
+         G
+        </em>
+        ) and a discriminator (
+        <em>
+         D
+        </em>
+        ) is denoted by
+        <em>
+         L
+         <sub>
+          disc
+         </sub>
+        </em>
+        (
+        <em>
+         y
+        </em>
+        ), and is defined as:
+       </p>
+       <div class="table-responsive" id="eq1">
+        <div class="display-equation">
+         <span class="tex mytex">
+          \begin{equation} L_{disc}(y) = \mathbb {E}_{z\sim P(z)}[D(G(z,y))] - \mathbb {E}_{x\sim P(x)}[D(x)] \end{equation}
+         </span>
+         <br/>
+         <span class="equation-number">
+          (1)
+         </span>
+        </div>
+       </div>
+       <p>
+       </p>
+       <p>
+        The term
+        <em>
+         z
+        </em>
+        is a sample from the latent space representing the variation of user-drawn gestures (Figure
+        <a class="fig" href="#fig3">
+         3
+        </a>
+        ), which has a Gaussian distribution denoted by
+        <em>
+         P
+        </em>
+        (
+        <em>
+         z
+        </em>
+        ).
+        <em>
+         G
+        </em>
+        (
+        <em>
+         z
+        </em>
+        ,
+        <em>
+         y
+        </em>
+        ) is a gesture simulated by Generator
+        <em>
+         G
+        </em>
+        for the word
+        <em>
+         y
+        </em>
+        with the sampled variation
+        <em>
+         z
+        </em>
+        . The term
+        <em>
+         D
+        </em>
+        (
+        <em>
+         G
+        </em>
+        (
+        <em>
+         z
+        </em>
+        ,
+        <em>
+         y
+        </em>
+        )) is the output (a real number) from discriminator
+        <em>
+         D
+        </em>
+        which describes how close the simulated gesture
+        <em>
+         G
+        </em>
+        (
+        <em>
+         z
+        </em>
+        ,
+        <em>
+         y
+        </em>
+        ) is to a user-drawn gesture.
+        <span class="inline-equation">
+         <span class="tex">
+          $\mathbb {E}_{z\sim P(z)}[D(G(z,y))]$
+         </span>
+        </span>
+        is the expectation of
+        <em>
+         D
+        </em>
+        (
+        <em>
+         G
+        </em>
+        (
+        <em>
+         z
+        </em>
+        ,
+        <em>
+         y
+        </em>
+        )) over a distribution of
+        <em>
+         P
+        </em>
+        (
+        <em>
+         z
+        </em>
+        ). The term
+        <em>
+         x
+        </em>
+        represents a user-drawn gesture, which has a distribution of
+        <em>
+         P
+        </em>
+        (
+        <em>
+         x
+        </em>
+        ).
+        <em>
+         D
+        </em>
+        (
+        <em>
+         x
+        </em>
+        ) represents the output of the discriminator which describes how close
+        <em>
+         x
+        </em>
+        is to a user-drawn gesture.
+       </p>
+       <p>
+        Minimizing the loss function over all words maximizes the output of discriminator for user-drawn gestures, while minimizing the output of the discriminator for simulated gestures. The loss function output acts as an estimate of the Wasserstein distance between the user-drawn and simulated gestures, providing a strong gradient for training.
+       </p>
+      </section>
+      <section id="sec-17">
+       <p>
+        <em>
+         <span class="section-number">
+          3.3.2
+         </span>
+         Loss function for generator.
+        </em>
+        The loss function of the generator for a word
+        <em>
+         y
+        </em>
+        is denoted by
+        <em>
+         L
+         <sub>
+          gen
+         </sub>
+        </em>
+        (
+        <em>
+         y
+        </em>
+        ), and is defined as follows.
+       </p>
+       <div class="table-responsive" id="eq2">
+        <div class="display-equation">
+         <span class="tex mytex">
+          \begin{equation} \begin{split} L_{gen}(y) = -L_{disc}(y) + \lambda _{feat}L_{feat}(y) &amp;+ \lambda _{rec}L_{rec}(y) \\ + \lambda _{lat}L_{lat}(y) &amp;+ \lambda _{KLD}L_{KLD} \end{split} \end{equation}
+         </span>
+         <br/>
+         <span class="equation-number">
+          (2)
+         </span>
+        </div>
+       </div>
+       <p>
+       </p>
+       <p>
+        It is a weighted average over 5 components. The weights
+        <em>
+         λ
+         <sub>
+          feat
+         </sub>
+        </em>
+        ,
+        <em>
+         λ
+         <sub>
+          rec
+         </sub>
+        </em>
+        ,
+        <em>
+         λ
+         <sub>
+          lat
+         </sub>
+        </em>
+        , and
+        <em>
+         λ
+         <sub>
+          KLD
+         </sub>
+        </em>
+        are hyper-parameters. We present their actual values in Section
+        <a class="sec" href="#sec-20">
+         4.2
+        </a>
+        . The definition of each of the five components is explained as follows.
+       </p>
+       <ul class="list-no-style">
+        <li id="list3" label="•">
+         The term
+         <em>
+          L
+          <sub>
+           disc
+          </sub>
+         </em>
+         (
+         <em>
+          y
+         </em>
+         ) is the loss function of the discriminator (Equation
+         <a class="eqn" href="#eq1">
+          1
+         </a>
+         ).
+         <br/>
+        </li>
+        <li id="list4" label="•">
+         The term
+         <em>
+          L
+          <sub>
+           feat
+          </sub>
+         </em>
+         (
+         <em>
+          y
+         </em>
+         ) is the feature matching loss for a given word
+         <em>
+          y
+         </em>
+         , which measures the difference between the statistics of user-drawn (
+         <em>
+          x
+         </em>
+         ) and generated gestures (
+         <em>
+          G
+         </em>
+         (
+         <em>
+          z
+         </em>
+         ,
+         <em>
+          y
+         </em>
+         )) for all hidden layers of the discriminator. The method used is the same as in the Pix2PixHD paper [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+          45
+         </a>
+         ] and is defined as
+         <div class="table-responsive" id="eq3">
+          <div class="display-equation">
+           <span class="tex mytex">
+            \begin{equation} \begin{aligned} L_{feat}(y) = \mathbb {E}_{z\sim P(z), x\sim P(x)}\sum _{i=1}^{T}{\frac{1}{N_i}(||D^{(i)}(G(z, y)) - D^{(i)}(x)||_1)} \end{aligned} \end{equation}
+           </span>
+           <br/>
+           <span class="equation-number">
+            (3)
+           </span>
+          </div>
+         </div>
+         Where
+         <em>
+          T
+         </em>
+         is the total number of hidden layers in the discriminator,
+         <em>
+          D
+         </em>
+         <sup>
+          (
+          <em>
+           i
+          </em>
+          )
+         </sup>
+         is the i-th layer of the discriminator,
+         <em>
+          N
+          <sub>
+           i
+          </sub>
+         </em>
+         is the number of elements in layer
+         <em>
+          i
+         </em>
+         .
+         <br/>
+        </li>
+        <li id="list5" label="•">
+         The term
+         <em>
+          L
+          <sub>
+           rec
+          </sub>
+         </em>
+         (
+         <em>
+          y
+         </em>
+         ) represents the reconstruction loss for a word
+         <em>
+          y
+         </em>
+         , which is the
+         <em>
+          L
+         </em>
+         <sub>
+          1
+         </sub>
+         loss between user-drawn gestures
+         <em>
+          x
+         </em>
+         , and simulated gestures from Generator
+         <em>
+          G
+         </em>
+         (
+         <em>
+          z
+         </em>
+         ,
+         <em>
+          y
+         </em>
+         ). It is defined as
+         <div class="table-responsive" id="eq4">
+          <div class="display-equation">
+           <span class="tex mytex">
+            \begin{equation} L_{rec}(y) = \mathbb {E}_{p \sim P(x), q \sim G(z,y)} |p - q| \end{equation}
+           </span>
+           <br/>
+           <span class="equation-number">
+            (4)
+           </span>
+          </div>
+         </div>
+         The
+         <em>
+          L
+         </em>
+         <sub>
+          1
+         </sub>
+         distance
+         <em>
+          p
+         </em>
+         −
+         <em>
+          q
+         </em>
+         is calculated between the
+         <em>
+          i
+         </em>
+         th point of the gestures as:
+         <div class="table-responsive" id="eq5">
+          <div class="display-equation">
+           <span class="tex mytex">
+            \begin{equation} |p - q| = \sum _{i \in n}{|x_{p_i} - x_{q_i}| + |y_{p_i} - y_{q_i}| + |t_{p_i} - t_{q_i}|} \end{equation}
+           </span>
+           <br/>
+           <span class="equation-number">
+            (5)
+           </span>
+          </div>
+         </div>
+         where
+         <em>
+          p
+          <sub>
+           i
+          </sub>
+         </em>
+         and
+         <em>
+          q
+          <sub>
+           i
+          </sub>
+         </em>
+         is the
+         <em>
+          i
+         </em>
+         th point of the user-drawn gesture
+         <em>
+          p
+         </em>
+         and a simulated gesture
+         <em>
+          q
+         </em>
+         , (
+         <em>
+          x
+         </em>
+         ,
+         <em>
+          y
+         </em>
+         ) are coordinates and
+         <em>
+          t
+         </em>
+         is the timestamp.
+         <br/>
+        </li>
+        <li id="list6" label="•">
+         To enforce greater diversity in outputs and prevent mode collapse, we include a latent encoding loss
+         <em>
+          L
+          <sub>
+           lat
+          </sub>
+         </em>
+         like the one found in Bicycle GAN [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+          50
+         </a>
+         ]. We take a randomly sampled encoding
+         <em>
+          z
+         </em>
+         from the Gaussian distribution
+         <em>
+          P
+         </em>
+         (
+         <em>
+          z
+         </em>
+         ) and attempt to recover it using
+         <span class="inline-equation">
+          <span class="tex">
+           $\tilde{z}=E(G(z,y))$
+          </span>
+         </span>
+         . we compare the original latent code
+         <em>
+          z
+         </em>
+         and the recovered latent code
+         <span class="inline-equation">
+          <span class="tex">
+           $\tilde{z}$
+          </span>
+         </span>
+         using the
+         <em>
+          L
+         </em>
+         <sub>
+          1
+         </sub>
+         distance. This loss is defined as
+         <div class="table-responsive" id="eq6">
+          <div class="display-equation">
+           <span class="tex mytex">
+            \begin{equation} L_{lat}(y) = \mathbb {E}_{z \sim P(z)}[||E(G(z,y)) - z||_1] \end{equation}
+           </span>
+           <br/>
+           <span class="equation-number">
+            (6)
+           </span>
+          </div>
+         </div>
+         While the reconstruction loss from Equation
+         <a class="eqn" href="#eq5">
+          5
+         </a>
+         enforces that simulated gestures
+         <span class="inline-equation">
+          <span class="tex">
+           $\tilde{x}$
+          </span>
+         </span>
+         generated from latent codes are consistent with user-drawn gestures
+         <em>
+          x
+         </em>
+         , the latent encoding loss ensures that encodings resulting from simulated gestures
+         <span class="inline-equation">
+          <span class="tex">
+           $\tilde{z}$
+          </span>
+         </span>
+         are consistent with the initial encoding
+         <em>
+          z
+         </em>
+         .
+         <br/>
+        </li>
+        <li id="list7" label="•">
+         We also include
+         <em>
+          L
+          <sub>
+           KLD
+          </sub>
+         </em>
+         as a part of the loss function, which is the Kullback-Liebler Divergence (KLD) [
+         <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+          24
+         </a>
+         ] between the variational encoder outputs and a normal distribution. This term as mentioned briefly in section
+         <a class="sec" href="#sec-8">
+          3
+         </a>
+         ensures that the distribution of the variational encoder output does not diverge too far from the Normal distribution and therefore become difficult to sample from.
+         <br/>
+        </li>
+       </ul>
+       <p>
+        The objective of the generator is to minimize the loss function (Equation
+        <a class="eqn" href="#eq2">
+         2
+        </a>
+        ) over all words in the training data set. Minimizing the loss function would maximize the term
+        <span class="inline-equation">
+         <span class="tex">
+          $\mathbb {E}_{z\sim P(z)}[D(G(z, y))]$
+         </span>
+        </span>
+        which indicates how likely a simulated gesture will be recognized as a user-drawn gesture by the discriminator. Conversely, by minimizing the loss function the
+        <em>
+         L
+         <sub>
+          feat
+         </sub>
+        </em>
+        ,
+        <em>
+         L
+         <sub>
+          rec
+         </sub>
+        </em>
+        ,
+        <em>
+         L
+         <sub>
+          lat
+         </sub>
+        </em>
+        , and
+        <em>
+         L
+         <sub>
+          KLD
+         </sub>
+        </em>
+        losses end up being minimized.
+       </p>
+      </section>
+     </section>
+    </section>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         4
+        </span>
+        Training WordGesture-GAN
+       </h2>
+      </div>
+     </header>
+     <section id="sec-19">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.1
+         </span>
+         Dataset
+        </h3>
+       </div>
+      </header>
+      <p>
+       We used the publicly available mobile word-gesture dataset [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+        26
+       </a>
+       ] with 38k gestures for training and testing. The dataset was collected via a web-based custom virtual keyboard, involving 1,338 users who submitted word-gestures for 11,318 unique English words. The original dataset consisted of around 124k gestures. We removed gestures marked as invalid and gestures for single letter words. The original dataset was heavily imbalanced, with certain words like "the" getting significantly more representation in the dataset than other words. To avoid bias for certain words introduced by imbalanced training data, for any word with more samples than some upper bound
+       <em>
+        n
+       </em>
+       , we sampled
+       <em>
+        n
+       </em>
+       gestures for that word randomly from the dataset and discarded the rest. After setting the upper bound as
+       <em>
+        n
+       </em>
+       = 5, we ended up with a dataset of around 38k gestures, spread across approximately 11k words.
+      </p>
+      <p>
+       We split the dataset into a training and testing set each with a unique set of words. To ensure no words overlap, we first randomly split the words into training and testing words following the split ratio. We used a ratio of 80% training 20% testing to split our data, resulting in 9045 unique training words and 2262 unique testing words. We then sort the gestures into the relevant set based on the word each gesture represents. The final training set size is 30k unique word-gestures (only for training) while the final testing set size is 7.6k unique word-gestures (exclusively held out for testing).
+      </p>
+     </section>
+     <section id="sec-20">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.2
+         </span>
+         Training Process
+        </h3>
+       </div>
+      </header>
+      <p>
+       We followed the procedure for training Wasserstein GAN [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+        3
+       </a>
+       ] to train WordGesture-GAN. We updated the discriminator 5 times for every 1 update to the generator. This ensured that the discriminator trained to optimality and provided a strong gradient for the generator to follow. For the Gaussian
+       <font color="#000000">
+        latent code
+       </font>
+       , we used a 32-dimensional vector as input to the network. For the weights of the components of the generator loss, we use
+       <em>
+        λ
+        <sub>
+         feat
+        </sub>
+       </em>
+       = 1,
+       <em>
+        λ
+        <sub>
+         rec
+        </sub>
+       </em>
+       = 5,
+       <em>
+        λ
+        <sub>
+         lat
+        </sub>
+       </em>
+       = 0.5, and
+       <em>
+        λ
+        <sub>
+         KLD
+        </sub>
+       </em>
+       = 0.05. We used a batch size of 512 and a learning rate of 0.0002 on the ADAM optimizer. Leaky ReLU was used between all layers of both the discriminator and the encoder, while the Tanh activation found within the LSTM layer itself was used as activation for all layers of the generator. Spectral normalization [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+        34
+       </a>
+       ] is used on all layers of the discriminator, due to the K-Lipschitz constraint for the WGAN loss.
+      </p>
+      <p>
+       We also trained the network in two cycles similar to how it is done in Bicycle GAN [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+        50
+       </a>
+       ]. In one cycle, the model is given a randomly sampled latent code
+       <em>
+        z
+       </em>
+       to generate a new gesture
+       <em>
+        X
+       </em>
+       ′ and must recover the latent code (denoted as
+       <em>
+        z
+       </em>
+       ′) from the simulated gesture
+       <em>
+        X
+       </em>
+       ′ using the variational encoder (
+       <em>
+        z
+       </em>
+       →
+       <em>
+        X
+       </em>
+       ′ →
+       <em>
+        z
+       </em>
+       ′). The latent codes
+       <em>
+        z
+       </em>
+       and
+       <em>
+        z
+       </em>
+       ′ are then compared using the latent code loss defined in Equation
+       <a class="eqn" href="#eq6">
+        6
+       </a>
+       . In the second cycle a user-drawn gesture
+       <em>
+        X
+       </em>
+       was encoded by the variational encoder to a latent code
+       <em>
+        z
+       </em>
+       ′ and was used as input to the generator to generate a new gesture
+       <em>
+        X
+       </em>
+       ′ (
+       <em>
+        X
+       </em>
+       →
+       <em>
+        z
+       </em>
+       →
+       <em>
+        X
+       </em>
+       ′). The user-drawn gesture
+       <em>
+        X
+       </em>
+       and the simulated gesture
+       <em>
+        X
+       </em>
+       ′ are then compared using an
+       <em>
+        L
+       </em>
+       <sub>
+        1
+       </sub>
+       reconstruction loss as described in Equation
+       <a class="eqn" href="#eq4">
+        4
+       </a>
+       . For each cycle a separate discriminator is trained, both having the same structure. As with the original Bicycle GAN paper [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+        50
+       </a>
+       ] we found that this improved the outputs of the model. For the
+       <em>
+        z
+       </em>
+       →
+       <em>
+        X
+       </em>
+       ′ →
+       <em>
+        z
+       </em>
+       ′ cycle we also freeze the encoder when updating the latent code reconstruction loss to prevent the encoder from hiding information from the generator.
+      </p>
+     </section>
+    </section>
+    <section id="sec-21">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         5
+        </span>
+        EVALUATION
+       </h2>
+      </div>
+     </header>
+     <p>
+      We used an ensemble of methods and measures to evaluate WG-GAN generated word-gestures. Each method looked at a different aspect of these gestures in comparison to those generated by the prior state-of-the-art word-gesture models.
+     </p>
+     <section id="sec-22">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.1
+         </span>
+         Re-implementing Minimum Jerk Model and Style-Transfer GAN
+        </h3>
+       </div>
+      </header>
+      <p>
+       As a baseline for comparison, we first implemented the minimum jerk model following Quinn and Zhai's work [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ]. We trained the model as explained in  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ] to find the aggregate distribution of the offsets from the key centers, and to find the mean and standard deviation of the angles between the next key center and the mid-point on the gesture curve about the previous character point. After training on the same training dataset, we used the model to generate the same number of simulated gestures as the testing dataset.
+      </p>
+      <p>
+       We also implemented the Style-Transfer GAN with explicit style transfer [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ] as another baseline for comparison. We constructed a sequence to sequence (Seq2Seq) model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+        42
+       </a>
+       ] as the generator for the network. We replaced the original Minimax GAN loss with the Wasserstein GAN loss for ease of training, given that this is a smaller dataset than the original paper [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ]. Since the original paper did not specify how the style encodings were added in to the Generator network, we chose to concatenate them together in the encoding layer of the Seq2Seq model, as concatenation is a common way to combined two inputs into one. The original Style-Transfer GAN simulate only spatial movement for gestures (i.e., a sequence of (
+       <em>
+        x
+        <sub>
+         i
+        </sub>
+       </em>
+       ,
+       <em>
+        y
+        <sub>
+         i
+        </sub>
+       </em>
+       )). We extended it to generate both spatial and temporal movements (i.e., a sequence of (
+       <em>
+        x
+        <sub>
+         i
+        </sub>
+       </em>
+       ,
+       <em>
+        y
+        <sub>
+         i
+        </sub>
+       </em>
+       ,
+       <em>
+        t
+        <sub>
+         i
+        </sub>
+       </em>
+       )), to make it comparable to the gestures generated by WordGesture-GAN. We achieved this by representing a gesture with a vector of (
+       <em>
+        x
+        <sub>
+         i
+        </sub>
+       </em>
+       ,
+       <em>
+        y
+        <sub>
+         i
+        </sub>
+       </em>
+       ,
+       <em>
+        t
+        <sub>
+         i
+        </sub>
+       </em>
+       ), instead of (
+       <em>
+        x
+        <sub>
+         i
+        </sub>
+       </em>
+       ,
+       <em>
+        y
+        <sub>
+         i
+        </sub>
+       </em>
+       ), in training. After training on the same training dataset, we sampled gestures to get the same number of simulated gestures as the testing dataset.
+      </p>
+     </section>
+     <section id="sec-23">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.2
+         </span>
+         Simulating gestures with the generator in WordGesture-GAN
+        </h3>
+       </div>
+      </header>
+      <p>
+       After training WordGesture-GAN, we used the generator to simulate gestures, and evaluated them on the held-out testing dataset. To simulate gestures for an arbitrary word
+       <em>
+        W
+       </em>
+       , we represented
+       <em>
+        W
+       </em>
+       as a word prototype and fed it into the generator. The generator then sampled a Gaussian
+       <font color="#000000">
+        latent code
+       </font>
+       (Figure
+       <a class="fig" href="#fig3">
+        3
+       </a>
+       ) to control the variation of the simulated gestures. With these two inputs (prototype shape, Gaussian
+       <font color="#000000">
+        latent code
+       </font>
+       ), the generator was able to simulate gestures for
+       <em>
+        W
+       </em>
+       . We simulated gestures for every word within the testing dataset. The number of simulated gestures for a word
+       <em>
+        W
+       </em>
+       was identical with the number of user-drawn gestures for
+       <em>
+        W
+       </em>
+       in the testing dataset. Therefore, the simulated gesture dataset was exactly the same size as the testing dataset. Recall that the words in the testing dataset do not overlap with words used in training.
+      </p>
+      <p>
+       When generating gestures, the only input to the generators for all the three models (the Minimum Jerk, Style-Transfer GAN, and WordGesture-GAN) was the input text. None of them took user-drawn gestures as references. Such a setup tested the capability of a generator for generating realistic gestures for arbitrary text. Taking the input text as the only input also made the comparison fair across models.
+      </p>
+     </section>
+     <section id="sec-24">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.3
+         </span>
+         Visual Inspection
+        </h3>
+       </div>
+      </header>
+      <figure id="fig5">
+       <img alt="Figure 5" aria-describedby="fig006" class="img-responsive" src="3581279_files\chi23590fig5.jpg"/>
+       <p id="fig006" style="display:none">
+        Top: Simulated gestures by WG-GAN for the words “brain”, “equal”, and “nice”. Dots are evenly spaced in time, so slower parts of the gesture contain more dots. Bottom: Three different simulated gestures by WG-GAN for the word “count”. The different examples have variations between each other. All words shown were not seen in training.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 5:
+        </span>
+        <span class="figure-title">
+         <strong>
+          Top:
+         </strong>
+         Examples of simulated gestures by WordGesture-GAN for three different words. The dots shown are evenly spaced in time, so areas where the dots become denser are areas where the gesture speed slows down.
+         <strong>
+          Bottom:
+         </strong>
+         Three simulated gestures from WordGesture-GAN for the word "count". All these words were unseen in the training dataset.
+        </span>
+       </figcaption>
+      </figure>
+      <figure id="fig6">
+       <img alt="Figure 6" aria-describedby="fig007" class="img-responsive" src="3581279_files\chi23590fig6.jpg"/>
+       <p id="fig007" style="display:none">
+        Examples of user-drawn and simulated gestures from all 3 models for the word “voice”. Two examples are shown for each.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 6:
+        </span>
+        <span class="figure-title">
+         Examples of user-drawn and simulated gestures from all three models for the word "voice". The dots shown are evenly spaced in time, so areas where the dots become denser are areas where the gesture speed slows down. All three models took the text “voice” as the only input.
+        </span>
+       </figcaption>
+      </figure>
+      <figure id="fig7">
+       <img alt="Figure 7" aria-describedby="fig008" class="img-responsive" src="3581279_files\chi23590fig7.jpg"/>
+       <p id="fig008" style="display:none">
+        Examples of user-drawn and WG-GAN simulated gesture for the words “brain”, “friends”, “climb”, “voice”, “market”, and “junior” are shown overlaying each other. Five user-drawn and five WG-GAN simulated gestures are shown for each word.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 7:
+        </span>
+        <span class="figure-title">
+         Five simulated gestures (blue) by WordGesture-GAN overlaying five user-drawn gestures (orange) for the same word.
+        </span>
+       </figcaption>
+      </figure>
+      <figure id="fig8">
+       <img alt="Figure 8" aria-describedby="fig009" class="img-responsive" src="3581279_files\chi23590fig8.jpg"/>
+       <p id="fig009" style="display:none">
+        Examples of user-drawn gestures, WG-GAN simulated gestures, and Minimum Jerk Model simulated gestures for the words “brain”, “liked”, “equal”, and “place” are shown overlaying each other. Five user-drawn, five WG-GAN simulated, and five Minimum Jerk Model simulated gestures are shown for each word.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 8:
+        </span>
+        <span class="figure-title">
+         Comparisons of WordGesture-GAN simulated gestures dynamics (blue) to user-drawn gesture dynamics (orange) and Minimum Jerk model simulated gestures (red) for the same word.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       We first visually inspected the simulated gestures from the three models, to qualitatively evaluate whether they resembled user-drawn gestures. Figures
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       ,
+       <a class="fig" href="#fig6">
+        6
+       </a>
+       ,
+       <a class="fig" href="#fig7">
+        7
+       </a>
+       , and
+       <a class="fig" href="#fig8">
+        8
+       </a>
+       show examples of simulated gestures by different models in comparison with user-drawn gestures. As shown in Figure
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       , the simulated gestures by WordGesture-GAN (blue curves) to a large degree matched our expectation of how users would draw gestures. The generated gestures by the Minimum Jerk model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ] (red curves in Figure
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       ) showed smoothness along the movements. It is expected as the gestures generated by this model should minimize the changes in acceleration along the path. The shapes of gestures generated by the Style-Transfer GAN (purple curves in Figure
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       ) deviate from the user-drawn gestures. It was probably because the style-transfer GAN was originally designed to work with user reference input [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ], but in our test user-drawn gestures (reference gestures) were absent in gesture generation. One possible reason for the sub-optimal performance of Style-Transfer GAN is that style-encoder in this model did not have a well-defined shape to describe the latent space where the style of drawing was embedded. It made the style sampling uncertain thus resulting in unrealistic movements when the user reference gestures were absent.
+      </p>
+     </section>
+     <section id="sec-25">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.4
+         </span>
+         Wasserstein Distance between Simulated and User-drawn Gestures
+        </h3>
+       </div>
+      </header>
+      <div class="table-responsive" id="tab1">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 1:
+        </span>
+        <span class="table-title">
+         Mean (std. dev) of
+         <em>
+          L
+         </em>
+         <sub>
+          2
+         </sub>
+         Word Wasserstein Distance between simulated gestures and user-drawn gestures on the testing dataset. The minimum jerk model is evaluated for (
+         <em>
+          x
+          <sub>
+           i
+          </sub>
+         </em>
+         ,
+         <em>
+          y
+          <sub>
+           i
+          </sub>
+         </em>
+         ) sequences only as it does not predict the timestamps of touchpoints on a non-relative timescale. As shown, WordGesture-GAN has better generation accuracy than the Minimum Jerk model and Style Transfer GAN (lower is better).
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Method
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           L2 Wasserstein Distance for (
+           <em>
+            x
+            <sub>
+             i
+            </sub>
+           </em>
+           ,
+           <em>
+            y
+            <sub>
+             i
+            </sub>
+           </em>
+           )
+           <br/>
+           sequences
+          </td>
+          <td>
+           L2 Wasserstein Distance for (
+           <em>
+            x
+            <sub>
+             i
+            </sub>
+           </em>
+           ,
+           <em>
+            y
+            <sub>
+             i
+            </sub>
+           </em>
+           ,
+           <em>
+            t
+            <sub>
+             i
+            </sub>
+           </em>
+           )
+           <br/>
+           sequences
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Minimum Jerk Model
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           5.004 (2.099)
+          </td>
+          <td>
+           -
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Style Transfer GAN
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           10.4805 (2.011)
+          </td>
+          <td>
+           10.4891 (2.011)
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           WordGesture-GAN
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            4.409 (2.193)
+           </strong>
+          </td>
+          <td>
+           <strong>
+            4.426 (2.198)
+           </strong>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <div class="table-responsive" id="tab2">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 2:
+        </span>
+        <span class="table-title">
+         Mean (std. dev) of Dynamic time warping (DTW) Word Wasserstein Distance between simulated gestures and user-drawn gestures on the testing dataset. The minimum jerk model is evaluated for (
+         <em>
+          x
+          <sub>
+           i
+          </sub>
+         </em>
+         ,
+         <em>
+          y
+          <sub>
+           i
+          </sub>
+         </em>
+         ) sequences only as it does not predict the timestamps of touchpoints on a non-relative timescale.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Method
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           DTW Wasserstein Distance for (
+           <em>
+            x
+            <sub>
+             i
+            </sub>
+           </em>
+           ,
+           <em>
+            y
+            <sub>
+             i
+            </sub>
+           </em>
+           ) sequences
+          </td>
+          <td>
+           DTW Wasserstein Distance for (
+           <em>
+            x
+            <sub>
+             i
+            </sub>
+           </em>
+           ,
+           <em>
+            y
+            <sub>
+             i
+            </sub>
+           </em>
+           ,
+           <em>
+            t
+            <sub>
+             i
+            </sub>
+           </em>
+           ) sequences
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Minimum Jerk Model
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           2.752 (1.488)
+          </td>
+          <td>
+           -
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Style Transfer GAN
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           8.11 (1.943)
+          </td>
+          <td>
+           8.132 (1.941)
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           WordGesture-GAN
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            2.146 (1.592)
+           </strong>
+          </td>
+          <td>
+           <strong>
+            2.183 (1.598)
+           </strong>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p>
+       To understand to what degree the simulated gestures mimic the user-drawn gestures, we examined the
+       <em>
+        Wasserstein distance
+       </em>
+       between the simulated gestures and the user-drawn gestures using both
+       <em>
+        L
+       </em>
+       <sub>
+        2
+       </sub>
+       and dynamic time warping (DTW) distance as distance metrics. We calculated the Wasserstein distance for each distance metric within the words as follows. For a word
+       <em>
+        W
+       </em>
+       , we first calculated the
+       <em>
+        L
+       </em>
+       <sub>
+        2
+       </sub>
+       (or DTW) distance between each simulated gesture and user-drawn gestures for the given word
+       <em>
+        W
+       </em>
+       . For measuring the
+       <em>
+        L
+       </em>
+       <sub>
+        2
+       </sub>
+       distance between gestures we maintain the temporal order of the gesture, where the
+       <em>
+        i
+       </em>
+       -th point of the generated gesture is measured against the
+       <em>
+        i
+       </em>
+       -th point of the user-drawn gesture. We then formulate the problem of calculating the Wasserstein distance as a minimum weight matching on a bipartite graph between simulated gestures and user-drawn gestures, where the weights of the edges were the
+       <em>
+        L
+       </em>
+       <sub>
+        2
+       </sub>
+       (or DTW) distances calculated beforehand (distances between gestures for different words are set to infinity). After performing the minimum weight matching, the mean of the weights of all remaining edges is the average minimum
+       <em>
+        L
+       </em>
+       <sub>
+        2
+       </sub>
+       (DTW) distance, which represents the smallest average cost needed to convert a simulated gesture to a user-drawn gesture for a word. This is equivalent to calculating the Wasserstein Distance, using
+       <em>
+        L
+       </em>
+       <sub>
+        2
+       </sub>
+       (DTW) distance as the metric.
+      </p>
+      <p>
+       Tables
+       <a class="tbl" href="#tab1">
+        1
+       </a>
+       and
+       <a class="tbl" href="#tab2">
+        2
+       </a>
+       show the Wasserstein distance for the
+       <em>
+        L
+       </em>
+       <sub>
+        2
+       </sub>
+       and DTW distance metrics between simulated and user-drawn gestures for the WordGesture-GAN, Style Transfer GAN, and minimum jerk models. Note that as the minimum jerk model does not simulate non-relative timestamps for touch points, we only have the Wasserstein distance for (
+       <em>
+        x
+        <sub>
+         i
+        </sub>
+       </em>
+       ,
+       <em>
+        y
+        <sub>
+         i
+        </sub>
+       </em>
+       ) sequences for this model. As shown, WordGesture-GAN yields a smaller Wasserstein distance than the minimum jerk model and Style-Transfer GAN, indicating that the gestures simulated by WordGesture-GAN are more similar to the user-drawn gestures compared with the other two models. Figure
+       <a class="fig" href="#fig8">
+        8
+       </a>
+       shows examples of simulated gestures of WordGesture-GAN and the Minimum Jerk model compared with the user-drawn gestures. As shown, WordGesture-GAN could simulate gestures similar to the user drawn-gestures.
+      </p>
+     </section>
+     <section id="sec-26">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.5
+         </span>
+         Frechet Inception Distance Score between Simulated and User-drawn Gestures
+        </h3>
+       </div>
+      </header>
+      <p>
+       We also measured the realism and diversity of generated gestures using the Frechet inception distance score (FID) [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ]. In image generation tasks, the FID score is a common metric for evaluating both the realism and diversity of images and has been shown to correlate well with human perception of realism [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ]. To apply this metric to our work, we trained an auto-encoder on the training dataset we used for the other 3 models. The objective of the auto-encoder was to encode a user-drawn gesture to a reduced dimension latent code and use the resulting latent code to reconstruct the original gesture. The auto encoder is a different structure from the GAN model, consisting of a multi-layer perceptron encoder and a multi-layer perceptron decoder, and being tasked with reconstructing the original gesture that was given. After extracting latent codes for both user-drawn gestures and simulated gesture using the encoder, we measured the Frechet Distance [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+        16
+       </a>
+       ] between the user-drawn and generated gesture latent code distributions using the mean and variance from each. For simulated gestures that are similar to user-drawn gestures, their encodings in the latent space should be similar to the encodings of user-drawn gestures, resulting in a small Frechet distance in the latent space. The final
+       <em>
+        L
+       </em>
+       <sub>
+        1
+       </sub>
+       reconstruction loss in training was 0.041 and the final
+       <em>
+        L
+       </em>
+       <sub>
+        1
+       </sub>
+       reconstruction loss on the testing set was 0.046. The FID Scores are presented in Table
+       <a class="tbl" href="#tab3">
+        3
+       </a>
+       . As shown, the distribution of gestures generated by WordGesture-GAN have the lowest Frechet Distance, indicating that they resembled the user-drawn gestures more closely than gestures generated by the other two models.
+      </p>
+      <div class="table-responsive" id="tab3">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 3:
+        </span>
+        <span class="table-title">
+         Frechet Inception Distance between generated and user-drawn gestures by three models. Lower score is better.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Method
+          </td>
+          <td>
+           Frechet Inception Distance Score
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Minimum Jerk Model
+          </td>
+          <td>
+           0.354
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Style Transfer GAN
+          </td>
+          <td>
+           2.733
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           WordGesture-GAN
+          </td>
+          <td>
+           <strong>
+            0.270
+           </strong>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </section>
+     <section id="sec-27">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.6
+         </span>
+         Precision and Recall of Generated Gestures over the User-Drawn Gestures
+        </h3>
+       </div>
+      </header>
+      <p>
+       <font color="#000000">
+        To further assess the realism and diversity of generated gestures, we use precision and recall [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+         25
+        </a>
+        ] to assess whether generated gestures truthfully represent the user-drawn gestures (precision), and whether the generated gestures cover variance in the user-drawn gestures (recall). Specifically, we followed a previously proposed method to estimate the manifold for the user drawn and generated gestures using
+        <em>
+         k
+        </em>
+        nearest neighbors
+       </font>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ].
+       <font color="#000000">
+        For estimating the precision and recall for the user-drawn distribution
+        <em>
+         U
+        </em>
+        and the generated distribution
+        <em>
+         G
+        </em>
+        , we describe the precision as the percentage of generated gestures in
+        <em>
+         G
+        </em>
+        that fall within the the user-drawn gesture manifold, while recall represents the percentage of user-drawn gestures that fall within the generated gesture manifold.
+       </font>
+      </p>
+      <p>
+       <font color="#000000">
+        More specifically, we calculated the precision and recall as follows. We first estimated the respective gesture manifolds by taking each gesture from the respective distribution (
+        <em>
+         U
+         <sub>
+          i
+         </sub>
+        </em>
+        or
+        <em>
+         G
+         <sub>
+          j
+         </sub>
+        </em>
+        ) and drawing a bounding circle
+        <em>
+         B
+        </em>
+        (
+        <em>
+         p
+        </em>
+        ,
+        <em>
+         r
+        </em>
+        ) around each gesture, where
+        <em>
+         p
+        </em>
+        is the center point, represented as a gesture, and
+        <em>
+         r
+        </em>
+        is the radius of the bounding circle. For estimating the manifold,
+        <em>
+         r
+        </em>
+        is equal to the distance to the k-th nearest neighbor of center point
+        <em>
+         p
+        </em>
+        represented as
+        <em>
+         NND
+         <sub>
+          k
+         </sub>
+        </em>
+        (
+        <em>
+         p
+        </em>
+        ). We set
+        <em>
+         k
+        </em>
+        = 3 as suggested in the original paper
+       </font>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+        25
+       </a>
+       ].
+       <font color="#000000">
+        The distance between gesture pairs is calculated using the
+        <em>
+         L
+        </em>
+        <sub>
+         2
+        </sub>
+        distance the same way as the
+        <em>
+         L
+        </em>
+        <sub>
+         2
+        </sub>
+        distances were calculated for the
+        <em>
+         L
+        </em>
+        <sub>
+         2
+        </sub>
+        Wasserstein distance.
+       </font>
+      </p>
+      <p>
+       <font color="#000000">
+        With the manifolds defined, we estimate the precision and recall as follows:
+       </font>
+      </p>
+      <div class="table-responsive" id="eq7">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation} precision = \frac{1}{|U|}\sum ^{|U|}_{j=0}1_{\exists i~\text{s.t.}~G_j \in B(U_i, NND_k(U_i))} \end{equation}
+        </span>
+        <br/>
+        <span class="equation-number">
+         (7)
+        </span>
+       </div>
+      </div>
+      <div class="table-responsive" id="eq8">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation} recall = \frac{1}{|G|}\sum ^{|G|}_{i=0}1_{\exists i~\text{s.t.}~U_i \in B(G_j, NND_k(G_j))} \end{equation}
+        </span>
+        <br/>
+        <span class="equation-number">
+         (8)
+        </span>
+       </div>
+      </div>
+      <p>
+      </p>
+      <p>
+       <font color="#000000">
+        The precision and recall for all three models on the testing dataset are presented in Table
+       </font>
+       <a class="tbl" href="#tab4">
+        4
+       </a>
+       .
+       <font color="#000000">
+        The results show that WordGesture-GAN has the highest precision value, indicating that WordGesture-GAN outperformed other two models in generating realistic gestures. On the other hand, The recall score of WordGesture-GAN is lower than other models, indicating that it could be further improved by increasing the variance of generated gestures. We discuss a potential research direction to mitigate this issue in the Limitations and Future Work section.
+       </font>
+      </p>
+      <div class="table-responsive" id="tab4">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 4:
+        </span>
+        <span class="table-title">
+         Precision and recall of generated gestures over the user-drawn gestures for all three models. Higher is better.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Method
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Precision
+          </td>
+          <td>
+           Recall
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Minimum Jerk Model
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           0.785
+          </td>
+          <td>
+           <strong>
+            0.575
+           </strong>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Style Transfer GAN
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           0.229
+          </td>
+          <td>
+           0.569
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           WordGesture-GAN
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <strong>
+            0.973
+           </strong>
+          </td>
+          <td>
+           0.258
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </section>
+     <section id="sec-28">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.7
+         </span>
+         Correlations for Velocity and Acceleration between Generated and User-drawn Gestures
+        </h3>
+       </div>
+      </header>
+      <div class="table-responsive" id="tab5">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 5:
+        </span>
+        <span class="table-title">
+         Mean (std. dev) of Velocity and acceleration correlations between simulated and user drawn gestures for each model.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Method
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Velocity Correlation
+          </td>
+          <td>
+           Acceleration Correlation
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Minimum Jerk Model
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <font color="#000000">
+            <strong>
+             0.40 (0.24)
+            </strong>
+           </font>
+          </td>
+          <td>
+           <font color="#000000">
+            0.21 (0.14)
+           </font>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Style Transfer GAN
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <font color="#000000">
+            0.31 (0.18)
+           </font>
+          </td>
+          <td>
+           <font color="#000000">
+            <strong>
+             0.26 (0.21)
+            </strong>
+           </font>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           WordGesture-GAN
+          </td>
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <font color="#000000">
+            <strong>
+             0.40 (0.21)
+            </strong>
+           </font>
+          </td>
+          <td>
+           <font color="#000000">
+            <strong>
+             0.26 (0.17)
+            </strong>
+           </font>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p>
+       In addition to visual analysis, we also analyze the correlation for the Velocity and Acceleration between generated and user-drawn gestures, following the method used to evaluate the Minimum Jerk Model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ]. We measured the Pearson Correlation between the user-drawn and generated gestures to quantify the correlation between the profiles. Our analysis presented in Table
+       <a class="tbl" href="#tab5">
+        5
+       </a>
+       shows that although the correlation for WordGesture-GAN is not the highest for either velocity or acceleration, it is close to the highest value for both measures. More specifically, WordGesture-GAN is slightly behind the Minimum Jerk Model, but better than the Style-Transfer Model in velocity correlation; it is slightly behind Style-Transfer GAN model, but better than the Minimum Jerk model in acceleration correlation.
+      </p>
+      <figure id="fig9">
+       <img alt="Figure 9" aria-describedby="fig010" class="img-responsive" src="3581279_files\chi23590fig9.jpg"/>
+       <p id="fig010" style="display:none">
+        Velocity and Acceleration profiles for gestures of the words “brain”, “equal”, “liked”, and “place”. Five user drawn gestures (orange) and 5 simulated gestures (blue) are shown for each word. WG-GAN can match the peaks for user-drawn gestures for these dynamics.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 9:
+        </span>
+        <span class="figure-title">
+         Comparisons of five simulated gestures dynamics by WordGesture-GAN (blue) to five user-drawn gesture dynamics (orange) for the same word. Simulated gestures were able to reflect the trends of movement dynamics in user-drawn gestures.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-29">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.8
+         </span>
+         Distributions of Velocity and Acceleration for Generated and User-Drawn Gestures
+        </h3>
+       </div>
+      </header>
+      <p>
+       <font color="#000000">
+        We also compare the distributions of velocity and acceleration for generated and user drawn gestures against each other using box plots. We calculate the velocities and accelerations across all gestures by using first and second derivative Savitzky-Golay filters
+       </font>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+        40
+       </a>
+       ]
+       <font color="#000000">
+        and applying them to the gestures. Figure
+       </font>
+       <a class="fig" href="#fig10">
+        10
+       </a>
+       <font color="#000000">
+        shows the distributions of velocity and acceleration for the user-drawn gestures and generated gestures from all 3 models. The distributions are visualized using a box plot. The distributions of velocities and accelerations for WordGesture-GAN more closely represent the distributions of velocities and accelerations for the user-drawn gestures than the other two models.
+       </font>
+      </p>
+      <figure id="fig10">
+       <img alt="Figure 10" aria-describedby="fig011" class="img-responsive" src="3581279_files\chi23590fig10.jpg"/>
+       <p id="fig011" style="display:none">
+        Box plots showing the velocity and acceleration distributions normalized by the keyboard dimensions for the user-drawn gestures and generated gestures for all 3 models. The distributions for WordGesture-GAN are closer than both the Minimum Jerk and Style-GAN models to the user-drawn distributions, having similar ranges for the values.
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 10:
+        </span>
+        <span class="figure-title">
+         <font color="#000000">
+          Box plots showing the velocity and acceleration distributions normalized by the keyboard dimensions for the user-drawn gestures and generated gestures for all 3 models. The distributions for WordGesture-GAN are closer than both the Minimum Jerk and Style-GAN models to the user-drawn distributions.
+         </font>
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-30">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.9
+         </span>
+         Comparing Jerk in User-drawn and Generated Gestures
+        </h3>
+       </div>
+      </header>
+      <div class="table-responsive" id="tab6">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 6:
+        </span>
+        <span class="table-title">
+         <font color="#000000">
+          mean
+         </font>
+         (std. dev) jerk for gestures from the presented models and user-drawn gestures.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Method
+          </td>
+          <td>
+           Jerk
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           User-Drawn
+          </td>
+          <td>
+           <font color="#000000">
+            0.0066 (0.0103)
+           </font>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Minimum Jerk Model
+          </td>
+          <td>
+           <font color="#000000">
+            0.0034 (0.0098)
+           </font>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           Style Transfer GAN
+          </td>
+          <td>
+           <font color="#000000">
+            0.0051 (0.0107)
+           </font>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           WordGesture-GAN
+          </td>
+          <td>
+           <font color="#000000">
+            <strong>
+             0.0058
+            </strong>
+            (0.0083)
+           </font>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p>
+       We compared the average jerk of user-drawn and generated gestures for each model as well. If the generated gestures resemble the user-drawn gestures, they should have the similar amount of jerk. We calculated the jerk by
+       <font color="#000000">
+        applying a third derivative Savtizky-Golay filter
+       </font>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+        40
+       </a>
+       ]
+       <font color="#000000">
+        to the gestures, using a third degree polynomial and a window size of 5
+       </font>
+       Table
+       <a class="tbl" href="#tab6">
+        6
+       </a>
+       shows the
+       <font color="#000000">
+        mean
+       </font>
+       (std. dev) of jerk over all generated and user-drawn gestures. As shown, the amount of jerk in gestures generated by WordGesture-GAN is closest to the amount of the jerk in the user-drawn gestures, indicating that the gestures generated by WordGesture-GAN resemble the user-drawn gestures more closely than other two models. It is also as expected that the gestures generated by the minimum jerk model have the lowest jerk as this model aims to the minimize the jerk of gesture movements.
+      </p>
+     </section>
+     <section id="sec-31">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.10
+         </span>
+         Duration of Gesture Production
+        </h3>
+       </div>
+      </header>
+      <p>
+       As WordGesture-GAN can simulate the timestamps of each touch point, it can predict the duration of drawing a gesture: the timestamp of the last touch point also indicates the duration of the drawing a gesture. To understand whether this duration prediction is accurate, we compared WordGesture-GAN against the CLC model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+        6
+       </a>
+       ] for predicting the duration of drawing gestures. The CLC model approximates the gesture production duration by summing up the cost for drawing line segments of a word prototype. More specifically the time duration for drawing line segments is determined by a function with parameters
+       <em>
+        m
+       </em>
+       and
+       <em>
+        n
+       </em>
+      </p>
+      <div class="table-responsive" id="Xeq1">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation} T(\overline{AB}) = m * (||\overline{AB}||_2)^n \end{equation}
+        </span>
+        <br/>
+        <span class="equation-number">
+         (9)
+        </span>
+       </div>
+      </div>
+      where
+      <span class="inline-equation">
+       <span class="tex">
+        $\overline{AB}$
+       </span>
+      </span>
+      is a line segment,
+      <span class="inline-equation">
+       <span class="tex">
+        $||\overline{AB}||_2$
+       </span>
+      </span>
+      is the length of the line segment, and
+      <em>
+       m
+      </em>
+      and
+      <em>
+       n
+      </em>
+      are empirically determined constants. The equation to get the duration of a gesture for a word is then the sum of the duration of the line segments. the final equation for the duration of a word is then
+      <div class="table-responsive" id="Xeq2">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation} T(P) = \sum _{\overline{AB} \in P}{T(\overline{AB})} \end{equation}
+        </span>
+        <br/>
+        <span class="equation-number">
+         (10)
+        </span>
+       </div>
+      </div>
+      We optimized the
+      <em>
+       m
+      </em>
+      and
+      <em>
+       n
+      </em>
+      values on the training set by finding the combination of
+      <em>
+       m
+      </em>
+      and
+      <em>
+       n
+      </em>
+      that minimizes the Root Mean Square Error (RMSE) of the total duration. The values were
+      <em>
+       m
+      </em>
+      = 431.9 and
+      <em>
+       n
+      </em>
+      = 0.125.
+      <p>
+      </p>
+      <p>
+       <font color="#000000">
+        The evaluation on the testing dataset showed that the RMSE for the CLC model was 1150.7 ms while WordGesture-GAN achieved an RMSE of 1180.3 ms. For reference, the average duration of gestures in the testing dataset was 1946.8 ms. Both WordGesture-GAN and the CLC model have similar performance in predicting the mean of duration. Our further analysis showed that WordGesture-GAN is better at estimating the duration of longer gestures, while the CLC model is better for short-length words, as is shown in Figure
+        <a class="fig" href="#fig11">
+         11
+        </a>
+        . Different from the CLC model, since WordGesture-GAN generates a distribution, it can estimate the variance of durations for gesture movement time. It estimated that the mean of Std. Dev. of gesture duration per word is 140 ms. For reference, the mean Std. Dev. of duration of user-drawn gestures per word was 609 ms.
+       </font>
+      </p>
+      <figure id="fig11">
+       <img alt="Figure 11" aria-describedby="fig012" class="img-responsive" src="3581279_files\chi23590fig11.jpg"/>
+       <p id="fig012" style="display:none">
+        Bar chart showing the Mean and Standard Deviation for words with different word lengths for gesture production time for user-drawn, WordGesture-GAN, and the CLC Model. The word lengths ranges are 2-4 characters, 5-10 characters, and 11-18 characters. in the 2-4 range the CLC model prediction is closer to the user drawn gestures, but for the 5-10 and 11-18 character ranges the CLC model overshoots and is further from the User drawn gestures than the estimated durations from WordGesture-GAN
+       </p>
+       <figcaption>
+        <span class="figure-number">
+         Figure 11:
+        </span>
+        <span class="figure-title">
+         <font color="#000000">
+          Mean (Std. Dev) gesture duration for words with different lengths for User-Drawn, and prediction by WordGesture-GAN and the CLC model. The mean and standard deviation duration for each word are calculated and then averaged within the respective word length bucket for user-drawn and prediction by WordGesture-GAN . The CLC model does not have error bars since it only estimates a single mean value for each word and cannot predict the standard deviation of gesture duration
+         </font>
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+      </p>
+     </section>
+    </section>
+    <section id="sec-32">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         6
+        </span>
+        DISCUSSION AND FUTURE WORK
+       </h2>
+      </div>
+     </header>
+     <section id="sec-33">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.1
+         </span>
+         Performance of WordGesture-GAN
+        </h3>
+       </div>
+      </header>
+      <p>
+       Our experiment results on the testing data set showed that the gestures generated by WordGesture-GAN more closely resemble the user drawn gestures than the Minimum Jerk model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+        37
+       </a>
+       ] and Style-Transfer GAN [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+        31
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+        32
+       </a>
+       ]. The
+       <em>
+        L
+       </em>
+       <sub>
+        2
+       </sub>
+       and DTW Wasserstein distances between the simulated and user-drawn gestures show that WordGesture-GAN captures the shape of user-drawn gestures the best, compared with the Minimum Jerk and Style-Transfer GAN. Our analysis of the total amount of jerk, and FID score also shows the gestures generated by WordGesture-GAN resemble the user-drawn gestures more closely than other two models. We also presented visual examples of user-drawn gestures and simulated gestures from all 3 models to show that WordGesture-GAN has the closest resemblance visually to user-drawn gestures.
+      </p>
+     </section>
+     <section id="sec-34">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.2
+         </span>
+         Applications of WordGesture-GAN
+        </h3>
+       </div>
+      </header>
+      <div class="table-responsive" id="tab7">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 7:
+        </span>
+        <span class="table-title">
+         <font color="#000000">
+          Word error rate of the SHARK
+          <sup>
+           2
+          </sup>
+          decoder for different training setups
+         </font>
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <font color="#000000">
+            Training Setup
+           </font>
+          </td>
+          <td>
+           <font color="#000000">
+            Word error rate on testing data set
+           </font>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <font color="#000000">
+            200 User-drawn gestures
+           </font>
+          </td>
+          <td>
+           <font color="#000000">
+            32.8%
+           </font>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <font color="#000000">
+            200 User-drawn + 10000 simulated gestures
+           </font>
+          </td>
+          <td>
+           <font color="#000000">
+            28.6%
+           </font>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <font color="#000000">
+            10000 Simulated gestures
+           </font>
+          </td>
+          <td>
+           <font color="#000000">
+            28.6%
+           </font>
+          </td>
+         </tr>
+         <tr style="border-bottom: 2pt solid #000000;">
+          <td style="text-align:left;border-right: 2pt solid #000000;">
+           <font color="#000000">
+            10000 User-drawn gestures
+           </font>
+          </td>
+          <td>
+           <font color="#000000">
+            27.8%
+           </font>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p>
+       Generative gesture models like WordGesture-GAN can be used to improve the development and evaluation of word-gesture based input systems, and for keyboard layout optimization and evaluation.
+      </p>
+      <p>
+       First, as simulated gestures can accurately reflect spatial and temporal features of gesture movements, WordGesture-GAN can be used for training and testing a word-gesture decoder. The development of word-gesture based input systems often require a large number of gestures for training and testing, which is laborious to collect. WordGesture-GAN can be deployed to simulate a large number of gestures for words with only small training samples, and for words that were not included in data collection. Its ability to simulate both spatial and temporal sequences (i.e., (
+       <em>
+        x
+        <sub>
+         i
+        </sub>
+       </em>
+       ,
+       <em>
+        y
+        <sub>
+         i
+        </sub>
+       </em>
+       ,
+       <em>
+        t
+        <sub>
+         i
+        </sub>
+       </em>
+       ) is valuable especially if a decoder under evaluation takes into account both spatial and temporal information (e.g., speed or acceleration) for decoding.
+      </p>
+      <p>
+       As an example, we investigated using gestures simulated by WordGesture-GAN to train a SHARK
+       <sup>
+        2
+       </sup>
+       decoder [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ]. The SHARK
+       <sup>
+        2
+       </sup>
+       decoder is a multi-channel recognition system that integrates distance scores from a location channel, a shape channel, and probability scores from a language component. The SHARK
+       <sup>
+        2
+       </sup>
+       decoder algorithm assumes that the distance from a gesture to the standard template of the intended word (in either the shape or the location channel) follows a Gaussian distribution
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {N}(0, \sigma)$
+        </span>
+       </span>
+       . First introduced in 2004 [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ], SHARK
+       <sup>
+        2
+       </sup>
+       outlines the principle of decoding gesture input that has been widely adopted by various gesture input systems (e.g.,  [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+        10
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+        11
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+        23
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+        52
+       </a>
+       ]). It was also the algorithm adopted by the authors of the mobile word-gesture dataset [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+        26
+       </a>
+       ] to analyze the gesture input accuracy. We decided on the SHARK
+       <sup>
+        2
+       </sup>
+       decoder due to it being a well-known and accessible open-source algorithm. Our results shown here using the decoder can therefore be used for comparison against other works. For the shape channel, this distribution is
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {N}(0, \sigma _{Shape})$
+        </span>
+       </span>
+       , and for the location channel, this distribution is
+       <span class="inline-equation">
+        <span class="tex">
+         $\mathcal {N}(0, \sigma _{Loc})$
+        </span>
+       </span>
+       . Therefore, there are three main empirically determined parameters in the SHARK
+       <sup>
+        2
+       </sup>
+       decoder:
+       <em>
+        σ
+        <sub>
+         Loc
+        </sub>
+       </em>
+       ,
+       <em>
+        σ
+        <sub>
+         Shape
+        </sub>
+       </em>
+       , and
+       <em>
+        σ
+        <sub>
+         LM
+        </sub>
+       </em>
+       which is the weight for the language model as described in previous research [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ]. We implemented a SHARK
+       <sup>
+        2
+       </sup>
+       decoder following the description in the original paper [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+        22
+       </a>
+       ], and trained the above three parameters using the setups described in Table
+       <a class="tbl" href="#tab7">
+        7
+       </a>
+       and tested the decoding results on 30000 unseen user-drawn gestures. We obtained user-drawn gestures from the mobile word-gesture dataset [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+        26
+       </a>
+       ] for training and testing the SHARK
+       <sup>
+        2
+       </sup>
+       decoder. More specifically, we reserved 30000 gestures for testing and randomly sampled 200 user-drawn gestures from the rest for training. We used the same 30k unigram language model trained from the COCA Corpus [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+        12
+       </a>
+       ] across all conditions.
+      </p>
+      <p>
+       <font color="#000000">
+        Our evaluation (Table
+        <a class="tbl" href="#tab7">
+         7
+        </a>
+        ) shows that augmenting user-drawn gestures with gestures simulated by WordGesture-GAN can benefit training word-gesture decoders. Furthermore, simulated gestures alone can achieve similar performance in training a word-gesture decoder compared to training with real-world gestures (decoding word error rate 28.6% versus 27.8%).
+       </font>
+      </p>
+      <p>
+       Second, since WordGesture-GAN can also predict the gesture production time for a word, it can serve as a performance model in interface design, optimization, and evaluation. For example, performance models such CLC model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+        6
+       </a>
+       ] and Rick's model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+        39
+       </a>
+       ] have been used to design, optimize, and evaluate keyboard layouts for word-gesture input. The WordGesture-GAN could play the same role as these models. A potential weakness of WordGesture-GAN is that neural network based model typically takes longer time than an analytic model (e.g., CLC model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+        6
+       </a>
+       ]) for making prediction. More research is needed to understand whether it would be appropriate for keyboard layout optimization research.
+      </p>
+      <p>
+       Third, as a data-driven model, WordGesture-GAN can be trained to learn any type of word-gesture data. A key benefit of neural network based generative model is the ability to fine-tune them for specific tasks. As we have shown, our model is able to simulate a variety of word-gestures from a small training dataset, which is ideal for simulating difficult to sample data. For example, the model could be shown a dataset containing gestures where the user made a mistake and could learn to recreate those types of gestures for different words.
+      </p>
+     </section>
+     <section id="sec-35">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.3
+         </span>
+         Limitations and Future Work
+        </h3>
+       </div>
+      </header>
+      <p>
+       <font color="#000000">
+        One area in which the current model can be improved further is the diversity of the generated gestures. While the model is capable of generate different gestures for a given word, the variance of these is somewhat limited compared to other gesture production models as is noted in Section
+       </font>
+       <a class="sec" href="#sec-27">
+        5.6
+       </a>
+       .
+       <font color="#000000">
+        A potential method for improving the variance could be to use gestures generated by the Minimum jerk model as input instead of the straight-line prototype. Since the Minimum Jerk gestures already have some variance for a given word, this could improve the variance of gestures from the model while still maintaining higher fidelity.
+       </font>
+      </p>
+     </section>
+    </section>
+    <section id="sec-36">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         7
+        </span>
+        CONCLUSION
+       </h2>
+      </div>
+     </header>
+     <p>
+      We have designed and implemented WordGesture-GAN, a conditional generative adversarial network that takes arbitrary text as input, and generates realistic word-gesture movements in both spatial and temporal dimensions (i.e., a vector of (
+      <em>
+       x
+       <sub>
+        i
+       </sub>
+      </em>
+      ,
+      <em>
+       y
+       <sub>
+        i
+       </sub>
+      </em>
+      ,
+      <em>
+       t
+       <sub>
+        i
+       </sub>
+      </em>
+      )). The innovations of WordGesture-GAN include introducing a Variational Auto-Encoder to extract the variation of user-drawn gestures, using the Wasserstein distance and
+      <em>
+       L
+      </em>
+      <sub>
+       1
+      </sub>
+      distance to ensure simulated gestures resembled user-drawn gestures, and adopting a two-cycle process to train the model. Our experiment on a 38k dataset shows that WordGesture-GAN outperforms the existing gesture production models [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ] in generating realistic gestures, measured by the
+      <em>
+       L
+      </em>
+      <sub>
+       2
+      </sub>
+      and dynamic time warping Wasserstein distances, the Frecher Inception Distance (FID) scores, and the amount of jerk in gestures. WordGesture-GAN can also predict the duration of drawing word-gestures, serving as a performance model. Our evaluation shows it overall performs similarly to the existing CLC model [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ] in predicting the duration of word-gesture movements. As WordGesture-GAN can generate realistic word-gestures and predict input performance, it serves as a valuable tool to develop and evaluate gestural input systems.
+     </p>
+    </section>
+   </section>
+   <section class="back-matter">
+    <section id="ref-001">
+     <header>
+      <div class="title-info">
+       <h2 class="page-brake-head">
+        REFERENCES
+       </h2>
+      </div>
+     </header>
+     <ul class="bibUl">
+      <li id="BibPLXBIB0001" label="[1]">
+       Jessalyn Alvina, Carla F. Griggio, Xiaojun Bi, and Wendy E. Mackay. 2017. CommandBoard: Creating a General-Purpose Command Gesture Input Space for Soft Keyboard. In Proceedings of the 30th Annual ACM Symposium on User Interface Software and Technology (Québec City, QC, Canada) (UIST ’17). Association for Computing Machinery, New York, NY, USA, 17–28.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3126594.3126639">
+        https://doi.org/10.1145/3126594.3126639
+       </a>
+      </li>
+      <li id="BibPLXBIB0002" label="[2]">
+       Dongsheng An, Yang Guo, Min Zhang, Xin Qi, Na Lei, and Xianfang Gu. 2020. AE-OT-GAN: Training GANs from Data Specific Latent Distribution. In
+       <em>
+        Computer Vision – ECCV 2020
+       </em>
+       , Andrea Vedaldi, Horst Bischof, Thomas Brox, and Jan-Michael Frahm (Eds.). Springer International Publishing, Cham, 548–564.
+      </li>
+      <li id="BibPLXBIB0003" label="[3]">
+       Martin Arjovsky, Soumith Chintala, and Léon Bottou. 2017. Wasserstein Generative Adversarial Networks. In
+       <em>
+        Proceedings of the 34th International Conference on Machine Learning - Volume 70
+       </em>
+       (
+       <em>
+        ICML’17
+       </em>
+       ). JMLR.org, Sydney, NSW, Australia, 214–223.
+      </li>
+      <li id="BibPLXBIB0004" label="[4]">
+       Xiaojun Bi, Ciprian Chelba, Tom Ouyang, Kurt Partridge, and Shumin Zhai. 2012.
+       <em>
+        Bimanual Gesture Keyboard
+       </em>
+       . Association for Computing Machinery, New York, NY, USA, 137–146.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2380116.2380136">
+        https://doi.org/10.1145/2380116.2380136
+       </a>
+      </li>
+      <li id="BibPLXBIB0005" label="[5]">
+       Xiaojun Bi and Shumin Zhai. 2016. IJQwerty: What Difference Does One Key Change Make? Gesture Typing Keyboard Optimization Bounded by One Key Position Change from Qwerty. In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems (San Jose, California, USA) (CHI ’16). Association for Computing Machinery, New York, NY, USA, 49–58.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858421">
+        https://doi.org/10.1145/2858036.2858421
+       </a>
+      </li>
+      <li id="BibPLXBIB0006" label="[6]">
+       Xiang Cao and Shumin Zhai. 2007. Modeling Human Performance of Pen Stroke Gestures. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (San Jose, California, USA) (CHI ’07). Association for Computing Machinery, New York, NY, USA, 1495–1504.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1240624.1240850">
+        https://doi.org/10.1145/1240624.1240850
+       </a>
+      </li>
+      <li id="BibPLXBIB0007" label="[7]">
+       SK Card, TP Moran, and A Newell. 1983.
+       <em>
+        The psychology of human-computer interaction
+       </em>
+       . L. Erlbaum Associates Inc., USA.
+      </li>
+      <li id="BibPLXBIB0008" label="[8]">
+       Zhehuai Chen, Andrew Rosenberg, Yu Zhang, Gary Wang, Bhuvana Ramabhadran, and Pedro J. Moreno. 2020. Improving Speech Recognition Using GAN-Based Speech Synthesis and Contrastive Unspoken Text Selection. In
+       <em>
+        Proc. Interspeech 2020
+       </em>
+       . International Speech Communication Association, Shanghai, China, 556–560.
+       <a class="link-inline force-break" href="https://doi.org/10.21437/Interspeech.2020-1475">
+        https://doi.org/10.21437/Interspeech.2020-1475
+       </a>
+      </li>
+      <li id="BibPLXBIB0009" label="[9]">
+       Danilo Croce, Giuseppe Castellucci, and Roberto Basili. 2020. GAN-BERT: Generative Adversarial Learning for Robust Text Classification with a Bunch of Labeled Examples. In
+       <em>
+        Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics
+       </em>
+       . Association for Computational Linguistics, Online, 2114–2119.
+       <a class="link-inline force-break" href="https://doi.org/10.18653/v1/2020.acl-main.191">
+        https://doi.org/10.18653/v1/2020.acl-main.191
+       </a>
+      </li>
+      <li id="BibPLXBIB0010" label="[10]">
+       Wenzhe Cui, Jingjie Zheng, Blaine Lewis, Daniel Vogel, and Xiaojun Bi. 2019. Hotstrokes: Word-gesture shortcuts on a trackpad. In
+       <em>
+        Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems
+       </em>
+       . 1–13.
+      </li>
+      <li id="BibPLXBIB0011" label="[11]">
+       Wenzhe Cui, Suwen Zhu, Zhi Li, Zheer Xu, Xing-Dong Yang, IV Ramakrishnan, and Xiaojun Bi. 2021. BackSwipe: Back-of-device Word-Gesture Interaction on Smartphones. In
+       <em>
+        Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems
+       </em>
+       . 1–12.
+      </li>
+      <li id="BibPLXBIB0012" label="[12]">
+       Mark Davies. 2008. The corpus of contemporary American English (COCA): 560 million words, 1990-present.
+      </li>
+      <li id="BibPLXBIB0013" label="[13]">
+       Jesse H. Engel, Kumar Krishna Agrawal, Shuo Chen, Ishaan Gulrajani, Chris Donahue, and Adam Roberts. 2019. GANSynth: Adversarial Neural Audio Synthesis. In 7th International Conference on Learning Representations, ICLR 2019, New Orleans, LA, USA, May 6-9, 2019 (New Orleans, LA, USA). OpenReview.net, -, –.
+       <a class="link-inline force-break" href="https://openreview.net/forum?id=H1xQVn09FX">
+        https://openreview.net/forum?id=H1xQVn09FX
+       </a>
+      </li>
+      <li id="BibPLXBIB0014" label="[14]">
+       T Flash and N Hogan. 1985. The coordination of arm movements: an experimentally confirmed mathematical model.
+       <em>
+        <em>
+         Journal of Neuroscience
+        </em>
+       </em>
+       5, 7 (1985), 1688–1703.
+       <a class="link-inline force-break" href="https://doi.org/10.1523/JNEUROSCI.05-07-01688.1985">
+        https://doi.org/10.1523/JNEUROSCI.05-07-01688.1985
+       </a>
+       arXiv:
+       <a class="link-inline force-break" href="https://www.jneurosci.org/content/5/7/1688.full.pdf">
+        https://www.jneurosci.org/content/5/7/1688.full.pdf
+       </a>
+      </li>
+      <li id="BibPLXBIB0015" label="[15]">
+       Ian Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley, Sherjil Ozair, Aaron Courville, and Yoshua Bengio. 2014. Generative Adversarial Nets. In
+       <em>
+        Advances in Neural Information Processing Systems
+       </em>
+       , Z. Ghahramani, M. Welling, C. Cortes, N. Lawrence, and K. Q. Weinberger (Eds.). Vol. 27. Curran Associates, Inc., Montréal, Canada.
+       <a class="link-inline force-break" href="https://proceedings.neurips.cc/paper/2014/file/5ca3e9b122f61f8f06494c97b1afccf3-Paper.pdf">
+        https://proceedings.neurips.cc/paper/2014/file/5ca3e9b122f61f8f06494c97b1afccf3-Paper.pdf
+       </a>
+      </li>
+      <li id="BibPLXBIB0016" label="[16]">
+       Martin Heusel, Hubert Ramsauer, Thomas Unterthiner, Bernhard Nessler, and Sepp Hochreiter. 2017. GANs Trained by a Two Time-Scale Update Rule Converge to a Local Nash Equilibrium. In
+       <em>
+        Advances in Neural Information Processing Systems
+       </em>
+       , I. Guyon, U. Von Luxburg, S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and R. Garnett (Eds.). Vol. 30. Curran Associates, Inc., Red Hook, NY, USA.
+       <a class="link-inline force-break" href="https://proceedings.neurips.cc/paper/2017/file/8a1d694707eb0fefe65871369074926d-Paper.pdf">
+        https://proceedings.neurips.cc/paper/2017/file/8a1d694707eb0fefe65871369074926d-Paper.pdf
+       </a>
+      </li>
+      <li id="BibPLXBIB0017" label="[17]">
+       CooTek (Cayman) Inc.2007. TouchPal.
+       <a class="link-inline force-break" href="https://www.touchpal.com/">
+        https://www.touchpal.com/
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0018" label="[18]">
+       Phillip Isola, Jun-Yan Zhu, Tinghui Zhou, and Alexei A. Efros. 2017. Image-to-Image Translation with Conditional Adversarial Networks. In
+       <em>
+        2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)
+       </em>
+       . IEEE Computer Society, USA, 5967–5976.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2017.632">
+        https://doi.org/10.1109/CVPR.2017.632
+       </a>
+      </li>
+      <li id="BibPLXBIB0019" label="[19]">
+       Tero Karras, Samuli Laine, and Timo Aila. 2021. A Style-Based Generator Architecture for Generative Adversarial Networks.
+       <em>
+        <em>
+         IEEE Trans. Pattern Anal. Mach. Intell.
+        </em>
+       </em>
+       43, 12 (dec 2021), 4217–4228.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/TPAMI.2020.2970919">
+        https://doi.org/10.1109/TPAMI.2020.2970919
+       </a>
+      </li>
+      <li id="BibPLXBIB0020" label="[20]">
+       Diederik P Kingma and Max Welling. 2014. Auto-Encoding Variational Bayes. arxiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/1312.6114">
+        1312.6114
+       </a>
+       [stat.ML]
+      </li>
+      <li id="BibPLXBIB0021" label="[21]">
+       Jungil Kong, Jaehyeon Kim, and Jaekyoung Bae. 2020. Hifi-gan: Generative adversarial networks for efficient and high fidelity speech synthesis.
+       <em>
+        <em>
+         Advances in Neural Information Processing Systems
+        </em>
+       </em>
+       33 (2020), 17022–17033.
+      </li>
+      <li id="BibPLXBIB0022" label="[22]">
+       Per-Ola Kristensson and Shumin Zhai. 2004. SHARK2: A Large Vocabulary Shorthand Writing System for Pen-Based Computers. In Proceedings of the 17th Annual ACM Symposium on User Interface Software and Technology(Santa Fe, NM, USA) (UIST ’04). Association for Computing Machinery, New York, NY, USA, 43–52.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1029632.1029640">
+        https://doi.org/10.1145/1029632.1029640
+       </a>
+      </li>
+      <li id="BibPLXBIB0023" label="[23]">
+       Per Ola Kristensson and Shumin Zhai. 2007. Command Strokes with and without Preview: Using Pen Gestures on Keyboard for Command Selection. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (San Jose, California, USA) (CHI ’07). Association for Computing Machinery, New York, NY, USA, 1137–1146.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1240624.1240797">
+        https://doi.org/10.1145/1240624.1240797
+       </a>
+      </li>
+      <li id="BibPLXBIB0024" label="[24]">
+       Solomon Kullback and Richard A Leibler. 1951. On information and sufficiency.
+       <em>
+        <em>
+         The annals of mathematical statistics
+        </em>
+       </em>
+       22, 1 (1951), 79–86.
+      </li>
+      <li id="BibPLXBIB0025" label="[25]">
+       Tuomas Kynkäänniemi, Tero Karras, Samuli Laine, Jaakko Lehtinen, and Timo Aila. 2019. Improved Precision and Recall Metric for Assessing Generative Models. In
+       <em>
+        Proceedings of the 33rd International Conference on Neural Information Processing Systems
+       </em>
+       . Curran Associates Inc., Red Hook, NY, USA, Article 353, 10 pages.
+      </li>
+      <li id="BibPLXBIB0026" label="[26]">
+       Luis A. Leiva, Sunjun Kim, Wenzhe Cui, Xiaojun Bi, and Antti Oulasvirta. 2021. How We Swipe: A Large-Scale Shape-Writing Dataset and Empirical Findings. In Proceedings of the 23rd International Conference on Mobile Human-Computer Interaction (Toulouse &amp; Virtual, France) (MobileHCI ’21). Association for Computing Machinery, New York, NY, USA, Article 11, 13 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3447526.3472059">
+        https://doi.org/10.1145/3447526.3472059
+       </a>
+      </li>
+      <li id="BibPLXBIB0027" label="[27]">
+       Changliang Li, Yixin Su, and Wenju Liu. 2018. Text-To-Text Generative Adversarial Networks. In
+       <em>
+        2018 International Joint Conference on Neural Networks (IJCNN)
+       </em>
+       . IEEE Computer Society, USA, 1–7.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/IJCNN.2018.8489624">
+        https://doi.org/10.1109/IJCNN.2018.8489624
+       </a>
+      </li>
+      <li id="BibPLXBIB0028" label="[28]">
+       Google LLC. 2016. Gboard.
+       <a class="link-inline force-break" href="https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin">
+        https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0029" label="[29]">
+       Mehran Maghoumi, Eugene Matthew Taranta, and Joseph LaViola. 2021. DeepNAG: Deep Non-Adversarial Gesture Generation. In 26th International Conference on Intelligent User Interfaces (College Station, TX, USA) (IUI ’21). Association for Computing Machinery, New York, NY, USA, 213–223.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3397481.3450675">
+        https://doi.org/10.1145/3397481.3450675
+       </a>
+      </li>
+      <li id="BibPLXBIB0030" label="[30]">
+       Anders Markussen, Mikkel Rønne Jakobsen, and Kasper Hornbæk. 2014. Vulture: A Mid-Air Word-Gesture Keyboard. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (Toronto, Ontario, Canada) (CHI ’14). Association for Computing Machinery, New York, NY, USA, 1073–1082.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2556288.2556964">
+        https://doi.org/10.1145/2556288.2556964
+       </a>
+      </li>
+      <li id="BibPLXBIB0031" label="[31]">
+       Akash Mehra, Jerome R. Bellegarda, Ojas Bapat, Hema Koppula, Rick Chang, Ashish Shrivastava, and Oncel Tuzel. 2021. Implicit vs. Explicit Style Transfer? A Comparison of GAN Architectures for Continuous Path Keyboard Input Modeling. In
+       <em>
+        2021 29th European Signal Processing Conference (EUSIPCO)
+       </em>
+       . IEEE Computer Society, USA, 1396–1400.
+       <a class="link-inline force-break" href="https://doi.org/10.23919/EUSIPCO54536.2021.9615962">
+        https://doi.org/10.23919/EUSIPCO54536.2021.9615962
+       </a>
+      </li>
+      <li id="BibPLXBIB0032" label="[32]">
+       Akash Mehra, Jerome R. Bellegarda, Ojas Bapat, Partha Lal, and Xin Wang. 2020. Leveraging Gans to Improve Continuous Path Keyboard Input Models. In
+       <em>
+        ICASSP 2020 - 2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)
+       </em>
+       . IEEE Computer Society, USA, 8174–8178.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ICASSP40776.2020.9052978">
+        https://doi.org/10.1109/ICASSP40776.2020.9052978
+       </a>
+      </li>
+      <li id="BibPLXBIB0033" label="[33]">
+       Mehdi Mirza and Simon Osindero. 2014. Conditional Generative Adversarial Nets. arxiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/1411.1784">
+        1411.1784
+       </a>
+       [cs.LG]
+      </li>
+      <li id="BibPLXBIB0034" label="[34]">
+       Takeru Miyato, Toshiki Kataoka, Masanori Koyama, and Yuichi Yoshida. 2018. Spectral Normalization for Generative Adversarial Networks. arxiv:
+       <a class="link-inline force-break" href="https://arXiv.org/abs/1802.05957">
+        1802.05957
+       </a>
+       [cs.LG]
+      </li>
+      <li id="BibPLXBIB0035" label="[35]">
+       Taesung Park, Ming-Yu Liu, Ting-Chun Wang, and Jun-Yan Zhu. 2019. GauGAN: Semantic Image Synthesis with Spatially Adaptive Normalization. In ACM SIGGRAPH 2019 Real-Time Live! (Los Angeles, California) (SIGGRAPH ’19). Association for Computing Machinery, New York, NY, USA, Article 2, 1 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3306305.3332370">
+        https://doi.org/10.1145/3306305.3332370
+       </a>
+      </li>
+      <li id="BibPLXBIB0036" label="[36]">
+       Deepak Pathak, Philipp Krähenbühl, Jeff Donahue, Trevor Darrell, and Alexei A. Efros. 2016. Context Encoders: Feature Learning by Inpainting. In
+       <em>
+        2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)
+       </em>
+       . IEEE Computer Society, USA, 2536–2544.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2016.278">
+        https://doi.org/10.1109/CVPR.2016.278
+       </a>
+      </li>
+      <li id="BibPLXBIB0037" label="[37]">
+       Philip Quinn and Shumin Zhai. 2018. Modeling Gesture-Typing Movements.
+       <em>
+        <em>
+         Human–Computer Interaction
+        </em>
+       </em>
+       33, 3 (2018), 234–280.
+       <a class="link-inline force-break" href="https://doi.org/10.1080/07370024.2016.1215922">
+        https://doi.org/10.1080/07370024.2016.1215922
+       </a>
+       arXiv:
+       <a class="link-inline force-break" href="https://doi.org/10.1080/07370024.2016.1215922">
+        https://doi.org/10.1080/07370024.2016.1215922
+       </a>
+      </li>
+      <li id="BibPLXBIB0038" label="[38]">
+       Alec Radford, Luke Metz, and Soumith Chintala. 2015. Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks.
+       <a class="link-inline force-break" href="https://doi.org/10.48550/ARXIV.1511.06434">
+        https://doi.org/10.48550/ARXIV.1511.06434
+       </a>
+      </li>
+      <li id="BibPLXBIB0039" label="[39]">
+       Jochen Rick. 2010. Performance Optimizations of Virtual Keyboards for Stroke-Based Text Entry on a Touch-Based Tabletop. In Proceedings of the 23nd Annual ACM Symposium on User Interface Software and Technology (New York, New York, USA) (UIST ’10). Association for Computing Machinery, New York, NY, USA, 77–86.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/1866029.1866043">
+        https://doi.org/10.1145/1866029.1866043
+       </a>
+      </li>
+      <li id="BibPLXBIB0040" label="[40]">
+       Abraham. Savitzky and M. J. E. Golay. 1964. Smoothing and Differentiation of Data by Simplified Least Squares Procedures.
+       <em>
+        <em>
+         Analytical Chemistry
+        </em>
+       </em>
+       36, 8 (1964), 1627–1639.
+       <a class="link-inline force-break" href="https://doi.org/10.1021/ac60214a047">
+        https://doi.org/10.1021/ac60214a047
+       </a>
+       arXiv:
+       <a class="link-inline force-break" href="https://doi.org/10.1021/ac60214a047">
+        https://doi.org/10.1021/ac60214a047
+       </a>
+      </li>
+      <li id="BibPLXBIB0041" label="[41]">
+       Brian A. Smith, Xiaojun Bi, and Shumin Zhai. 2015. Optimizing Touchscreen Keyboards for Gesture Typing. In Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems (Seoul, Republic of Korea) (CHI ’15). Association for Computing Machinery, New York, NY, USA, 3365–3374.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702357">
+        https://doi.org/10.1145/2702123.2702357
+       </a>
+      </li>
+      <li id="BibPLXBIB0042" label="[42]">
+       Ilya Sutskever, Oriol Vinyals, and Quoc V. Le. 2014. Sequence to Sequence Learning with Neural Networks. In Proceedings of the 27th International Conference on Neural Information Processing Systems - Volume 2 (Montreal, Canada) (NIPS’14). MIT Press, Cambridge, MA, USA, 3104–3112.
+      </li>
+      <li id="BibPLXBIB0043" label="[43]">
+       SwiftKey. 2016. Microsoft Swiftkey.
+       <a class="link-inline force-break" href="https://www.microsoft.com/en-us/swiftkey">
+        https://www.microsoft.com/en-us/swiftkey
+       </a>
+       .
+      </li>
+      <li id="BibPLXBIB0044" label="[44]">
+       Khai N. Truong, Sen H. Hirano, Gillian R. Hayes, and Karyn Moffatt. 2013.
+       <em>
+        2-Thumb Gesture: The Design &amp; Evaluation of a Non-Sequential Bi-manual Gesture Based Text Input Technique for Touch Tablets
+       </em>
+       . Technical Report. Knowledge Media Design Institute.
+      </li>
+      <li id="BibPLXBIB0045" label="[45]">
+       Ting-Chun Wang, Ming-Yu Liu, Jun-Yan Zhu, Andrew Tao, Jan Kautz, and Bryan Catanzaro. 2018. High-Resolution Image Synthesis and Semantic Manipulation with Conditional GANs. In
+       <em>
+        Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition
+       </em>
+       . IEEE Computer Society, USA, 8798–8807.
+      </li>
+      <li id="BibPLXBIB0046" label="[46]">
+       Xintao Wang, Liangbin Xie, Chao Dong, and Ying Shan. 2021. Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data. In
+       <em>
+        2021 IEEE/CVF International Conference on Computer Vision Workshops (ICCVW)
+       </em>
+       . IEEE Computer Society, USA, 1905–1914.
+       <a class="link-inline force-break" href="https://doi.org/10.1109/ICCVW54120.2021.00217">
+        https://doi.org/10.1109/ICCVW54120.2021.00217
+       </a>
+      </li>
+      <li id="BibPLXBIB0047" label="[47]">
+       Shumin Zhai and Per-Ola Kristensson. 2003. Shorthand Writing on Stylus Keyboard. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (Ft. Lauderdale, Florida, USA) (CHI ’03). Association for Computing Machinery, New York, NY, USA, 97–104.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/642611.642630">
+        https://doi.org/10.1145/642611.642630
+       </a>
+      </li>
+      <li id="BibPLXBIB0048" label="[48]">
+       Shumin Zhai and Per Ola Kristensson. 2007. CHAPTER 7 - Introduction to Shape Writing. In
+       <em>
+        Text Entry Systems
+       </em>
+       , I. Scott MacKenzie and Kumiko Tanaka-Ishii (Eds.). Morgan Kaufmann, Burlington, 139–158.
+       <a class="link-inline force-break" href="https://doi.org/10.1016/B978-012373591-1/50007-3">
+        https://doi.org/10.1016/B978-012373591-1/50007-3
+       </a>
+      </li>
+      <li id="BibPLXBIB0049" label="[49]">
+       Shumin Zhai and Per Ola Kristensson. 2012. The Word-Gesture Keyboard: Reimagining Keyboard Interaction.
+       <em>
+        <em>
+         Commun. ACM
+        </em>
+       </em>
+       55, 9 (sep 2012), 91–101.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2330667.2330689">
+        https://doi.org/10.1145/2330667.2330689
+       </a>
+      </li>
+      <li id="BibPLXBIB0050" label="[50]">
+       Jun-Yan Zhu, Richard Zhang, Deepak Pathak, Trevor Darrell, Alexei A Efros, Oliver Wang, and Eli Shechtman. 2017. Toward Multimodal Image-to-Image Translation. In
+       <em>
+        Advances in Neural Information Processing Systems
+       </em>
+       , I. Guyon, U. Von Luxburg, S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and R. Garnett (Eds.). Vol. 30. Curran Associates, Inc., Red Hook, NY, USA.
+       <a class="link-inline force-break" href="https://proceedings.neurips.cc/paper/2017/file/819f46e52c25763a55cc642422644317-Paper.pdf">
+        https://proceedings.neurips.cc/paper/2017/file/819f46e52c25763a55cc642422644317-Paper.pdf
+       </a>
+      </li>
+      <li id="BibPLXBIB0051" label="[51]">
+       Suwen Zhu, Yoonsang Kim, Jingjie Zheng, Jennifer Yi Luo, Ryan Qin, Liuping Wang, Xiangmin Fan, Feng Tian, and Xiaojun Bi. 2020.
+       <em>
+        Using Bayes’ Theorem for Command Input: Principle, Models, and Applications
+       </em>
+       . Association for Computing Machinery, New York, NY, USA, 1–15.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3313831.3376771">
+        https://doi.org/10.1145/3313831.3376771
+       </a>
+      </li>
+      <li id="BibPLXBIB0052" label="[52]">
+       Suwen Zhu, Jingjie Zheng, Shumin Zhai, and Xiaojun Bi. 2019. I'sFree: Eyes-Free Gesture Typing via a Touch-Enabled Remote Control. In Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems (Glasgow, Scotland Uk) (CHI ’19). Association for Computing Machinery, New York, NY, USA, 1–12.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300678">
+        https://doi.org/10.1145/3290605.3300678
+       </a>
+      </li>
+     </ul>
+    </section>
+   </section>
+   <section class="footnote" id="foot-001">
+    <div class="bibStrip">
+     <p>
+      Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+      <a href="mailto:permissions@acm.org">
+       permissions@acm.org
+      </a>
+      .
+     </p>
+     <p>
+      <em>
+       CHI '23, April 23–28, 2023, Hamburg, Germany
+      </em>
+     </p>
+     <p>
+      © 2023 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+      <br/>
+      ACM ISBN 978-1-4503-9421-5/23/04…$15.00.
+      <br/>
+      DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3581279" target="_blank">
+       https://doi.org/10.1145/3544548.3581279
+      </a>
+     </p>
+    </div>
+   </section>
+  </main>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'869c2dbcae39366e',t:'MTcxMTM0MTE2Ni4xODEwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

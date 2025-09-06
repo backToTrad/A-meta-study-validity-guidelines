@@ -1,0 +1,3897 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Geometrically Compensating Effect of End-to-End Latency in Moving-Target Selection Games
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300790_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300790_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300790_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300790_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300790_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300790_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300790_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300790_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Geometrically Compensating Effect of End-to-End Latency in Moving-Target Selection Games
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Injung
+      </span>
+      <span class="surName">
+       Lee
+      </span>
+      , Korea Advanced Institute of Science and Technology, Republic of Korea,
+      <a href="mailto:edndn@kaist.ac.kr">
+       edndn@kaist.ac.kr
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Sunjun
+      </span>
+      <span class="surName">
+       Kim
+      </span>
+      , Aalto University, Finland,
+      <a href="mailto:kuaa.net@gmail.com">
+       kuaa.net@gmail.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Byungjoo
+      </span>
+      <span class="surName">
+       Lee
+      </span>
+      , Korea Advanced Institute of Science and Technology, Republic of Korea,
+      <a href="mailto:bjlee1985@gmail.com">
+       bjlee1985@gmail.com
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300790" target="_blank">
+       https://doi.org/10.1145/3290605.3300790
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Effects of unintended latency on gamer performance have been reported. End-to-end latency can be corrected by post-input manipulation of activation times, but this gives the player unnatural gameplay experience. For moving-target selection games such as Flappy Bird, the paper presents a predictive model of latency on error rate and a novel compensation method for the latency effects by adjusting the game's geometry design – e.g., by modifying the size of the selection region. Without manipulation of the game clock, this can keep the user's error rate constant even if the end-to-end latency of the system changes. The approach extends the current model of
+       <em>
+        moving-target selection
+       </em>
+       with two additional assumptions about the effects of latency: (1) latency reduces players’ cue-viewing time and (2) pushes the mean of the input distribution backward. The model and method proposed have been validated through precise experiments.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → HCI theory, concepts and models
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Latency compensation; moving-target selection
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Injung Lee, Sunjun Kim, and Byungjoo Lee. 2019. Geometrically Compensating Effect of End-to-End Latency in Moving-Target Selection Games. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 12 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300790" target="_blank">
+         https://doi.org/10.1145/3290605.3300790
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Minimizing a discordance between user input and system response is crucial to producing seamless human–computer interaction [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+      11
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+      41
+     </a>
+     ]. The temporal gap between the input and the response, which is called
+     <em>
+      latency
+     </em>
+     ,
+     <em>
+      lag
+     </em>
+     or
+     <em>
+      delay
+     </em>
+     , is among the factors that create this discordance. The cumulative effect, referred to as
+     <em>
+      end-to-end latency
+     </em>
+     , has various sources including device delay, network delay, and processing delay [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+      22
+     </a>
+     ]. Latency has an especially strong unintended effect on user experience when accurate time management is critical: in applications such as real-time games. Addressing such situations, this paper has two goals: (1) to provide a clear understanding of how latency changes the user experience and (2) to suggest a novel method of compensating for latency effects.
+     <a class="fn" href="#fn1" id="foot-fn1">
+      <sup>
+      </sup>
+     </a>
+    </p>
+    <p>
+     Latency, which is not intentionally created or considered, has always existed in typical computing environments. The amount of end-to-end latency varies from computing platforms and their conditions, ranging from 21–277 ms for desktop to over 50 ms for touchscreen environments [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+      34
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+      52
+     </a>
+     ]. Latency is often inevitable, not controllable, and vary among devices.
+    </p>
+    <figure id="fig1">
+     <img alt="" class="img-responsive" longdesc="By manipulating geometric factors such as heights of pillars, impacts of latency can be compensated as if there is no latency." src="3300790_files\chi2019560fig1.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       Geometric compensation overview.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     According to previous research, the effects of latency on performance are mostly negative [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+      32
+     </a>
+     ]. In fact, even near-zero latency may have a negative impact on users, at least in theory [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+      44
+     </a>
+     ]. Also, positive effects of latency on usability have been reported in several recent works [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+      29
+     </a>
+     ].
+    </p>
+    <p>
+     Various studies have been conducted to compensate the unintended effects of latency, especially in
+     <em>
+      real-time
+     </em>
+     network games, such as an online first-person shooter (FPS) games. The most widely used method is to rewind the timeframe by the amount of latency and then determine the feedback on the basis of that point [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+      39
+     </a>
+     ]. At this point, all game elements, except local input feedback, are rendered in keeping with the rewound game timeframe. Hence, the player experiences a discrepancy between the perceived situation stemming from the local feedback and the feedback given by the compensated system (e.g., an apparent success getting deemed a failure, or vice versa). This can create a serious hindrance to user engagement in real-time games [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+      40
+     </a>
+     ].
+    </p>
+    <p>
+     However, if the latency mechanisms that influence game performance can be clearly explained,
+     <em>
+      geometric
+     </em>
+     compensation could be attempted. For example, if 50 ms system latency exists in an FPS game and the player's number of hit points is reduced by 15% relative to a zero-latency situation, an enemy's size can be increased (making it easier to hit) to compensate for the drop in hit rate. For determining the amount of the target's size increase, a predictive model is more effective than tedious trial-and-errors.
+    </p>
+    <p>
+     To demonstrate the potential of geometric compensation for latency, we focus on one type of task, we call
+     <em>
+      moving-target selection
+     </em>
+     task, which is widely encountered with today's mobile games. In this task, players must activate a button within a short time window when a moving target is placed within a certain selection region. The time window is often shorter than typical human reaction times (from 200 to 300 ms depending on the stimulus modality) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+      45
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+      50
+     </a>
+     ]. Therefore, the player must plan the input in advance for successful trial. Moving-target selection games are popular these days, e.g., Flappy Bird, Dancing Line, etc (see Figure
+     <a class="fig" href="#fig2">
+      2
+     </a>
+     ). Our survey
+     <a class="fn" href="#fn2" id="foot-fn2">
+      <sup>
+       1
+      </sup>
+     </a>
+     of the Google Play market revealed that 16 of “the 100 most popular” free games employ a moving-target selection task as their central component.
+    </p>
+    <figure id="fig2">
+     <img alt="" class="img-responsive" longdesc="Numerous games that have moving-target selection tasks as their main component." src="3300790_files\chi2019560fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 2:
+      </span>
+      <span class="figure-title">
+       Moving-target selection games: (from upper left) Jelly Jump!, Beatmania, Rollercoaster Dash, Stack, CookieRun for Kakao, Knife Hit, Piano Magic Tiles, Dancing Line, Taiko no Tatsujin, Helix Jump, and Rolling Sky.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     For a moving-target selection task with zero latency, a model for predicting the user's error rate already exists [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+      29
+     </a>
+     ]. We complement the model with the following two assumptions: (1) latency reduces the player's cue-viewing time, and (2) latency pushes the player's implicit aim point backwards. The new model built on these assumptions accurately predicts the effect of end-to-end latency on user error rate for the task. When geometric compensation is applied, the model can predict the corresponding error rate, thereby facilitating control of game difficulty level when latency exists.
+    </p>
+    <p>
+     Contributions of this research can be summarized thus:
+    </p>
+    <ul class="list-no-style">
+     <li id="list1" label="•">
+      We constructed a predictive model that explains the effect of end-to-end latency on user error rate in moving-target selection games.
+      <br/>
+     </li>
+     <li id="list2" label="•">
+      We verified the proposed model (
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      =0.94) by using a customized experimental apparatus that can precisely control the latency (&lt;0.5 ms accuracy, &lt;1.5 ms precision).
+      <br/>
+     </li>
+     <li id="list3" label="•">
+      We demonstrated that geometric compensation can offset the unintended effects of end-to-end latency.
+      <br/>
+     </li>
+    </ul>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Latency and its Measurement
+       </h3>
+      </div>
+     </header>
+     <p>
+      Latency, lag or delay is the time span between a input and its corresponding response [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ].
+      <em>
+       End-to-end latency
+      </em>
+      generally refers to the total time elapsed between a user's initiation act and the system's visual, auditory, or other responses [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ]. Several components contribute to end-to-end latency in an interactive system. In online mobile games, there are three types of latency: device delays, network delays, and processing delays [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ]. For nowadays touchscreen mobile games, device latency (capacitive touch sensor and display) and processing latency (logic in game software) exist as a baseline [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ]. Network communication latency may added for online games. All kinds of delays (device, processing, and network) increase user reaction time [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ].
+     </p>
+     <p>
+      Often, measuring end-to-end latency entails using a camera, in most cases a high-speed one, to capture the input motion and the associated feedback [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ]. Latency is calculated by manually counting the frames between them. Automated tools such as a mechanical relay [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ], optical sensor [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ], or accelerometer [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ] have been employed to capture the exact input and output moments. The automation allows repeated measure for better precision. Depending on the devices and applications, the amount of end-to-end latency ranges from 21 to 277 ms, composed of input latencies of 2–30 ms and output latencies between 19 ms and 247 ms [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ]. Latencies in touchscreen devices such as smartphones or tablet PCs range from 50 to 200 ms [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ].
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Effects of Latency on Human Performance
+       </h3>
+      </div>
+     </header>
+     <p>
+      Latency influences user experience in interactive systems. Firstly, even a small amount of latency is perceivable. Interactive display delays start to be detectable at 40 ms to 90 ms [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ]. According to Ng et al., people have been able to visually detect even latency as low as 2.38 ms when performing direct-touch dragging [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ]. Latencies that are greater than “barely perceptible” start to impair user experience [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ]. Practically, delays more than 180 ms in FPS game have tended to frustrate users, which lead them to eventually stop playing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ]. Latency of 600 ms for tap actions and 450 ms for drag actions annoyed people using touchscreens [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ].
+     </p>
+     <p>
+      In addition disturbed user interaction, higher latency hinder human performance [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ] also. With general tasks such as programming and problem-solving, it has been found that latency impairs work efficiency [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ]. For target-acquisition tasks specifically, movement times and error rates have risen as the amount of latency grew [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ]. More precisely, latencies over 100 ms have strong negative effects on human performance [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ]. FPS game players exposed to 200 ms latency exhibited a performance deduction of 1 kills-per-minute
+      <a class="fn" href="#fn3" id="foot-fn3">
+       <sup>
+        2
+       </sup>
+      </a>
+      compared to players experiencing 45 ms latency [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ]. Human performance degrades more with targets that are smaller or further away [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ].
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Effects of Latency on Anticipated-Input Tasks
+       </h3>
+      </div>
+     </header>
+     <p>
+      Obviously, latency negatively affects users’ performance of reaction tasks (responding as quickly as possible to a given unexpected stimulus). However, in real-time games, there are often anticipation tasks: a user can anticipate the moment of input before the actual stimulus. Imagine a target that briefly blinks periodically or that moves toward a particular selection region at constant speed. The time window for successful trial is set to shorter than a person's typical visual reaction time (up to 250 ms) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ]. The player must anticipate and plan the input so as to acquire the target successfully. A series of models for predicting user error rates in such anticipated input tasks has recently been published [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ]. The moving-target selection model extended in this paper [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ] is the latest of these.
+     </p>
+     <p>
+      In a task that requires anticipation for input, the moment the system responds may lag behind or jump ahead of the timing anticipated by the user. If the system response is
+      <em>
+       faster
+      </em>
+      than the user's anticipation, a non-intuitive conclusion follows: that latency must be
+      <em>
+       increased
+      </em>
+      for minimizing the discordance. This effect has recently been reported by several authors [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ]. In their studies, delaying the system response of the button-pressing reduced the user's error rate by 5–94%. The effect of latency is more complicated in an anticipatory task than in a reactive task, and, to the best of our knowledge, there remains no decent model to explain and predict it.
+     </p>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Reducing Effects of Latency
+       </h3>
+      </div>
+     </header>
+     <p>
+      Reducing the amount of end-to-end latency is the most direct way to decrease the effect of latency [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ]. Researchers have been improving hardware and software to minimize the total latency, by such means as considering the best locations for game servers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ] and developing software that eliminates delays from synchrony [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ]. The main goal with these has been to reduce latency to an imperceivable level [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ].
+     </p>
+     <p>
+      Trajectory prediction, such as dead reckoning, is another way to reduce perceived latency by predicting the best possible current movement from the history of tracked movements. To reduce the perceived delays in an head-mounted display environment, researchers have implemented a “look-ahead” algorithm to predict the head-tracking data [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ]. Using prediction, Knibbe et al. improved high-speed motion-projector–camera systems by such means as projecting images onto moving objects [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ]. Recently, some researchers have applied trajectory prediction in combination with additional sensors such as accelerometers or inertial measurement units (IMUs) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. Their approach is effective with ballistic motion but cannot be directly applied to a moving-target selection task, which is performed based on a user's small movement with a single button.
+     </p>
+     <p>
+      In FPS games, wherein real-time operation is crucial to player performance, “favoring the shooter” is a widely used latency-compensation method [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]. This method makes decisions on events in line with the game world that the shooter sees when shooting [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]. Although keeping players from aiming ahead of the targets, this has “shot around a corner” inconsistency issues [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]. To eliminate the oddity wherein players get shot even though they hid behind walls, some games, such as
+      <em>
+       Battlefield 4
+      </em>
+      and
+      <em>
+       Overwatch
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ], impose a 250 ms maximum for their lag-compensation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ].
+      <a class="fn" href="#fn4" id="foot-fn4">
+       <sup>
+        3
+       </sup>
+      </a>
+      Rolling back the game clock is deemed
+      <em>
+       unfair
+      </em>
+      and
+      <em>
+       not playable
+      </em>
+      from the point of view of players who have been shot [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ].
+     </p>
+    </section>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Summary
+       </h3>
+      </div>
+     </header>
+     <p>
+      The effect of latency on usability has been considered primarily negative. However, for anticipated input tasks, which occur frequently in real-time games, latency exhibits a more complicated effect on user performance than is seen in reactive input tasks. Nonetheless, relatively simple approaches have been taken to compensate for latency in real-time games. We have complemented existing models for anticipated inputs, and the discussion below presents
+      <em>
+       geometric compensation
+      </em>
+      , a novel way to eliminate or control the effects of latency, accordingly.
+     </p>
+    </section>
+   </section>
+   <section id="sec-9">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       MOVING-TARGET SELECTION TASK OVERVIEW
+      </h2>
+     </div>
+    </header>
+    <p>
+     Moving-target selection is one of the most representative tasks in real-time games: players must activate the button input within a particular time window – for example, while a moving target is passing over a particular selection region. Since the time window is usually shorter than human reaction time, the player must anticipate the timing of the input before the target reaches that region. With multiple trials, player's input points can be approximated to be Gaussian distribution
+     <span class="inline-equation">
+      <span class="tex">
+       $\mathcal {N}(\mu ,\,\sigma ^{2})$
+      </span>
+     </span>
+     in time. The error rate is then obtained by integrating the input point distribution outside the selection region as depicted in the figure below:
+    </p>
+    <figure id="fig3">
+     <img alt="" class="img-responsive" longdesc="" src="3300790_files\chi2019560fig3.jpg"/>
+    </figure>
+    <p>
+    </p>
+    <p>
+     In the most recent model for moving-target selection [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ], multiple factors influence
+     <em>
+      μ
+     </em>
+     and
+     <em>
+      σ
+     </em>
+     (see the Table below). The signs in parentheses in the table indicate whether
+     <em>
+      σ
+     </em>
+     or
+     <em>
+      μ
+     </em>
+     increases or decreases as the corresponding factor increases. The model proposed in this study adds the effect of end-to-end latency (
+     <em>
+      L
+     </em>
+     ) to the table. The following section first introduces known factors in the existing model that affect
+     <em>
+      μ
+     </em>
+     and
+     <em>
+      σ
+     </em>
+     of the input point distribution. The section after that introduces new factors (marked in red) related to latency.
+    </p>
+    <div class="table-responsive" id="inltbl1">
+     <table class="table">
+      <tbody>
+       <tr>
+        <td style="text-align:left;border-right: 2pt solid #000000;">
+        </td>
+        <td style="text-align:left;border-right: 2pt solid #000000;">
+         <strong>
+          Affecting
+          <em>
+           σ
+          </em>
+         </strong>
+        </td>
+        <td style="text-align:left;border-right: 2pt solid #000000;">
+         <strong>
+          Affecting
+          <em>
+           μ
+          </em>
+         </strong>
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:left;border-right: 2pt solid #000000;">
+         <strong>
+          Task factor
+         </strong>
+        </td>
+        <td style="text-align:left;border-right: 2pt solid #000000;">
+         <em>
+          t
+          <sub>
+           c
+          </sub>
+         </em>
+         (−),
+         <em>
+          P
+         </em>
+         (+),
+         <em>
+          L
+         </em>
+         (+)
+        </td>
+        <td style="text-align:left;border-right: 2pt solid #000000;">
+         <em>
+          W
+          <sub>
+           t
+          </sub>
+         </em>
+         (+),
+         <em>
+          L
+         </em>
+         (+)
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:left;border-right: 2pt solid #000000;">
+         <strong>
+          Player factor
+         </strong>
+        </td>
+        <td style="text-align:left;border-right: 2pt solid #000000;">
+         <em>
+          c
+          <sub>
+           σ
+          </sub>
+         </em>
+         (+),
+         <em>
+          ν
+         </em>
+         (−),
+         <em>
+          δ
+         </em>
+         (+)
+        </td>
+        <td style="text-align:left;border-right: 2pt solid #000000;">
+         <em>
+          c
+          <sub>
+           μ
+          </sub>
+         </em>
+         (+) ,
+         <em>
+          c
+          <sub>
+           L
+          </sub>
+         </em>
+         (+)
+        </td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Factors Affecting the Standard Deviation (
+        <em>
+         σ
+        </em>
+        )
+       </h3>
+      </div>
+     </header>
+     <p>
+      Task design has a huge impact on the standard deviation (
+      <em>
+       σ
+      </em>
+      ) of the user-input distribution. The following two factors exist in this regard:
+     </p>
+     <ul class="list-no-style">
+      <li id="list4" label="•">
+       <strong>
+        Period of input repetition
+       </strong>
+       (
+       <em>
+        P
+       </em>
+       ): If the inputs are repeated with a period of
+       <em>
+        P
+       </em>
+       , the player can anticipate the moment of the upcoming input. The longer the period of input repetition is, the larger the standard deviation (
+       <em>
+        σ
+       </em>
+       ) of the input distribution for the player becomes. This phenomenon is connected with the scalar property of the internal clock [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+        9
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+        14
+       </a>
+       ]. Recall that clapping once every five seconds is much harder than clapping once every second.
+       <br/>
+      </li>
+      <li id="list5" label="•">
+       <strong>
+        Cue-viewing time
+       </strong>
+       (
+       <strong>
+        t
+        <sub>
+         c
+        </sub>
+       </strong>
+       ): This is the time from when the moving target starts to become visible until it reaches the selection region. The shorter
+       <em>
+        t
+        <sub>
+         c
+        </sub>
+       </em>
+       is, the more difficult it is for the user to anticipate timing information from the target's motion, and the standard deviation (
+       <em>
+        σ
+       </em>
+       ) of the input distribution increases.
+       <br/>
+      </li>
+     </ul>
+     <p>
+      Also, player-side factors influence the
+      <em>
+       σ
+      </em>
+      :
+     </p>
+     <ul class="list-no-style">
+      <li id="list6" label="•">
+       <strong>
+        Precision of the player's internal clock
+       </strong>
+       (
+       <strong>
+        c
+        <sub>
+         <em>
+          σ
+         </em>
+        </sub>
+       </strong>
+       ): Even with the same amount of information, anticipation performance vary by individual. The parameter
+       <em>
+        c
+        <sub>
+         σ
+        </sub>
+       </em>
+       aggregates such user-side factors. The higher its value, the less precise the player's internal clock is and, thereby, the higher the
+       <em>
+        σ
+       </em>
+       of the input distribution.
+       <br/>
+      </li>
+      <li id="list7" label="•">
+       <strong>
+        Drift rate
+       </strong>
+       (
+       <strong>
+        <em>
+         ν
+        </em>
+       </strong>
+       ): The rate at which the player encodes timing information visually from a moving target varies too. A player with high
+       <em>
+        ν
+       </em>
+       produces an input distribution with a lower
+       <em>
+        σ
+       </em>
+       for the same cue-viewing time
+       <em>
+        t
+        <sub>
+         c
+        </sub>
+       </em>
+       .
+       <br/>
+      </li>
+      <li id="list8" label="•">
+       <strong>
+        Precision limits in motion decoding
+       </strong>
+       (
+       <strong>
+        <em>
+         δ
+        </em>
+       </strong>
+       ): No matter how long the cue-viewing time (
+       <em>
+        t
+        <sub>
+         c
+        </sub>
+       </em>
+       ) given, the timing precision that a user can obtain from a moving target is limited.
+       <em>
+        δ
+       </em>
+       represents the limit. A player with a lower
+       <em>
+        δ
+       </em>
+       produces an input distribution with a lower
+       <em>
+        σ
+       </em>
+       for the same given
+       <em>
+        t
+        <sub>
+         c
+        </sub>
+       </em>
+       .
+       <br/>
+      </li>
+     </ul>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Factors Affecting the Mean (
+        <em>
+         μ
+        </em>
+        )
+       </h3>
+      </div>
+     </header>
+     <p>
+      The input distribution's mean value,
+      <em>
+       μ
+      </em>
+      , is known to vary with the following factors:
+     </p>
+     <ul class="list-no-style">
+      <li id="list9" label="•">
+       <strong>
+        Target-selectable duration
+       </strong>
+       (
+       <strong>
+        W
+        <sub>
+         t
+        </sub>
+       </strong>
+       ): This is the duration of the time window where a moving target is on the selection region. It can be obtained by dividing the spatial size of the selection region by the speed of the target.
+       <br/>
+      </li>
+      <li id="list10" label="•">
+       <strong>
+        Implicit aim point
+       </strong>
+       (
+       <strong>
+        c
+        <sub>
+         <em>
+          μ
+         </em>
+        </sub>
+       </strong>
+       ): This is the user's implicit aim point within the selection region, which is known to a constant ratio of aim point to the size of the selection region [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ], (
+       <em>
+        μ
+       </em>
+       =
+       <em>
+        c
+        <sub>
+         μ
+        </sub>
+       </em>
+       ·
+       <em>
+        W
+        <sub>
+         t
+        </sub>
+       </em>
+       ). That is, if
+       <em>
+        c
+        <sub>
+         μ
+        </sub>
+       </em>
+       is 0.5, the player always aims at the center of the given selection region.
+       <br/>
+      </li>
+     </ul>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Error Rates in Moving-Target Selection
+       </h3>
+      </div>
+     </header>
+     <p>
+      Let's define
+      <em>
+       t
+      </em>
+      = 0 as the time at which the target contacts the selection region for the first time. The time window where the target stays in the selection region can be expressed as [0,
+      <em>
+       W
+       <sub>
+        t
+       </sub>
+      </em>
+      ]. The error rate (
+      <em>
+       E
+      </em>
+      ) is then obtained by integrating the input distribution of the player
+      <span class="inline-equation">
+       <span class="tex">
+        $\mathcal {N}(\mu ,\,\sigma ^{2})$
+       </span>
+      </span>
+      over the time interval outside the selection region. According to the previous study [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ], this results in the following equation:
+     </p>
+     <div class="table-responsive" id="eq1">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} E =1-\frac{1}{2}\left[erf(\frac{(1-c_{\mu })}{c_{\sigma }\sqrt {2}}\cdot \frac{W_{t}}{D_{t}}) +erf(\frac{c_{\mu }}{c_{\sigma }\sqrt {2}}\cdot \frac{W_{t}}{D_{t}})\right] \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (1)
+       </span>
+      </div>
+     </div>
+     <em>
+      D
+      <sub>
+       t
+      </sub>
+     </em>
+     is used in the denominator in line with this equation:
+     <div class="table-responsive" id="eq2">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} D_{t} =P/\sqrt {1+(P/(1/(\mathrm{e}^{\nu t_{c}}-1)+\delta))^{2}} \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (2)
+       </span>
+      </div>
+     </div>
+     <em>
+      erf
+     </em>
+     (error function) is a special function that often appears in the integration process of the Gaussian distribution. Refer to the original paper [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ] for the detailed derivation process.
+     <p>
+     </p>
+    </section>
+   </section>
+   <section id="sec-13">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       THE NEW MODEL REGARDING THE EFFECT OF END-TO-END LATENCY
+      </h2>
+     </div>
+    </header>
+    <p>
+     On top of the existing model above, we derived an advanced model that accounts for the effects of latency on player's input distribution. The new model assumes that latency has two effects on the moving-target selection (see Figure
+     <a class="fig" href="#fig4">
+      3
+     </a>
+     ).
+    </p>
+    <p>
+     Firstly, a player experiences a decrease in cue-viewing time. With a certain amount of latency, the player must prepare and execute the input earlier compared to a no-latency condition. This preparation reduces the amount of time for the player to observe the target's movement. The assumption can be expressed as:
+    </p>
+    <div class="table-responsive" id="eq3">
+     <div class="display-equation">
+      <span class="tex mytex">
+       \begin{equation} t_{{\it eff}}=MAX\left[(t_{c}-L),0\right] \end{equation}
+      </span>
+      <br/>
+      <span class="equation-number">
+       (3)
+      </span>
+     </div>
+    </div>
+    Here,
+    <em>
+     t
+     <sub>
+      c
+     </sub>
+    </em>
+    is the original cue-viewing time and
+    <em>
+     t
+     <sub>
+      eff
+     </sub>
+    </em>
+    is the newly calculated
+    <em>
+     effective
+    </em>
+    cue-viewing time under the influence of latency
+    <em>
+     L
+    </em>
+    .
+    <em>
+     MAX
+    </em>
+    function is applied because
+    <em>
+     t
+     <sub>
+      eff
+     </sub>
+    </em>
+    should never be negative even with a great latency.
+    <p>
+    </p>
+    <p>
+     Secondly, latency shift the input distribution backward in time. However, the extent of this may vary from player to player, so the assumption can be expressed as follows:
+    </p>
+    <div class="table-responsive" id="eq4">
+     <div class="display-equation">
+      <span class="tex mytex">
+       \begin{equation} \mu _{{\it eff}}=\mu +c_L \cdot L \end{equation}
+      </span>
+      <br/>
+      <span class="equation-number">
+       (4)
+      </span>
+     </div>
+    </div>
+    Here,
+    <em>
+     μ
+    </em>
+    is the average from the player input distribution when no latency is present and
+    <em>
+     μ
+     <sub>
+      eff
+     </sub>
+    </em>
+    is the mean of the distribution under latency
+    <em>
+     L
+    </em>
+    .
+    <em>
+     c
+     <sub>
+      L
+     </sub>
+    </em>
+    is a player-specific parameter that indicates how much the mean is affected by latency.
+    <figure id="fig4">
+     <img alt="" class="img-responsive" longdesc="Latency reduces cue-viewing time (left), and shifts input distribution backward (right)." src="3300790_files\chi2019560fig4.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 3:
+      </span>
+      <span class="figure-title">
+       Effects of latency on moving-target selection task.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     Substituting the above formula into Equation
+     <a class="eqn" href="#eq1">
+      1
+     </a>
+     yields the new moving-target selection model that considers latency:
+    </p>
+    <div class="table-responsive" id="eq5">
+     <div class="display-equation">
+      <span class="tex mytex">
+       \begin{equation} E =1-\frac{1}{2}\left[{\it erf}(\frac{(1-c_{\mu })W_{t}-c_{L}L}{c_{\sigma }\sqrt {2}\,D_{t}}) +{\it erf}(\frac{c_{\mu }W_{t}+c_{L}L}{c_{\sigma }\sqrt {2}\,D_{t}})\right] \end{equation}
+      </span>
+      <br/>
+      <span class="equation-number">
+       (5)
+      </span>
+     </div>
+    </div>
+    The
+    <em>
+     D
+     <sub>
+      t
+     </sub>
+    </em>
+    with latency effect included is expressed thus:
+    <div class="table-responsive" id="eq6">
+     <div class="display-equation">
+      <span class="tex mytex">
+       \begin{equation} D_{t} =P/\sqrt {1+(P/(1/(\mathrm{e}^{\nu (t_{{\it eff}}-L)}-1)+\delta))^{2}} \end{equation}
+      </span>
+      <br/>
+      <span class="equation-number">
+       (6)
+      </span>
+     </div>
+    </div>
+    <p>
+    </p>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Geometric Compensation of Latency Effect
+       </h3>
+      </div>
+     </header>
+     <p>
+      We propose a geometric compensation method when varying latency exists in the system. It controls the error rate by slightly changing the geometric design of the game.
+     </p>
+     <p>
+      The full process has four steps (see Figure
+      <a class="fig" href="#fig5">
+       4
+      </a>
+      ).
+      <strong>
+       (1)
+      </strong>
+      Obtain the
+      <strong>
+       player-side factor
+      </strong>
+      s of the model (
+      <em>
+       c
+       <sub>
+        σ
+       </sub>
+      </em>
+      ,
+      <em>
+       c
+       <sub>
+        μ
+       </sub>
+      </em>
+      ,
+      <em>
+       ν
+      </em>
+      ,
+      <em>
+       δ
+      </em>
+      ,
+      <em>
+       c
+       <sub>
+        L
+       </sub>
+      </em>
+      ) for the target game. This can be achieved by playing the game under various conditions, finding the case-specific error rates, and fitting them to the model (Equation
+      <a class="eqn" href="#eq5">
+       5
+      </a>
+      ). In order for fitting to be successful, the model must observe error rates for at least four to six task conditions. Assuming that 50 trials for each condition, about 300 button inputs are required. This can be done individually for each player or at a population-level for a particular game. This study focuses on showing the possibility of compensation at the population-level.
+      <strong>
+       (2)
+      </strong>
+      Identify the model's
+      <strong>
+       task factors
+      </strong>
+      (
+      <em>
+       P
+      </em>
+      ,
+      <em>
+       t
+       <sub>
+        c
+       </sub>
+      </em>
+      ,
+      <em>
+       W
+       <sub>
+        t
+       </sub>
+      </em>
+      ,
+      <em>
+       L
+      </em>
+      ) in the current game design.
+      <em>
+       P
+      </em>
+      ,
+      <em>
+       W
+       <sub>
+        t
+       </sub>
+      </em>
+      ,
+      <em>
+       t
+       <sub>
+        c
+       </sub>
+      </em>
+      are set by a designer.
+      <em>
+       L
+      </em>
+      of a system could be measured or estimated.
+      <strong>
+       (3)
+      </strong>
+      Set the game's difficulty in terms of desired players’ error rate (target error rate).
+      <strong>
+       (4)
+      </strong>
+      Using Equation
+      <a class="eqn" href="#eq5">
+       5
+      </a>
+      , derive new
+      <em>
+       W
+       <sub>
+        t
+       </sub>
+      </em>
+      and
+      <em>
+       t
+       <sub>
+        c
+       </sub>
+      </em>
+      that minimizes the difference between the current error rate and the target error rate. This can be completed with any nonlinear optimization toolbox. Those values alter the game's post-compensation geometric appearance. For example,
+      <em>
+       W
+       <sub>
+        t
+       </sub>
+      </em>
+      can be adjusted by changing the size of the selection region. Also,
+      <em>
+       t
+       <sub>
+        c
+       </sub>
+      </em>
+      can be adjusted by changing the size of the area that makes the target invisible (e.g., wall or curtain). Note that
+      <em>
+       P
+      </em>
+      and
+      <em>
+       L
+      </em>
+      are
+      <em>
+       temporal
+      </em>
+      factors and not altered.
+     </p>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="Geometric compensation process in this research." src="3300790_files\chi2019560fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Flow of geometric compensation process.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+   </section>
+   <section id="sec-15">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       STUDY 1: MODEL VALIDATION
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this experiment, the proposed moving-target selection model was verified via a custom-built device with precise control of latency. A point target moves at constant speed toward a one-dimensional selection region. Participants were asked to catch the target by pressing a button.
+    </p>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Method
+       </h3>
+      </div>
+     </header>
+     <section id="sec-17">
+      <p>
+       <em>
+        Participants:
+       </em>
+       Sixteen participants (3 female and 13 male) were recruited from a local university. Their average age was 24.9 years (SD=3.5). Each was paid
+       <font style="normal">
+        $
+       </font>
+       10 for 50 minutes of participation. Participants were informed and signed a consent form before the experiment.
+      </p>
+     </section>
+     <section id="sec-18">
+      <p>
+       <em>
+        Experimental Design:
+       </em>
+       The experiment was a 2 × 2 × 5 × 2 within-subject design with four independent variables:
+       <em>
+        Period
+       </em>
+       of input repetition (
+       <em>
+        P
+       </em>
+       ),
+       <em>
+        Target-Selectable Duration
+       </em>
+       (
+       <em>
+        W
+        <sub>
+         t
+        </sub>
+       </em>
+       ), end-to-end
+       <em>
+        Latency
+       </em>
+       (
+       <em>
+        L
+       </em>
+       ), and
+       <em>
+        Cue-Viewing Time
+       </em>
+       (
+       <em>
+        t
+        <sub>
+         c
+        </sub>
+       </em>
+       ):
+      </p>
+      <ul class="list-no-style">
+       <li id="list11" label="•">
+        Period (
+        <em>
+         P
+        </em>
+        ): 1,250 and 1,800 ms
+        <br/>
+       </li>
+       <li id="list12" label="•">
+        Target-Selectable Duration (
+        <em>
+         W
+         <sub>
+          t
+         </sub>
+        </em>
+        ): 80 and 150 ms
+        <br/>
+       </li>
+       <li id="list13" label="•">
+        Latency (
+        <em>
+         L
+        </em>
+        ): 0, 60, 80, 130, and 200 ms (+1.5 ms baseline)
+        <br/>
+       </li>
+       <li id="list14" label="•">
+        Cue-Viewing Time (
+        <em>
+         t
+         <sub>
+          c
+         </sub>
+        </em>
+        ): 0 and 200 ms
+        <br/>
+       </li>
+      </ul>
+     </section>
+     <section id="sec-19">
+      <p>
+       <em>
+        Task:
+       </em>
+       Participants were asked to complete the task of activating a button when a moving target point was in the one-dimensional selection region. The target moved in a straight line, on an LED strip attached horizontally to a wall. The speed of the target was fixed at 1.39 m/s (200 LED/s). If the button was activated while the target was in the selection region, the trial was considered successful; otherwise, a failure was recorded. With a given
+       <em>
+        Period
+       </em>
+       , the target repeatedly appeared from the left.
+       <em>
+        Cue-Viewing Time
+       </em>
+       ,
+       <em>
+        t
+        <sub>
+         c
+        </sub>
+       </em>
+       , was the time for which the target was visible before reaching the selection region. The physical length of the selection region and cue-viewing region were calculated from the given
+       <em>
+        W
+        <sub>
+         t
+        </sub>
+       </em>
+       ,
+       <em>
+        t
+        <sub>
+         c
+        </sub>
+       </em>
+       , and target speed (i.e., length of selection region =
+       <em>
+        W
+        <sub>
+         t
+        </sub>
+       </em>
+       × target speed). When the participant pressed the button, the activation event was delayed by the given
+       <em>
+        Latency
+       </em>
+       . Feedback for each button press came as blinking
+       <em>
+        green or red
+       </em>
+       lights along both sides of the selection region, for
+       <em>
+        success or failure
+       </em>
+       , respectively (see Figure
+       <a class="fig" href="#fig6">
+        5
+       </a>
+       ).
+      </p>
+      <figure id="fig6">
+       <img alt="" class="img-responsive" longdesc="LED strip apparatus used in Study 1." src="3300790_files\chi2019560fig6.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 5:
+        </span>
+        <span class="figure-title">
+         The task in Study 1, to select a moving target within the selection region by clicking a button, as the target moved from left to right.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-20">
+      <p>
+       <em>
+        Apparatus:
+       </em>
+       We implemented a one-dimensional moving-target selection device with precisely controlled latency (check the supplement material for the detail). To minimize default latency, a commercial LED strip (Adafruit DotStar
+       <a class="fn" href="#fn5" id="foot-fn5">
+        <sup>
+         4
+        </sup>
+       </a>
+       , 3 meters, 144 LED/m) was used as the display. A dedicated LED strip driver board (
+       <tt>
+        Arduino Uno
+       </tt>
+       using the Adafruit DotStar Library
+       <a class="fn" href="#fn6" id="foot-fn6">
+        <sup>
+         5
+        </sup>
+       </a>
+       ) drove 300 LEDs on the strip at 333.3 Hz. The moving target was moderate yellow in color (#202000), and the color value of the selection region was dark blue (#000001). Our feedback colors were bright green (#002001) for success and bright red (#200000) for failure.
+      </p>
+      <p>
+       An experiment board (
+       <tt>
+        Arduino 101
+       </tt>
+       ) sets experimental conditions for the LED strip driver board through UART serial communication. It also monitored the following events through digital interconnection wires: LED target appearing/disappearing, LED target entering/exiting the selection region, and button press/release. For user input, the left button of a dummy mouse (activated at 0.4 mm with 55 cN force) was directly connected to the experiment board. The board recorded timestamps of all events internally. The board transmitted the events (with timestamps, to 0.1 ms precision) to a PC (Mac mini Late 2014, 2.6 GHz Intel Core i5) for logging. The device exhibited 1.5 ms of mean latency.
+      </p>
+      <p>
+       To implement latency, the experiment driver board maintained a circular queue. Switch state (opened or closed) of the mouse button was enqueued every 0.5 ms with timestamp. If items in the queue exceed the
+       <em>
+        Latency
+       </em>
+       time, they were dequeued and triggered the press/release events. By this method, all sequences of the button events were precisely delayed. The baseline latency was not considered, so 1.5 ms should be added to the experimental latency values.
+      </p>
+     </section>
+     <section id="sec-21">
+      <p>
+       <em>
+        Setup and Procedure:
+       </em>
+       Participants were asked to sit on a regular office chair 2.8 meters away from the LED strip. The LED strip was installed horizontally at subjects’ eye level. The dummy mouse was on a desk in front of the chair. After completing the pre-experiment questionnaire, participants were given a practice session to familiarize themselves with the task. Participants were instructed to try not to skip any of the repeating targets. Forty task conditions (2 × 2 × 5 × 2) were randomly assigned to the participants. There were 40 trials for each condition, and a minimum of one-minute break was given between conditions. Accordingly, there were 1,600 trials per participant, taking 50 minutes. The apparatus logged the result of each trial and the timing of every events.
+      </p>
+      <figure id="fig7">
+       <img alt="" class="img-responsive" longdesc="(1st) Effect of latency on error rates. (2nd, 3rd) Tested assumptions about effect of latency on sigma and mu. (4th) Our model fitted with the observed error rate shows a high coefficient of determination." src="3300790_files\chi2019560fig7.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 6:
+        </span>
+        <span class="figure-title">
+         Results of Study 1.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+    </section>
+    <section id="sec-22">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Results
+       </h3>
+      </div>
+     </header>
+     <p>
+      In total, 25,600 trials were logged from 16 participants. The overall error rate measured for participants in the experiment was 45% (SD=23%). For statistical testing, we used repeated-measure ANOVA with an alpha level of 0.05. Greenhouse–Geisser correction was used for violation of sphericity. As forty task conditions were progressed, no increase in error rate due to fatigue was observed (
+      <em>
+       F
+      </em>
+      (1,15)=0.838,
+      <em>
+       p
+      </em>
+      =0.374).
+     </p>
+     <section id="sec-23">
+      <p>
+       <em>
+        Normality of the Response Distribution:
+       </em>
+       Before analyzing the results, we consider whether the timing distribution obtained in this experiment shows a Gaussian distribution as expected. We tested the normality of each task condition block. A one-sample Kolmogorov–Smirnov test was performed for 640 blocks (40 conditions × 16 participants) in total (
+       <em>
+        α
+       </em>
+       = .05).
+      </p>
+      <p>
+       Of the 640 distributions obtained (one per condition per user), 70.3% were statistically normal distributions. This is similar to the level observed in typical timing tasks [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ]. For the participants who met the normality condition at the lowest rate, 60% of the conditions were found to be statistically normal. Since this is not a particularly problematic level, all subsequent analyses included data from all participants.
+      </p>
+     </section>
+     <section id="sec-24">
+      <header>
+       <div class="title-info">
+        <h4>
+         <span class="section-number">
+         </span>
+         Effect of ‘
+         <em>
+          P
+         </em>
+         ,
+         <em>
+          W
+          <sub>
+           t
+          </sub>
+         </em>
+         , and
+         <em>
+          t
+          <sub>
+           c
+          </sub>
+         </em>
+         ’ on Error Rates:
+        </h4>
+       </div>
+      </header>
+      <p>
+       Their effect on the error rate of the moving-target selection task have been reported in detail in previous studies [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ]. Below, we replicate each effect once again and report on it briefly.
+      </p>
+      <p>
+       Firstly, all factors had statistically significant effects on the error rate:
+       <em>
+        P
+       </em>
+       (
+       <em>
+        F
+       </em>
+       (1,15)=106.4,
+       <em>
+        p
+       </em>
+       &lt; 0.001),
+       <em>
+        t
+        <sub>
+         c
+        </sub>
+       </em>
+       (
+       <em>
+        F
+       </em>
+       (1,15)=485.1,
+       <em>
+        p
+       </em>
+       &lt; 0.001), and
+       <em>
+        W
+        <sub>
+         t
+        </sub>
+       </em>
+       (
+       <em>
+        F
+       </em>
+       (1,15)=750.1,
+       <em>
+        p
+       </em>
+       &lt; 0.001). We replicated the tendency for error rates to rise as
+       <em>
+        Period
+       </em>
+       (
+       <em>
+        P
+       </em>
+       ) increases,
+       <em>
+        Cue-Viewing Time
+       </em>
+       (
+       <em>
+        t
+        <sub>
+         c
+        </sub>
+       </em>
+       ) decreases, and
+       <em>
+        Target-Selectable Duration
+       </em>
+       (
+       <em>
+        W
+        <sub>
+         t
+        </sub>
+       </em>
+       ) decreases.
+      </p>
+     </section>
+     <section id="sec-25">
+      <p>
+       <em>
+        Effect of Latency on Error Rates:
+       </em>
+       End-to-end latency too had a significant impact on the error rate (
+       <em>
+        F
+       </em>
+       (2.205,33.079)=53.975,
+       <em>
+        p
+       </em>
+       &lt; 0.001). Contrary to the conventional belief that error rate will increase when latency rises, a slight latency seems to benefit performance of tasks involving anticipation by the user, such as moving-target selection (see Figure
+       <a class="fig" href="#fig7">
+        6
+       </a>
+       ). The condition with 60–80 ms latency added showed an error rate that was 15.7% lower (mean=35.3%, SD=27.2%) than that in the zero-latency condition (mean=51%, SD=26.4%).
+      </p>
+     </section>
+    </section>
+    <section id="sec-26">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Model Fitting
+       </h3>
+      </div>
+     </header>
+     <section id="sec-27">
+      <header>
+       <div class="title-info">
+        <h4>
+         <span class="section-number">
+         </span>
+         Testing Assumptions about Effect of Latency on
+         <em>
+          σ
+         </em>
+         and
+         <em>
+          μ
+         </em>
+         :
+        </h4>
+       </div>
+      </header>
+      <p>
+       We validated Section
+       <a class="sec" href="#sec-13">
+        4
+       </a>
+       ’s assumptions related to latency for input-distribution
+       <em>
+        σ
+       </em>
+       and
+       <em>
+        μ
+       </em>
+       (expressed as equations
+       <a class="eqn" href="#eq3">
+        3
+       </a>
+       ,
+       <a class="eqn" href="#eq6">
+        6
+       </a>
+       , and
+       <a class="eqn" href="#eq4">
+        7
+       </a>
+       ) by fitting the equations to the data obtained. All the curve fittings were carried out with the
+       <tt>
+        patternsearch
+       </tt>
+       function provided by
+       <tt>
+        MATLAB Global Optimization Toolbox
+       </tt>
+       . Fitting was performed at the population-level by averaging all participant data for each condition.
+      </p>
+      <p>
+       As a result, the predicted
+       <em>
+        σ
+       </em>
+       value and the actually measured
+       <em>
+        σ
+       </em>
+       are fitted with a high correlation (
+       <em>
+        R
+       </em>
+       <sup>
+        2
+       </sup>
+       =0.77; see Figure
+       <a class="fig" href="#fig7">
+        6
+       </a>
+       ). Also, the phenomenon of input-distribution mean
+       <em>
+        μ
+       </em>
+       shifting with latency is explained by the model with a moderate coefficient of determination (
+       <em>
+        R
+       </em>
+       <sup>
+        2
+       </sup>
+       =0.70; see Figure
+       <a class="fig" href="#fig7">
+        6
+       </a>
+       ).
+      </p>
+      <div class="table-responsive" id="tab1">
+       <div class="table-caption">
+        <span class="table-number">
+         Table 1:
+        </span>
+        <span class="table-title">
+         Summary of empirical parameters.
+        </span>
+       </div>
+       <table class="table">
+        <tbody>
+         <tr>
+          <td>
+           <img alt="" class="img-responsive" src="3300790_files\chi2019560img1.svg"/>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </section>
+     <section id="sec-28">
+      <p>
+       <em>
+        Error Rates:
+       </em>
+       The proposed model is ultimately aimed at predicting the error rate displayed by users in the given task condition. This is achieved by plugging the independent variables and the observed error rate into Equation
+       <a class="eqn" href="#eq5">
+        5
+       </a>
+       .
+      </p>
+      <p>
+       Hence, the model was fitted with the observed error rate and showing a high coefficient of determination (
+       <em>
+        R
+       </em>
+       <sup>
+        2
+       </sup>
+       =0.94; see Figure
+       <a class="fig" href="#fig7">
+        6
+       </a>
+       ). If the effect of latency is not considered, the earlier model for moving-target selection [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+        28
+       </a>
+       ] provides a low fit (
+       <em>
+        R
+       </em>
+       <sup>
+        2
+       </sup>
+       =0.65). The five free parameters obtained from the fitting are summarized in Table
+       <a class="tbl" href="#tab1">
+        1
+       </a>
+       . For reference, individual-level fitting was attempted for each participant, and the results are as follows:
+       <em>
+        c
+        <sub>
+         μ
+        </sub>
+       </em>
+       =0.056 (SD=0.099),
+       <em>
+        c
+        <sub>
+         σ
+        </sub>
+       </em>
+       =0.091 (SD=0.017),
+       <em>
+        ν
+       </em>
+       =19.54 (SD=21.77),
+       <em>
+        δ
+       </em>
+       =0.243 (SD=0.202),
+       <em>
+        c
+        <sub>
+         L
+        </sub>
+       </em>
+       =0.53 (SD=0.16),
+       <em>
+        R
+       </em>
+       <sup>
+        2
+       </sup>
+       =0.81 (SD=0.051).
+      </p>
+     </section>
+    </section>
+    <section id="sec-29">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Discussion
+       </h3>
+      </div>
+     </header>
+     <p>
+      In the moving-target selection task with latency added, the proposed model faithfully predicted the empirical error rate of the user. In particular, in the study we observed a decline in participants’ error rate with latency increases up to a certain level. To achieve the lowest error rate in the timing task, players must aim at the center of the selection region as the Gaussian distribution is symmetric about the mean. However, users are generally known to aim at the front of the selection region (note that
+      <em>
+       c
+       <sub>
+        μ
+       </sub>
+      </em>
+      values in Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      are lower than 0.5). This is called the negative mean asynchrony (NMA) phenomenon [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ]. The increase in latency allows the user's aim point to move closer to the center of the selection region. So, while not intuitive, an increase in latency can lead to a reduction in the error rate. This illustration that the system's response can sometimes be too fast in a task involving participant anticipation of input timing replicates and theoretically extends the results of some studies previously reported upon [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ].
+     </p>
+     <p>
+      The model's assumptions about the effects of latency on the input distribution's
+      <em>
+       μ
+      </em>
+      and
+      <em>
+       σ
+      </em>
+      values were verified. Thus, we can report that the model succeeded in predicting participants’ empirical error rates with high accuracy (
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      =0.94).
+     </p>
+     <p>
+      We now turn to the empirical parameters obtained through fitting. The previous model for moving-target selection [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ] failed to capture the tendency of latency to push back the mean of the input distribution,
+      <em>
+       μ
+      </em>
+      . The effect was reflected instead in the measurement of the user's implicit aim point (
+      <em>
+       c
+       <sub>
+        μ
+       </sub>
+      </em>
+      ). For the same dataset, the prior model produces a large
+      <em>
+       c
+       <sub>
+        μ
+       </sub>
+      </em>
+      value, about 0.35 (see Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      ), which results from misinterpreting the latency-induced shift in input distribution to be a shift in the user's intended aim point.
+     </p>
+     <p>
+      We attempted to further analyze whether the phenomenon of shifting the input distribution backward is a passive effect of latency vs. intended by the user. If we assume that
+      <em>
+       c
+       <sub>
+        μ
+       </sub>
+      </em>
+      is directly affected by latency, the
+      <em>
+       μ
+      </em>
+      of the input distribution can be expressed thus:
+     </p>
+     <div class="table-responsive" id="eq7">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} \mu =c_{\mu }\cdot W_{t}=(c_{\mu 0}+c_{L}\cdot L)\cdot W_{t} \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (7)
+       </span>
+      </div>
+     </div>
+     <p>
+     </p>
+     <p>
+      Fitting this equation to the
+      <em>
+       μ
+      </em>
+      of the empirically measured input distribution yields a worse fit (
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      =0.47) than our model's (
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      =0.70). This supports the view that the input-distribution shift represents not user intention but a passive effect of latency.
+     </p>
+     <p>
+      However, there are hypotheses that cannot be answered by this analysis alone. For example, to achieve a lower error rate, the user may tolerate the input being delayed without actively correcting the aim point. In contrast, under experimental conditions wherein the error rate can be critically increased via latency (i.e., by latency above 200 ms), the user may actively modify the implicit aim point. In fact, it has been observed that as the latency value approaches 200 ms, the change in
+      <em>
+       μ
+      </em>
+      value saturates (see the third graph in Figure
+      <a class="fig" href="#fig7">
+       6
+      </a>
+      ). A definitive answer is beyond the scope of this study and requires further investigation.
+     </p>
+    </section>
+   </section>
+   <section id="sec-30">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       STUDY 2: GEOMETRIC COMPENSATION OF LATENCY
+      </h2>
+     </div>
+    </header>
+    <p>
+     For the famous moving-target selection game Flappy Bird, Study 2 demonstrates the geometric compensation of the latency effect.
+    </p>
+    <figure id="fig8">
+     <img alt="" class="img-responsive" longdesc="Selection regions in Flappy Bird (left), and the result of geometric compensation (right)." src="3300790_files\chi2019560fig8.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 7:
+      </span>
+      <span class="figure-title">
+       Two selection regions in the Flappy Bird game (left), the result of the geometric compensation performed by adjusting the pillar spacing (right).
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <section id="sec-31">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Moving-Target Selection in Flappy Bird
+       </h3>
+      </div>
+     </header>
+     <p>
+      In Flappy Bird, the player must control the flight of a small bird and pass it through pillars that each have a narrow gap. The player must activate a button occasionally to control the bird's flight: when this is pressed, the bird starts rising at a constant speed, but if there is no further input it then falls to the ground under gravity. The game ends when the bird hits the ground or a pillar.
+     </p>
+     <p>
+      Keeping the bird from falling to the ground is easy, so this task was not considered in our study. However, the player must perform a moving-target selection task to pass through a pillar without bumping into it. At this time, the player encounters two selection regions in the game scene, of different shapes (see Figure
+      <a class="fig" href="#fig8">
+       7
+      </a>
+      ).
+     </p>
+    </section>
+    <section id="sec-32">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Geometric Compensation in Flappy Bird
+       </h3>
+      </div>
+     </header>
+     <p>
+      The difficulty level in Flappy Bird is determined by the speed of the bird, the vertical spacing between pillar sections, and the magnitude of the gravity. Of these variables, the one that determines the look of the game geometry is the spacing between the pillars. Other variables must be kept constant to maintain the temporal dynamics of the game.
+     </p>
+     <p>
+      When the vertical spacing for a pillar is changed, target-selectable duration
+      <em>
+       W
+       <sub>
+        t
+       </sub>
+      </em>
+      , which determines the user's error rate, is changed. Input period
+      <em>
+       P
+      </em>
+      and cue-viewing time
+      <em>
+       t
+       <sub>
+        c
+       </sub>
+      </em>
+      do not change when the bird's speed and gravity are constant. In Study 2, we controlled the player's error rate by adjusting the vertical spacing of pillar segments to change
+      <em>
+       W
+       <sub>
+        t
+       </sub>
+      </em>
+      .
+     </p>
+     <p>
+      How vertical gaps determine the
+      <em>
+       W
+       <sub>
+        t
+       </sub>
+      </em>
+      value is calculated from an equation obtained in previous work [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ] (not repeated here). The change in the player's error rate due to the change in
+      <em>
+       W
+       <sub>
+        t
+       </sub>
+      </em>
+      can be predicted via Equation
+      <a class="eqn" href="#eq5">
+       5
+      </a>
+      . This enabled geometric compensation to be applied for Flappy Bird in line with Figure
+      <a class="fig" href="#fig5">
+       4
+      </a>
+      . Changing the pillar gaps alters the
+      <em>
+       W
+       <sub>
+        t
+       </sub>
+      </em>
+      values in selection regions
+      <em>
+       A
+      </em>
+      and
+      <em>
+       B
+      </em>
+      both (see Figure
+      <a class="fig" href="#fig8">
+       7
+      </a>
+      ).
+     </p>
+    </section>
+    <section id="sec-33">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Obtaining Empirical Parameters
+       </h3>
+      </div>
+     </header>
+     <p>
+      The 10 participants in the aforementioned study [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ] played the Flappy Bird game under various
+      <em>
+       W
+       <sub>
+        t
+       </sub>
+      </em>
+      ,
+      <em>
+       P
+      </em>
+      , and
+      <em>
+       t
+       <sub>
+        c
+       </sub>
+      </em>
+      conditions. Using their dataset, we fitted our model to obtain empirical parameters. Since we did not know the end-to-end latency of the apparatus used in the earlier experiments (
+      <tt>
+       MacBook Pro
+      </tt>
+      late 2012, 2.2 GHz Intel Core i7, Intel Iris Pro 1536 MB graphics card). Therefore, it was assumed that the typical latency of a MacBook Pro keyboard, 30 ms, was present in those experiments. Our model showed a high fit with their data (
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      =0.98). The resulting empirical parameters were used for geometric compensation in Study 2 (see Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      ). When the latency changes from 30 ms to 200 ms, the spacing between the pillars varies by compensation from -34.85% to 3.57% as shown in the figure below (the shading indicates the 95% confidence interval):
+     </p>
+     <figure id="fig9">
+      <img alt="" class="img-responsive" longdesc="" src="3300790_files\chi2019560fig9.jpg"/>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-34">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Method
+       </h3>
+      </div>
+     </header>
+     <section id="sec-35">
+      <p>
+       <em>
+        Participants:
+       </em>
+       Twelve participants, four of them female and eight male, were recruited from a local university. Their average age was 23.61 (SD=4.4), and each was rewarded with
+       <font style="normal">
+        $
+       </font>
+       10 for completing the experiment. Participants were informed and signed a consent form before the experiment.
+      </p>
+      <figure id="fig10">
+       <img alt="" class="img-responsive" longdesc="Modified pillar heights for compensating error rates of three latency conditions." src="3300790_files\chi2019560fig10.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 8:
+        </span>
+        <span class="figure-title">
+         On successful compensation, error rates of Latency 1, 2 and 3 should be similar for each Condition.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-36">
+      <p>
+       <em>
+        Task:
+       </em>
+       Participants were asked to play Flappy Bird implemented in Java (see Figure
+       <a class="fig" href="#fig10">
+        8
+       </a>
+       ). They made the bird jump by pressing the spacebar. We asked the participants to do their best to avoid colliding with the pillars and make the bird fly as far as they could. The horizontal velocity of the bird was 3 pixels/frame, and the speed at which the bird rose upon pressing of the spacebar was 5 pixels/frame. The temporal dynamics of the final application were similar to those of the original Flappy Bird.
+      </p>
+     </section>
+     <section id="sec-37">
+      <p>
+       <em>
+        Apparatus:
+       </em>
+       The game was implemented on a desktop computer (
+       <tt>
+        Intel
+       </tt>
+       Core(TM) i7-7700 CPU @3.60 GHz, Windows 10) and was constantly driven at a frame rate of 60Hz. A 24-inch monitor (
+       <tt>
+        ASUS ROG Swift PG248Q
+       </tt>
+       180 Hz) and a gaming keyboard (
+       <tt>
+        ASUS ROG Claymore
+       </tt>
+       ) were used. We measured the end-to-end latency of the system with a high-speed camera (960 fps, SONY DSC–RX100M5). The resulting latency was approximately 40 ms between when the keyboard button was pressed and feedback appeared on the screen.
+      </p>
+     </section>
+     <section id="sec-38">
+      <p>
+       <em>
+        Experimental Design:
+       </em>
+       The experiment had a 4 × 3 within-subject design with two independent variables:
+       <em>
+        Game Condition
+       </em>
+       , and
+       <em>
+        Latency
+       </em>
+       . The levels were the following:
+      </p>
+      <ul class="list-no-style">
+       <li id="list15" label="•">
+        Game Condition:
+        <em>
+         Condition 1
+        </em>
+        (Gravity
+        <em>
+         g
+        </em>
+        <sub>
+         1
+        </sub>
+        –0.11 pixels
+        <sup>
+         2
+        </sup>
+        /frame, Pillar Width
+        <em>
+         W
+        </em>
+        <sub>
+         <em>
+          p
+         </em>
+         1
+        </sub>
+        –272 pixels, Pillar Spacing
+        <em>
+         H
+        </em>
+        <sub>
+         <em>
+          p
+         </em>
+         1
+        </sub>
+        –190 pixels),
+        <em>
+         Condition 2
+        </em>
+        (
+        <em>
+         g
+        </em>
+        <sub>
+         2
+        </sub>
+        –0.22 pixels
+        <sup>
+         2
+        </sup>
+        /frame,
+        <em>
+         W
+        </em>
+        <sub>
+         <em>
+          p
+         </em>
+         2
+        </sub>
+        –136 pixels,
+        <em>
+         H
+        </em>
+        <sub>
+         <em>
+          p
+         </em>
+         2
+        </sub>
+        132– pixels),
+        <em>
+         Condition 3
+        </em>
+        (
+        <em>
+         g
+        </em>
+        <sub>
+         3
+        </sub>
+        –0.22 pixels
+        <sup>
+         2
+        </sup>
+        /frame,
+        <em>
+         W
+        </em>
+        <sub>
+         <em>
+          p
+         </em>
+         3
+        </sub>
+        –136 pixels,
+        <em>
+         H
+        </em>
+        <sub>
+         <em>
+          p
+         </em>
+         3
+        </sub>
+        –94 pixels),
+        <em>
+         Condition 4
+        </em>
+        (
+        <em>
+         g
+        </em>
+        <sub>
+         4
+        </sub>
+        –0.22 pixels
+        <sup>
+         2
+        </sup>
+        /frame,
+        <em>
+         W
+        </em>
+        <sub>
+         <em>
+          p
+         </em>
+         4
+        </sub>
+        –136 pixels,
+        <em>
+         H
+        </em>
+        <sub>
+         <em>
+          p
+         </em>
+         4
+        </sub>
+        –84 pixels)
+        <br/>
+       </li>
+       <li id="list16" label="•">
+        Latency:
+        <em>
+         Latency 1
+        </em>
+        (40 ms, default latency),
+        <em>
+         Latency 1
+        </em>
+        (80 ms, 40 ms added),
+        <em>
+         Latency 3
+        </em>
+        (120 ms, 80 ms added)
+        <br/>
+       </li>
+      </ul>
+      <p>
+       The additional latency was implemented through software and was applied from the moment of the
+       <tt>
+        keyPressed
+       </tt>
+       event. For each
+       <em>
+        Latency
+       </em>
+       –
+       <em>
+        Game Condition
+       </em>
+       pair except with default latency, the following geometric compensation was applied to
+       <em>
+        H
+        <sub>
+         p
+        </sub>
+       </em>
+       :
+       <span class="inline-equation">
+        <span class="tex">
+         $\Delta H_{p1}^{80}=-17$
+        </span>
+       </span>
+       pixels,
+       <span class="inline-equation">
+        <span class="tex">
+         $\Delta H_{p2}^{80}=-12$
+        </span>
+       </span>
+       pixels,
+       <span class="inline-equation">
+        <span class="tex">
+         $\Delta H_{p3}^{80}=-11$
+        </span>
+       </span>
+       pixels,
+       <span class="inline-equation">
+        <span class="tex">
+         $\Delta H_{p4}^{80}=-4$
+        </span>
+       </span>
+       pixels,
+       <span class="inline-equation">
+        <span class="tex">
+         $\Delta H_{p1}^{120}=-35$
+        </span>
+       </span>
+       pixels,
+       <span class="inline-equation">
+        <span class="tex">
+         $\Delta H_{p2}^{120}=-26$
+        </span>
+       </span>
+       pixels,
+       <span class="inline-equation">
+        <span class="tex">
+         $\Delta H_{p3}^{120}=-11$
+        </span>
+       </span>
+       pixels,
+       <span class="inline-equation">
+        <span class="tex">
+         $\Delta H_{p4}^{120}=-4$
+        </span>
+       </span>
+       pixels. Since the latency used was expected to lower the participants’ error rates, the pillar gaps had to be reduced overall after the geometric compensation was performed. After this compensation, the error rate for each
+       <em>
+        Game Condition
+       </em>
+       would be expected to remain the same across
+       <em>
+        Latency
+       </em>
+       conditions.
+      </p>
+     </section>
+     <section id="sec-39">
+      <p>
+       <em>
+        Setup and Procedure:
+       </em>
+       Participants were instructed to sit on a gaming chair in front of the PC. During an experimenter's brief explanation of the experiment, it was verified that each subject understood the tasks. None of the participants were familiar with the original Flappy Bird game. The order of the three
+       <em>
+        Latency
+       </em>
+       conditions was counterbalanced via a Latin square design. In each
+       <em>
+        Latency
+       </em>
+       condition, the order of
+       <em>
+        Game Condition
+       </em>
+       assignments was random. To keep trial counts similar irrespective of
+       <em>
+        Game Condition
+       </em>
+       , participants played for six minutes with a gravity of 0.11 pixels
+       <sup>
+        2
+       </sup>
+       /frame and three minutes with a gravity of 0.22 pixels
+       <sup>
+        2
+       </sup>
+       /frame. All received
+       <font style="normal">
+        $
+       </font>
+       10 as compensation for participating.
+      </p>
+     </section>
+    </section>
+    <section id="sec-40">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Results
+       </h3>
+      </div>
+     </header>
+     <p>
+      Let
+      <em>
+       E
+      </em>
+      <sub>
+       1
+      </sub>
+      be the error rate in the default latency condition (
+      <em>
+       Latency 1
+      </em>
+      ),
+      <em>
+       E
+      </em>
+      <sub>
+       2
+      </sub>
+      be the error rate in the presence of 40 ms added latency (
+      <em>
+       Latency 2
+      </em>
+      ), and
+      <em>
+       E
+      </em>
+      <sub>
+       3
+      </sub>
+      be the error rate when additional latency of 80 ms is present (
+      <em>
+       Latency 3
+      </em>
+      ). With the geometric compensation, the following relationship between these three error rates should be observed:
+      <em>
+       E
+      </em>
+      <sub>
+       0
+      </sub>
+      ≈
+      <em>
+       E
+      </em>
+      <sub>
+       40
+      </sub>
+      and
+      <em>
+       E
+      </em>
+      <sub>
+       0
+      </sub>
+      ≈
+      <em>
+       E
+      </em>
+      <sub>
+       80
+      </sub>
+      .
+     </p>
+     <p>
+      The result is shown on the right in Figure
+      <a class="fig" href="#fig8">
+       7
+      </a>
+      . The
+      <em>
+       x
+      </em>
+      -axis of the graph represents the error rate measured under the
+      <em>
+       Latency 1
+      </em>
+      condition for each
+      <em>
+       Game Condition
+      </em>
+      setting. On the
+      <em>
+       y
+      </em>
+      -axis is the error rate obtained in the measurements when participants were exposed to the latency-compensation conditions (
+      <em>
+       Latency 2
+      </em>
+      and
+      <em>
+       Latency 3
+      </em>
+      ). The graph illustrates that geometric compensation allows participants to maintain error rates similar to those with the default latency and geometry conditions (
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      = 0.80 and root mean square error (RMSE)=7.8%).
+     </p>
+    </section>
+    <section id="sec-41">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Discussion
+       </h3>
+      </div>
+     </header>
+     <p>
+      By means of empirical parameters obtained via Flappy Bird data published in 2016 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ], geometric compensation for additional latency was attempted. This was successful in terms of linearity (
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      =0.80) and RMSE (7.8%). Note that the compensation was performed at the population-level and did not take into account the effect of each player's difference. We discuss other factors that affected the compensation accuracy in Study 2.
+     </p>
+     <section id="sec-42">
+      <p>
+       <em>
+        Simultaneous Compensation of Multiple Selection Regions:
+       </em>
+       As mentioned earlier in Figure
+       <a class="fig" href="#fig8">
+        7
+       </a>
+       , the game Flappy Bird features two types of selection region, and the change in intra-pillar spacing affects both shapes simultaneously. That is, if compensation for the error rate is applied for one kind of selection area, the error rate for the other may not reach the level targeted. In Study 2, we computed post-compensation pillar gaps for each of the two region types and averaged these to obtain a single compensation-inclusive spacing. This compromises the accuracy of the compensation. In fact, as Figure
+       <a class="fig" href="#fig8">
+        7
+       </a>
+       shows, the post-compensation error rate for selection region
+       <em>
+        A
+       </em>
+       is slightly lower than the post-compensation error rate for selection region
+       <em>
+        B
+       </em>
+       .
+      </p>
+      <p>
+       If the speed of the bird too were adjusted, it would have been possible to compensate for the error rate from both selection regions simultaneously. However, this could affect the game's temporal dynamics; game designers should apply it only selectively.
+      </p>
+     </section>
+     <section id="sec-43">
+      <p>
+       <em>
+        Inaccurate Estimation of Empirical Parameters:
+       </em>
+       For performing geometric compensation, the empirical parameters of the moving-target selection model ‘
+       <span class="inline-equation">
+        <span class="tex">
+         $c_{\mu }, c_{\sigma }, \nu , \delta , and \space c_{L}$
+        </span>
+       </span>
+       ’ must be known in advance. In our experiment, these parameters’ values were obtained by fitting the model to the Flappy Bird dataset from the earlier paper [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ]. Again, since the authors did not report the end-to-end latency of the system from which the data were obtained, we made a rough estimate for our paper that puts the latency of the system in the 2016 Flappy Bird experiment at about 30 ms. If errors in this assumption led to the empirical parameters not being obtained correctly, the accuracy of the geometric compensation performed in Study 2 may have suffered.
+      </p>
+      <p>
+       For confirmation, we fitted the model with only the data obtained in Study 2 and acquired empirical parameters again. Since the latency in the newer user study is clearly known (40 ms, 80 ms, 120 ms), the empirical parameters obtained from the Study 2 dataset can be regarded as ground truth. Thus, we can conclude that our model successfully explained the error rate of the participants in Study 2 (
+       <em>
+        R
+       </em>
+       <sup>
+        2
+       </sup>
+       = 0.94).
+      </p>
+      <p>
+       The resulting parameters differed from the set used to design the geometrical compensation in Study 2 (see Table
+       <a class="tbl" href="#tab1">
+        1
+       </a>
+       ). There are two possible causes for this difference: (1) the end-to-end latency in the 2016 experiment may
+       <em>
+        not
+       </em>
+       have been 30 ms, and (2) subjects’ demographic differences may be relevant. However, no significant demographic differences were found between the participants in the 2016 experiment [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ] and those in Study 2, so we conjecture that error exists in our assumption that the system latency in the 2016 experiment was 30 ms.
+      </p>
+     </section>
+     <section id="sec-44">
+      <p>
+       <em>
+        Inverse Modeling of Latency in 2016 Paper:
+       </em>
+       Assuming that the empirical parameters obtained from the Study 2 dataset are ground truth, we can estimate the end-to-end latency in the 2016 Flappy Bird experiment [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+        29
+       </a>
+       ] through
+       <em>
+        inverse modeling
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+        23
+       </a>
+       ]. The end-to-end latency in the earlier study was regarded as an unknown variable and fitted to our model via ground-truth empirical parameters. As a result, the model described the data well (
+       <em>
+        R
+       </em>
+       <sup>
+        2
+       </sup>
+       = 0.96), and the 2016 system's latency was found to be
+       <em>
+        122
+       </em>
+       ms, a much larger value than we expected. This may be the reason for our geometrical compensation not being perfect.
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-45">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       LIMITATION AND CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Our research yielded a novel model and method that can compensate for the effects of latency by
+     <em>
+      geometrically transforming
+     </em>
+     the shape of the game scene. The idea could be further generalizable to other games. For example, followings are applicable geometric compensation methods on existing popular games: increase/decrease a route width in Dancing Line, enlarge/reduce a size of enemy in a FPS game, and adjust a ball size in Rolling Sky. The method does not interfere with the time progress of the game, so it can enhance the player's immersion unlike prior time rewinding methods. That said, our work was confined to games based on relatively simple tasks (i.e., moving-target selection) and did not test how geometric compensation actually benefits the player. Also, this study did not address how the geometric compensation of latency affects the quality of experience (QoE) of players. Nonetheless, the model proposed in this paper represents a low-level mechanism for the effects of latency and was derived on that basis, so follow-up studies should be able to easily extend the model to more complex tasks. Finally, our non-intuitive finding that the error rate may decrease with some latency increases is an important take-away, one with implications for future game design.
+    </p>
+   </section>
+   <section id="sec-46">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       ACKNOWLEDGEMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This research was supported by the National Research Foundation of Korea (2017R1C1B2002101, 2018R1A5A7025409). SK's research was funded by the Aalto University Seed Funding Grant GamerLab.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Glen Anderson, Rina Doherty, and Subhashini Ganapathy. 2011. User Perception of Touch Screen Latency. In Design, User Experience, and Usability. Theory, Methods, Tools and Practice, Aaron Marcus (Ed.). Springer Berlin Heidelberg, Berlin, Heidelberg, 195–202.
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Axel Antoine, Sylvain Malacria, and Géry Casiez. 2018. Using High Frequency Accelerometer and Mouse to Compensate for End-to-end Latency in Indirect Interaction. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 609, 11 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174183" target="_blank">
+       https://doi.org/10.1145/3173574.3174183
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      G. Armitage. 2003. An experimental estimation of latency sensitivity in multiplayer Quake 3. In
+      <em>
+       The 11th IEEE International Conference on Networks, 2003. ICON2003.
+      </em>
+      137–141.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/ICON.2003.1266180" target="_blank">
+       https://doi.org/10.1109/ICON.2003.1266180
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Raymond E. Barber and Henry C. Lucas, Jr.1983. System Response Time Operator Productivity, and Job Satisfaction.
+      <em>
+       <em>
+        Commun. ACM
+       </em>
+      </em>
+      26, 11 (Nov. 1983), 972–986.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/182.358464" target="_blank">
+       https://doi.org/10.1145/182.358464
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Tom Beigbeder, Rory Coughlan, Corey Lusher, John Plunkett, Emmanuel Agu, and Mark Claypool. 2004. The Effects of Loss and Latency on User Performance in Unreal Tournament 2003®. (2004), 144–151.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1016540.1016556" target="_blank">
+       https://doi.org/10.1145/1016540.1016556
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      François Bérard and Renaud Blanch. 2013. Two Touch System Latency Estimators: High Accuracy and Low Overhead. In
+      <em>
+       Proceedings of the 2013 ACM International Conference on Interactive Tabletops and Surfaces
+      </em>
+      (
+      <em>
+       ITS ’13
+      </em>
+      ). ACM, New York, NY, USA, 241–250.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2512349.2512796" target="_blank">
+       https://doi.org/10.1145/2512349.2512796
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Yahn W Bernier. 2001. Latency compensating methods in client/server in-game protocol design and optimization. In
+      <em>
+       Game Developers Conference
+      </em>
+      , Vol. 98033.
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Florian Bockes, Raphael Wimmer, and Andreas Schmid. 2018. LagBox – Measuring the Latency of USB-Connected Input Devices. , Article LBW115 (2018), 6 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3170427.3188632" target="_blank">
+       https://doi.org/10.1145/3170427.3188632
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Catalin V Buhusi and Warren H Meck. 2005. What makes us tick? Functional and neural mechanisms of interval timing.
+      <em>
+       <em>
+        Nature Reviews Neuroscience
+       </em>
+      </em>
+      6, 10 (2005), 755.
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Géry Casiez, Thomas Pietrzak, Damien Marchal, Sébastien Poulmane, Matthieu Falce, and Nicolas Roussel. 2017. Characterizing Latency in Touch and Button-Equipped Interactive Systems. In
+      <em>
+       Proceedings of the 30th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’17
+      </em>
+      ). ACM, New York, NY, USA, 29–39.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3126594.3126606" target="_blank">
+       https://doi.org/10.1145/3126594.3126606
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Irina Ceaparu, Jonathan Lazar, Katie Bessiere, John Robinson, and Ben Shneiderman. 2004. Determining Causes and Severity of End-User Frustration.
+      <em>
+       <em>
+        International Journal of Human-Computer Interaction
+       </em>
+      </em>
+      17, 3(2004), 333–356.
+      <a class="link-inline force-break" href="https://doi.org/10.1207/s15327590ijhc1703_3" target="_blank">
+       https://doi.org/10.1207/s15327590ijhc1703_3
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Mark Claypool, Ragnhild Eg, and Kjetil Raaen. 2017. Modeling user performance for moving target selection with a delayed mouse. In
+      <em>
+       International Conference on Multimedia Modeling
+      </em>
+      . Springer, 226–237.
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Jonathan Deber, Bruno Araujo, Ricardo Jota, Clifton Forlines, Darren Leigh, Steven Sanders, and Daniel Wigdor. 2016. Hammer Time!: A Low-Cost, High Precision, High Accuracy Tool to Measure the Latency of Touchscreen Devices. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 2857–2868.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858394" target="_blank">
+       https://doi.org/10.1145/2858036.2858394
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      John Gibbon, Russell M Church, and Warren H Meck. 1984. Scalar timing in memory.
+      <em>
+       <em>
+        Annals of the New York Academy of sciences
+       </em>
+      </em>
+      423, 1 (1984), 52–77.
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Niels Henze and Benjamin Poppinga. 2012. Measuring latency of touch and tactile feedback in touchscreen interaction using a mobile game. In
+      <em>
+       Proceedings of the 3rd International Workshop on Research in the Large. New York: ACM. S
+      </em>
+      . 23–26.
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Zenja Ivkovic, Ian Stavness, Carl Gutwin, and Steven Sutcliffe. 2015. Quantifying and Mitigating the Negative Effects of Local Latencies on Aiming in 3D Shooter Games. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’15
+      </em>
+      ). ACM, New York, NY, USA, 135–144.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702432" target="_blank">
+       https://doi.org/10.1145/2702123.2702432
+      </a>
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Aditya Jain, Ramta Bansal, Avnish Kumar, and KD Singh. 2015. A comparative study of visual and auditory reaction times on the basis of gender and physical activity levels of medical first year students.
+      <em>
+       <em>
+        International Journal of Applied and Basic Medical Research
+       </em>
+      </em>
+      5, 2(2015), 124.
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Arthur R. Jensen and Ella Munro. 1979. Reaction time, movement time, and intelligence.
+      <em>
+       <em>
+        Intelligence
+       </em>
+      </em>
+      3, 2 (1979), 121 – 126.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/0160-2896(79)90010-2" target="_blank">
+       https://doi.org/10.1016/0160-2896(79)90010-2
+      </a>
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Ricardo Jota, Albert Ng, Paul Dietz, and Daniel Wigdor. 2013. How Fast is Fast Enough?: A Study of the Effects of Latency in Direct-touch Pointing Tasks. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’13
+      </em>
+      ). ACM, New York, NY, USA, 2291–2300.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2481317" target="_blank">
+       https://doi.org/10.1145/2470654.2481317
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      T. Kaaresoja, E. Anttila, and E. Hoggan. 2011. The effect of tactile feedback latency in touchscreen interaction. In
+      <em>
+       2011 IEEE World Haptics Conference
+      </em>
+      . 65–70.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/WHC.2011.5945463" target="_blank">
+       https://doi.org/10.1109/WHC.2011.5945463
+      </a>
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Topi Kaaresoja and Stephen Brewster. 2010. Feedback is... Late: Measuring Multimodal Delays in Mobile Device Touchscreen Interaction. In
+      <em>
+       International Conference on Multimodal Interfaces and the Workshop on Machine Learning for Multimodal Interaction
+      </em>
+      (
+      <em>
+       ICMI-MLMI ’10
+      </em>
+      ). ACM, New York, NY, USA, Article 2, 8 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1891903.1891907" target="_blank">
+       https://doi.org/10.1145/1891903.1891907
+      </a>
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Teemu Kämäräinen, Matti Siekkinen, Antti Ylä-Jääski, Wenxiao Zhang, and Pan Hui. 2017. A Measurement Study on Achieving Imperceptible Latency in Mobile Cloud Gaming. In
+      <em>
+       Proceedings of the 8th ACM on Multimedia Systems Conference
+      </em>
+      (
+      <em>
+       MMSys’17
+      </em>
+      ). ACM, New York, NY, USA, 88–99.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3083187.3083191" target="_blank">
+       https://doi.org/10.1145/3083187.3083191
+      </a>
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Antti Kangasrääsiö, Kumaripaba Athukorala, Andrew Howes, Jukka Corander, Samuel Kaski, and Antti Oulasvirta. 2017. Inferring cognitive models from data using approximate Bayesian computation. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 1295–1306.
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Sunjun Kim, Byungjoo Lee, and Antti Oulasvirta. 2018. Impact Activation Improves Rapid Button Pressing. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 571, 8 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174145" target="_blank">
+       https://doi.org/10.1145/3173574.3174145
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Jarrod Knibbe, Hrvoje Benko, and Andrew D. Wilson. 2015. Juggling the Effects of Latency: Software Approaches to Minimizing Latency in Dynamic Projector-Camera Systems. (2015), 93–94.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2815585.2815735" target="_blank">
+       https://doi.org/10.1145/2815585.2815735
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Huy Viet Le, Valentin Schwind, Philipp Göttlich, and Niels Henze. 2017. PredicTouch: A System to Reduce Touchscreen Latency Using Neural Networks and Inertial Measurement Units. In
+      <em>
+       Proceedings of the 2017 ACM International Conference on Interactive Surfaces and Spaces
+      </em>
+      (
+      <em>
+       ISS ’17
+      </em>
+      ). ACM, New York, NY, USA, 230–239.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3132272.3134138" target="_blank">
+       https://doi.org/10.1145/3132272.3134138
+      </a>
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Byungjoo Lee, Qiao Deng, Eve Hoggan, and Antti Oulasvirta. 2017. Boxer: A Multimodal Collision Technique for Virtual Objects. In
+      <em>
+       Proceedings of the 19th ACM International Conference on Multimodal Interaction
+      </em>
+      (
+      <em>
+       ICMI 2017
+      </em>
+      ). ACM, New York, NY, USA, 252–260.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3136755.3136761" target="_blank">
+       https://doi.org/10.1145/3136755.3136761
+      </a>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Byungjoo Lee, Sunjun Kim, Antti Oulasvirta, Jong-In Lee, and Eunji Park. 2018. Moving Target Selection: A Cue Integration Model. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 230, 12 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3173804" target="_blank">
+       https://doi.org/10.1145/3173574.3173804
+      </a>
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Byungjoo Lee and Antti Oulasvirta. 2016. Modelling Error Rates in Temporal Pointing. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 1857–1868.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858143" target="_blank">
+       https://doi.org/10.1145/2858036.2858143
+      </a>
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Steven W. K. Lee and Rocky K. C. Chang. 2017. On ”shot around a corner” in first-person shooter games. In
+      <em>
+       2017 15th Annual Workshop on Network and Systems Support for Games (NetGames)
+      </em>
+      . 1–6.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/NetGames.2017.7991545" target="_blank">
+       https://doi.org/10.1109/NetGames.2017.7991545
+      </a>
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Jiandong Liang, Chris Shaw, and Mark Green. 1991. On Temporal-spatial Realism in the Virtual Reality Environment. In
+      <em>
+       Proceedings of the 4th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’91
+      </em>
+      ). ACM, New York, NY, USA, 19–25.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/120782.120784" target="_blank">
+       https://doi.org/10.1145/120782.120784
+      </a>
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      I. Scott MacKenzie and Colin Ware. 1993. Lag As a Determinant of Human Performance in Interactive Systems. In
+      <em>
+       Proceedings of the INTERACT ’93 and CHI ’93 Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’93
+      </em>
+      ). ACM, New York, NY, USA, 488–493.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/169059.169431" target="_blank">
+       https://doi.org/10.1145/169059.169431
+      </a>
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Gale L. Martin and Kenneth G. Corl. 1986. System response time effects on user productivity.
+      <em>
+       <em>
+        Behaviour &amp; Information Technology
+       </em>
+      </em>
+      5, 1 (1986), 3–13.
+      <a class="link-inline force-break" href="https://doi.org/10.1080/01449298608914494" target="_blank">
+       https://doi.org/10.1080/01449298608914494
+      </a>
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Albert Ng, Julian Lepinski, Daniel Wigdor, Steven Sanders, and Paul Dietz. 2012. Designing for Low-latency Direct-touch Input. (2012), 453–464.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2380116.2380174" target="_blank">
+       https://doi.org/10.1145/2380116.2380174
+      </a>
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Antti Oulasvirta, Sunjun Kim, and Byungjoo Lee. 2018. Neuromechanics of a Button Press. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 508, 13 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174082" target="_blank">
+       https://doi.org/10.1145/3173574.3174082
+      </a>
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Eunji Park, Hyunju Kim, and Byungjoo Lee. 2018. Button++: Designing Risk-aware Smart Buttons. In
+      <em>
+       Extended Abstracts of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, LBW116.
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Eunji Park and Byungjoo Lee. 2018. Predicting Error Rates in Pointing Regardless of Target Motion.
+      <em>
+       <em>
+        arXiv preprint arXiv:1806.02973
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Andriy Pavlovych and Wolfgang Stuerzlinger. 2009. The Tradeoff Between Spatial Jitter and Latency in Pointing Tasks. In
+      <em>
+       Proceedings of the 1st ACM SIGCHI Symposium on Engineering Interactive Computing Systems
+      </em>
+      (
+      <em>
+       EICS ’09
+      </em>
+      ). ACM, New York, NY, USA, 187–196.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1570433.1570469" target="_blank">
+       https://doi.org/10.1145/1570433.1570469
+      </a>
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      PlayOverwatch. 2016. Developer Update | Let's Talk Netcode | Overwatch.
+      <a class="link-inline force-break" href="https://www.youtube.com/watch?v=vTH2ZPgYujQ">
+       https://www.youtube.com/watch?v=vTH2ZPgYujQ
+      </a>
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Peter Quax, Patrick Monsieurs, Wim Lamotte, Danny De Vleeschauwer, and Natalie Degrande. 2004. Objective and Subjective Evaluation of the Influence of Small Amounts of Delay and Jitter on a Recent First Person Shooter Game. In
+      <em>
+       Proceedings of 3rd ACM SIGCOMM Workshop on Network and System Support for Games
+      </em>
+      (
+      <em>
+       NetGames ’04
+      </em>
+      ). ACM, New York, NY, USA, 152–156.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1016540.1016557" target="_blank">
+       https://doi.org/10.1145/1016540.1016557
+      </a>
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      K. Raaen, R. Eg, and C. Griwodz. 2014. Can gamers detect cloud delay?. In
+      <em>
+       2014 13th Annual Workshop on Network and Systems Support for Games
+      </em>
+      . 1–3.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/NetGames.2014.7008962" target="_blank">
+       https://doi.org/10.1109/NetGames.2014.7008962
+      </a>
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      Bruno H Repp. 2005. Sensorimotor synchronization: a review of the tapping literature.
+      <em>
+       <em>
+        Psychonomic bulletin &amp; review
+       </em>
+      </em>
+      12, 6 (2005), 969–992.
+      <a class="link-inline force-break" href="https://doi.org/10.3758/bf03206433" target="_blank">
+       https://doi.org/10.3758/bf03206433
+      </a>
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Walter Ritter, Guido Kempter, and Tobias Werner. 2015. User-Acceptance of Latency in Touch Interactions. In Universal Access in Human-Computer Interaction. Access to Interaction, Margherita Antona and Constantine Stephanidis (Eds.). Springer International Publishing, Cham, 139–147.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/978-3-319-20681-3_13">
+       https://doi.org/10.1007/978-3-319-20681-3_13
+      </a>
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      Steven C Seow. 2008.
+      <em>
+       Designing and engineering time: The psychology of time perception in software
+      </em>
+      . Addison-Wesley Professional.
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      Jose Shelton and Gideon Praveen Kumar. 2010. Comparison between auditory and visual simple reaction times.
+      <em>
+       <em>
+        Neuroscience &amp; Medicine
+       </em>
+      </em>
+      1, 1 (2010), 30–32.
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      Ben Shneiderman. 1984. Response Time and Display Rate in Human Performance with Computers.
+      <em>
+       <em>
+        ACM Comput. Surv.
+       </em>
+      </em>
+      16, 3 (Sept. 1984), 265–285.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2514.2517" target="_blank">
+       https://doi.org/10.1145/2514.2517
+      </a>
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      Richard H.Y. So and Michael J Griffin. 1992. Compensating lags in head-coupled displays using head position prediction and image deflection.
+      <em>
+       <em>
+        Journal of Aircraft
+       </em>
+      </em>
+      29, 6 (1992), 1064–1068.
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      Steven L. Teal and Alexander I. Rudnicky. 1992. A Performance Model of System Delay and User Strategy Selection. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’92
+      </em>
+      ). ACM, New York, NY, USA, 295–305.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/142750.142818" target="_blank">
+       https://doi.org/10.1145/142750.142818
+      </a>
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      R. J. Teather, A. Pavlovych, W. Stuerzlinger, and I. S. MacKenzie. 2009. Effects of tracking technology, latency, and spatial jitter on object movement. In
+      <em>
+       2009 IEEE Symposium on 3D User Interfaces
+      </em>
+      . 43–50.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/3DUI.2009.4811204" target="_blank">
+       https://doi.org/10.1109/3DUI.2009.4811204
+      </a>
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      Simon Thorpe, Denis Fize, and Catherine Marlot. 1996. Speed of processing in the human visual system.
+      <em>
+       <em>
+        nature
+       </em>
+      </em>
+      381, 6582 (1996), 520.
+      <a class="link-inline force-break" href="https://doi.org/10.1038/381520a0" target="_blank">
+       https://doi.org/10.1038/381520a0
+      </a>
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      Jiann-Rong Wu and Ming Ouhyoung. 2000. On latency compensation and its effects on head-motion trajectories in virtual environments.
+      <em>
+       <em>
+        The Visual Computer
+       </em>
+      </em>
+      16, 2 (01 Mar 2000), 79–90.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/s003710050198" target="_blank">
+       https://doi.org/10.1007/s003710050198
+      </a>
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Min Hong Yun, Songtao He, and Lin Zhong. 2017. Reducing Latency by Eliminating Synchrony. In
+      <em>
+       Proceedings of the 26th International Conference on World Wide Web
+      </em>
+      (
+      <em>
+       WWW ’17
+      </em>
+      ). International World Wide Web Conferences Steering Committee, Republic and Canton of Geneva, Switzerland, 331–340.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3038912.3052557" target="_blank">
+       https://doi.org/10.1145/3038912.3052557
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    *Corresponding author.
+   </p>
+   <p id="fn2">
+    <a href="#foot-fn2">
+     <sup>
+      1
+     </sup>
+    </a>
+    Data retrieval date: September 12, 2018
+   </p>
+   <p id="fn3">
+    <a href="#foot-fn3">
+     <sup>
+      2
+     </sup>
+    </a>
+    The number of kills that a player made in average one minute.
+   </p>
+   <p id="fn4">
+    <a href="#foot-fn4">
+     <sup>
+      3
+     </sup>
+    </a>
+    Lagged players with a round-trip time (RTT) of 250 ms or more do not receive compensation via this method
+   </p>
+   <p id="fn5">
+    <a href="#foot-fn5">
+     <sup>
+      4
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="https://learn.adafruit.com/adafruit-dotstar-leds/overview">
+     https://learn.adafruit.com/adafruit-dotstar-leds/overview
+    </a>
+   </p>
+   <p id="fn6">
+    <a href="#foot-fn6">
+     <sup>
+      5
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="https://github.com/adafruit/Adafruit_DotStar">
+     https://github.com/adafruit/Adafruit_DotStar
+    </a>
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300790" target="_blank">
+      https://doi.org/10.1145/3290605.3300790
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8757e7fa1bee9176',t:'MTcxMzMwOTYyOC44MjkwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

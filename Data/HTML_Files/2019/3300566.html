@@ -1,0 +1,2480 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Hands Holding Clues for Object Recognition in Teachable Machines
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300566_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300566_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300566_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300566_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300566_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300566_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300566_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300566_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Hands Holding Clues for Object Recognition in Teachable Machines
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Kyungjun
+      </span>
+      <span class="surName">
+       Lee
+      </span>
+      , University of Maryland, USA,
+      <a href="mailto:kjlee@cs.umd.edu">
+       kjlee@cs.umd.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Hernisa
+      </span>
+      <span class="surName">
+       Kacorri
+      </span>
+      , University of Maryland, USA,
+      <a href="mailto:hernisa@umd.edu">
+       hernisa@umd.edu
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300566" target="_blank">
+       https://doi.org/10.1145/3290605.3300566
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Camera manipulation confounds the use of object recognition applications by blind people. This is exacerbated when photos from this population are also used to train models, as with teachable machines, where out-of-frame or partially included objects against cluttered backgrounds degrade performance. Leveraging prior evidence on the ability of blind people to coordinate hand movements using proprioception, we propose a deep learning system that jointly models hand segmentation and object localization for object classification. We investigate the utility of hands as a natural interface for including and indicating the object of interest in the camera frame. We confirm the potential of this approach by analyzing existing datasets from people with visual impairments for object recognition. With a new publicly available egocentric dataset and an extensive error analysis, we provide insights into this approach in the context of teachable recognizers.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Accessibility technologies
+       </strong>
+       ; •
+       <strong>
+        Computing methodologies → Object recognition
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        blind
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        object recognition
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        hand
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        egocentric
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        k-shot learning
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Kyungjun Lee and Hernisa Kacorri. 2019. Hands Holding Clues for Object Recognition in Teachable Machines. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 13 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300566" target="_blank">
+         https://doi.org/10.1145/3290605.3300566
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <figure id="fig1">
+     <img alt="" class="img-responsive" longdesc="In this figure, there are five images in a row. From left to right, the first image shows a picture of a user taking a photo of an aspirin bottle in proximity to his left hand. The second image shows the user input, which is the actual photo the user takes. The third image shows the output of the hand segmentation; the output is overlaid with the green color. The fourth image shows the output of the object localization model; this output is overlaid with the blue color and has a bounding box located around the object according to the localization output. The last image shows the image of the aspirin bottle cropped by our object localization model." src="3300566_files\chi2019336fig1.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       An illustration of our hand-guided object recognition approach on an example from our egocentric dataset. Given a photo of an object in proximity to a hand, it first identifies the hand and then estimates the object center, which is then cropped and passed to the recognition model.
+      </span>
+     </div>
+    </figure>
+    <p>
+     Object recognition apps making use of built-in cameras on mobile or wearable devices have gained in popularity among blind users as they help with access to the visual world. Typically, they provide solutions employing sighted help through crowdsourcing (
+     <em>
+      e.g.
+     </em>
+     , Aira [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ] and BeMyEyes [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+      9
+     </a>
+     ]) or machine learning with pre-trained image recognition models (
+     <em>
+      e.g.
+     </em>
+     , SeeingAI [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ] and Aipoly Vision [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+      67
+     </a>
+     ]). They have also employed hybrid solutions, falling back to sighted help when computer vision models fail (
+     <em>
+      e.g.
+     </em>
+     , TapTapSee [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+      65
+     </a>
+     ]). Camera manipulation, however, remains a challenge for blind users [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+      34
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+      36
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+      66
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+      73
+     </a>
+     ]. In all cases, the effectiveness of these solutions is confounded by blurred images, viewpoints with low discriminative characteristics, cluttered backgrounds, low saliency, and more importantly
+     <em>
+      partially included
+     </em>
+     or
+     <em>
+      out-of-frame
+     </em>
+     objects of interest.
+    </p>
+    <p>
+     Human-powered applications, especially those employing video services, can provide near-real-time guidance for better camera aiming. However, they often come with other limitations such as the need for crowd availability and Internet connection, per demand cost, and privacy concerns [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+      61
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0071">
+      71
+     </a>
+     ]. Such limitations can be resolved with pre-trained computer vision models using the device's onboard processing, though many of the camera manipulation challenges remain difficult to resolve. For example, a computer vision app, which is typically trained on well-framed photos of sighted people, may not be able to recognize the object of interest when given a partially included object against a cluttered background. In the case of object recognizers with teachable machines [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+      36
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+      62
+     </a>
+     ], where machine learning models are trained and personalized by blind users, having objects partially included or even out of the camera frame is a primary factor limiting performance [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+      36
+     </a>
+     ]. To overcome these challenges, we are interested in examining hands as a natural interface for including and indicating the object of interest in the camera frame (as shown in Fig.
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     ).
+    </p>
+    <p>
+     <strong>
+      Why hand-detection in object recognition.
+     </strong>
+     When exploring the feasibility of teachable object recognizers for the blind, Kacorri
+     <em>
+      et al.
+     </em>
+     , 2017 [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+      36
+     </a>
+     ] observed that users’ hands tend to be present in many of the images, either holding an object or serving as a reference point to place the object in the photo. We speculate that they were leveraging proprioception [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+      51
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+      60
+     </a>
+     ], the perception of body and limb position, to coordinate their hand movements: one hand holding and adjusting the camera to the location of the other hand that was in proximity to the object of interest. Gosselin
+     <em>
+      et al.
+     </em>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ] provide evidence on the ability of blind people to use proprioception to guide hand orientation and to make rapid corrections of hand orientation during movements.
+    </p>
+    <p>
+     <strong>
+      Hand-guided object localization.
+     </strong>
+     Motivated by the observation above and prior literature in proprioception, we analyze existing datasets from blind users in the context of object recognition to examine the presence of the user's hand in photos. Moreover, we investigate the effectiveness of a hand-guided object localization approach for object recognition, where an object is localized based on its proximity to the hand, cropped and forwarded to the object recognition model. By using the hand as a guide to the object of interest, we not only ensure that the object is included in the frame, but we also reduce the effect that the background might have on the recognition model. This is natural since the object is cropped and the background is removed from the image, as shown in Fig.
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     . To localize the object of interest based on its proximity to the user's hand, we use convolutional neural networks (CNNs) to first train a hand segmentation model and then fine-tune it to learn to locate the center of the object in proximity to the segmented hand. The image is then cropped to include the located object of interest. We explore the effectiveness of this approach in the context of teachable machines, where the quality of the image impacts accuracy not only during the prediction step but also in training [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+      36
+     </a>
+     ]. Specifically, we show that this approach could improve the accuracy of teachable object recognizers in real-world environments where objects lay in a cluttered background. With an extensive error analysis, we provide deeper insights into the feasibility and challenges of using existing egocentric datasets from the sighted population. To further research in this direction, we make our dataset as well as the output of our models for the error analysis publicly available.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Object recognition and camera manipulation for visually impaired people have been extensively studied for accessibility. We discuss prior work that we draw upon to both inform our analysis and contextualize the implications of our results. Moreover, we present state-of-the-art deep learning approaches, which guide our model, from hand recognition in egocentric vision, a sub-field of computer vision focusing on the analysis of images and videos typically captured by a wearable camera.
+    </p>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Object Recognition for the Blind
+       </h3>
+      </div>
+     </header>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Input, model, and prediction characteristics of prior work in object recognition for the blind.
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr>
+         <td>
+          <img alt="" class="img-responsive" src="3300566_files\chi2019336img1.svg"/>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      Researchers have explored assistive technologies that use camera input to help visually impaired people identify surrounding objects. The following surveys prior work to identify the characteristics of these solutions and to understand: the diversity of user input, the mechanisms underlying prediction, and sources of training examples for deployed computer vision models. Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      presents representative examples from 2010-2018 focusing mainly on real-world applications, though similar patterns may be found when examining larger surveys [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ]. While a few examples are similar to barcode scanners, requiring adhesive tags to be attached to objects, (
+      <em>
+       e.g.
+      </em>
+      , [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+       68
+      </a>
+      ]), the general trend is to use camera stream as an input for prediction with a single photo [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ] or real-time video [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+       67
+      </a>
+      ].
+     </p>
+     <p>
+      Prediction using computer vision models is common practice (Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      ). However, current limitations in object recognition make it impossible to build a “super” object classifier to recognize all possible object instances of interest for all blind people. Thus, such solutions are typically restricted to a few object instances (
+      <em>
+       e.g.
+      </em>
+      , US currency [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ]), adhesive tags (
+      <em>
+       e.g.
+      </em>
+      , [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+       68
+      </a>
+      ]), objects whose images are available on the web or a database (
+      <em>
+       e.g.
+      </em>
+      , [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+       73
+      </a>
+      ]), and generic object classes (
+      <em>
+       e.g.
+      </em>
+      , [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+       67
+      </a>
+      ]). To overcome some of these limitations, applications are either backed up (
+      <em>
+       e.g.
+      </em>
+      , [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ]) or fully supported (
+      <em>
+       e.g.
+      </em>
+      , [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ]) by human respondents.
+     </p>
+     <p>
+      Most recently, researchers are exploring teachable object recognition which allows users to personalize a recognizer with their objects of interest. Early approaches required training examples provided by sighted users [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+       63
+      </a>
+      ]. Subsequently, models trained by users with visual impairments have shown promise given well-framed training examples [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ]. As there are few datasets with photos of objects taken by blind users, most models are trained on photos taken by sighted people. Such photos may exhibit different background clutter, scale, viewpoints, occlusion, and image quality than those taken by blind users at prediction time.
+     </p>
+     <p>
+      Informed by this design space, we explore the presence of users’ hands in photos during
+      <strong>
+       prediction
+      </strong>
+      for a crowdsourced solution, such as VizWiz [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ], and a teachable solution, such as Sosa-García and Odone [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ]; they released their datasets (Sec.
+      <a class="sec" href="#sec-11">
+       4
+      </a>
+      ). Moreover, we explore the effectiveness of our hand-guided object localization in the context of
+      <strong>
+       training
+      </strong>
+      , by replicating prior work from Kacorri
+      <em>
+       et al.
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ] on a new small but rich benchmark dataset (Sec.
+      <a class="sec" href="#sec-18">
+       5
+      </a>
+      ).
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Camera Manipulation for the Blind
+       </h3>
+      </div>
+     </header>
+     <p>
+      We consider how challenges in camera manipulation faced by blind people have been studied in prior work. While not restricted to object recognition, prior studies analyzing photos taken by blind people have reported on difficulties related to blurriness, lighting, framing, composition, and overall photo quality [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ]. To overcome some of these challenges, researchers have leveraged models of visual attention [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ] to either provide feedback to the user for better framing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+       66
+      </a>
+      ] or to select a high-quality photo from a video stream [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+       73
+      </a>
+      ]. Others have explored solutions that can detect blurriness and inform users about camera tilt [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ]. While rarely discussed in the context of object recognition, such approaches assume that the users can spatially localize an object and aim the camera appropriately. Thus, they have limited utility in the case of partially included or out-of-frame objects of interest, cluttered backgrounds, and the presence of multiple objects.
+     </p>
+     <p>
+      Some reported strategies that blind users employ for taking good photos [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ] include: (i) positioning the camera to the center of an object and slowly pulling away while trying to keep it in frame, (ii) making an educated guess on where to point the camera, and (iii) taking several shots, hoping some will include the object. Jayant
+      <em>
+       et al.
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ] built upon the first strategy to guide users by asking them to take a first photo of the object up-close and then to follow verbal feedback to move the camera away. Although this method is an interesting alternative approach that can be used in our work, it is verbose and has not been evaluated in a real-world setup and the presence of multiple objects.
+     </p>
+     <p>
+      Even though the presence of users’ hands in the camera frame (mentioned in Kacorri
+      <em>
+       et al.
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ]) is not explicitly reported above, we associate it with the second strategy: users leverage proprioception [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ] to make an educated guess. Prior work on blind users’ fingertip detection to estimate the area of interest in a camera frame for inaccessible physical interfaces [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ] or color detection [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ] provides additional evidence for the potential of our approach.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Hands in Egocentric Vision
+       </h3>
+      </div>
+     </header>
+     <p>
+      Egocentric vision analyzes images providing a first-person view from a wearable camera typically mounted on the user's body or, as in our context, a mobile camera hand-held by a blind user. As users’ hands in egocentric vision can provide context about intentions, actions, and areas of interest, hand recognition is an active area of research in the computer vision community (
+      <em>
+       e.g.
+      </em>
+      , [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ]) with many applications in virtual reality (
+      <em>
+       e.g.
+      </em>
+      , [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+       69
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+       70
+      </a>
+      ]), augmented reality (
+      <em>
+       e.g.
+      </em>
+      , [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ]), as well as within our community [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ]. To our knowledge, this is the first study exploring hand detection in the context of object recognition for the blind.
+     </p>
+     <p>
+      Our hand-guided object localization leverages prior work by Ma
+      <em>
+       et al.
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ], which uses a twin-stream CNN to detect egocentric activities. Specifically, we adopt one of the network streams for our recognition pipeline (Fig.
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      ). However, we opt for a different network architecture using FCN-8s [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ] to improve our model's understanding of hands in the first-person view. Using photos from sighted users with a head-mounted camera, we explore its potential for photos taken by both blind and sighted users using a mobile camera over a larger number of object instances.
+     </p>
+    </section>
+   </section>
+   <section id="sec-7">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       A HAND-GUIDED OBJECT RECOGNIZER
+      </h2>
+     </div>
+    </header>
+    <p>
+     We introduce a hand-guided object recognizer comprising three deep learning models (Fig.
+     <a class="fig" href="#fig2">
+      2
+     </a>
+     ): hand segmentation, object localization, and object classification. Our architecture is based on prior work on egocentric activity recognition [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+      44
+     </a>
+     ], though we use a high-precision fully convolutional network, FCN-8s, proposed by Long
+     <em>
+      et al.
+     </em>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+      42
+     </a>
+     ].
+    </p>
+    <p>
+     Typically, thousands of annotated images are required to train such models. Therefore, in training our system, we make use of any existing pertinent datasets (Sec.
+     <a class="sec" href="#sec-11">
+      4
+     </a>
+     ) and create a new one for richer insights and error analysis (Sec.
+     <a class="sec" href="#sec-18">
+      5
+     </a>
+     ).
+    </p>
+    <figure id="fig2">
+     <img alt="" class="img-responsive" longdesc="This figure illustrates the architecture of our hand-guided object recognizer that consists of an object localization model and an object classification model. To build our system, we first develop a hand segmentation convolutional neural network that is not yet part of our system (shown in the top of the figure). From this hand segmentation model, we then build the object localization convolutional neural network that is located below the hand segmentation model. The object classification model, which is located next to the localization model, takes as input the output of the localization model to predict a label of an object." src="3300566_files\chi2019336fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 2:
+      </span>
+      <span class="figure-title">
+       In our approach, a hand segmentation model (Step I) is fine-tuned to estimate the center of the object in proximity to the hand (Step II). A bounding box, placed in that center is used to isolate the object and crop the image, which is then passed to the object classification model (Step III).
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Hand Segmentation Model
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our hand-guided object recognizer is based on the intuition that objects of interest will appear in the vicinity of the user's hand. Thus, to estimate the center of the object of interest, we need to locate the hand within the frame. We train a hand segmentation model to perform this task.
+     </p>
+     <p>
+      Specifically, we use a fully convolutional network (FCN-8s), shown to perform well for fine-grained segmentation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ]. High performance is crucial to our approach as it requires highly accurate information on hand shape and poses. As shown in Fig. 3(a), our model is trained with images annotated with two labels,
+      <em>
+       background
+      </em>
+      and
+      <em>
+       hand
+      </em>
+      , where we estimate the class of each pixel; that is, whether the pixel belongs to the background or the hand. The model is optimized using the cross-entropy loss function.
+     </p>
+    </section>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Object Localization Model
+       </h3>
+      </div>
+     </header>
+     <p>
+      Employing transfer learning [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ], we build an object localization model by “fine-tuning” our hand segmentation model. Intuitively, lower layers of the segmentation model have learned to identify image pixels corresponding to a hand. Thus, these features can be re-purposed to estimate the center of the object relative to the hand pixels.
+     </p>
+     <p>
+      Specifically, we keep weights for the first five layers in the segmentation model, shown to learn hand related features [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ], and re-train the rest. Training images are annotated with a Euclidean heatmap mark indicating the object's center (Fig. 3(b)). Heatmap annotation has been shown to be more robust than pinpointing location coordinates regarding model training [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ]. Using cross-entropy loss, we train the localization model to predict the class of each pixel in the final layer: the background or the center location
+      <a class="fn" href="#fn1" id="foot-fn1">
+       <sup>
+        1
+       </sup>
+      </a>
+      .
+     </p>
+     <p>
+      Annotating with a heatmap, the model learns which pixel belongs to the
+      <em>
+       possible center locations
+      </em>
+      . Given an image, we use this model to localize the object center and crop the image based on the estimate (blue overlay in Fig. 3(b)).
+     </p>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Object Classification Models
+       </h3>
+      </div>
+     </header>
+     <p>
+      Automatic object recognition spans across: (i) pre-trained models on a static number of object classes, which we call generic object recognizers (GOR); and (ii) personalized models with teachable machines, allowing end-users to specify objects of interest and provide a small number of training examples, which we call teachable object recognizers (TOR).
+     </p>
+     <p>
+      We explore feasibility of hand-guided object localization for object recognition in both contexts:
+      <em>
+       generic
+      </em>
+      and
+      <em>
+       teachable
+      </em>
+      . The former uses state-of-art models trained on large data. In the teachable case, models are trained on the fly by users; thus we expect the effect of hand-guided localization to be larger as image quality affects both training and prediction.
+     </p>
+     <p>
+      <em>
+       GOR:
+      </em>
+      We use Google's Inception V3 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ] pre-trained on the 2012 ILSVRC dataset [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ] with 1,000 object classes.
+     </p>
+     <p>
+      <em>
+       TOR:
+      </em>
+      We use transfer learning to re-train
+      <a class="fn" href="#fn2" id="foot-fn2">
+       <sup>
+        2
+       </sup>
+      </a>
+      GOR for 19 object classes using our benchmark dataset described in Sec.
+      <a class="sec" href="#sec-18">
+       5
+      </a>
+      .
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="(a) On the left of the figure, there are an example image, its hand mask, and the output of our hand segmentation model. The output of the hand recognition is overlaid with the green color and shows that the model correctly segments the hand from the input image. (b) The right side of the figure lists an example image, its heatmap annotation for the object center, and the output of our object localization model. The output is overlaid with the blue color and shows that the model appropriately estimates the center locations of the object." src="3300566_files\chi2019336fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        An (input, annotation, output) example for our hand segmentation fig:segmentation and object localization fig:localization models.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <div class="table-responsive" id="tab2">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 2:
+       </span>
+       <span class="table-title">
+        Overview of the dataset characteristics used in our work. An asterisk indicates a simulated environment.
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr>
+         <td>
+          <img alt="" class="img-responsive" src="3300566_files\chi2019336img2.svg"/>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="In this figure, we select eight examples that include an object of interest in proximity to the user's hand from the GTEA, Intel Egocentric Vision, EgoHands, Glassense-Vision, VizWiz, and our benchmark egocentric datasets." src="3300566_files\chi2019336fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Examples from each dataset. Glassense-Vision, VizWiz, and our benchmark examples are selected to include hands.
+       </span>
+      </div>
+     </figure>
+    </section>
+   </section>
+   <section id="sec-11">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       EGOCENTRIC HAND-OBJECT DATASETS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Training and evaluating each component requires an abundance of data. Ideally, the data are egocentric images from diverse groups of visually impaired people with mobile cameras to identify real-world objects using both GORs and TORs. Moreover, images require detailed annotations such as hand masks, object center, and object name (Fig. 3(a) and Fig. 3(b)). Such a dataset is not currently available.
+    </p>
+    <p>
+     To mitigate this, we identify related datasets, extend them with additional annotations, and create a new benchmark dataset (see Sec.
+     <a class="sec" href="#sec-18">
+      5
+     </a>
+     ). Table
+     <a class="tbl" href="#tab2">
+      2
+     </a>
+     summarizes these datasets along the number of images, distinct objects, and people, the level of people's vision, camera perspective, and environmental setup (examples shown in Fig.
+     <a class="fig" href="#fig4">
+      4
+     </a>
+     ). Environments are reported as “wild” for images captured in the real world, and “vanilla” for images in a uniform laboratory setting where objects tend to occur with a plain background.
+    </p>
+    <section id="sec-12">
+     <section id="sec-13">
+      <p>
+       <em>
+        GTEA.
+       </em>
+       Georgia Tech Egocentric Activity (GTEA and GTEA Gaze+) datasets [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+        41
+       </a>
+       ] are collected with 4 and 26 sighted people, respectively, through hat-mounted cameras
+       <a class="fn" href="#fn3" id="foot-fn3">
+        <sup>
+         3
+        </sup>
+       </a>
+       . For benchmarking activity recognition, they include annotation of actions being performed — frame-level gaze tracking data included in Gaze+ as well. They also provide hand mask annotations, since hand shape and poses are informative in object and activity recognition [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+        21
+       </a>
+       ]. We manually annotated the object centers
+       <a class="fn" href="#fn4" id="foot-fn4">
+        <sup>
+         4
+        </sup>
+       </a>
+       .
+      </p>
+     </section>
+     <section id="sec-14">
+      <p>
+       <em>
+        Intel Egocentric Vision Dataset.
+       </em>
+       This dataset is closer to our task as it was collected for recognition of everyday objects handled by a person [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+        55
+       </a>
+       ]. Similar to GTEA, two sighted participants recorded their activities using a shoulder-mounted camera. However, the default per-pixel annotations include both hand(s) and the object of interest. As our system recognizes a hand and an object separately, we manually generated hand-only masks and object-center annotations for a subset of this dataset (only 177 images from one participant)
+       <a class="fn" href="#fn5" id="foot-fn5">
+        <sup>
+         5
+        </sup>
+       </a>
+       and use them to train our segmentation and localization models.
+      </p>
+     </section>
+     <section id="sec-15">
+      <p>
+       <em>
+        EgoHands.
+       </em>
+       This dataset provides first-person interactions among four sighted people; two people formed a group, and each of two wore a glass-mounted camera to record the activities [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+        8
+       </a>
+       ]. We use the 3,752 images with hand masks to train our hand segmentation model.
+      </p>
+     </section>
+     <section id="sec-16">
+      <p>
+       <em>
+        Glassense-Vision.
+       </em>
+       This dataset is close to both our task and our target population as it was collected with three low-vision participants for TORs [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+        62
+       </a>
+       ]. Thus, we use it to evaluate our approach. A total of 71 object instances were grouped along seven categories
+       <a class="fn" href="#fn6" id="foot-fn6">
+        <sup>
+         6
+        </sup>
+       </a>
+       of three geometrical types (flat, boxes, and cylinders). However, their training data were collected in a uniform setting, with objects on a white surface with no hands present. In contrast, the testing data were acquired while participants held the object on their hand. Therefore, our analysis only uses the testing data that capture hand-object interactions.
+      </p>
+     </section>
+     <section id="sec-17">
+      <p>
+       <em>
+        VizWiz.
+       </em>
+       This visual question answering dataset [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ] provides a rich set of real-world images taken by visually impaired people along with questions to the crowd. While the images are not limited to object recognition, the dataset provides a unique opportunity to investigate how hand presence in real-world settings would lead to including and indicating the object of interest in the camera frame. Thus, we use this dataset to evaluate our approach.
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-18">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       TEgO: A New Benchmark Dataset
+      </h2>
+     </div>
+    </header>
+    <p>
+     To investigate the feasibility of hand-guided object recognition for blind people, we create a new benchmark dataset, called Teachable Egocentric Objects (TEgO)
+     <a class="fn" href="#fn7" id="foot-fn7">
+      <sup>
+       7
+      </sup>
+     </a>
+     . By controlling for factors such as users, environments, lighting, and object characteristics, this small but rich dataset allows us to explore and uncover potential strengths and limitations in the context of object recognition for the blind, which is not feasible with the existing datasets described above.
+    </p>
+    <section id="sec-19">
+     <section id="sec-20">
+      <p>
+       <em>
+        People.
+       </em>
+       Two individuals collected data over five weeks resulting in 11,930 images. As shown in Table
+       <a class="tbl" href="#tab2">
+        2
+       </a>
+       , the small number of people is comparable to those reported for similar egocentric datasets in computer vision, while the number of images is large. The first individual (B) was a blind undergraduate (no light perception) with little experience using a mobile phone camera. The second individual (S) was a sighted student experienced in machine learning. Data from S serve merely as
+       <em>
+        an upper baseline for discriminative power of the system given that many of the objects shared visual similarities
+       </em>
+       ; that is, we treat the data from S as ideal data and use them as a point of comparison in our analysis.
+      </p>
+     </section>
+     <section id="sec-21">
+      <header>
+       <div class="title-info">
+        <h4>
+         <span class="section-number">
+         </span>
+         Objects.
+        </h4>
+       </div>
+      </header>
+      <figure id="fig5">
+       <img alt="" class="img-responsive" longdesc="In this figure, we list the nineteen objects used for our data collection. Following is the list of the objects: oregano spice, grill salt, can of mandarin oranges, can of chicken soup, dr pepper can, mountain dew can, sprite bottle, regular coke bottle, diet coke bottle, baked cheetos, baked lays chip, great grains cereal, cheerios cereal, extra dry skin moisturizer, spf55 sunscreen, aspirin bottle, airborne gummies bottle, hand soap, hand sanitizer." src="3300566_files\chi2019336fig5.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 5:
+        </span>
+        <span class="figure-title">
+         Nineteen objects used in our data collection. Objects in the same category are displayed in proximity.
+        </span>
+       </div>
+      </figure>
+      <p>
+       Informed by prior work on TORs [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ,
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+        62
+       </a>
+       ], object stimuli (total of 19) were carefully engineered to cover a large group of categories with diverse geometries and functions. Objects within a category were deliberately chosen to have a similar shape and appearance (Fig.
+       <a class="fig" href="#fig5">
+        5
+       </a>
+       ). By making the recognition task more difficult, we are hoping to anticipate more challenges faced in real-world deployments.
+      </p>
+     </section>
+     <section id="sec-22">
+      <p>
+       <em>
+        Environment and Lighting.
+       </em>
+       We collected our dataset in both simulated real-world (wild*) and more traditional lab (vanilla) settings. As shown in Fig.
+       <a class="fig" href="#fig1">
+        1
+       </a>
+       and Fig.
+       <a class="fig" href="#fig4">
+        4
+       </a>
+       , “wild”-photos were taken against a cluttered background including a bookshelf, a kitchen, and many other objects. Whereas “vanilla”-photos were taken against a wooden surface next to a white wall. Three different lighting conditions are considered for testing in each environment: (i) indoor lights on, (ii) surrounding light with indoor lights off, and (iii) flash on with indoor lights off. The data collection lasted for many days while the effect of natural light was mitigated.
+      </p>
+     </section>
+     <section id="sec-23">
+      <p>
+       <em>
+        Procedure.
+       </em>
+       TORs are evaluated in two phases: training and testing. In training, the user sequentially provides a small number of photos: about 30 examples per object under each environment and lighting condition. To simulate testing, an object is randomly given to the user for a single shot. The random object assignment minimizes learning effects [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ]. We iterate it until we test each object five times, resulting in a total of 19 × 5 test images at a time.
+      </p>
+      <p>
+       In the pilot stage, we observed that photos taken by B with the volume button differed from those taken with the screen button. To account for this, we also considered two photo-capturing conditions for B: (i) screen button and (ii) volume button. Since we did not observe such differences from S's photos, S used only the screen button.
+      </p>
+      <p>
+       More importantly, to allow for meaningful interpretation of results, data were collected under two hand-inclusion conditions: (i) use of hand-object interaction, and (ii) no hand. B took a total of 6,189 training and 2,280 testing images, and S took a total of 2,321 training and 1,140 testing images.
+      </p>
+     </section>
+     <section id="sec-24">
+      <p>
+       <em>
+        Annotations.
+       </em>
+       Beyond object labels, all images in our dataset are manually annotated with hand masks (Fig. 3(a)) and object center heatmaps (Fig. 3(b)).
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-25">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       EXPLORATORY ANALYSIS AND RESULTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     As discussed in Sec.
+     <a class="sec" href="#sec-7">
+      3
+     </a>
+     , our system comprises three models:
+    </p>
+    <p>
+     <em>
+      Hand segmentation
+     </em>
+     : The model was trained primarily on images taken by sighted people with hand mask annotations (a total of 5,707) from GTEA, GTEA Gaze+, Intel Egocentric Vision, and EgoHands. Additionally, similar to the selective hand annotation in [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+      41
+     </a>
+     ], we included randomly selected images (about 7%) from TEgO during the training phase (224 and 654 from S and B, respectively). By including some images from our dataset, we increase the potential of the model to perform well on the unseen data from S and B. It decouples the performance of the segmentation and localization models from the recognition model, and thus allows us to evaluate the utility of hands in recognition. Only the Intel Egocentric Vision dataset (177 annotated images) includes hands with a similar complexion to that of B. The majority of the data from sighted participants include hands with a complexion close to that of S (5,530 images). Thus, we do not anticipate that the imbalance across B and S data, will bias our segmentation model in favor of B.
+    </p>
+    <p>
+     <em>
+      Object localization
+     </em>
+     : We used a total of 1,955 images from GTEA, GTEA Gaze+, and Intel Egocentric Vision, and 4,048 images from TEgO (1,175 and 2,873 from S and B, respectively) with their heatmap annotation data to train the model; we fine-tuned the hand model to the localization model. It leads to roughly balanced data from sighted versus blind individuals (3,130 vs. 2,873) and lighter versus darker complexions (2,953 vs. 3,050).
+    </p>
+    <p>
+     <em>
+      Object recognition
+     </em>
+     : A GOR is pre-trained on a million of images from ImageNet [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+      58
+     </a>
+     ], and TORs are trained on images from TEgO; each TOR is trained with 30 examples per object (total 19 objects) from S or B in a given condition: hand presence and environment. For example, a TOR for B is trained on 30 images per object taken in the wild with the screen button while using one hand to interact with the object.
+    </p>
+    <section id="sec-26">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Analysis on Existing Datasets from Our User Group
+       </h3>
+      </div>
+     </header>
+     <p>
+      To provide further evidence for this work, we investigate whether hands are used as a natural interface by people with visual impairments for including and indicating the objects in the camera frame. We examine existing images from this population in the context of object recognition such as the Glassense-Vision [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ] (vanilla) and VizWiz [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ] (wild) datasets. In addition, we run our segmentation and localization models over these previously unseen datasets, report the proportion of images with such characteristics, and offer qualitative insights on their limitations.
+     </p>
+     <section id="sec-27">
+      <p>
+       <em>
+        Glassense-Vision.
+       </em>
+       Through manual examination, we find about 44% of images taken by people with low vision in the Glassense-Vision included the individual's hand when testing the performance of their teachable object recognizers in a vanilla environment. However, our model estimated that only 16% of images include a hand, appropriately cropping the object in 89% of these. By visually inspecting failed cases, where a hand was not identified, we find images with different ratio and orientation from those typical in our training examples. It highlights the importance of diversity in hand-segmentation training data for this population. Positive and negative examples of model outputs are shown in Fig. 6(a) . While this analysis would benefit from a more quantitative approach for object detection, it requires ground-truth annotations which are currently unavailable for the dataset.
+      </p>
+     </section>
+     <section id="sec-28">
+      <p>
+       <em>
+        VizWiz.
+       </em>
+       As discussed in Sec.
+       <a class="sec" href="#sec-11">
+        4
+       </a>
+       , VizWiz provides a richer, more realistic object recognition scenario as blind or low vision real-world users post images with associated questions to the crowd. To gauge what portion of VizWiz data are object recognition tasks, we note that most questions begin with “what”. Based on prior analysis on this dataset [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+        27
+       </a>
+       ], we estimate that around 29% of questions are related to object identification: about 8,700 of 31,173 images. While it is impractical to manually inspect all 31,173 for the presence of a user's hand, we run our object segmentation and localization models on the VizWiz data and detect a total of 1,548 images that include a user's hand for the object of interest. While still an estimate, this result indicates that, in at least 18% of images regarding object identification, real-world end users use their hands as a natural interface to indicate the object of interest. Figure 6(b) depicts examples of our localization model's positive and negative results on VizWiz. By visually inspecting 6,000 random samples not detected by our hand model, we identify only 36 images (&lt;1%) where users’ hands were present. The majority (24) includes just the fingertips, and one image includes a previously unseen hand shape. Some images were blurry (9), and some had the camera flash on (9) — a lighting condition not present in any of the training sets. When visible, objects’ shapes were: relatively flat (
+       <em>
+        e.g.
+       </em>
+       , paper, currency, gift card, newspaper, DVD cover), roughly cylindrical (
+       <em>
+        e.g.
+       </em>
+       , pen, cigarette, cans, bottles, mug), and nearly rectangular (
+       <em>
+        e.g.
+       </em>
+       , smartphones, laptop, keyboard).
+      </p>
+      <figure id="fig6">
+       <img alt="" class="img-responsive" longdesc="For both of the Glassense-Vision and VizWiz datasets, two positive and two negative examples are shown in this figure. In the positive examples, the object localization model correctly crops the object of interest from the input images. In contrast, the negative examples show the case when the model fails to localize the object of interest." src="3300566_files\chi2019336fig6.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 6:
+        </span>
+        <span class="figure-title">
+         Positive and negative outputs of our object localization model on the Glassense-Vision and VizWiz datasets.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+    </section>
+    <section id="sec-29">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Analysis on Our New Benchmark Dataset TEgO
+       </h3>
+      </div>
+     </header>
+     <p>
+      For our analysis, we first separate the S data from the B data in TEgO, then divide their data into three subsets based on the method applied to the training and testing images — cropped-object (
+      <em>
+       CO
+      </em>
+      ), hand-object (
+      <em>
+       HO
+      </em>
+      ), and object (
+      <em>
+       O
+      </em>
+      ). The HO and O methods include original images taken by S and B.
+      <em>
+       HO
+      </em>
+      contains images where S and B are holding the object, while
+      <em>
+       O
+      </em>
+      contains the rest.
+      <em>
+       CO
+      </em>
+      consists of HO images cropped by the object localization model; that is, the CO images are extracted from the HO images.
+     </p>
+     <section id="sec-30">
+      <p>
+       <em>
+        Model Performance.
+       </em>
+       We explore the potential of the hand-guided recognition approach in the context of teachable object recognizers by comparing recognition performance of TORs trained on the CO images to those trained on the original HO and O images, respectively. Each model is trained on around 30 images per object at a given condition (
+       <em>
+        e.g.
+       </em>
+       , environment, button), and its accuracy is calculated on five testing images per object (total of 95) in the same condition. The average accuracy across models in HO, CO, and O is reported in Fig.
+       <a class="fig" href="#fig7">
+        7
+       </a>
+       , with error bars denoting standard error across multiple sets of testing results for S and B — 12 sets for S and 24 sets for B (due to the button settings).
+      </p>
+      <p>
+       As expected, the models from S, serving as an upper baseline and trained on images taken by a sighted machine learning expert, outperform those of B. They also indicate that this 19-way classification task is challenging, with CO achieving an average accuracy of 92% and an improvement of 5% and 6% on average over HO and O, respectively. Models from B follow a similar pattern, with CO achieving an average accuracy of 71% and an improvement of 6% and 9% on average over HO and O, respectively. However, overlapping error bars indicate that these differences may not be significant.
+      </p>
+     </section>
+     <section id="sec-31">
+      <p>
+       <em>
+        Effect of Environment.
+       </em>
+       Fig.
+       <a class="fig" href="#fig8">
+        8
+       </a>
+       shows a breakdown of the models’ performance across vanilla and wild environments. As expected, overall model performance is lower in the wild, where cluttered backgrounds tend to be present. In the vanilla environment, we observe that, in general, models trained on images where S and B hold the objects (HO and CO) perform better than those where they don't (O). However, the utility of our approach seems more pertinent to the wild environment, where CO achieves, on average, 67% accuracy for B and improvement of 12% and 14% over HO and O, respectively. These results highlight the potential of our approach, given that photos of objects taken by people with visual impairments in the real world tend to include cluttered environments, as illustrated with the VizWiz dataset (Sec.
+       <a class="sec" href="#sec-11">
+        4
+       </a>
+       ).
+      </p>
+     </section>
+     <section id="sec-32">
+      <p>
+       <em>
+        Effect of Sample Size.
+       </em>
+       We explore the potential of our approach for training with highly limited sample sizes of 1 and 5 with
+       <em>
+        k
+       </em>
+       -shot learning in Fig.
+       <a class="fig" href="#fig9">
+        9
+       </a>
+       . Similar to Kacorri
+       <em>
+        et al.
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ], we observe that, on average, the model performance increases with the sample size. More importantly, we note that CO tends to outperform HO and O consistently across sample sizes.
+      </p>
+     </section>
+     <section id="sec-33">
+      <p>
+       <em>
+        Teachable vs. Generic.
+       </em>
+       We explore whether the positive effect of the CO method over the HO and O methods, observed in teachable object recognizers (TORs), carries on to a generic object recognizer (GOR). As discussed in Sec.
+       <a class="sec" href="#sec-7">
+        3
+       </a>
+       , we use as our GOR the Google's Inception V3 model [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+        64
+       </a>
+       ]. Since a GOR is not trained on the labels of TEgO, its accuracy score should not be compared with those of TORs, directly. As shown in Fig.
+       <a class="fig" href="#fig10">
+        10
+       </a>
+       , to allow for the comparison, we use V-measure [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+        57
+       </a>
+       ] by comparing desirable properties of the two, such as consistency of their predictions given images of the same object, and ability to distinguish between two different objects. Similar to Kacorri
+       <em>
+        et al.
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+        36
+       </a>
+       ], we observe that a TOR achieves higher V-scores than a GOR. This is not surprising since a TOR model is fine-tuned to the users, their environments, and the number of objects. However, we did not anticipate
+       <em>
+        CO
+       </em>
+       and
+       <em>
+        HO
+       </em>
+       underperforming
+       <em>
+        O
+       </em>
+       in the GOR case. We suspect that the presence of hands in the HO and CO images, as well as close-up cropped images in the CO, may have induced some confusion in the GOR.
+      </p>
+      <figure id="fig7">
+       <img alt="" class="img-responsive" longdesc="Average accuracy of the model on the HO, CO, and O method. The model achieves 0.648 (std: 0.129), 0.707 (std: 0.085), and 0.618 (std: 0.102) on the HO, CO, and O method with the B data, respectively, and 0.867 (std: 0.098), 0.919 (std: 0.043), and 0.858 (std: 0.034) on the HO, CO, and O method with the S data, respectively." src="3300566_files\chi2019336fig7.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 7:
+        </span>
+        <span class="figure-title">
+         Our hand-guided object recognition method (CO) tends to improve recognition accuracy on average for S and B compared to the original HO and O methods.
+        </span>
+       </div>
+      </figure>
+      <figure id="fig8">
+       <img alt="" class="img-responsive" longdesc="This figure has two graphs that show the average accuracy depending on the background environment of objects: vanilla and wild. The graph for the vanilla environment is shown on left and the graph for the wild environment is shown on right. (Left) In the vanilla environment, the model achieves 0.754 (std: 0.086), 0.747 (std: 0.102), and 0.704 (std: 0.028) on the HO, CO, and O method with the B data, respectively, and 0.937 (std: 0.011), 0.933 (std: 0.037), and 0.863 (std: 0.028) on the HO, CO, and O method with the S data, respectively. (Right) In the wild environment, the model achieves 0.542 (std: 0.047), 0.667 (std: 0.040), and 0.532 (std: 0.065) on the HO, CO, and O method with the B data, respectively, and 0.796 (std: 0.095), 0.905 (std: 0.053), and 0.853 (std: 0.046) on the HO, CO, and O method with the S data, respectively." src="3300566_files\chi2019336fig8.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 8:
+        </span>
+        <span class="figure-title">
+         Accuracy gain of our method (CO) over HO and O is more pertinent in cluttered backgrounds (wild).
+        </span>
+       </div>
+      </figure>
+      <figure id="fig9">
+       <img alt="" class="img-responsive" longdesc="The figure consists of three graphs that show the average accuracy depending on the sample size during training, referred to as k-shot where k is the number of images used for training — three sample sizes (20, 5, 1). (Left) When using 1 image per object for training, the model achieves 0.400 (std: 0.068), 0.450 (std: 0.090), and 0.424 (std: 0.053) on the HO, CO, and O methods with the B data, respectively, and 0.587 (std: 0.056), 0.614 (std: 0.094), and 0.611 (std: 0.056) on the HO, CO, and O methods with the S data, respectively. (Middle) When using 5 images per object for training, the model achieves 0.539 (std: 0.099), 0.595 (std: 0.112), and 0.550 (std: 0.098) on the HO, CO, and O methods with the B data, respectively, and 0.788 (std: 0.098), 0.818 (std: 0.058), and 0.811 (std: 0.052) on the HO, CO, and O methods with the S data, respectively. (Right) When using 20 images per object for training, the model achieves 0.618 (std: 0.114), 0.705 (std: 0.075), and 0.608 (std: 0.098) on the HO, CO, and O methods with the B data, respectively, and 0.855 (std: 0.087), 0.888 (std: 0.064), and 0.859 (std: 0.039) on the HO, CO, and O methods with the S data, respectively." src="3300566_files\chi2019336fig9.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 9:
+        </span>
+        <span class="figure-title">
+         On average CO outperforms HO and O consistently across training sample sizes
+         <em>
+          k
+         </em>
+         = 1, 5, 20.
+        </span>
+       </div>
+      </figure>
+      <figure id="fig10">
+       <img alt="" class="img-responsive" longdesc="The figure shows two graphs: one graph for the generic model on the left and another one for the teachable model on the right. (Left) The left graph, which is for the generic model, shows that the generic model achieves, on average, 0.687 (std: 0.034), 0.686 (std: 0.023), and 0.711 (std: 0.034) of V-Score on the HO, CO, and O method with the B data, respectively, and 0.684 (std: 0.019), 0.698 (std: 0.023), and 0.721 (std: 0.009) of V-Score on the HO, CO, and O method with the S data, respectively. (Right) The right graph, which is drawn from the teachable model, shows that the teachable model achieves, on average, 0.801 (std: 0.056), 0.836 (std: 0.041), and 0.806 (std: 0.033) of V-Score on the HO, CO, O method with the B data, respectively, and 0.909 (std: 0.050), 0.941 (std: 0.030), and 0.916 (std: 0.027) of V-Score on the HO, CO, and O method with the B data, respectively." src="3300566_files\chi2019336fig10.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 10:
+        </span>
+        <span class="figure-title">
+         Presence of hands (HO and CO) seems to have a different effect for generic vs. teachable models.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-34">
+      <p>
+       <em>
+        Error Analysis.
+       </em>
+       Interested on how to improve our method, we focus on hand segmentation and localization errors (Fig.
+       <a class="fig" href="#fig11">
+        11
+       </a>
+       ) as well as object features affecting recognition (Fig.
+       <a class="fig" href="#fig12">
+        12
+       </a>
+       ).
+      </p>
+      <p>
+       <em>
+        Hands out of frame.
+       </em>
+       While S and B held objects in all CO images, the B's hand is not present in nine images; but, the objects are. These were taken in the wild environment and included relatively large objects such as soda bottles (6) and cereal boxes (3). The localization model correctly identifies object centers on seven of them and failed to localize any on the other two, which partially include the object.
+      </p>
+      <p>
+       <em>
+        Hand segmentation errors.
+       </em>
+       Among 855 testing images collected in the vanilla environment, hands are partially segmented on 11 images for S and 9 for B. Even with partial segmentation, the localization model successfully infers the object centers. In 18 images from S and 29 from B, the segmentation model misclassifies small non-hand parts of the image in addition to correctly segmenting the hand. The localization model successfully infers the object centers in all but 2 images from B, where the misclassifies non-hand parts are in proximity to another object. We observe similar patterns for the simulated wild environment. Among 855 testing images in the wild, hands are partially segmented on 54 images for S and 15 images for B. However, the localization model is affected only on one image for S and two for B. In other 30 images from S and 42 from B, the segmentation model classifies small non-hand parts of the image as a hand while correctly segmenting the hand. Again, the localization model successfully infers the object centers for all but two images from B, where the misclassified non-hand parts are in proximity to another object.
+      </p>
+      <p>
+       <em>
+        Object localization errors.
+       </em>
+       There are few instances in the vanilla environment where the localization model fails even though most of the hand is detected. Specifically, on two images from B, the model fails to localize the object, which is partially included. We observe 11 similar instances from B in the simulated wild environment. However, the most common localization error, observed in one image from S and 20 images from B in the wild, is misidentifying another object close to the object of interest. We suspect that some of these errors could be mitigated with additional training examples including such ambiguities.
+      </p>
+      <p>
+       <em>
+        Discriminative features of objects.
+       </em>
+       The stimuli objects in TEgO were engineered to be diverse in terms of shape and function while sharing similarities to make recognition challenging. We illustrate aggregated results on misclassified testing images as a confusion heatmap (Fig.
+       <a class="fig" href="#fig12">
+        12
+       </a>
+       ). We observe that some of the highest confusions are among objects within the same category that are cylindrical or share visual features such as soup can and mandarin can, salt and oregano, cheetos and lays. It indicates room for better performance in the recognition models (TORs) independent of the quality of cropped photos fed by our localization model.
+      </p>
+      <figure id="fig11">
+       <img alt="" class="img-responsive" longdesc="This figure shows four positive and four negative examples of the localization on our benchmark egocentric dataset. (Left) In the positive examples, which are shown on the left in the figure, the object localization model correctly crops the object of interest from the input images. (Right) In contrast, the negative examples shown on the right in the figure illustrate the case when the model fails to localize the object of interest." src="3300566_files\chi2019336fig11.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 11:
+        </span>
+        <span class="figure-title">
+         Positive and negative results on TEgO, with out-of-frame hands for some of the negative examples.
+        </span>
+       </div>
+      </figure>
+      <figure id="fig12">
+       <img alt="" class="img-responsive" longdesc="The confusion matrix shows how many times our model predicts the class of a given object. In this matrix, our CO model seems to confuse between the chicken soup can and the mandarin can, between the airborne gummies and the aspirin, between the oregano spice and the grill salt, and among the soda bottles (sprite, regular coke, and diet coke)." src="3300566_files\chi2019336fig12.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 12:
+        </span>
+        <span class="figure-title">
+         Confusion matrix for the CO models showing that misclassification occurs within objects of similar shape. Cans and bottles are indicated as “-c” and “-b”, respectively.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+    </section>
+   </section>
+   <section id="sec-35">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We discuss implications and limitations of our analysis and the proposed hand-guided object recognition method.
+    </p>
+    <section id="sec-36">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Implications
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our findings and insights can contribute to the design and evaluation of future object recognition applications for people with visual impairments in the following ways.
+     </p>
+     <p>
+      <em>
+       Teachable object recognizers.
+      </em>
+      We demonstrate that by jointly modeling hand segmentation and object localization, we can improve the performance of teachable object recognizers. Our analysis indicates that this gain is present across models trained by a sighted and a blind individual, vanilla and wild environments, as well as varying training sizes. The largest gain appears in the wild, highlighting the potential of this approach given that photos by people with visual impairments in the real world tend to include cluttered environments.
+     </p>
+     <p>
+      <em>
+       User interactions.
+      </em>
+      Our analysis on existing datasets from people with visual impairments in the context of image recognition provides further evidence on the utility of hands as a natural interface for including and indicating the object of interest in the camera frame. However, we observe that the presence of hands might have the opposite effect on generic object recognizers where the training images are often leveraging available data from sighted people. Given the visual feedback, sighted people may not use proprioception to aim their camera. Thus, their images may not necessarily include the hand. We propose that researchers consider these user interactions when designing and evaluating their systems.
+     </p>
+     <p>
+      <em>
+       Representative datasets.
+      </em>
+      While there is a recent trend of data sharing in accessibility that we embrace (
+      <em>
+       e.g.
+      </em>
+      , [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ]), privacy concerns often prevent researchers from sharing images taken by people with visual impairments outside the lab. This work illustrates the potentials and limitations of leveraging existing data from a non-representative population such as sighted people. Beyond a population mismatch, we faced the following challenges: bias towards lighter hand complexions; bias towards male individuals (13 male; 2 female); lack of wrinkles, tattoos, and jewerly in the hands; and limited annotations for new but related learning tasks. We contribute towards representative datasets by making our data, TEgO and other annotations, publicly available.
+     </p>
+     <p>
+      <em>
+       New directions.
+      </em>
+      To provide evidence for the utility of proprioception in photo-taking, similar to the Glassense and VizWiz datasets, the blind individual in TEgO did not receive any guidance from the mobile device in taking a good photo. However, we see the potential of our hand segmentation and object localization models for providing an explicit mechanism that can guide the user. For example, we can use sonification to guide the user to take well-framed photos based on the estimated center of the object, its relative position to the frame, and confidence scores from our models.
+     </p>
+    </section>
+    <section id="sec-37">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Limitations
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our dataset was collected with two individuals by controlling for a number of factors which exceed characteristics of previous datasets (in terms of objects and environments). While the small number of people is comparable to those reported for similar benchmark egocentric datasets, we can see results benefiting from a larger and more diverse blind user pool (gender, age, and hand characteristics) — especially since one of the individuals was sighted and merely served as an upper baseline. Furthermore, such analysis would benefit from additional data that account for real-world cluttered backgrounds, lighting conditions, and object ambiguities.
+     </p>
+     <p>
+      Due to the lack of available hand data with darker complexions, we included more hand data from the blind individual in training our segmentation model. While this might have biased our hand segmentation model, we do not see that this effect carries over into the segmentation (more errors are observed on images from the blind individual). We suspect that additional data can also help improve the performance of our approach by allowing to encode diverse hand shapes in the localization better. Prior work on hand-object manipulation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ] argues that people tend to use same or similar hand shapes for a given object shape and function.
+     </p>
+     <p>
+      Given the limited data, we did not use a dynamically sized bounding box. Cropping with a fixed size box could have resulted in unwanted background artifacts or partially included objects, which may have impacted their recognition.
+     </p>
+     <p>
+      Due to the lack of hand annotations for the Glassense and VizWiz datasets and available tools for understanding model behaviors, part of our analysis was based on subjective visual inspection. For a more objective analysis, we are currently exploring the compatibility of available approaches, such as Grad-CAM [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ] and LIME [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ] for explainability.
+     </p>
+    </section>
+   </section>
+   <section id="sec-38">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       CONCLUSIONS AND FUTURE WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this paper, we explore the utility of proprioception in the context of object recognition, which allows people with visual impairments to more easily align their camera by holding or placing their hand close to an object of interest. We provide evidence that such natural interactions occur in real-world datasets for this population and demonstrate their potential for teachable object recognizers, where out-of-frame or partially included objects against cluttered backgrounds can degrade performance. By jointly modeling hand segmentation and object localization, we achieve a sizable improvement on recognition accuracy that peeks on simulated real-world conditions with cluttered backgrounds. To train and evaluate our models, we leverage existing egocentric datasets on related tasks from sighted people and collect a new benchmark dataset (TEgO). Our extensive error analysis provides insights into the feasibility and challenges of this approach. To further research in this direction, we make our dataset as well as the output of our models for the error analysis publicly available at
+     <a class="link-inline force-break" href="https://iamlabumd.github.io/tego/">
+      https://iamlabumd.github.io/tego/
+     </a>
+     .
+    </p>
+    <p>
+     In future work, we plan to replicate this analysis with video streams processed at a frame level. While videos can provide continuous information on hand-object interactions, they are computationally expensive, consume more power, and require a frame-selection approach to extract higher quality images that we are still working on.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-39">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     The authors would like to thank Ebrima Jarjue, Dan Yang, June Xu, and Simone Pimento for helping with the dataset; Kris Kitani and Chieko Asakawa for valuable discussions; as well as Jonggi Hong and the anonymous reviewers for insightful comments on earlier drafts of this paper. This work is supported by NIDILRR (#90REGE0008).
+    </p>
+   </section>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Dustin Adams, Sri Kurniawan, Cynthia Herrera, Veronica Kang, and Natalie Friedman. 2016. Blind photographers and VizSnap: A long-term study. In
+      <em>
+       Proceedings of the 18th International ACM SIGACCESS Conference on Computers and Accessibility
+      </em>
+      . ACM, 201–208.
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Dustin Adams, Lourdes Morales, and Sri Kurniawan. 2013. A qualitative study to support a blind photography mobile application. In
+      <em>
+       Proceedings of the 6th International Conference on PErvasive Technologies Related to Assistive Environments
+      </em>
+      . ACM, 25.
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Tousif Ahmed, Roberto Hoyle, Kay Connelly, David Crandall, and Apu Kapadia. 2015. Privacy concerns and behaviors of people with visual impairments. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 3523–3532.
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Envision AI. 2018. Enabling vision for the blind.
+      <a class="link-inline force-break" href="https://www.letsenvision.com">
+       https://www.letsenvision.com
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Seeing AI. 2017. A free app that narrates the world around you.
+      <a class="link-inline force-break" href="https://www.microsoft.com/en-us/seeing-ai">
+       https://www.microsoft.com/en-us/seeing-ai
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      VocalEyes AI. 2017. Computer Vision for the blind.
+      <a class="link-inline force-break" href="http://vocaleyes.ai">
+       http://vocaleyes.ai
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Aira. 2017. Your Life, Your Schedule, Right Now.
+      <a class="link-inline force-break" href="https://aira.io">
+       https://aira.io
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Sven Bambach, Stefan Lee, David J Crandall, and Chen Yu. 2015. Lending a hand: Detecting hands and recognizing activities in complex egocentric interactions. In
+      <em>
+       Proceedings of the IEEE International Conference on Computer Vision
+      </em>
+      . 1949–1957.
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      BeMyEyes. 2015. Lend you eyes to the blind.
+      <a class="link-inline force-break" href="http://www.bemyeyes.org">
+       http://www.bemyeyes.org
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      BeSpecular. 2016. Let blind people see through your eyes.
+      <a class="link-inline force-break" href="https://www.bespecular.com">
+       https://www.bespecular.com
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Jeffrey P Bigham, Chandrika Jayant, Hanjie Ji, Greg Little, Andrew Miller, Robert C Miller, Robin Miller, Aubrey Tatarowicz, Brandyn White, Samual White,
+      <em>
+       et al.
+      </em>
+      2010. VizWiz: nearly real-time answers to visual questions. In
+      <em>
+       Proceedings of the 23nd annual ACM symposium on User interface software and technology
+      </em>
+      . ACM, 333–342.
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Erin L Brady, Yu Zhong, Meredith Ringel Morris, and Jeffrey P Bigham. 2013. Investigating the appropriateness of social network question asking as a resource for blind users. In
+      <em>
+       Proceedings of the 2013 conference on Computer supported cooperative work
+      </em>
+      . ACM, 1225–1236.
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Minjie Cai, Kris Kitani, and Yoichi Sato. 2018. Understanding hand-object manipulation by modeling the contextual relationship between actions, grasp types and object attributes.
+      <em>
+       <em>
+        arXiv preprint arXiv:1807.08254
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Minjie Cai, Kris M Kitani, and Yoichi Sato. 2016. Understanding Hand-Object Manipulation with Grasp Types and Object Attributes.. In
+      <em>
+       Robotics: Science and Systems
+      </em>
+      , Vol. 3.
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      CamFind. 2013. Search the physical world.
+      <a class="link-inline force-break" href="http://camfindapp.com">
+       http://camfindapp.com
+      </a>
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Claudio Castellini, Tatiana Tommasi, Nicoletta Noceti, Francesca Odone, and Barbara Caputo. 2011. Using object affordances to improve object recognition.
+      <em>
+       <em>
+        IEEE Transactions on Autonomous Mental Development
+       </em>
+      </em>
+      3, 3(2011), 207–215.
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Digit-Eyes. 2010. Identify and organize your world.
+      <a class="link-inline force-break" href="http://www.digit-eyes.com">
+       http://www.digit-eyes.com
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      EyeNote. 2010. Mobile device application to denominate Federal Reserve Notes (U.S. paper currency) as an aid for the blind or visually impaired to increase accessibility.
+      <a class="link-inline force-break" href="https://www.eyenote.gov">
+       https://www.eyenote.gov
+      </a>
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      EyeSpy. 2015. The world's best object recognition mobile app.
+      <a class="link-inline force-break" href="http://www.eyespy.com">
+       http://www.eyespy.com
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Alireza Fathi, Yin Li, and James M Rehg. 2012. Learning to recognize daily actions using gaze. In
+      <em>
+       European Conference on Computer Vision
+      </em>
+      . Springer, 314–327.
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Alireza Fathi, Xiaofeng Ren, and James M Rehg. 2011. Learning to recognize objects in egocentric activities. In
+      <em>
+       Computer Vision and Pattern Recognition (CVPR), 2011 IEEE Conference On
+      </em>
+      . IEEE, 3281–3288.
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      German H Flores and Roberto Manduchi. 2018. WeAllWalk: An Annotated Dataset of Inertial Sensor Time Series from Blind Walkers.
+      <em>
+       <em>
+        ACM Transactions on Accessible Computing (TACCESS)
+       </em>
+      </em>
+      11, 1 (2018), 4.
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      René Gilster, Constanze Hesse, and Heiner Deubel. 2012. Contact points during multidigit grasping of geometric objects.
+      <em>
+       <em>
+        Experimental brain research
+       </em>
+      </em>
+      217, 1 (2012), 137–151.
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Talking Goggles. 2013. A camera with speech.
+      <a class="link-inline force-break" href="http://www.sparklingapps.com/goggles">
+       http://www.sparklingapps.com/goggles
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Nadia Gosselin-Kessiby, John F Kalaska, and Julie Messier. 2009. Evidence for a proprioception-based rapid on-line error correction mechanism for hand orientation during reaching movements in blind subjects.
+      <em>
+       <em>
+        Journal of Neuroscience
+       </em>
+      </em>
+      29, 11 (2009), 3485–3496.
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Anhong Guo, Xiang'Anthony’ Chen, Haoran Qi, Samuel White, Suman Ghosh, Chieko Asakawa, and Jeffrey P Bigham. 2016. Vizlens: A robust and interactive screen reader for interfaces in the real world. In
+      <em>
+       Proceedings of the 29th Annual Symposium on User Interface Software and Technology
+      </em>
+      . ACM, 651–664.
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Danna Gurari, Qing Li, Abigale J Stangl, Anhong Guo, Chi Lin, Kristen Grauman, Jiebo Luo, and Jeffrey P Bigham. 2018. VizWiz Grand Challenge: Answering Visual Questions from Blind People.
+      <em>
+       <em>
+        arXiv preprint arXiv:1802.08218
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Susumu Harada, Daisuke Sato, Dustin W Adams, Sri Kurniawan, Hironobu Takagi, and Chieko Asakawa. 2013. Accessible photo album: enhancing the photo sharing experience for people with visual impairment. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 2127–2136.
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      T. Hollerer and T. Lee. 2007. Handy AR: Markerless Inspection of Augmented Reality Objects Using Fingertip Tracking. In
+      <em>
+       2007 11th IEEE International Symposium on Wearable Computers(ISWC)
+      </em>
+      , Vol. 00. 1–8.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/ISWC.2007.4373785" target="_blank">
+       https://doi.org/10.1109/ISWC.2007.4373785
+      </a>
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Shao Huang, Weiqiang Wang, Shengfeng He, and Rynson WH Lau. 2017. Egocentric hand detection via dynamic region growing.
+      <em>
+       <em>
+        ACM Transactions on Multimedia Computing, Communications, and Applications (TOMM)
+       </em>
+      </em>
+      14, 1 (2017), 10.
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Matt Huenerfauth and Hernisa Kacorri. 2014. Release of experimental stimuli and questions for evaluating facial expressions in animations of American Sign Language. In
+      <em>
+       Proceedings of the 6th Workshop on the Representation and Processing of Sign Languages: Beyond the Manual Channel, The 9th International Conference on Language Resources and Evaluation (LREC 2014), Reykjavik, Iceland
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Laurent Itti and Christof Koch. 2001. Computational modelling of visual attention.
+      <em>
+       <em>
+        Nature reviews neuroscience
+       </em>
+      </em>
+      2, 3 (2001), 194.
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Rabia Jafri, Syed Abid Ali, Hamid R Arabnia, and Shameem Fatima. 2014. Computer vision-based object recognition for the visually impaired in an indoors environment: a survey.
+      <em>
+       <em>
+        The Visual Computer
+       </em>
+      </em>
+      30, 11 (2014), 1197–1222.
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Chandrika Jayant, Hanjie Ji, Samuel White, and Jeffrey P Bigham. 2011. Supporting blind photography. In
+      <em>
+       The proceedings of the 13th international ACM SIGACCESS conference on Computers and accessibility
+      </em>
+      . ACM, 203–210.
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Hernisa Kacorri. 2017. Teachable machines for accessibility.
+      <em>
+       <em>
+        ACM SIGACCESS Accessibility and Computing
+       </em>
+      </em>
+      119 (2017), 10–18.
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Hernisa Kacorri, Kris M Kitani, Jeffrey P Bigham, and Chieko Asakawa. 2017. People with visual impairment training personal object recognizers: Feasibility and challenges. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 5839–5849.
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Hernisa Kacorri, Sergio Mascetti, Andrea Gerino, Dragan Ahmetovic, Hironobu Takagi, and Chieko Asakawa. 2016. Supporting orientation of people with visual impairment: Analysis of large scale usage data. In
+      <em>
+       Proceedings of the 18th International ACM SIGACCESS Conference on Computers and Accessibility
+      </em>
+      . ACM, 151–159.
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Diederik P Kingma and Jimmy Ba. 2014. Adam: A method for stochastic optimization.
+      <em>
+       <em>
+        arXiv preprint arXiv:1412.6980
+       </em>
+      </em>
+      (2014).
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Roberta L Klatzky, Brian McCloskey, Sally Doherty, James Pellegrino, and Terence Smith. 1987. Knowledge about hand shaping and knowledge about objects.
+      <em>
+       <em>
+        Journal of motor Behavior
+       </em>
+      </em>
+      19, 2 (1987), 187–213.
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Marco Leo, G Medioni, M Trivedi, Takeo Kanade, and Giovanni Maria Farinella. 2017. Computer vision for assistive technologies.
+      <em>
+       <em>
+        Computer Vision and Image Understanding
+       </em>
+      </em>
+      154 (2017), 1–15.
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      Yin Li, Zhefan Ye, and James M Rehg. 2015. Delving into egocentric actions. In
+      <em>
+       Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition
+      </em>
+      . 287–295.
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      Jonathan Long, Evan Shelhamer, and Trevor Darrell. 2015. Fully convolutional networks for semantic segmentation. In
+      <em>
+       Proceedings of the IEEE conference on computer vision and pattern recognition
+      </em>
+      . 3431–3440.
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Mingsheng Long, Yue Cao, Jianmin Wang, and Michael I Jordan. 2015. Learning transferable features with deep adaptation networks.
+      <em>
+       <em>
+        arXiv preprint arXiv:1502.02791
+       </em>
+      </em>
+      (2015).
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      Minghuang Ma, Haoqi Fan, and Kris M Kitani. 2016. Going deeper into first-person activity recognition. In
+      <em>
+       Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition
+      </em>
+      . 1894–1903.
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      Shahzad Malik, Chris McDonald, and Gerhard Roth. 2002. Hand tracking for interactive pattern-based augmented reality. In
+      <em>
+       Proceedings of the 1st International Symposium on Mixed and Augmented Reality
+      </em>
+      . IEEE Computer Society, 117.
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      Roberto Manduchi and James Coughlan. 2012. (Computer) vision without sight.
+      <em>
+       <em>
+        Commun. ACM
+       </em>
+      </em>
+      55, 1 (2012), 96–104.
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      Sergio Mascetti, Andrea Gerino, Cristian Bernareggi, Silvia D'Acquisto, Mattia Ducci, and James M Coughlan. 2017. JustPoint: Identifying Colors with a Natural User Interface. In
+      <em>
+       Proceedings of the 19th International ACM SIGACCESS Conference on Computers and Accessibility
+      </em>
+      . ACM, 329–330.
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      Novi Patricia and Barbara Caputo. 2014. Learning to learn, from transfer learning to domain adaptation: A unifying perspective. In
+      <em>
+       Proceedings of the Computer Vision and Pattern Recognition
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      V. I. Pavlovic, T. S. Huang, and R. Sharma. 1997. Visual Interpretation of Hand Gestures for Human-Computer Interaction: A Review.
+      <em>
+       <em>
+        IEEE Transactions on Pattern Analysis &amp; Machine Intelligence
+       </em>
+      </em>
+      19 (07 1997), 677–695.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/34.598226" target="_blank">
+       https://doi.org/10.1109/34.598226
+      </a>
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      Tomas Pfister, James Charles, and Andrew Zisserman. 2015. Flowing convnets for human pose estimation in videos. In
+      <em>
+       Proceedings of the IEEE International Conference on Computer Vision
+      </em>
+      . 1913–1921.
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      Uwe Proske and Simon C Gandevia. 2012. The proprioceptive senses: their roles in signaling body shape, body position and movement, and muscle force.
+      <em>
+       <em>
+        Physiological reviews
+       </em>
+      </em>
+      92, 4 (2012), 1651–1697.
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Siddharth S Rautaray and Anupam Agrawal. 2015. Vision based hand gesture recognition for human computer interaction: a survey.
+      <em>
+       <em>
+        Artificial Intelligence Review
+       </em>
+      </em>
+      43, 1 (2015), 1–54.
+     </li>
+     <li id="BibPLXBIB0053" label="[53]">
+      LookTel Recognizer. 2012. Instantly recognize everyday objects.
+      <a class="link-inline force-break" href="http://www.looktel.com/recognizer">
+       http://www.looktel.com/recognizer
+      </a>
+     </li>
+     <li id="BibPLXBIB0054" label="[54]">
+      Stefan Reifinger, Frank Wallhoff, Markus Ablassmeier, Tony Poitschke, and Gerhard Rigoll. 2007. Static and dynamic hand-gesture recognition for augmented reality applications. In
+      <em>
+       International Conference on Human-Computer Interaction
+      </em>
+      . Springer, 728–737.
+     </li>
+     <li id="BibPLXBIB0055" label="[55]">
+      Xiaofeng Ren and Chunhui Gu. 2010. Figure-ground segmentation improves handled object recognition in egocentric video. In
+      <em>
+       Computer Vision and Pattern Recognition (CVPR), 2010 IEEE Conference on
+      </em>
+      . IEEE, 3137–3144.
+     </li>
+     <li id="BibPLXBIB0056" label="[56]">
+      Marco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. 2016. Why should i trust you?: Explaining the predictions of any classifier. In
+      <em>
+       Proceedings of the 22nd ACM SIGKDD international conference on knowledge discovery and data mining
+      </em>
+      . ACM, 1135–1144.
+     </li>
+     <li id="BibPLXBIB0057" label="[57]">
+      Andrew Rosenberg and Julia Hirschberg. 2007. V-measure: A conditional entropy-based external cluster evaluation measure. In
+      <em>
+       Proceedings of the 2007 joint conference on empirical methods in natural language processing and computational natural language learning (EMNLP-CoNLL)
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0058" label="[58]">
+      Olga Russakovsky, Jia Deng, Hao Su, Jonathan Krause, Sanjeev Satheesh, Sean Ma, Zhiheng Huang, Andrej Karpathy, Aditya Khosla, Michael Bernstein,
+      <em>
+       et al.
+      </em>
+      2015. Imagenet large scale visual recognition challenge.
+      <em>
+       <em>
+        International Journal of Computer Vision
+       </em>
+      </em>
+      115, 3 (2015), 211–252.
+     </li>
+     <li id="BibPLXBIB0059" label="[59]">
+      Ramprasaath R Selvaraju, Michael Cogswell, Abhishek Das, Ramakrishna Vedantam, Devi Parikh, Dhruv Batra,
+      <em>
+       et al.
+      </em>
+      2017. Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization.. In
+      <em>
+       ICCV
+      </em>
+      . 618–626.
+     </li>
+     <li id="BibPLXBIB0060" label="[60]">
+      Charles S SHERRINGTON. 1907. On the proprio-ceptive system, especially in its reflex aspect.
+      <em>
+       <em>
+        Brain
+       </em>
+      </em>
+      29, 4 (1907), 467–482.
+     </li>
+     <li id="BibPLXBIB0061" label="[61]">
+      Kristen Shinohara and Jacob O Wobbrock. 2011. In the shadow of misperception: assistive technology use and social interactions. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 705–714.
+     </li>
+     <li id="BibPLXBIB0062" label="[62]">
+      Joan Sosa-García and Francesca Odone. 2017. “Hands On” Visual Recognition for Visually Impaired Users.
+      <em>
+       <em>
+        ACM Transactions on Accessible Computing (TACCESS)
+       </em>
+      </em>
+      10, 3 (2017), 8.
+     </li>
+     <li id="BibPLXBIB0063" label="[63]">
+      Jeremi Sudol. 2013.
+      <em>
+       LookTel—Computer Vision Applications for the Visually Impaired
+      </em>
+      . Ph.D. Dissertation. UCLA.
+     </li>
+     <li id="BibPLXBIB0064" label="[64]">
+      Christian Szegedy, Vincent Vanhoucke, Sergey Ioffe, Jon Shlens, and Zbigniew Wojna. 2016. Rethinking the inception architecture for computer vision. In
+      <em>
+       Proceedings of the IEEE conference on computer vision and pattern recognition
+      </em>
+      . 2818–2826.
+     </li>
+     <li id="BibPLXBIB0065" label="[65]">
+      TapTapSee. 2012. Mobile camera application designed specifically for the blind and visually impaired iOS users.
+      <a class="link-inline force-break" href="http://www.taptapseeapp.com">
+       http://www.taptapseeapp.com
+      </a>
+     </li>
+     <li id="BibPLXBIB0066" label="[66]">
+      Marynel Vázquez and Aaron Steinfeld. 2012. Helping visually impaired users properly aim a camera. In
+      <em>
+       Proceedings of the 14th international ACM SIGACCESS conference on Computers and accessibility
+      </em>
+      . ACM, 95–102.
+     </li>
+     <li id="BibPLXBIB0067" label="[67]">
+      Aipoly Vision. 2016. Sight for Blind &amp; Visually Impaired.
+      <a class="link-inline force-break" href="http://aipoly.com">
+       http://aipoly.com
+      </a>
+     </li>
+     <li id="BibPLXBIB0068" label="[68]">
+      WayAround. 2018. The smart assistant for people who are blind.
+      <a class="link-inline force-break" href="https://www.wayaround.com">
+       https://www.wayaround.com
+      </a>
+     </li>
+     <li id="BibPLXBIB0069" label="[69]">
+      John Weissmann and Ralf Salomon. 1999. Gesture recognition for virtual reality applications using data gloves and neural networks. In
+      <em>
+       Neural Networks, 1999. IJCNN’99. International Joint Conference on
+      </em>
+      , Vol. 3. IEEE, 2043–2046.
+     </li>
+     <li id="BibPLXBIB0070" label="[70]">
+      Deyou Xu. 2006. A neural network approach for hand gesture recognition in virtual reality driving training system of SPG. In
+      <em>
+       Pattern Recognition, 2006. ICPR 2006. 18th International Conference on
+      </em>
+      , Vol. 3. IEEE, 519–522.
+     </li>
+     <li id="BibPLXBIB0071" label="[71]">
+      Hanlu Ye, Meethu Malu, Uran Oh, and Leah Findlater. 2014. Current and future mobile and wearable device use by people with visual impairments. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 3123–3132.
+     </li>
+     <li id="BibPLXBIB0072" label="[72]">
+      Yifan Zhang, Congqi Cao, Jian Cheng, and Hanqing Lu. 2018. EgoGesture: A New Dataset and Benchmark for Egocentric Hand Gesture Recognition.
+      <em>
+       <em>
+        IEEE Transactions on Multimedia
+       </em>
+      </em>
+      20, 5 (2018), 1038–1050.
+     </li>
+     <li id="BibPLXBIB0073" label="[73]">
+      Yu Zhong, Pierre J Garrigues, and Jeffrey P Bigham. 2013. Real time object scanning using a mobile phone and cloud-based visual search engine. In
+      <em>
+       Proceedings of the 15th International ACM SIGACCESS Conference on Computers and Accessibility
+      </em>
+      . ACM, 20.
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    We train both models with 10,000 training steps, using the Adam optimizer [
+    <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+     38
+    </a>
+    ], 10
+    <sup>
+     − 6
+    </sup>
+    learning rate, 0.9 beta1, 0.999 beta2, and 0.9 Adam epsilon.
+   </p>
+   <p id="fn2">
+    <a href="#foot-fn2">
+     <sup>
+      2
+     </sup>
+    </a>
+    We fine-tune pre-trained Inception using 4,000 training steps and gradient descent with learning rate 10
+    <sup>
+     − 2
+    </sup>
+    . We augment data by flipping left/right, randomly cropping 10% of the margin, and varying brightness by
+    <span class="inline-equation">
+     <span class="tex">
+      $\pm 10\%$
+     </span>
+    </span>
+    .
+   </p>
+   <p id="fn3">
+    <a href="#foot-fn3">
+     <sup>
+      3
+     </sup>
+    </a>
+    Only data with available hand masks (6 people) were used in GTEA Gaze+.
+   </p>
+   <p id="fn4">
+    <a href="#foot-fn4">
+     <sup>
+      4
+     </sup>
+    </a>
+    Additional annotations available at
+    <a class="link-inline force-break" href="https://iamlabumd.github.io/tego/">
+     https://iamlabumd.github.io/tego/
+    </a>
+    .
+   </p>
+   <p id="fn5">
+    <a href="#foot-fn5">
+     <sup>
+      5
+     </sup>
+    </a>
+    Additional annotations available at
+    <a class="link-inline force-break" href="https://iamlabumd.github.io/tego/">
+     https://iamlabumd.github.io/tego/
+    </a>
+    .
+   </p>
+   <p id="fn6">
+    <a href="#foot-fn6">
+     <sup>
+      6
+     </sup>
+    </a>
+    The cereals category in the Glassense-Vision dataset was unavailable at the time.
+   </p>
+   <p id="fn7">
+    <a href="#foot-fn7">
+     <sup>
+      7
+     </sup>
+    </a>
+    TEgO is available at
+    <a class="link-inline force-break" href="https://iamlabumd.github.io/tego/">
+     https://iamlabumd.github.io/tego/
+    </a>
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300566" target="_blank">
+      https://doi.org/10.1145/3290605.3300566
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8757e7977f0318d7',t:'MTcxMzMwOTYxMy4wMjEwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

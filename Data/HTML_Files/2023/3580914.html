@@ -1,0 +1,2536 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Kerfmeter: Automatic Kerf Calibration for Laser Cutting
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3580914_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3580914_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3580914_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3580914_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3580914_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3580914_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3580914_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3580914_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <main>
+   <section class="front-matter">
+    <section>
+     <header class="title-info">
+      <div class="journal-title">
+       <h1>
+        <span class="title">
+         Kerfmeter: Automatic Kerf Calibration for Laser Cutting
+        </span>
+        <br/>
+        <span class="subTitle">
+        </span>
+       </h1>
+      </div>
+     </header>
+     <div class="authorGroup">
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-4511-6619" ref="author">
+        <span class="givenName">
+         Shohei
+        </span>
+        <span class="surName">
+         Katakura
+        </span>
+       </a>
+       , Hasso Plattner Institute, Germany and Hasso Plattner Institute, Germany,
+       <a href="mailto:shohei.katakura@hpi.de">
+        shohei.katakura@hpi.de
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-6655-9427" ref="author">
+        <span class="givenName">
+         Martin
+        </span>
+        <span class="surName">
+         Taraz
+        </span>
+       </a>
+       , Hasso Plattner Institute, Germany and Hasso Plattner Institute, Germany,
+       <a href="mailto:martin.taraz@hpi.de">
+        martin.taraz@hpi.de
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-5057-477X" ref="author">
+        <span class="givenName">
+         Muhammad
+        </span>
+        <span class="surName">
+         Abdullah
+        </span>
+       </a>
+       , Hasso Plattner Institute, Germany and Hasso Plattner Institute, Germany,
+       <a href="mailto:muhammad.abdullah@hpi.de">
+        muhammad.abdullah@hpi.de
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0003-0387-171X" ref="author">
+        <span class="givenName">
+         Paul
+        </span>
+        <span class="surName">
+         Methfessel
+        </span>
+       </a>
+       , Human Computer Interaction Lab, Hasso Plattner Institute, Germany and Human Computer Interaction Lab, Hasso Plattner Institute, Germany,
+       <a href="mailto:paul.methfessel@student.hpi.uni-potsdam.de">
+        paul.methfessel@student.hpi.uni-potsdam.de
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0003-3663-9757" ref="author">
+        <span class="givenName">
+         Lukas
+        </span>
+        <span class="surName">
+         Rambold
+        </span>
+       </a>
+       , Human Computer Interaction Lab, Hasso Plattner Institute, Germany and Human Computer Interaction Lab, Hasso Plattner Institute, Germany,
+       <a href="mailto:lukas.rambold@student.hpi.de">
+        lukas.rambold@student.hpi.de
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-9427-2861" ref="author">
+        <span class="givenName">
+         Robert
+        </span>
+        <span class="surName">
+         Kovacs
+        </span>
+       </a>
+       , Hasso Plattner Institute, Germany and Hasso Plattner Institute, Germany,
+       <a href="mailto:robert.kovacs@hpi.de">
+        robert.kovacs@hpi.de
+       </a>
+      </div>
+      <div class="author">
+       <a href="https://orcid.org/0000-0002-5005-6868" ref="author">
+        <span class="givenName">
+         Patrick
+        </span>
+        <span class="surName">
+         Baudisch
+        </span>
+       </a>
+       , Hasso Plattner Institute, Germany and Hasso Plattner Institute, Germany,
+       <a href="mailto:patrick.baudisch@hpi.de">
+        patrick.baudisch@hpi.de
+       </a>
+      </div>
+     </div>
+     <br/>
+     <figure id="fig1">
+      <img alt="Figure 1" class="img-responsive" src="3580914_files\image1.png"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        Kerfmeter is a hardware + software device that attaches to the head of a laser cutter. It calibrates the laser cutter's kerf without user intervention. (a) When the user sends a model to the laser cutter, Kerfmeter intercepts the job, injects an automated 20s calibration routine that starts by cutting what we call a
+        <em>
+         spiral gauge
+        </em>
+        , (b) inserts its pair of prongs into the spiral gauge, and rotates it until it jams. Kerfmeter reads the angle
+        <span class="inline-equation">
+         <span class="tex">
+          $\theta $
+         </span>
+        </span>
+        at which this takes place using an encoder. This angle indicates how much material the laser has removed, i.e., the laser's
+        <em>
+         kerf
+        </em>
+        . (c) Kerfmeter triggers the dilation of the model by kerf, and (d) proceeds to fabricate the model. (e) Its kerf-calibrated joints make the model loose enough to allow for comfortable assembly, yet can also tight enough to resist tension, such as when suspending the model.
+       </span>
+      </figcaption>
+     </figure>
+     <div class="pubInfo">
+      <p>
+       DOI:
+       <a href="https://doi.org/10.1145/3544548.3580914" target="_blank">
+        https://doi.org/10.1145/3544548.3580914
+       </a>
+       <br/>
+       CHI '23:
+       <a href="https://doi.org/10.1145/3544548" target="_blank">
+        Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems
+       </a>
+       , Hamburg, Germany, April 2023
+      </p>
+     </div>
+     <div class="abstract">
+      <p>
+       <small>
+        We present Kerfmeter, a hardware + software device that automatically determines how much material the laser cutter burns off, also known as
+        <em>
+         kerf
+        </em>
+        . Its knowledge about kerf allows Kerfmeter to make the joints of laser cut 3D models fit together with just the right tension, i.e., loose enough to allow for comfortable assembly, yet tight enough to hold parts together without glue—all this without user interaction. Kerfmeter attaches to the head of a laser cutter and works as follows: when users send a model to the laser cutter, Kerfmeter intercepts the job, injects a brief calibration routine that determines kerf, dilates the cutting plan according to this kerf, and then proceeds to fabricate the cutting plan. During the calibration routine, Kerfmeter cuts a 2cm Archimedean spiral and uses a motor to rotate it in place until it jams against the surrounding material; the angle at which the spiral jams allows Kerfmeter to infer kerf. The calibration process takes about 20s, which is &gt;10x faster than traditional, manual kerf calibration, while also eliminating the need for expertise. In our technical evaluation, Kerfmeter produced functioning press fit joints reliably at a precision comparable to traditional manual kerf strips. Kerfmeter makes it easy to sample repeatedly; we demonstrate how this allows boosting precision past any traditional kerf strip.
+       </small>
+      </p>
+     </div>
+     <div class="CCSconcepts">
+      <ccs2012>
+       <small>
+        <span style="font-weight:bold;">
+         CCS Concepts:
+        </span>
+       </small>
+       <span class="keyword">
+        <small>
+         Human-centered computing∼Human computer interaction (HCI)∼Interactive systems and tools
+        </small>
+       </span>
+      </ccs2012>
+     </div>
+     <br/>
+     <div class="classifications">
+      <div class="author">
+       <span style="font-weight:bold;">
+        <small>
+         KEYWORDS:
+        </small>
+       </span>
+       <span class="keyword">
+        <small>
+         personal fabrication
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         laser cutting
+        </small>
+        ,
+       </span>
+       <span class="keyword">
+        <small>
+         rapid prototyping
+        </small>
+       </span>
+      </div>
+      <br/>
+      <div class="AcmReferenceFormat">
+       <p>
+        <small>
+         <span style="font-weight:bold;">
+          ACM Reference Format:
+         </span>
+         <br/>
+         Shohei Katakura, Martin Taraz, Muhammad Abdullah, Paul Methfessel, Lukas Rambold, Robert Kovacs and Patrick Baudisch. 2023. Kerfmeter: Automatic Kerf Calibration for Laser Cutting. In
+         <em>
+          Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems (CHI '23), April 23-28, 2023, Hamburg, Germany
+         </em>
+         . ACM, New York, NY, USA, 21 Pages.
+         <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3580914">
+          https://doi.org/10.1145/3544548.3580914
+         </a>
+        </small>
+       </p>
+      </div>
+     </div>
+    </section>
+   </section>
+   <section class="body">
+    <section id="sec1">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         1
+        </span>
+        INTRODUCTION
+       </h2>
+      </div>
+     </header>
+     <p>
+      When laser cutting 3D models,
+      <em>
+       precision
+      </em>
+      plays a central role. The reason is that 3D models consist of multiple parts, held together by joints—most commonly intersecting slits called
+      <em>
+       cross joints
+      </em>
+      or interlocking fingers called
+      <em>
+       box joints
+      </em>
+      . To allow joints to hold without glue, parts are designed to
+      <em>
+       overlap
+      </em>
+      by a tiny amount, such as 100μm for certain types of wood [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib1">
+       1
+      </a>
+      ]. This allows users to assemble such
+      <em>
+       press fits
+      </em>
+      by
+      <em>
+       forcing
+      </em>
+      parts into each other, which causes the natural springiness of the material to hold the parts together. This is what requires precision, i.e., if dimensions are not precise within 100μm, the resulting model, such as the lamp shown in Figure
+      <a class="fig" href="#fig1">
+       1e
+      </a>
+      , may either be impossible to assemble or fall apart under tension.
+     </p>
+     <p>
+      However, reaching this precision is complicated by the fact that all dimensions are impacted by a second factor: laser cutters burn off a certain amount of material during cutting, the width of the removed material being known as
+      <em>
+       kerf
+      </em>
+      . In order to achieve a functional press fit, the dimensions of parts sent to the cutter thus need to first be made wider (or "dilated") by the expected kerf in order to achieve the desired dimensions after kerf. This requires users to figure out kerf prior to cutting.
+     </p>
+     <p>
+      Unfortunately, determining kerf turns out to be a challenging process. As illustrated by Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      , today's technology enthusiasts (aka
+      <em>
+       makers
+      </em>
+      ) commonly determine kerf using the following four-step process: (a) They cut a specifically designed "kerf strip" (e.g., [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib24">
+       24
+      </a>
+      ]), (b) remove the kerf strip from the cutter and insert a separate part of it into a number of matching openings, thereby identifying the opening that fits best. Users then read the kerf value from the associated scale (e.g., 50μm steps) and enter it into the system. (c) Users then dilate the cutting plan by kerf, e.g., using a vector editing program or using specialized laser cutter modeling software, e.g.,
+      <em>
+       FlatFitFab
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib19">
+       19
+      </a>
+      ] or
+      <em>
+       Kyub
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib34">
+       34
+      </a>
+      ]) and, finally, (d) cut the actual model.
+     </p>
+     <figure id="fig2">
+      <img alt="Figure 2" class="img-responsive" src="3580914_files\image3.png"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        (a-d) Historically, users have calibrated kerf by performing this 4-step manual process. This included users having to run the later cutter
+        <em>
+         twice
+        </em>
+        . (e) Kerfmeter automates kerf calibration and integrates it into the cutting process of the model.
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+      This process is rather imprecise with 50μm steps in order to keep the size of the kerf strip feasible, time-consuming (about 5min for 4mm MDF on a
+      <em>
+       Trotec Speedy 360
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib46">
+       46
+      </a>
+      ] using
+      <em>
+       FlatFab
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib12">
+       12
+      </a>
+      ]), and rather laborious in that it requires users to run the laser cutter twice instead of once. This user effort is compounded by the fact that the procedure must be repeated periodically, potentially for every single model, to account for variations in material, power, and speed settings, as well as for the wear of laser, air compressor, and lens [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib47">
+       47
+      </a>
+      ] [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib25">
+       25
+      </a>
+      ] (see Section 6). Furthermore, worse than that, this 4-step process requires expertise, which raises the bar and commonly excludes non-expert users from laser cutting.
+     </p>
+     <p>
+      In this paper, we alleviate this problem. We present
+      <em>
+       Kerfmeter
+      </em>
+      , a hardware + software device that
+      <em>
+       automates
+      </em>
+      kerf calibration. As illustrated by Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      , Kerfmeter prefixes cutting with a fast, automated calibration procedure that measures kerf automatically compensates for it and then proceeds to cut the actual model, where the joints hold together with just the right amount of force. The entire process takes place inside the laser cutter and without user intervention, thereby alleviating users from having to deal with or even to know about kerf.
+     </p>
+    </section>
+    <section id="sec2">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         2
+        </span>
+        KERFMETER
+       </h2>
+      </div>
+     </header>
+     <p>
+      Kerfmeter consists of two components: first, a hardware component built into the laser cutter, which measures kerf, and second a software component, which acts as a server, controls the laser cutter, and dilates the cutting plan. Kerfmeter starts by the user sending a model to the cutter. This triggers the following
+      <em>
+       automated
+      </em>
+      seven-step process.
+     </p>
+     <p>
+      <strong>
+       1. Material sheet:
+      </strong>
+      Kerfmeter pauses until users insert a sheet of material into the laser cutter. Users position the sheet flush against the stops that most laser cutters feature at the left and left top edges of their cutting area (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ). This will prevent the material from rotating when a force is applied (see Step 5 below). In case the material is warped, users flatten it out by placing a weight on it, keeping the material in focus and the Kerfmeter's spiral gauge cutout aligned with its perimeter (see Step 5 below).
+     </p>
+     <figure id="fig3">
+      <img alt="Figure 3" class="img-responsive" src="3580914_files\image4.png"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Kerfmeter uses the alignment aids of the laser cutter to prevent the material from rotating during operation.
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+      <strong>
+       2. Spiral gauge:
+      </strong>
+      As shown in Figure
+      <a class="fig" href="#fig4">
+       4a
+      </a>
+      , Kerfmeter's hardware device now becomes active. It starts cutting what we call a
+      <em>
+       spiral gauge,
+      </em>
+      This gauge is the key element of our overall design, and its purpose is to make kerf "visible" to a rotary encoder. (b) Like everything cut using the laser cutter, the spiral gauge is subject to kerf, but the secret of its specific shape is that (c) rotating the spiral (counterclockwise) produces the same effect as growing it in place. Later (see step 5), we will use this property to measure kerf, as the amount of rotation a specific spiral gauge permits, here shown as θ, indicates the size of the gap around, i.e., kerf. (d) To make this work, we gave the spiral gauge the shape of the outermost revolution of a
+      <em>
+       self-similar
+      </em>
+      spiral, also known as an
+      <em>
+       Archimedean spiral
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib3">
+       3
+      </a>
+      ].
+     </p>
+     <figure id="fig4">
+      <img alt="Figure 4" class="img-responsive" src="3580914_files\image5.png"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        (a) Kerfmeter cutting its spiral gauge. (b) When rotated (counterclockwise), the spiral inset "grows" until (c) it eventually jams. The final orientation of the spiral inset now reflects kerf. (d) The shape of the spiral gauge is derived from an Archimedean spiral
+        <em>
+         .
+        </em>
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+      <strong>
+       3. Holes:
+      </strong>
+      Eventually, Kerfmeter will spin the spiral gauge using a pair of prongs (see Step 5). In order to allow the prongs to grip the spiral gauge, Kerfmeter cuts a pair of holes into it. As illustrated in Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      , Kerfmeter positions the spiral gauge so as to locate the holes over openings in the laser cutter's grating; this allows the round pieces of residue to drop through the grating, clearing the way for the prongs.
+     </p>
+     <figure id="fig5">
+      <img alt="Figure 5" class="img-responsive" src="3580914_files\image6.png"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        (a) Most laser cutters feature a metal inset inside the cutting volume, onto which the material is to be placed. Here the inset has the shape of a grid (
+        <em>
+         Trotec Speedy 360
+        </em>
+        ). (b) Kerfmeter positions the gauge to position the two holes over openings in the grid table. This causes the insets to drop, making space for the prongs that (c) allows Kerfmeter to insert its prongs into the holes.
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+      <strong>
+       4. Inserting prongs:
+      </strong>
+      Kerfmeter now inserts the two prongs into the holes and, as illustrated by Figure
+      <a class="fig" href="#fig6">
+       6a
+      </a>
+      , Kerfmeter orients the prongs so as to match the holes in the gauge, (b) moves the laser head so as to align the two prongs with the holes, and then (c) raises the worktable of the laser cutter so as to just barely stay clear of the grating.
+     </p>
+     <figure id="fig6">
+      <img alt="Figure 6" class="img-responsive" src="3580914_files\image7.png"/>
+      <figcaption>
+       <span class="figure-number">
+        Figure 6:
+       </span>
+       <span class="figure-title">
+        Kerfmeter (a,b) orients the prongs to match the holes in the gauge, moves the laser head to align the two prongs with the holes (c), and then raises the worktable so as barely to stay clear of the grid table. (d) Kerfmeter pushes the spiral inset against its surrounding with the same amount of force that occurs when assembling box joints.
+       </span>
+      </figcaption>
+     </figure>
+     <p>
+      <strong>
+       5. Measuring kerf
+      </strong>
+      : As shown in Figure
+      <a class="fig" href="#fig6">
+       6e
+      </a>
+      , Kerfmeter now conducts the actual kerf measurement. By gradually increasing the torque of the DC motor, it causes the spiral inset to rotate—until it eventually jams. During the procedure, Kerfmeter controls the motor's torque so that the pressure of the spiral inset against its surrounding matches the pressure between fingers when assembling box joints (see Section 5 for the underlying math). Throughout the procedure, Kerfmeter continually reads the rotary encoder attached to its DC motor and stores pairs of applied torque and resulting gauge angles, as measured by the encoder.
+     </p>
+     <p>
+      <strong>
+       6. Dilating &amp; fabricating the model:
+      </strong>
+      The Kerfmeter software now translates gauge angles into kerf as described in Section 5, dilates the model's cutting plan by that kerf, and sends it to the cutter. Our specific implementation of Kerfmeter accomplishes the dilation by asking the modeling software that produced the model (
+      <em>
+       Kyub
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib34">
+       34
+      </a>
+      ] ) to re-export with the additional kerf. Alternatively, models represented in appropriately extended SVG formats, such as
+      <em>
+       MetaSVG
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib30">
+       30
+      </a>
+      ] or
+      <em>
+       laserSVG
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib13">
+       13
+      </a>
+      ], allow dilation directly, as they already contain surface information. For models represented in legacy SVG, the surfaces can be inferred as described in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib43">
+       43
+      </a>
+      ].
+     </p>
+     <p>
+      <strong>
+       7. Assembly:
+      </strong>
+      Users then retrieve the laser-cut parts from the cutter and assemble the model. Since kerf has now been properly accounted for, the model's joints hold together with just the right amount of force to allow a human user to assemble the model comfortably, while its joints also hold together (see Section 5). In Figure
+      <a class="fig" href="#fig1">
+       1e
+      </a>
+      , for example, kerf calibration through Kerfmeter allows the lamp to hold up when suspended by a plate held by press-fit box joints.
+     </p>
+    </section>
+    <section id="sec3">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         3
+        </span>
+        CONTRIBUTION, BENEFITS, AND LIMITATIONS
+       </h2>
+      </div>
+     </header>
+     <p>
+      Our main contribution is the mechanical, hardware, and software design of a device that calibrates kerf. The benefit of Kerfmeter is that it makes the traditional manual 4-step test cut, assemble, read value, dilate model, cut again workflow shown in Figure
+      <a class="fig" href="#fig2">
+       2a
+      </a>
+      -d obsolete. Instead, Kerfmeter performs a fully automated kerf calibration procedure and integrates it into the regular cutting process of models shown in Figure
+      <a class="fig" href="#fig2">
+       2e
+      </a>
+      . The process takes about 20 seconds (with 4mm MDF on a
+      <em>
+       Trotec Speedy 360
+      </em>
+      laser cutter), which is about 10x faster than the manual process it replaces. Kerfmeter thus reduces user effort, speeds up personal fabrication, and, most of all, allows users without technical expertise to fabricate well-fitting joints and thus laser-cut 3D models.
+     </p>
+     <p>
+      Limitations include the fact that Kerfmeter can be used neither with film materials nor with strongly warped materials, as both make run the risk of the spiral gauge not properly engaging the material outside the gauge.
+     </p>
+    </section>
+    <section id="sec4">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         4
+        </span>
+        RELATED WORK
+       </h2>
+      </div>
+     </header>
+     <p>
+      Kerfmeter builds on related work on laser cutting, not expert use, fit, and kerf.
+     </p>
+     <section id="sec4Z1">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.1
+         </span>
+         3D models from multiple parts
+        </h3>
+       </div>
+      </header>
+      <p>
+       Researchers in various fields including graphics and HCI have explored the fabrication of 3D models that users assemble from multiple individual parts. Larson et al. developed a software system that allows users to design traditional Japanese wood joinery [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib26">
+        26
+       </a>
+       ]; while users focus on designing joints, their system checks fabricability and assemblability. Magrisso et al. propose a generative design approach to 3D-printing joints for wood furniture [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib37">
+        37
+       </a>
+       ].
+       <em>
+        Joinery
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib8">
+        8
+       </a>
+       ] allows generating parametric joints for laser-cut assemblies. Wang et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib50">
+        50
+       </a>
+       ] and Fu et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib7">
+        7
+       </a>
+       ] have presented a framework that allows users to design interlocking furniture and puzzles. Muntoni et al. propose an algorithm for decomposing 3D geometries into small sets of blocks for 3-Axis CNC milling machine [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib2">
+        2
+       </a>
+       ].
+       <em>
+        MatchSticks
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib36">
+        36
+       </a>
+       ] supports hand-milled joints by custom hardware and interactive software systems.
+      </p>
+     </section>
+     <section id="sec4Z2">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.2
+         </span>
+         Enabling non-expert use of laser cutters
+        </h3>
+       </div>
+      </header>
+      <p>
+       Laser cutting 3D objects has traditionally required expert knowledge. Recently, substantial research has gone into lowering the entry barrier, so as to allow a broader range of users to participate.
+      </p>
+      <p>
+       <em>
+        Modeling: Kyub
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib34">
+        34
+       </a>
+       ] and
+       <em>
+        FlatFitFab
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib19">
+        19
+       </a>
+       ] allow users to design 3D laser cut models in a 3D modeling environment.
+       <em>
+        LaserFactory
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib27">
+        27
+       </a>
+       ] and
+       <em>
+        Platener
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib11">
+        11
+       </a>
+       ] convert
+       <em>
+        3D
+       </em>
+       objects to laser-cuttable representations without user intervention.
+      </p>
+      <p>
+       <em>
+        Assembly: Roadkill
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib28">
+        28
+       </a>
+       ] embeds visual assembly guidance elements into workpieces, allowing users to assemble 3D models faster.
+       <em>
+        Daedalus in the Dark
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib35">
+        35
+       </a>
+       ] embeds haptic assembly guidance elements, empowering blind users.
+       <em>
+        FoolProofJoint
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib22">
+        22
+       </a>
+       ] disambiguates the assembly of laser-cut 3D models by giving identical parts identical joint patterns, while giving different parts different joint patterns.
+      </p>
+      <p>
+       <em>
+        Fabrication and calibration:
+       </em>
+       HCI researchers have implemented a number of software and hardware extensions that simplify the calibration and set-up process for laser cutters:
+       <em>
+        SensiCut
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib29">
+        29
+       </a>
+       ] identifies materials inserted into the cutter automatically—based on speckle sensing.
+       <em>
+        Fabricaide
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib44">
+        44
+       </a>
+       ] and
+       <em>
+        PacCAM
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib10">
+        10
+       </a>
+       ] allow users to nest models on non-standard plate shapes and sizes.
+      </p>
+      <p>
+       The
+       <em>
+        Glowforge
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib15">
+        15
+       </a>
+       ] consumer-level laser-cutter integrates a number of set-up and calibration aides in a single, integrated system. This system, for example, allows users to nest parts on a camera image of the inserted material sheet. Glowforge also provides materials with QR codes, allowing laser cutters to identify materials, and then recall the appropriate laser power settings for the respective material.
+      </p>
+     </section>
+     <section id="sec4Z3">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.3
+         </span>
+         Engineering fit
+        </h3>
+       </div>
+      </header>
+      <p>
+       When fabricating laser-cut 3D models based on cross joints or box joints, parts are held together using so-called
+       <em>
+        interference fits
+       </em>
+       or
+       <em>
+        press fits
+       </em>
+       , i.e., as discussed earlier, parts are forced into slightly smaller openings, allowing the resulting object to resist a certain amount of tension. Since the force induced by press-fits grows quadratically [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib6">
+        6
+       </a>
+       ] with the size of the interference, parts have to be manufactured with very small (such as 10μm) tolerances, in order to achieve the desired fit. Similar requirements tend to apply to certain types of mechanism, such as gears or axles and bearings. Engineering fit and the associated tolerance classes (e.g., ISO286 [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib6">
+        6
+       </a>
+       ]) define interactions between parts by specifying the desired size of holes and shafts etc. and their permittable error ranges.
+       <em>
+        JIS
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib18">
+        18
+       </a>
+       ] provides a list of fits and corresponding tolerance classes.
+      </p>
+      <p>
+       Precise fit can be challenging to achieve, as many fabrication devices, including laser cutters, are subject to variation in repeatability [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib17">
+        17
+       </a>
+       ] and kerf [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib42">
+        42
+       </a>
+       ], both of which tend to affect fit.
+      </p>
+      <p>
+       One approach to sidestepping the kerf/fit issue is to replace kerf/fit-sensitive elements with elements capable of tolerating large variations in terms of kerf/fit, such as
+       <em>
+        SpringFit
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib42">
+        42
+       </a>
+       ] and
+       <em>
+        Kerf-canceling mechanisms
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib41">
+        41
+       </a>
+       ]—the latter using a spiral-shaped jamming mechanism.
+       <em>
+        LaserOrigami
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib39">
+        39
+       </a>
+       ] eliminates joints altogether by instead
+       <em>
+        bending
+       </em>
+       parts into 3D shape.
+      </p>
+      <p>
+       Given the popularity of box joints, however, fit tends to be a major concern. Khoshaim et. al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib23">
+        23
+       </a>
+       ] conducted a large-scale experimental study to understand the impact of different influences on shape and composition of kerf for laser cutting polymethyl methacrylate sheets. Horisawa et. al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib16">
+        16
+       </a>
+       ] focus their analysis on the flow characteristics of the gas jet used in many laser cutting systems.
+      </p>
+      <p>
+       In the related field of 3D printing, Kim et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib20">
+        20
+       </a>
+       ] identified the challenge of measuring and creating precise mounts and joints for 3D printed objects, and proposed strategies for giving designed 3D models flexibility for adjustment. Chen et al. [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib49">
+        49
+       </a>
+       ] optimize snap fit geometry for injection molding. Sigmund [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib31">
+        31
+       </a>
+       ] deals with the problem of manufacturing tolerances in the nanofabrication domain. They eliminate tolerances for fit by introducing compliant materials or mechanisms such as spring washers or spring couplers. On a larger scale, industrial engineers tune tolerances based on stochastic metrics, such as in the
+       <em>
+        Robust Design Methodology
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib14">
+        14
+       </a>
+       ].
+      </p>
+     </section>
+     <section id="sec4Z4">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          4.4
+         </span>
+         Measuring kerf
+        </h3>
+       </div>
+      </header>
+      <p>
+       In order to reduce the influence of kerf, operators of subtractive fabrication machinery tend to measure and calibrate kerf. In the context of CNC milling machines, integrated touch probes are commonly used to achieve the sub-millimeter precision required to achieve a desired fit [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib9">
+        9
+       </a>
+       ].
+      </p>
+      <p>
+       In the domain of laser cutting, various tools have been proposed for calibrating kerf. They vary along multiple dimensions, including the precision of measurement. The simplest approach is to measure cut parts using calipers [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib21">
+        21
+       </a>
+       ]. A more involved approach is to insert parts of different degrees of dilation into a reference opening [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib38">
+        38
+       </a>
+       ]. Finally, the aforementioned kerf strips [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib24">
+        24
+       </a>
+       ] tends to produce better precision by using an incline to map small differences in kerf to large distances on its scale.
+      </p>
+      <p>
+       Unfortunately, all of these devices still tend to be subject to two key limitations. (1) None of them represent the force exerted at an actual (box) joint. This is problematic, as kerf measured at a force of quasi zero (e.g., calipers) does not allow concluding kerf at an actual joint. While such a conversion is possible in theory, it would at very least require knowledge about the stiffness of the material at hand. However, none of the aforementioned calibration tools measure material stiffness. (2) Manual kerf calibration procedures and tools tend to be not only time-consuming, but also raise the entrance barrier for non-experts. This hurdle stems from the fact that kerf calibration requires at least some basic understanding of the underlying manufacturing process—which non-experts do not tend to possess (and, we argue, should not be required to possess).
+      </p>
+      <p>
+       Kerfmeter is designed to overcome both hurdles. (1) using a geared motor, further amplified by a rotary incline (the spiral gauge) Kerfmeter produces the forces that apply at actual joints. By
+       <em>
+        sweeping
+       </em>
+       a whole range of forces, it is capable of determining a material's response to a whole range of joint situations. (2) By automating the process, it eliminates the need for users to understand or even know about kerf and the underlying manufacturing process that causes it.
+      </p>
+     </section>
+    </section>
+    <section id="sec5">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         5
+        </span>
+        DESIGN AND ENGINEERING BEHIND KERFMETER
+       </h2>
+      </div>
+     </header>
+     <p>
+      In order to help readers replicate our results, we now explain the engineering requirements, the underlying technology, the geometry, and the math.
+     </p>
+     <section id="sec5Z1">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.1
+         </span>
+         Hardware
+        </h3>
+       </div>
+      </header>
+      <p>
+       As illustrated in Figure
+       <a class="fig" href="#fig7">
+        7a
+       </a>
+       , our Kerfmeter prototype is based on a DC motor (
+       <em>
+        Maxon DCX22S
+       </em>
+       ) fitted with a planetary gearbox (
+       <em>
+        Maxon GPX22 C
+       </em>
+       21:1) as well as a magnetic encoder (
+       <em>
+        AMS AS5048A
+       </em>
+       ). A universal aluminum mounting hub attached to the shaft holds the two prongs, here implemented in the form of two bolts. A downward-facing coil spring mounted to the center of the hub is designed to keep the spiral gauge in place to assure good physical contact between the spiral inset and the material surrounding it. The encoder is connected to a microcontroller (
+       <em>
+        ESP32
+       </em>
+       ), which drives the motor with the help of a motor driver (
+       <em>
+        Pololu G2
+       </em>
+       ).
+      </p>
+      <figure id="fig7">
+       <img alt="Figure 7" class="img-responsive" src="3580914_files\image8.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 7:
+        </span>
+        <span class="figure-title">
+         (a) The Kerfmeter device, (b) mounted in the cutter (Trotec Speedy 360) with cables piggybacked on the laser cutter's drag chain.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       The microcontroller communicates with Kerfmeter server through a serial connection over USB. As shown in Figure
+       <a class="fig" href="#fig7">
+        7b
+       </a>
+       , we run serial and power cables through the drag chain of the laser cutter (here, a
+       <em>
+        Trotec Speedy 360
+       </em>
+       ).
+      </p>
+     </section>
+     <section id="sec5Z2">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.2
+         </span>
+         Design alternatives
+        </h3>
+       </div>
+      </header>
+      <p>
+       Kerfmeter is the result of a larger design exploration. Figure
+       <a class="fig" href="#fig8">
+        8
+       </a>
+       illustrates the design space we examined, the design decisions we made, and highlights the selected design alternatives we considered.
+      </p>
+      <figure id="fig8">
+       <img alt="Figure 8" class="img-responsive" src="3580914_files\image9.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 8:
+        </span>
+        <span class="figure-title">
+         The design space of automatic kerf measurement devices we considered.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       The first three of the design decisions shown in Figure
+       <a class="fig" href="#fig8">
+        8
+       </a>
+       allowed us to maximize the fidelity of our measurement: (a) Our first design decision was to apply a load, namely a load properly representing the
+       <em>
+        amount
+       </em>
+       of force exchanged when mounting (box) joints. (b) We then decided to apply a tangential force, so as to properly represent the
+       <em>
+        type
+       </em>
+       of force exchanged when assembling box joints. (c) We decided to
+       <em>
+        sweep
+       </em>
+       a range of forces, as this would allow us to calibrate a wider range of forces, such as the forces emerging as cross joints, the forces emerging as box joints, etc.
+      </p>
+      <p>
+       The remaining five design decisions helped us optimize our mechanical design: (d) Rather than inserting a (reusable, e.g., ceramics) wedge into a cutout from above, we opted for having the device fabricate
+       <em>
+        both halves
+       </em>
+       of a joint, which required us to fabricate this joint in-plane. In addition to allowing for higher fidelity, this also reduced the risk of accidentally pulling the material sheet upwards upon release. (e) We opted for a rotary mechanism, as a rotary force was easier to produce using (geared) motors. The cartesian approach would have been quite feasible too. However, we found some gantries to not be quite strong and sturdy enough to produce the required ∼50N. (f) The resulting design is subject to a
+       <em>
+        horizontal
+       </em>
+       net force upon release. While we considered canceling this force using a second opposing mechanism, it proved difficult to synchronize two mechanisms to the necessary degree. We thus chose to go with a single mechanism. (g) We then opted for an incline/wedge shapes for its mechanical advantage and finally (h) we picked the Archimedes spiral, because its outer and inner spirals coincide when rotating the inner spiral (it is “self-similar”).
+      </p>
+     </section>
+     <section id="sec5Z3">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.3
+         </span>
+         Software
+        </h3>
+       </div>
+      </header>
+      <p>
+       In order to produce end-to-end automation, the Kerfmeter server software, which is running on a computer connected to the laser cutter via serial over USB, talks to the modeling software (in the case of our prototype, this is
+       <em>
+        kyub
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib34">
+        34
+       </a>
+       ]), and the laser cutter driver (in the case of our prototype
+       <em>
+        Trotec Ruby
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib45">
+        45
+       </a>
+       ]), as illustrated by Figure
+       <a class="fig" href="#fig9">
+        9
+       </a>
+       .
+      </p>
+      <figure id="fig9">
+       <img alt="Figure 9" class="img-responsive" src="3580914_files\image10.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 9:
+        </span>
+        <span class="figure-title">
+         Sequence diagram showing the communication between the modeling system, Kerfmeter's software server, and the laser cutter's API.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       When the user exports a model in the modeling software (in our case
+       <em>
+        kyub
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib34">
+        34
+       </a>
+       ]), the modeling software sends information about the material thickness and the desired assembly force to the Kerfmeter server via a WebSocket connection. The Kerfmeter server responds by sending the material information to the laser cutter's REST API. It then sends a vector drawing of the spiral gauge to the laser cutter, which starts fabricating it.
+      </p>
+      <p>
+       As discussed earlier, when the spiral and holes have been cut, the Kerfmeter server positions the laser head over the spiral shape and programmatically raises the cutting table by sending the according
+       <em>
+        move
+       </em>
+       commands to the laser cutter REST API to insert the prongs into the holes in the spiral inset. It then sends the
+       <em>
+        start
+       </em>
+       command with the specified force and finger length to the Kerfmeter device via the serial connection.
+      </p>
+      <p>
+       The Kerfmeter device continuously reads the encoder, adjusts the target torque, and finally reports force and rotation angle pairs back to the Kerfmeter server, allowing it to calculate kerf, which it sends back to the modeling software through the WebSocket connection, which in turn triggers the dilation of the cutting plan. Finally, this cutting plan gets sent to the Kerfmeter server, which forwards it to the laser cutter, where it gets fabricated.
+      </p>
+      <p>
+       Kerfmeter provides this functionality by means of an application-independent API that offers three calls: run_kerfmeter() actuates the spiral gauge, get_kerf_value() retrieves the measured kerf value, and reset_kerfmeter() resets kerfmeter to its zero position. All functions are implemented as python scripts using the
+       <em>
+        simple_rpc library
+       </em>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib4">
+        4
+       </a>
+       ]. These three API calls allow integrating Kerfmeter into arbitray laser cutting design systems, such as
+       <em>
+        flatFab
+       </em>
+       or
+       <em>
+        Onshape
+       </em>
+       , as well as
+       <em>
+        kyub
+       </em>
+       .
+      </p>
+     </section>
+     <section id="sec5Z4">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.4
+         </span>
+         Translating between rotation and kerf
+        </h3>
+       </div>
+      </header>
+      <p>
+       As mentioned earlier, the spiral type that archives the desired self-similarity is an
+       <em>
+        Archimedean spiral
+       </em>
+       [3]. Its curve is described by the polar equation
+       <span class="inline-equation">
+        <span class="tex">
+         $r = b\varphi + a$
+        </span>
+       </span>
+       where
+       <span class="inline-equation">
+        <span class="tex">
+         $r$
+        </span>
+       </span>
+       is the radius of the spiral,
+       <span class="inline-equation">
+        <span class="tex">
+         $b$
+        </span>
+       </span>
+       is the distance between loops, and
+       <span class="inline-equation">
+        <span class="tex">
+         $a$
+        </span>
+       </span>
+       is the distance from the center to the start of the spiral.
+       <span class="inline-equation">
+        <span class="tex">
+         $\varphi \ $
+        </span>
+       </span>
+       defines the angle of rotation for each point on the curve. We represent all angles in degrees throughout this paper. Rotating the spiral inset causes it to "grow" based on the formula
+      </p>
+      <div class="table-responsive">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation*} kerf = b \cdot \theta \end{equation*}
+        </span>
+        <br/>
+       </div>
+      </div>
+      where
+      <span class="inline-equation">
+       <span class="tex">
+        $\theta $
+       </span>
+      </span>
+      is the rotation angle, as measured by Kerfmeter's encoder. We determine the spiral parameter
+      <em>
+       b
+      </em>
+      as
+      <div class="table-responsive">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation*} b = \ maxKerf/maxRotation \end{equation*}
+        </span>
+        <br/>
+       </div>
+      </div>
+      Using a manual kerf gauge, we empirically determined kerf values on our cutter to lay well below maxKerf = 430μm in wood and MDF materials (in our Trotec 360). Note that proper
+      <em>
+       maxKerf
+      </em>
+      highly depends on the lens, and laser power of given laser cutters. Once
+      <em>
+       maxKerf
+      </em>
+      is known, any laser cutter can use this spiral gauge by changing the parameter
+      <span class="inline-equation">
+       <span class="tex">
+        $b$
+       </span>
+      </span>
+      . The inset of the spiral geometrically disengages like Figure
+      <a class="fig" href="#fig10">
+       10a
+      </a>
+      , once the tangent line at the endpoint of the inner spiral (Figure
+      <a class="fig" href="#fig10">
+       10b
+      </a>
+      , green line) is parallel to the tangent line at the starting point of the outer counterpart (Figure
+      <a class="fig" href="#fig10">
+       10b
+      </a>
+      , red line), which is reached at 180 degrees rotation. However, the inner spiral can also overcome the outer spiral by compressing the material holding it in place earlier. Based on our experiments, rotating the inner spiral up to 155/180 did not cause the inner spiral to disengage. Applying maxKerf/maxRotation gives us an
+      <span class="inline-equation">
+       <span class="tex">
+        $b$
+       </span>
+      </span>
+      of 2.774μm, the value throughout this paper.
+      <p>
+      </p>
+      <figure id="fig10">
+       <img alt="Figure 10" class="img-responsive" src="3580914_files\image20.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 10:
+        </span>
+        <span class="figure-title">
+         (a) Rotating the spiral inset past 180° causes it to disengage from the surrounding material, thus break. (b) This is because the inset is not held in place anymore by the surrounding.
+        </span>
+       </figcaption>
+      </figure>
+     </section>
+     <section id="sec5Z5">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.5
+         </span>
+         Compensating for the hole kerf
+        </h3>
+       </div>
+      </header>
+      <p>
+       The two holes on the spiral gauge are also subject to kerf, allowing the motor and encoder to rotate before engaging the spiral inset. Figure
+       <a class="fig" href="#fig11">
+        11
+       </a>
+       illustrates the geometry of the problem at hand: A
+       <sub>
+        h
+       </sub>
+       denotes the angle between the outline of the prong and the hole's theoretical outline, while A
+       <sub>
+        hk
+       </sub>
+       denotes the angle between the theoretical outline of the hole and the outline of the hole, e.g., the additional rotation introduced by kerf. Without compensation for this, we would for kerf values from 100μm to 300μm introduce an error of 14μm to 17μm by not correcting.
+      </p>
+      <figure id="fig11">
+       <img alt="Figure 11" class="img-responsive" src="3580914_files\image24.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 11:
+        </span>
+        <span class="figure-title">
+         Kerfmeter recursively computes the angles, considering the radius of the hole and A
+         <sub>
+          hk
+         </sub>
+         .
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       Our Kerfmeter software compensates for this error by solving the following recurrence:
+      </p>
+      <div class="table-responsive">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation*} kerf = kerf' - {\rm{\ a\ }} \cdot \left( {{A}_h + \ \arctan \frac{{kerf'}}{{2R}}} \right) \end{equation*}
+        </span>
+        <br/>
+       </div>
+      </div>
+      where
+      <span class="inline-equation">
+       <span class="tex">
+        ${\rm{a\ }}$
+       </span>
+      </span>
+      is the spiral constant, and
+      <span class="inline-equation">
+       <span class="tex">
+        $kerf'$
+       </span>
+      </span>
+      is the result of the previously calculated kerf value.
+      <p>
+      </p>
+     </section>
+     <section id="sec5Z6">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          5.6
+         </span>
+         Translating between forces and torque
+        </h3>
+       </div>
+      </header>
+      <p>
+       Finally, the Kerfmeter workflow from Section 2 requires translating back and forth between the motor torque
+       <span class="inline-equation">
+        <span class="tex">
+         ${\rm{\tau }}$
+        </span>
+       </span>
+       applied to the spiral gauge and the force F required to assemble box joints. This conversion is governed by
+       <span class="inline-equation">
+        <span class="tex">
+         $F{\rm{\ }} = \mu {P}_{\rm{{\rm E}}}{A}_J$
+        </span>
+       </span>
+       [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib32">
+        32
+       </a>
+       ], where
+       <span class="inline-equation">
+        <span class="tex">
+         $\mu $
+        </span>
+       </span>
+       is the coefficient of friction of the given material and
+       <span class="inline-equation">
+        <span class="tex">
+         ${P}_{\rm{{\rm E}}}$
+        </span>
+       </span>
+       is the pressure between joint and joint, which depends on the material's Young's modulus and strain, as well as the sum of the contact areas of the box joints
+       <span class="inline-equation">
+        <span class="tex">
+         ${{\rm{A}}}_{\rm{J}}$
+        </span>
+       </span>
+       . Figure
+       <a class="fig" href="#fig12">
+        12a
+       </a>
+       illustrates this contact area.
+      </p>
+      <figure id="fig12">
+       <img alt="Figure 12" class="img-responsive" src="3580914_files\image30.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 12:
+        </span>
+        <span class="figure-title">
+         (a) The force that holds a joint together is defined by the area of the contact surface A
+         <sub>
+          J
+         </sub>
+         and the material-dependent constant
+         <span class="inline-equation">
+          <span class="tex">
+           $\mu {P}_E{A}_J$
+          </span>
+         </span>
+         . (b) The torque required to tighten the spiral swatch is defined by the material thickness L, the angle of rotation
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       The torque
+       <span class="inline-equation">
+        <span class="tex">
+         ${\rm{\tau }}$
+        </span>
+       </span>
+       is defined as
+       <span class="inline-equation">
+        <span class="tex">
+         ${\rm{\tau }} = \mu {P}_{\rm{{\rm E}}}\ \ ( {2\pi \ --\ 2\theta } )\ {r}^2 \cdot L\ $
+        </span>
+       </span>
+       , where
+       <span class="inline-equation">
+        <span class="tex">
+         $\theta $
+        </span>
+       </span>
+       is the angle of rotation,
+       <span class="inline-equation">
+        <span class="tex">
+         $r$
+        </span>
+       </span>
+       is the radius of the spiral gauge, and
+       <span class="inline-equation">
+        <span class="tex">
+         $L$
+        </span>
+       </span>
+       is the material thickness, as illustrated by Figure
+       <a class="fig" href="#fig12">
+        12b
+       </a>
+       , simplified by approximating the circumference of the spiral inset with a circle. Since both the box joints and the spiral are made from the same material and will cause the same strain,
+       <span class="inline-equation">
+        <span class="tex">
+         $\mu {P}_{\rm{{\rm E}}}$
+        </span>
+       </span>
+       is the same. We obtain
+      </p>
+      <div class="table-responsive">
+       <div class="display-equation">
+        <span class="tex mytex">
+         \begin{equation*} {\rm{\tau }} = \left( {2\pi - 2\theta } \right)\left( {{r}^2 \cdot L} \right)F/{A}_J \end{equation*}
+        </span>
+        <br/>
+       </div>
+      </div>
+      <p>
+      </p>
+      <p>
+       The specified force
+       <span class="inline-equation">
+        <span class="tex">
+         $F$
+        </span>
+       </span>
+       depends on torque
+       <span class="inline-equation">
+        <span class="tex">
+         ${\rm{\tau }}$
+        </span>
+       </span>
+       and rotation angle
+       <span class="inline-equation">
+        <span class="tex">
+         $\theta $
+        </span>
+       </span>
+       . For the computation of the used torque, Kerfmeter uses the angle of rotation
+       <span class="inline-equation">
+        <span class="tex">
+         $\theta $
+        </span>
+       </span>
+       measured by the encoder after the torque overcomes the friction between the spiral and the table (Figure
+       <a class="fig" href="#fig12">
+        12b
+       </a>
+       ). For example, if a user wants to assembly three fingers of a box joint made from 4mm thick material with 50N force, Kerfmeter needs to apply ∼0.62Nm at an angle of 45 degrees, ∼0.41Nm at an angle of 90 degrees or any other pair of τ and θ as described above.
+      </p>
+      <p>
+       This model requires Kerfmeter to apply a well-controlled torque, which we produce by varying the length of the pulse-width modulation duty cycle. As illustrated in Figure
+       <a class="fig" href="#fig13">
+        13
+       </a>
+       , we verified that the length of the duty cycle linearly affects our motor torque.
+      </p>
+      <figure id="fig13">
+       <img alt="Figure 13" class="img-responsive" src="3580914_files\image40.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 13:
+        </span>
+        <span class="figure-title">
+         The torque of Kerfmeters' motor increases linearly with the length of the PWM duty cycle.
+        </span>
+       </figcaption>
+      </figure>
+     </section>
+    </section>
+    <section id="sec6">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         6
+        </span>
+        CALIBRATING KERFMETER
+       </h2>
+      </div>
+     </header>
+     <p>
+      The Kerfmeter device, as described above gives us a kerf value. However, kerf is just a means to an end—and that end is fit. To apply Kerfmeter, we need to have a sense of what fit values we should be aiming for. In order to find out, we conducted a simple user study in which we had participants assemble box joints. We then measured how much force they were willing to apply. This tells us what fit to aim for.
+     </p>
+     <p>
+      A desired force alone is not sufficient though, as the production of joints is subject to a certain amount of error, caused by the limitations of the laser cutter itself. Rather than picking a single target force, we want to make sure that if possible the entire range of possible outcomes produces useful results, i.e., we want to avoid joints that are impossible to assemble, just like how we want to avoid creating joints that would fall apart. We therefore conducted additional analysis and study of the error we would be expecting.
+     </p>
+     <section id="sec6Z1">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.1
+         </span>
+         Study 1: What fit value to aim for: sampling the force users are willing to apply when assembling box joints
+        </h3>
+       </div>
+      </header>
+      <p>
+       In order to understand how much torque to apply, Kerfmeter needs to know what forces users are able and willing to apply when assembling a 3D laser cut model. Naturally, such values will vary across users. While there is research on the pinch and grip strength of adults [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib48">
+        48
+       </a>
+       ], resulting in an average pinch strength of 109N for male and 72N for female adults, we performed a study on measuring the force participants applied during the assembly.
+      </p>
+      <p>
+       We had participants assemble three-finger box joints designed to require different amounts of force. We observed which ones they managed to assemble.
+      </p>
+      <p>
+       <strong>
+        Participants:
+       </strong>
+       we recruited six male participants, three female participants, and one participant who preferred not to state a gender, aged 23 to 32 from our institution.
+      </p>
+      <p>
+       <strong>
+        Apparatus and procedure:
+       </strong>
+       As illustrated by Figure
+       <a class="fig" href="#fig14">
+        14a
+       </a>
+       , participants began each trial by grabbing one random sample from a box of left half-joints and one random sample from a box of right half-joints. The pairings were of different tightness, i.e., kerf between 150μm–200μm; we had cut them from 6mm MDF board on a Trotec speedy 360, thus requiring different amounts of force.
+      </p>
+      <figure id="fig14">
+       <img alt="Figure 14" class="img-responsive" src="3580914_files\image41.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 14:
+        </span>
+        <span class="figure-title">
+         (a) We used this apparatus to measure the force applied by participants while assembling box joints. (b) The half joint held by the slot pushed down on a force gauge, which performed the measurement.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       As illustrated by Figure
+       <a class="fig" href="#fig14">
+        14b
+       </a>
+       , the participant's task was to assemble the two halves into a joint. To do so, participants placed the left half into the shown slot and then pressed the right half into the left half using one or two thumbs.
+      </p>
+      <p>
+       The bottom of the slot was formed by a digital force gauge (BAOSHISHAN WLS-107), which allowed us to measure the force participants applied while assembling the joint as the maximum force across the respective trial. An experimenter logged whether participants succeeded at assembling or gave up.
+      </p>
+      <p>
+       <strong>
+        Results:
+       </strong>
+       Figure
+       <a class="fig" href="#fig15">
+        15
+       </a>
+       shows the results. All participant managed to assemble all box joints requiring 97.7 N of compression force or less. These 97.7N are comparable to the pinch strength from the related work. In this paper, we defined 97.7N as an upper bound of three finger box joints.
+      </p>
+      <figure id="fig15">
+       <img alt="Figure 15" class="img-responsive" src="3580914_files\image42.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 15:
+        </span>
+        <span class="figure-title">
+         All participants applied 97.7N of force or more.
+        </span>
+       </figcaption>
+      </figure>
+     </section>
+     <section id="sec6Z2">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.2
+         </span>
+         Analysis of the limitation imposed by the repeatability of the laser cutter's gantry
+        </h3>
+       </div>
+      </header>
+      <p>
+       Mechanical devices, including the gantry inside the laser cutter, support only a limited precision, also known as
+       <em>
+        repeatability
+       </em>
+       . In the case of the
+       <em>
+        Trotec Speedy 360
+       </em>
+       used in this evaluation, the repeatability is ±15μm. More specifically, repeatability is a statement issued by the manufacturer. It states the precision at which their machines are capable of positioning the laser head—and for that matter cutting lines (assuming lines to be parallel to the X or Y-axis). As shared in ISO230-2[17], the positioning accuracy of machining is normally distributed, and the reported range forms a 95% confidential interval. Therefore, the standard deviation of the Trotec 360’s positioning system is 7.5μm.
+      </p>
+      <p>
+       Some types of cutting tasks incur repeatability multiple times. When cutting a square, for example, the width of that square is subject to 2x repeatability: one for the left and one for the right edge, thus ±
+       <span class="inline-equation">
+        <span class="tex">
+         $2\sqrt {2 \cdot {{7.5}}^2} $
+        </span>
+       </span>
+       μm = ±21.2μm for the 95% confidence interval (assuming the repeatability of each edge to be statistically independent). When cutting box joints, repeatability comes into play
+       <em>
+        four times
+       </em>
+       . This gives the overlap, i.e., the aforementioned interference, ±30μm for 95% confidence interval. As illustrated in Figure
+       <a class="fig" href="#fig16">
+        16
+       </a>
+       , the worst case occurs when all four edges are either all extended or retracted.
+      </p>
+      <figure id="fig16">
+       <img alt="Figure 16" class="img-responsive" src="3580914_files\image44.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 16:
+        </span>
+        <span class="figure-title">
+         Due to the limited repeatability of the laser cutter (here a Trotec 360), 5% of samples would be expected to be +30μm tighter or -30μm looser than calibrated joints.
+        </span>
+       </figcaption>
+      </figure>
+     </section>
+     <section id="sec6Z3">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.3
+         </span>
+         Study 2: The effect of cutting location within the laser cutter on kerf
+        </h3>
+       </div>
+      </header>
+      <p>
+       The related work [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib5">
+        5
+       </a>
+       ] suggests that laser cutter might be subject to additional variation based on “cut location”, i.e., cutting on some specific position in the cutter might produce one kerf range while cutting at a different position in the cutter might produce a different kerf range.
+      </p>
+      <p>
+       In order to assess the effect of cutting location within the laser cutter on kerf, we conducted a simple study, in which we cut test objects (squares) at 12 different locations across each and assessed their kerf. In order to validate that the effect was not just specific to the cutter tested, we extended the study to include three different laser cutters.
+      </p>
+      <p>
+       We measured the resulting squares using a digital micrometer (
+       <em>
+        Mitutoyo 293-831-30
+       </em>
+       , see Figure
+       <a class="fig" href="#fig17">
+        17
+       </a>
+       ). For a somewhat realistic setting, we calibrated the device to apply a compression force of 5-10N (0.2–0.4MPa) using the built-in ratchet stop. We computed kerf as: 17mm minus the measured width of the rectangles.
+      </p>
+      <figure id="fig17">
+       <img alt="Figure 17" class="img-responsive" src="3580914_files\image45.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 17:
+        </span>
+        <span class="figure-title">
+         (a) We laid out 50x50mm material swatches in a 4 x 3 grid and (b) cut 17x 17 mm squares from each swatch, the width of which we then (c) measured using a digital micrometer (Mitutoyo 293-831-30).
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       <strong>
+        Positions:
+       </strong>
+       We sampled on a 4 x 3 grid of samples across the entire cutting volume as shown in Figure
+       <a class="fig" href="#fig17">
+        17a
+       </a>
+       and b.
+      </p>
+      <p>
+       <strong>
+        Trials:
+       </strong>
+       Each sample was a 17x 17 mm square. We ran eight repetitions per location.
+      </p>
+      <p>
+       <strong>
+        Cutters:
+       </strong>
+       We tested three cutters: (1)
+       <em>
+        Trotec Speedy 360
+       </em>
+       with 120W CO2 laser source. (2) an (older)
+       <em>
+        Universal PLS6.150D
+       </em>
+       with dual 75W CO2 laser sources, and (3) a Glowforge with a 45W CO2 laser source.
+      </p>
+      <p>
+       <strong>
+        Material:
+       </strong>
+       to minimize the effect of material variations, we used a highly homogeneous material, i.e., MDF.
+      </p>
+      <p>
+       <strong>
+        Order:
+       </strong>
+       To eliminate sequence effects, the MDF swatches were assigned to locations randomly
+      </p>
+      <p>
+       <strong>
+        Results:
+       </strong>
+       Figure
+       <a class="fig" href="#fig18">
+        18
+       </a>
+       shows the kerf values for each of the eight samples on each of the 4 x 3 grid locations on each of the three cutters. An ANOVA with location as a factor (12 levels) found significant effects of location on kerf for all laser cutters, Trotec 360: p&lt;0.01 (5.7*10
+       <sup>
+        -9
+       </sup>
+       ), Glowforge: p&lt;0.01(2.5*10
+       <sup>
+        -25
+       </sup>
+       ), Universal: p&lt;0.01(1.7*10
+       <sup>
+        -15
+       </sup>
+       ), i.e., as expected, location did affect kerf, i.e., kerf differed significantly across locations for all three cutters. The main results are the standard deviations of the three cutters, i.e., 13μm on
+       <em>
+        Trotec
+       </em>
+       , 63μm on
+       <em>
+        Glowforge
+       </em>
+       , and 73μm on
+       <em>
+        Universal.
+       </em>
+       Note how the negative values produced by the universal cutter indicate yet another source of error, such as a systematic bias of the gantry.
+      </p>
+      <figure id="fig18">
+       <img alt="Figure 18" class="img-responsive" src="3580914_files\image46.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 18:
+        </span>
+        <span class="figure-title">
+         The kerf values for each of the eight samples on each of the 4 x 3 grid locations for each of the three laser cutters. Low kerf values are shown as green, and high kerf values as red. Since the ranges varied substantially between cutters (250μm (SD = 13μm) on the
+         <em>
+          Trotec
+         </em>
+         cutter, 88μm (SD = 73μm) on
+         <em>
+          Universal
+         </em>
+         , and 172μm (SD = 63μm) on Glowforge, we color-coded samples
+         <em>
+          per cutter
+         </em>
+         , i.e., sample colors are visually comparable within a cutter but not across cutters.
+        </span>
+       </figcaption>
+      </figure>
+     </section>
+     <section id="sec6Z4">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          6.4
+         </span>
+         Discussion
+        </h3>
+       </div>
+      </header>
+      <p>
+       The analysis and two studies reported above provide us with the information we need to deploy Kerfmeter.
+      </p>
+      <p>
+       To summarize what we found out, at the example of the Trotec laser cutter: (1) the repeatability of the gantry introduces a standard deviation of 10.6μm as we measured the width of the rectangle. (2) This compounded with variability caused by the cutting location, i.e., an additional standard deviation of 13μm (on the
+       <em>
+        Trotec
+       </em>
+       cutter; substantially worse on the two other cutters). (3) We now have a sense of the variation resulting from the machine alone (i.e., without any kerf strip or Kerfmeter): the machine produces a standard deviation of
+       <span class="inline-equation">
+        <span class="tex">
+         $\sqrt {{{10.6}}^2{\rm{\ }} + {\rm{\ }}{{13}}^2} $
+        </span>
+       </span>
+       = 16.7μm.
+      </p>
+      <p>
+       This number is non-trivial, as it is not too far from, for example, the 50μm steps that form the basis of the kerf strip's scale [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib24">
+        24
+       </a>
+       ]. This sets our expectations for kerf calibration: a highly precise laser cutter (for example
+       <em>
+        , ExactCut 430 Coherent
+       </em>
+       advertises repeatability of 1μm) would allow us to aim for a
+       <em>
+        specific
+       </em>
+       fit; we might, for example, aim for maximum stability by setting the intended assembly force close to the human limit determined above.
+      </p>
+      <p>
+       However, the use of less specialized machines produces data that tells us that we need to be more conservative. Our primary objective has to be to stay within the interval of acceptable fit values in either direction: we neither want to run the risk of making a model impossible to assemble, nor do we want to run the risk of joints falling apart.
+      </p>
+      <p>
+       In order to minimize either risk, we should therefore aim for the
+       <em>
+        center
+       </em>
+       of the assembly force interval.
+      </p>
+      <p>
+       Note that this observation and the resulting strategy is only based on our analysis of laser cutter hardware. These insights therefore apply to any kerf strip to the same extent they apply to Kerfmeter.
+      </p>
+      <p>
+       Now that we have defined our strategy for picking a fit, we are ready to evaluate the performance of Kerfmeter.
+      </p>
+     </section>
+    </section>
+    <section id="sec7">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         7
+        </span>
+        TECHNICAL EVALUATION OF THE PRECISION OF KERFMETER
+       </h2>
+      </div>
+     </header>
+     <p>
+      To validate our design, we conducted a technical evaluation. We measured the precision with which Kerfmeter measures kerf and computed its implications on assembling press fit joints.
+     </p>
+     <section id="sec7Z1">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          7.1
+         </span>
+         Apparatus and procedure
+        </h3>
+       </div>
+      </header>
+      <p>
+       As shown in Figure
+       <a class="fig" href="#fig19">
+        19a
+       </a>
+       , we started by placing sheets of material (4mm MDF) into a laser cutter (the same
+       <em>
+        Trotec 360
+       </em>
+       we had used earlier). For each trial, we ran Kerfmeter, causing it to cut a spiral gauge, measure it, and compute the resulting kerf value. We then had the laser cutter cut a one-finger box joint next to the spiral gauge, adjusted with the kerf value determined by the Kerfmeter measurement taken a few seconds earlier.
+      </p>
+      <figure id="fig19">
+       <img alt="Figure 19" class="img-responsive" src="3580914_files\image48.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 19:
+        </span>
+        <span class="figure-title">
+         (a) We had Kerfmeter perform 30 measurements on MDF 4mm, all taking place at the same location within the cutter. For each kerf measurement, we had the laser cutter cut a one-finger box joints next to the spiral gauge. (b) We then measured the force to assemble the box joints.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       We then measured the force required to assemble the box joints using the measuring apparatus shown in Figure
+       <a class="fig" href="#fig19">
+        19b
+       </a>
+       : an experimenter aligned the two halves of a box joint on an aluminum tray and moved the joint into the force gauge using a linear rail with a ball screw.
+      </p>
+      <p>
+       We set up Kerfmeter to calibrate kerf for an assembly force of 18.3N (55N for three-finger box joints). As discussed above, we had picked this value as the midpoint between the 32.6N (97.7N for three fingers) users were willing to produce in Section 6.1 and a somewhat arbitrary lower limit of 2.7N (8N for three fingers) we had picked out for a reliable box joint.
+      </p>
+      <p>
+       We conducted 30 trials, i.e., we repeated this procedure at the same location 30 times (power 100%, speed 0.4% at Trotec 360), resulting in 30 (spiral, box joint) pairs.
+      </p>
+     </section>
+     <section id="sec7Z2">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          7.2
+         </span>
+         Results
+        </h3>
+       </div>
+      </header>
+      <p>
+       Figure
+       <a class="fig" href="#fig20">
+        20
+       </a>
+       shows the kerf measurements made by Kerfmeter. Measured kerf values ranged between 244μm and 317μm, but the main observation here is the standard deviation, which was 15.5μm.
+      </p>
+      <figure id="fig20">
+       <img alt="Figure 20" class="img-responsive" src="3580914_files\image49.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 20:
+        </span>
+        <span class="figure-title">
+         The result of the assembly force of one-finger box joints calibrated by Kerfmeter. The blue-colored strip indicates the range between stable joints and maximum force users are willing to produce, as discussed in Section 6(For three-finger box joints, all values would be tripled, i.e., 9N – 97.7N).
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       Overall this is a good result, as this standard deviation of 15.5μm is smaller than the standard deviation 19.5μm manual kerf strips are subject to the repeatability
+       <span class="inline-equation">
+        <span class="tex">
+         ${\sigma }_l$
+        </span>
+       </span>
+       of the laser cutter (here ±15μm for a
+       <em>
+        Trotec 360
+       </em>
+       ) combines with an average error of a quarter of the step size
+       <em>
+        s
+       </em>
+       of the kerf strip (50μm [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib24">
+        24
+       </a>
+       ]), resulting in a standard deviation of
+       <span class="inline-equation">
+        <span class="tex">
+         $\sigma \ = \ \sqrt {{{( {\frac{s}{4}} )}}^2\ + \ 2{\sigma }_l^2\ } $
+        </span>
+       </span>
+       .
+      </p>
+      <p>
+       As illustrated by Figure
+       <a class="fig" href="#fig20">
+        20
+       </a>
+       , we succeeded at placing the produced fit into the center point between the minimum force require for a stable joint and the maximum force users are willing to produce: the mean of the assembly force of 17.5N (SD 9.7N) is equivalent to 52.5N for a three-finger box joint, which is close to the force of 55N we had targeted. As illustrated using a blue ribbon, 28 of the 30 measurements fit in this interval.
+      </p>
+     </section>
+     <section id="sec7Z3">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          7.3
+         </span>
+         The majority of the observed variation is indeed caused by the limited repeatability of the machine
+        </h3>
+       </div>
+      </header>
+      <p>
+       The vast majority of the observed variation was indeed explained by the limited repeatability of the machine. To prove this point, we conducted another cutting session—this time
+       <em>
+        leaving out Kerfmeter
+       </em>
+       and instead cut all samples using the same kerf value. More specifically, we cut 30 identical one-finger box joints (MDF 4mm) with the same
+       <em>
+        Trotec 360
+       </em>
+       laser cutter, again at identical locations (Figure
+       <a class="fig" href="#fig21">
+        21a
+       </a>
+       ). Again, we measured the size of parts using a micrometer and we measured the assembly force using the linear ball screw mechanism described earlier.
+      </p>
+      <figure id="fig21">
+       <img alt="Figure 21" class="img-responsive" src="3580914_files\image52.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 21:
+        </span>
+        <span class="figure-title">
+         (a) To understand whether the variation of kerf and assembly comes from Kerfmeter or laser cutter, we also cut and measured 30 identical one-box joints without Kerfmeter calibration. (b) The result of measuring the assembly force of one-finger box joints without Kerfmeter calibration.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       Figure
+       <a class="fig" href="#fig21">
+        21b
+       </a>
+       shows the map between overlap and assembly force. The main finding is that resulting box joints assembled with a force subject to a standard deviation of 6.3N. Comparing these values to standard deviation of 9.7N we had found in Section 7.2, we conclude that about two thirds of the standard deviation are indeed explained by the limited repeatability of the cutter, rather than by Kerfmeter.
+      </p>
+     </section>
+     <section id="sec7Z4">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          7.4
+         </span>
+         Discussion
+        </h3>
+       </div>
+      </header>
+      <p>
+       Our findings confirm that Kerfmeter achieves the desired precision, i.e., reliable press fits and that its precision is comparable to a manual kerf strip. At the same time, Kerfmeter is 15x faster and consumes 25x less material than a manual kerf strip [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib24">
+        24
+       </a>
+       ]. Kerfmeter thus achieves automation without sacrificing precision.
+      </p>
+      <p>
+       The variation of kerf and assembly force with Kerfmeter calibration was 15.5μm and 9.7N each. Without Kerfmeter calibration, the variation of kerf (concave joints) and assembly force was 14μm and 6.3N. Therefore, due to the additivity of variance, a variation of assembly force in SD=7.4N is produced by Kerfmeter.
+      </p>
+     </section>
+     <section id="sec7Z5">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          7.5
+         </span>
+         Improving Kerfmeter's precision by multiple sampling at run-time
+        </h3>
+       </div>
+      </header>
+      <p>
+       Kerfmeter performs its task in fully automated fashion while also consuming substantially less material than the traditional kerf strips. This lowers the bar for performing multiple measurements. We can exploit this to increase the precision of the device further so as to surpass the precision of manual kerf measurement substantially, as repeated measuring allows us to counteract the limited repeatability of the cutter, which caused 2 of 30 samples to miss our requirements in the evaluation reported above.
+      </p>
+      <p>
+       The fact that we can increase precision by measuring multiple times is based on the observation that limited repeatability hits precision twice: During calibration and during fabrication. In the worst case, repeatability errors in one direction during calibration and in the opposite direction during fabrication, allowing both errors to accumulate. While we cannot improve repeatability issues during fabrication, we can reduce repeatability issues during calibration by running the calibration device multiple times.
+      </p>
+      <p>
+       Running Kerfmeter (or any kerf calibration tool for that matter)
+       <em>
+        twice
+       </em>
+       lowers the effect of limited repeatability by a factor of
+       <span class="inline-equation">
+        <span class="tex">
+         $\sqrt 2 $
+        </span>
+       </span>
+       , i.e., from ±15.5μm to ±11μm. Sampling 3 times increase precision further to ±8.9μm. Given that limited repeatability turned out to be the main limitation of kerf calibration, we feel multiple measurement are worth pursuing.
+      </p>
+     </section>
+     <section id="sec7Z6">
+      <header>
+       <div class="title-info">
+        <h3>
+         <span class="section-number">
+          7.6
+         </span>
+         Compensating kerf based on location
+        </h3>
+       </div>
+      </header>
+      <p>
+       With the same reasoning, Kerfmeter makes it more feasible to measure kerf across cutting locations in the laser cutter. This allows us to compensate for the local variations in kerf discussed in Section 6.3. To validate this, we used Kerfmeter to cut 3 x 4 samples laid out across the laser cutter with three samples each.
+      </p>
+      <p>
+       Figure
+       <a class="fig" href="#fig22">
+        22b
+       </a>
+       shows the result. (c) shows the resulting local compensation values for each location, which we obtained by computing the median across the three samples and subtracting from the top left corner.
+      </p>
+      <figure id="fig22">
+       <img alt="Figure 22" class="img-responsive" src="3580914_files\image54.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 22:
+        </span>
+        <span class="figure-title">
+         (a) Kerfmeter measured kerf 3 times at 12 different locations (b) the result of 36 measurements. (c) the local kerf compensation map based on the measured result.
+        </span>
+       </figcaption>
+      </figure>
+      <p>
+       We then generated 12 one-finger box joints and cut them at each location three times. Figure
+       <a class="fig" href="#fig23">
+        23
+       </a>
+       shows the results (b) without and (c) with location-specific compensation. The results show that local compensation successfully reduced the assembly force variation from 15.9 N to 7.76 N.
+      </p>
+      <figure id="fig23">
+       <img alt="Figure 23" class="img-responsive" src="3580914_files\image55.png"/>
+       <figcaption>
+        <span class="figure-number">
+         Figure 23:
+        </span>
+        <span class="figure-title">
+         (a) We cut 36 one-finger box joints for two conditions. (b) the result of the assembly force without and (c) with compensation.
+        </span>
+       </figcaption>
+      </figure>
+     </section>
+    </section>
+    <section id="sec8">
+     <header>
+      <div class="title-info">
+       <h2>
+        <span class="section-number">
+         8
+        </span>
+        CONCLUSION
+       </h2>
+      </div>
+     </header>
+     <p>
+      In this paper, we presented Kerfmeter, a hardware device that calibrates kerf in an automatic fashion. Our main contribution is the automation of kerf measurement, allowing for reliable press fit joints without the manual effort traditional kerf calibration entails. This not only speeds up the laser cutting process but, arguably most importantly, lowers the bar to laser cutting, allowing
+      <em>
+       non-experts
+      </em>
+      to laser cut 3D models successfully. The latter is key, as it bears the potential to get laser cutting into peoples' hands past its current niche with technology enthusiasts and into the much bigger space of use by "consumers" [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#bib33">
+       33
+      </a>
+      ].
+     </p>
+     <p>
+      In future work, we will continue down this route of automating the pipeline between a cutting plan and assembled physical model, with the ultimate objective of turning laser cutters into "appliances."
+     </p>
+    </section>
+   </section>
+   <section class="back-matter">
+    <section id="bib-sec-001">
+     <header>
+      <div class="title-info">
+       <h2 class="page-brake-head">
+        REFERENCES
+       </h2>
+      </div>
+     </header>
+     <ul class="bibUl">
+      <li id="bib1" label="[1]">
+       Accuracy of mortise and tenon joints
+       <a class="link-inline force-break" href="https://woodgears.ca/mortise/accuracy.html">
+        https://woodgears.ca/mortise/accuracy.html
+       </a>
+       September 2022.
+      </li>
+      <li id="bib2" label="[2]">
+       Alessandro Muntoni, Marco Livesu, Riccardo Scateni, Alla Sheffer, and Daniele Panozzo. 2018. Axis-Aligned Height-Field Block Decomposition of 3D Shapes. ACM Trans. Graph. 37, 5, Article 169 (October 2018), 15 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3204458">
+        https://doi.org/10.1145/3204458
+       </a>
+      </li>
+      <li id="bib3" label="[3]">
+       Archimedean spiral
+       <a class="link-inline force-break" href="https://en.wikipedia.org/wiki/Archimedean_spiral">
+        https://en.wikipedia.org/wiki/Archimedean_spiral
+       </a>
+       Accessed September 2022.
+      </li>
+      <li id="bib4" label="[4]">
+       Arduino-simple-rpc
+       <a class="link-inline force-break" href="https://github.com/jfjlaros/arduino-simple-rpc">
+        https://github.com/jfjlaros/arduino-simple-rpc
+       </a>
+       Accessed December 2022.
+      </li>
+      <li id="bib5" label="[5]">
+       Ben Schilling, Yadunund Vijay, Yuwen Zhang, Minimization of Kerf and Spatial Variation Analysis for Laser Cutting Process,
+       <a class="link-inline force-break" href="https://www.yadunundvijay.com/laser-kerf-minimization">
+        https://www.yadunundvijay.com/laser-kerf-minimization
+       </a>
+       Accessed September 2022.
+      </li>
+      <li id="bib6" label="[6]">
+       Boresi, A. P., Schmidt, R. J., and Sidebottom, O. M. Advanced Mechanics of Materials, 1952.
+      </li>
+      <li id="bib7" label="[7]">
+       Chi-Wing Fu, Peng Song, Xiaoqi Yan, Lee Wei Yang, Pradeep Kumar Jayaraman, and Daniel Cohen-Or. 2015. Computational interlocking furniture assembly. ACM Trans. Graph. 34, 4, Article 91 (August 2015), 11 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2766892">
+        https://doi.org/10.1145/2766892
+       </a>
+      </li>
+      <li id="bib8" label="[8]">
+       Clement Zheng, Ellen Yi-Luen Do, and Jim Budd. 2017. Joinery: Parametric Joint Generation for Laser Cut Assemblies. In Proceedings of the 2017 ACM SIGCHI Conference on Creativity and Cognition (C&amp;C '17). Association for Computing Machinery, New York, NY, USA, 63–74.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3059454.3059459">
+        https://doi.org/10.1145/3059454.3059459
+       </a>
+      </li>
+      <li id="bib9" label="[9]">
+       CNC &amp; Manual Touch Probe
+       <a class="link-inline force-break" href="https://www.instructables.com/CNC-Manual-Touch-Probe/Accessed">
+        https://www.instructables.com/CNC-Manual-Touch-Probe/Accessed
+       </a>
+       September 2022.
+      </li>
+      <li id="bib10" label="[10]">
+       Daniel Saakes, Thomas Cambazard, Jun Mitani, and Takeo Igarashi. 2013. PacCAM: material capture and interactive 2D packing for efficient material usage on CNC cutting machines. In Proceedings of the 26th annual ACM symposium on User interface software and technology (UIST '13). Association for Computing Machinery, New York, NY, USA, 441–446. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2501988.2501990">
+        https://doi.org/10.1145/2501988.2501990
+       </a>
+      </li>
+      <li id="bib11" label="[11]">
+       Dustin Beyer, Serafima Gurevich, Stefanie Mueller, Hsiang-Ting Chen, and Patrick Baudisch. 2015. Platener: Low-Fidelity Fabrication of 3D Objects by Substituting 3D Print with Laser-Cut Plates. In Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems (CHI '15). Association for Computing Machinery, New York, NY, USA, 1799–1806. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702225">
+        https://doi.org/10.1145/2702123.2702225
+       </a>
+      </li>
+      <li id="bib12" label="[12]">
+       FlatFab
+       <a class="link-inline force-break" href="http://flatfab.com">
+        http://flatfab.com
+       </a>
+       Accessed September 2022.
+      </li>
+      <li id="bib13" label="[13]">
+       Florian Heller, Raf Ramakers, and Kris Luyten. 2022. LaserSVG: Responsive Laser-Cutter Templates. arXiv [cs.HC]. Retrieved September 12, 2022 from
+       <a class="link-inline force-break" href="http://arxiv.org/abs/2209.00116">
+        http://arxiv.org/abs/2209.00116
+       </a>
+      </li>
+      <li id="bib14" label="[14]">
+       Genichi Taguchi and Anthony J. Rafanelli. Taguchi on robust technology development: bringing quRality engineering upstream.1994.
+      </li>
+      <li id="bib15" label="[15]">
+       Glowforge,
+       <a class="link-inline force-break" href="https://glowforge.com/latest-improvements/snap-and-store-and-rotate-and-refer">
+        https://glowforge.com/latest-improvements/snap-and-store-and-rotate-and-refer
+       </a>
+       Accessed February 2022
+      </li>
+      <li id="bib16" label="[16]">
+       H. Horisawa, T. Fushimi, T. Takasaki and S. Yamaguchi, "Flow characterization in a laser cut kerf," Technical Digest. CLEO/Pacific Rim '99. Pacific Rim Conference on Lasers and Electro-Optics (Cat. No.99TH8464), 1999, pp. 358-359 vol.2, doi: 10.1109/CLEOPR.1999.811467.
+      </li>
+      <li id="bib17" label="[17]">
+       International Organization for Standardization. (2014). ISO 230-2:2014
+      </li>
+      <li id="bib18" label="[18]">
+       ISO system of limits and fits – Part 1: Bases of tolerances, deviations and fits, JIS B 0401-1:1998.
+      </li>
+      <li id="bib19" label="[19]">
+       James McCrae, Nobuyuki Umetani, and Karan Singh. 2014. FlatFitFab: interactive modeling with planar sections. In Proceedings of the 27th annual ACM symposium on User interface software and technology (UIST '14). ACM, New York, NY, USA, 13-22. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2642918.2647388">
+        https://doi.org/10.1145/2642918.2647388
+       </a>
+      </li>
+      <li id="bib20" label="[20]">
+       Jeeeun Kim, Anhong Guo, Tom Yeh, Scott E. Hudson, and Jennifer Mankoff. 2017. Understanding Uncertainty in Measurement and Accommodating its Impact in 3D Modeling and Printing. In Proceedings of the 2017 Conference on Designing Interactive Systems (DIS '17). ACM, New York, NY, USA, 1067-1078. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3064663.3064690">
+        https://doi.org/10.1145/3064663.3064690
+       </a>
+      </li>
+      <li id="bib21" label="[21]">
+       Kerf Correction for Laser Cutting With MakerCase
+       <a class="link-inline force-break" href="https://www.instructables.com/Kerf-Correction-for-Laser-Cutting-With-MakerCase">
+        https://www.instructables.com/Kerf-Correction-for-Laser-Cutting-With-MakerCase
+       </a>
+       Accessed December 2022.
+      </li>
+      <li id="bib22" label="[22]">
+       Keunwoo Park, Conrad Lempert, Muhammad Abdullah, Shohei Katakura, Jotaro Shigeyama, Thijs Roumen, and Patrick Baudisch. 2022. FoolProofJoint: Reducing Assembly Errors of Laser Cut 3D Models by Means of Custom Joint Patterns. In Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems (CHI '22). Association for Computing Machinery, New York, NY, USA, Article 271, 1–12.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3491102.3501919">
+        https://doi.org/10.1145/3491102.3501919
+       </a>
+      </li>
+      <li id="bib23" label="[23]">
+       Khoshaim, Ahmed &amp; Elsheikh, Ammar &amp; Moustafa, Essam &amp; Basha, Muhammad &amp; Showaib, Ezzat. (2021). Experimental investigation on laser cutting of PMMA sheets: Effects of process factors on kerf characteristics. Journal of Materials Research and Technology. 11. 10.1016/j.jmrt.2021.01.012.
+      </li>
+      <li id="bib24" label="[24]">
+       Laser Cutter Kerf Gauge
+       <a class="link-inline force-break" href="https://elplatt.com/laser-cutter-kerf-gauge">
+        https://elplatt.com/laser-cutter-kerf-gauge
+       </a>
+       Accessed September 2022
+      </li>
+      <li id="bib25" label="[25]">
+       Luke Wallace, A fully lasercut kit 3D printer, on
+       <a class="link-inline force-break" href="https://hackaday.io/project/164156-lp3d-a-fully-lasercut-kit-3d-printer">
+        https://hackaday.io/project/164156-lp3d-a-fully-lasercut-kit-3d-printer
+       </a>
+       Accessed September 2022
+      </li>
+      <li id="bib26" label="[26]">
+       Maria Larsson, Hironori Yoshida, Nobuyuki Umetani, and Takeo Igarashi. 2020. Tsugite: Interactive Design and Fabrication of Wood Joints. In Proceedings of the 33rd Annual ACM Symposium on User Interface Software and Technology (UIST '20). Association for Computing Machinery, New York, NY, USA, 317–327.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3379337.3415899">
+        https://doi.org/10.1145/3379337.3415899
+       </a>
+      </li>
+      <li id="bib27" label="[27]">
+       Martin Nisser, Christina Chen Liao, Yuchen Chai, Aradhana Adhikari, Steve Hodges, and Stefanie Mueller. 2021. LaserFactory: A Laser Cutter-based Electromechanical Assembly and Fabrication Platform to Make Functional Devices &amp; Robots. Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems. Association for Computing Machinery, New York, NY, USA, Article 663, 1–15. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3411764.3445692">
+        https://doi.org/10.1145/3411764.3445692
+       </a>
+      </li>
+      <li id="bib28" label="[28]">
+       Muhammad Abdullah, Romeo Sommerfeld, Laurenz Seidel, Jonas Noack, Ran Zhang, Thijs Roumen, and Patrick Baudisch. 2021. Roadkill: Nesting Laser-Cut Objects for Fast Assembly. In The 34th Annual ACM Symposium on User Interface Software and Technology (UIST '21). Association for Computing Machinery, New York, NY, USA, 972–984. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3472749.3474799">
+        https://doi.org/10.1145/3472749.3474799
+       </a>
+      </li>
+      <li id="bib29" label="[29]">
+       Mustafa Doga Dogan, Steven Vidal Acevedo Colon, Varnika Sinha, Kaan Akşit, and Stefanie Mueller. 2021. SensiCut: Material-Aware Laser Cutting Using Speckle Sensing and Deep Learning. In The 34th Annual ACM Symposium on User Interface Software and Technology (UIST '21). Association for Computing Machinery, New York, NY, USA, 24–38. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3472749.3474733">
+        https://doi.org/10.1145/3472749.3474733
+       </a>
+      </li>
+      <li id="bib30" label="[30]">
+       Nur Yildirim, Matthew Franklin, Daniel Zeng, John Zimmerman, and James Mccann. metaSVG: A Portable Exchange Format for Adaptable Laser Cutting Plans. Openreview.net. Retrieved September 12, 2022 from
+       <a class="link-inline force-break" href="https://openreview.net/pdf?id=rffplK46z9">
+        https://openreview.net/pdf?id=rffplK46z9
+       </a>
+      </li>
+      <li id="bib31" label="[31]">
+       Ole Sigmund, 2009 Manufacturing tolerant topology optimization. Acta Mechanica Sinica 25, no. 2: 227- 239. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1007/s10409-009-0240-z">
+        https://doi.org/10.1007/s10409-009-0240-z
+       </a>
+      </li>
+      <li id="bib32" label="[32]">
+       Optimize Your Interference/Transition Fit Design
+       <a class="link-inline force-break" href="https://www.meadinfo.org/2009/07/press-fit-pressure-calculator-optimize.html">
+        https://www.meadinfo.org/2009/07/press-fit-pressure-calculator-optimize.html
+       </a>
+      </li>
+      <li id="bib33" label="[33]">
+       Patrick Baudisch and Stefanie Mueller. "Personal fabrication." Foundations and Trends in Human-Computer Interaction 10, no. 3-4 (2016): 165-293.
+      </li>
+      <li id="bib34" label="[34]">
+       Patrick Baudisch, Arthur Silber, Yannis Kommana, Milan Gruner, Ludwig Wall, Kevin Reuss, Lukas Heilman, Robert Kovacs, Daniel Rechlitz, and Thijs Roumen. 2019. Kyub: A 3D Editor for Modeling Sturdy Laser-Cut Objects. In Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems (CHI '19). ACM, New York, NY, USA, Paper 566, 12 pages. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300796">
+        https://doi.org/10.1145/3290605.3300796
+       </a>
+      </li>
+      <li id="bib35" label="[35]">
+       Ruei-Che Chang, Chih-An Tsao, Fang-Ying Liao, Seraphina Yong, Tom Yeh, and Bing-Yu Chen. 2021. Daedalus in the Dark: Designing for Non-Visual Accessible Construction of Laser-Cut Architecture. In The 34th Annual ACM Symposium on User Interface Software and Technology (UIST '21). Association for Computing Machinery, New York, NY, USA, 344–358. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3472749.3474754">
+        https://doi.org/10.1145/3472749.3474754
+       </a>
+      </li>
+      <li id="bib36" label="[36]">
+       Rundong Tian, Sarah Sterman, Ethan Chiou, Jeremy Warner, and Eric Paulos. 2018. MatchSticks: Woodworking through Improvisational Digital Fabrication. In Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems (CHI '18). Association for Computing Machinery, New York, NY, USA, Paper 149, 1–12.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3173723">
+        https://doi.org/10.1145/3173574.3173723
+       </a>
+      </li>
+      <li id="bib37" label="[37]">
+       Shiran Magrisso, Moran Mizrahi, and Amit Zoran. 2018. Digital Joinery For Hybrid Carpentry. In Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems (CHI '18). Association for Computing Machinery, New York, NY, USA, Paper 167, 1–11.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3173741">
+        https://doi.org/10.1145/3173574.3173741
+       </a>
+      </li>
+      <li id="bib38" label="[38]">
+       Special Project: Measuring Laser Kerf
+       <a class="link-inline force-break" href="https://web.archive.org/web/20130831135948/http://www.brainstormkingston.com/measuring-laser-kerf">
+        https://web.archive.org/web/20130831135948/http://www.brainstormkingston.com/measuring-laser-kerf
+       </a>
+       Accessed December 2022.
+      </li>
+      <li id="bib39" label="[39]">
+       Stefanie Mueller, Bastian Kruck, and Patrick Baudisch. 2013. LaserOrigami: laser-cutting 3D objects. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI '13). Association for Computing Machinery, New York, NY, USA, 2585–2592. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2481358">
+        https://doi.org/10.1145/2470654.2481358
+       </a>
+      </li>
+      <li id="bib40" label="[40]">
+       Taylor, J. R. (1997). Introduction to Error Analysis, second edition: The study of uncertainties in physical measurements (2nd ed.). University Science Books.
+      </li>
+      <li id="bib41" label="[41]">
+       Thijs Roumen, Ingo Apel, Jotaro Shigeyama, Abdullah Muhammad, and Patrick Baudisch. 2020. Kerf-Canceling Mechanisms: Making Laser-Cut Mechanisms Operate across Different Laser Cutters. Proceedings of the 33rd Annual ACM Symposium on User Interface Software and Technology. Association for Computing Machinery, New York, NY, USA, 293–303. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3379337.3415895">
+        https://doi.org/10.1145/3379337.3415895
+       </a>
+      </li>
+      <li id="bib42" label="[42]">
+       Thijs Roumen, Jotaro Shigeyama, Julius Cosmo Romeo Rudolph, Felix Grzelka, and Patrick Baudisch. SpringFit Joints and Mounts that Fabricate on Any Laser Cutter. In Proceedings of the 32th annual ACM symposium on User interface software and technology (UIST '19). ACM, New York, NY, USA, DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3332165.3347930">
+        https://doi.org/10.1145/3332165.3347930
+       </a>
+      </li>
+      <li id="bib43" label="[43]">
+       Thijs Roumen, Yannis Kommana, Ingo Apel, Conrad Lempert, Markus Brand, Erik Brendel, Laurenz Seidel, Lukas Rambold, Carl Goedecken, Pascal Crenzin, Ben Hurdelhey, Muhammad Abdullah, and Patrick Baudisch. 2021. Assembler3: 3D Reconstruction of Laser-Cut Models. In Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems (CHI '21). Association for Computing Machinery, New York, NY, USA, Article 672, 1–11. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3411764.3445453">
+        https://doi.org/10.1145/3411764.3445453
+       </a>
+      </li>
+      <li id="bib44" label="[44]">
+       Ticha Sethapakdi, Daniel Anderson, Adrian Reginald Chua Sy, and Stefanie Mueller. 2021. Fabricaide: Fabrication-Aware Design for 2D Cutting Machines. In Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems (CHI '21). Association for Computing Machinery, New York, NY, USA, Article 664, 1–12. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3411764.3445345">
+        https://doi.org/10.1145/3411764.3445345
+       </a>
+      </li>
+      <li id="bib45" label="[45]">
+       Trotec Ruby
+       <a class="link-inline force-break" href="https://www.troteclaser.com/en/laser-machines/laser-software">
+        https://www.troteclaser.com/en/laser-machines/laser-software
+       </a>
+       Accessed September 2022.
+      </li>
+      <li id="bib46" label="[46]">
+       Trotec Speedy 360 laser cutter,
+       <a class="link-inline force-break" href="https://www.troteclaser.comhttps://www.troteclaser.com/">
+        https://www.troteclaser.comhttps://www.troteclaser.com/
+       </a>
+       , Accessed September 2022.
+      </li>
+      <li id="bib47" label="[47]">
+       Uslan, I. (2005) 'CO2 laser cutting: Kerf width variation during cutting', Proceedings of the Institution of Mechanical Engineers, Part B: Journal of Engineering Manufacture, 219(8), pp. 571–577. doi: 10.1243/095440505X32508.
+      </li>
+      <li id="bib48" label="[48]">
+       Virgil Mathiowetz, Nancy Kashman, Gloria Volland, Karen Weber, Mary Dowe, and Sandra Rogers. 1985. Grip and pinch strength: normative data for adults. Archives of physical medicine and rehabilitation 66, 2: 69–74. Retrieved September 12, 2022 from
+       <a class="link-inline force-break" href="https://asset-pdf.scinapse.io/prod/1586793705/1586793705.pdf">
+        https://asset-pdf.scinapse.io/prod/1586793705/1586793705.pdf
+       </a>
+      </li>
+      <li id="bib49" label="[49]">
+       Yi-Ho Chen, and Chao-Chieh Lan. 2012. Design of a constant-force snap-fit mechanism for minimal mating uncertainty. Mechanism and Machine Theory 55: 34- 50. DOI:
+       <a class="link-inline force-break" href="https://doi.org/10.1016/j.mechmachtheory.2012.04.006">
+        https://doi.org/10.1016/j.mechmachtheory.2012.04.006
+       </a>
+      </li>
+      <li id="bib50" label="[50]">
+       Ziqi Wang, Peng Song, and Mark Pauly. 2018. DESIA: a general framework for designing interlocking assemblies. ACM Trans. Graph. 37, 6, Article 191 (December 2018), 14 pages.
+       <a class="link-inline force-break" href="https://doi.org/10.1145/3272127.3275034">
+        https://doi.org/10.1145/3272127.3275034
+       </a>
+      </li>
+     </ul>
+    </section>
+   </section>
+   <section class="footnote" id="foot-001">
+    <div class="bibStrip">
+     <p>
+      <img alt="CC-BY license image" class="img-responsive" src="3580914_files\ccby.jpg"/>
+      <br/>
+      This work is licensed under a
+      <a href="https://creativecommons.org/licenses/by/4.0/">
+       Creative Commons Attribution International 4.0 License
+      </a>
+      .
+     </p>
+     <p>
+      <em>
+       CHI '23, April 23–28, 2023, Hamburg, Germany
+      </em>
+     </p>
+     <p>
+      © 2023 Copyright held by the owner/author(s).
+      <br/>
+      ACM ISBN 978-1-4503-9421-5/23/04.
+      <br/>
+      DOI:
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3544548.3580914" target="_blank">
+       https://doi.org/10.1145/3544548.3580914
+      </a>
+     </p>
+    </div>
+   </section>
+  </main>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'86a01ae29a2e4db7',t:'MTcxMTM4MjMzNC4yMTIwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

@@ -1,0 +1,4487 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Optimising Encoding for Vibrotactile Skin Reading
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300465_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300465_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300465_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300465_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300465_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300465_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300465_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300465_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Optimising Encoding for Vibrotactile Skin Reading
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Granit
+      </span>
+      <span class="surName">
+       Luzhnica
+      </span>
+      , Know Center, Austria,
+      <a href="mailto:gluzhnica@know-center.at">
+       gluzhnica@know-center.at
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Eduardo
+      </span>
+      <span class="surName">
+       Veas
+      </span>
+      , Know Center GmbH, Austria,
+      <a href="mailto:eveas@know-center.at">
+       eveas@know-center.at
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300465" target="_blank">
+       https://doi.org/10.1145/3290605.3300465
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       This paper proposes methods of optimising alphabet encoding for skin reading in order to avoid perception errors. First, a user study with 16 participants using two body locations serves to identify issues in recognition of both individual letters and words. To avoid such issues, a two-step optimisation method of the symbol encoding is proposed and validated in a second user study with eight participants using the optimised encoding with a seven vibromotor wearable layout on the back of the hand. The results show significant improvements in the recognition accuracy of letters (97%) and words (97%) when compared to the non-optimised encoding.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Human computer interaction (HCI)
+       </strong>
+       ; •
+       <strong>
+        Human-centered computing → Haptic devices
+       </strong>
+       ; •
+       <strong>
+        Human-centered computing → Empirical studies in HCI
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        haptic feedback; tactile feedback; skin reading; stimulation; wearable; user study; optimisation; encoding; HCI
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Granit Luzhnica and Eduardo Veas. 2019. Optimising Encoding for Vibrotactile Skin Reading. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 14 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300465" target="_blank">
+         https://doi.org/10.1145/3290605.3300465
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Wearable devices are already a part of our everyday life. They provide assistance to daily activities and enrich them with additional information collected by the sensors within them. The primary feedback modalities of wearables devices are visual and auditory. Although, most of them include vibrotactile capabilities, the primary utilisation of vibrotactile feedback is to support the visual interaction. On the contrary, the vibrotactile feedback on wearable devices has a lot of potential to be used on its own. A prominent application and the subject of this paper is the so called skin reading [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ].
+    </p>
+    <p>
+     <em>
+      Vibrotactile skin reading
+     </em>
+     uses vibrotactile patterns to encode symbols [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ] (letters or phonemes) which then are combined to convey complex messages such as words and phrases [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ]. While traditionally, perceiving information through skin has been applied for visually impaired users and skin reading presents some good opportunities for them [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ], users with normal vision can also benefit from means to perceive messages that does not recruit the visual or auditory senses in multi tasking scenarios.
+    </p>
+    <p>
+     Depending on the method, the duration of conveying symbols varies from dozens of milliseconds to few seconds. Performance varies as well, with most studies reporting recognition accuracies between 80% and 90% on symbols and words with a few hours of training. Considering the short training time, such performances are quite promising but yet not at a state to be considered for real-world applications. Performance could potentially improve with more training and practice. However, limitations to the design of wearable devices, simulation locus and information encoding could also cause systematic performance errors. This work investigates encoding related systematic recognition errors of skin reading conveyed by state of the art overlapped spatiotemporal (OST) patterns [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ]. We rely on OST patterns due to their proven high speed in transmitting symbols (70-120 ms) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ].
+    </p>
+    <p>
+     First, we conduct a user study with 16 participants. We utilise two layouts, patterns, training program and a letter frequency-based encoding on the hand already proposed by Luzhnica et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ]. Our first contribution is an encoding for the forearms layout used in the first study. Contrary to expectations from evidence in Luzhnica et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ], performance with the two-arm layout was not better than with the hand layout. Yet, there were comparable systematic errors in both layouts. The study successfully identifies issues on the recognition of individual letters as well as sequences of letters (words). Hereby, our main contribution is a two-step optimisation of the alphabet encoding to prevent issues in communicating sequences of letters and avoid issues with single letters. The optimisation process results in a new, optimised layout and alphabet encoding. A second user study provides evidence on the impact of our proposed optimisation methodology on the aforementioned issues. Results of the second study also shed new evidence on the effectiveness of our method: i) it empirically demonstrates that participants can transfer the encoding knowledge and letter recognition to an untrained body part (more specifically, to the untrained hand), ii) it provides evidence of that knowledge and letter recognition performance remains over time even without re-training or usage after 3, 10 and 19 days.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Research on tactile displays equipped with actuators has been ongoing since at least 1924, where Gault [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+      15
+     </a>
+     ] used a piezoelectric unit to convert speech to touch. Similarly, Kirman [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ] transmitted speech streams to the palm using a 15 × 15 vibromotor matrix. Six participants learned to differentiate the patterns of 15 different words. Numerous researchers follow similar methodologies of encoding speech directly to tactile aiming to provide hearing aids for auditory impaired users [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+      38
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+      41
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+      45
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+      46
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+      52
+     </a>
+     ]. Recently, Novich [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ] used the real-time recorded audio signal and maped it to a vibrotactile vest. Seven users were trained for 12 days to recognise 50 unique words. They were able to recognise the trained words with an average user accuracy of
+     <span class="inline-equation">
+      <span class="tex">
+       $35\% - 65\%$
+      </span>
+     </span>
+     . Another less common technique of conveying information is imprinting a shape directly on the skin of the user [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+      50
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+      51
+     </a>
+     ].
+    </p>
+    <p>
+     Geldard provided a symbol based approach using five vibromotors placed on the chest to encode 45 symbols (letters, numbers and common short words) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ]. For each symbol, only one vibromotor was active (on average 120
+     <em>
+      ms
+     </em>
+     ). After 65 hours of training, one subject was capable of receiving words per minute. Since then, researchers have proposed numerous ways of encoding symbols through vibrotactile cues. Typically a combination of variations in amplitude [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+      48
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+      49
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+      51
+     </a>
+     ], frequency [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+      42
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+      48
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+      49
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+      51
+     </a>
+     ], duration [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+      42
+     </a>
+     ], body locations [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+      33
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+      47
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+      51
+     </a>
+     ] and haptic illusions [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+      42
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ] have been used. Stimuli has been presented in different locations such as users back [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+      36
+     </a>
+     ], chest [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ], fingers [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+      34
+     </a>
+     ], palms [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ], with a recent focus (due to wearable devices) on the back of the hand [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+      31
+     </a>
+     ], wrist [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ] and forearms [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+      42
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ].
+    </p>
+    <p>
+     Much recent research concentrated on finding patterns to encode symbols such as letters, numbers or phonemes, which then are used to construct complex messages such as words or sentences. Encoding needs to provide patterns that are discriminative, easy to learn and deliver them as fast as possible. Spatial patterns, where all vibromotors in a pattern onset and offset simultaneously, have no time overhead when using more vibromotors. They result in shorter durations but are prone to masking [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+      36
+     </a>
+     ] and thus researchers use longer durations to avoid it. Nicolau et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+      33
+     </a>
+     ] used six vibromotors on the fingers of both hands to convey letters spatially encoded in a braille-based alphabet. In an initial study, eleven blind participants were able to correctly identify letters encoded by a duration
+     <em>
+      d
+     </em>
+     = 2000
+     <em>
+      ms
+     </em>
+     with an accuracy of 82%. Seven of them were tested for word recognition and achieved an accuracy of 32.86% for
+     <em>
+      d
+     </em>
+     = 250 ms, 64.29% for
+     <em>
+      d
+     </em>
+     = 500 ms, 88.57% for
+     <em>
+      d
+     </em>
+     = 1000 ms and 92.86% for
+     <em>
+      d
+     </em>
+     = 2000 ms (the gap between symbols was equal to
+     <em>
+      d
+     </em>
+     ).
+    </p>
+    <p>
+     Novich [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+      36
+     </a>
+     ] showed that sequential spatiotemporal patterns, where vibromotors are turned on and off sequentially one after the other, result in significantly better discrimination than the spatial patterns but they are slower to stimulate. Liao [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ] used such a patterns on the wrist where actuators are activated for 500 ms and a gap of 100 ms is used between them. The alphanumeric symbols were encoded with 2-6 (resulting in a duration of 1100 ms - 3000 ms) sequential activated locations. After an hour of training, 24 participants identified symbols with an
+     <span class="inline-equation">
+      <span class="tex">
+       $85.6\%-88.6\%$
+      </span>
+     </span>
+     average accuracy.
+    </p>
+    <p>
+     More complex spatiotemporal patterns have been proposed and successfully evaluated. Zhao et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ] used a 6 (2 × 3) tactors display on the dorsal part of the forearm to encode phonemes either by a single tactor or an apparent motion between two. In a user study, the authors found that although it was not feasible to generate 36 necessary distinguishable patterns, 9 patterns were easy to discern. The authors trained 11 users for 45 minutes to recognise 9 phonemes transmitted in a duration of 180 ms-770.5 ms, and also trained them on 10 words transmitted as a series of phonemes with a 500 ms gap. Participants could recognise phonemes with an 82% accuracy, seen words with
+     <span class="inline-equation">
+      <span class="tex">
+       $64.3\%-74\%$
+      </span>
+     </span>
+     and ten unseen words with
+     <span class="inline-equation">
+      <span class="tex">
+       $26.7\%-46\%$
+      </span>
+     </span>
+     . A further study trained 9 participants only on words and not phones at all [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ]. Participants could recognise trained words with an 88.6% accuracy, unseen words with 55.7% and phonemes with 90%. The authors also tested the recognition of new (pseudo) words with higher speeds which resulted in a recognition accuracy between
+     <span class="inline-equation">
+      <span class="tex">
+       $21.4\%-45.7\%$
+      </span>
+     </span>
+     depending on the speed. Chen et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ] extended such layout to 8 tactors (2 × 4) and trained 19 participants to recognise words encoded by phonemes of duration 126-267 ms with a gap of 200 ms between them in words. After 65 minutes of training (in 3 days), they achieved an accuracy of
+     <span class="inline-equation">
+      <span class="tex">
+       $71.5\%-85.7\%$
+      </span>
+     </span>
+     depending on the training method.
+    </p>
+    <p>
+     Reed et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+      42
+     </a>
+     ] used a layout containing 24 (6 × 4) tactors on the forearm to encode 39 phonemes. Their encoding is based on articulatory properties of the phonemes, where each phoneme was encoded varying location, frequency, duration, waveform, movement and the number of tactors involved (2-8). The stimuli duration of a phoneme varied between 100 ms to 480 ms with a majority of them being 400 ms and 480 ms. Ten participants achieved a phoneme recognition accuracy of 85.77% after 50-230 minutes (depending on the progress) of training. The same technique was used by Jiao et. al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ] to train 12 participants over a course of 10 days (10 min per day) to recognise 39 phonemes and 100 words encoded as a series of phonemes with a 300 ms gap in between. Participants achieved 92% accuracy on phonemes. Participants that achieved a certain accuracy on phonemes were tested on words and recognised them with 80% accuracy.
+    </p>
+    <p>
+     Dunkelberger [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ] introduced a multi-sensory approach by building a haptic display composed by three types of haptic actuators: a vibromotors band containing four vibromotors, a radial squeeze band and a haptic rocker. Such diverse actuators were able to produce concurrent sensations of vibration, radial squeeze and lateral skin stretch. The haptic display was placed on the upper arm, and it was able to produce 48 unique haptic patterns of 350 ms. A user study where 10 participants were trained for 100 minutes (in 4 different days) to recognise phonemes and words. Even though the device could encode 48 different messages (phonemes), the authors used only 23 phonemes in the study which then formed 150 words. The participants were tested in words as a sequence 350 ms encoded phonemes. Within a word, phonemes were not separated by a fixed gap but rather participants controlled when to proceed to the next phoneme which in turn resulted in an average of 3.5 s gap between phonemes. At the end of the study participants were able to recognise words with an accuracy of 86.6%.
+    </p>
+    <p>
+     Luzhnica et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ] used prioritised overlapping spatiotemporal (OST) patterns, where vibromotors are activated in sequence after a short gap (10
+     <em>
+      ms
+     </em>
+     ), and stay on until the pattern is finished. This method results in better recognition accuracy than spatial patterns [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ], and it is faster than spatiotemporal encoding, as vibromotors share most of the activated time. Furthermore, prioritising the activation of vibromotors based on spatial acuity increases the performance [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ]. Initially, the authors [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ] designed three six vibromotor layouts: on the back of the hand, forearm and two forearms; and tested the identification accuracy of OST patterns. The hand and two-forearms layout showed promising results whereas the single forearm layout was prone to masking effects. They proceeded only with the hand layout and dropped the other two layouts. Using the hand layout with an encoding of 26 letters, they trained 4 participants for 5 sessions (≈ 5
+     <em>
+      h
+     </em>
+     in total). Each symbol was encoded by a duration of 100
+     <em>
+      ms
+     </em>
+     − 120
+     <em>
+      ms
+     </em>
+     in session 4 and 70
+     <em>
+      ms
+     </em>
+     − 90
+     <em>
+      ms
+     </em>
+     in session 5, where participants achieved a letter recognition accuracy of 90% and 94%, respectively. Participants also achieved a word recognition accuracy of
+     <span class="inline-equation">
+      <span class="tex">
+       $86\%-93\%$
+      </span>
+     </span>
+     depending on the gap between letters (100
+     <em>
+      ms
+     </em>
+     − 250
+     <em>
+      ms
+     </em>
+     ). With the same layout and patterns, 22 participants trained only 25 minutes to recognise 10 letters [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ]. Moreover, a study with 10 participants trained for 32 minutes using passive haptic learning while playing a game resulted in 72% accuracy [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+      31
+     </a>
+     ]. Due to promising accuracies and the capability to deliver symbols with a high speed (70
+     <em>
+      ms
+     </em>
+     − 120
+     <em>
+      ms
+     </em>
+     ), the present work uses OST patterns and aims at improving the skin reading performance by optimising layout and encoding.
+    </p>
+    <figure id="fig1">
+     <img alt="A finger-less glove for the hand layout with the positions of motors annotated and the encoding of letters." class="img-responsive" longdesc="" src="3300465_files\chi2019235fig1.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       A finger-less glove for the hand layout with the positions of vibromotors annotated and the encoding of letters [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+        30
+       </a>
+       ].
+      </span>
+     </div>
+    </figure>
+    <figure id="fig2">
+     <img alt="" class="img-responsive" longdesc="" src="3300465_files\chi2019235fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 2:
+      </span>
+      <span class="figure-title">
+       Letter encoding for the forearms layout. Only active vibromotors that are used for encoding the letters are displayed.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+   </section>
+   <section id="sec-4">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       USER STUDY 1: INVESTIGATING SKIN READING
+      </h2>
+     </div>
+    </header>
+    <p>
+     The main objective of this study is to identify issues that hinder performance in the task of skin reading in general. Users are trained to recognise symbols and then tested on symbols and words stimulated on two different body locations: hand and forearms. By using two different layouts, we ensure that the findings are not bound to a body part or layout. Also, by using the forearms layout, we elucidate if such a layout originally proposed and then dropped by Luzhnica et al [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ] is suitable for skin reading. We use the exact wearable layouts, stimulation method and training procedure proposed in Luzhnica et al [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ]. In addition, we develop a new scheme to encode the alphabet in the two-forearms layout.
+    </p>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Wearable Layouts
+       </h3>
+      </div>
+     </header>
+     <p>
+      Two layouts were used for stimulation in different body parts. Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      and Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      illustrate the location of vibromotors in each layouts. The wearables use an Arduino-Duo board coupled to a power regulator (LM2596S) which controls 3.4 mm vibrotactile motors of type ROB-08449 (Voltage range: 2.5V 3.8V; Amplitude vibration: 0.8G).
+     </p>
+     <p>
+      <strong>
+       Hand layout.
+      </strong>
+      Six vibromotors are placed on the back of the hand and fingers, so as to avoid interfering with grasp and hand interactions. On the fingers, vibromotors are placed on the middle phalanx leaving the fingertips free and uncovered by utilising a partially finger-less glove as shown in Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      .
+     </p>
+     <p>
+      <strong>
+       Forearms layout.
+      </strong>
+      On each forearm, two vibromotors are placed on the outer side (extremes), and one in the middle on the inner side of the forearm (see Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      ) fixed by elastic adhesive bandages. In practice, the motors can be placed within two wearable sleeves in a consumer product.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Patterns and Encoding
+       </h3>
+      </div>
+     </header>
+     <p>
+      Each letter is encoded in patterns of one, two or three vibromotors using the overlapped spatiotemporal (OST) stimulation. OST delivers patterns that are very short and yet can be discriminated with a high accuracy [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]. The activation of vibromotors is done in sequence after a gap (g) of 10 ms, but they share most of the activation time, as illustrated by Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      . When encoding words, there is a between-letter gap (see Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ) to separate them. For the hand layout, we use the encoding proposed by [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]. The encoding considers the frequency of letters to encode the most frequent letters by a single vibromotor, and increases the number of vibromotors with decreasing frequency (see Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      ). This encoding results in 6 single-vibromotor letters, 15 two-vibromotor and 5 three-vibromotor letters. For this experiment, we introduce an encoding for the forearms layout adhering to the aforementioned letter frequency strategy (see Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      ).
+     </p>
+     <figure id="fig3">
+      <img alt="stimulation of letters and words." class="img-responsive" longdesc="" src="3300465_files\chi2019235fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Letters encoded using OST patterns where vibromotors are activated after a gap in between (g). Words are transmitted as letters in series with a gap in between (bl) [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+         30
+        </a>
+        ].
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Training program: number of training rounds (LT), reinforcement rounds (LR), number of letters and words, stimulation base duration (BD), between letter (BL) gap and total session duration (TD) in minutes for each session (S).
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          S
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          LT
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          LR
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          Letters
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          BD
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          Words/ unique
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          BL Gap
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          TD
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          1
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          8
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          4
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          16
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          100ms
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          16 / 4
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          800ms
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          45
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          10
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          5
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          21
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          100ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          26 / 6
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          800ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          70
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          3
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          5
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          3
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          26
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          100ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          82 / 40
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          500ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          75
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          4
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          3
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          26
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          100ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          48 / 48
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          250ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          45
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          25 / 25
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          150ms
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          25 / 25
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          100ms
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          5
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          3
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          26
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          70ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          48 / 48
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          250ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          45
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          25 / 25
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          150ms
+         </td>
+         <td>
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          25 / 25
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          100ms
+         </td>
+         <td>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Procedure
+       </h3>
+      </div>
+     </header>
+     <p>
+      The study was split into five sessions as proposed by Luzhnica et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]. Each session consisted of several different rounds, each serving a different purpose:
+     </p>
+     <p>
+      <strong>
+       Letter Training (LT)
+      </strong>
+      introduced letters in a number of repetitions for participants to learn to associate them with vibrotactile patterns. Each letter would be stimulated with the a vibrotactile pattern (haptic cue), displayed on the screen (visual cue), and spelled via speakers (audio cue). A training round repeatedly shows letters in a predefined sequence.
+     </p>
+     <p>
+      <strong>
+       Letter Reinforcement (LR)
+      </strong>
+      allowed participants to test if they recognised a letter. They were stimulated with a (randomly ordered) pattern and asked to enter (via keyboard) the letter associated with it. After entering the answer, the letter was spoken and displayed in green if correct, red otherwise. Participants could repeat the stimuli before answering by pressing space bar. LR rounds aimed to give feedback and served to record performance and progress.
+     </p>
+     <p>
+      <strong>
+       Word Challenge (WC)
+      </strong>
+      stimulated full words, which participants had to type in. Participants could repeat the entire word but not single letters within the word.
+     </p>
+     <div class="table-responsive" id="tab2">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 2:
+       </span>
+       <span class="table-title">
+        Letter recognition accuracy, time to respond (TTR), the re-stimulation rate (Re-stim), number of unique letters (UL) and all tested letters (TL) for each session (S). The values correspond to the average and standard deviation of the given variable.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+         </th>
+         <th colspan="3" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          Hand
+         </th>
+         <th colspan="3" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          Forearms
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          S
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Accuracy
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          TTR (s)
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Re-stim
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Accuracy
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          TTR (s)
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Re-stim
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          UL
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          TL
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          1
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .98 (.15)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.8 (2.2)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .33 (.47)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .85 (.35)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.6 (1.5)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .22 (.41)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          18
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          54
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .93 (.25)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.7 (1.9)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .35 (.48)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .90 (.30)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3.1 (2.5)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .37 (.48)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          23
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          92
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .92 (.27)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3.4 (4.2)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .47 (.50)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .84 (.36)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3.9 (3.8)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .45 (.50)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          26
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          52
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          4
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .89 (.31)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.9 (1.9)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .31 (.46)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .91 (.29)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3.5 (2.9)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .46 (.50)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          26
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          52
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          5
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .92 (.28)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.6 (2.3)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .28 (.45)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .90 (.30)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3.5 (3.5)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .44 (.50)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          26
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          52
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <div class="table-responsive" id="tab3">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 3:
+       </span>
+       <span class="table-title">
+        Letter recognition accuracy (sessions 4 and 5), time to respond (TTR) and re-stimulation rate (Re-stim) depending on the number of vibromotors (M) that encode a letter.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+         </th>
+         <th colspan="3" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          Hand
+         </th>
+         <th colspan="3" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          Forearms
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          M
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Accuracy
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          TTR
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Re-stim
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Accuracy
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          TTR
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Re-stim
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          1
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .95 (.22)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.0 (1.2)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .15 (.36)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .95 (.22)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3.0 (2.8)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .38 (.49)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .92 (.27)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.9 (2.3)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .31 (.46)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .92 (.27)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3.5 (3.1)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .45 (.50)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .80 (.41)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3.3 (2.0)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .43 (.50)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .79 (.41)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          4.4 (3.8)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .55 (.50)
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      Participants were only gradually introduced to single new letters at a rate of 16, 5, 5 for each session 1 − 3– the full English Alphabet of 26 letters. WC rounds were introduced from session 1 to keep participants engaged with a feeling of progress. The goal of sessions 4 − 5 was to train participants with shorter letter duration and time gaps between letters in a word. The words used in sessions 4 and 5 were composed of 2-5 letters with an average length of 3.5 letters per word. Table
+      <a class="tbl" href="#tab1">
+       1
+      </a>
+      presents the number of training and testing rounds in each session, the number of letters, words and the stimulation parameters (stimulus base duration for each letter; gap time between letters when transmitting a word).
+     </p>
+    </section>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Participants
+       </h3>
+      </div>
+     </header>
+     <p>
+      Sixteen participants (12 males and 4 females) aged between 20 and 37 volunteered for this user study. Half of them (6 males and 2 females) used the hand layout and the rest used the forearms layout. None of them had any prior experience with skin reading, and none of them was a native English speaker but they all self-reported being fluent in English. Regardless of their performance, they were rewarded for their participation with 30 euros in the form of a voucher.
+     </p>
+    </section>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Results
+       </h3>
+      </div>
+     </header>
+     <p>
+      For each session, the last LR and WC rounds were considered to indicate performance by:
+     </p>
+     <p>
+      <strong>
+       1. Accuracy
+      </strong>
+      : whether the user correctly recognised the letter or word. Letter accuracy is a binary value defined to be 1 if correctly recognised. Word accuracy is computed as
+      <span class="inline-equation">
+       <span class="tex">
+        $\sigma (a,s)=1-\frac{d(a,s)}{\#s}$
+       </span>
+      </span>
+      , where
+      <em>
+       d
+      </em>
+      is a Levenshtein distance between a stimulated word (s) of length
+      <span class="inline-equation">
+       <span class="tex">
+        $\#s$
+       </span>
+      </span>
+      and user's answer (a).
+     </p>
+     <p>
+      <strong>
+       2. Response time
+      </strong>
+      : the difference between the response time-point and first stimulation time-point including repetitions.
+     </p>
+     <p>
+      <strong>
+       3. Re-stimulation
+      </strong>
+      : whether participant repeated a stimuli.
+     </p>
+     <p>
+      <em>
+       Letters
+      </em>
+      . First, we analyse the letter recognition accuracy across last LR rounds of all sessions. The results for both layouts are presented in Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      . Already in the first day, participants were able to identify letters with an accuracy of 98% for the hand layout and 85% for the forearms layout. With increasing number of letters in the next two sessions, the recognition accuracy balances to
+      <span class="inline-equation">
+       <span class="tex">
+        $90\%-93\%$
+       </span>
+      </span>
+      (depending on the layout) in session 2 and
+      <span class="inline-equation">
+       <span class="tex">
+        $84\%-92\%$
+       </span>
+      </span>
+      in session 3.
+     </p>
+     <p>
+      We will focus on the last two sessions when participants were already trained on the entire alphabet, and the information was transmitted at a very high speed (70-90 ms for a letter in session 5 and 100 − 120 ms in session 4). In session 4, participants achieved an accuracy of 89% in hand layout and 92% in forearms layout. In session 5, they achieved an accuracy of 92% in hand layout and 90% in forearms layout. Since the accuracy is a binary variable, we compare the results of the two sessions using McNemar's test (paired) which reveals no significant differences in accuracy between the two sessions;
+      <em>
+       χ
+      </em>
+      <sup>
+       2
+      </sup>
+      (1,
+      <em>
+       N
+      </em>
+      = 1664) = 0.064,
+      <em>
+       p
+      </em>
+      = 0.8. Thus we will analyse the two sessions together in the further analysis. A chi-squared (unpaired) analysis also reveals that there are no significant differences in accuracy between the two layouts;
+      <em>
+       χ
+      </em>
+      <sup>
+       2
+      </sup>
+      (1,
+      <em>
+       N
+      </em>
+      = 1664) = 0.01,
+      <em>
+       p
+      </em>
+      = 0.93. Thus we will also combine both layouts in the further analysis.
+     </p>
+     <p>
+      Table
+      <a class="tbl" href="#tab3">
+       3
+      </a>
+      presents the recognition accuracy depending on the number vibromotors that encode a letter. To analyse its effect, we first average the accuracy by user, session, layout and number of vibromotors as we deal with unbalanced sets. As the aggregated accuracy is not normally distributed (Shapiro-Wilk test: p=0.0) and we deal with paired samples, we use the Wilcoxon signed-rank test. The test reveals that there is no significant change in accuracy between one-vibromotor and two-vibromotor letters;
+      <em>
+       r
+      </em>
+      = 101.5,
+      <em>
+       p
+      </em>
+      = 0.059, but there is a significant difference between two-vibromotor and three-vibromotor letters;
+      <em>
+       r
+      </em>
+      = 42.5,
+      <em>
+       p
+      </em>
+      = 0.0.
+     </p>
+     <div class="table-responsive" id="tab4">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 4:
+       </span>
+       <span class="table-title">
+        Word recognition accuracy depending on the session and the gap (BL) between subsequent letters.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+         </th>
+         <th colspan="2" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          Hand
+         </th>
+         <th colspan="2" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          Forearms
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          #S
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          BL Gap
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          Accuracy
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          Re-stim
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          Accuracy
+         </th>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          Re-stim
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          800ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .92 (.22)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .45 (.50)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .98 (.15)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .31 (.47)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          500ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .96 (.17)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .33 (.47)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .99 (.10)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .40 (.49)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          3
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          500ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .90 (.22)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .90 (.29)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .91 (.21)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .94 (.23)
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          4
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          250ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .84 (.28)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .92 (.27)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .84 (.28)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .89 (.31)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          4
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          150ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .89 (.23)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .84 (.37)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .87 (.24)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .90 (.30)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          4
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          100ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .89 (.22)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .90 (.31)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .87 (.24)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .95 (.22)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          5
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          250ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .86 (.28)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .88 (.33)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .86 (.28)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .91 (.29)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          5
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          150ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .85 (.30)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .86 (.35)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .86 (.27)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .87 (.34)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          5
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          100ms
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .89 (.22)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .86 (.35)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .90 (.22)
+         </td>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          .89 (.31)
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      <em>
+       Words
+      </em>
+      . The accuracy depending on the session and gap time between consecutive letters (
+      <em>
+       bl
+      </em>
+      ) when transmitting a word is presented in Table
+      <a class="tbl" href="#tab4">
+       4
+      </a>
+      . Using a gap of 500
+      <em>
+       ms
+      </em>
+      in the third session results in an accuracy of
+      <span class="inline-equation">
+       <span class="tex">
+        $90-91\%$
+       </span>
+      </span>
+      . However as we proceed to reduce the gap time between the letters and also decrease the stimulation time, the performance decreased as well. In sessions 4 and 5, we use three different gap times which yield three different results. For further analysis, we focus on the last two sessions because of the fast transmission speed and maturity of training. In session 4, depending on the gap, participants achieved an accuracy of
+      <span class="inline-equation">
+       <span class="tex">
+        $84-89\%$
+       </span>
+      </span>
+      with the hand layout and
+      <span class="inline-equation">
+       <span class="tex">
+        $84-87\%$
+       </span>
+      </span>
+      with the forearms layout. Similarly, in the last session, participants achieved an accuracy of
+      <span class="inline-equation">
+       <span class="tex">
+        $86-89\%$
+       </span>
+      </span>
+      with the hand layout and
+      <span class="inline-equation">
+       <span class="tex">
+        $86-88\%$
+       </span>
+      </span>
+      with the forearms layout. Considering that the accuracy is a real value and it is not normally distributed (Shapiro-Wilk test: p=0.0), we rely on non-parametric tests to determine the significance levels. A rank-sum test reveals that there was no significant difference in accuracy between hand and forearms layout neither for session 5 ;
+      <em>
+       r
+      </em>
+      = −0.8,
+      <em>
+       p
+      </em>
+      = 0.425 nor for session 4;
+      <em>
+       r
+      </em>
+      = 0.87,
+      <em>
+       p
+      </em>
+      = 0.385. Additionally, there was no significant differences accuracy between word recognition in session 4 and session 5;
+      <em>
+       r
+      </em>
+      = −1.06,
+      <em>
+       p
+      </em>
+      = 0.29.
+     </p>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="" src="3300465_files\chi2019235fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Letter recognition accuracy within words depending on whether the encoding of current letter shares a vibromotor with the transmitted letter and the number of vibromotors that encode the current letter.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      <em>
+       Characters within Words
+      </em>
+      . LR rounds identified problems related to individual letter patterns evidencing that letters encoded with three vibromotors are more difficult to recognise. However, the errors in word recognition can not be explained through them. Due to the letter frequency based encoding, the five letters encoded with three vibromotors appear rather infrequently in words. According to the Google N-gram Corpus [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ]
+      <a class="fn" href="#fn1" id="foot-fn1">
+       <sup>
+        1
+       </sup>
+      </a>
+      <a class="fn" href="#fn2" id="foot-fn2">
+       <sup>
+        2
+       </sup>
+      </a>
+      , their frequency in the text is 0.54% for K, 0.23% for X, 0.16% for J, 0.12% for Q and 0.09% for Z. So, all four combined have a frequency of 1.04%. For comparison, the most frequent letter E has a frequency of 12.49%. In words used in sessions 4 and 5, 55.2% of the letters are encoded by one vibromotor, 41.4% by two vibromotors and only 3.4% of letters were encoded by three vibromotors. Moreover, the average word recognition accuracy of all used words in sessions 4 and 5 for both layouts is 87.3%. When discarding the words that contain any three vibromotor letters, the word recognition accuracy increases only slightly to 88.4%. Thus, the overall word recognition error rate cannot be explained by the poor recognition of three vibromotor letters.
+     </p>
+     <p>
+      Nevertheless, when conveying words, patterns are transmitted in a sequence, and this might introduce additional problems. On sessions 4 and 5 where the transmission speed was higher, participants mentioned that sometimes, when two sequential letters (transmitted within a word) share one vibromotor, it became more difficult to distinguish whether that vibromotor was active in both letters or only in the first one. For instance, if we have the bigram of WH (e.g. in the word WHAT) transmitted using the hand layout, the letter W and H share a vibromotor in the ring finger. According to the claims, it would be hard to determine whether the shared vibromotor was active in both letters or the second letter was only composed of vibromotor located in index finger (which would then result in the letter E). We investigate the claim by analysing whether the sharing of a vibromotor between the patterns of two subsequent letters within a word has an effect on the recognition of the letters. Thus, we examine the recognition of single letters within all bigrams of tested words. We will exclude the ones that contain letters encoded with three vibromotors. Such letters have a high probability of not being correctly identified alone and also have the higher probability of sharing vibromotors (they have more vibromotors), thus they would skew the results.
+     </p>
+     <p>
+      For letters that share vibromotors, we take into consideration the number of vibromotors that encode the current letter. We hypothesise that when the current letter is composed of only one motor, then it should not create confusion as it is easier to perceive one stimulus than two simultaneously. Thus we have three types of sequential letters:
+     </p>
+     <p>
+      <strong>
+       S1
+      </strong>
+      - current letter shares one vibromotor with previous letter and it is encoded by only one vibromotor (16% of bigrams),
+     </p>
+     <p>
+      <strong>
+       S2
+      </strong>
+      - current letter shares a vibromotor with previous letter and it is encoded by two vibromotors (14% of bigrams),
+     </p>
+     <p>
+      <strong>
+       NS
+      </strong>
+      - current letter shares no vibromotor previous letter.
+     </p>
+     <p>
+      Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      presents the recognition accuracy of such sequential letters. To further analyse, we first average the accuracy by user, session, layout and number of vibromotors as we have imbalanced sets. Given that the aggregated accuracy is not normally distributed (Shapiro-Wilk test: p=0.0) and we deal with paired samples, we use the Wilcoxon signed-rank test to determine significance. A combined test for sessions 4 and 5 for both layouts reveals that there is no significant difference on accuracy between NS (
+      <em>
+       M
+      </em>
+      = 0.89,
+      <em>
+       MDN
+      </em>
+      = 0.92,
+      <em>
+       STD
+      </em>
+      = 0.08) and S1 (
+      <em>
+       M
+      </em>
+      = 0.89,
+      <em>
+       MDN
+      </em>
+      = 0.91,
+      <em>
+       STD
+      </em>
+      = 0.1) ;
+      <em>
+       r
+      </em>
+      = 215.0,
+      <em>
+       p
+      </em>
+      = 0.36 but there is a significant difference between NS and S2 (
+      <em>
+       M
+      </em>
+      = 0.7,
+      <em>
+       MDN
+      </em>
+      = 0.69,
+      <em>
+       STD
+      </em>
+      = 0.15);
+      <em>
+       r
+      </em>
+      = 0.0,
+      <em>
+       p
+      </em>
+      = 0.0. It is worth noting that also when separately analysing the sessions 4 and 5, and the layouts, the results of the significant differences remain the same.
+     </p>
+    </section>
+   </section>
+   <section id="sec-10">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       COMPENSATING FOR PERCEPTION PROBLEMS
+      </h2>
+     </div>
+    </header>
+    <p>
+     While both layouts deliver good results, the study evidence that both layouts share the same perception problems:
+    </p>
+    <p>
+     <strong>
+      1.
+     </strong>
+     Letters encoded with patterns composed of three vibromotors result in poorer recognition accuracy when compared with letters encoded with one or two vibromotors. Thus, the overlapping spatiotemporal patterns (OST) with three vibromotors are more difficult to identify correctly.
+    </p>
+    <p>
+     <strong>
+      2.
+     </strong>
+     When two letters are transmitted in sequence (within a word), the recognition accuracy of the second letter is negatively affected when their corresponding patterns share vibromotors. However, this problem only occurs if the second letter is encoded by more than one vibromotor.
+    </p>
+    <p>
+     Both problems are related to perception. Numerous studies in neuroscience shed evidence that with exposure to stimuli there is a tactile learning effect [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+      19
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+      39
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+      40
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+      44
+     </a>
+     ] and thus with the usage of the vibrotactile displays perception might improve. However, there is no assurance on how much it will improve. We propose methods to avoid or minimise their occurrences by following a two-step optimisation process, which we consider as the main contribution in this work.
+    </p>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Step 1: Letters Encoded with Three Vibromotors
+       </h3>
+      </div>
+     </header>
+     <p>
+      The perception problem of patterns encoded with three vibromotors can be solved by simply adding more vibromotors to the layout. This would result in more patterns encoded with only one or two vibromotors. The set of all available OST patterns
+      <em>
+       OP
+      </em>
+      composed of
+      <em>
+       m
+      </em>
+      vibromotors can be expressed as the set of all combinations with one or two elements:
+     </p>
+     <div class="table-responsive" id="eq1">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{align} OP &amp;= \lbrace op_i\rbrace = \binom{V}{2} \cup \binom{V}{1}, i \in [1,n] \end{align}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (1)
+       </span>
+      </div>
+     </div>
+     <div class="table-responsive" id="eq2">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{align} n &amp;= \binom{m}{2} + m = \frac{m(m+1)}{2} \end{align}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (2)
+       </span>
+      </div>
+     </div>
+     where
+     <em>
+      V
+     </em>
+     = {
+     <em>
+      v
+      <sub>
+       i
+      </sub>
+     </em>
+     },
+     <em>
+      i
+     </em>
+     ∈ [1,
+     <em>
+      m
+     </em>
+     ] is the set of vibromotors and
+     <em>
+      n
+     </em>
+     is the total number of patterns. A vibrotactile display with
+     <em>
+      m
+     </em>
+     = 7,
+     <em>
+      n
+     </em>
+     = 28 can encode the entire English alphabet. With
+     <em>
+      m
+     </em>
+     = 8,
+     <em>
+      n
+     </em>
+     = 36 and with
+     <em>
+      m
+     </em>
+     = 9,
+     <em>
+      n
+     </em>
+     = 45 it would be sufficient to also encode most of the punctuations and symbols. For the arms, there would be enough space for more vibromotors in the upper part of the arm. For the hand layout, more vibromotors could be placed on the back of the hand and the wrist to provide distinguishable OST patterns [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ].
+     <p>
+     </p>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Step 2: Consecutive Letters with Shared Vibromotors
+       </h3>
+      </div>
+     </header>
+     <p>
+      We can not avoid having patterns that share vibromotors as long as we have patterns that use two vibromotors. However, we can minimise their occurrences by leveraging the morphological structure of the language we target. For instance, in every language, some letters occur more often than others which is modelled by the letter frequency distribution
+      <a class="fn" href="#fn3" id="foot-fn3">
+       <sup>
+        3
+       </sup>
+      </a>
+      . Similar frequency distribution can be observed for bigrams (a pair of consecutive letters). We can use this information to construct an alphabet encoding, such that pairs of letters that are more probable to appear in a sequence are encoded by patterns that do not share any vibromotor. Thus, we treat the encoding of the alphabet as an optimisation problem which reduces the occurrences of bigrams with shared vibromotors.
+     </p>
+     <p>
+      To approach this problem, we first introduce a cost function, which measures the proportion of consecutive letters with shared vibromotor occurrences, where the second letter is encoded by two vibromotors. We denote the alphabet with
+      <em>
+       k
+      </em>
+      letters as
+      <em>
+       A
+      </em>
+      = {
+      <em>
+       l
+       <sub>
+        i
+       </sub>
+      </em>
+      },
+      <em>
+       i
+      </em>
+      ∈ [1,
+      <em>
+       k
+      </em>
+      ] and the set of possible OST patterns as
+      <em>
+       OP
+      </em>
+      = {
+      <em>
+       op
+       <sub>
+        i
+       </sub>
+      </em>
+      },
+      <em>
+       i
+      </em>
+      ∈ [1,
+      <em>
+       n
+      </em>
+      ],
+      <em>
+       n
+      </em>
+      ≥
+      <em>
+       k
+      </em>
+      , where each pattern
+      <em>
+       op
+       <sub>
+        i
+       </sub>
+      </em>
+      is a set of one or two vibromotors as defined in Eq.
+      <a class="eqn" href="#eq1">
+       1
+      </a>
+      . We also define the bigram probability distribution:
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" src="3300465_files\chi2019235inline17.svg"/>
+      </span>
+      as
+      <em>
+       BF
+      </em>
+      (
+      <em>
+       l
+      </em>
+      <sub>
+       1
+      </sub>
+      ,
+      <em>
+       l
+      </em>
+      <sub>
+       2
+      </sub>
+      ) =
+      <em>
+       P
+      </em>
+      (
+      <em>
+       l
+      </em>
+      <sub>
+       2
+      </sub>
+      |
+      <em>
+       l
+      </em>
+      <sub>
+       1
+      </sub>
+      ) and a mapping function called encoding E:
+      <em>
+       A
+      </em>
+      →
+      <em>
+       OP
+      </em>
+      . The cost function is defined as:
+     </p>
+     <div class="table-responsive" id="eq3">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} f(E, BF, A) = \sum _{l_1 \in A}\sum _{l_2 \in A, , l_1 \ne l_2} BF(l_1,l_2) \cdot |E(l_1) \cap E(l_2)| \cdot (|E(l_2)|- 1) \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (3)
+       </span>
+      </div>
+     </div>
+     |
+     <em>
+      E
+     </em>
+     (
+     <em>
+      l
+     </em>
+     <sub>
+      1
+     </sub>
+     )∩
+     <em>
+      E
+     </em>
+     (
+     <em>
+      l
+     </em>
+     <sub>
+      2
+     </sub>
+     )| counts the shared vibromotors between patterns while (|
+     <em>
+      E
+     </em>
+     (
+     <em>
+      l
+     </em>
+     <sub>
+      2
+     </sub>
+     )| − 1)| excludes those that do share but the second letter in bigram is encoded by a single vibromotor.
+     <p>
+     </p>
+     <p>
+      We can define our problem as a minimisation problem which for a given language with an alphabet A and a bigram probability distribution BF, finds a mapping E from letters to patterns (encoding) that minimises the objective function f:
+     </p>
+     <div class="table-responsive" id="eq4">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} E_o = \mathop{arg\,min}_{E} f(E, BF, A) \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (4)
+       </span>
+      </div>
+     </div>
+     for a given alphabet
+     <em>
+      A
+     </em>
+     of length
+     <em>
+      k
+     </em>
+     and a set of
+     <em>
+      n
+     </em>
+     (
+     <em>
+      n
+     </em>
+     ≥
+     <em>
+      k
+     </em>
+     ) patterns
+     <em>
+      OP
+     </em>
+     , a valid mapping E can be considered an element-wise pairing
+     <span class="inline-equation">
+      <span class="tex">
+       $(l_i, \hat{p_i})$
+      </span>
+     </span>
+     of the alphabet
+     <em>
+      A
+     </em>
+     and any permutation
+     <span class="inline-equation">
+      <span class="tex">
+       $\hat{P} = \lbrace \hat{p_i}\rbrace , i \in [1, k]$
+      </span>
+     </span>
+     of
+     <em>
+      OP
+     </em>
+     with
+     <em>
+      k
+     </em>
+     elements. Therefore, the problem is reduced to a combinatorial optimisation of finding the best permutation for a given cost function. We aim at finding an optimal solution as finding the best solution would require the evaluation of every possible solution, which is not feasible. For this, we propose a greedy algorithm. We also explored and evaluated existing approaches proven to provide optimal solutions in similar combinatorial optimisations problems such as genetic algorithms [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+      43
+     </a>
+     ] and simulated annealing [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+      9
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+      37
+     </a>
+     ]. However, in this case, both algorithms performed worse than the greedy approach, and thus we will not discuss their details.
+     <p>
+     </p>
+     <p>
+      <em>
+       Greedy Approach
+      </em>
+      . The algorithm starts with a random permutation
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{P}$
+       </span>
+      </span>
+      and employs an iterative process. At each iteration, it finds a pair of elements
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{P}[i]$
+       </span>
+      </span>
+      ,
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{P}[j]$
+       </span>
+      </span>
+      for which when being swapped, the resulting cost function score decreases the most. Then, it performs swapping until there is no room for improvement. The pseudocode is given in Algorithm 1 . As with most of the greedy algorithms, it suffers from getting stuck at a local minimum, and the results highly depend on the initial permutation
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{P}$
+       </span>
+      </span>
+      . To avoid getting a poor optimised local minimum, we run this algorithm many times (10000), where each time the initial permutation is selected randomly and choose the resulting permutation with the lowest cost function as our optimal solution.
+     </p>
+     <p>
+      For the bigram probability distribution, we rely on the Google Books N-gram Corpus [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ]
+      <a class="fn" href="#fn4" id="foot-fn4">
+       <sup>
+        4
+       </sup>
+      </a>
+      , which contains frequency distribution of all possible 2-5 n-grams. The data is constructed by scanning over five million books holding over a trillion words.
+     </p>
+     <p>
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300465_files\chi2019235img1.svg"/>
+      </span>
+     </p>
+     <p>
+      <em>
+       Optimisation Results
+      </em>
+      . As we want to provide an encoding and layout that avoids both issues occurring in letter and word recognition, we use seven vibromotors which allows to encode letters with at most two vibromotors as three vibromotor letters should be avoided.
+     </p>
+     <p>
+      The result of the greedy approach for seven vibromotors delivered an optimal permutation with a cost function score of 0.038. Note that there are many solutions with the same result (lowest score) as vibromotors can be arranged differently and still preserve the same relationship between patterns. Thus, we choose one of the optimal encodings with the lowest score which is presented in Table
+      <a class="tbl" href="#tab5">
+       5
+      </a>
+      . Interestingly the most frequent letters are encoded with only one vibromotor without the cost function explicitly aiming for such an optimisation. Obviously, the most frequent letters form the most frequent bigrams. In comparison, the encodings used in the study 1, would get a score of 0.184 for the hand and 0.188 for the forearms layout.
+     </p>
+     <p>
+      To outline the effects of such optimisation, we present a text snippet from the ”I Have a Dream” speech by Martin Luther King Jr. The text is encoded with the optimal encoding and with a randomly generated one. Clearly, when using optimal encoding, letters share very rarely a vibromotor with the previous letter. Please note that the algorithm does not optimise for double letters (e.g. ll) as there it is impossible to avoid sharing vibromotors. The optimised encoding with seven vibromotors for the hand layout is visualised in the Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      . The vibromotors on the hand are positioned based on the recommendation of Luzhnica and Veas [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ].
+     </p>
+     <p>
+      I ha
+      <strong>
+       <span style="text-decoration: underline;">
+        v
+       </span>
+      </strong>
+      e a dream that my four little chil
+      <strong>
+       <span style="text-decoration: underline;">
+        d
+       </span>
+      </strong>
+      ren wil
+      <strong>
+       <span style="text-decoration: underline;">
+        l
+       </span>
+      </strong>
+      one day live in a nation where they wil
+      <strong>
+       <span style="text-decoration: underline;">
+        l
+       </span>
+      </strong>
+      not be jud
+      <strong>
+       <span style="text-decoration: underline;">
+        g
+       </span>
+      </strong>
+      ed by the color of their skin but by the content of their character.
+     </p>
+     <p>
+      I h
+      <strong>
+       <span style="text-decoration: underline;">
+        ave
+       </span>
+      </strong>
+      a d
+      <strong>
+       <span style="text-decoration: underline;">
+        re
+       </span>
+      </strong>
+      am th
+      <strong>
+       <span style="text-decoration: underline;">
+        a
+       </span>
+      </strong>
+      t my four li
+      <strong>
+       <span style="text-decoration: underline;">
+        ttle
+       </span>
+      </strong>
+      c
+      <strong>
+       <span style="text-decoration: underline;">
+        hi
+       </span>
+      </strong>
+      ld
+      <strong>
+       <span style="text-decoration: underline;">
+        ren
+       </span>
+      </strong>
+      w
+      <strong>
+       <span style="text-decoration: underline;">
+        i
+       </span>
+      </strong>
+      l
+      <strong>
+       <span style="text-decoration: underline;">
+        l
+       </span>
+      </strong>
+      o
+      <strong>
+       <span style="text-decoration: underline;">
+        ne
+       </span>
+      </strong>
+      d
+      <strong>
+       <span style="text-decoration: underline;">
+        a
+       </span>
+      </strong>
+      y liv
+      <strong>
+       <span style="text-decoration: underline;">
+        e
+       </span>
+      </strong>
+      i
+      <strong>
+       <span style="text-decoration: underline;">
+        n
+       </span>
+      </strong>
+      a n
+      <strong>
+       <span style="text-decoration: underline;">
+        a
+       </span>
+      </strong>
+      t
+      <strong>
+       <span style="text-decoration: underline;">
+        i
+       </span>
+      </strong>
+      o
+      <strong>
+       <span style="text-decoration: underline;">
+        n
+       </span>
+      </strong>
+      whe
+      <strong>
+       <span style="text-decoration: underline;">
+        re
+       </span>
+      </strong>
+      they w
+      <strong>
+       <span style="text-decoration: underline;">
+        i
+       </span>
+      </strong>
+      l
+      <strong>
+       <span style="text-decoration: underline;">
+        l
+       </span>
+      </strong>
+      no
+      <strong>
+       <span style="text-decoration: underline;">
+        t
+       </span>
+      </strong>
+      be judg
+      <strong>
+       <span style="text-decoration: underline;">
+        ed
+       </span>
+      </strong>
+      by the co
+      <strong>
+       <span style="text-decoration: underline;">
+        l
+       </span>
+      </strong>
+      or of thei
+      <strong>
+       <span style="text-decoration: underline;">
+        r
+       </span>
+      </strong>
+      s
+      <strong>
+       <span style="text-decoration: underline;">
+        k
+       </span>
+      </strong>
+      i
+      <strong>
+       <span style="text-decoration: underline;">
+        n
+       </span>
+      </strong>
+      but by the co
+      <strong>
+       <span style="text-decoration: underline;">
+        ntent
+       </span>
+      </strong>
+      of thei
+      <strong>
+       <span style="text-decoration: underline;">
+        r
+       </span>
+      </strong>
+      c
+      <strong>
+       <span style="text-decoration: underline;">
+        ha
+       </span>
+      </strong>
+      ract
+      <strong>
+       <span style="text-decoration: underline;">
+        er
+       </span>
+      </strong>
+      .
+     </p>
+     <p>
+      <strong>
+       Listing 1:
+      </strong>
+      Illustrating the effects of different encodings. The underlined bold letters number of letters that are encoded with two vibromotors and share a vibromotor with the previous letter in the same word. The text is part of Martin Luther King Jr.’s ”I Have a Dream” speech and it is encoded with the optimal encoding (top) and with a random encoding (down).
+     </p>
+     <div class="table-responsive" id="tab5">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 5:
+       </span>
+       <span class="table-title">
+        The resulting encoding for seven vibromotors. The encoding can be applied to any layout.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Letters
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          A
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          B
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          C
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          D
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          E
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          F
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          G
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          H
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          I
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Vibromotors
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          1
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          3,6
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          5,6
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          5,7
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          3
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          1,6
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          3,7
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          1,2
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          4
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Letters
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          J
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          K
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          L
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          M
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          N
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          O
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          P
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Q
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          R
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Vibromotors
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2,3
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3,4
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2,7
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          6,7
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2,6
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          5
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3,5
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2,5
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Letters
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          S
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          T
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          U
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          V
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          W
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          X
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Y
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Z
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          Vibromotors
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          7
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          6
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          1,4
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          1,7
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          4,7
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2,4
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          4,5
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          1,3
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="" src="3300465_files\chi2019235fig7.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        The optimised encoding for the back of the hand layout with seven vibromotors.
+       </span>
+      </div>
+     </figure>
+    </section>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        User Study 2: Optimised Encoding
+       </h3>
+      </div>
+     </header>
+     <p>
+      In order to observe the effect of the encoding optimisation, we conduct another user study. For this, we utilise a hand layout with 7 vibromotors as there are already proposed suitable locations for up to 8 vibromotors [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. Eight individuals participated in the study (seven males and one female) aged between 21 and 34. No participant had any prior experience with skin reading. They all reported being fluent in English but none of them was a native speaker. The study setup, rewarding scheme, and procedure including the training and testing program (the letters and words) is borrowed from study 1. Nevertheless, in order to investigate other phenomena, we applied some minor changes in the study design without jeopardising the comparability with the study 1:
+     </p>
+     <p>
+      <strong>
+       1.
+      </strong>
+      At the beginning of sessions 2-5 (before training), a recall test only with letters was performed, assessing how well participants recall the previously trained letters.
+     </p>
+     <p>
+      <strong>
+       2.
+      </strong>
+      At the end of session 5, participants were tested with a round of letters on the left hand, to evaluate how well they are able to transfer the skill of decoding letters on an untrained body part. The layout was mirrored on the left hand.
+     </p>
+     <p>
+      <strong>
+       3.
+      </strong>
+      After the last training session (5), participants were invited twice and exposed to one round letter testing in order to evaluate how well they could still recall letters in absence of training or device usage. Such letter test rounds were assigned to be (i) three days and then (ii) ten days after the session 5. We will refer to them as recall session 6 and 7.
+     </p>
+     <p>
+      <strong>
+       4.
+      </strong>
+      Users filled an NASA TLX questionnaire for every session and also a questionnaire evaluating the wearability and comfortless of the prototypes. However due to the focused scope, they will be not discussed in this paper.
+     </p>
+     <figure id="fig6">
+      <img alt="" class="img-responsive" longdesc="" src="3300465_files\chi2019235fig8.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 6:
+       </span>
+       <span class="figure-title">
+        Letter and word recognition for each session. Data is initially averaged per user and session to emphasise the variation among users which is expressed via error bars representing the 95% confidence intervals.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Results
+       </h3>
+      </div>
+     </header>
+     <p>
+      <em>
+       Letters
+      </em>
+      . First, we analyse the letter recognition accuracy across last letter testing rounds of all sessions. The results are presented in Table
+      <a class="tbl" href="#tab6">
+       6
+      </a>
+      . Additionally, the results grouped by user and session are visualised in Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      . The grouped averaging is performed to emphasise the variations among users. When looking at the letter recognition (Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      ) on the first day, participants on average achieve the lowest accuracy (among all sessions), and at the same time, the variation among users was the highest. As the training session followed, the accuracy increased and at the same time as the variation among users decreased, meaning that at the end they achieved a comparable performance (see Figure
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      ) but with some differences in the learning rate along the way.
+     </p>
+     <div class="table-responsive" id="tab6">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 6:
+       </span>
+       <span class="table-title">
+        Letter recognition accuracy for each session (S) using the optimised encoding on the hand layout. Post-training represents the last testing round of the current session (at the end of the training). Recall tests of session 2-5 represent the testing round at the beginning of the session (before any training). Recall tests in sessions 6 and 7 represent letter testing 3 days respectively 10+ days after the session 5.
+        <strong>
+         5L
+        </strong>
+        notes the post-train of session 5 on the left hand.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+         </th>
+         <th colspan="3" style="text-align:center;border-right: 2pt solid #000000;;border-bottom: 2pt solid #000000;">
+          Recall
+         </th>
+         <th colspan="3" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          Post-Training
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          S
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Accuracy
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          TTR (s)
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Re-stim
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Accuracy
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          TTR (s)
+         </th>
+         <th style="text-align:left;border-right: 2pt solid #000000;">
+          Re-stim
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          1
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .91 (.29)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.9 (2.7)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .41 (.49)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .92 (.27)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3.3 (4.5)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .27 (.44)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .94 (.24)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.6 (1.9)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .28 (.45)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .95 (.22)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.5 (1.8)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .16 (.37)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .96 (.20)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.6 (1.9)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .22 (.42)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          4
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .92 (.27)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.8 (1.7)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .20 (.40)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .97 (.17)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.3 (1.3)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .17 (.38)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          5
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .98 (.15)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.6 (2.0)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .17 (.38)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .97 (.16)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.4 (1.8)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .22 (.42)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          <strong>
+           5L
+          </strong>
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .92 (.27)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          3.6 (2.9)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .23 (.42)
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          6
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .97 (.17)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          2.3 (1.4)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .11 (.31)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          7
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .94 (.24)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          4.8 (8.1)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+          .26 (.44)
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+         <td style="text-align:left;border-right: 2pt solid #000000;">
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <figure id="fig7">
+      <img alt="" class="img-responsive" longdesc="" src="3300465_files\chi2019235fig9.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        Letter and word recognition accuracy for both hand based layouts (with six vibromotors and the optimised with seven vibromotors) using the data from the sessions 4 and 5. Words that contain letters (K, J, Q, X and Z) are excluded.
+       </span>
+      </div>
+     </figure>
+     <p>
+      For the rest of analysis, analogously to the study 1, we will focus on the sessions 4 and 5 where the letter recognition accuracy is 97% which is a major improvement over six vibromotor hand layout used in study 1. When comparing the optimised layout from the study 2 with the non-optimised from the study 1, a chi-squared analysis reveals that the differences in the letter recognition accuracy are significant in both session 4;
+      <em>
+       χ
+      </em>
+      <sup>
+       2
+      </sup>
+      (1,
+      <em>
+       N
+      </em>
+      = 832) = 16.95,
+      <em>
+       p
+      </em>
+      = 0.0 and session 5;
+      <em>
+       χ
+      </em>
+      <sup>
+       2
+      </sup>
+      (1,
+      <em>
+       N
+      </em>
+      = 832) = 12.17,
+      <em>
+       p
+      </em>
+      &lt; 0.001. We attribute this improvement to the absence of the three vibromotor encoded letters in the optimised layout. A comparison of the results for both layouts is visualised in Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      .
+     </p>
+     <figure id="fig8">
+      <img alt="" class="img-responsive" longdesc="" src="3300465_files\chi2019235fig11.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 8:
+       </span>
+       <span class="figure-title">
+        Letter recognition accuracy in post-training tests, recall tests and also the test in the left hand for each user. The white numbers on the bottom represent the day of the test it was performed relative to the first day of training (first session). Note that the last user did not perform a the 7th recall and the first user was the only one to perform the 8th recall test.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      <em>
+       Recall Tests
+      </em>
+      . The recall tests of sessions 2-5 performed at the very beginning of each session investigate how much participants remember from the previous days of training. The recall tests performed on sessions 6 and 7 investigate how the recognition of letters decays over time, as between session 5 and those recall tests, participants were not exposed to any usage of the vibrotactile device. The recall in session 6 was performed exactly 3 days after the last round of training and letter/word testing which corresponds to day 8 from the first session. The recall test in session 7 was initially planned to be exactly 10 days after the session 5 (15 days after session 1). However, in practice participants were not able to hold the plan. Thus, this test was performed between 10 and 19 days after the session 5 (15-24 days after the first session) for 7 participants whereas one participant did not perform it at all. Although initially unplanned, one participant performed an additional recall test (session 8) 45 days after the session 5.
+     </p>
+     <p>
+      The results are shown in Table
+      <a class="tbl" href="#tab6">
+       6
+      </a>
+      , and the recall tests from session 5 onwards are visualised in the Figure
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      (per user). Table
+      <a class="tbl" href="#tab6">
+       6
+      </a>
+      shows that for the next day recalls (sessions 1-4), except for session 3, in other sessions participants performed even slightly better on the recall tests on the next day compared to the last round of testing in the current session (post-training). On the recall of session 6 which was 3 days after the last training session, participants did as good (97%) as in the post-training test of the session 4 and 5. On the recall of session 7 which was performed 10-19 days after the last training session, the letter recognition accuracy dropped to 94%. The 8th recall session performed by only one user reveals that even after 45 days after the last training session, the participant was still able to correctly recognise 92% of the letters.
+     </p>
+     <p>
+      <em>
+       Left Hand
+      </em>
+      . The letter recognition results on the left hand (at the end of session 5) are presented in Table
+      <a class="tbl" href="#tab6">
+       6
+      </a>
+      and Figure
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      . Table
+      <a class="tbl" href="#tab6">
+       6
+      </a>
+      shows that participants could recognise letters with an average accuracy of 92%. Figure
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      shows that the results might have been negatively influenced by users 5 and 7.
+     </p>
+     <p>
+      <em>
+       Words
+      </em>
+      . The results of word recognition accuracy are presented in Table
+      <a class="tbl" href="#tab7">
+       7
+      </a>
+      . Additionally, the results aggregated first by grouping by user and session are visualised in Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      . The grouped averaging is performed to emphasise the variations between users. It shows that the overall variability is quite low. We focus on the sessions 4 and 5 where participants achieved a word recognition accuracy of
+      <span class="inline-equation">
+       <span class="tex">
+        $96\%-98\%$
+       </span>
+      </span>
+      in both of the sessions. It is visible in Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      that when looking at the aggregated data (by user and session), in session 5 the variation between different users (STD = 0.031) is a bit higher compared to session 4 (STD=0.017). Perhaps due to the shorter duration used in session 5 for conveying letters. However, the differences in accuracy between sessions 4 and 5 are not significant;
+      <em>
+       r
+      </em>
+      = 0.05,
+      <em>
+       p
+      </em>
+      = 0.96,
+     </p>
+     <p>
+      We compare the word recognition accuracy with the unoptimised six vibromotor hand layout used in the study 1. The six vibromotor layout encodes five letters with three vibromotors whereas the optimal layout encodes all letters with at most two. Thus, to make the comparison fair, we exclude from analysis all words that contain any of those five letters (K, J, Q, X and Z). A rank-sum test analysis reveals participants recognised significantly better words (97% in both session) when using the optimised layout when compared unoptimised six vibromotor hand layout (88% in both session) used in study 1 in both sessions 4;
+      <em>
+       r
+      </em>
+      = 5.31,
+      <em>
+       p
+      </em>
+      = 0.0 and 5;
+      <em>
+       r
+      </em>
+      = 4.72,
+      <em>
+       p
+      </em>
+      = 0.0; as visualised in Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      .
+     </p>
+     <div class="table-responsive" id="tab7">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 7:
+       </span>
+       <span class="table-title">
+        Word recognition accuracy depending on the session (#S) and the gap (BL) between subsequent letters using the optimised encoding in seven vibromotors hand layout.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;border-right: 2pt solid #000000;">
+          #S
+         </th>
+         <th style="text-align:center;">
+          BL Gap
+         </th>
+         <th style="text-align:center;">
+          Accuracy
+         </th>
+         <th style="text-align:center;">
+          Re-stim
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          1
+         </td>
+         <td style="text-align:center;">
+          800ms
+         </td>
+         <td style="text-align:center;">
+          .96 (.15)
+         </td>
+         <td style="text-align:center;">
+          .27 (.45)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          2
+         </td>
+         <td style="text-align:center;">
+          500ms
+         </td>
+         <td style="text-align:center;">
+          1.0 (.05)
+         </td>
+         <td style="text-align:center;">
+          .12 (.33)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          3
+         </td>
+         <td style="text-align:center;">
+          500ms
+         </td>
+         <td style="text-align:center;">
+          .97 (.11)
+         </td>
+         <td style="text-align:center;">
+          .80 (.40)
+         </td>
+        </tr>
+        <tr style="border-bottom: 2pt solid #000000;">
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          4
+         </td>
+         <td style="text-align:center;">
+          250ms
+         </td>
+         <td style="text-align:center;">
+          .98 (.12)
+         </td>
+         <td style="text-align:center;">
+          .74 (.44)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          4
+         </td>
+         <td style="text-align:center;">
+          150ms
+         </td>
+         <td style="text-align:center;">
+          .96 (.14)
+         </td>
+         <td style="text-align:center;">
+          .73 (.45)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          4
+         </td>
+         <td style="text-align:center;">
+          100ms
+         </td>
+         <td style="text-align:center;">
+          .97 (.12)
+         </td>
+         <td style="text-align:center;">
+          .80 (.40)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          5
+         </td>
+         <td style="text-align:center;">
+          250ms
+         </td>
+         <td style="text-align:center;">
+          .98 (.13)
+         </td>
+         <td style="text-align:center;">
+          .67 (.50)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          5
+         </td>
+         <td style="text-align:center;">
+          150ms
+         </td>
+         <td style="text-align:center;">
+          .96 (.18)
+         </td>
+         <td style="text-align:center;">
+          .68 (.47)
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;border-right: 2pt solid #000000;">
+          5
+         </td>
+         <td style="text-align:center;">
+          100ms
+         </td>
+         <td style="text-align:center;">
+          .97 (.13)
+         </td>
+         <td style="text-align:center;">
+          .73 (.44)
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </section>
+   </section>
+   <section id="sec-15">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       GENERAL DISCUSSION AND OUTLOOK
+      </h2>
+     </div>
+    </header>
+    <p>
+     The first user study used two layouts of vibrotactile displays: hand and forearms; the state of the art OST patterns [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ] with frequency based letter encoding [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ] and five sessions of training/testing. In both layouts, participants achieved a comparable and relatively good accuracy in the letter (
+     <span class="inline-equation">
+      <span class="tex">
+       $89\%-92\%$
+      </span>
+     </span>
+     ) and word recognition (
+     <span class="inline-equation">
+      <span class="tex">
+       $85\%-90\%$
+      </span>
+     </span>
+     ). This demonstrates that besides the back of the hand (as Luzhnica et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ] proposed), also other body parts such as forearms could be used for skin reading. Nevertheless, in both layouts, systematic errors occurred during both letter and word recognition.
+    </p>
+    <p>
+     When testing for individual letters, most problems occurred with letters encoded with three vibromotors. Thus, we propose to avoid encoding the letters with more than two vibromotors. For the forearms layout, the upper forearms could be used to place six additional vibromotors (three on each upper arm). With 12 vibromotors, we could encode 78 symbols each using at most two vibromotors. As for the hand, eight vibromotor layouts have already been proposed and evaluated in terms of OST pattern identification [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ]. Eight vibromotors could encode 36 symbols. Additionally, a similar layout using two hands (with eight vibromotors on each) could encode 136 symbols. Such a large number of patterns could be used to encode letters, numbers, punctuations and even commonly used words. We use only seven vibromotors as it is enough to encode the entire English Alphabet.
+    </p>
+    <p>
+     When testing for words transmitted as a sequence of letters, we identified another problem for letters encoded by more than one vibromotor. Participants had significantly more difficulties in correctly recognising letters that are encoded with two vibromotors and share a vibromotor with the encoding of the previous letter (within the same word). Such phenomenon where a vibrotactile pattern is interfered (masked) by a preceding one when presented in temporal contiguity is known as forward masking [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+      11
+     </a>
+     ]. Thus letters encoded by such patterns were correctly recognised with an average accuracy of only 70%. We propose to use the internal structure and representation of the used language to develop an alphabet encoding that minimises occurrences of such cases. Moreover, we provide a complete methodology for this process which starts by defining a metric to measure how often such cases occur in the text by considering the probability distribution of bigrams for the given language. Then, we model the finding of an optimal encoding by minimising the score of our defined metric. For such an optimisation process we provide a greedy algorithm, which then is used to find an optimal encoding for any given number of vibromotors.
+    </p>
+    <p>
+     To evaluate the effects of the optimisation, we performed a second user study where we apply the proposed encoding optimisations. Note that we use a layout of seven vibromotors on the back of the hand as by comparing the results with six vibromotor layout (from first user study), we want to investigate the hypothesis that encoding letters with at most two vibromotors improve the recognition accuracy. The results show that participants were able to achieve a letter recognition accuracy of 97% in sessions 4 and 5, which is a significant improvement over the six layout display used in the first user study (
+     <span class="inline-equation">
+      <span class="tex">
+       $89\%-92\%$
+      </span>
+     </span>
+     ). Letters were encoded by a 100 − 110
+     <em>
+      ms
+     </em>
+     in session 4 and 70 − 80
+     <em>
+      ms
+     </em>
+     in session 5. Besides, the new encoding is optimised to minimise the probability of two sequent letters in any word to share a vibromotor between them in order to improve the word recognition accuracy. This allows us to investigate the effects of such optimisation in word recognition by comparing its results with the ones from the hand layout from the first user study. The results show that, in sessions 4 and 5, participants were able to achieve an accuracy of
+     <span class="inline-equation">
+      <span class="tex">
+       $96\%-98\%$
+      </span>
+     </span>
+     on the words which indeed is a significant improvement over the hand layout used on the first user study (
+     <span class="inline-equation">
+      <span class="tex">
+       $85\%-90\%$
+      </span>
+     </span>
+     ). The archived accuracies are outstanding considering only 5 hours of training. For comparison, sighted users have been reported to need six months of training to for recognising the Braille alphabet [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2
+     </a>
+     ] and three more months for reading words [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2
+     </a>
+     ].
+    </p>
+    <p>
+     Note that, the optimal hand layout (in study 2) encodes every letter by at most two vibromotors whereas the unoptimised layout (in study 1) encodes five letters (K, J, Q, X and Z) by three vibromotors. However, when performing a statical comparison of word recognition, we exclude the words that contain any of those five letters. This ensures that only the optimisation effects of sharing among bigrams are taken into account and excludes the influence three vibromotor letters.
+    </p>
+    <p>
+     The second user study also tested how well participants would be able to transfer the recognition of letters on the body parts that they did not train on. In practice, this would mean that participants could easily change the body position of the wearable device and be able to perceive the information without re-training. In our user study, participants trained on the right hand and were tested at the end of the session 5 on the left hand. They were able to recognise letters on the left (untrained) hand with an average accuracy of 92%.
+    </p>
+    <p>
+     Besides post-training letter testing (at the end of a session), we also performed recall tests at the beginning of a session (for sessions 2-5). Interestingly, when comparing the post-training letter accuracy with the letter accuracy of the recall session the next day, results show that except for one session (3), the accuracy in the recall was even slightly better than in the post-training. This suggests that our training program might be unnecessarily extensive in letter training. Participants demonstrated that on the very next day, they had a very good recollection of letters learned on the previous day. Thus, re-training them on the letters of the previous session might not have been necessary to the extent we performed. Additionally, we asked participants to do recall tests 3 days after and 10 days after the last training session. All participants completed the recall test scheduled 3 days after the last training. Unfortunately, due to participants’ private schedules conflicts, the 10 days after the last training session proved infeasible to hold. Nevertheless, seven participants were able to perform this recall session within 10 to 19 days after the last training session. In the recall test 3 days after the training, they performed with 97% accuracy, as good as on the day of the training. In the recall test 10-19 days after the last training, they were still able to recognise letters with an accuracy of 94%. Moreover, one participant performed an additional recall test 45 days after the last day of training and was able to recognise the letters with 92% accuracy.
+    </p>
+    <p>
+     Our encoding scheme is tailored for English language and layouts with seven vibromotors. Our bigram optimisation methodology can be used for any language and number of vibromotors. The methodology could be applied to other units of encoding such as phonemes [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ]. In case OST patterns were to encode phonemes, then the same methodology could be applied by simply constructing bi-phoneme frequency (frequency of subsequent phonemes) distribution and then replacing the bigram frequency distribution with bi-phoneme frequency distribution in cost function defined in Equation
+     <a class="eqn" href="#eq3">
+      3
+     </a>
+     . Encoding phonemes instead of letters would have the advantage that words would contain less symbols. An average english words contains 3.34 phonemes [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+      22
+     </a>
+     ] and 4.79 letters according to Corpus [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+      32
+     </a>
+     ]
+     <a class="fn" href="#fn5" id="foot-fn5">
+      <sup>
+       5
+      </sup>
+     </a>
+     <a class="fn" href="#fn6" id="foot-fn6">
+      <sup>
+       6
+      </sup>
+     </a>
+     . Having less symbols in a word would make the conveying faster. On the other hand the Alphabet has 26 letters but there are 39 phonemes in English and thus when using phonemes, more unique vibrotactile patterns are required to cover the entire vocabulary of symbols. When using OST to encode phonemes, at least 9 vibromotors would be required on a wearable display to produce the 39 unique patterns. Additionally, when using phonemes other factors such as accent or dialect of the user might have an influence on the perception.
+    </p>
+    <p>
+     In future work, we plan to conduct longer studies where users will be trained to read through vibrotactile displays larger portions of text, e.g. a short story (1-2 pages). Moreover, we will evaluate how well users are able to comprehend the textual information apart from recognising it. Furthermore, we also plan to investigate how the outdoor and other real-world distractions affect the performance of such information comprehension, which is not covered by the studies in this paper. Previous research indicates that simple vibrotactile messages can be accurately comprehended [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+      23
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+      29
+     </a>
+     ] while performing other primary tasks without degrading the performance in either of the tasks [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+      29
+     </a>
+     ].
+    </p>
+   </section>
+   <section id="sec-16">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     This paper proposes methods to optimise alphabet encoding represented by OST patterns. An initial user study investigates systematic mistakes that occur during the recognition of letters and words conveyed by two wearable vibrotactile displays on back of the hand and forearms. The results show that indeed there is room for optimisation and we propose a two-step optimisation. First, we propose to avoid using three vibromotor encoded letters for improving the letter recognition accuracy. Second, we propose minimising the probability that two subsequent letters in a word share a vibromotor to improve word recognition accuracy. We also provide methods for both optimisation steps. Moreover, we evaluate our proposed optimisations by a second user study which shows that our optimisation steps result in significant improvements in both letter and word recognition accuracies. Participants achieve an accuracy of 97% on letter recognition and 97% on word recognition within five hours of training. Such an outstanding accuracy of comprehension makes skin reading a good candidate for real-world applications.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-17">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This work partially is funded by MoreGrasp (H2020-ICT-2014-1 643955). The Know-Center is funded within the Austrian COMET Program - Competence Centers for Excellent Technologies - under the auspices of the Austrian Federal Ministry of Transport, Innovation and Technology, the Austrian Federal Ministry of Economy, Family and Youth and by the State of Styria. COMET is managed by the Austrian Research Promotion Agency FFG.
+    </p>
+   </section>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      J. C. Bliss, M. H. Katcher, C. H. Rogers, and R. P. Shepard. 1970. Optical-to-Tactile Image Conversion for the Blind.
+      <em>
+       <em>
+        IEEE Transactions on Man-Machine Systems
+       </em>
+      </em>
+      11, 1 (March 1970), 58–65.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TMMS.1970.299963" target="_blank">
+       https://doi.org/10.1109/TMMS.1970.299963
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Łukasz Bola, Katarzyna Siuda-Krzywicka, Małgorzata Paplińska, Ewa Sumera, Paweł Hańczur, and Marcin Szwed Szwed. 2016. Braille in the sighted: Teaching tactile reading to sighted adults.
+      <em>
+       <em>
+        PLoS ONE
+       </em>
+      </em>
+      (2016).
+      <a class="link-inline force-break" href="https://doi.org/10.1371/journal.pone.0155394" target="_blank">
+       https://doi.org/10.1371/journal.pone.0155394
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Jessica R. Cauchard, Janette L. Cheng, Thomas Pietrzak, and James A. Landay. 2016. ActiVibe: Design and Evaluation of Vibrations for Progress Monitoring. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 3261–3271.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858046" target="_blank">
+       https://doi.org/10.1145/2858036.2858046
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Jennifer Chen, Pablo Castillo, Robert Turcott, Ali Israr, and Frances Lau. 2018. Feeling Speech on the Arm. In
+      <em>
+       Extended Abstracts of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI EA ’18
+      </em>
+      ). ACM, New York, NY, USA, Article D107, 4 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3170427.3186537" target="_blank">
+       https://doi.org/10.1145/3170427.3186537
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Jennifer Chen, Robert Turcott, Pablo Castillo, Wahyudinata Setiawan, Frances Lau, and Ali Israr. 2018. Learning to Feel Words: A Comparison of Learning Approaches to Acquire Haptic Words. In
+      <em>
+       Proceedings of the 15th ACM Symposium on Applied Perception
+      </em>
+      (
+      <em>
+       SAP ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 11, 7 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3225153.3225174" target="_blank">
+       https://doi.org/10.1145/3225153.3225174
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Roger W. Cholewiak and Amy A. Collins. 1995. Vibrotactile pattern discrimination and communality at several body sites.
+      <em>
+       <em>
+        Perception &amp; Psychophysics
+       </em>
+      </em>
+      57, 5 (1995), 724–737.
+      <a class="link-inline force-break" href="https://doi.org/10.3758/BF03213276" target="_blank">
+       https://doi.org/10.3758/BF03213276
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Roger W. Cholewiak and Amy A. Collins. 2000. The generation of vibrotactile patterns on a linear array: Influences of body site, time, and presentation mode.
+      <em>
+       <em>
+        Perception &amp; Psychophysics
+       </em>
+      </em>
+      62, 6 (2000), 1220–1235.
+      <a class="link-inline force-break" href="https://doi.org/10.3758/BF03212124" target="_blank">
+       https://doi.org/10.3758/BF03212124
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Roger W. Cholewiak and James C. Craig. [n. d.]. Vibrotactile pattern recognition and discrimination at several body sites.
+      <em>
+       <em>
+        Perception &amp; Psychophysics
+       </em>
+      </em>
+      35, 6 ([n. d.]), 503–514.
+      <a class="link-inline force-break" href="https://doi.org/10.3758/BF03205946" target="_blank">
+       https://doi.org/10.3758/BF03205946
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      P.C. Chu and J.E. Beasley. 1997. A genetic algorithm for the generalised assignment problem.
+      <em>
+       <em>
+        Computers &amp; Operations Research
+       </em>
+      </em>
+      24, 1 (1997), 17 – 23.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/S0305-0548(96)00032-9" target="_blank">
+       https://doi.org/10.1016/S0305-0548(96)00032-9
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      P. C. Chu and J. E. Beasley. 1997. A Genetic Algorithm for the Generalised Assignment Problem.
+      <em>
+       <em>
+        Comput. Oper. Res.
+       </em>
+      </em>
+      24, 1 (Jan. 1997), 17–23.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/S0305-0548(96)00032-9" target="_blank">
+       https://doi.org/10.1016/S0305-0548(96)00032-9
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      James C. Craig and Paul M. Evans. 1987. Vibrotactile masking and the persistence of tactual features.
+      <em>
+       <em>
+        Perception &amp; Psychophysics
+       </em>
+      </em>
+      42, 4 (01 Jul 1987), 309–317.
+      <a class="link-inline force-break" href="https://doi.org/10.3758/BF03203085" target="_blank">
+       https://doi.org/10.3758/BF03203085
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      de Jesus Oliveira and Anderson Maciel. 2014. Introducing the Modifier Tactile Pattern for Vibrotactile Communication. In
+      <em>
+       EUROHAPTICS, 2014
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Hubert R. Dinse, Tobias Kalisch, Patrick Ragert, Burkhard Pleger, Peter Schwenkreis, and Martin Tegenthoff. 2005. Improving Human Haptic Performance in Normal and Impaired Human Populations Through Unattended Activation-based Learning.
+      <em>
+       <em>
+        ACM Trans. Appl. Percept.
+       </em>
+      </em>
+      2, 2 (April 2005), 71–88.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1060581.1060583" target="_blank">
+       https://doi.org/10.1145/1060581.1060583
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Nathan Dunkelberger, Jenny Sullivan, Joshua Bradley, Nickolas P Walling, Indu Manickam, Gautam Dasarathy, Ali Israr, Frances W. Y. Lau, Keith Klumb, Brian Knott, Freddy Abnousi, Richard Baraniuk, and Marcia K O'Malley. 2018. Conveying Language Through Haptics: A Multi-sensory Approach. In
+      <em>
+       Proceedings of the 2018 ACM International Symposium on Wearable Computers
+      </em>
+      (
+      <em>
+       ISWC ’18
+      </em>
+      ). ACM, New York, NY, USA, 25–32.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3267242.3267244" target="_blank">
+       https://doi.org/10.1145/3267242.3267244
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Robert H Gault. 1924. Progress in experiments on tactual interpretation of oral speech.
+      <em>
+       <em>
+        The Journal of Abnormal Psychology and Social Psychology
+       </em>
+      </em>
+      19, 2(1924), 155.
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Frank A. Geldard. 1957. Adventures in tactile literacy.
+      <em>
+       <em>
+        American Psychologist
+       </em>
+      </em>
+      12, 3 (1957), 115–124.
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Ben Godde, Beate Stauffenberg, Friederike Spengler, and Hubert R. Dinse. 2000. Tactile Coactivation-Induced Changes in Spatial Discrimination Performance.
+      <em>
+       <em>
+        Journal of Neuroscience
+       </em>
+      </em>
+      20, 4 (2000), 1597–1604. arXiv:
+      <a class="link-inline force-break" href="http://www.jneurosci.org/content/20/4/1597.full.pdf">
+       http://www.jneurosci.org/content/20/4/1597.full.pdf
+      </a>
+      <a class="link-inline force-break" href="http://www.jneurosci.org/content/20/4/1597">
+       http://www.jneurosci.org/content/20/4/1597
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Eric Gunther. 2001.
+      <em>
+       Skinscape: A tool for composition in the tactile modality
+      </em>
+      . Ph.D. Dissertation. Massachusetts Institute of Technology.
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Amra Hodzic, Ralf Veit, Ahmed A. Karim, Michael Erb, and Ben Godde. 2004. Improvement and Decline in Tactile Discrimination Behavior after Cortical Plasticity Induced by Passive Tactile Coactivation.
+      <em>
+       <em>
+        Journal of Neuroscience
+       </em>
+      </em>
+      24, 2 (2004), 442–446.
+      <a class="link-inline force-break" href="https://doi.org/10.1523/JNEUROSCI.3731-03.2004" target="_blank">
+       https://doi.org/10.1523/JNEUROSCI.3731-03.2004
+      </a>
+      arXiv:
+      <a class="link-inline force-break" href="http://www.jneurosci.org/content/24/2/442.full.pdf">
+       http://www.jneurosci.org/content/24/2/442.full.pdf
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Yang Jiao, Frederico M. Severgnini, Juan Sebastian Martinez, Jaehong Jung, Hong Z. Tan, Charlotte M. Reed, E. Courtenay Wilson, Frances Lau, Ali Israr, Robert Turcott, Keith Klumb, and Freddy Abnousi. 2018. A Comparative Study of Phoneme- and Word-Based Learning of English Words Presented to the Skin. In Haptics: Science, Technology, and Applications, Domenico Prattichizzo, Hiroyuki Shinoda, Hong Z. Tan, Emanuele Ruffaldi, and Antonio Frisoli(Eds.). Springer International Publishing, Cham, 623–635.
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Jacob H. Kirman. 1974. Tactile perception of computer-derived formant patterns from voiced speech.
+      <em>
+       <em>
+        The Journal of the Acoustical Society of America
+       </em>
+      </em>
+      55, 1 (1974).
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Lori Lamel, Robert H. Kassel, and Stephanie Seneff. 1989. Speech database development: Design and analysis of the acoustic-phonetic corpus.
+      <em>
+       <em>
+        Proceedings of the DARPA Speech Recognition Workshop
+       </em>
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Seungyon ”Claire” Lee and Thad Starner. 2010. BuzzWear: Alert Perception in Wearable Tactile Displays on the Wrist. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’10
+      </em>
+      ). ACM, New York, NY, USA, 433–442.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1753326.1753392" target="_blank">
+       https://doi.org/10.1145/1753326.1753392
+      </a>
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Yi-Chi Liao, Yi-Ling Chen, Jo-Yu Lo, Rong-Hao Liang, Liwei Chan, and Bing-Yu Chen. 2016. EdgeVib: Effective Alphanumeric Character Output Using a Wrist-Worn Tactile Display. In Proceedings of the 29th Annual Symposium on User Interface Software and Technology(UIST ’16). ACM, New York, NY, USA, 7.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2984511.2984522">
+       https://doi.org/10.1145/2984511.2984522
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Granit Luzhnica, Sebastian Stein, Eduardo Veas, Viktoria Pammer, John Williamson, and Roderick Murray Smith. 2017. Personalising Vibrotactile Displays Through Perceptual Sensitivity Adjustment. In
+      <em>
+       Proceedings of the 2017 ACM International Symposium on Wearable Computers
+      </em>
+      (
+      <em>
+       ISWC ’17
+      </em>
+      ). ACM, New York, NY, USA, 66–73.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3123021.3123029" target="_blank">
+       https://doi.org/10.1145/3123021.3123029
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Granit Luzhnica and Eduardo Veas. 2017. Vibrotactile Patterns using Sensitivity Prioritisation. In
+      <em>
+       Proceedings of the 2017 ACM International Symposium on Wearable Computers
+      </em>
+      (
+      <em>
+       ISWC ’17
+      </em>
+      ). ACM, New York, NY, USA, 148–155.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3123021.3123032" target="_blank">
+       https://doi.org/10.1145/3123021.3123032
+      </a>
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Granit Luzhnica and Eduardo Veas. 2018. Investigating Interactions for Text Recognition Using a Vibrotactile Wearable Display. In
+      <em>
+       23rd International Conference on Intelligent User Interfaces
+      </em>
+      (
+      <em>
+       IUI ’18
+      </em>
+      ). ACM, New York, NY, USA, 453–465.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3172944.3172951" target="_blank">
+       https://doi.org/10.1145/3172944.3172951
+      </a>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Granit Luzhnica and Eduardo Veas. 2018. Skin Reading Meets Speech Recognition and Object Recognition for Sensory Substitution. In
+      <em>
+       Proceedings of the 2018 ACM International Joint Conference on Pervasive and Ubiquitous Computing and Proceedings of the 2018 ACM International Symposium on Wearable Computers
+      </em>
+      (
+      <em>
+       UbiComp ’18
+      </em>
+      ). ACM, New York, NY, USA.
+      <a class="link-inline force-break" href="https://doi.org/doi.org/10.1145/3267305.3267604" target="_blank">
+       https://doi.org/doi.org/10.1145/3267305.3267604
+      </a>
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Granit Luzhnica and Eduardo Veas. 2019. Background Perception and Comprehension of Symbols Conveyed through Vibrotactile Wearable Displays. In
+      <em>
+       24rd International Conference on Intelligent User Interfaces
+      </em>
+      (
+      <em>
+       IUI ’19
+      </em>
+      ). ACM, New York, NY, USA.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3301275.3302282" target="_blank">
+       https://doi.org/10.1145/3301275.3302282
+      </a>
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Granit Luzhnica, Eduardo Veas, and Viktoria Pammer. 2016. Skin Reading: Encoding Text in a 6-channel Haptic Display. In
+      <em>
+       Proceedings of the 2016 ACM International Symposium on Wearable Computers
+      </em>
+      (
+      <em>
+       ISWC ’16
+      </em>
+      ). ACM, New York, NY, USA, 148–155.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2971763.2971769" target="_blank">
+       https://doi.org/10.1145/2971763.2971769
+      </a>
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Granit Luzhnica, Eduardo Veas, and Caitlyn Seim. 2018. Passive Haptic Learning for Vibrotactile Skin Reading. In
+      <em>
+       Proceedings of the 2018 ACM International Symposium on Wearable Computers
+      </em>
+      (
+      <em>
+       ISWC ’18
+      </em>
+      ). ACM.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3267242.3267271" target="_blank">
+       https://doi.org/10.1145/3267242.3267271
+      </a>
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Jean-Baptiste Michel, Yuan Kui Shen, Aviva Presser Aiden, Adrian Veres, Matthew K. Gray, , Joseph P. Pickett, Dale Hoiberg, Dan Clancy, Peter Norvig, Jon Orwant, Steven Pinker, Martin A. Nowak, and Erez Lieberman Aiden. 2011. Quantitative Analysis of Culture Using Millions of Digitized Books.
+      <em>
+       <em>
+        Science
+       </em>
+      </em>
+      331, 6014 (2011), 176–182.
+      <a class="link-inline force-break" href="https://doi.org/10.1126/science.1199644" target="_blank">
+       https://doi.org/10.1126/science.1199644
+      </a>
+      arXiv:
+      <a class="link-inline force-break" href="http://science.sciencemag.org/content/331/6014/176.full.pdf">
+       http://science.sciencemag.org/content/331/6014/176.full.pdf
+      </a>
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Hugo Nicolau, João Guerreiro, Tiago Guerreiro, and Luís Carriço. 2013. UbiBraille: Designing and Evaluating a Vibrotactile Braille-reading Device. In
+      <em>
+       Proceedings of the 15th International ACM SIGACCESS Conference on Computers and Accessibility
+      </em>
+      (
+      <em>
+       ASSETS ’13
+      </em>
+      ). ACM, New York, NY, USA, Article 23, 8 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2513383.2513437" target="_blank">
+       https://doi.org/10.1145/2513383.2513437
+      </a>
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Hugo Nicolau, Kyle Montague, Tiago Guerreiro, André Rodrigues, and Vicki L. Hanson. 2015. HoliBraille: Multipoint Vibrotactile Feedback on Mobile Devices. In
+      <em>
+       Proceedings of the 12th Web for All Conference
+      </em>
+      (
+      <em>
+       W4A ’15
+      </em>
+      ). ACM, New York, NY, USA, Article 30, 4 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2745555.2746643" target="_blank">
+       https://doi.org/10.1145/2745555.2746643
+      </a>
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Scott David Novich. 2015.
+      <em>
+       Sound-to-Touch Sensory Substitution and Beyond
+      </em>
+      . Ph.D. Dissertation. Rice University.
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Scott D. Novich and David M. Eagleman. 2015. Using space and time to encode vibrotactile information: toward an estimate of the skin's achievable throughput.
+      <em>
+       <em>
+        Experimental Brain Research
+       </em>
+      </em>
+      10 (2015).
+      <a class="link-inline force-break" href="https://doi.org/10.1007/s00221-015-4346-1" target="_blank">
+       https://doi.org/10.1007/s00221-015-4346-1
+      </a>
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      IH Osman and CN Potts. 1989. Simulated annealing for permutation flow-shop scheduling.
+      <em>
+       <em>
+        Omega
+       </em>
+      </em>
+      17, 6 (1989), 551 – 557.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/0305-0483(89)90059-5" target="_blank">
+       https://doi.org/10.1016/0305-0483(89)90059-5
+      </a>
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      A. J. Phillips, A. R. D. Thornton, S. Worsfold, A. Downie, and J. Milligan. 1994. Experience of using vibrotactile aids with the profoundly deafened.
+      <em>
+       <em>
+        International Journal of Language and Communication Disorders
+       </em>
+      </em>
+      29, 1(1994), 17–26.
+      <a class="link-inline force-break" href="https://doi.org/10.3109/13682829409041478" target="_blank">
+       https://doi.org/10.3109/13682829409041478
+      </a>
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Burkhard Pleger, Hubert R. Dinse, Patrick Ragert, Peter Schwenkreis, Jean Pierre Malin, and Martin Tegenthoff. 2001. Shifts in cortical representations predict human discrimination improvement.
+      <em>
+       <em>
+        Proceedings of the National Academy of Sciences
+       </em>
+      </em>
+      98, 21 (2001), 12255–12260.
+      <a class="link-inline force-break" href="https://doi.org/10.1073/pnas.191176298" target="_blank">
+       https://doi.org/10.1073/pnas.191176298
+      </a>
+      arXiv:
+      <a class="link-inline force-break" href="http://www.pnas.org/content/98/21/12255.full.pdf">
+       http://www.pnas.org/content/98/21/12255.full.pdf
+      </a>
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Burkhard Pleger, Ann-Freya Foerster, Patrick Ragert, Hubert R Dinse, Peter Schwenkreis, Jean-Pierre Malin, Volkmar Nicolas, and Martin Tegenthoff. 2003. Functional imaging of perceptual learning in human primary and secondary somatosensory cortex.
+      <em>
+       <em>
+        Neuron
+       </em>
+      </em>
+      40, 3 (2003), 643–653.
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      Charlotte M Reed and Lorraine A Delhorne. 2003. The reception of environmental sounds through wearable tactual aids.
+      <em>
+       <em>
+        Ear and hearing
+       </em>
+      </em>
+      24, 6 (2003), 528–538.
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      C. M. Reed, H. Z. Tan, Z. D. Perez, E. C. Wilson, F. M. Severgnini, J. Jung, J. S. Martinez, Y. Jiao, A. Israr, F. Lau, K. Klumb, R. Turcott, and F. Abnousi. 2018. A Phonemic-Based Tactile Display for Speech Communication.
+      <em>
+       <em>
+        IEEE Transactions on Haptics
+       </em>
+      </em>
+      (2018), 1–1.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TOH.2018.2861010" target="_blank">
+       https://doi.org/10.1109/TOH.2018.2861010
+      </a>
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Colin R. Reeves. 1995. A genetic algorithm for flowshop sequencing.
+      <em>
+       <em>
+        Computers &amp; Operations Research
+       </em>
+      </em>
+      22, 1 (1995), 5 – 13.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/0305-0548(93)E0014-K" target="_blank">
+       https://doi.org/10.1016/0305-0548(93)E0014-K
+      </a>
+      Genetic Algorithms.
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      Eva-Maria Reuter, Claudia Voelcker-Rehage, Solveig Vieluf, and Ben Godde. 2014. Effects of age and expertise on tactile learning in humans.
+      <em>
+       <em>
+        European Journal of Neuroscience
+       </em>
+      </em>
+      40, 3 (2014), 2589–2599.
+      <a class="link-inline force-break" href="https://doi.org/10.1111/ejn.12629" target="_blank">
+       https://doi.org/10.1111/ejn.12629
+      </a>
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      Jerker Rönnberg, Ulf Andersson, Björn Lyxell, and Karl-Erik Spens. 1998. Vibrotactile Speech Tracking Support: Cognitive Prerequisites.
+      <em>
+       <em>
+        The Journal of Deaf Studies and Deaf Education
+       </em>
+      </em>
+      3, 2 (1998).
+      <a class="link-inline force-break" href="https://doi.org/10.1093/oxfordjournals.deafed.a014344" target="_blank">
+       https://doi.org/10.1093/oxfordjournals.deafed.a014344
+      </a>
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      B. L. Scott and C. L. De Filippo. 1977. Progress in the development of a tactile aid for the deaf.
+      <em>
+       <em>
+        The Journal of the Acoustical Society of America
+       </em>
+      </em>
+      62, S1 (1977), S76–S76.
+      <a class="link-inline force-break" href="https://doi.org/10.1121/1.2016369" target="_blank">
+       https://doi.org/10.1121/1.2016369
+      </a>
+      arXiv:
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1121/1.2016369">
+       http://dx.doi.org/10.1121/1.2016369
+      </a>
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      Caitlyn E. Seim, David Quigley, and Thad E. Starner. 2014. Passive Haptic Learning of Typing Skills Facilitated by Wearable Computers. In
+      <em>
+       CHI ’14 Extended Abstracts on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI EA ’14
+      </em>
+      ). ACM, New York, NY, USA, 2203–2208.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2559206.2581329" target="_blank">
+       https://doi.org/10.1145/2559206.2581329
+      </a>
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      Ian R Summers, Jon J Whybrow, Denise A Gratton, Peter Milnes, Brian H Brown, and John C Stevens. 2005. Tactile information transfer: A comparison of two stimulation sites.
+      <em>
+       <em>
+        The Journal of the Acoustical Society of America
+       </em>
+      </em>
+      118, 4 (2005), 2527–2534.
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      David Ternes and K E MacLean. 2008. Designing Large Sets of Haptic Icons with Rhythm. In EuroHaptics, M. Ferre (Ed.). Springer, Madrid, Spain, 199–208.
+      <a class="link-inline force-break" href="http://www.cs.ubc.ca/labs/spin/publications/spin/ternes2008eh.pdf">
+       http://www.cs.ubc.ca/labs/spin/publications/spin/ternes2008eh.pdf
+      </a>
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      Benjamin W. White, Frank A. Saunders, Lawrence Scadden, Paul Bach-Y-Rita, and Carter C. Collins. 1970. Seeing with the skin.
+      <em>
+       <em>
+        Perception &amp; Psychophysics
+       </em>
+      </em>
+      7, 1 (1970), 23–27.
+      <a class="link-inline force-break" href="https://doi.org/10.3758/BF03210126" target="_blank">
+       https://doi.org/10.3758/BF03210126
+      </a>
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      Cheng Xu, Ali Israr, Ivan Poupyrev, Olivier Bau, and Chris Harrison. 2011. Tactile Display for the Visually Impaired Using TeslaTouch. In
+      <em>
+       CHI ’11 Extended Abstracts on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI EA ’11
+      </em>
+      ). ACM, New York, NY, USA, 317–322.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1979742.1979705" target="_blank">
+       https://doi.org/10.1145/1979742.1979705
+      </a>
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Hanfeng Yuan, Charlotte M. Reed, and Nathaniel I. Durlach. 2005. Tactual display of consonant voicing as a supplement to lipreading.
+      <em>
+       <em>
+        The Journal of the Acoustical Society of America
+       </em>
+      </em>
+      118, 2 (2005), 1003–1015.
+      <a class="link-inline force-break" href="https://doi.org/10.1121/1.1945787" target="_blank">
+       https://doi.org/10.1121/1.1945787
+      </a>
+      arXiv:
+      <a class="link-inline force-break" href="http://dx.doi.org/10.1121/1.1945787">
+       http://dx.doi.org/10.1121/1.1945787
+      </a>
+     </li>
+     <li id="BibPLXBIB0053" label="[53]">
+      Siyan Zhao, Ali Israr, Frances Lau, and Freddy Abnousi. 2018. Coding Tactile Symbols for Phonemic Communication. In
+      <em>
+       CHI Conference on Human Factors in Computing Systems
+      </em>
+      .
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3173966" target="_blank">
+       https://doi.org/10.1145/3173574.3173966
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="http://storage.googleapis.com/books/ngrams/books/datasetsv2.html">
+     http://storage.googleapis.com/books/ngrams/books/datasetsv2.html
+    </a>
+   </p>
+   <p id="fn2">
+    <a href="#foot-fn2">
+     <sup>
+      2
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="http://norvig.com/mayzner.html">
+     http://norvig.com/mayzner.html
+    </a>
+   </p>
+   <p id="fn3">
+    <a href="#foot-fn3">
+     <sup>
+      3
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="https://en.wikipedia.org/wiki/Letter_frequency">
+     https://en.wikipedia.org/wiki/Letter_frequency
+    </a>
+   </p>
+   <p id="fn4">
+    <a href="#foot-fn4">
+     <sup>
+      4
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="storage.googleapis.com/books/ngrams/books/datasetsv2.html">
+     storage.googleapis.com/books/ngrams/books/datasetsv2.html
+    </a>
+   </p>
+   <p id="fn5">
+    <a href="#foot-fn5">
+     <sup>
+      5
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="http://storage.googleapis.com/books/ngrams/books/datasetsv2.html">
+     http://storage.googleapis.com/books/ngrams/books/datasetsv2.html
+    </a>
+   </p>
+   <p id="fn6">
+    <a href="#foot-fn6">
+     <sup>
+      6
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="http://norvig.com/mayzner.html">
+     http://norvig.com/mayzner.html
+    </a>
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300465" target="_blank">
+      https://doi.org/10.1145/3290605.3300465
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8757f1c22b86046e',t:'MTcxMzMxMDAyOS41MDcwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

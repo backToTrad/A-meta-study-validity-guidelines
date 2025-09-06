@@ -1,0 +1,2525 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Put Your Warning Where Your Link Is: Improving and Evaluating Email Phishing Warnings
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300748_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300748_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300748_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300748_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300748_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300748_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300748_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300748_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Put Your Warning Where Your Link Is: Improving and Evaluating Email Phishing Warnings
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Justin
+      </span>
+      <span class="surName">
+       Petelka
+      </span>
+      , University of Washington, USA,
+      <a href="mailto:jpetelka@uw.edu">
+       jpetelka@uw.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Yixin
+      </span>
+      <span class="surName">
+       Zou
+      </span>
+      , University of Michigan, USA,
+      <a href="mailto:yixinz@umich.edu">
+       yixinz@umich.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Florian
+      </span>
+      <span class="surName">
+       Schaub
+      </span>
+      , University of Michigan, USA,
+      <a href="mailto:fschaub@umich.edu">
+       fschaub@umich.edu
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300748" target="_blank">
+       https://doi.org/10.1145/3290605.3300748
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Phishing emails often disguise a link's actual URL. Thus, common anti-phishing advice is to check a link's URL before clicking, but email clients do not support this well. Automated phishing detection enables email clients to warn users that an email is suspicious, but current warnings are often not specific. We evaluated the effects on phishing susceptibility of (1) moving phishing warnings close to the suspicious link in the email, (2) displaying the warning on hover interactions with the link, and (3) forcing attention to the warning by deactivating the original link, forcing users to click the URL in the warning. We assessed the effectiveness of such link-focused phishing warning designs in a between-subjects online experiment (n=701). We found that link-focused phishing warnings reduced phishing click-through rates compared to email banner warnings; forced attention warnings were most effective. We discuss the implications of our findings for phishing warning design.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Security and privacy → Usability in security and privacy
+       </strong>
+       ; •
+       <strong>
+        Security and privacy → Intrusion/anomaly detection and malware mitigation
+       </strong>
+       ; •
+       <strong>
+        Human-centered computing → Empirical studies in HCI
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Justin Petelka, Yixin Zou, and Florian Schaub. 2019. Put Your Warning Where Your Link Is: Improving and Evaluating Email Phishing Warnings. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 15 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300748" target="_blank">
+         https://doi.org/10.1145/3290605.3300748
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Phishing attacks typically involve an unsolicited email, text message, or telephone call purportedly from a legitimate organization requesting personal, financial, and/or login information [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+      40
+     </a>
+     ]. The Anti Phishing Working Group reported half a million unique phishing campaigns in the second half of 2017 [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ]. The FBI reported 25,344 victims of phishing in 2017, resulting in the loss of 30 million U.S. dollars [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+      40
+     </a>
+     ]. Email is the most common medium for phishing attacks [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+      61
+     </a>
+     ]. Phishing emails often contain links which, once clicked, take the victim to a legitimate-looking website, where victims are asked to input login, personal, or financial information. This information is then harvested by the attackers to gain unauthorized access to personal accounts, sometimes as the first step in a more sustained attack against an organization [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ]. Phishing attacks vary with respect to target specialization (e.g., spear-phishing, leading to business email compromise) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+      61
+     </a>
+     ] and attack vector (e.g., malicious attachment or phishing link). “Fire-and-forget” phishing attacks are the most common [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ], where attackers send a large number of phishing emails with the objective of tricking a small percentage of users to click on a phishing link and visit the phishing website.
+    </p>
+    <p>
+     Efforts to combat phishing include (1) training users to identify phish  [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+      32
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+      49
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+      57
+     </a>
+     ], (2) automated identification of phishing emails [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+      62
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+      64
+     </a>
+     ], domains, and websites  [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+      59
+     </a>
+     ], and (3) providing warnings to aid users in spotting suspected phishing emails [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+      55
+     </a>
+     ] or websites [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ]. Common advice given in phishing training places the onus of discovering phishing links on the user, urging them to “hover to discover” [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+      48
+     </a>
+     ] suspicious links and Uniform Resource Locators (URLs). Automated phishing detection approaches analyze link and URL features to determine whether an email or webpage is a phish  [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+      39
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+      59
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+      62
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+      64
+     </a>
+     ], allowing certain phishing emails to be removed before users encounters them. However, despite high accuracy [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+      39
+     </a>
+     ], phishing algorithms are probabilistic and produce false positives (i.e., removing legitimate emails), especially when deployed at scale. Phishing warnings commonly augment automated detection to manage detection uncertainty, and limit the impact of false positives by allowing users to override the system [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ].
+    </p>
+    <p>
+     Phishing and other online security warning research has largely focused on browser-based warnings and indicators [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+      19
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+      19
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+      50
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+      63
+     </a>
+     ].
+     <em>
+      Browser warnings
+     </em>
+     appear when a user is attempting to load a suspicious website. However, if the email is the attack vector, a browser warning appears after a user has already decided to visit the link, at which point it may be difficult to overcome anchoring bias and loss aversion [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ]. A potential solution is to warn users before they click an email's suspicious link, i.e., within the email client. Some current email clients use
+     <em>
+      banner warnings
+     </em>
+     (see Figure
+     <a class="fig" href="#fig2">
+      2
+     </a>
+     ), which notify users that an email might be suspect. However, such banner warnings typically do not explain what specifically is suspicious. The lack of specific information in such banner warnings places the burden of locating suspicious cues (e.g., regarding the link) on the user. This increases the risk that the warning is ignored or misunderstood.
+    </p>
+    <p>
+     We propose and evaluate three warning design features for supporting users in more effectively assessing phishing risks and avoiding phishing websites. The first feature is (1)
+     <em>
+      warning placement
+     </em>
+     . In particular, we evaluated the impact of placing warnings near a suspicious link compared to banner or browser warnings. Similar to Volkamer et al.’s work [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+      55
+     </a>
+     ], we developed
+     <em>
+      link-focused warnings
+     </em>
+     , which clearly display the underlying URL of a suspicious link, thus making it easier for users to notice discrepancies between where they expect the link to go and its actual destination. The second feature is (2)
+     <em>
+      forced attention
+     </em>
+     . We force the user's attention to the warning content [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+      11
+     </a>
+     ] by deactivating the suspicious link in the email body and forcing the user to click the unmasked URL in the warning if they want to proceed. Forced attention allows users to safely hover over a link to identify it without the risk of clicking, while adding a small cognitive burden to the risky option [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+      9
+     </a>
+     ]. The third feature is (3)
+     <em>
+      warning activation
+     </em>
+     . We hypothesize that dynamically displaying a warning only when the user hovers over a link would increase warning adherence compared to a static warning.
+    </p>
+    <p>
+     We assessed the effectiveness of these warning design features in a between-subjects controlled experiment (
+     <em>
+      n
+     </em>
+     =701) conducted on Amazon Mechanical Turk. Our evaluation metric for warning effectiveness was click-through rate (CTR). Our experiment had seven conditions: four link-focused warnings factored by forced attention (yes vs. no) and warning activation (activated on-hover vs. statically displayed), an email banner warning (based on Gmail's banner warning), a browser warning (based on Chrome's browser warning), and a no-warning condition (control). Participants were asked to test whether links worked in a set of emails presented in an online email client.
+    </p>
+    <p>
+     Our research contributes a new controlled method for evaluating phishing warning effectiveness, empirical evidence of different warning features’ influence on CTR, and guidelines for phishing warning design. Our key findings are:
+    </p>
+    <ul class="list-no-style">
+     <li id="list1" label="•">
+      Link-focused phishing warnings significantly reduced click-through rate compared to email banner warnings and no warning. This shows that warning placement has a significant impact on phishing warning adherence.
+      <br/>
+     </li>
+     <li id="list2" label="•">
+      Forced attention, i.e., requiring users to click the actual URL displayed in the warning, resulted in significantly lower click-through rates compared to other link-focused phishing warnings. This suggests that forcing interaction with the warning improves phishing warning adherence.
+      <br/>
+     </li>
+     <li id="list3" label="•">
+      Whether link-focused warnings were static or appeared only when hovering over the link had little effect on click-through rate. This suggests that warning placement and forced attention are more important for phishing warning effectiveness than the method of activation.
+      <br/>
+     </li>
+    </ul>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Phishing counter measures in HCI research fall into three major categories [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+      32
+     </a>
+     ]: training users to detect and avoid phishing emails, silent identification and elimination of phishing emails and domains, and warning users about phishing emails and domains.
+    </p>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Phishing Training and Behavior
+       </h3>
+      </div>
+     </header>
+     <p>
+      People become victims of phishing attacks because of inattention or not understanding browser-based cues regarding a website's authenticity [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ]. In contrast, people who check URLs are less likely to click on a phishing link [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ].
+     </p>
+     <p>
+      The importance of user perception and understanding for avoiding phish has been incorporated into anti-phishing training approaches. The Anti-Phishing Phil game [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ] trained users to identify phishing URLs. PhishGuru [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ] sent fake phishing mails to an organization and provided anti-phishing training once a person has clicked on one of those phishing links. The training emphasized phishing email cues, such as a potentially fraudulent sender or non-matching URLs (links that do not match the status bar). More recently, Wash and Cooper conducted a simulated phishing campaign similar to PhishGuru and found that stories are more effective when heard from peers, but facts and advice were more effective when heard from professionals [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+       57
+      </a>
+      ]; four of six points covered in their training materials related to inspecting URLs by hovering over links. Lastdrager et al. evaluated the effectiveness of anti-phishing training for children [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ]. When introducing phish identification, the first clue given to participants was “how to find a URL from a hyperlink and how to assess where a URL leads to.”
+     </p>
+     <p>
+      While identifying a link's URL is common anti-phishing advice, current email clients do not support this task well. For instance, users are told to hover over links to check their URLs, but are not supported in doing so safely. Users should be able to evaluate a suspect link without being placed at risk of clicking a link. When the link is suspect, email phishing warnings should be
+      <em>
+       link-focused
+      </em>
+      , i.e., appear near the suspect link, clearly display the link's URL, and the suspect link should be unclickable so users can safely evaluate the URL.
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Phishing Detection
+       </h3>
+      </div>
+     </header>
+     <p>
+      Another approach to thwart phishing attacks is to automatically detect phishing websites or emails. Common strategies include blacklists of confirmed phishing website URLs [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ] and automated probabilistic detection. Such phishing detection algorithms analyze URL, website or email features to determine the probability that a website or email is a phish. Methods for phishing website detection include term frequency-inverse document frequency (TF-IDF) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ], semantic data models [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ], and machine learning [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ]. Similarly, phishing email detection analyzes features such as message content, email structure, sender information, target identification, and links in the email [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ]. While these approaches achieve high accuracy (e.g., CANTINA+ had a best case false positive rate of 1.35% [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ]), problems still arise at scale. Considering an estimated 269 billion emails are sent each day [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ], and one in 2,000 emails are phish [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ], even such high accuracy in phishing email classification would still produce over 1.8 million false positives every day. Therefore, a common approach is to augment phishing detection with phishing warnings.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Security Warnings
+       </h3>
+      </div>
+     </header>
+     <p>
+      Security warnings have been a particular focus of usable privacy and security research  [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ], including website security indicators [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ], software installation dialogues [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ], mobile app permissions [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ], privacy notices [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ], and phishing warnings [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ]. Security warnings and indicators aim to make users aware of a potential hazard and help them take informed actions. However, repeated exposure to warnings can result in habituation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]. Proposals to mitigate habituation include dynamic [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ] or polymorphic warnings [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ], or adding warning attractors to capture users’ attention  [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ]. Other work has shown that certain security indicators and warnings may go unnoticed, such as the HTTPS icon in a browser's address bar; they may be misunderstood, or they may not be heeded [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ]. SSL certificate warnings also face misunderstandings [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ] and lack of adherence [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ]. Different variations in warning design have been shown to improve (or reduce) a warning's effectiveness [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ].
+     </p>
+     <p>
+      Regarding phishing warnings, Egelman et al. found that active phishing warnings, which interrupt the user's process, are more effective than static indicators [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ]. Akhawe and Felt evaluated the click-through rate of malware and phishing warnings using browser telemetry in Google Chrome and Mozilla Firefox, and found click-through rate differed by browser, release channel, and operating system [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ]. Volkamer et al. found that drawing attention to a pruned URL (only the domain, e.g.
+      <a class="link-inline force-break" href="www.chase.com">
+       www.chase.com
+      </a>
+      ) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ] and tooltip warnings appearing when hovering over a link [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ] significantly helped people identify phishing URLs. They further used a time delay (i.e. a time limit before the link is clickable) as an inhibitive attractor. However, Volkamer et al. only evaluated their warning against a non-warning control, which makes it difficult to ascribe observed effects to specific warning design features. Instead, we conducted a between-subjects experiment to understand and isolate the effects of different warning features on click-through rate: warning placement (link, email banner, browser warning), warning activation (hover, static), and forced attention (yes, no). With our study, we validate Volkamer et al.’s finding that link-focused warnings are more effective than no warning. Additionally, we provide empirical effectiveness comparisons across different types of email client warnings.
+     </p>
+    </section>
+   </section>
+   <section id="sec-7">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       LINK-FOCUSED PHISHING WARNING DESIGN
+      </h2>
+     </div>
+    </header>
+    <p>
+     Security and phishing warnings have been studied extensively. We contribute to this body of work by assessing in a controlled manner what warning features effectively support people in applying prominent anti-phishing advice, namely checking a link's URL before clicking on it, and thus avoid phishing links. Building on prior work and warning design principles, we studied the effects of warning placement, forced attention, and warning activation in a controlled experiment. In order to be able to isolate the effects of specific warning features, we designed a link-focused phishing warning that allowed for controlled variation of variables rather than comparing existing warnings as-is.
+    </p>
+    <p>
+     Our link-focused phishing warning design, as shown in Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     , appears near a suspicious link, similar to Volkamer et al.’s proposal [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+      55
+     </a>
+     ]. We implemented forced attention similar to Bravo-Lillo et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ] by deactivating the suspicious link in the email body and forcing the user to click the unmasked URL in the warning if they want to proceed. This allows users to safely hover over a link without the risk of clicking, while still allowing them to proceed. We further studied the effect of a warning's activation, since active warnings have been shown to improve warning effectiveness compared to static warnings [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ]. Our active warnings displayed on-hover [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+      55
+     </a>
+     ], while the static warnings were displayed statically with the email. Next, we elaborate on our design rationale for link-focused warnings with respect to warning placement, warning activation, warning content, and the use of forced attention.
+    </p>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Warning Placement
+       </h3>
+      </div>
+     </header>
+     <p>
+      Wogalter et al. suggest that to be effective, a warning should be placed close in space and time to the hazard it guards against [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ]. For victims of email-based phishing attacks, the hazard begins at the phishing email. A
+      <em>
+       browser
+      </em>
+      -based phishing warning (see Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ) appears after the user has already decided to click on an email link, at which point the browser warning must overcome the user's anchoring bias and loss aversion [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ] to prevent them from proceeding to the phishing site. Phishing warnings in the email client can potentially prevent users from clicking a suspicious link in the first place. Current phishing warnings in email clients, such as Gmail's
+      <em>
+       banner
+      </em>
+      warning (see Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      ), appear at the top of an email. Banner warnings often warn users to be cautious and state general anti-phishing advice. However, for phishing emails in which a link is the hazard, these warnings may (1) appear too far from the specific phishing link and (2) provide little support for helping users identify the specific hazard. Therefore, similar to Volkamer et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ], we propose placing
+      <em>
+       link-focused phishing warnings
+      </em>
+      inside the email, in close proximity to the suspected phishing link (see Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      ).
+     </p>
+     <figure id="fig1">
+      <img alt="" class="img-responsive" longdesc="Our link-focused warning, under a link in an email. The warning tells the user they are about to travel to a fake website." src="3300748_files\chi2019518fig1.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        Our link-focused phishing warning with forced attention. The warnings appears when a user hovers over a phishing link. The warning uses sparse text and draws attention to the link's actual URL in order to facilitate its inspection. We further force a user's attention to the warning content by deactivating the link in the email when the warning appears (and mouse cursor turns into a “no” symbol), forcing the user to click the URL displayed in the warning if they choose to proceed.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Warning Activation
+       </h3>
+      </div>
+     </header>
+     <p>
+      Prior research indicates that active warnings (those that interrupt the user's process) are more effective than static warnings [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ]. This approach also aligns well with typical phishing training [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ], recommending that one should hover over links and check the URL before clicking. There are two options for realizing an active link-focused phishing warning: when the user hovers over a link [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ] or clicks it. Since the warning's objective is to prevent people from clicking the phishing link at all, our warning appears when a user hovers over a suspicious link —  more specifically, the warning is triggered by the
+      <tt>
+       onmouseenter
+      </tt>
+      event and remains visible until the cursor leaves the link or warning area and a 250 ms delay has elapsed.
+     </p>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Warning Content
+       </h3>
+      </div>
+     </header>
+     <p>
+      Typically, when hovering over a link, the link's URL is displayed in the browser's status bar, which is decoupled from the suspicious link and may be ignored by the user. Lin et al. found that domain highlighting helps some people identify phishing websites [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ]. Volkamer et al. found that displaying a pruned URL (i.e., only the domain without path or parameters, e.g.,
+      <a class="link-inline force-break" href="www.chase.com">
+       www.chase.com
+      </a>
+      ) significantly helped people identify phishing URLs [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ].
+     </p>
+     <p>
+      Therefore, we display a link's unmasked and pruned URL in our warning. This reduces the cognitive burden of having to look away from the link in order to evaluate it, and makes it easier for users to recognize when the URL differs from the domain they expect. The URL shown in the warning is also clickable, allowing the user to proceed to the website if they so choose with minimal extra effort. We also added a clear indication that the URL displayed in the warning is the link's actual destination (see Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      ). Following hazard warning guidelines [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ], the warning further includes a red triangle with an exclamation symbol and a warning heading.
+     </p>
+     <p>
+      For the heading text of our link-focused warnings, we considered the heading of Chrome's SafeBrowsing warning (“Deceptive site ahead;” see Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ) and a variant in plainer language (“fake” instead of “deceptive”), as it might be more succinct and legible, which is important for effective warning design [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ]. We conducted a between-subjects pre-study with Amazon MTurk (
+      <em>
+       n
+      </em>
+      =207) with two groups to determine the word choice for the warning heading. Participants were paid
+      <font style="normal">
+       $
+      </font>
+      0.30 for a 5-minute survey. Participants saw an image of an email that contained the warning (either with “fake” or “deceptive”). We then asked participants to describe in an open-response question what the warning text meant; we scored answers correct if they described the hazard as the link or the website that it leads to (evaluation), and mentioned phish or stolen credentials as opposed to spam (accuracy). Then we asked participants 2 seven-point Likert scale questions about how likely they would be to heed the warning, and how they would rate the effectiveness of the warning.
+     </p>
+     <p>
+      We found no significant differences between our groups, so we evaluated each of these four categories by the mean response. By this measure, our participants responded favorably to the word “fake” across all four measurements. Participants more frequently identified the hazard as the link or the link's website (85%) and described the consequences of clicking the link correctly (77.5%). Participants also rated “fake” as being effective (5.25 out of 7) and would be less likely to proceed past the warning (1.55 out of 7). Thus, we used “Fake Website” as the warning heading and further added a call to action to clarify that one should not proceed. The final warning heading for the link-focused warning was “Fake Website, Don't Click!”
+     </p>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Forced Attention
+       </h3>
+      </div>
+     </header>
+     <p>
+      Hovering over suspicious links to inspect URLs to see warnings has two weaknesses: (1) it increases the risk of accidentally clicking the link, and (2) it is easy for users to miss or ignore the link-focused warning. Bravo-Lillo et al. proposed inhibiting warning attractors that temporarily prevent the user from taking a risky action until a set amount of time has passed or the user has taken a specific action [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ]. Volkamer et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ] used a time delay before the original link in the email becomes clickable. We use an action-based inhibitor instead. More specifically, we deactivate the link in the original email, but include the pruned URL as a clickable link in the warning. Thus, the user cannot just click through and ignore the warning, but has to click the pruned URL in the warning if they want to proceed. The user can still take the risky option without having to wait, but needs to overcome a small cognitive burden [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ]. This approach also guards the user when evaluating the potential hazard [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ], since a user can check a link's URL by hovering without being at risk of clicking it.
+     </p>
+    </section>
+   </section>
+   <section id="sec-12">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       STUDY DESIGN
+      </h2>
+     </div>
+    </header>
+    <p>
+     We conducted a between-subjects online experiment to evaluate the effectiveness of three different warning features (forced attention, activation, placement) with our warning design. Participants were asked to log into an online email client and evaluate ten emails, three of which contained a phishing link. Specifically, we used a 2x2 design to isolate effects of warning activation and forced attention for link-focused warnings. We then compared the link-focused warnings to a banner and a browser warning (for which warning activation and forced attention would not be meaningfully comparable), as well as a no-warning control condition, resulting in seven conditions in total. We first describe the conditions in more detail, before outlining the study protocol, our online email client, the emails and phishing URLs used, and our analysis methods.
+    </p>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Link-focused Warning Conditions
+       </h3>
+      </div>
+     </header>
+     <p>
+      The four link-focused warning conditions (shown in Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      ) only varied in whether the warning was activated by hovering over the link or was statically displayed (
+      <em>
+       warning activation: hover vs. static
+      </em>
+      ); and whether forced attention was used (
+      <em>
+       forced attention: yes vs. no
+      </em>
+      ). In the non-forced attention conditions, both the original link in the email and the link in the warning were clickable; in the forced attention conditions, only the link in the warning was clickable.
+     </p>
+     <p>
+      To study differences in user behavior when confronted with different warning placements, we further created a comparable email banner warning and browser warning. Both warnings were modelled after existing warnings (Google's Safe Browsing
+      <a class="fn" href="#fn1" id="foot-fn1">
+       <sup>
+        1
+       </sup>
+      </a>
+      warnings for Gmail and Chrome, respectively). However, to isolate the effects of our independent variables (i.e., placement, forced attention, activation), the style and content of the browser and banner warnings were adjusted to be consistent with our link-focused warnings.
+     </p>
+     <p>
+      Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      and Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      show our adaptations in comparison to the original Gmail banner warning and Chrome's browser warning, respectively. For the email banner warning, we adjusted the warning heading from the link-focused warning so the email was the focus of the warning (as opposed to the website) and kept the unmasked URL in the warning even though Gmail's banner warning does not highlight suspicious URLs. Otherwise, we kept the warning content consistent with the link-focused warning. The browser warning appears after clicking on an email's phishing link, so we used Chrome's warning heading but replaced “deceptive” with “fake” to be consistent with our link-focused warning. We further reduced the amount of text in the browser warning to achieve consistency with the other warning conditions.
+     </p>
+     <p>
+      To obtain a baseline of participants’ unaided phishing detection ability and behavior, participants in the control condition saw no phishing warning, but could still see a link's URL in the browser's status bar.
+     </p>
+     <figure id="fig2">
+      <img alt="" class="img-responsive" longdesc="(Top) Gmail's banner warning is red with explanatory text. It says that people marked similar messages as phishing scams. (Bottom) Our banner warning is white. It says the email contains a link going to a fake website, and provides the unmasked URL." src="3300748_files\chi2019518fig2.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        Gmail's (
+        <em>
+         top
+        </em>
+        ) and our adapted (
+        <em>
+         bottom
+        </em>
+        ) email banner phishing warnings. Both warnings appear above the email body.
+       </span>
+      </div>
+     </figure>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="(Bottom) Our browser warning. It warns that the website ahead is fake, and provides a link to continue to the URL" src="3300748_files\chi2019518fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Chrome's (
+        <em>
+         top
+        </em>
+        ) and our adapted (
+        <em>
+         bottom
+        </em>
+        ) browser phishing warnings. Both warnings appear in the browser when a person is about to visit a phishing website.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Study Protocol
+       </h3>
+      </div>
+     </header>
+     <p>
+      We conducted our study via Amazon Mechanical Turk. Our study used deception to avoid priming participants about phishing risks. We described the goal of the task as evaluating whether links work in emails in order to help automated detection of dead hyperlinks.
+     </p>
+     <p>
+      Upon accepting our HIT, participants were randomly assigned to one of the seven conditions. Participants were told that they would be given access to an email inbox containing ten emails drawn from a large dataset of real emails, and asked to provide information about each email in our survey. To further increase ecological validity, participants were then given a unique username and password and a link to log into ‘their’ inbox. We implemented an instrumented online email client, based on Gmail's aesthetics, in which participants then interacted with emails.
+     </p>
+     <p>
+      Participants were asked to log into the email client with their credentials, go through each email in their inbox, and answer questions about each email's contents in our Qualtrics survey. For each individual email, participants were asked (a) What is the title of the email?, (b) How many hyperlinks are in the email?, and (c) Are all the hyperlinks in the email working? These questions were designed to incentivize participants to click on links without explicitly instructing them to do so or priming their behavior. Participants have the freedom to click, hover, or use some other means of subjective evaluation.
+     </p>
+     <p>
+      Each inbox had the same ten emails in randomized order. Three of these emails contained phishing links. When participants opened any of the three phishing emails, they would encounter the phishing warning corresponding to their condition (i.e., banner and static link-focused warnings would be immediately visible; hover-activated link-focused warnings would load if the user hovered over the link; the browser warning would appear after the participant clicked the phishing link; no warning in the control). We recorded participants’ click and hover interaction with the links in the inbox and emails.
+     </p>
+     <p>
+      After a participant finished evaluating all ten emails, we asked follow-up questions about their cybersecurity knowledge, past data theft experience, their frequency of using the vendors used as phishing targets, their impressions of our warnings, and demographic questions. Cybersecurity knowledge and past data theft experiences were assessed using questions from Pew Research Center surveys [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ]. Phishing vendor usage was measured on a 6-point scale for each company ranging from “less than once a month” to “daily”, with an option for “I'm not sure”. We assessed participants’ impression of the warnings by asking them to recall if they had seen the warning, how useful the warning was in identifying the link, how annoying the warning was, and how much the warning affected their perception of the link. We also tested their comprehension of the warning by asking them to indicate which parts of the email seemed suspicious, with options including “the link shown in the email text,” “the sender,” and “the subject line.” We further asked for optional feedback on how to improve the warning in a free text box before demographic questions.
+     </p>
+     <p>
+      At the end of the study, we debriefed participants that the true intention of the study was the assessment of phishing warnings and that their hover and click interactions with the email client and warnings had been recorded. They were provided with a completion code to copy-and-paste back into MTurk. Participants were compensated with
+      <font style="normal">
+       $
+      </font>
+      5.00 for work that was expected to take 20-25 minutes. Our study was approved by our institutional review board (IRB). The study materials, online email client code, and analysis code are publicly available.
+      <a class="fn" href="#fn2" id="foot-fn2">
+       <sup>
+        2
+       </sup>
+      </a>
+     </p>
+    </section>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Online Email Client
+       </h3>
+      </div>
+     </header>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="Our online inbox, designed to be similar aesthetically to Gmail" src="3300748_files\chi2019518fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Our online email client, modeled after Gmail's interface.
+       </span>
+      </div>
+     </figure>
+     <p>
+      Participants interacted with an online email client modeled after Gmail's interface, shown in Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      . Participants could log in and interact with emails, but additional buttons and features (e.g., “Compose“) were visibly disabled. The email client did not have a name or logo to reduce brand effects.
+     </p>
+     <p>
+      While participants interacted with our email client, we recorded specific events: click and hover interactions, when a warning was rendered, and other metadata (e.g., link URL, their IP address). Events were detected on the client side with Javascript and sent back to our web server using AJAX requests. We also recorded website requests on the server side, both for pages of the email client, as well as the phishing domains used.
+     </p>
+     <p>
+      Consistent with prior work [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ], we used click-through rate (CTR), or “adherence rate,” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ] as the metric to measure warning effectiveness: the number of people who clicked on the link, divided by the number of people who saw the link. The lower the CTR on phishing links, the more effective the warning is. We also recorded whether participants’ hovered over links and for how long, which provides an indication of how long they engaged with a warning or URL displayed in the browser's status bar. We estimated that the threshold after which the browser's status bar is displayed is 250 ms. Since hover interactions less than 250 ms would not display a link's URL, we only recorded hover events longer than 250 ms. We further logged when a warning was rendered to assess potential changes in behavior after encountering multiple warnings. Using these event records, we split a participant's data into segments separated by the first, second or third warning displayed.
+     </p>
+    </section>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Email Selection and Phishing URLs
+       </h3>
+      </div>
+     </header>
+     <p>
+      All participants saw the same ten emails in random order. These emails were modelled after real emails the authors had received. For benign (i.e., non-phish) emails, links that may have been difficult to see were removed to facilitate the participants’ primary task, but were otherwise unaltered. Each email contained between two and seven unique links.
+     </p>
+     <p>
+      Three of the emails were modified to contain a link to a phishing domain controlled by the authors. We modeled our phishing domains and URLs based on actual phishing emails we received from our institution's IT department and trends in phishing reports [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ]. The vendors (Chase, Venmo, Yahoo) were chosen because they are industries and/or organizations that are frequently targeted by phishing campaigns [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ]. The three domain names all contained a word or words related to the organization or industry (i.e., “chase” and “banking”). As top-level domains we used .com, .br, and .us. Each of these phishing emails contained a call to action such as “Click Here.” We replaced the underlying URL of the call-to-action links with a phishing URL, thus replicating a common phishing attack in which an otherwise authentic looking email contains a non-matching URL [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ]. Each phishing email had either two or three unique links, with the remaining unchanged links pointing to ancillary information such as privacy policies.
+     </p>
+     <p>
+      The three phishing domains pointed to our study server, ensuring participant safety. Both our email client and the phish links were configured for HTTPS, since APWG reports an increase in phishing websites using certificates [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ]. When the server received a request for one of the phishing domains, the request was logged, and the server merely redirected the participant to the legitimate website.
+     </p>
+    </section>
+    <section id="sec-17">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Data Cleaning
+       </h3>
+      </div>
+     </header>
+     <p>
+      After data collection, we found it necessary to filter out certain responses. We removed participants from the same IP address who began the survey within two hours of each other. Removing these participants ensures participants did not have prior knowledge of our study's deception. We further removed participants who did not appear in our server logs, and participants who answered factual questions about the emails incorrectly. Finally, we removed participants whose server records showed unread emails. After removing 56 incomplete and invalid responses, our final sample consisted of 701 participants.
+     </p>
+     <p>
+      All 701 participants opened all 10 emails and had click and/or hover interactions within every email. Furthermore, all participants responded with an approximation of the correct title of each email in our survey. This suggests that our participants attempted our task in earnest.
+     </p>
+     <p>
+      We further analyzed the performance of websites under our control (email client and phishing domains). When a user clicks a link to one of our websites (i.e. the inbox, each email, and our phish domains), we should receive a click event from the client and a server record that the request was processed. Our results show that on average 8.02% of server records per condition did not have a corresponding client event log. This is likely due to interactions that we did not capture, such as the back and refresh buttons, or participant behavior. In an optional free-response question in our survey, several participants indicated they copied the phishing links and opened them in a separate window, browser or private browsing mode. Other participants mentioned our websites triggered their 3rd party security software. Note that this has no effect on the reliability of our phishing click-through rate analysis, because requests for the phishing domains were logged server-side. However, benign click-through rates and hover times may be under-reported, though equally across conditions. We discuss the implications of this on our findings where applicable.
+     </p>
+    </section>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Analysis Method
+       </h3>
+      </div>
+     </header>
+     <p>
+      To examine how warning designs and personal characteristics affected participants’ behavior, we conducted mixed-effect logistic regressions on click and hover actions (outcome: yes vs. no), and mixed-effect linear regressions on hover time (a continuous variable with 250 ms as the minimum value). For logistic regression results, we report the odds-ratio of the predictor as the effect size and its corresponding
+      <em>
+       p
+      </em>
+      -value. For linear regressions, the dependent variable (i.e., hover time) was normalized to maximize the model's accuracy.
+     </p>
+     <p>
+      Our mixed-effect regression models consisted of fixed-effect and random-effect variables. Fixed-effect variables included (1) warning-related variables: placement (link-focused, banner, or browser), activation (whether the email was activated by hover/click or loaded with the email), and forced attention (whether the phish link was unclickable or not); and (2) participant-related variables: cybersecurity knowledge, past data theft experience, vendor usage, and demographic information (gender, education, age, and occupation). Random-effect variables measure the random effects resulting from the differences between individual links and emails when fixed-effect variables are under control. We applied our models to both phishing links and benign links.
+     </p>
+     <p>
+      We further conducted qualitative analysis on participants’ open-ended responses regarding (1) how the warning affected their perception of the link and behavior (Perception), and (2) how they would improve the warning (Improvement). Of 701 participants, we received 528 valid responses for Perception, and 89 for Improvement. We used thematic coding and affinity diagramming [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ] to develop a codebook for analyzing these responses. Two researchers independently coded 20% of the responses, reconciled results and refined the codebook until reaching a high inter-rater reliability (Cohen's
+      <em>
+       κ
+      </em>
+      = 83.3 for Perception;
+      <em>
+       κ
+      </em>
+      = 73.3 for Improvement). One researcher then used the updated codebook to code all responses.
+     </p>
+    </section>
+   </section>
+   <section id="sec-19">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       RESULTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Our results show that placement influences click-through rate, as link-focused warnings were significantly more effective than banner warnings; browser warnings performed better than link-focused warnings, but this is likely due to the study design. Within link-focused warnings, we found that forced attention (i.e. restricting access to the link) was effective at reducing CTR. Warning activation had no significant impact on CTR.
+    </p>
+    <section id="sec-20">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Participant Demographics and Profile
+       </h3>
+      </div>
+     </header>
+     <p>
+      Of our 701 participants, 395 responded male (56.34%), 301 female (42.94%), 3 non-binary/third gender (0.43%), and 2 preferred not to answer (0.29%). Our participants were 20 to 71 years old (mean: 34.38 years; median: 31 years). Each condition had 98 to 103 participants (mean: 100). Compared to the results from the Pew 2017 Cybersecurity Knowledge survey [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ], our participants answered questions correctly more often (69.13% vs. 42.54%). This corroborates prior research that MTurk participants have better cybersecurity knowledge [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ]. Our participants’ aggregated responses regarding prior data theft experiences were within 6 percentage points of responses to Pew's Americans and Cybersecurity survey [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ], suggesting our sample population had similar data theft experiences as the general population.
+     </p>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="A bar graph which shows benign click rates are similar across condition, but phish click rates are different" src="3300748_files\chi2019518fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        Click through rates for our warning designs for phishing links (
+        <em>
+         red
+        </em>
+        ) and benign links (
+        <em>
+         blue
+        </em>
+        ).
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      As shown in Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      , the different warning designs had an effect on whether a participant clicked a phishing link. Notably, participants in the control condition clicked on a greater percentage of phishing links than benign links. We attribute this difference to the call-to-action nature of the phishing links, which without a phishing warning, were effective at baiting participants to click. We would expect such call-to-action links to be clicked at a greater rate than peripheral links. Indeed, call-to-action links in other benign emails also had a high CTR (57–63%) across all conditions, suggesting participants generally clicked on links that called to be clicked. It is further notable that the average benign links CTR across all conditions was 48.5%, even though the task asked participants to check whether links worked. This is likely because not all benign links in an email (e.g. embedded images, fine print) are as obvious as the call-to-action links. It could also be that participants evaluated whether a link “worked” through other means than clicking; our intention in crafting the task is to avoid overly incentivizing participants to click the links.
+     </p>
+     <p>
+      Our logistic regression analysis showed that a participant's click-through rate for benign links was a significant predictor of their click actions on phish links (
+      <em>
+       OR
+      </em>
+      = 4.34,
+      <em>
+       p
+      </em>
+      &lt; .001). This suggests that participants who click more on benign links are more likely to also click on phishing links. Furthermore, participants who gained a higher score in the cybersecurity quiz were significantly less likely to click on phishing links (
+      <em>
+       OR
+      </em>
+      = 0.89,
+      <em>
+       p
+      </em>
+      &lt; .05), and were significantly more likely to hover over (
+      <em>
+       OR
+      </em>
+      = 1.95,
+      <em>
+       p
+      </em>
+      &lt; .001) and click on benign links (
+      <em>
+       OR
+      </em>
+      = 1.35,
+      <em>
+       p
+      </em>
+      &lt; .001). This suggests participants with higher cybersecurity knowledge were more cautious when interacting with these links, and could better distinguish phish from benign links. Moreover, we found that participants who used the vendor more often previously were more likely to click on phishing links (
+      <em>
+       OR
+      </em>
+      = 1.05,
+      <em>
+       p
+      </em>
+      &lt; .05), suggesting the existence of brand effects.
+     </p>
+    </section>
+    <section id="sec-21">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Warnings Reduced Phishing CTR
+       </h3>
+      </div>
+     </header>
+     <p>
+      Setting the control condition (no warning) as the baseline for
+      <em>
+       placement
+      </em>
+      in the mixed-effect logistic regression model, we see that the presence of a warning led participants to be more cautious about clicking phishing links. Participants in the four link-focused warning groups (
+      <em>
+       OR
+      </em>
+      = .002,
+      <em>
+       p
+      </em>
+      &lt; .001), the banner warning group (
+      <em>
+       OR
+      </em>
+      = .04,
+      <em>
+       p
+      </em>
+      &lt; .01), and the browser warning group (
+      <em>
+       OR
+      </em>
+      = .73*10
+      <sup>
+       − 4
+      </sup>
+      ,
+      <em>
+       p
+      </em>
+      &lt; .001) were significantly less likely to click phishing links compared to participants who did not see a warning.
+     </p>
+     <p>
+      Next, we compared the click-through rates (CTR) for the four link-focused warning designs to current warning designs, namely browser and banner warnings, and the control. The most effective warning design with the lowest CTR was on-hover/forced attention (8.67%), followed by the browser (11.78%), static/forced attention (15.64%), on-hover (30.36%), static (33.65%), banner (44.00%), and finally the control group with no warning (76.67%). A Kruskal-Wallis test confirmed differences in phishing CTR were significant among different conditions (
+      <em>
+       χ
+      </em>
+      <sup>
+       2
+      </sup>
+      (6) = 180,
+      <em>
+       p
+      </em>
+      &lt; .001, ϵ
+      <sup>
+       2
+      </sup>
+      = .26). Post-hoc analysis (Dunn comparison test) showed that the CTR for the best-performing link-based warning (on-hover/forced attention) was significantly lower than the banner warning (
+      <em>
+       p
+      </em>
+      &lt; .001), but does not differ significantly from the browser warning. This means link-focused warnings are more effective than banner warnings, but inconclusive when compared to the browser warning. Conversely, a one-way ANOVA showed that the CTR for benign links was consistent across conditions (
+      <em>
+       F
+      </em>
+      (6, 694) = .59,
+      <em>
+       p
+      </em>
+      = .74). This indicates that warning designs played a factor in determining whether a participant clicked a phishing link but not a benign link.
+     </p>
+     <p>
+      To determine if the difference in click and hover behaviors came from warning design variants and participant characteristics exclusively (and not random effects from links or emails, such as certain links or emails being more or less believable than others), we included individual links and emails as random-effect variables in our regression models. We found that the variances for the random effects for both links and emails were between .00 and .04, suggesting that participants’ propensity to click or hover over links did not vary between emails or links. These results suggest that our emails and links were equally believable.
+     </p>
+    </section>
+    <section id="sec-22">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Placement: Link-focused Better than Banner
+       </h3>
+      </div>
+     </header>
+     <p>
+      Using link-focused as the baseline for placement in the logistic regression model, we found that, compared to link-focused warnings, banner warnings led to higher phishing CTR (
+      <em>
+       OR
+      </em>
+      = 3.26,
+      <em>
+       p
+      </em>
+      &lt; .001), and higher hover rate for both benign (
+      <em>
+       OR
+      </em>
+      = 1.60,
+      <em>
+       p
+      </em>
+      &lt; .001) and phishing links (
+      <em>
+       OR
+      </em>
+      = 6.65,
+      <em>
+       p
+      </em>
+      &lt; .001). Participants who encountered the banner warning also spent more time hovering over phishing links (
+      <em>
+       b
+      </em>
+      = .18,
+      <em>
+       p
+      </em>
+      &lt; .01). This suggests that participants noticed the banner warning, hovered over all the links to search for the suspect link, hovered longer over phishing links, yet, clicked them anyways. Due to likely under-reported hover times (see Section
+      <a class="sec" href="#sec-17">
+       4
+      </a>
+      ), we believe our results to be less pronounced than reality.
+     </p>
+     <p>
+      Compared to link-focused groups, participants in the browser warning group were significantly less likely to click phishing links (
+      <em>
+       OR
+      </em>
+      = .45,
+      <em>
+       p
+      </em>
+      &lt; .001). This suggests that overall, browser warnings were the most effective at preventing participants from reaching phishing websites. However, the effectiveness of browser warnings may be an artifact of our study design. Since our task for participants was to check whether links worked, reaching a full-screen browser warning after clicking an email link may have been sufficient for them to conclude the link was suspicious with little incentive to proceed further. Furthermore, Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      shows that the on-hover/forced attention condition had the lowest CTR on phishing links. This suggests that placement of the warning cannot be the single predictor of whether or not a participant will click on a phishing link, and the effect of forced attention and hover activation might add nuances to this interaction.
+     </p>
+    </section>
+    <section id="sec-23">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Forced Attention Is Effective
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our logistic regression analysis showed that within link-focused warnings, participants in forced attention conditions were significantly less likely to click phishing links (
+      <em>
+       OR
+      </em>
+      = .33,
+      <em>
+       p
+      </em>
+      &lt; .001). A Mann-Whitney
+      <em>
+       U
+      </em>
+      test on forced attention confirms the significant difference between forced attention and non-forced attention groups regarding phishing CTR (
+      <em>
+       W
+      </em>
+      = 2.5*10
+      <sup>
+       4
+      </sup>
+      ,
+      <em>
+       p
+      </em>
+      &lt; .001,
+      <em>
+       r
+      </em>
+      = .27). This suggests that within link-focused warnings, forced attention is an effective approach for reducing phishing CTR.
+     </p>
+    </section>
+    <section id="sec-24">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Warning Activation: No Significant Effect
+       </h3>
+      </div>
+     </header>
+     <p>
+      We further examined the effect of hover warnings (warnings that interrupt the user) and static warnings (warnings that display simultaneously with the email) on phishing link CTR. We found that activating a link-focused warning on hover had little to no effect on clicking phishing links (n.s.). This is also confirmed by a Mann-Whitney
+      <em>
+       U
+      </em>
+      test (n.s.). This indicates that prior work suggesting active warnings are more effective than passive warnings [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ] might not apply to the kind of in-email, link-focused warnings we tested.
+     </p>
+     <p>
+      The only significant effect of warning activation we observed is that participants who encountered an active link-focused warning were significantly more likely to hover over benign links (
+      <em>
+       OR
+      </em>
+      = 1.50,
+      <em>
+       p
+      </em>
+      &lt; .001), and also spent more time hovering over benign links (
+      <em>
+       b
+      </em>
+      = .12,
+      <em>
+       p
+      </em>
+      &lt; .001). Possibly when participants view a warning that appears on hover, they then might hover for longer over other links to see if a warning appears for them. Due to likely under-reported hover times (see Section
+      <a class="sec" href="#sec-17">
+       4
+      </a>
+      ), a more pronounced difference may exist.
+     </p>
+    </section>
+    <section id="sec-25">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Multiple Warnings Affect Benign Link Interactions
+       </h3>
+      </div>
+     </header>
+     <p>
+      In addition to click-through rates, we examined how being exposed to multiple warnings would affect participants’ interaction with phishing and benign links. We grouped participants’ interactions into four groups: before a user sees a warning (0 warnings seen), after the user sees the first warning (1 warning seen), etc. For most conditions, phishing link click-through and hover rates decreased as participants saw additional warnings, as shown in Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      and
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      . This suggests that participants may have become habituated to the warnings. However, we also noticed that the hover rate over benign links increased as participants saw more warnings (see Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      ). This suggests participants interacted with the phishing links less but hovered over benign links more as they saw more warnings.
+     </p>
+     <figure id="fig6">
+      <img alt="" class="img-responsive" longdesc="A line chart which shows that mean hover time over phish links decreased for all conditions as users saw more warnings" src="3300748_files\chi2019518fig6.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 6:
+       </span>
+       <span class="figure-title">
+        Mean time hovered over phishing links.
+       </span>
+      </div>
+     </figure>
+     <figure id="fig7">
+      <img alt="" class="img-responsive" longdesc="A line chart which shows the hover rate over benign links increased for most conditions as users saw more warnings" src="3300748_files\chi2019518fig7.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        Hover rate over non-phishing (benign) links.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      Our regression models confirmed that, as participants saw more warnings, they were more likely to hover over benign links (
+      <em>
+       OR
+      </em>
+      = 1.14,
+      <em>
+       p
+      </em>
+      &lt; .001), but also spent less time hovering over both phishing (
+      <em>
+       b
+      </em>
+      = − .25,
+      <em>
+       p
+      </em>
+      &lt; .001) and benign links (
+      <em>
+       b
+      </em>
+      = − .05,
+      <em>
+       p
+      </em>
+      &lt; .001).
+     </p>
+     <p>
+      Particularly, as the number of warnings seen increased participants in the link-focused groups were less likely to click (
+      <em>
+       OR
+      </em>
+      = .87,
+      <em>
+       p
+      </em>
+      &lt; .05) and hover over (
+      <em>
+       OR
+      </em>
+      = .68,
+      <em>
+       p
+      </em>
+      &lt; .01) phishing links. They also spent less time hovering over phishing links (
+      <em>
+       b
+      </em>
+      = − .31,
+      <em>
+       p
+      </em>
+      &lt; .001). This suggests that participants began to rely on our link-focused warnings to detect phishing warnings, which successfully helped reduce the cognitive load of seeking and examining phishing links, as reflected by the decreased time.
+     </p>
+    </section>
+    <section id="sec-26">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Warnings Aided Hazard Identification
+       </h3>
+      </div>
+     </header>
+     <p>
+      Qualitative analysis of open-ended responses revealed that warnings aided participants in identifying phishing links more easily, and sometimes triggered protective behaviors. The majority of participants who answered the Perception question (325, 62%) reported that the warning helped them notice suspect links (e.g., “It made me think the link was bad“). Among them, 128 participants further reported perceptual or behavioral reactions to the warning. 105 participants explicitly said, that as a result of seeing the warning, they did not click suspect links. Several mentioned engaging in secure practices such as double-checking links (16), checking the email sender (3), or comparing the link to the URL (29). 4 participants mentioned opening a suspicious link in a separate browser, window, or tab during study; another 3 participants mentioned they would do so hypothetically. Additionally, 3 participants mentioned that our links triggered their previously installed 3rd party anti-virus software.
+     </p>
+     <p>
+      Based on participants’ responses (multiple choice) regarding which parts of the email seemed suspicious, participants’ ability to identify the hazard varied among conditions. Responses were categorized as correct (identified the link only), partially correct (identified the link and something else), and incorrect (did not identify the link). The two on hover, link-focused warning conditions had the most participants’ correctly identifying only the link as the hazard (on hover: 61%, on hover/forced attention: 58%). A Kruskal-Wallis test revealed a significant difference among groups (
+      <em>
+       χ
+      </em>
+      <sup>
+       2
+      </sup>
+      (6) = 14.43,
+      <em>
+       p
+      </em>
+      &lt; .05, ϵ
+      <sup>
+       2
+      </sup>
+      = .02). However, post-hoc analysis (Mann-Whitney
+      <em>
+       U
+      </em>
+      ) showed no significant pairwise differences.
+     </p>
+     <p>
+      Conversely, participants’ perceptions of the different warning designs did not vary substantially among groups. A one-way ANOVA revealed no significant differences among groups for a warning's intrusiveness (n.s.), helpfulness (n.s.), or whether it changed their perception of the link (n.s.).
+     </p>
+     <p>
+      On a scale from 1 to 5, participants rated all warnings as similar with regard to intrusiveness (ranging from 1.36 (banner) to 1.5 (on hover/no forced attention)), helpfulness (from 4.0 (banner) to 4.42 (tatic/forced attention)), and perceptual change (from 3.54 (browser) to 4.0 (static/forced attention)).
+     </p>
+     <p>
+      While most participants had an accurate understanding of the warnings, 2 participants (&lt; 0.5%) confused the browser phishing warning with a Transport Layer Security (TLS) warning, reporting that the warning pertained to an expired security certificate. This aligns with prior studies which found that people tend to confuse browser-based phishing and malware warnings with TLS/SSL warnings [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ]. Such confusions did not occur for link-focused and banner warnings, which might be an indication that placing phishing warnings in the email client helps users distinguish them from (potentially benign) TLS/SSL warnings.
+     </p>
+    </section>
+    <section id="sec-27">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Need for More Information
+       </h3>
+      </div>
+     </header>
+     <p>
+      The qualitative analysis further revealed multiple suggestions for improving current phishing warning designs. Of 23 participants who reported clicking a phishing link, 5 noted they clicked the link because they were curious about where the link went; another 6 reported clicking despite being alert to the link's danger, e.g.,
+      <em>
+       “It made me skeptical of the content of the link, or what the destination truly was. Yet, I still clicked it anyways.”
+      </em>
+      Similarly, of the 89 valid responses for the Improvement question, 17 participants expressed a desire for more information, including an explanation of why the link/email was suspicious (10), what the consequences were of clicking (4), and what further actions should be taken (3). Prior work suggests that people will attend to an email message in their inbox if they are curious about its content [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ]. We believe it is reasonable to extend this to phishing emails, phishing links, and phishing websites. While current warnings might include a “Learn More” button, those often point to general security advice, whereas providing more information about the specific suspected phishing link might also be important to satisfy users’ curiosity.
+     </p>
+    </section>
+   </section>
+   <section id="sec-28">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Our results suggest that placing the warning near phishing links helps reduce click-through rate when compared to no warning and similar banner warnings. We also found that forced attention resulted in significantly lower click-through rates for link-focused warnings, though activation (on hover) appears to have had little effect on click-through rates.
+    </p>
+    <p>
+     Next, we first discuss potential limitations of our study before discussing our findings’ implications in more detail.
+    </p>
+    <section id="sec-29">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Limitations
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our study has potential limitations. In our controlled experiment, we gave participants the artificial task to “Check emails for valid links,” which differs from how people use email in their daily lives. We carefully crafted this task to get participants to engage with the emails in a meaningful way, without revealing the study's focus on phishing. More specifically, we gave participants credentials to a realistic online email client and asked them to evaluate whether links are “working,” which was deliberately vague, in order to not over-incentivize clicking on links. Additionally, participants checked these email links on their own computers, further enhancing the ecological validity of perceived security risks. In fact, only 12 participants (1.7%) reported clicking a phishing link because of the task instructions; whereas 105 (15%) explicitly stated they hesitated to click because of the shown warning; 410 (58%) did not click any phishing links. This suggests participants were not unreasonably incentivized to click all links.
+     </p>
+     <p>
+      A further limitation is that our experiment did not assess the effects of false positives, i.e., erroneously displaying a warning for a benign link. In particular, participants may overly rely on the warning and thus refrain from clicking benign links when an erroneous warning is displayed; while a concern, common security advice encourages caution and suggests that people should validate an email request through other channels when unsure [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ]. Another concern is that variance in phishing detection accuracy over time, i.e., repeatedly seeing false positive warnings, may affect the warning's credibility or lead to warning habituation. Our experiment provided new insights on the effectiveness of phishing warning features (placement, forced attention, activation). Further studies such as longitudinal field studies are necessary to assess the impact of false positives on those warning features and the interplay between warning design and phishing detection accuracy, in particular over time.
+     </p>
+     <p>
+      MTurk participants have been shown to be more security-aware than the general population [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ], which was corroborated by our participants’ cybersecurity knowledge. This means our participants may have clicked less frequently on links than the general population might. However, we still observed significant differences in CTR, especially among the control and treatment groups. This suggests that warnings which are effective for this population may also hold value for the general population.
+     </p>
+     <p>
+      Finally, phishing takes many different forms, from spear-phishing and whaling to business email compromise (BEC) to malicious attachments [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ]. We focused on link-based phishing attacks. We acknowledge that phishing links are not always straightforward, as attackers can use URL shorteners to further obfuscate a link's URL. However, even in those cases, placing warnings at a suspicious link, unmasking a link's URL by showing it in the warning, and using forced attention to make it slightly harder for people to ignore the warning may still be useful in protecting people from falling for phish.
+     </p>
+    </section>
+    <section id="sec-30">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Put Your Warning Where The Link Is
+       </h3>
+      </div>
+     </header>
+     <p>
+      When the link is the hazard, we found that placing the phishing warning near the link reduces phishing click-through rates. While the browser warning performed significantly better than our group of link-focused warnings as a whole, this may be a study design artifact, due to low incentives for participants to continue through a warning after having already clicked the link in the email.
+     </p>
+     <p>
+      However, our link-focused warnings performed significantly better than the banner warning group, with lower phish CTR, lower phish and benign hover rates, as well as shorter phish hover time. Our interpretation is that with a banner warning, users search for the suspicious link by hovering over multiple links, hover for a longer time over a phish link, yet might still click the phishing link.
+     </p>
+     <p>
+      Based on our results, we propose that if a link has been flagged as suspicious by phishing detection, email clients should place the warnings directly at the respective link and unmask the link's URL in order to help users apply common anti-phishing advice, namely checking the URL before clicking a link. Encouragingly, major email vendors are starting to adopt such approaches. While our study was in progress, Gmail introduced a new phishing warning, shown in Figure
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      , which appears after clicking a suspected phishing link and includes the suspicious link's unmasked and pruned URL [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ]. Our study provides empirical evidence for the positive impact of such link-focused warnings inside email clients and the use of forced attention on phishing warning adherence.
+     </p>
+     <figure id="fig8">
+      <img alt="" class="img-responsive" longdesc="Gmail's current phishing warning. It activates after a user clicks, asking if the user wants to proceed to the untrusted site" src="3300748_files\chi2019518fig8.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 8:
+       </span>
+       <span class="figure-title">
+        Gmail's current phishing warning [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+         23
+        </a>
+        ] appears after a user clicks but in the email client.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      While this may be effective for phishing emails where the link is suspicious, the most effective method for calling attention to suspect senders or attachments may be different. Contextual phishing warnings that adapt in placement and content to highlight the suspected phishing hazard could be a worthwhile approach for help users more effectively identify phishing in all its forms.
+     </p>
+    </section>
+    <section id="sec-31">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Implement Forced Attention
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our forced attention design deactivated the original phishing link in the email and provided a path to the phishing website through our warning, a type of inhibitive attractor [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ]. Among the link-focused warnings, forced attention was significantly more effective at reducing phishing CTR. We recommend that link-focused warnings should apply forced attention to better protect people from phishing websites. We also propose that future work investigate the use of inhibitive attractors for other interactive phishing hazards, such as attachments.
+     </p>
+    </section>
+    <section id="sec-32">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Curiosity Phished Users
+       </h3>
+      </div>
+     </header>
+     <p>
+      Prior work suggests that curiosity influences a user's attention towards email [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ]. This is corroborated by our qualitative analysis, with several participants reporting they clicked phishing links out of curiosity despite risk awareness, or stating they wanted to learn more about the suspicious link. However, this curiosity is seemingly at odds with prior warning research, which suggests users do not often click “learn more” in browser warnings [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ]. A more nuanced interpretation might be that people do not want to “learn more” about web security/phishing in general, but are curious about why an email in their inbox or a given link was flagged as suspicious. Addressing curiosity about the specific security incident could further help reduce phishing victims. For instance, a link-focused warning could provide an unclickable preview image of the linked website. Such a preview could highlight cues, drawn from phishing training research, on why the particular website is suspicious. This information could be coupled with the warning rather than hiding it behind a “learn more” button.
+     </p>
+    </section>
+   </section>
+   <section id="sec-33">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Despite extensive research and industry efforts, people continue to fall for phish. Users have difficulty identifying phishing cues without training, and automated phish detection will always require mechanisms for users to override system decisions. Warnings can play a crucial role in providing this safety valve while providing the appropriate cues for humans to identify and avoid phishing links.
+    </p>
+    <p>
+     We evaluated the effects of different phishing warning features aimed at making both suspect features of a phishing link and the warning itself more salient (placement, activation) and nudging people away from clicking a suspicious link (forced attention). Our controlled online experiment showed that providing a warning near a link is more effective at reducing phishing CTR than a banner warning at the top of an email. In addition, banner warnings force users to search for links by hovering while not providing enough contextual clues to identify a phishing link once a user hovers. While phishers will continue to adapt their methods to circumvent security processes, our results indicate how improving the placement, interactivity, and contextual cues of phishing warnings can help reduce cognitive burden in identifying and avoiding phishing attacks.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-34">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This research was partially funded by the University of Michigan School of Information and the Institute of Museum and Library Services (RE-01-15-0086-15). The authors thank all study participants for their efforts, as well as the CHI reviewers for their extensive and constructive feedback. The authors would also like to thank Akshay Potnis and the University of Michigan's ITS department for their support and contributions in early stages of this project.
+    </p>
+   </section>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Alessandro Acquisti, Idris Adjerid, Rebecca Balebako, Laura Brandimarte, Lorrie Faith Cranor, Saranga Komanduri, Pedro Giovanni Leon, Norman Sadeh, Florian Schaub, Manya Sleeper,
+      <em>
+       et al.
+      </em>
+      2017. Nudges for privacy and security: understanding and assisting users’ choices online.
+      <em>
+       <em>
+        ACM Computing Surveys (CSUR)
+       </em>
+      </em>
+      50, 3 (2017), 44.
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Devdatta Akhawe and Adrienne Porter Felt. 2013. Alice in Warningland: A Large-Scale Field Study of Browser Security Warning Effectiveness.. In
+      <em>
+       USENIX security symposium
+      </em>
+      , Vol. 13.
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Hazim Almuhimedi, Florian Schaub, Norman Sadeh, Idris Adjerid, Alessandro Acquisti, Joshua Gluck, Lorrie Faith Cranor, and Yuvraj Agarwal. 2015. Your location has been shared 5,398 times!: A field study on mobile app privacy nudging. In
+      <em>
+       Proceedings of the 33rd annual ACM conference on human factors in computing systems
+      </em>
+      . ACM, 787–796.
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Bonnie Brinton Anderson, C Brock Kirwan, Jeffrey L Jenkins, David Eargle, Seth Howard, and Anthony Vance. 2015. How polymorphic warnings reduce habituation in the brain: Insights from an fMRI study. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 2883–2892.
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Anti Phishing Working Group (APWG). 2016. Global Phishing Report 2015-2016.
+      <a class="link-inline force-break" href="http://docs.apwg.org/reports/APWG_Global_Phishing_Report_2015-2016.pdf">
+       http://docs.apwg.org/reports/APWG_Global_Phishing_Report_2015-2016.pdf
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Anti Phishing Working Group (APWG). 2018.
+      <em>
+       Phishing Activity Trends Report Q1 2018
+      </em>
+      . Technical Report.
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Lujo Bauer, Cristian Bravo-Lillo, Lorrie Cranor, and Elli Fragkaki. 2013.
+      <em>
+       CMU Warning Design Guidelines
+      </em>
+      . Technical Report CMU-CyLab-13-002. Carnegie Mellon University.
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      André Bergholz, Jan De Beer, Sebastian Glahn, Marie-Francine Moens, Gerhard Paaß, and Siehyun Strobel. 2010. New filtering approaches for phishing email.
+      <em>
+       <em>
+        Journal of computer security
+       </em>
+      </em>
+      18, 1 (2010), 7–35.
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Cristian Bravo-Lillo. 2014. Improving Computer Security Dialogs: An Exploration of Attention and Habituation.
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Cristian Bravo-Lillo, Lorrie Cranor, Saranga Komanduri, Stuart Schechter, and Manya Sleeper. 2014. Harder to Ignore? Revisiting Pop-Up Fatigue and Approaches to Prevent It. In
+      <em>
+       10th Symposium On Usable Privacy and Security (SOUPS 2014)
+      </em>
+      . USENIX Association, Menlo Park, CA, 105–111.
+      <a class="link-inline force-break" href="https://www.usenix.org/conference/soups2014/proceedings/presentation/bravo-lillo">
+       https://www.usenix.org/conference/soups2014/proceedings/presentation/bravo-lillo
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Cristian Bravo-Lillo, Lorrie Faith Cranor, Julie Downs, and Saranga Komanduri. 2011. Bridging the Gap in Computer Security Warnings: A Mental Model Approach.
+      <em>
+       <em>
+        IEEE Security &amp; Privacy
+       </em>
+      </em>
+      9, 2 (2011), 18–26.
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Cristian Bravo-Lillo, Saranga Komanduri, Lorrie Faith Cranor, Robert W Reeder, Manya Sleeper, Julie Downs, and Stuart Schechter. 2013. Your attention please: designing security-decision UIs to make genuine risks harder to ignore. In
+      <em>
+       Proceedings of the Ninth Symposium on Usable Privacy and Security
+      </em>
+      . ACM, 6.
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      José Carlos Brustoloni and Ricardo Villamarín-Salomón. 2007. Improving security decisions with polymorphic and audited dialogs. In
+      <em>
+       Proceedings of the 3rd symposium on Usable privacy and security
+      </em>
+      . ACM, 76–85.
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Madhusudhanan Chandrasekaran, Krishnan Narayanan, and Shambhu Upadhyaya. 2006. Phishing E-Mail Detection Based on Structural Properties. (2006), 7.
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Lorrie Faith Cranor. 2012. Necessary but not sufficient: Standardized mechanisms for privacy notice and choice.
+      <em>
+       <em>
+        J. on Telecomm. &amp; High Tech. L.
+       </em>
+      </em>
+      10 (2012), 273.
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Rachna Dhamija, J Doug Tygar, and Marti Hearst. 2006. Why phishing works. In
+      <em>
+       Proceedings of the SIGCHI conference on Human Factors in computing systems
+      </em>
+      . ACM, 581–590.
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Julie S Downs, Mandy Holbrook, and Lorrie Faith Cranor. 2007. Behavioral response to phishing risk. In
+      <em>
+       Proceedings of the anti-phishing working groups 2nd annual eCrime researchers summit
+      </em>
+      . ACM, 37–44.
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Serge Egelman, Lorrie Faith Cranor, and Jason Hong. 2008. You've been warned: an empirical study of the effectiveness of web browser phishing warnings. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 1065–1074.
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Adrienne Porter Felt, Alex Ainslie, Robert W Reeder, Sunny Consolvo, Somas Thyagaraja, Alan Bettes, Helen Harris, and Jeff Grimes. 2015. Improving SSL warnings: Comprehension and adherence. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 2893–2902.
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Adrienne Porter Felt, Robert W Reeder, Hazim Almuhimedi, and Sunny Consolvo. 2014. Experimenting at scale with google chrome's SSL warning. In
+      <em>
+       Proceedings of the 32nd annual ACM conference on Human factors in computing systems
+      </em>
+      . ACM, 2667–2670.
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Ian Fette, Norman Sadeh, and Anthony Tomasic. 2007. Learning to detect phishing emails. In
+      <em>
+       Proceedings of the 16th international conference on World Wide Web
+      </em>
+      . ACM, 649–656.
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Kristin Firth, David A. Hoffman, and Tess Wilkinson-Ryan. 2017. Law and Psychology Grows Up, Goes Online, and Replicates. (2017).
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Gmail Help Forum. 2018. Suspicious link issue! - Google Product Forums.
+      <a class="link-inline force-break" href="https://productforums.google.com/forum/!msg/gmail/h_yeYefHFWk/Fj8o4q3HAQAJ">
+       https://productforums.google.com/forum/!msg/gmail/h_yeYefHFWk/Fj8o4q3HAQAJ
+      </a>
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Simson Garfinkel and Heather Richter Lipford. 2014. Usable security: History, themes, and challenges.
+      <em>
+       <em>
+        Synthesis Lectures on Information Security, Privacy, and Trust
+       </em>
+      </em>
+      5, 2(2014), 1–124.
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Anti Phishing Working Group. 2017.
+      <em>
+       Global Phishing Survey: Trends and Domain Name Use in 2016
+      </em>
+      .
+      <a class="link-inline force-break" href="https://docs.apwg.org/reports/APWG_Global_Phishing_Report_2015-2016.pdf">
+       https://docs.apwg.org/reports/APWG_Global_Phishing_Report_2015-2016.pdf
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Marian Harbach, Markus Hettig, Susanne Weber, and Matthew Smith. 2014. Using Personal Examples to Improve Risk Communication for Security &amp; Privacy Decisions. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’14
+      </em>
+      ). ACM, New York, NY, USA, 2647–2656.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2556288.2556978" target="_blank">
+       https://doi.org/10.1145/2556288.2556978
+      </a>
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Jason Hong. 2012. The state of phishing attacks.
+      <em>
+       <em>
+        Commun. ACM
+       </em>
+      </em>
+      55, 1 (2012), 74–81.
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      The Radicati Group Inc. 2017. Email Statistics Report, 2017-2021.
+      <a class="link-inline force-break" href="http://www.radicati.com/wp/wp-content/uploads/2017/01/Email-Statistics-Report-2017-2021-Executive-Summary.pdf">
+       http://www.radicati.com/wp/wp-content/uploads/2017/01/Email-Statistics-Report-2017-2021-Executive-Summary.pdf
+      </a>
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Patrick Gage Kelley, Joanna Bresee, Lorrie Faith Cranor, and Robert W Reeder. 2009. A nutrition label for privacy. In
+      <em>
+       Proceedings of the 5th Symposium on Usable Privacy and Security
+      </em>
+      . ACM, 4.
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Soyun Kim and Michael S Wogalter. 2009. Habituation, dishabituation, and recovery effects in visual warnings. In
+      <em>
+       Proceedings of the Human Factors and Ergonomics Society Annual Meeting
+      </em>
+      , Vol. 53. Sage Publications Sage CA: Los Angeles, CA, 1612–1616.
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Ponnurangam Kumaraguru, Justin Cranshaw, Alessandro Acquisti, Lorrie Cranor, Jason Hong, Mary Ann Blair, and Theodore Pham. 2009. School of phish: a real-world evaluation of anti-phishing training. In
+      <em>
+       Proceedings of the 5th Symposium on Usable Privacy and Security
+      </em>
+      . ACM, 3.
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Ponnurangam Kumaraguru, Steve Sheng, Alessandro Acquisti, Lorrie Faith Cranor, and Jason Hong. 2010. Teaching Johnny not to fall for phish.
+      <em>
+       <em>
+        ACM Transactions on Internet Technology (TOIT)
+       </em>
+      </em>
+      10, 2 (2010), 7.
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Phish Labs. 2017. 2017 Phishing and Threat Intelligence Report.
+      <a class="link-inline force-break" href="https://pages.phishlabs.com/rs/130-BFB-942/images/2017%20PhishLabs%20Phishing%20and%20Threat%20Intelligence%20Report.pdf">
+       https://pages.phishlabs.com/rs/130-BFB-942/images/2017%20PhishLabs%20Phishing%20and%20Threat%20Intelligence%20Report.pdf
+      </a>
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Elmer Lastdrager, Inés Carvajal Gallardo, Pieter Hartel, and Marianne Junger. 2017. How Effective is Anti-Phishing Training for Children?. In
+      <em>
+       Symposium on Usable Privacy and Security (SOUPS)
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Jonathan Lazar, Jinjuan Heidi Feng, and Harry Hochheiser. 2017.
+      <em>
+       Research methods in human-computer interaction
+      </em>
+      . Morgan Kaufmann.
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Eric Lin, Saul Greenberg, Eileah Trotter, David Ma, and John Aycock. 2011. Does domain highlighting help people identify phishing sites?. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 2075–2084.
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Gang Liu, Guang Xiang, Bryan A Pendleton, Jason I Hong, and Wenyin Liu. 2011. Smartening the crowds: computational techniques for improving human verification to fight phishing scams. In
+      <em>
+       Proceedings of the Seventh Symposium on Usable Privacy and Security
+      </em>
+      . ACM, 8.
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Samuel Marchal, Giovanni Armano, Tommi Grondahl, Kalle Saari, Nidhi Singh, and N Asokan. 2017. Off-the-Hook: An Efficient and Usable Client-Side Phishing Prevention Application.
+      <em>
+       <em>
+        IEEE Trans. Comput.
+       </em>
+      </em>
+      (2017).
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Samuel Marchal, Kalle Saari, Nidhi Singh, and N. Asokan. 2015. Know Your Phish: Novel Techniques for Detecting Phishing Sites and their Targets.
+      <em>
+       <em>
+        CoRR
+       </em>
+      </em>
+      abs/1510.06501(2015). arxiv:1510.06501
+      <a class="link-inline force-break" href="http://arxiv.org./abs/1510.06501">
+       http://arxiv.org./abs/1510.06501
+      </a>
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Federal Bureau of Investigation Internet Crime Complaint Center. 2017. 2017 Internet Crime Report. (2017), 29.
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      Kenneth Olmstead and Aaron Smith. 2017. Pew Research Center.
+      <a class="link-inline force-break" href="http://www.pewinternet.org/2017/03/22/what-the-public-knows-about-cybersecurity/">
+       http://www.pewinternet.org/2017/03/22/what-the-public-knows-about-cybersecurity/
+      </a>
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      Kenneth Olmstead and Aaron Smith. 2017. Pew Research Center.
+      <a class="link-inline force-break" href="http://www.pewinternet.org/2017/01/26/americans-and-cybersecurity/">
+       http://www.pewinternet.org/2017/01/26/americans-and-cybersecurity/
+      </a>
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Sameer Patil, Roberto Hoyle, Roman Schlegel, Apu Kapadia, and Adam J. Lee. 2015. Interrupt Now or Inform Later?: Comparing Immediate and Delayed Privacy Feedback. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’15
+      </em>
+      ). ACM, New York, NY, USA, 1415–1418.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702165" target="_blank">
+       https://doi.org/10.1145/2702123.2702165
+      </a>
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      Sameer Patil, Roman Schlegel, Apu Kapadia, and Adam J. Lee. 2014. Reflection or Action?: How Feedback and Control Affect Location Sharing Decisions. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’14
+      </em>
+      ). ACM, New York, NY, USA, 101–110.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2556288.2557121" target="_blank">
+       https://doi.org/10.1145/2556288.2557121
+      </a>
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      PhishTank. 2018.
+      <em>
+       Join the fight against phishing
+      </em>
+      . Technical Report.
+      <a class="link-inline force-break" href="https://www.phishtank.com/">
+       https://www.phishtank.com/
+      </a>
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      Florian Schaub, Rebecca Balebako, Adam L Durity, and Lorrie Faith Cranor. 2015. A design space for effective privacy notices. In
+      <em>
+       Eleventh Symposium On Usable Privacy and Security (SOUPS 2015)
+      </em>
+      . 1–17.
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      Stuart E. Schechter, Rachna Dhamija, Andy Ozment, and Ian Fischer. [n. d.]. The Emperor's New Security Indicators. In
+      <em>
+       Security and Privacy, 2007. SP’07. IEEE Symposium On
+      </em>
+      (2007). IEEE, 51–65.
+      <a class="link-inline force-break" href="http://ieeexplore.ieee.org/abstract/document/4223213/">
+       http://ieeexplore.ieee.org/abstract/document/4223213/
+      </a>
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      UC Berkeley Information Security and Policy. 2018. Phishing | Information Security and Policy.
+      <a class="link-inline force-break" href="https://security.berkeley.edu/resources/phishing">
+       https://security.berkeley.edu/resources/phishing
+      </a>
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      Steve Sheng, Bryant Magnien, Ponnurangam Kumaraguru, Alessandro Acquisti, Lorrie Faith Cranor, Jason Hong, and Elizabeth Nunge. 2007. Anti-Phishing Phil: The Design and Evaluation of a Game That Teaches People Not to Fall for Phish. In
+      <em>
+       Proceedings of the 3rd Symposium on Usable Privacy and Security - SOUPS ’07
+      </em>
+      . ACM Press, Pittsburgh, Pennsylvania, 88.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1280680.1280692" target="_blank">
+       https://doi.org/10.1145/1280680.1280692
+      </a>
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      Joshua Sunshine, Serge Egelman, Hazim Almuhimedi, Neha Atri, and Lorrie Faith Cranor. 2009. Crying Wolf: An Empirical Study of SSL Warning Effectiveness.. In
+      <em>
+       USENIX Security Symposium
+      </em>
+      . 399–416.
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      Symantec. 2018. Internet Security Threat Report.
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Janice Y Tsai, Serge Egelman, Lorrie Cranor, and Alessandro Acquisti. 2011. The effect of online privacy information on purchasing behavior: An experimental study.
+      <em>
+       <em>
+        Information Systems Research
+       </em>
+      </em>
+      22, 2 (2011), 254–268.
+     </li>
+     <li id="BibPLXBIB0053" label="[53]">
+      Verizon. 2018.
+      <em>
+       2018 Data Breach Investigations Report
+      </em>
+      . Technical Report 11th Edition.
+     </li>
+     <li id="BibPLXBIB0054" label="[54]">
+      Melanie Volkamer, Karen Renaud, and Paul Gerber. 2016. Spot the Phish by Checking the Pruned URL.
+      <em>
+       <em>
+        Information and Computer Security
+       </em>
+      </em>
+      24, 4 (Oct. 2016), 372–385.
+      <a class="link-inline force-break" href="https://doi.org/10.1108/ICS-07-2015-0032" target="_blank">
+       https://doi.org/10.1108/ICS-07-2015-0032
+      </a>
+     </li>
+     <li id="BibPLXBIB0055" label="[55]">
+      Melanie Volkamer, Karen Renaud, Benjamin Reinheimer, and Alexandra Kunz. 2017. User experiences of TORPEDO: TOoltip-poweRed Phishing Email DetectiOn.
+      <em>
+       <em>
+        Computers &amp; Security
+       </em>
+      </em>
+      71(2017), 100 – 113.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.cose.2017.02.004" target="_blank">
+       https://doi.org/10.1016/j.cose.2017.02.004
+      </a>
+     </li>
+     <li id="BibPLXBIB0056" label="[56]">
+      Jaclyn Wainer, Laura Dabbish, and Robert Kraut. 2011. Should I open this email?: inbox-level cues, curiosity and attention to email. In
+      <em>
+       Proceedings of the SIGCHI conference on human factors in computing systems
+      </em>
+      . ACM, 3439–3448.
+     </li>
+     <li id="BibPLXBIB0057" label="[57]">
+      Rick Wash and Molly M. Cooper. 2018. Who Provides Phishing Training?: Facts, Stories, and People Like Me. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems - CHI ’18
+      </em>
+      . ACM Press, Montreal QC, Canada, 1–12.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174066" target="_blank">
+       https://doi.org/10.1145/3173574.3174066
+      </a>
+     </li>
+     <li id="BibPLXBIB0058" label="[58]">
+      Liu Wenyin, Ning Fang, Xiaojun Quan, Bite Qiu, and Gang Liu. 2010. Discovering Phishing Target Based on Semantic Link Network.
+      <em>
+       <em>
+        Future Generation Computer Systems
+       </em>
+      </em>
+      26, 3 (March 2010), 381–388.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.future.2009.07.012" target="_blank">
+       https://doi.org/10.1016/j.future.2009.07.012
+      </a>
+     </li>
+     <li id="BibPLXBIB0059" label="[59]">
+      Colin Whittaker, Brian Ryner, and Marria Nazif. 2007. Large-Scale Automatic Classification of Phishing Pages. (2007), 14.
+     </li>
+     <li id="BibPLXBIB0060" label="[60]">
+      Michael S Wogalter, Vincent C Conzola, and Tonya L Smith-Jackson. 2002. based guidelines for warning design and evaluation.
+      <em>
+       <em>
+        Applied ergonomics
+       </em>
+      </em>
+      33, 3 (2002), 219–230.
+     </li>
+     <li id="BibPLXBIB0061" label="[61]">
+      IBM X-Force. 2018. IBM X-Force Threat Intelligence Index 2018.
+      <a class="link-inline force-break" href="https://www.ibm.com/security/data-breach/threat-intelligence">
+       https://www.ibm.com/security/data-breach/threat-intelligence
+      </a>
+     </li>
+     <li id="BibPLXBIB0062" label="[62]">
+      Guang Xiang, Jason Hong, Carolyn P Rose, and Lorrie Cranor. 2011. Cantina+: A feature-rich machine learning framework for detecting phishing web sites.
+      <em>
+       <em>
+        ACM Transactions on Information and System Security (TISSEC)
+       </em>
+      </em>
+      14, 2(2011), 21.
+     </li>
+     <li id="BibPLXBIB0063" label="[63]">
+      Weining Yang, Jing Chen, Aiping Xiong, Robert W. Proctor, and Ninghui Li. [n. d.]. Effectiveness of a Phishing Warning in Field Settings. ACM Press, 1–2.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2746194.2746208" target="_blank">
+       https://doi.org/10.1145/2746194.2746208
+      </a>
+     </li>
+     <li id="BibPLXBIB0064" label="[64]">
+      Yue Zhang, Jason I. Hong, and Lorrie F. Cranor. 2007. Cantina: A Content-Based Approach to Detecting Phishing Web Sites. In
+      <em>
+       Proceedings of the 16th International Conference on World Wide Web - WWW ’07
+      </em>
+      . ACM Press, Banff, Alberta, Canada, 639.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1242572.1242659" target="_blank">
+       https://doi.org/10.1145/1242572.1242659
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="https://safebrowsing.google.com/">
+     https://safebrowsing.google.com/
+    </a>
+   </p>
+   <p id="fn2">
+    <a href="#foot-fn2">
+     <sup>
+      2
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="https://github.com/spilab-umich/phishing-warning-experiment">
+     https://github.com/spilab-umich/phishing-warning-experiment
+    </a>
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300748" target="_blank">
+      https://doi.org/10.1145/3290605.3300748
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8758100d69d49b5d',t:'MTcxMzMxMTI3MC4zNTEwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

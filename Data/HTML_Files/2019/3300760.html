@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Street–Level Algorithms: A Theory At The Gaps Between Policy and Decisions
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300760_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300760_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300760_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300760_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300760_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300760_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300760_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300760_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Street–Level Algorithms: A Theory At The Gaps Between Policy and Decisions
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Ali
+      </span>
+      <span class="surName">
+       Alkhatib
+      </span>
+      , Stanford University, USA,
+      <a href="mailto:ali.alkhatib@cs.stanford.edu">
+       ali.alkhatib@cs.stanford.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Michael
+      </span>
+      <span class="surName">
+       Bernstein
+      </span>
+      , Stanford University, USA,
+      <a href="mailto:msb@cs.stanford.edu">
+       msb@cs.stanford.edu
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300760" target="_blank">
+       https://doi.org/10.1145/3290605.3300760
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Errors and biases are earning algorithms increasingly malignant reputations in society. A central challenge is that algorithms must bridge the gap between high–level policy and on–the–ground decisions, making inferences in novel situations where the policy or training data do not readily apply. In this paper, we draw on the theory of
+       <em>
+        street–level bureaucracies
+       </em>
+       , how human bureaucrats such as police and judges interpret policy to make on–the–ground decisions. We present by analogy a theory of
+       <em>
+        street–level algorithms
+       </em>
+       , the algorithms that bridge the gaps between policy and decisions about people in a socio-technical system. We argue that unlike street–level bureaucrats, who reflexively refine their decision criteria as they reason through a novel situation, street–level algorithms at best refine their criteria only after the decision is made. This loop–and–a–half delay results in illogical decisions when handling new or extenuating circumstances. This theory suggests designs for street–level algorithms that draw on historical design patterns for street–level bureaucracies, including mechanisms for self–policing and recourse in the case of error.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → HCI theory, concepts and models
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Street–level algorithms
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        Street–level bureaucracies
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        Artificial Intelligence
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Ali Alkhatib and Michael Bernstein. 2019. Street–Level Algorithms: A Theory At The Gaps Between Policy and Decisions. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), April 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 13 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300760" target="_blank">
+         https://doi.org/10.1145/3290605.3300760
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     People have grown increasingly frustrated with the decisions that algorithmic systems make over their lives. These decisions can have weighty consequences: they determine whether we're excluded from social environments [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ]; they decide whether we should be paid for our work [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+      47
+     </a>
+     ]; they influence whether we're sent to jail or released on bail [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+      29
+     </a>
+     ]. Despite the importance of getting these decisions right, algorithmic and machine learning systems make surprising and frustrating errors: they ban good actors from social environments and leave up toxic content [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ]; they disproportionately make bail inaccessible for people of color [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ]; they engage in wage theft for honest workers [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+      47
+     </a>
+     ]. Across diverse applications of algorithmic systems, one aspect seems to come through: surprise and — quite often — frustration with these systems over the decisions they make.
+    </p>
+    <p>
+     Researchers have approached these problems in algorithmic systems from a number of perspectives: some have interrogated the hegemonic influence that these systems have over their users [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+      61
+     </a>
+     ]; others have documented and called attention to the unfair and opaque decisions these systems can make [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ]; others still have audited algorithms via the criteria of fairness, accountability and transparency [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ]. But even if we could answer the questions at the hearts of these research agendas — finding clear guiding principles, incorporating the needs of myriad stakeholders, and ensuring fairness — these algorithms will always face cases that are
+     <em>
+      at the margin
+     </em>
+     : outside the situations seen in their training data. For example, even a value–sensitive [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0076">
+      76
+     </a>
+     ], fair, and transparent content moderation algorithm will likely make errors with high confidence when classifying content with a new slur that it has never seen before. And it is exactly at these moments that the algorithm has to generalize: to “fill in the gaps” between the policy implied by training data and a new case the likes of which it has never seen before.
+    </p>
+    <p>
+     “Filling in the gaps” is not a problem unique to algorithms, however: it has been the chief concern for decades of what bureaucratic theorists call
+     <em>
+      street–level bureaucracies
+     </em>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+      43
+     </a>
+     ]. A street–level bureaucracy is the layer of a bureaucracy that directly interacts with people. They are responsible for making decisions “on the street”, filling in the gaps between legislated policies and the situations in front of them. Street–level bureaucrats are police officers, judges, teachers, customer service agents, and others with whom members of the public interact frequently, and who make everyday decisions that affect our lives throughout the day. In all of these roles, street–level bureaucrats make important decisions about cases both familiar and new that require them to translate an official policy into decisions about the situations they face. A police officer chooses whether to issue a warning or a traffic citation; a judge decides whether to allow a defendant to pay bail or to have them remanded to jail; a teacher determines whether to waive a course's prerequisites for a student. These decisions often involve nuance or extenuating circumstances, making it all but impossible to prescribe the right response for all situations.
+    </p>
+    <p>
+     Street–level bureaucracies are important because the decisions they make are the manifestation of the power of the institution, and are
+     <em>
+      effectively
+     </em>
+     policy. Regardless of what's explicitly legislated or prescribed, policy is effected by the street–level bureaucrat's execution of their duties. Police officers choose whether to issue citations to people speeding only slightly over the speed limit; judges may make every effort to make bail accessible given a defendant's circumstances; teachers may allow some flexibility in course prerequisites. In each case, these street–level decisions become expectations of the system writ large. When these effective policies are biased (e.g., [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+      68
+     </a>
+     ]), it prompts broad critiques and reviews of the policy, organization, or system.
+    </p>
+    <p>
+     In this paper, we draw the analogy to pose people's interactions with algorithmic aspects of sociotechnical systems as interactions with what we term
+     <em>
+      street–level algorithms
+     </em>
+     . Street–level algorithms are algorithmic systems that directly interact with and make decisions about people in a sociotechnical system. They make on–the–ground decisions about human lives and welfare, filling in the gaps between platform policy and implementation, and represent the algorithmic layer that mediates interaction between humans and complex computational systems.
+    </p>
+    <p>
+     Our central claim is that street–level algorithms make frustrating decisions in many situations where street–level bureaucrats do not, because street–level bureaucrats can reflexively refine the contours of their decision boundary
+     <em>
+      before
+     </em>
+     making a decision on a novel or marginal case, but street–level algorithms at best refine these contours only
+     <em>
+      after
+     </em>
+     they make a decision. Our focus here is on cases at the margin: those representing marginal or under-represented groups, or others creating novel situations not seen often or at all in the training data. When street–level bureaucrats encounter a novel or marginal case, they use that case to refine their understanding of the policy. When street–level algorithms encounter a novel or marginal case, they execute their pre–trained classification boundary, potentially with erroneously high confidence [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ]. For a bureaucrat, but not an algorithm, the execution of policy is itself reflexive. For an algorithm, but not for a bureaucrat, reflexivity can only occur after the system receives feedback or additional training data. The result is that street–level algorithms sometimes make nonsensical decisions, never revisiting the decision or the motivating rationale until it has prompted human review.
+    </p>
+    <p>
+     We will look at several case studies through this lens of street–level algorithms. First, we will discuss how YouTube's monetization algorithms targeted LGBTQ content creators. Second, we will analyze the algorithmic management of crowd workers, discussing problems that arise when algorithmic systems evaluate the quality of workers who must themselves make interpretations about underspecified tasks. Third, we will look at judicial bail–recommendation systems and interrogate their biases — for example, disproportionately recommending jail for people of color. In all of these cases, we'll illustrate the difference between policy explication and policy execution, or in some other sense, the difference between training data and test data.
+    </p>
+    <p>
+     We will discuss ways that designers of sociotechnical systems can mitigate the damage that street–level algorithms do in marginal cases. Drawing on analogy to street–level bureaucracies, we identify opportunities for designers of algorithmic systems to incorporate mechanisms for recourse in the case of mistakes and for self-policing and audits. Recognizing that bureaucrats often operate by precedent, we suggest that people might compare their case to similar cases seen by the algorithm, arguing specifically how their case is marginal relative to previously observed cases. We also reflect on the emerging set of cases where street–level bureaucrats utilize or contest the output of street–level algorithms, for example judges making decisions based in part on the predictions of bail-setting algorithms.
+    </p>
+    <p>
+     We suggest that many of today's discussions of the invisible systems in human–computer interaction might also be considered interrogations of street–level algorithms. When we talk about systems that decide which social media posts we see [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ], when we find ourselves in conflict with Wikipedia bots [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+      63
+     </a>
+     ], and when we enforce screen time with our children [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ], we are creating, debating, and working around street–level algorithms. Our hope is that the lens we introduce in this paper can help make sense of these previously disconnected phenomena.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       STREET–LEVEL BUREAUCRACY
+      </h2>
+     </div>
+    </header>
+    <p>
+     <em>
+      Street–level bureaucracies
+     </em>
+     are the layer of a bureaucratic institutions that intermediate between the public and the institution itself. They're the police, the teachers, the judges, and others who make decisions “on the street” that largely determine outcomes for stakeholders of the cities, the schools, the courts, and other institutions in which they work. These functionaries are the points of contact for people who need to interact with these organizations.
+    </p>
+    <p>
+     Street–level bureaucracies are important because it's here that much of the power of the institution becomes manifest. At numerous stages in interactions with the bureaucracy, officials make consequential decisions about what to do with a person. Police officers decide who to pull over, arrest, and interrogate; judges pass sentences and mediate trials; instructors decide a student's grades, ultimately determining their education outcomes. To put it another way: Universities are vested with the power to grant degrees, but that power manifests in the classroom, when an instructor gives a student a passing or failing grade. Laws govern the actions of police officer, but that power manifests in their actions when they cite someone or let them off with a warning.
+    </p>
+    <p>
+     Street–level bureaucracies are important for reasons beyond the outcomes of members of the public; they substantially affect the outcomes of the organizations they serve. Whether a bureaucratic institution succeeds in its goals or not is largely influenced by the street–level bureaucrats [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ]. Efforts to constrain street–level bureaucrats are also fraught with challenges [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ]; the specialized tasks that bureaucrats perform necessitates a certain degree of autonomy, which affords them latitude to make determinations according to their best judgment.
+    </p>
+    <p>
+     The consequences of the responsibility to make these kinds of decisions autonomously are difficult to exaggerate. By not issuing tickets for cars speeding only marginally over the speed limit, police officers effect a policy of higher speed limits. An instructor can waive a prerequisite for their course for inquiring students, effecting a policy that overrides the prerequisite for those that ask. Like all instruments of power, the power to enact effective policy can cause harm as well: judges might dismiss cases involving white people at a higher rate than they dismiss cases involving people of color; women are less likely to ask for exceptions [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ], which can lead to an emergent gender bias. And street–level bureaucrats can be the arbiters of prejudice, manifesting policies and regimes that bring lasting harm to groups that are consequentially regarded as lesser. In all of these cases, regardless of the details of their choices,
+     <em>
+      defined
+     </em>
+     policies transform into
+     <em>
+      effective
+     </em>
+     policies through street–level bureaucrats.
+    </p>
+    <p>
+     The term of “street–level bureaucracy” was introduced by Lipsky in his
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+      42
+     </a>
+     working paper [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+      42
+     </a>
+     ] and explicated more comprehensively in his book on the subject in
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+      43
+     </a>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+      43
+     </a>
+     ]. Although the intuition of street–level bureaucracies had existed for some time, Lipsky formalized the insight and the term. Prior to this work, the academic focus on politics had specifically been of the people in formally recognized positions of power: the elected officials who authored policy. Lipsky argued that the true locus of power lay in the people who turn the policies into actions. This point of view became a formative landmark in thinking about governmental administration and political science more broadly, shifting focus from elected officials to the everyday bureaucrat, with over 14,000 citations and counting.
+    </p>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Street–level algorithms
+       </h3>
+      </div>
+     </header>
+     <figure id="fig1">
+      <img alt="" class="img-responsive" longdesc="A timeline illustrating how reflexivity differs between streetlevel bureaucrats and streetlevel algorithms. The bureaucrat refines their decision boundary before making a decision about a new case, whereas the algorithm does so afterwards." src="3300760_files\chi2019530fig1.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        A timeline illustrating how reflexivity differs between street–level bureaucrats and street–level algorithms. The bureaucrat refines their decision boundary
+        <em>
+         before
+        </em>
+        making a decision about a new case, whereas the algorithm does so
+        <em>
+         afterwards
+        </em>
+        .
+       </span>
+      </div>
+     </figure>
+     <p>
+      We argue in this paper that we would benefit from recognizing the agents in sociotechnical systems as analogous to Lipsky's street–level bureaucrats: that we live in a world with
+      <em>
+       street–level algorithms
+      </em>
+      . Street–level algorithms are tasked with making many of the kinds of decisions that street–level bureaucrats have historically made — in some cases actually subsuming the roles of bureaucrats — with many of the same emergent tensions that Lipsky originally described. This framing helps us understand the nuances between expressed policy and effected policy, and how those things diverge.
+     </p>
+     <p>
+      Street–level algorithms are the layer of systems — especially but not exclusively sociotechnical systems — that directly interact with the people the systems act upon. These algorithmic systems are specifically responsible for making decisions that affect the lives of the users and the stakeholders who operate said systems. Street–level algorithms take the explained policy, and often data that train a model or decision–making framework, and manifest power as decisions that immediately affect stakeholders. These interactions happen every day, sometimes without us realizing what's transpiring. Facebook, Twitter, Instagram, Reddit, and myriad other sites use algorithmic systems that choose what items to show in users’ news feeds, and the order in which to show them; companies like Google and Amazon use algorithms which decide which advertisements to show us; Wikipedia and other peer production websites use bots to rebuff edits that don't correspond to previously articulated standards; credit card companies, PayPal, Venmo, and others employ algorithmic systems that flag payment activity as fraudulent and deactivate financial accounts.
+     </p>
+     <p>
+      These systems that make and execute decisions about us represent the layer that mediates the interaction between humans and much more nebulous sets of computational systems. It's here, we argue, that we should be focusing when we discuss questions of fairness in algorithmic systems, raise concerns about the lack of accountability of complex algorithms, and critique the lack of transparency in the design, training, and execution of algorithmic systems. This layer is where all of those events take place, and specifically where decisions one way or another are manifest and become real.
+     </p>
+     <p>
+      Moreover, we in HCI have been thinking about street–level algorithms for the better part of a decade — without naming it as such. When we talk about the systems that decide which posts we see [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ], street–level algorithms have made decisions about the content in our news feeds, and the order in which we see it. When we fight with Wikipedia bots [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+       63
+      </a>
+      ], street–level algorithms have erred in their enforcement of policies they've been taught either by programming or deep learning. Street–level algorithms enforce screen time with our children [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ], manage data workers [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+       66
+      </a>
+      ], and motivate the long–term directions of organizations [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ].
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Reflexivity in bureaucracy and algorithms
+       </h3>
+      </div>
+     </header>
+     <p>
+      This reframing gives us traction on the issue that originally brought us here: why have street–level algorithms seen such intense criticism in the last several years? What is it about street–level algorithms that make the routinization of dealing with people so problematic that doesn't exist in, or doesn't elicit the same reactions about, bureaucracies? Street–level bureaucrats, Lipsky points out, practice
+      <em>
+       discretion
+      </em>
+      . Discretion is the decision of street–level bureaucrats not to enforce the policies precisely as stated, even if it means ostensibly failing their task, in favor of achieving the organization's goal. Street–level bureaucrats are capable of doing all of this only because they engage in reflexivity, thinking about their roles as observers, agents, and decision–makers in a given setting, and about the impact that their decision will have. Street–level bureaucrats reflect on their roles and on the circumstances and construct their reasoning accordingly.
+     </p>
+     <p>
+      Street–level bureaucrats are capable of making sense of new situations and
+      <em>
+       then
+      </em>
+      construct rationales that fill in the gaps. When police officers arrive at novel situations, they can make sense of what's happening — recognizing that this is a situation they
+      <em>
+       need
+      </em>
+      to make sense of — and they can intuit an appropriate rationale and application of rules to deal with the current case; the decision they make informs the next decision they make about incidents in a similar decision space. When instructors make decisions about whether to allow a student to take a course without a defined prerequisite, their decision contributes to a rationale that continually develops.
+     </p>
+     <p>
+      Street–level algorithms, by contrast, can be reflexive only
+      <em>
+       after
+      </em>
+      a decision is made, and often only when a decision has been made incorrectly. Even reinforcement learning systems, which require tight loops of feedback, receive feedback only after they take an action. Often, these algorithms only ever receive feedback after a wrong decision is made, as a corrective measure. Sometimes, algorithmic systems don't receive corrective input at all. Algorithmic systems don't make in–the–moment considerations about the decision boundary that has been formed by training data or explicit policies encoded into the program. Instead, the decision boundaries are effectively established beforehand, and street–level algorithms classify their test data without consideration of each case they encounter, and how it might influence the system to reconsider its decision boundary.
+     </p>
+     <figure id="fig2">
+      <img alt="" class="img-responsive" longdesc="Bureaurats can act reflexively before making the decision; algorithms, requiring feedback, can at best retrain and act reflexively after the decision." src="3300760_files\chi2019530fig2.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        Bureaurats can act reflexively before making the decision; algorithms, requiring feedback, can at best retrain and act reflexively after the decision.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      We can illustrate how this underlying difference between algorithmic and human agents takes form by using a single specific case where both kinds of agents intervened in fundamentally different ways. Facebook's policy prohibiting nudity came under scrutiny in 2008 when mothers protested action taken against pictures of them breastfeeding [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]. Facebook adjusted its moderation policies to allow nudity in the case of breastfeeding, but its moderation team then was faced with myriad new marginal and novel cases. For example, when faced with new examples, they needed to decide: is it breastfeeding if the baby isn't actually eating? What if it's not a baby, but instead an older child, an adult, or an animal that's at the breast? These interpretations had to be developed to handle these cases as soon as they arose on Facebook. In contrast, today Facebook uses algorithms to detect nudity. For several of these classes of photos, the pretrained algorithm makes a decision guided by the data that informed it and, in accordance with its training, it removes the photos. As a street–level algorithm, the system made its decision
+      <em>
+       ex ante
+      </em>
+      and executed its decision according to the decision boundary that it generated. Facebook's moderation team, in contrast, made the decision
+      <em>
+       ex post
+      </em>
+      , debating about the implications of each option, the underlying rationale that would corroborate their intuition for whether it should be allowed, and what their boundary should be.
+     </p>
+    </section>
+   </section>
+   <section id="sec-6">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       CASE STUDIES
+      </h2>
+     </div>
+    </header>
+    <p>
+     We will focus on three cases to illustrate a methodology for thinking about the problems with street–level algorithms more broadly. We will look at moderation through YouTube's demonetization system and how it fails when it encounters underrepresented groups—in this case, members of the LGBTQ community discussing their gender identity and sexuality. We will proceed to examine the algorithmic management of workers in online labor markets and the perils of misjudgment by algorithmic quality control systems. Finally, we will discuss the emergence of algorithmic bias in judicial bail recommendation systems—a topic that has already generated substantial academic discussion in the past several years. In all of these cases, a theme will emerge of algorithmic system encountering either a novel otherwise unforeseen situation for which it was not trained—and for which, perhaps, it
+     <em>
+      could
+     </em>
+     not have been trained—and that system making a decision without reflexivity.
+    </p>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        YouTube content moderation
+       </h3>
+      </div>
+     </header>
+     <p>
+      YouTube enforces many of its content policies algorithmically. The decisions of how to handle user–generated content in general have enormous bearing on the culture of today's online platforms [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ]. On YouTube, machine learning systems classify whether each uploaded video contains content that is protected by an existing copyright [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ], and whether it violates YouTube's “advertiser–friendly content guidelines” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+       75
+      </a>
+      ]. The content guidelines, for example, state that to earn ad revenue, videos must not feature controversial issues, dangerous substances, harmful acts, inappropriate language, or sexually suggestive content. YouTube's advertisers do not want their ads run on videos with this content, so if a video does not meet the content deadlines, it is
+      <em>
+       demonetized
+      </em>
+      , where YouTube does not show ads on the video and the content creator receives no income for it.
+     </p>
+     <p>
+      But these demonetization algorithms have made highly–publicized errors. For example, YouTube began labeling videos uploaded by transgender YouTubers as “sexually explicit” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ], demonetizing them. When video titles included words like “transgender”, they were demonetized; when the content creators removed “transgender” but left other aspects of the video as–is, the same videos were monetized normally [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ].
+     </p>
+     <p>
+      YouTube's classifier for sexually explicit content misfired. Discussions of transgender issues are not necessarily about sex at all; while sex and gender have historically been conflated [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ], they refer to different ideas [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ]. Even if a discussion about gender identity mentions sex, it does not necessarily mean that the discussion is sexually explicit. The algorithm's training data or model may not have yet represented the evolution of our collective consciousness to acknowledge this distinction, or our changing desire to treat people variably along these dimensions and with more consideration than we have in the past. As people increasingly turn to and rely on YouTube to be a venue to earn a living — much like a public square — YouTube's algorithmic classification system denies people a space for this discussion about the biological and cultural distinctions of sex and gender. YouTube eventually apologized, stating “our system sometimes make mistakes in understanding context and nuances” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0074">
+       74
+      </a>
+      ].
+     </p>
+     <p>
+      These issues also emerge in the opposite direction, so to speak. The same algorithms that mischaracterized discussions about
+      <em>
+       gender
+      </em>
+      as
+      <em>
+       sexual
+      </em>
+      and consequently inappropriate for advertising failed to flag inappropriate content disguised in a large number of children's cartoons. Fraudulent videos of Peppa Pig being tortured at a dentist's office were left alone, and videos of cartoon characters assaulting and killing each other were passed over by the algorithm, in some cases being included in YouTube Kids, a subset of YouTube which offers to source content appropriate specifically for children. This failure to identify troubling content wrapped in ostensibly child–friendly animation again led to a refinement of YouTube's policies and algorithms.
+     </p>
+     <p>
+      It can be useful to think about YouTube's content moderation algorithms as analogous to the class of street–level bureaucrats who monitor and interact with street performers in offline urban contexts. Street performance, or
+      <em>
+       busking
+      </em>
+      , is usually monitored by police [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ]. Many cities have laws which restrict busking in certain contexts. The police must identify when they should enforce laws strictly and when they should take a more permissive stance: the details of enforcement of those laws is necessarily left to police officers, affording them substantial latitude. The public record is full of instances of police ranging in behavior from aggressively managing to enjoying and engaging in the performance themselves [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ]. As performance by nature often pushes the bounds of expectations and street performance in particular is inherently experimental [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ], police have to be flexible about the application of their powers and make reasonable decisions in new circumstances. The challenge is to characterize the novelty of the situation and reflect on the decision they're being called to make. More importantly, they must make these decisions in the moment, applying the implications of that decision to a constantly–updating intuition about the effective policy they're creating through their selective enforcement of laws.
+     </p>
+     <p>
+      We can think of YouTube's monetization algorithm as akin to a sort of police force that encounters hundreds of thousands of new performances every day and is expected to navigate those situations appropriately. The challenge is that this algorithmic police force trains and updates its policies in batches: it is executing on today's performances based on yesterday's data. Yesterday, transgender people weren't speaking publicly, in a venue accessible all over the world, about deeply personal aspects of their lives in the ways that they now do. The algorithm is always behind the curve: at best, it gets feedback or negative rewards only after it has executed its decision, in this case when YouTubers appeal or gather media attention. By contrast, police reflexively construct an interpretation of the situation as soon as they encounter it, rather than merely match on learned patterns.
+     </p>
+     <p>
+      This case highlights a shortcoming with a commonly offered solution to these kinds of problems, that more training data would eliminate errors of this nature: culture always shifts. Simply having more data will never allow us to anticipate and prevent these kinds of errors. Experimentation is often the point of performance and art, and certainly part of the nature of public performance art like YouTube [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ]. Society is slowly (albeit not consistently) coming to acknowledge that transgender people are people, and in doing so recognize that their gender identities are acceptable to discuss. In statistical terms, we might say that the data in this system is a nonstationary process: the distribution (of words, topics, and meanings) changes, sometimes abruptly. YouTube was, at one time, a uniquely empowering space for members of the transgender community to be candid and to explore their shared experiences [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ], but arguably culture has grown in ways that YouTube and its content classification algorithms have not. Reinforcement rewards and new training data can help an algorithm reconfigure its decision boundary, but even deep learning only gets this new training information
+      <em>
+       after
+      </em>
+      it has already made decisions, sometimes hundreds of thousands of decisions —
+      <em>
+       effecting
+      </em>
+      a policy deterring transgender YouTubers from discussing their gender identity, or risk being demonetized for discussing content the system erroneously classifies as “sexual”.
+     </p>
+     <p>
+      The effects of bad street–level algorithms are farther–reaching than the immediate cases that are mishandled. Lipsky points out that people begin to work around street–level bureaucracies when they become unreliable and untrustworthy, or when the public decide that they cannot hope for bureaucrats to make favorable decisions [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ]. We see this phenomenon unfolding on YouTube: as their demonetization algorithms mishandle more and more YouTubers  [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ], creators have begun to circumvent YouTube monetization entirely, encouraging audiences to support them through third–party services such as Patreon [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ].
+     </p>
+    </section>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Quality control in crowd work
+       </h3>
+      </div>
+     </header>
+     <p>
+      Crowd work — that is, piecework [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ] on platforms such as Amazon Mechanical Turk — has become both a crucial source of income for many workers, and a major source of annotations for modern machine learning systems. Tasks on crowd work platforms range from the prosaic (e.g., transcribing audio) to the novel (literally, in some cases, writing novels [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ]). Nearly every approach to crowd work requires a strategy for quality control, deciding which workers are allowed to continue working on the task, or at worst, which ones are denied payment [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ]. These algorithmic approaches variously seek to test workers’ abilities, measure cross-worker agreement, and motivate high–effort responses. Workers’ reputations — and by extension, their prospective abilities to find work — are determined by whether these algorithms decide that workers’ submissions are high quality.
+     </p>
+     <p>
+      Unfortunately, these quality control algorithms have — perhaps unintentionally — resulted in wage theft for many workers, because the algorithms deny payment for good-faith work. There are often many correct ways to interpret a task [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ], and often these algorithms only recognize and pay for the most common one. Requesters’ right to reject work without compensation is the second–most common discussion topic about the Mechanical Turk participation agreement [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ], and mass rejection is a persistent, widespread fear [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ], and the fear of getting work algorithmically rejected looms large [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ]. To manage the concern, workers use back–channels to share information about which requesters are reliable and don't reject unnecessarily [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ].
+     </p>
+     <p>
+      We can think of the relationship Turkers have with the systems that manage them as analogous in some sense to the foremen who manage factory workers. Pieceworkers in railroads, car assembly, and many other industries historically interacted with foremen as their interface with the company: the foreman assigned workers to suitable work given their qualifications, responded to workers when they needed assistance, and provided feedback on the output of the work. This relationship was a crucial boundary between managers and workers that foremen had to navigate carefully — neither management nor worker, but decidedly and intentionally in the middle [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0071">
+       71
+      </a>
+      ].
+     </p>
+     <p>
+      The foreman's job was important because even the most standardized work sometimes surfaces unique circumstances. As much as managers attempt to routinize work, scholarship on the subject tells us that improvisation remains a necessary aspect of even the most carefully routinized work [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ].
+     </p>
+     <blockquote>
+      <p>
+       When performance is difficult to evaluate, imperfect input measures and a manager's subjective judgment are preferable to defective (simple, observable) output measures.
+      </p>
+      <p>
+       — Anderson and Schmittlein [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+        3
+       </a>
+       ], as cited in [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+        2
+       </a>
+       ]
+      </p>
+     </blockquote>
+     <p>
+      The challenge is that algorithmic review mechanisms are not well–equipped to understand unusual cases. A crowd worker's output is almost never evaluated by humans directly, but algorithmically scored either in comparison to the work of other workers or a known “gold standard” correct response [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ]. However, often the most popular answer isn't actually the correct one [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ], and a gold standard answer may not be the only correct answer [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ]. If the task becomes more complex, for example writing, algorithmic systems fall back to evaluating for syntactic features that, paradoxically, both make it easy to game and frustratingly difficult to succeed [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+       73
+      </a>
+      ]. This general characterization of an algorithmic agent — one that essentially seeks agreement in some form — is not designed to evaluate entirely novel work. With all of the mistakes these systems make, and with the additional work that crowd workers have to do to make these systems work [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ], it should come as little surprise that crowd workers are hesitant to attempt work from unknown and unreliable requesters [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ].
+     </p>
+     <p>
+      The problem is that these algorithmic foremen can't distinguish novel answers from wrong answers. Rare responses do not necessarily mean that the worker was not paying attention — in fact, we prize experts for unique insights and answers nobody else has produced. However, where the foreman would evaluate unusual work relative to its particular constraints, the algorithm at best can only ask if this work resembles other work. Crowd workers might then receive a mass rejection as a result, harming their reputation on the platform. Again as in other cases we've discussed, gathering more training data is not a feasible path to fix the problem: crowd work is often carried out exactly in situations where such data does not yet exist. Machine learning algorithms that evaluate worker effort also require substantial data for each new task [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ]. The street–level algorithm is stuck with a cold–start problem where it does not have enough data to evaluate work accurately.
+     </p>
+    </section>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Algorithmic bias in justice
+       </h3>
+      </div>
+     </header>
+     <p>
+      American courts have, in recent years, turned to algorithmic systems to predict whether a defendant is likely to appear at a subsequent court date, recommending the level at which bail should be set. The idea is to train these systems based on public data such as whether historical defendants who were let out on bail actually showed up at their court date. These systems take into account dimensions such as the charges being levied, the defendant's history, their income level, and much more, in the hopes of yielding outcomes that increase public welfare, for example by reducing jailing rates by 40% with no change in resulting crime rates [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ], all while being less biased and more empirically grounded.
+     </p>
+     <p>
+      Instead, observers have seen patterns of bias that either reflect or amplify well–documented prejudices in the criminal justice system. Researchers have found bail–recommendation systems replicating and exacerbating racial and gender biases — recommending against offering bail to black men disproportionately more than for white men, for example [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ]. In some cases, it seems that problems stem from the data that informs models [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ]; in others, recommendation systems are, as AI researchers say, reflecting a mirror back at our own society, itself steeped in racial prejudice [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ].
+     </p>
+     <p>
+      In this case, the analogical street–level bureaucrat is probably clear. It is the person whose work the algorithm seeks to replicate: the judge. These algorithms are often even trained on judges’ prior decisions [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ]. However, as street–level bureaucrats, judges have struggled to answer the question of “which defendants secure release before trial?” for most of the 20th century [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+       69
+      </a>
+      ]. While constitutional law protects people from “excessive bail”, Walker points out that ultimately this decision is left to the discretion of the judge [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+       69
+      </a>
+      ]. A judge hears preliminary information about the case, reviews information about the defendant (such as past criminal record, assets, and access to means of travel), and sets bail that should be sufficiently high that a defendant will appear for their court date without being inaccessible.
+     </p>
+     <p>
+      In this third case study, we observe something new: a street–level bureaucrat interacting with a street–level algorithm. This interaction can be fraught: bureaucrats in the judicial system resist, buffer, and circumvent the algorithmic recommendations, especially as those algorithms attempt to subsume the work of those bureaucrats. Indeed, Christin explores some of the tensions that emerge when algorithms begin to absorb bureaucrats’ responsibilities and shift the latitude that bureaucrats enjoyed, finding that bureaucrats work around and subvert these systems through foot-dragging, gaming, and open critique as a way of keeping their autonomy [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ]. Veale et al. go further to illustrate some of the ways that designers of algorithmic systems can better support street–level bureaucrats given these and other tensions [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+       67
+      </a>
+      ].
+     </p>
+     <p>
+      Researchers have contributed many valuable insights about bail recommendation algorithms from the perspective of fairness, accountability and transparency (reviewed in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ]); the literature of street–level bureaucracies adds a reminder that each case may involve novel circumstances and deserves thoughtful consideration about which humans in particular are well–equipped to reason. As Lipsky writes, “street–level bureaucrats ...
+      <em>
+       at least [have] to be open to the possibility
+      </em>
+      that each client presents special circumstances and opportunities that may require fresh thinking and flexible action.” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ]. Otherwise, why bother having judges or trials at all? Why not articulate the consequences directly in the law, feed the circumstances of the crime into a predefined legal ruleset (e.g.,
+      <tt>
+       {crime: murder}, {eyewitness: true}, {fingerprints: true}
+      </tt>
+      ), and assign whatever conclusion the law's prescriptions yield? Largely the reason that our society insists on the right to a trial is that there may be relevant characteristics that cannot be readily encoded or have not been foreseen in advance.
+     </p>
+     <p>
+      If street–level algorithms are liable to make errors in marginal and novel situations, it suggests that the problem is not just how to handle biased data, but also how to handle missing data. Increased training data is insufficient: for important cases at the margin, there may be no prior cases. Intersectionality is growing as an area of focus within HCI [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+       57
+      </a>
+      ]; intersectionality fundamentally calls attention to the fact that combinations of traits (e.g., being a woman and a person of color) need to be treated as a holistically unique constellation of traits, rather than as some sort of sum of the individual traits. As a matter of probability, each additional dimension in the intersection makes that constellation less likely. While similar cases in the mainstream may well have been seen before by the algorithm, when the case is at the margin, its particular intersection of traits may be completely novel. Adding training data is almost a waste of resources here, as the combination may be so rare that even increasing dataset size tenfold or one hundredfold may only add a single additional instance of that combination.
+     </p>
+     <p>
+      In practice, this intersectional challenge is one reason why many democracies use a form of case law, allowing an individual to argue to a judge that their circumstances are unique and should be examined uniquely, and with discretion. Many cases are straightforward; however, when they're not, the court system must re–examine the case and the law in this new light. How could an algorithm identify a situation that needs to be treated as a novel interpretation of a policy, as opposed to one that is only a small variation on a theme that has been seen before?
+     </p>
+     <p>
+      Much of the discussion of judicial bail recommendation algorithms today is focused on the goals of fairness, accountability and transparency, or
+      <em>
+       FAT
+      </em>
+      . We argue that FAT is a necessary, but not sufficient, goal. Even a perfectly fair, transparent, and accountable algorithm will make errors of generalization in marginal or new cases.
+     </p>
+    </section>
+   </section>
+   <section id="sec-10">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       DESIGN IMPLICATIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We've discussed the demonetization on YouTube, the management of crowd work, and the bias of algorithmic justice, but the same undercurrent moves all of these cases. The inability of algorithmic systems to
+     <em>
+      reflect
+     </em>
+     on their decision criteria appears across these diverse cases. A human has the capacity to recognize the substantive injustice of a judicial system that targets and disenfranchises people of color when faced with a new situation; an algorithm can only see a pattern. Not a good or bad pattern — just a pattern. And even the goodness or badness of that pattern must itself be taught.
+    </p>
+    <p>
+     What should designers of street–level algorithms do? The question we hope to answer is how to find and identify circumstances for which algorithmic systems would not yield problematic outcomes, assuming that designers want to create a prosocial, fair system. The defining goal, then, should be to identify cases requiring discretion and flexibility. In some cases that will be easy — some classifications’ confidence will be low, or the result will be ambiguous in some predictable way. In much the way we already do, we should divert those cases to human bureaucrats. However, often the system performs these erroneous classifications with high confidence, because it does not recognize that the uniqueness of the input is different than other unique tokens or inputs.
+    </p>
+    <p>
+     Lipsky argues that street–level bureaucrats must exercise reflexivity, recognizing the underlying purpose of the tasks at hand, to be effective. If this is the substantive goal of designing effective street–level algorithms, then we need to figure out how to get there. Today's most advanced AIs cannot reflect on the purpose or meaning of the tasks for which they're optimizing results. We turn, then, to Lipsky's work yet again, where he argues that appeals and recourse — and the ability for people to recognize the uniqueness of a situation when it's explained to them — are necessary features of street–level bureaucrats who fail to recognize the marginality of a case at hand the first time around. Developing more robust mechanisms for recourse may be the path to sufficient, if not yet effective, street–level algorithms.
+    </p>
+    <p>
+     We argue that system–designers need to develop ways for people to get
+     <em>
+      recourse
+     </em>
+     if the system makes a mistake, much like citizens of a bureaucratic institution can mitigate harm due to mistakes. Our theory suggests to look to best practices in bureaucratic design as inspiration. Crafting a fair appeals process is one common lever: for example ensuring that the person reviewing any appeal does not have conflicting interests or misaligned incentives — or in this case, perhaps not the same software developers, human bureaucrats, or machine learning model as the socio-technical system that made the original decision. Another approach is a predefined process for recourse, for example compensating lost income. Third, since bureaucracies can be as opaque as algorithms, many bureaucracies are required by law or design to publish materials describing people's rights in plain language.
+    </p>
+    <p>
+     Recourse and appeals require grounds for the individual to understand precisely where and how the system made a mistake. How, for instance, can a person prove that they have been misjudged by the algorithm? One solution might be to represent the embeddings generated in classifying that case by showing similar points in the embedding space, suitably anonymized. If, for instance, the classification system figured that the current case was very similar to a number of other cases, presenting the user's case in the context of some of those closely–aligned cases can give the user sufficient context to articulate why their situation is marginal relative to the projection the system has of it.
+    </p>
+    <p>
+     For example, YouTube's demonetization system could communicate its judgments about videos to YouTubers, giving those performers an opportunity to argue that they've been misjudged. If a YouTuber uploads a video discussing gender identity, and the system thinks that content is sexual content, it might present a handful of similar videos nearby in the embedding space. By comparing their video to these, a YouTuber can identify whether they're being misjudged as similar to videos from which they're substantively different. This kind of information is crucial for systems such as these to develop depth in the sense that they understand the difference between gender and sex, for instance.
+    </p>
+    <p>
+     Bail recommendation systems could offer similar insights to stakeholders and help both judges and defendants better understand the intuition the algorithmic system has developed. A judge might see that the embeddings generated for a defendant are categorically wrong in some way that the algorithm either doesn't understand or can't measure. In this kind of scenario, information about the other defendants might be sensitive for various reasons, but some representation of the present case and its neighbors in the embedding space can reveal whether a categorical error has been made.
+    </p>
+    <p>
+     These examples may prove untenable due to any number of hurdles, but by sparking a conversation along this dimension — one that calls to attention how the choices of designers manifest in their systems as features of a bureaucracy which billions of people may have to navigate — we hope to encourage thinking about these problems along the same general lines that political scientists have been thinking for the better part of half a century. In doing so, we may be able to find and leverage stopgap solutions — developed and improved by social scientists over decades — that mitigate some of the harms done to marginalized communities.
+    </p>
+    <p>
+     This discussion has focused on individual–level recourse — what about institutional checks? In other words, how can designers of algorithmic systems ensure that the systems will self–police, or if they can at all? Our approach seeks grounding in the literature via the mechanisms that evaluate and manage bureaucracies to identify possible design directions. Street–level bureaucracies experience oversight via a number of channels, including internal audits, external review, and the judicial system. These methods are variably effective, which is to say that public administration has no perfect answer to accountability. However, these models have worked and likely will continue to work as ways that designers can build oversight into algorithms, for example peer juries of disruptive behavior online [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+      38
+     </a>
+     ]. This approach provides us with a structure for reasoning about algorithmic systems with the added benefit of decades of theoretical refinement.
+    </p>
+    <p>
+     The more distant question, of course, is what needs to change before algorithms can reliably subsume the roles of street–level bureaucrats as Lipsky described. Lipsky argues that programs will never be able to take the roles of human beings:
+     <em>
+      “the essence of street–level bureaucrats is [that] they cannot be programmed”
+     </em>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+      43
+     </a>
+     ], because they can't think deeply about the circumstances of the case in front of them or their role in the decision being rendered. That certainly is true today, but advances in AI since Lipsky's time may have surprised even him. It may be possible that algorithmically intelligent systems will reach a point where they can believably take up the roles of human bureaucrats; what they will need to demonstrate is some capacity to reflect on the novelty of novel or unusual cases, and what the implications of their decisions might be
+     <em>
+      before
+     </em>
+     a decision is made.
+    </p>
+   </section>
+   <section id="sec-11">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Street–level bureaucracies are not a perfect metaphor for the phenomena we've discussed. We didn't address in any capacity the fact that street–level bureaucrats sometimes diverge in unexpected ways from the prerogatives of their managers. This becomes the source of tension in Lipsky's treatment of street–level bureaucracies, but in our discussion of the relationships between street–level algorithms and their stakeholders, we avoided the relationship between engineers and designers and the systems themselves. Suffice it to say that while there is a disconnect between intent and outcome, the nature of that relationship is so different that it warrants much further discussion. We also avoided a unique quality of machines in this nuanced tension: algorithmic systems operate at far greater speed than humans can [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+      46
+     </a>
+     ], precipitating what Mittelstadt et al. characterized as a “technical infeasibility of oversight” [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+      49
+     </a>
+     ].
+    </p>
+    <p>
+     Nor are street–level bureaucrats paragons of justice, fairness, accountability, transparency, or any particular virtue. Street–level bureaucrats have historically been agents of immense prejudice and discrimination: writing insuring guidelines specifying that racially integrated neighborhoods are inherently less safe than white ones [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+      55
+     </a>
+     ], for instance. Whyte's ethnography of organized crime in Boston, and of a corrupt police force that took payoffs to exercise their discretion more favorably toward criminal enterprises [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+      70
+     </a>
+     ], illustrates in a different way how discretion can be applied contrary to our values. Street–level bureaucracies are loci of immense power — and power can be abused by those who have it.
+    </p>
+    <p>
+     Perhaps least certain of all the questions that emerge as a result of this discussion of street–level algorithms is that of the relationship between conflicting agents. What happens when street–level bureaucrats collide with street–level algorithms? The theory of street–level bureaucracies doesn't offer much to mitigate this tension. Christin, Veale et al. have traced the landscape of challenges that may emerge and ways to mitigate those conflicts [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+      67
+     </a>
+     ]. This area in particular needs further study: the fault lines are here to stay, and we need to reflect on this shifting of discretion from the bureaucrat to the engineer [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ]. A value-sensitive approach [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0076">
+      76
+     </a>
+     ] would ensure that engineers be careful of how the algorithms may support or undermine bureaucrats’ authority.
+    </p>
+    <p>
+     Algorithms and machine learning may yet introduce new methods that override the observations made here. We are assuming, as is the case currently, that algorithms require feedback or additional training to update their learned models. Likewise, we are assuming that algorithms will continue to make errors of confidence estimation, and will make mistakes by labeling marginal, novel cases with high confidence. Nothing about the emerging architectures of modern machine learning techniques challenges these assumptions, but should it happen, the situation might improve.
+    </p>
+    <p>
+     Despite these limitations, we suspect that the lens of “street–level algorithms” gives us a starting point on many questions in HCI and computing more broadly. We've discussed the ways that street–level bureaucracies can inform how we think about YouTube content moderation, judicial bias, and crowdwork, but we could take the same framing to task on a number of other cases:
+    </p>
+    <ul class="list-no-style">
+     <li id="list1" label="•">
+      <em>
+       Moderation of forum content:
+      </em>
+      For many of the same reasons that we see trouble with the application of algorithmic classification systems on YouTube, we should expect to see problems applying algorithmic systems to textual forums.
+      <br/>
+     </li>
+     <li id="list2" label="•">
+      <em>
+       Self-driving cars:
+      </em>
+      Cars will make algorithmic decisions all the way from Level 1, where vehicles decide to break when we get too close to others, to Level 3, where they will need to decide when to hand control back to drivers, to Level 5, where systems may decide which routes to take and thus how late we should be to our destinations. Self-driving cars are literal “street–level” algorithms.
+      <br/>
+     </li>
+     <li id="list3" label="•">
+      <em>
+       Parental controls:
+      </em>
+      Algorithms that lock children out after a certain amount of screen time elapses will need to learn how to handle unforeseen situations when the device should remain functional, such as a threat or emergency.
+      <br/>
+     </li>
+     <li id="list4" label="•">
+      <em>
+       AI in medicine:
+      </em>
+      When decisions are life-or-death, how does a patient or doctor handle an algorithm's potentially error-prone recommendations?
+      <br/>
+     </li>
+    </ul>
+   </section>
+   <section id="sec-12">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this paper we've explored a framework for thinking about algorithmic systems mediating our lives: one that leans substantially on the scholarship on street–level bureaucracies. We've conducted this exploration by discussing three cases of particular salience in the scholarly and public discourse, but our overarching goal is to motivate the use of this framing to ask questions and even develop lines of inquiry that might help us better understand our own relationships with these systems — and hopefully to design better systems.
+    </p>
+    <p>
+     While we have alluded only briefly to the dangers of bureaucratic organizations and their histories reaffirming prejudice and biases, it's our hope that the underlying narrative — that these institutions, and in particular the agents “on the street”, carry overwhelming power and should be regarded accordingly. It's not our intention to imply that bureaucratic organizations are in any sense a panacea to any problems that we've discussed; instead, we hope that people can take this discussion and begin to apply a vocabulary that enriches future conversations about algorithmic systems and the decisions they make about us. Indeed, by reasoning about street–level algorithms with the benefit of theoretical and historical background afforded by Lipsky's discussion of street–level bureaucracies and the body of work that followed, we are confident that we (designers, researchers, and theorists) can make substantial progress toward designing and advancing systems that consider the needs of stakeholders and the potent influence we have over their lives.
+    </p>
+   </section>
+   <section id="sec-13">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Several thoughtful colleagues helped us understand and discuss the difficult subjects with which we engaged, and we would like them to know that their patience and input was deeply meaningful to us.
+    </p>
+    <p>
+     This work was supported by a National Science Foundation award IIS-1351131 and the Stanford Cyber Initiative.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Paul S. Adler, Barbara Goldoftas, and David I. Levine. 1999. Flexibility Versus Efficiency? A Case Study of Model Changeovers in the Toyota Production System.
+      <em>
+       <em>
+        Organization Science
+       </em>
+      </em>
+      10, 1 (1999), 43–68.
+      <a class="link-inline force-break" href="https://doi.org/10.1287/orsc.10.1.43" target="_blank">
+       https://doi.org/10.1287/orsc.10.1.43
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Ali Alkhatib, Michael S. Bernstein, and Margaret Levi. 2017. Examining Crowd Work and Gig Work Through The Historical Lens of Piecework. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 4599–4616.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025974" target="_blank">
+       https://doi.org/10.1145/3025453.3025974
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Erin Anderson and David C. Schmittlein. 1984. Integration of the Sales Force: An Empirical Examination.
+      <em>
+       <em>
+        The RAND Journal of Economics
+       </em>
+      </em>
+      15, 3 (1984), 385–395.
+      <a class="link-inline force-break" href="http://www.jstor.org/stable/2555446">
+       http://www.jstor.org/stable/2555446
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Julia Angwin, Jeff Larson, Surya Mattu, and Lauren Kirchner. 2016. Machine Bias.
+      <a class="link-inline force-break" href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing">
+       https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Josh Attenberg, Panagiotis G Ipeirotis, and Foster J Provost. 2011. Beat the Machine: Challenging Workers to Find the Unknown Unknowns.
+      <em>
+       <em>
+        Human Computation
+       </em>
+      </em>
+      11, 11 (2011), 2–7.
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Linda Babcock and Sara Laschever. 2009.
+      <em>
+       Women don't ask: Negotiation and the gender divide
+      </em>
+      . Princeton University Press.
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Jeffrey P. Bigham, Michael S. Bernstein, and Eytan Adar. 2015. Human-Computer Interaction and Collective Intelligence. In
+      <em>
+       Handbook of Collective Intelligence
+      </em>
+      . MIT Press, 57–84.
+      <a class="link-inline force-break" href="http://repository.cmu.edu/cgi/viewcontent.cgi?article=1264&amp;context=hcii">
+       http://repository.cmu.edu/cgi/viewcontent.cgi?article=1264&amp;context=hcii
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Chris Bopp, Ellie Harmon, and Amy Voida. 2017. Disempowered by Data: Nonprofits, Social Enterprises, and the Consequences of Data-Driven Work. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 3608–3619.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025694" target="_blank">
+       https://doi.org/10.1145/3025453.3025694
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Nadia Boukhelifa, Marc-Emmanuel Perrin, Samuel Huron, and James Eagan. 2017. How Data Workers Cope with Uncertainty: A Task Characterisation Study. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 3645–3656.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025738" target="_blank">
+       https://doi.org/10.1145/3025453.3025738
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      James Bridle. 2017. Something is wrong on the internet.
+      <a class="link-inline force-break" href="https://medium.com/@jamesbridle/something-is-wrong-on-the-internet-c39c471271d2">
+       https://medium.com/@jamesbridle/something-is-wrong-on-the-internet-c39c471271d2
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Joy Buolamwini and Timnit Gebru. 2018. Gender shades: Intersectional accuracy disparities in commercial gender classification. In
+      <em>
+       Conference on Fairness, Accountability and Transparency
+      </em>
+      . 77–91.
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Stevie Chancellor, Jessica Annette Pater, Trustin Clear, Eric Gilbert, and Munmun De Choudhury. 2016. # thyghgapp: Instagram content moderation and lexical variation in pro-eating disorder communities. In
+      <em>
+       Proceedings of the 19th ACM Conference on Computer-Supported Cooperative Work &amp; Social Computing
+      </em>
+      . ACM, 1201–1213.
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Lydia B. Chilton, John J. Horton, Robert C. Miller, and Shiri Azenkot. 2010. Task Search in a Human Computation Market. In
+      <em>
+       Proceedings of the ACM SIGKDD Workshop on Human Computation
+      </em>
+      (
+      <em>
+       HCOMP ’10
+      </em>
+      ). ACM, 1–9.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1837885.1837889" target="_blank">
+       https://doi.org/10.1145/1837885.1837889
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Angèle Christin. 2017. Algorithms in practice: Comparing web journalism and criminal justice.
+      <em>
+       <em>
+        Big Data &amp; Society
+       </em>
+      </em>
+      4, 2 (2017), 2053951717718855.
+      <a class="link-inline force-break" href="https://doi.org/10.1177/2053951717718855" target="_blank">
+       https://doi.org/10.1177/2053951717718855
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Jan Cohen-Cruz. 1998.
+      <em>
+       Radical street performance: An international anthology
+      </em>
+      . Cambridge Univ Press.
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Sam Corbett-Davies and Sharad Goel. 2018. The Measure and Mismeasure of Fairness: A Critical Review of Fair Machine Learning.
+      <em>
+       <em>
+        arXiv preprint arXiv:1808.00023
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Motahhare Eslami, Aimee Rickman, Kristen Vaccaro, Amirhossein Aleyasen, Andy Vuong, Karrie Karahalios, Kevin Hamilton, and Christian Sandvig. 2015. ”I Always Assumed That I Wasn't Really That Close to [Her]”: Reasoning About Invisible Algorithms in News Feeds. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’15
+      </em>
+      ). ACM, New York, NY, USA, 153–162.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702556" target="_blank">
+       https://doi.org/10.1145/2702123.2702556
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Virginia Eubanks. 2018.
+      <em>
+       Automating inequality: How high-tech tools profile, police, and punish the poor
+      </em>
+      . St. Martin's Press.
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Megan Farokhmanesh. 2018. YouTube is still restricting and demonetizing LGBT videos — and adding anti-LGBT ads to some.
+      <a class="link-inline force-break" href="https://www.theverge.com/2018/6/4/17424472/youtube-lgbt-demonetization-ads-algorithm">
+       https://www.theverge.com/2018/6/4/17424472/youtube-lgbt-demonetization-ads-algorithm
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      R Stuart Geiger and David Ribes. 2010. The work of sustaining order in wikipedia: the banning of a vandal. In
+      <em>
+       Proceedings of the 2010 ACM conference on Computer supported cooperative work
+      </em>
+      . ACM, 117–126.
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Tarleton Gillespie. 2018.
+      <em>
+       Custodians of the Internet: Platforms, content moderation, and the hidden decisions that shape social media
+      </em>
+      . Yale University Press.
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Mary L. Gray, Siddharth Suri, Syed Shoaib Ali, and Deepti Kulkarni. 2016. The Crowd is a Collaborative Network. In
+      <em>
+       Proceedings of the 19th ACM Conference on Computer–Supported Cooperative Work &amp; Social Computing
+      </em>
+      (
+      <em>
+       CSCW ’16
+      </em>
+      ). ACM, 134–147.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2818048.2819942" target="_blank">
+       https://doi.org/10.1145/2818048.2819942
+      </a>
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Jan Grill. 2011. From street busking in Switzerland to meat factories in the UK: a comparative study of two Roma migration networks from Slovakia.
+      <em>
+       <em>
+        Global Connections and emerging inequalities in Europe: perspectives on poverty and transnational migration
+       </em>
+      </em>
+      (2011), 77–102.
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Aaron Halfaker, R Stuart Geiger, Jonathan T Morgan, and John Riedl. 2013. The rise and decline of an open collaboration system: How Wikipedia's reaction to popularity is causing its decline.
+      <em>
+       <em>
+        American Behavioral Scientist
+       </em>
+      </em>
+      57, 5 (2013), 664–688.
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Kenneth Hanf. 1982. The implementation of regulatory policy: enforcement as bargaining.
+      <em>
+       <em>
+        European Journal of Political Research
+       </em>
+      </em>
+      10, 2 (1982), 159–172.
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Sally Harrison-Pepper. 1990.
+      <em>
+       Drawing a circle in the square: street performing in New York's Washington Square Park
+      </em>
+      . Univ Pr of Mississippi.
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Alexis Hiniker, Hyewon Suh, Sabina Cao, and Julie A. Kientz. 2016. Screen Time Tantrums: How Families Manage Screen Media Experiences for Toddlers and Preschoolers. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 648–660.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858278" target="_blank">
+       https://doi.org/10.1145/2858036.2858278
+      </a>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      John D Huber and Charles R Shipan. 2002.
+      <em>
+       Deliberate discretion?: The institutional foundations of bureaucratic autonomy
+      </em>
+      . Cambridge University Press.
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Aziz Z Huq. 2018. Racial Equity in Algorithmic Criminal Justice. (2018).
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Yasmin Ibrahim. 2010. The breastfeeding controversy and Facebook: Politicization of image, privacy and protest.
+      <em>
+       <em>
+        International Journal of E-Politics (IJEP)
+       </em>
+      </em>
+      1, 2 (2010), 16–28.
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Lilly C. Irani and M. Six Silberman. 2013. Turkopticon: Interrupting Worker Invisibility in Amazon Mechanical Turk. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’13
+      </em>
+      ). ACM, 611–620.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2470742" target="_blank">
+       https://doi.org/10.1145/2470654.2470742
+      </a>
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      B.M. Jewell. 1921. The problem of piece work. Number nos. 1-16 in The Problem of Piece Work. Bronson Canode Print. Co.
+      <a class="link-inline force-break" href="https://books.google.com/books?id=NN5NAQAAIAAJ">
+       https://books.google.com/books?id=NN5NAQAAIAAJ
+      </a>
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Erik Kain. 2017. YouTube Wants Content Creators To Appeal Demonetization, But It's Not Always That Easy.
+      <a class="link-inline force-break" href="https://www.forbes.com/sites/erikkain/2017/09/18/adpocalypse-2017-heres-what-you-need-to-know-about-youtubes-demonetization-troubles/#31b00bb96c26">
+       https://www.forbes.com/sites/erikkain/2017/09/18/adpocalypse-2017-heres-what-you-need-to-know-about-youtubes-demonetization-troubles/#31b00bb96c26
+      </a>
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Sanjay Kairam and Jeffrey Heer. 2016. Parting Crowds: Characterizing Divergent Interpretations in Crowdsourced Annotation Tasks. In
+      <em>
+       Proceedings of the 19th ACM Conference on Computer-Supported Cooperative Work &amp; Social Computing
+      </em>
+      (
+      <em>
+       CSCW ’16
+      </em>
+      ). ACM, 1637–1648.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2818048.2820016" target="_blank">
+       https://doi.org/10.1145/2818048.2820016
+      </a>
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Eugene C Kim. 2007. YouTube: Testing the safe harbors of digital copyright law.
+      <em>
+       <em>
+        S. Cal. Interdisc. LJ
+       </em>
+      </em>
+      17(2007), 139.
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Joy Kim, Sarah Sterman, Allegra Argent Beal Cohen, and Michael S Bernstein. 2017. Mechanical Novel: Crowdsourcing Complex Work through Revision. In
+      <em>
+       Proceedings of the 20th ACM Conference on Computer Supported Cooperative Work \&amp; Social Computing
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Jon Kleinberg, Himabindu Lakkaraju, Jure Leskovec, Jens Ludwig, and Sendhil Mullainathan. 2017. Human decisions and machine predictions.
+      <em>
+       <em>
+        The quarterly journal of economics
+       </em>
+      </em>
+      133, 1 (2017), 237–293.
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Yubo Kou, Xinning Gui, Shaozeng Zhang, and Bonnie Nardi. 2017. Managing Disruptive Behavior Through Non-Hierarchical Governance: Crowdsourcing in League of Legends and Weibo.
+      <em>
+       <em>
+        Proc. ACM Hum.-Comput. Interact.
+       </em>
+      </em>
+      1, CSCW, Article 62 (Dec. 2017), 17 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3134697" target="_blank">
+       https://doi.org/10.1145/3134697
+      </a>
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Anja Lambrecht and Catherine E Tucker. 2018. Algorithmic bias? An empirical study into apparent gender-based discrimination in the display of STEM career ads. (2018).
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      John Le, Andy Edmonds, Vaughn Hester, and Lukas Biewald. 2010. Ensuring quality in crowdsourced search relevance evaluation: The effects of training question distribution. In
+      <em>
+       SIGIR 2010 workshop on crowdsourcing for search evaluation
+      </em>
+      . 21–26.
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      Roope Leppänen
+      <em>
+       et al.
+      </em>
+      2017. The State of Video Hosting Websites from the Perspective of Content Creators. (2017).
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      Michael Lipsky. 1969.
+      <em>
+       Toward a theory of street-level bureaucracy
+      </em>
+      . Institute for Research on Poverty, University of Wisconsin.
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Michael Lipsky. 1983.
+      <em>
+       Street-Level Bureaucracy: The Dilemmas of the Individual in Public Service
+      </em>
+      . Russell Sage Foundation.
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      David Martin, Benjamin V. Hanrahan, Jacki O'Neill, and Neha Gupta. 2014. Being a Turker. In
+      <em>
+       Proceedings of the 17th ACM Conference on Computer Supported Cooperative Work &amp; Social Computing
+      </em>
+      (
+      <em>
+       CSCW ’14
+      </em>
+      ). ACM, 224–235.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2531602.2531663" target="_blank">
+       https://doi.org/10.1145/2531602.2531663
+      </a>
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      Bim Mason. 1992.
+      <em>
+       Street theatre and other outdoor performance
+      </em>
+      . Taylor &amp; Francis.
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      Andreas Matthias. 2004. The responsibility gap: Ascribing responsibility for the actions of learning automata.
+      <em>
+       <em>
+        Ethics and Information Technology
+       </em>
+      </em>
+      6, 3 (01 Sep 2004), 175–183.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/s10676-004-3422-1" target="_blank">
+       https://doi.org/10.1007/s10676-004-3422-1
+      </a>
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      Brian McInnis, Dan Cosley, Chaebong Nam, and Gilly Leshed. 2016. Taking a HIT: Designing Around Rejection, Mistrust, Risk, and Workers’ Experiences in Amazon Mechanical Turk. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, 2271–2282.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858539" target="_blank">
+       https://doi.org/10.1145/2858036.2858539
+      </a>
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      Tanushree Mitra, C.J. Hutto, and Eric Gilbert. 2015. Comparing Person- and Process–centric Strategies for Obtaining Quality Data on Amazon Mechanical Turk. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’15
+      </em>
+      ). ACM, 1345–1354.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702553" target="_blank">
+       https://doi.org/10.1145/2702123.2702553
+      </a>
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      Brent Daniel Mittelstadt, Patrick Allo, Mariarosaria Taddeo, Sandra Wachter, and Luciano Floridi. 2016. The ethics of algorithms: Mapping the debate.
+      <em>
+       <em>
+        Big Data &amp; Society
+       </em>
+      </em>
+      3, 2 (2016), 2053951716679679.
+      <a class="link-inline force-break" href="https://doi.org/10.1177/2053951716679679" target="_blank">
+       https://doi.org/10.1177/2053951716679679
+      </a>
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      Matthew G. O'Neill. 2014.
+      <em>
+       Transgender Youth and YouTube Videos: Self-Representation and Five Identifiable Trans Youth Narratives
+      </em>
+      . Palgrave Macmillan UK, London, 34–45.
+      <a class="link-inline force-break" href="https://doi.org/10.1057/9781137383556_3" target="_blank">
+       https://doi.org/10.1057/9781137383556_3
+      </a>
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      Dražen Prelec. 2004. A Bayesian truth serum for subjective data.
+      <em>
+       <em>
+        science
+       </em>
+      </em>
+      306, 5695 (2004), 462–466.
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Julia Quilter and Luke McNamara. 2015. Long May the Buskers Carry on Busking: Street Music and the Law in Melbourne and Sydney.
+      <em>
+       <em>
+        Melb. UL Rev.
+       </em>
+      </em>
+      39(2015), 539.
+     </li>
+     <li id="BibPLXBIB0053" label="[53]">
+      Tobias Raun. 2016.
+      <em>
+       Out online: Trans self-representation and community building on YouTube
+      </em>
+      . Routledge.
+     </li>
+     <li id="BibPLXBIB0054" label="[54]">
+      Daniela Retelny, Sébastien Robaszkiewicz, Alexandra To, Walter S. Lasecki, Jay Patel, Negar Rahmati, Tulsee Doshi, Melissa Valentine, and Michael S. Bernstein. 2014. Expert Crowdsourcing with Flash Teams. In
+      <em>
+       Proceedings of the 27th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’14
+      </em>
+      ). ACM, 75–85.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2642918.2647409" target="_blank">
+       https://doi.org/10.1145/2642918.2647409
+      </a>
+     </li>
+     <li id="BibPLXBIB0055" label="[55]">
+      Richard Rothstein. 2017.
+      <em>
+       The Color of Law: A Forgotten History of How Our Government Segregated America
+      </em>
+      . Liveright Publishing.
+     </li>
+     <li id="BibPLXBIB0056" label="[56]">
+      Jeffrey M. Rzeszotarski and Aniket Kittur. 2011. Instrumenting the Crowd: Using Implicit Behavioral Measures to Predict Task Performance. In
+      <em>
+       Proceedings of the 24th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’11
+      </em>
+      ). ACM, 13–22.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2047196.2047199" target="_blank">
+       https://doi.org/10.1145/2047196.2047199
+      </a>
+     </li>
+     <li id="BibPLXBIB0057" label="[57]">
+      Ari Schlesinger, W Keith Edwards, and Rebecca E Grinter. 2017. Intersectional HCI: Engaging identity through gender, race, and class. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 5412–5427.
+     </li>
+     <li id="BibPLXBIB0058" label="[58]">
+      Aaron D. Shaw, John J. Horton, and Daniel L. Chen. 2011. Designing Incentives for Inexpert Human Raters. In
+      <em>
+       Proceedings of the ACM 2011 Conference on Computer Supported Cooperative Work
+      </em>
+      (
+      <em>
+       CSCW ’11
+      </em>
+      ). ACM, 275–284.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1958824.1958865" target="_blank">
+       https://doi.org/10.1145/1958824.1958865
+      </a>
+     </li>
+     <li id="BibPLXBIB0059" label="[59]">
+      Victor S. Sheng, Foster Provost, and Panagiotis G. Ipeirotis. 2008. Get Another Label? Improving Data Quality and Data Mining Using Multiple, Noisy Labelers. In
+      <em>
+       Proceedings of the 14th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining
+      </em>
+      (
+      <em>
+       KDD ’08
+      </em>
+      ). ACM, 614–622.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1401890.1401965" target="_blank">
+       https://doi.org/10.1145/1401890.1401965
+      </a>
+     </li>
+     <li id="BibPLXBIB0060" label="[60]">
+      Jocelyn Summers. 2018. What Professors Don't Tell You About Social Media. (2018).
+     </li>
+     <li id="BibPLXBIB0061" label="[61]">
+      Zephyr Teachout and Lina Khan. 2014. Market Structure and Political Law: A Taxonomy of Power.
+      <em>
+       <em>
+        Duke J. Const. L. &amp; Pub. Pol'y
+       </em>
+      </em>
+      9 (2014), 37.
+     </li>
+     <li id="BibPLXBIB0062" label="[62]">
+      Jacob Thebault-Spieker, Loren G Terveen, and Brent Hecht. 2015. Avoiding the south side and the suburbs: The geography of mobile crowdsourcing markets. In
+      <em>
+       Proceedings of the 18th ACM Conference on Computer Supported Cooperative Work &amp; Social Computing
+      </em>
+      . ACM, 265–275.
+     </li>
+     <li id="BibPLXBIB0063" label="[63]">
+      Milena Tsvetkova, Ruth García-Gavilanes, Luciano Floridi, and Taha Yasseri. 2017. Even good bots fight: The case of Wikipedia.
+      <em>
+       <em>
+        PLOS ONE
+       </em>
+      </em>
+      12, 2 (02 2017), 1–13.
+      <a class="link-inline force-break" href="https://doi.org/10.1371/journal.pone.0171774" target="_blank">
+       https://doi.org/10.1371/journal.pone.0171774
+      </a>
+     </li>
+     <li id="BibPLXBIB0064" label="[64]">
+      J Richard Udry. 1994. The nature of gender.
+      <em>
+       <em>
+        Demography
+       </em>
+      </em>
+      31, 4 (1994), 561–573.
+     </li>
+     <li id="BibPLXBIB0065" label="[65]">
+      Francisco Valdes. 1994.
+      <em>
+       Queers, Sissies, Dykes, and Tomboys: Deconstructing the Conflation of” Sex,”” Gender,” and” Sexual Orientation” in Euro-American Law and Society
+      </em>
+      . Ph.D. Dissertation. HeinOnline.
+     </li>
+     <li id="BibPLXBIB0066" label="[66]">
+      Melissa A. Valentine, Daniela Retelny, Alexandra To, Negar Rahmati, Tulsee Doshi, and Michael S. Bernstein. 2017. Flash Organizations: Crowdsourcing Complex Work by Structuring Crowds As Organizations. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 3523–3537.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025811" target="_blank">
+       https://doi.org/10.1145/3025453.3025811
+      </a>
+     </li>
+     <li id="BibPLXBIB0067" label="[67]">
+      Michael Veale, Max Van Kleek, and Reuben Binns. 2018. Fairness and Accountability Design Needs for Algorithmic Support in High-Stakes Public Sector Decision-Making. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 440, 14 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174014" target="_blank">
+       https://doi.org/10.1145/3173574.3174014
+      </a>
+     </li>
+     <li id="BibPLXBIB0068" label="[68]">
+      Rob Voigt, Nicholas P. Camp, Vinodkumar Prabhakaran, William L. Hamilton, Rebecca C. Hetey, Camilla M. Griffiths, David Jurgens, Dan Jurafsky, and Jennifer L. Eberhardt. 2017. Language from police body camera footage shows racial disparities in officer respect.
+      <em>
+       <em>
+        Proceedings of the National Academy of Sciences
+       </em>
+      </em>
+      114, 25(2017), 6521–6526.
+      <a class="link-inline force-break" href="https://doi.org/10.1073/pnas.1702413114" target="_blank">
+       https://doi.org/10.1073/pnas.1702413114
+      </a>
+      arXiv:
+      <a class="link-inline force-break" href="http://www.pnas.org/content/114/25/6521.full.pdf">
+       http://www.pnas.org/content/114/25/6521.full.pdf
+      </a>
+     </li>
+     <li id="BibPLXBIB0069" label="[69]">
+      Samuel Walker. 1993.
+      <em>
+       Taming the system: The control of discretion in criminal justice, 1950-1990
+      </em>
+      . Oxford University Press on Demand.
+     </li>
+     <li id="BibPLXBIB0070" label="[70]">
+      William Foote Whyte. 2012.
+      <em>
+       Street corner society: The social structure of an Italian slum
+      </em>
+      . University of Chicago Press.
+     </li>
+     <li id="BibPLXBIB0071" label="[71]">
+      William F. Whyte and Burleigh B. Gardner. 1945. The Position and Problems of the Foreman.
+      <em>
+       <em>
+        Applied Anthropology
+       </em>
+      </em>
+      4, 2 (1945), 17–25.
+      <a class="link-inline force-break" href="http://www.jstor.org/stable/44135127">
+       http://www.jstor.org/stable/44135127
+      </a>
+     </li>
+     <li id="BibPLXBIB0072" label="[72]">
+      James Q Wilson. 1989. Bureaucracy: What government agencies do and why they do it. (1989).
+     </li>
+     <li id="BibPLXBIB0073" label="[73]">
+      Michael Winerip. 2012. Facing a robo-grader? Just keep obfuscating mellifluously.
+      <em>
+       <em>
+        New York Times
+       </em>
+      </em>
+      22(2012).
+     </li>
+     <li id="BibPLXBIB0074" label="[74]">
+      Johanna Wright. 2018. Restricted Mode: How it works and what we can do better.
+      <a class="link-inline force-break" href="https://youtube-creators.googleblog.com/2017/03/restricted-mode-how-it-works-and-what.html">
+       https://youtube-creators.googleblog.com/2017/03/restricted-mode-how-it-works-and-what.html
+      </a>
+     </li>
+     <li id="BibPLXBIB0075" label="[75]">
+      LLC YouTube. 2010. YouTube Community Guidelines.
+     </li>
+     <li id="BibPLXBIB0076" label="[76]">
+      Haiyi Zhu and Loren Terveen. [n. d.]. Value Sensitive Algorithm Design. ([n. d.]).
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300760" target="_blank">
+      https://doi.org/10.1145/3290605.3300760
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'87577141f8cc3a94',t:'MTcxMzMwNDc2Ni4xMTEwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

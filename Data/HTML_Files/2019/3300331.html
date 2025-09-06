@@ -1,0 +1,3966 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   RayCursor: a 3D Pointing Facilitation Technique based on Raycasting
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300331_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300331_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300331_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300331_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300331_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300331_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300331_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300331_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        RayCursor: a 3D Pointing Facilitation Technique based on Raycasting
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Marc
+      </span>
+      <span class="surName">
+       Baloup
+      </span>
+      , Université de Lille, France,
+      <a href="mailto:marc.baloup@inria.fr">
+       marc.baloup@inria.fr
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Thomas
+      </span>
+      <span class="surName">
+       Pietrzak
+      </span>
+      , Université de Lille, France,
+      <a href="mailto:thomas.pietrzak@univ-lille.fr">
+       thomas.pietrzak@univ-lille.fr
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Géry
+      </span>
+      <span class="surName">
+       Casiez
+      </span>
+      , Université de Lille, France,
+      <a href="mailto:gery.casiez@univ-lille.fr">
+       gery.casiez@univ-lille.fr
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300331" target="_blank">
+       https://doi.org/10.1145/3290605.3300331
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       <em>
+        Raycasting
+       </em>
+       is the most common target pointing technique in virtual reality environments. However, performance on small and distant targets is impacted by the accuracy of the pointing device and the user's motor skills. Current pointing facilitation techniques are currently only applied in the context of the virtual hand,
+       <em>
+        i.e.
+       </em>
+       for targets within reach. We propose enhancements to
+       <em>
+        Raycasting
+       </em>
+       : filtering the ray, and adding a controllable cursor on the ray to select the nearest target. We describe a series of studies for the design of the visual feedforward, filtering technique, as well as a comparative study between different 3D pointing techniques. Our results show that highlighting the nearest target is one of the most efficient visual feedforward technique. We also show that filtering the ray reduces error rate in a drastic way. Finally we show the benefits of
+       <em>
+        RayCursor
+       </em>
+       compared to
+       <em>
+        Raycasting
+       </em>
+       and another technique from the literature.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Virtual reality
+       </strong>
+       ; •
+       <strong>
+        Human-centered computing → Pointing
+       </strong>
+       ;
+       <em>
+        Gestural input;
+       </em>
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Virtual reality
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        pointing technique
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        visual feedforward
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Marc Baloup, Thomas Pietrzak, and Géry Casiez. 2019. RayCursor: a 3D Pointing Facilitation Technique based on Raycasting. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 12 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300331" target="_blank">
+         https://doi.org/10.1145/3290605.3300331
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <figure id="fig1">
+    <img alt="Illustration of RayCursor" class="img-responsive" longdesc="a The user moves their thumb on the touchpad of the controller. The cursor moves along the ray accordingly. b The closest target from the cursor is highlighted. c In automatic mode, the cursor moves to the intersection of the ray with a target. d The target remains selected if the cursor moves out of the target, until it is closer to another target. e The user can manually move the cursor using the controller's touchpad, to select another target (the cursor turns red to indicate manual mode). f If the user does not touch the touchpad for 1s, the cursor returns to automatic mode." src="3300331_files\chi2019101fig1.jpg"/>
+    <div class="figure-caption">
+     <span class="figure-number">
+      Figure 1:
+     </span>
+     <span class="figure-title">
+      Illustration of manual
+      <em>
+       RayCursor
+      </em>
+      : a) the user controls a cursor along the ray using relative displacements of their thumb on the controller's touchpad; b) the target closest to the cursor is highlighted. Illustration of semi-auto
+      <em>
+       RayCursor
+      </em>
+      : c) by default, it works like
+      <em>
+       Raycasting
+      </em>
+      . The cursor (in black) is positioned at the intersection with a target; d) the target remains selected if the cursor moves out of the target, until it is closer to another target; e) the user can manually move the cursor using the controller's touchpad, to select another target (the cursor turns red to indicate manual mode); f) if the user does not touch the touchpad for 1s, the cursor returns to its behaviour described in c).
+     </span>
+    </div>
+   </figure>
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Pointing is a fundamental task in any interactive system featuring a 2D or 3D interaction space. Numerous techniques have been proposed and refined over decades for 2D environments to exploit the degrees of freedom offered by new input devices (
+     <em>
+      e.g.
+     </em>
+     computer mouse, touch interfaces or eye trackers) or the characteristics of the objects displayed, trying to artificially reduce the distance to objects [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+      15
+     </a>
+     ] or increasing their width [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ], for example. 3D environments also provide multiple techniques to accomplish this task. These techniques can be divided into two main categories: virtual hands and techniques based on
+     <em>
+      Raycasting
+     </em>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+      23
+     </a>
+     ]. Virtual hand techniques provide an isomorphic mapping between the real hand and the virtual one [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ]. Despite many technique intended to improve
+     <em>
+      Raycasting
+     </em>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+      22
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ], standard
+     <em>
+      Raycasting
+     </em>
+     and virtual hand remain the two default techniques available with devices such as the HTC Vive and their programming environment.
+    </p>
+    <p>
+     With a
+     <em>
+      Raycasting
+     </em>
+     technique, the user manipulates a ray whose origin and orientation are defined by those of a 6 degrees of freedom input device, in a way similar to the manipulation of a laser pointer. When the ray intersects several objects, the one closest to the user can be selected. This technique allows to select targets with a difficulty increasing with longer distances and smaller object widths, due to limits in motion tracking and human motor capabilities. This technique is also affected by occlusion and distracting targets as only the closest intersecting target can be selected, requiring to change the ray position and orientation to select occluded targets.
+    </p>
+    <p>
+     Many techniques have been designed and refined to overcome these limitations. New input devices and interaction contexts offer new opportunities to improve pointing techniques. New trackers, as available on the HTC Vive, offer additional degrees of freedom such as trackpads that were not available before.
+    </p>
+    <p>
+     We propose an improved
+     <em>
+      Raycasting
+     </em>
+     called
+     <em>
+      RayCursor
+     </em>
+     <a class="fn" href="#fn1" id="foot-fn1">
+      <sup>
+       1
+      </sup>
+     </a>
+     , which uses a cursor on the ray. This technique has been designed primarily for immersive environments using the HTC Vive but could also be used in other 3D contexts featuring a 6 degrees of freedom (DOF) controller comprising a touchpad and buttons. The user can control the cursor along the ray using relative displacements of their thumb on the controller's touchpad. Similarly to the
+     <em>
+      Bubble Cursor
+     </em>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+      29
+     </a>
+     ], the target closest to the cursor can be selected when the user presses a button.
+    </p>
+    <p>
+     After presenting the related work on 3D selection techniques based on
+     <em>
+      Raycasting
+     </em>
+     and pointing facilitation techniques, we then describe the design of
+     <em>
+      RayCursor
+     </em>
+     and its characteristics: visual feedforward, cursor transfer function and ray filtering. We explain the general setup of our user studies, and a series of experiments investigating each of the characteristics of
+     <em>
+      RayCursor
+     </em>
+     . Finally, we detail a user evaluation, comparing
+     <em>
+      RayCursor
+     </em>
+     to standard
+     <em>
+      Raycasting
+     </em>
+     and the closest technique in the literature [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ].
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Our related work section focuses on selection techniques building on
+     <em>
+      Raycasting
+     </em>
+     . We start by presenting the different disambiguation mechanisms that have been proposed for these techniques. We then present techniques adding extra degrees of freedom to the ray before covering pointing facilitation techniques using target proximity.
+    </p>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Disambiguation techniques
+       </h3>
+      </div>
+     </header>
+     <p>
+      Argelaguet and Andujar provide a taxonomy of the different techniques designed to improve
+      <em>
+       Raycasting
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ]. Most of these techniques are based on the use of a volume instead of a ray, requiring the use of disambiguation techniques for selection. They distinguish three groups of disambiguation mechanisms: manual, heuristic and behavioral.
+     </p>
+     <p>
+      The manual approach requires additional steps to manually select a target among those highlighted. For example, in the Flower Ray, Grossman
+      <em>
+       et al.
+      </em>
+      display in a pie menu the objects intersected by the ray [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ]. The menu cone technique also displays the targets to disambiguate in a menu and the user performs a gesture to select the target of interest [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ]. In a similar way the SQUAD technique proposed by Kopper
+      <em>
+       et al.
+      </em>
+      adapts the
+      <em>
+       Raycasting
+      </em>
+      to cast a sphere onto the nearest intersecting surface to determine which objects are available for selection [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ]. The selectable objects are then distributed among four quadrants and the user refines the selection until the desired object can be selected. SQUAD showed significantly better performance compared to
+      <em>
+       Raycasting
+      </em>
+      for small target sizes and low densities but there was a significant performance degradation with large target sizes and high densities, due to the increased number of steps to select a target. Cashion
+      <em>
+       et al.
+      </em>
+      propose a variation of SQUAD, called Expand, adding the ability to zoom [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ]. They show Expand performs faster than SQUAD for high object densities. Without relying on menus, the Depth Ray [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ] uses a depth marker attached at a fixed position on the ray. When the rays intersects multiple objects, the one which is closest to the depth marker can be selected. The user can then adjust the position of the depth ray by changing the position and orientation of his hand. Grossman and Balakrishnan also proposed the Lock Ray technique that consists in locking all intersected objects before selecting one using the depth marker [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ], building on the concept of cycling through the set selected objects [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ]. However this did not improve movement time. Using a smartphone to select objects in the physical world, Delamare
+      <em>
+       et al.
+      </em>
+      proposed two techniques to disambiguate targets selected in a cone [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ]. With P2Roll the user performs a rolling gesture to select the target of interest and a sliding gesture on the touch surface using P2Slide. Their techniques were only evaluated with up to 16 targets.
+     </p>
+     <p>
+      The heuristic approach applies some heuristics to determine the target the user is willing to select. The Flashlight technique, for example, highlights the object that is the closest of the central axis of the selection cone [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ]. The Skicky-Ray is based on the
+      <em>
+       Raycasting
+      </em>
+      technique [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ], and the last object intersected remains selectable until another one is hit. The virtual ray is bended towards the objects that can be selected, loosing some visual feedback to select another object. This technique has not been evaluated. Schimdt
+      <em>
+       et al.
+      </em>
+      proposed different pointing-based probabilistic selection algorithms to infer the target the user wants to select but it requires complex tuning of weighting schemes depending on the application [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ].
+     </p>
+     <p>
+      Last, the behavioral approaches consider user's actions before the selection confirmation to determine the object to be selected. For example, IntenSelect uses a time-based scoring function to calculate the score of objects inside a conic selection volume and the object with the highest score can be selected [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ]. In a similar way the Smart Ray continuously weights targets based on their proximity to the ray cursor [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ]. However the latter shows lower performance compared to techniques such as the Flower Ray or the Depth Ray [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ].
+     </p>
+     <p>
+      In summary, current techniques improving
+      <em>
+       Raycasting
+      </em>
+      require a disambiguation mechanism that needs extra steps to make a selection. When evaluated, these techniques show better performance for the selection of small objects in dense environments but they also show lower performance compared to
+      <em>
+       Raycasting
+      </em>
+      for the selection of large targets. Grossman and Balakrishnan showed that the Depth Ray gets better performance compared to the Lock Ray, Flower Ray or Smart Ray because of the lower time required for the disambiguation phase [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ]. Instead of having to disambiguate between different targets using several steps, another approach is to add extra degrees of freedom to the
+      <em>
+       Raycasting
+      </em>
+      to help adjusting the target selection while manipulating the ray.
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Adding extra degrees of freedom
+       </h3>
+      </div>
+     </header>
+     <p>
+      Grossman and Balakrishnan simply added an extra degree of freedom by adding a fixed cursor at the middle of a ray [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ] which proved to be the most efficient technique to select targets in a small volumetric display. However in the context of immersive environments the use of this technique would require significant displacements of the user to disambiguate between targets. Instead of having a cursor fixed on a ray, Ro
+      <em>
+       et al.
+      </em>
+      introduced the ability to adjust the depth of the ray using relative displacements of a finger on a smartphone touchscreen [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. However their technique was not compared to other techniques and the transfer function used to control the length of the ray is not detailed. Recent studies combine hand movements with head and eye-tracking for pointing in augmented reality, such as Pinpointing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ]. This technique is much more precise than gaze-only-based techniques. However it shares disadvantages with
+      <em>
+       Raycasting
+      </em>
+      : sensibility to occlusion, hand tremor and input precision.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Pointing facilitation techniques
+       </h3>
+      </div>
+     </header>
+     <p>
+      Various strategies were studied to facilitate pointing. For instance, semantic pointing expands targets in the motor space [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ]. This technique was designed for 2D pointing, but another study extended it to 3D using a computer mouse on standard monitor [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ]. This technique improves pointing performance in sparse environments but is affected by intervening targets on the way of the cursor (distractors) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ]. An alternative strategy is to replace pointing by symbolic gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ]. It alleviates issues due to pointing gestures, but it is not adapted to arbitrary targets. At the opposite, studies propose 3D gestures for pointing targets on 2D displays but these results are hardly applicable in the context of 3D targets selection [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ].
+     </p>
+     <p>
+      One of the most efficient pointing facilitation technique existing in 2D is to select the target closest to the cursor. For example, the Bubble Cursor displays a disk (a bubble) centered on a mouse cursor whose radius is adjusted with the distance to the closest target [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ]. This technique is especially efficient when the density of targets is low, whatever the size of the targets. The main drawback remains the visual feedback introduced by the bubble constantly changing its radius. Guillon
+      <em>
+       et al.
+      </em>
+      have evaluated the impact of several visual feedbacks on performance for the Bubble Cursor and found that a simple highlight of the closest target is efficient [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ].
+     </p>
+     <p>
+      Vanacken
+      <em>
+       et al.
+      </em>
+      developed a 3D version of the Bubble Cursor, called 3D Bubble, using a virtual hand technique to control a 3D pointer [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ]. Their technique displays a 3D semi-transparent sphere enclosing the closest target. They show that the Depth Ray is more efficient than the 3D Bubble, that is more efficient than the
+      <em>
+       Raycasting
+      </em>
+      . Similarly, Vickers defined a sensitive cube around a 3D cursor manipulated by a wand [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]. When an object was found within the sensitive cube, the cursor jumped to the object.
+     </p>
+     <p>
+      In summary, disambiguation techniques appear efficient to select small targets in dense environments but they overall increase movement time due to the extra steps they introduce. Selection techniques using target proximity appear efficient but they require the use of an appropriate feedback, especially in 3D. Inspired by the 3D Bubble, the Depth Ray and the adjustable length ray introduced by Ro
+      <em>
+       et al.
+      </em>
+      , we propose the
+      <em>
+       RayCursor
+      </em>
+      , a technique combining several of the benefits these techniques offer, without introducing extra disambiguation steps many techniques require.
+     </p>
+    </section>
+   </section>
+   <section id="sec-7">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       RAYCURSOR
+      </h2>
+     </div>
+    </header>
+    <p>
+     We describe the design of
+     <em>
+      RayCursor
+     </em>
+     , an improvement of
+     <em>
+      Raycasting
+     </em>
+     . First we add a cursor on the ray, that the user can manipulate. Then we add a strategy consisting in selecting the closest target to the cursor, similarly to the Bubble Cursor [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+      29
+     </a>
+     ]. We discuss variations of visual feedbacks, inspired by Guillon's work for 2D [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ]. Then, we describe alternative transfer functions for the control of the cursor. Finally we explain filtering techniques we used on the ray to reduce tremor effects, with the
+     <em>
+      1€  Filter
+     </em>
+     [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+      9
+     </a>
+     ].
+    </p>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Adding a cursor on the ray
+       </h3>
+      </div>
+     </header>
+     <p>
+      The idea of a controllable cursor was introduced by Ro
+      <em>
+       et al.
+      </em>
+      to select targets in augmented reality environments using a mobile phone [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. However this technique was not designed to facilitate the selection of small targets. Instead of using a mobile phone, the user performs forward-backward displacements on the touchpad of a Vive Controller located under their thumb. It would be possible to implement this technique on any other 6 DOF controller having at least an extra degree of freedom such as a wheel.
+     </p>
+    </section>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Gain function for cursor control
+       </h3>
+      </div>
+     </header>
+     <p>
+      The transfer function, which computes the cursor movements, is an essential aspect of the interaction technique. Indeed, previous research showed that the transfer function influences pointing performance [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ]. We consider two variables for the design of the transfer function:
+     </p>
+     <ul class="list-no-style">
+      <li id="list1" label="•">
+       <em>
+        v
+        <sub>
+         pad
+        </sub>
+       </em>
+       the speed of the contact point on the pad in m/s: this is a usual input for non-linear transfer functions.
+       <br/>
+      </li>
+      <li id="list2" label="•">
+       <em>
+        d
+        <sub>
+         cur
+        </sub>
+       </em>
+       the distance between the hand and the cursor in m: because of depth, closer objects seem to be moving faster than farther objects. We make the hypothesis that it influences movement time.
+       <br/>
+      </li>
+     </ul>
+     <p>
+      The speed of the cursor is thus
+      <em>
+       v
+       <sub>
+        cur
+       </sub>
+      </em>
+      =
+      <em>
+       g
+      </em>
+      (
+      <em>
+       v
+       <sub>
+        pad
+       </sub>
+      </em>
+      ,
+      <em>
+       d
+       <sub>
+        cur
+       </sub>
+      </em>
+      ) ×
+      <em>
+       v
+       <sub>
+        pad
+       </sub>
+      </em>
+      . We propose several transfer functions, which we evaluate in a dedicated experiment.
+     </p>
+     <p>
+      <em>
+       Gain function depending on finger speed
+      </em>
+      .
+     </p>
+     <p>
+      Common non-linear transfer functions depend on the cursor speed [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ]. This is due to the ballistic and correction phases of a pointing task. During the ballistic stage, the user wants to move as fast as possible to get close to the target. In the correction phase the user wants to select as precisely as possible the target. To do so, non-linear transfer functions use a lower gain at slow speeds and higher gains at high speed. We designed this transfer function as a bounded linear interpolation:
+     </p>
+     <div class="table-responsive">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \[ {VitLerp}(v_{pad}) = \left\lbrace \begin{array}{ll}k_1 &amp; \mbox{if $x \le v_1$}\\ k_2 &amp; \mbox{if $x \ge v_2$}\\ k_1 + \frac{k_2 - k_1}{v_2 - v_1}(v_{pad} - v_1) &amp; \mbox{otherwise}\end{array} \right. \]
+       </span>
+       <br/>
+      </div>
+     </div>
+     <em>
+      Gain function depending on cursor position
+     </em>
+     .
+     <p>
+     </p>
+     <p>
+      With a constant gain function, the cursor seems to move at a different speed, depending on the depth position. It seems to move faster when it is closer, and slower when it is farther. We designed a transfer function, based on a gain proportional to the cursor distance to the hand to alleviate this problem. It is tuned to ensure a usable minimum gain for closer distances. The formula is the following, with
+      <em>
+       k
+      </em>
+      the proportional factor,
+      <em>
+       d
+       <sub>
+        cur
+       </sub>
+      </em>
+      the distance between the hand and the cursor in m, and
+      <em>
+       d
+      </em>
+      a constant corresponding to an estimated distance between the user's eye and hand in m :
+     </p>
+     <div class="table-responsive">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \[ {DistDep}(d_{cur}) = k \times \sqrt {d_{cur}^2 + d^2} \]
+       </span>
+       <br/>
+      </div>
+     </div>
+     <p>
+     </p>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Visual feedforwards
+       </h3>
+      </div>
+     </header>
+     <p>
+      Guillon
+      <em>
+       et al.
+      </em>
+      ’s work showed an influence of visual feedforward on pointing efficiency with a
+      <em>
+       Bubble Cursor
+      </em>
+      for 2D pointing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ]. In the case of selecting the nearest target, feedforward is necessary. Vanacken
+      <em>
+       et al.
+      </em>
+      ’s study about the 3D bubble only used the bubble feedback [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ]. We adapt to 3D interaction the feedforwards Guillon
+      <em>
+       et al.
+      </em>
+      designed for 2D interaction. We describe below these feedforwards along two dimensions: highlighting the target, and representing the distance between the cursor and the nearest target.
+     </p>
+     <figure id="fig2">
+      <img alt="Raycursor with different visual feedbacks" class="img-responsive" longdesc="Five Visual feedforwards for RayCursor: Highlight, Rope Cursor, 3D Bubble, and combination of Highlight with Rope Cursor and with 3D Bubble." src="3300331_files\chi2019101fig2.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        <em>
+         RayCursor
+        </em>
+        with different visual feedbacks. The cursor is
+        <font color="red">
+         red
+        </font>
+        and the ray is
+        <font color="cyan">
+         cyan
+        </font>
+        .
+        <strong>
+         (c,d,e)
+        </strong>
+        <em>
+         Highlight
+        </em>
+        : the nearest target is highlighted.
+        <strong>
+         (a,d)
+        </strong>
+        <em>
+         Rope Cursor
+        </em>
+        [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+         17
+        </a>
+        ] : a white ray binds the cursor and the nearest target.
+        <strong>
+         (b,e)
+        </strong>
+        <em>
+         3D Bubble
+        </em>
+        [
+        <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+         29
+        </a>
+        ] : a 3D bubble centered on the cursor encompassing the nearest target.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <section id="sec-11">
+      <p>
+       <em>
+        Target highlight.
+       </em>
+       In our implementation, highlighting the closest target consists in applying a color lighter than the other targets (Figure
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       (c,d,e)). The advantage of this feedforward compared to the following ones is that visual clutter is minimal. We can also combine it with other visual feedforwards.
+      </p>
+     </section>
+     <section id="sec-12">
+      <header>
+       <div class="title-info">
+        <h4>
+         <span class="section-number">
+         </span>
+         Representing
+         <em>
+          target-cursor
+         </em>
+         distance.
+        </h4>
+       </div>
+      </header>
+      <p>
+       Representing the distance between the cursor and the nearest target is likely to help determining the target that can be selected using the cursor. There are several ways to represent this distance. Drawing a semi-transparent sphere, centered on the cursor and whose radius is the distance
+       <em>
+        target-cursor
+       </em>
+       , is a 3D adaptation of the
+       <em>
+        Bubble Cursor
+       </em>
+       (Figure
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       (b,e)). Guillon
+       <em>
+        et al.
+       </em>
+       also proposed the
+       <em>
+        Rope Cursor
+       </em>
+       , which we adapt to 3D by displaying a white segment between the cursor and the nearest target (Figure
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       (a,d)). This visual feedback causes less visual clutter than the bubble. Another proposition of Guillon
+       <em>
+        et al.
+       </em>
+       is the Voronoï region of each target. This diagram represents the region of influence for each target, taking into account the distance to each target. Although we implemented this visual feedforward as semi-transparent volumes, we discarded it because the visual clutter created makes it hard to use.
+      </p>
+      <p>
+       In section
+       <a class="sec" href="#sec-18">
+        5
+       </a>
+       we present a comparative study for combinations of the following visual feedbacks depicted in Figure
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       :
+       <em>
+        3D Bubble
+       </em>
+       ,
+       <em>
+        Rope Cursor
+       </em>
+       and
+       <em>
+        Highlight
+       </em>
+       .
+      </p>
+     </section>
+    </section>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Filtering the ray
+       </h3>
+      </div>
+     </header>
+     <p>
+      An issue with
+      <em>
+       Raycasting
+      </em>
+      is the precision to select small targets. It is due both to hand tremor and noisy input. We propose to reduce jitter by filtering the ray. We apply filtering both on
+      <em>
+       Raycasting
+      </em>
+      , and on
+      <em>
+       RayCursor
+      </em>
+      , using the
+      <em>
+       1€  Filter
+      </em>
+      as it is fast, simple to tune, and offers a good trade-off between precision and latency [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ]. We designed two filtering modes. In the first mode we filter the orientation of the ray but only to compute the intersection with virtual objects. The ray displayed is not filtered. We call this mode 1€
+      <sub>
+       <em>
+        M
+       </em>
+      </sub>
+      , as the ray is only filtered in motor space. In the second mode, we filter the orientation of the ray both in the motor and visual spaces (1€
+      <sub>
+       <em>
+        VM
+       </em>
+      </sub>
+      ). The advantage of 1€
+      <sub>
+       <em>
+        M
+       </em>
+      </sub>
+      over 1€
+      <sub>
+       <em>
+        VM
+       </em>
+      </sub>
+      is that the user experiences absolutely no extra delay but still benefits from filtering for the intersecting objects. In contrast, with 1€
+      <sub>
+       <em>
+        VM
+       </em>
+      </sub>
+      the user has a more consistent feedback regarding the results of his actions.
+     </p>
+     <p>
+      We describe a comparative study of these two filter modes and an unfiltered
+      <em>
+       Raycasting
+      </em>
+      in section
+      <a class="sec" href="#sec-23">
+       5
+      </a>
+      .
+     </p>
+    </section>
+   </section>
+   <section id="sec-14">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       GENERAL EXPERIMENTAL SETUP
+      </h2>
+     </div>
+    </header>
+    <p>
+     All the experiments in this paper use the same general setup as described in this section.
+    </p>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Apparatus
+       </h3>
+      </div>
+     </header>
+     <p>
+      The experiment used a PC with a
+      <em>
+       HTC Vive
+      </em>
+      VR headset [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ]. Participants manipulated a Vive controller in their dominant hand, and were not allowed to use the second hand. The ray was controlled using the six degrees of freedom of the controller, and the cursor was manipulated using the thumb on the touchpad (Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      ). Target selection was done by pressing the controller's trigger using the index finger. The experiment application was coded in
+      <em>
+       C#
+      </em>
+      using
+      <em>
+       Unity 3D
+      </em>
+      and the
+      <em>
+       SteamVR
+      </em>
+      library.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="View of the scene used in the experiments. It is a gray room with lights on the ceil, some blue targets in the middle and a cyan square representing the position of the participant on the floor." src="3300331_files\chi2019101fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        3D scene used in the experiments. Participants stood in a cyan square drawn on the ground. Instructions were displayed on a virtual screen. Targets were displayed between the user and the screen.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Tasks
+       </h3>
+      </div>
+     </header>
+     <p>
+      Unless stated otherwise, participants had to conform to the following instructions in all experiments. They had to stand in the middle of a 7m square room. The exact position was marked as a 70cm square on the ground. The experiment instructions were displayed on a virtual screen in front of the user (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ). Participants were asked to select targets of varying positions, sizes and densities depending on the experimental conditions. All targets were at sight when the user was looking at the virtual wall with the virtual display. To allow a fair comparison of completion times and error rates between conditions, we generated, before the experiments, a single sequence of targets for each condition, used for all participants, all techniques and all blocks.
+     </p>
+     <p>
+      All targets were blue except the one to be selected, which was yellow. The participant could select a target by pressing the trigger. A 10ms vibration of the controller informed the participant when the correct target was selected. When a participant pressed the trigger with no target selected (with
+      <em>
+       Raycasting
+      </em>
+      ), the controller vibrated for 200ms, the correct target flashed green and the trial was marked as an error. When the participant selected a wrong target, the controller vibrated for 200ms, the selected target flashed red, the correct target flashed green and the trial was marked as an error. Participants could not move to the next target before correctly selecting the current one. The error rate was computed as the ratio between trials for which the correct target was not selected first and the total number of trials. Participants were instructed to remain around 4% error rate as a way to balance their speed/accuracy trade-off. The error rate was displayed on the virtual screen during breaks.
+     </p>
+    </section>
+   </section>
+   <section id="sec-17">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       <em>
+        RayCursor
+       </em>
+       characteristics studies
+      </h2>
+     </div>
+    </header>
+    <p>
+     We present a series of experiments investigating each of the characteristics of
+     <em>
+      RayCursor
+     </em>
+     . We start with the study of different visual feedforwards to indicate the target to select, as it seemed to us as the characteristic most likely to affect performance. We then evaluate the different transfer functions we designed, and evaluate the effect of filtering the ray.
+    </p>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Visual feedforward
+       </h3>
+      </div>
+     </header>
+     <p>
+      We proposed several visual feedforwards, based on previous work on similar techniques for 2D and 3D interaction [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ]. Guillon
+      <em>
+       et al.
+      </em>
+      ’s study in the 2D case concluded that highlighting the nearest target is the most efficient feedforward, while limiting visual clutter. We describe a similar study, comparing 3D versions of these visual feedforwards with
+      <em>
+       Raycasting
+      </em>
+      as a baseline. Considering previous work in 2D, our hypothesis is that highlighting the nearest target is the most efficient feedforward in 3D (H1). We used the
+      <em>
+       DistDep
+      </em>
+      transfer function to control the cursor and no filtering was used in any condition. We refer to [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ] for more details about this study.
+     </p>
+     <section id="sec-19">
+      <p>
+       <em>
+        Methodology.
+       </em>
+       Twelve participants (1 female, all right-handed, age mean=26,
+       <em>
+        σ
+       </em>
+       = 4.3) took part in this experiment. Two of them experienced Virtual Reality for their first time.
+      </p>
+      <p>
+       We used a within-subjects design, with factors:
+       <font style="font-variant: small-caps">
+        Technique
+       </font>
+       , target
+       <font style="font-variant: small-caps">
+        Density
+       </font>
+       , target
+       <font style="font-variant: small-caps">
+        Size
+       </font>
+       and
+       <font style="font-variant: small-caps">
+        Block
+       </font>
+       . The 6 techniques are
+       <em>
+        Raycasting
+       </em>
+       (
+       <em>
+        RC
+       </em>
+       ) as the reference interaction technique, and the
+       <em>
+        RayCursor
+       </em>
+       with the 5 visual feedforwards, as depicted on Figure
+       <a class="fig" href="#fig2">
+        2
+       </a>
+       :
+       <em>
+        RopeCursor
+       </em>
+       (
+       <em>
+        Rope
+       </em>
+       ),
+       <em>
+        Highlight
+       </em>
+       (
+       <em>
+        HL
+       </em>
+       ),
+       <em>
+        3DBubble
+       </em>
+       (
+       <em>
+        Bub
+       </em>
+       ),
+       <em>
+        3DBubble+Highlight
+       </em>
+       (
+       <em>
+        Bub+HL
+       </em>
+       ),
+       <em>
+        RopeCursor+ Highlight
+       </em>
+       (
+       <em>
+        Rope+HL
+       </em>
+       ). The order of techniques was balanced between participants using a Latin square. The 2 target sizes were
+       <em>
+        S
+        <sub>
+         Big
+        </sub>
+       </em>
+       = 8cm and
+       <em>
+        S
+        <sub>
+         Small
+        </sub>
+       </em>
+       = 4cm. The 2 densities used were 15 targets (
+       <em>
+        D
+        <sub>
+         Low
+        </sub>
+       </em>
+       ) and 40 targets (
+       <em>
+        D
+        <sub>
+         High
+        </sub>
+       </em>
+       ). All the targets were spread out at pseudo-random positions in a 2m diameter sphere, whose center was 2m in front of the participants.
+      </p>
+      <p>
+       Participants were allowed to rest between blocks. The experiment design was: 12 participants × 6
+       <font style="font-variant: small-caps">
+        Techniques
+       </font>
+       × 3
+       <font style="font-variant: small-caps">
+        Blocks
+       </font>
+       × 2
+       <font style="font-variant: small-caps">
+        Densities
+       </font>
+       × 2
+       <font style="font-variant: small-caps">
+        Sizes
+       </font>
+       × 10 targets = 8, 640 trials in total. The experiment lasted around 30min per participant.
+      </p>
+      <figure id="fig4">
+       <img alt="" class="img-responsive" longdesc="Bar charts of mean times and error rates for each technique, target size and density, with 95% confidence intervals, for the visual feedforward experiment." src="3300331_files\chi2019101fig4.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 4:
+        </span>
+        <span class="figure-title">
+         Mean times and error rates results for the visual feedforvard experiment, with 95% confidence intervals.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+     </section>
+     <section id="sec-20">
+      <p>
+       <em>
+        Results.
+       </em>
+       Our two main dependent variables are selection time and error rate.
+      </p>
+      <p>
+       <em>
+        Selection time
+       </em>
+       .
+      </p>
+      <p>
+       In this analysis, selection time refers to the time elapsed between two selections. Therefore the first trial of each sequence of 10 targets is discarded, as well as trials resulting in an error. A Box-Cox transformation with
+       <em>
+        λ
+       </em>
+       = −1.2 was applied to correct non-normal selection time residuals [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+        5
+       </a>
+       ].
+      </p>
+      <p>
+       A repeated measures ANOVA
+       <a class="fn" href="#fn2" id="foot-fn2">
+        <sup>
+         2
+        </sup>
+       </a>
+       found a significant effect of
+       <font style="font-variant: small-caps">
+        Block
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        1.2, 12.7
+       </sub>
+       = 21.2,
+       <em>
+        p
+       </em>
+       &lt; 0.001,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.04$
+        </span>
+       </span>
+       ). Pairwise comparisons show significant differences between blocks 1 and the two following ones (
+       <em>
+        p
+       </em>
+       &lt; 0.003, Block 1: 1.45s, 2: 1.29s, 3: 1.25s). We assume this difference is due to a learning effect, therefore we remove the first block from remaining analysis.
+      </p>
+      <p>
+       Subsequent analysis reveal a significant effect of
+       <font style="font-variant: small-caps">
+        Technique
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        5, 55
+       </sub>
+       = 5.4,
+       <em>
+        p
+       </em>
+       &lt; 0.001,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.1$
+        </span>
+       </span>
+       ). Pairwise comparisons show a significant effect between
+       <em>
+        Raycasting
+       </em>
+       and all the other techniques except
+       <em>
+        3DBubble
+       </em>
+       (
+       <em>
+        RC
+       </em>
+       : 1.39s,
+       <em>
+        HL
+       </em>
+       : 1.19s,
+       <em>
+        Bub
+       </em>
+       : 1.42s,
+       <em>
+        Bub+HL
+       </em>
+       : 1.22s,
+       <em>
+        Rope
+       </em>
+       : 1.23s,
+       <em>
+        Rope+HL
+       </em>
+       : 1.17s,
+       <em>
+        p
+       </em>
+       &lt; 0.027).
+      </p>
+      <p>
+       The analysis shows a significant effect of
+       <font style="font-variant: small-caps">
+        Size
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        1, 11
+       </sub>
+       = 108.3,
+       <em>
+        p
+       </em>
+       &lt; 0.001,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.07$
+        </span>
+       </span>
+       ) and a
+       <font style="font-variant: small-caps">
+        Technique × Size
+       </font>
+       interaction (
+       <em>
+        F
+       </em>
+       <sub>
+        5, 55
+       </sub>
+       = 28.1,
+       <em>
+        p
+       </em>
+       &lt; 0.001,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.05$
+        </span>
+       </span>
+       ). Pairwise comparisons only show significant differences between the techniques for
+       <em>
+        small
+       </em>
+       targets.
+       <em>
+        Raycasting
+       </em>
+       is significantly slower (
+       <em>
+        p
+       </em>
+       &lt; 0.0004) than all the other techniques except
+       <em>
+        3DBubble
+       </em>
+       (
+       <em>
+        RC
+       </em>
+       : 1.63s,
+       <em>
+        Bub
+       </em>
+       : 1.48s,
+       <em>
+        HL
+       </em>
+       : 1.21s,
+       <em>
+        Rope
+       </em>
+       : 1.28s,
+       <em>
+        Rope+HL
+       </em>
+       : 1.20s).
+      </p>
+      <p>
+       We also observe a significant effect of
+       <font style="font-variant: small-caps">
+        Density
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        1, 11
+       </sub>
+       = 176.3,
+       <em>
+        p
+       </em>
+       &lt; 0.001,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.11$
+        </span>
+       </span>
+       ) and a
+       <font style="font-variant: small-caps">
+        Technique × Density
+       </font>
+       interaction (
+       <em>
+        F
+       </em>
+       <sub>
+        5, 55
+       </sub>
+       = 5.2,
+       <em>
+        p
+       </em>
+       &lt; 0.001,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.01$
+        </span>
+       </span>
+       ). For
+       <em>
+        low
+       </em>
+       density, we observe a significant differences (
+       <em>
+        p
+       </em>
+       &lt; 0.01) between
+       <em>
+        Raycasting
+       </em>
+       and all other techniques, except
+       <em>
+        3DBubble
+       </em>
+       (
+       <em>
+        RC
+       </em>
+       : 1.36s,
+       <em>
+        Bub
+       </em>
+       : 1.30s,
+       <em>
+        Bub+HL
+       </em>
+       : 1.13s,
+       <em>
+        HL
+       </em>
+       : 1.10s,
+       <em>
+        Rope
+       </em>
+       : 1.11s,
+       <em>
+        Rope+HL
+       </em>
+       : 1.07s).
+      </p>
+      <p>
+       <em>
+        Error Rate
+       </em>
+       . The overall error rate is 4.7%, knowing that participants were instructed to keep around 4% of errors. Data were pre-processed using an Aligned Rank Transform (ART) to take into account the non-normal distribution [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+        33
+       </a>
+       ]. Repeated-measures ANOVA reveals a significant effect of
+       <font style="font-variant: small-caps">
+        Technique
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        5, 829
+       </sub>
+       = 30.3,
+       <em>
+        p
+       </em>
+       &lt; 0.001). Pairwise comparisons show a significant differences between
+       <em>
+        Raycasting
+       </em>
+       (12.9%) and all the other techniques (
+       <em>
+        HL
+       </em>
+       : 2.2%,
+       <em>
+        Bub
+       </em>
+       : 3.8%,
+       <em>
+        Bub+HL
+       </em>
+       : 1.9%,
+       <em>
+        Rope
+       </em>
+       : 4.3%,
+       <em>
+        Rope+HL
+       </em>
+       : 3.3%,
+       <em>
+        p
+       </em>
+       &lt; 0.006). We also observe a significant effect of
+       <font style="font-variant: small-caps">
+        Size
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        1, 829
+       </sub>
+       = 140.7,
+       <em>
+        p
+       </em>
+       &lt; 0.0001) and a
+       <font style="font-variant: small-caps">
+        Technique × Size
+       </font>
+       interaction (
+       <em>
+        F
+       </em>
+       <sub>
+        5, 829
+       </sub>
+       = 26.4,
+       <em>
+        p
+       </em>
+       &lt; 0.0001). Pairwise comparisons only show that error rate with
+       <em>
+        Raycasting
+       </em>
+       is significantly higher for
+       <em>
+        small
+       </em>
+       (20.2%) targets than with
+       <em>
+        big
+       </em>
+       targets (5.6%).
+       <em>
+        Raycasting
+       </em>
+       also has a higher error rate for
+       <em>
+        small
+       </em>
+       targets than all the other techniques (
+       <span class="inline-equation">
+        <span class="tex">
+         ${\lt}5\%$
+        </span>
+       </span>
+       ,
+       <em>
+        p
+       </em>
+       &lt; 0.0001). The analysis also shows a significant
+       <font style="font-variant: small-caps">
+        Technique × Density
+       </font>
+       interaction (
+       <em>
+        F
+       </em>
+       <sub>
+        5, 829
+       </sub>
+       = 5.8,
+       <em>
+        p
+       </em>
+       &lt; 0.0001). Pairwise comparisons show that
+       <em>
+        Raycasting
+       </em>
+       has a higher error rate for
+       <em>
+        low
+       </em>
+       density than all the other techniques (
+       <span class="inline-equation">
+        <span class="tex">
+         ${\lt}3.6\%$
+        </span>
+       </span>
+       ,
+       <em>
+        p
+       </em>
+       &lt; 0.0001).
+      </p>
+     </section>
+     <section id="sec-21">
+      <p>
+       <em>
+        Discussion.
+       </em>
+       The results show that all visual feedforward used with
+       <em>
+        RayCursor
+       </em>
+       are overall more efficient than
+       <em>
+        Raycasting
+       </em>
+       . In particular
+       <em>
+        RayCursor
+       </em>
+       is overall faster for small targets while keeping a low error rate. Highlighting the nearest target is among the most efficient visual feedforwards (H1). Displaying a bubble does not allow to improve performance compared to
+       <em>
+        Raycasting
+       </em>
+       , especially for small targets or dense environments, certainly due to the higher visual clutter it introduces. These results are in line with Guillon
+       <em>
+        et al.
+       </em>
+       ’s study for the 2D case.
+      </p>
+     </section>
+    </section>
+    <section id="sec-22">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Cursor transfer function
+       </h3>
+      </div>
+     </header>
+     <p>
+      To check H2, we compared the performance of
+      <em>
+       VitLerp
+      </em>
+      ,
+      <em>
+       DistProp
+      </em>
+      , and
+      <em>
+       VitLerp × DistDep
+      </em>
+      (a combination of
+      <em>
+       VitLerp
+      </em>
+      and
+      <em>
+       DistDep
+      </em>
+      ) with 9 participants (2 female, all right handed, age mean=27.7,
+      <em>
+       σ
+      </em>
+      = 6.5). The parameters of each transfer function were tuned empirically to maximize performance. For
+      <em>
+       VitLerp
+      </em>
+      , the parameters were
+      <em>
+       k
+      </em>
+      <sub>
+       1
+      </sub>
+      = 30,
+      <em>
+       k
+      </em>
+      <sub>
+       2
+      </sub>
+      = 150,
+      <em>
+       v
+      </em>
+      <sub>
+       1
+      </sub>
+      = 0.05 and
+      <em>
+       v
+      </em>
+      <sub>
+       2
+      </sub>
+      = 0.15. For
+      <em>
+       DistProp
+      </em>
+      , the parameter was
+      <em>
+       k
+      </em>
+      = 50. The combination of
+      <em>
+       VitLerp
+      </em>
+      and
+      <em>
+       DistDep
+      </em>
+      (
+      <em>
+       VLDD
+      </em>
+      ) consists in multiplying both gains. For
+      <em>
+       VLDD
+      </em>
+      , the parameters were
+      <em>
+       k
+      </em>
+      <sub>
+       1
+      </sub>
+      = 20,
+      <em>
+       k
+      </em>
+      <sub>
+       2
+      </sub>
+      = 100,
+      <em>
+       v
+      </em>
+      <sub>
+       1
+      </sub>
+      = 0.05,
+      <em>
+       v
+      </em>
+      <sub>
+       2
+      </sub>
+      = 0.15,
+      <em>
+       k
+      </em>
+      = 1 and
+      <em>
+       d
+      </em>
+      = 0.55.
+     </p>
+     <p>
+      The independent variables were transfer
+      <font style="font-variant: small-caps">
+       Function
+      </font>
+      (
+      <em>
+       VitLerp
+      </em>
+      ,
+      <em>
+       DistProp
+      </em>
+      ,
+      <em>
+       VLDD
+      </em>
+      ), target
+      <font style="font-variant: small-caps">
+       Position
+      </font>
+      (
+      <em>
+       Near
+      </em>
+      ,
+      <em>
+       Far
+      </em>
+      ),
+      <font style="font-variant: small-caps">
+       Distance
+      </font>
+      from the previous target (
+      <em>
+       Short
+      </em>
+      ,
+      <em>
+       Long
+      </em>
+      ), and
+      <font style="font-variant: small-caps">
+       Block
+      </font>
+      (3). The targets to select were organized to combine long and short displacements, target far away and close to the user, to try to use all the possible range of speed and displacement for each function.
+     </p>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="Bar charts of mean times and error rates for each technique, position and distance, with 95% confidence intervals, for the transfert function experiment." src="3300331_files\chi2019101fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        Mean times and error rates results from the transfert function experiment, with 95% confidence intervals.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      <em>
+       Selection time
+      </em>
+      . A Box-Cox transformation with
+      <em>
+       λ
+      </em>
+      = −0.4 was applied to correct non-normal selection time residuals. A repeated measures ANOVA
+      <sup>
+       <a class="fn" href="#fn2" id="foot-fn2">
+        <sup>
+         2
+        </sup>
+       </a>
+      </sup>
+      showed a significant main effect of
+      <font style="font-variant: small-caps">
+       Function
+      </font>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       2, 16
+      </sub>
+      = 3.8,
+      <em>
+       p
+      </em>
+      = 0.046,
+      <span class="inline-equation">
+       <span class="tex">
+        $\eta ^2_G\!=\!0.07$
+       </span>
+      </span>
+      ). Pairwise comparisons show a marginally significant difference between
+      <em>
+       DistProp
+      </em>
+      and
+      <em>
+       VLDD
+      </em>
+      (
+      <em>
+       DP
+      </em>
+      : 2.79s ;
+      <em>
+       VLDD
+      </em>
+      : 2.39s ;
+      <em>
+       p
+      </em>
+      = 0.05).
+      <em>
+       DistProp
+      </em>
+      is slightly slower on average than
+      <em>
+       VLDD
+      </em>
+      . We also observe a significant effect of
+      <font style="font-variant: small-caps">
+       Position
+      </font>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       1, 8
+      </sub>
+      = 223,
+      <em>
+       p
+      </em>
+      &lt; 0.001,
+      <span class="inline-equation">
+       <span class="tex">
+        $\eta ^2_G\!=\!0.55$
+       </span>
+      </span>
+      ) and a
+      <font style="font-variant: small-caps">
+       Function × Position
+      </font>
+      interaction (
+      <em>
+       F
+      </em>
+      <sub>
+       2, 16
+      </sub>
+      = 25.1,
+      <em>
+       p
+      </em>
+      &lt; 0.001,
+      <span class="inline-equation">
+       <span class="tex">
+        $\eta ^2_G\!=\!0.16$
+       </span>
+      </span>
+      ). No significant difference was observed for the
+      <em>
+       Near
+      </em>
+      position. However for the
+      <em>
+       Far
+      </em>
+      position, pairwise comparison show a significant difference between
+      <em>
+       DistProp
+      </em>
+      (3.72s) and the two other functions (
+      <em>
+       VL
+      </em>
+      : 2.76s ;
+      <em>
+       VLDD
+      </em>
+      : 2.88s ;
+      <em>
+       p
+      </em>
+      &lt; 0.002).
+     </p>
+     <p>
+      <em>
+       Error Rate
+      </em>
+      . Data were pre-processed using an ART to take into account the non-normal distribution. Repeated measures ANOVA shows a significant effect of
+      <font style="font-variant: small-caps">
+       Function
+      </font>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       2, 304
+      </sub>
+      = 4.55,
+      <em>
+       p
+      </em>
+      &lt; 0.0004). Pairwise comparisons show a significant effect between
+      <em>
+       DistProp
+      </em>
+      and
+      <em>
+       VitLerp
+      </em>
+      (
+      <em>
+       DP
+      </em>
+      : 7.4% ;
+      <em>
+       VL
+      </em>
+      : 3.7% ;
+      <em>
+       p
+      </em>
+      &lt; 0.002). Users globally made less errors with
+      <em>
+       VitLerp
+      </em>
+      than with
+      <em>
+       DistProp
+      </em>
+      . We also observe a significant effect of
+      <font style="font-variant: small-caps">
+       Position
+      </font>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       1, 304
+      </sub>
+      = 29.6,
+      <em>
+       p
+      </em>
+      &lt; 0.001), and a
+      <font style="font-variant: small-caps">
+       Function × Position
+      </font>
+      interaction (
+      <em>
+       F
+      </em>
+      <sub>
+       2, 304
+      </sub>
+      = 12.9,
+      <em>
+       p
+      </em>
+      &lt; 0.0001). Pairwise comparisons do not show statistical differences between transfer functions for
+      <em>
+       Near
+      </em>
+      targets. However we observed significant differences for
+      <em>
+       Far
+      </em>
+      targets between
+      <em>
+       DistProp
+      </em>
+      and
+      <em>
+       VitLerp
+      </em>
+      (
+      <em>
+       DP
+      </em>
+      : 11.8% ;
+      <em>
+       VL
+      </em>
+      : 3.9% ;
+      <em>
+       p
+      </em>
+      &lt; 0.008).
+     </p>
+     <p>
+      We conclude that the transfer function influences the performance of
+      <em>
+       RayCursor
+      </em>
+      (H2 confirmed):
+      <em>
+       VitLerp
+      </em>
+      is faster and more reliable than
+      <em>
+       DistProp
+      </em>
+      for targets far away from the user and it is overall the most efficient function.
+     </p>
+    </section>
+    <section id="sec-23">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Ray filtering
+       </h3>
+      </div>
+     </header>
+     <p>
+      In the previous experiments, smaller targets were harder to select because of hand tremor and input jitter, even if the tracking provided by the HTC Vive is accurate. In this experiment we want to assess our hypothesis that filtering the ray will reduce selection errors for
+      <em>
+       Raycasting
+      </em>
+      (H3). While filtering has already been used in the literature to filter rays [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ], it was used in the context where the ray intersects a physical screen. We are not aware of previous work formally evaluating the effect of filtering for
+      <em>
+       Raycasting
+      </em>
+      on performance and error rate. Vogel
+      <em>
+       et al.
+      </em>
+      and Kopper
+      <em>
+       et al.
+      </em>
+      both used what corresponds to a primitive version of the
+      <em>
+       1€  Filter
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ]. We also used it as it appears to provide the best trade-off between low jitter and low latency. In this experiment we only consider far away targets, which is the most difficult situation.
+     </p>
+     <section id="sec-24">
+      <p>
+       <em>
+        Methodology.
+       </em>
+       Nine participants (2 female, all right handed, age mean=26.9,
+       <em>
+        σ
+       </em>
+       = 6.25) took part of this experiment. All of them already experienced Virtual Reality before.
+      </p>
+      <p>
+       We used a within-subjects design. Independent variables are:
+       <font style="font-variant: small-caps">
+        Technique
+       </font>
+       and
+       <font style="font-variant: small-caps">
+        Block
+       </font>
+       . The three techniques are described in section
+       <a class="sec" href="#sec-13">
+        3
+       </a>
+       :
+       <em>
+        Raycasting
+       </em>
+       not filtered (
+       <em>
+        RC
+       </em>
+       ),
+       <em>
+        Raycasting
+       </em>
+       filtered in the motor space (1€
+       <sub>
+        <em>
+         M
+        </em>
+       </sub>
+       ) and
+       <em>
+        Raycasting
+       </em>
+       filtered in the visual and motor spaces (1€
+       <sub>
+        <em>
+         VM
+        </em>
+       </sub>
+       ). The order of the three techniques was balanced among participants using a Latin square. We set the
+       <em>
+        1€  Filter
+       </em>
+       parameters to
+       <span class="inline-equation">
+        <span class="tex">
+         $\text{min}_\text{cutoff}=0.1$
+        </span>
+       </span>
+       and
+       <em>
+        β
+       </em>
+       = 50 according to empirical evaluations, in order to minimize latency and jitter. The selectable target was highlighted, according to the previous study on visual feedforward. For each technique, the participants had to perform 5
+       <font style="font-variant: small-caps">
+        Blocks
+       </font>
+       of 20 targets.
+      </p>
+      <p>
+       In summary, the experiment design is: 9 participants × 3
+       <font style="font-variant: small-caps">
+        Techniques
+       </font>
+       × 5
+       <font style="font-variant: small-caps">
+        Blocks
+       </font>
+       × 20 trials = 2, 700 trials in total. The experiment lasted around 15min per participant.
+      </p>
+     </section>
+     <section id="sec-25">
+      <p>
+       <em>
+        Results.
+       </em>
+       We analyze selection time and error to study the effects of filtering. There is an interruption between blocks, so we discarded the first trial of each block in the analysis. For selection time, we also discarded trials resulting in an error.
+      </p>
+      <figure id="fig6">
+       <img alt="" class="img-responsive" longdesc="Bar charts of mean times and error rates for each technique, with 95% confidence intervals, for the 1€ Filter experiment." src="3300331_files\chi2019101fig6.jpg"/>
+       <div class="figure-caption">
+        <span class="figure-number">
+         Figure 6:
+        </span>
+        <span class="figure-title">
+         Mean times and error rates results from the
+         <em>
+          1€  Filter
+         </em>
+         experiment, with 95% confidence intervals.
+        </span>
+       </div>
+      </figure>
+      <p>
+      </p>
+      <p>
+       <em>
+        Selection Time
+       </em>
+       .
+      </p>
+      <p>
+       A Box-Cox transformation with
+       <em>
+        λ
+       </em>
+       = −0.2 was applied to correct non-normal selection time residuals. Repeated measures ANOVA
+       <sup>
+        <a class="fn" href="#fn2" id="foot-fn2">
+         <sup>
+          2
+         </sup>
+        </a>
+       </sup>
+       does not show a significant effect of
+       <font style="font-variant: small-caps">
+        Block
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        4, 32
+       </sub>
+       = 2.2,
+       <em>
+        p
+       </em>
+       = 0.09) or
+       <font style="font-variant: small-caps">
+        Technique
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        1.2, 9.8
+       </sub>
+       = 2.0,
+       <em>
+        p
+       </em>
+       = 0.18).
+      </p>
+      <p>
+       <em>
+        Error Rate
+       </em>
+       .
+      </p>
+      <p>
+       The overall error rate is 16.02%, despite the instruction to follow a 4% error rate. We applied a log transformation to correct non-normal error rate residuals. The analysis does not show a significant effect of
+       <font style="font-variant: small-caps">
+        Block
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        4, 32
+       </sub>
+       = 0.94,
+       <em>
+        p
+       </em>
+       &gt; 0.05). However we observe a significant effect of
+       <font style="font-variant: small-caps">
+        Technique
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        2, 16
+       </sub>
+       = 12.2,
+       <em>
+        p
+       </em>
+       &lt; 0.001,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.21$
+        </span>
+       </span>
+       ). Pairwise comparisons show a significant effect between
+       <em>
+        Raycasting
+       </em>
+       (25.2%) and the other techniques (1€
+       <sub>
+        <em>
+         VM
+        </em>
+       </sub>
+       : 11.7%, 1€
+       <sub>
+        <em>
+         M
+        </em>
+       </sub>
+       : 11.1%,
+       <em>
+        p
+       </em>
+       &lt; 0.0001).
+      </p>
+     </section>
+     <section id="sec-26">
+      <p>
+       <em>
+        Discussion.
+       </em>
+       The results show that filtering the ray with the
+       <em>
+        1€  Filter
+       </em>
+       cuts selection errors by more than 50% (H3 confirmed). Whether only the motor space or both the visual and motor space are filtered does not influence selection errors. However our debriefing with participants reveals that 7/9 prefer when both the visual and motor space are filtered.
+      </p>
+     </section>
+    </section>
+    <section id="sec-27">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Discussion
+       </h3>
+      </div>
+     </header>
+     <p>
+      Among the visual feedbacks we proposed for
+      <em>
+       RayCursor
+      </em>
+      , the efficient ones show the target that will be selected unambiguously. This is the case for all techniques highlighting the target, and the rope. Although several of the feedforwards have similar performance, we suggest just highlighting the nearest target, since this is the feedforward with the less visual clutter. It also suggests that the 3DBubble technique [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ] would certainly also benefit from this type of feedforward.
+     </p>
+     <p>
+      Our studies about the transfer function for controlling the cursor showed that a non linear function of the cursor speed was the most efficient. This is in line with the literature and common transfer functions for computer mice and trackpads on a desktop [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ]. We proposed a simplified function, parametrized with two input speed thresholds, and two extrema gains. The application designer can adapt these parameters to the size of the trackpad input area, and the distances the user has to travel. We informally observed that frequent forward and backward movements of the cursor over long distances slow down the technique. This brought us the idea of combining
+      <em>
+       Raycasting
+      </em>
+      and
+      <em>
+       RayCursor
+      </em>
+      , with a mechanism to teleport the cursor close to a point of interest, hence reducing travelling time.
+     </p>
+     <p>
+      Finally we showed that filtering the ray decreases selection errors. This is both beneficial for
+      <em>
+       Raycasting
+      </em>
+      and
+      <em>
+       RayCursor
+      </em>
+      . While our studies showed that either filtering just the motor space or both the visual and motor space increased performance, user preference tends to suggest it is better to filter both spaces.
+     </p>
+     <p>
+      In the following, we provide a last experiment to compare 1)
+      <em>
+       RayCursor
+      </em>
+      using the highlight feedback, tuned transfer function and filtered ray; 2) the same version of
+      <em>
+       RayCursor
+      </em>
+      but using a semi-automatic cursor positioning along the ray; 3)
+      <em>
+       Raycasting
+      </em>
+      using filtering; and 4) a recent technique from the literature, which features an adjustable ray [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ].
+     </p>
+    </section>
+   </section>
+   <section id="sec-28">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       COMPARATIVE STUDY
+      </h2>
+     </div>
+    </header>
+    <p>
+     We evaluated every characteristic of
+     <em>
+      RayCursor
+     </em>
+     , and proposed optimal settings. In this section we compare two variations of the technique with
+     <em>
+      Raycasting
+     </em>
+     and the closest technique to ours in the literature [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ]. The two variations are a manual control of the cursor, and a semi-automatic control of the cursor. The semi-automatic version (Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     , c-f) is an hybrid between
+     <em>
+      Raycasting
+     </em>
+     and
+     <em>
+      RayCursor
+     </em>
+     . Automatic cursor control is enabled when the user does not touch the touchpad. In this mode when the ray intersects a target, the cursor moves automatically on the ray at the intersection point. If the ray moves out of the target, the target remains selectable using the proximity selection mechanism. If another target is closer to the cursor or intersects the ray, this new target is selected. If the user puts his finger on the touchpad, he can control the cursor position like in the manual version of
+     <em>
+      RayCursor
+     </em>
+     (the automatic control is disabled). If the user releases the touchpad more than 1s, the technique switches back to the automatic cursor behavior.
+    </p>
+    <p>
+     <em>
+      Raycasting
+     </em>
+     and the two variations of
+     <em>
+      RayCursor
+     </em>
+     are filtered using the
+     <em>
+      1€  Filter
+     </em>
+     with the settings previously defined. Indeed, when
+     <em>
+      Raycasting
+     </em>
+     is not filtered its error rate is much higher than for other techniques according to our studies in section
+     <a class="sec" href="#sec-23">
+      5
+     </a>
+     . This experiment will give us more insights on the performance improvements of
+     <em>
+      Raycasting
+     </em>
+     when it is filtered. We also implemented Ro
+     <em>
+      et al.
+     </em>
+     ’s technique as it can be the closest technique to our work [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ]. It also allows to measure the direct benefit of the use of the target proximity facilitation technique. As Ro
+     <em>
+      et al.
+     </em>
+     did not detail the transfer function used to control the length of their ray, we used for their technique the same transfer function used for
+     <em>
+      RayCursor
+     </em>
+     . Our hypothesis is that
+     <em>
+      RayCursor
+     </em>
+     with semi-automatic control of the cursor is faster and less error prone than others techniques tested (H4).
+    </p>
+    <section id="sec-29">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Methodology
+       </h3>
+      </div>
+     </header>
+     <p>
+      Twelve participants (2 female, 1 left handed, age mean=27.6,
+      <em>
+       σ
+      </em>
+      = 5.8) took part of this experiment. Two of them experienced Virtual Reality for the first time. Six of them participated in previous experiments. The time between two of our experiments was at least 4 weeks, suggesting the acquired learning was minimal. The within subject design further reduces individual differences.
+     </p>
+     <p>
+      We used a within-subjects design, with factors:
+      <font style="font-variant: small-caps">
+       Technique
+      </font>
+      , target
+      <font style="font-variant: small-caps">
+       Density
+      </font>
+      , target
+      <font style="font-variant: small-caps">
+       Size
+      </font>
+      and
+      <font style="font-variant: small-caps">
+       Block
+      </font>
+      . The 4 techniques used are:
+      <em>
+       Raycasting
+      </em>
+      filtred with
+      <em>
+       1€  Filter
+      </em>
+      in visual and motor space (
+      <em>
+       <em>
+        RC
+        <sub>
+         f
+        </sub>
+       </em>
+      </em>
+      ), the
+      <em>
+       RayCursor
+      </em>
+      with the cursor controlled manually by the user (
+      <em>
+       ManRCur
+      </em>
+      ), the
+      <em>
+       RayCursor
+      </em>
+      with semi-automatic control of the cursor (
+      <em>
+       AutoRCur
+      </em>
+      ) and the Ro
+      <em>
+       et al.
+      </em>
+      ’s technique [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ] (
+      <em>
+       Ro
+      </em>
+      ). The order of techniques was balanced between participants with a Latin square. The 2 target sizes were
+      <em>
+       S
+       <sub>
+        Big
+       </sub>
+      </em>
+      = 8cm and
+      <em>
+       S
+       <sub>
+        Small
+       </sub>
+      </em>
+      = 4cm of diameter. The 2 densities used 30 targets (
+      <em>
+       D
+       <sub>
+        Low
+       </sub>
+      </em>
+      ) and 60 targets (
+      <em>
+       D
+       <sub>
+        High
+       </sub>
+      </em>
+      ). All the targets were spread out at random positions into 2 spheres of 60cm diameter, in front of the user, and centered at 80cm from the ground. The closer sphere was 1m in front of the user and the farther one at 4m. All targets were at sight when the user was looking at the virtual wall with the virtual display. The participant had to select a target alternately in the near and distant spheres. This condition corresponds to the worse case scenario for
+      <em>
+       ManRCur
+      </em>
+      as the user has to constantly travel over long distances with the cursor along the ray. This is intended to point out the limits on
+      <em>
+       RayCursor
+      </em>
+      .
+     </p>
+     <p>
+      Participants were allowed to rest between blocks. The experiment design was: 12 participants × 4
+      <font style="font-variant: small-caps">
+       Techniques
+      </font>
+      × 3
+      <font style="font-variant: small-caps">
+       Blocks
+      </font>
+      × 2
+      <font style="font-variant: small-caps">
+       Densities
+      </font>
+      × 2
+      <font style="font-variant: small-caps">
+       Sizes
+      </font>
+      × 9 targets = 5, 184 trials in total. The experiment lasted around 30
+      <em>
+       min
+      </em>
+      per participant.
+     </p>
+    </section>
+    <section id="sec-30">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Results
+       </h3>
+      </div>
+     </header>
+     <p>
+      Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      shows selection times and error rates. We also discuss user preferences.
+     </p>
+     <figure id="fig7">
+      <img alt="" class="img-responsive" longdesc="Bar charts of mean times and error rates for each technique, target size and density, with 95% confidence intervals, for the comparative study." src="3300331_files\chi2019101fig7.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        Mean times and error rates results for the comparative study, with 95% confidence intervals.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <section id="sec-31">
+      <p>
+       <em>
+        Selection time.
+       </em>
+       In this analysis, selection time refers to the time elapsed between two selections. Therefore the first trial of each sequence of 10 targets is discarded, as well as trials resulting in an error. We also removed outliers trials, for which the selection time was above
+       <em>
+        mean
+       </em>
+       + 3 ×
+       <em>
+        sd
+       </em>
+       for each technique. A Box-Cox transformation with
+       <em>
+        λ
+       </em>
+       = −0.3 was applied to correct non-normal selection time residuals. Repeated measures ANOVA
+       <sup>
+        <a class="fn" href="#fn2" id="foot-fn2">
+         <sup>
+          2
+         </sup>
+        </a>
+       </sup>
+       found a significant effect of
+       <font style="font-variant: small-caps">
+        Block
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        2, 22
+       </sub>
+       = 21.3,
+       <em>
+        p
+       </em>
+       = 0.001,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.05$
+        </span>
+       </span>
+       ), with pairwise comparisons revealing a significant difference between blocks 1 and 3 (
+       <em>
+        p
+       </em>
+       &lt; 0.016, Block 1: 2.96s, 2: 2.72s, 3: 2.59s). As these results do not clearly suggest a learning or fatigue effect, we kept all blocks for subsequent analysis.
+      </p>
+      <p>
+       We observe also a significant effect of
+       <font style="font-variant: small-caps">
+        Technique
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        1.4, 15.9
+       </sub>
+       = 120.0,
+       <em>
+        p
+       </em>
+       &lt; 0.0001,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.71$
+        </span>
+       </span>
+       ). Pairwise comparisons show a significant effect between
+       <em>
+        Ro
+       </em>
+       and all the other techniques (
+       <em>
+        <em>
+         RC
+         <sub>
+          f
+         </sub>
+        </em>
+       </em>
+       : 1.77s,
+       <em>
+        ManRCur
+       </em>
+       : 2.72s,
+       <em>
+        AutoRCur
+       </em>
+       : 1.88s,
+       <em>
+        Ro
+       </em>
+       : 4.67s,
+       <em>
+        p
+       </em>
+       &lt; 0.0001), as well as between
+       <em>
+        ManRCur
+       </em>
+       and all the others (
+       <em>
+        p
+       </em>
+       &lt; 0.0001).
+       <em>
+        Ro
+       </em>
+       technique is significantly slower than
+       <em>
+        ManRCur
+       </em>
+       , that is significantly slower than the two last techniques. With the semi-auto
+       <em>
+        RayCursor
+       </em>
+       and
+       <em>
+        Raycasting
+       </em>
+       , the user just has to aim the right target with the ray in most cases. Therefore these techniques are faster than the others, which requires the user to move the cursor along the ray to reach the target.
+      </p>
+      <p>
+       The analysis shows a significant effect of
+       <font style="font-variant: small-caps">
+        Size
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        1, 11
+       </sub>
+       = 11.0,
+       <em>
+        p
+       </em>
+       &lt; 0.007,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.02$
+        </span>
+       </span>
+       ) and a
+       <font style="font-variant: small-caps">
+        Technique × Size
+       </font>
+       interaction (
+       <em>
+        F
+       </em>
+       <sub>
+        3, 33
+       </sub>
+       = 11.8,
+       <em>
+        p
+       </em>
+       &lt; 0.0001,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.03$
+        </span>
+       </span>
+       ). Pairwise comparisons only show a significant difference for
+       <em>
+        Ro
+       </em>
+       technique between
+       <em>
+        Big
+       </em>
+       and
+       <em>
+        Small
+       </em>
+       targets (
+       <em>
+        Ro
+        <sub>
+         Small
+        </sub>
+       </em>
+       : 5.08s,
+       <em>
+        Ro
+        <sub>
+         Big
+        </sub>
+       </em>
+       : 4.27s,
+       <em>
+        p
+       </em>
+       = 0.05). We observe that our implementation of Ro
+       <em>
+        et al.
+       </em>
+       ’s technique is slower for the
+       <em>
+        Small
+       </em>
+       targets. We also found a significant effect of
+       <font style="font-variant: small-caps">
+        Density
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        1, 11
+       </sub>
+       = 5.8,
+       <em>
+        p
+       </em>
+       &lt; 0.035,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.01$
+        </span>
+       </span>
+       ) and
+       <font style="font-variant: small-caps">
+        Technique × Density
+       </font>
+       interaction (
+       <em>
+        F
+       </em>
+       <sub>
+        3, 33
+       </sub>
+       = 3.4,
+       <em>
+        p
+       </em>
+       &lt; 0.03,
+       <span class="inline-equation">
+        <span class="tex">
+         $\eta ^2_G\!=\!0.01$
+        </span>
+       </span>
+       ). Post-hoc analysis reveal that selection time increases for
+       <em>
+        Raycasting
+       </em>
+       for the
+       <em>
+        High
+       </em>
+       density (
+       <em>
+        p
+       </em>
+       &lt; 0.001,
+       <em>
+        High
+       </em>
+       : 1.82s,
+       <em>
+        Low
+       </em>
+       : 1.71s).
+      </p>
+      <p>
+       <em>
+        Error Rate
+       </em>
+       .
+      </p>
+      <p>
+       The overall error rate is 5.9%, knowing that participants were instructed to keep around 4% of errors. Data were pre-processed using an ART to take into account the non-normal distribution. Repeated measures ANOVA does not show a
+       <font style="font-variant: small-caps">
+        Block
+       </font>
+       effect (
+       <em>
+        F
+       </em>
+       <sub>
+        2, 562
+       </sub>
+       = 2.9,
+       <em>
+        p
+       </em>
+       &gt; 0.05). However it reveals a significant effect of
+       <font style="font-variant: small-caps">
+        Technique
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        3, 549
+       </sub>
+       = 25.5,
+       <em>
+        p
+       </em>
+       &lt; 0.0001). Pairwise comparisons show significant differences between Ro
+       <em>
+        et al.
+       </em>
+       ’s technique (11.9%) and all the other techniques (
+       <em>
+        <em>
+         RC
+         <sub>
+          f
+         </sub>
+        </em>
+       </em>
+       : 5.7%,
+       <em>
+        ManRCur
+       </em>
+       : 3.8%,
+       <em>
+        AutoRCur
+       </em>
+       : 2.4%,
+       <em>
+        p
+       </em>
+       &lt; 0.0001), as well as between
+       <em>
+        <em>
+         RC
+         <sub>
+          f
+         </sub>
+        </em>
+       </em>
+       and
+       <em>
+        AutoRCur
+       </em>
+       (
+       <em>
+        p
+       </em>
+       = 0.013). The high error rate of Ro
+       <em>
+        et al.
+       </em>
+       ’s technique is probably due to the lack of proximity selection, compared to the manual
+       <em>
+        RayCursor
+       </em>
+       . Also, semi-auto
+       <em>
+        RayCursor
+       </em>
+       has lower error rate than
+       <em>
+        Raycasting
+       </em>
+       . We explain this effect by the proximity selection when the user deviates from the targeted object while trying to select it. There was also a significant effect of
+       <font style="font-variant: small-caps">
+        Size
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        1, 549
+       </sub>
+       = 11.9,
+       <em>
+        p
+       </em>
+       &lt; 0.001) showing higher error rate for the small target size (
+       <em>
+        Small
+       </em>
+       : 6.5%,
+       <em>
+        Large
+       </em>
+       : 5.2%). No significant effect of
+       <font style="font-variant: small-caps">
+        Density
+       </font>
+       (
+       <em>
+        F
+       </em>
+       <sub>
+        1, 549
+       </sub>
+       = 0.01,
+       <em>
+        p
+       </em>
+       &gt; 0.05) was found.
+      </p>
+      <p>
+       <em>
+        User preferences
+       </em>
+       .
+      </p>
+      <p>
+       At the end of the experiment, each participant was instructed to rank the techniques according to their preference. A Friedman test revealed a significant effect of technique on user preference (
+       <em>
+        χ
+       </em>
+       <sup>
+        2
+       </sup>
+       (3) = 25.3,
+       <em>
+        p
+       </em>
+       &lt; 0.0001). Wilcoxon post-hoc analysis showed significant differences between Ro
+       <em>
+        et al.
+       </em>
+       ’s technique (median rank = 4) and all others techniques (median ranks:
+       <em>
+        <em>
+         RC
+         <sub>
+          f
+         </sub>
+        </em>
+       </em>
+       : 2,
+       <em>
+        ManRCur
+       </em>
+       : 2,
+       <em>
+        AutoRCur
+       </em>
+       : 1,
+       <em>
+        p
+       </em>
+       &lt; 0.0001) and between manual and semi-auto
+       <em>
+        RayCursor
+       </em>
+       (
+       <em>
+        p
+       </em>
+       = 0.041). These subjective results are in line with our analysis of error rates and selection time. A majority of participants ranked the semi-auto
+       <em>
+        RayCursor
+       </em>
+       first (9 out of 12).
+      </p>
+     </section>
+    </section>
+    <section id="sec-32">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Discussion
+       </h3>
+      </div>
+     </header>
+     <p>
+      This experiment shows that our semi-auto
+      <em>
+       RayCursor
+      </em>
+      yields selection times similar to the filtered
+      <em>
+       Raycasting
+      </em>
+      , across different target sizes and densities. However, semi-auto
+      <em>
+       RayCursor
+      </em>
+      significantly improves error rates over the filtered
+      <em>
+       Raycasting
+      </em>
+      across the different conditions. It shows the efficiency of 1) the
+      <em>
+       1€  Filter
+      </em>
+      to reduce jitter; 2) the selection of targets by proximity; and 3) the semi-automatic placement of the cursor along the ray. When selecting targets far away the semi-auto
+      <em>
+       RayCursor
+      </em>
+      could have been negatively impacted by the ray hitting close targets and making the cursor suddenly jumps, but it was not the case. If jumps would occur due to targets approximately equally far away, the use of an hysteresis function would help solving the problem. Our manual
+      <em>
+       RayCursor
+      </em>
+      obtained lower time performance compared to the previously mentioned techniques, certainly due to the incessant cursor displacement required to move the cursor forward and backward from one trial to the other. However when comparing the manual
+      <em>
+       RayCursor
+      </em>
+      to Ro
+      <em>
+       et al.
+      </em>
+      ’s technique, it clearly shows the benefits of proximity selection.
+     </p>
+    </section>
+   </section>
+   <section id="sec-33">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We presented
+     <em>
+      RayCursor
+     </em>
+     , a new interaction technique for 3D target selection in immersive environments. This technique is an improvement of
+     <em>
+      Raycasting
+     </em>
+     that uses a cursor on the ray to select the nearest target. Displaying a bubble was the typical visual feedforward for such a technique. However Guillon
+     <em>
+      et al.
+     </em>
+     ’s showed that, in a 2D context, highlighting the nearest target is more efficient, and produces less visual clutter [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ]. We extended their results to 3D interaction, with similar conclusions. Despite the existence of previous work filtering the ray, we described the first evaluation of a filtered
+     <em>
+      Raycasting
+     </em>
+     formally evaluating its benefits. We showed that filtering the ray strongly reduces selection errors. This is both beneficial for
+     <em>
+      Raycasting
+     </em>
+     and
+     <em>
+      RayCursor
+     </em>
+     . Our results also demonstrate that transfer functions like the ones used on desktop interfaces are efficient for the control of a cursor on a ray. We recommend using a sigmoid function that depends on the cursor speed. Last, our comparative study shows that a filtered
+     <em>
+      Raycasting
+     </em>
+     has decent performance on several target sizes and densities. We also show that an hybrid technique between
+     <em>
+      Raycasting
+     </em>
+     and
+     <em>
+      RayCursor
+     </em>
+     has the lowest error rate, while being as fast as
+     <em>
+      Raycasting
+     </em>
+     . In 3D, selection often precede the manipulation of a 3D object. A side and important benefit of our technique is its ability to manipulate the object along the ray once it is selected, for example to bring it close to the user, something the standard
+     <em>
+      Raycasting
+     </em>
+     does not allow to do. Future work will focus on the use of
+     <em>
+      RayCursor
+     </em>
+     to enable both the selection and manipulation of 3D objects in immersive environments.
+    </p>
+   </section>
+   <section id="sec-34">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This work was partially supported by the Inria IPL Avatar project.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Ferran Argelaguet and Carlos Andujar. 2013. A survey of 3D object selection techniques for virtual environments.
+      <em>
+       <em>
+        Computers and Graphics
+       </em>
+      </em>
+      37, 3 (2013), 121 – 136.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.cag.2012.12.003" target="_blank">
+       https://doi.org/10.1016/j.cag.2012.12.003
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Marc Baloup, Veis Oudjail, Thomas Pietrzak, and Géry Casiez. 2018. Pointing Techniques for Distant Targets in Virtual Reality. In Proceedings of the AFIHM Conférence Francophone sur l'interaction Homme-Machine (IHM 2018)(Articles Scientifiques). Brest, France, 8.
+      <a class="link-inline force-break" href="https://hal.archives-ouvertes.fr/hal-01899061">
+       https://hal.archives-ouvertes.fr/hal-01899061
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Renaud Blanch, Yves Guiard, and Michel Beaudouin-Lafon. 2004. Semantic Pointing: Improving Target Acquisition with Control-display Ratio Adaptation. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’04
+      </em>
+      ). ACM, New York, NY, USA, 519–526.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/985692.985758" target="_blank">
+       https://doi.org/10.1145/985692.985758
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Doug A. Bowman, Ernst Kruijff, Joseph J. LaViola, and Ivan Poupyrev. 2004.
+      <em>
+       3D User Interfaces: Theory and Practice
+      </em>
+      . Addison Wesley Longman Publishing Co., Inc., Redwood City, CA, USA.
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      George EP Box and David R Cox. 1964. An analysis of transformations.
+      <em>
+       <em>
+        Journal of the Royal Statistical Society. Series B (Methodological)
+       </em>
+      </em>
+      (1964), 211–252.
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Jeffrey Cashion, Chadwick Wingrave, and Joseph J LaViola Jr. 2012. Dense and dynamic 3d selection for game-based virtual environments.
+      <em>
+       <em>
+        IEEE transactions on visualization and computer graphics
+       </em>
+      </em>
+      18, 4(2012), 634–642.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TVCG.2012.40" target="_blank">
+       https://doi.org/10.1109/TVCG.2012.40
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Géry Casiez and Nicolas Roussel. 2011. No More Bricolage!: Methods and Tools to Characterize, Replicate and Compare Pointing Transfer Functions. In
+      <em>
+       Proceedings of the 24th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’11
+      </em>
+      ). ACM, New York, NY, USA, 603–614.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2047196.2047276" target="_blank">
+       https://doi.org/10.1145/2047196.2047276
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Géry Casiez, Nicolas Roussel, Romuald Vanbelleghem, and Frédéric Giraud. 2011. Surfpad: Riding Towards Targets on a Squeeze Film Effect. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’11
+      </em>
+      ). ACM, New York, NY, USA, 2491–2500.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1978942.1979307" target="_blank">
+       https://doi.org/10.1145/1978942.1979307
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Géry Casiez, Nicolas Roussel, and Daniel Vogel. 2012. 1€  Filter: A Simple Speed-based Low-pass Filter for Noisy Input in Interactive Systems. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’12
+      </em>
+      ). ACM, New York, NY, USA, 2527–2530.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2207676.2208639" target="_blank">
+       https://doi.org/10.1145/2207676.2208639
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Gerwin de Haan, Michal Koutek, and Frits H. Post. 2005. IntenSelect: Using Dynamic Object Rating for Assisting 3D Object Selection. In
+      <em>
+       Proceedings of the 11th Eurographics Conference on Virtual Environments
+      </em>
+      (
+      <em>
+       EGVE’05
+      </em>
+      ). Eurographics Association, Aire-la-Ville, Switzerland, Switzerland, 201–209.
+      <a class="link-inline force-break" href="https://doi.org/10.2312/EGVE/IPT_EGVE2005/201-209" target="_blank">
+       https://doi.org/10.2312/EGVE/IPT_EGVE2005/201-209
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      William Delamare, Céline Coutrix, and Laurence Nigay. 2013. Mobile Pointing Task in the Physical World: Balancing Focus and Performance While Disambiguating. In
+      <em>
+       Proceedings of the 15th International Conference on Human-computer Interaction with Mobile Devices and Services
+      </em>
+      (
+      <em>
+       MobileHCI ’13
+      </em>
+      ). ACM, New York, NY, USA, 89–98.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2493190.2493232" target="_blank">
+       https://doi.org/10.1145/2493190.2493232
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Niklas Elmqvist and Jean-Daniel Fekete. 2008. Semantic Pointing for Object Picking in Complex 3D Environments. In
+      <em>
+       Proceedings of Graphics Interface 2008
+      </em>
+      (
+      <em>
+       GI ’08
+      </em>
+      ). Canadian Information Processing Society, Toronto, Ont., Canada, 243–250.
+      <a class="link-inline force-break" href="http://dl.acm.org/citation.cfm?id=1375714.1375755">
+       http://dl.acm.org/citation.cfm?id=1375714.1375755
+      </a>
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Tovi Grossman and Ravin Balakrishnan. 2005. The Bubble Cursor: Enhancing Target Acquisition by Dynamic Resizing of the Cursor's Activation Area. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’05
+      </em>
+      ). ACM, New York, NY, USA, 281–290.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1054972.1055012" target="_blank">
+       https://doi.org/10.1145/1054972.1055012
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Tovi Grossman and Ravin Balakrishnan. 2006. The Design and Evaluation of Selection Techniques for 3D Volumetric Displays. In
+      <em>
+       Proceedings of the 19th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’06
+      </em>
+      ). ACM, New York, NY, USA, 3–12.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1166253.1166257" target="_blank">
+       https://doi.org/10.1145/1166253.1166257
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Yves Guiard, Renaud Blanch, and Michel Beaudouin-Lafon. 2004. Object Pointing: A Complement to Bitmap Pointing in GUIs. In
+      <em>
+       Proceedings of Graphics Interface 2004
+      </em>
+      (
+      <em>
+       GI ’04
+      </em>
+      ). Canadian Human-Computer Communications Society, School of Computer Science, University of Waterloo, Waterloo, Ontario, Canada, 9–16.
+      <a class="link-inline force-break" href="http://dl.acm.org/citation.cfm?id=1006058.1006060">
+       http://dl.acm.org/citation.cfm?id=1006058.1006060
+      </a>
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Maxime Guillon, François Leitner, and Laurence Nigay. 2014. Static Voronoi-Based Target Expansion Technique for Distant Pointing. In Proceedings of the International Working Conference on Advanced Visual Interfaces (AVI 2014), Franca Garzotto, Paolo Paolini, Antonella De Angeli, Giulio Jacucci, Alessio Malizia, Maristella Matera, and Rosa Lanzilotti (Eds.). ACM, Como, Italy, 41–48.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2598153.2598178">
+       https://doi.org/10.1145/2598153.2598178
+      </a>
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Maxime Guillon, François Leitner, and Laurence Nigay. 2015. Investigating Visual Feedforward for Target Expansion Techniques. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’15
+      </em>
+      ). ACM, New York, NY, USA, 2777–2786.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702375" target="_blank">
+       https://doi.org/10.1145/2702123.2702375
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Aakar Gupta, Thomas Pietrzak, Cleon Yau, Nicolas Roussel, and Ravin Balakrishnan. 2017. Summon and Select: Rapid Interaction with Interface Controls in Mid-air. In
+      <em>
+       Proceedings of the 2017 ACM International Conference on Interactive Surfaces and Spaces
+      </em>
+      (
+      <em>
+       ISS ’17
+      </em>
+      ). ACM, New York, NY, USA, 52–61.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3132272.3134120" target="_blank">
+       https://doi.org/10.1145/3132272.3134120
+      </a>
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Ken Hinckley, Randy Pausch, John C. Goble, and Neal F. Kassell. 1994. A Survey of Design Issues in Spatial Input. In
+      <em>
+       Proceedings of the 7th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’94
+      </em>
+      ). ACM, New York, NY, USA, 213–222.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/192426.192501" target="_blank">
+       https://doi.org/10.1145/192426.192501
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Regis Kopper, Felipe Bacim, and Doug A Bowman. 2011. Rapid and accurate 3D selection by progressive refinement. In 2011 IEEE Symposium on 3D User Interfaces (3DUI). IEEE, IEEE Computer Society, Washington, DC, USA, 67–74.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/3DUI.2011.5759219">
+       https://doi.org/10.1109/3DUI.2011.5759219
+      </a>
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Mikko Kytö, Barrett Ens, Thammathip Piumsomboon, Gun A. Lee, and Mark Billinghurst. 2018. Pinpointing: Precise Head- and Eye-Based Target Selection for Augmented Reality. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 81, 14 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3173655" target="_blank">
+       https://doi.org/10.1145/3173574.3173655
+      </a>
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Jiandong Liang and Mark Green. 1994. JDCAD: A highly interactive 3D modeling system.
+      <em>
+       <em>
+        Computers &amp; Graphics
+       </em>
+      </em>
+      18, 4 (1994), 499 – 506.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/0097-8493(94)90062-0" target="_blank">
+       https://doi.org/10.1016/0097-8493(94)90062-0
+      </a>
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Mark R Mine. 1995. Virtual environment interaction techniques. Technical Report. University of North Carolina, Chapel Hill, NC, USA.
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Mathieu Nancel, Olivier Chapuis, Emmanuel Pietriga, Xing-Dong Yang, Pourang P Irani, and Michel Beaudouin-Lafon. 2013. High-precision pointing on large wall displays using small handheld devices. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’13
+      </em>
+      ). ACM, New York, NY, USA, 831–840.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2470773" target="_blank">
+       https://doi.org/10.1145/2470654.2470773
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Gang Ren and Eamonn O'Neill. 2013. 3D selection with freehand gesture.
+      <em>
+       <em>
+        Computers &amp; Graphics
+       </em>
+      </em>
+      37, 3 (May 2013), 101–120.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.cag.2012.12.006" target="_blank">
+       https://doi.org/10.1016/j.cag.2012.12.006
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Hyocheol Ro, Seungho Chae, Inhwan Kim, Junghyun Byun, Yoonsik Yang, Yoonjung Park, and Tackdon Han. 2017. A dynamic depth-variable ray-casting interface for object manipulation in ar environments. In
+      <em>
+       2017 IEEE International Conference on Systems, Man, and Cybernetics (SMC)
+      </em>
+      . IEEE Systems, Man, and Cybernetics Society, 2873–2878.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/SMC.2017.8123063" target="_blank">
+       https://doi.org/10.1109/SMC.2017.8123063
+      </a>
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Greg Schmidt, Yohan Baillot, Dennis G. Brown, Erik B. Tomlin, and J. Edward II Swan. 2006. Toward Disambiguating Multiple Selections for Frustum-Based Pointing. In
+      <em>
+       Proceedings of the 3D User Interfaces
+      </em>
+      (
+      <em>
+       3DUI ’06
+      </em>
+      ). IEEE Computer Society, Washington, DC, USA, 87–94.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/VR.2006.133" target="_blank">
+       https://doi.org/10.1109/VR.2006.133
+      </a>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Frank Steinicke, Timo Ropinski, and Klaus Hinrichs. 2004. Object selection in virtual environments with an improved virtual pointer metaphor. In
+      <em>
+       Computer Vision and Graphics: International Conference, ICCVG 2004
+      </em>
+      . Springer Netherlands, Warsaw, Poland, 320–326.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/1-4020-4179-9_46" target="_blank">
+       https://doi.org/10.1007/1-4020-4179-9_46
+      </a>
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Lode Vanacken, Tovi Grossman, and Karin Coninx. 2007. Exploring the Effects of Environment Density and Target Visibility on Object Selection in 3D Virtual Environments. In
+      <em>
+       2007 IEEE Symposium on 3D User Interfaces
+      </em>
+      . IEEE Computer Society, Washington, DC, USA.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/3DUI.2007.340783" target="_blank">
+       https://doi.org/10.1109/3DUI.2007.340783
+      </a>
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Donald Lee Vickers. 1972.
+      <em>
+       Sorcerer's Apprentice: Head-mounted Display and Wand
+      </em>
+      . Ph.D. Dissertation.
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Vive. 2019. HTC Vive VR headset.
+      <a class="link-inline force-break" href="https://www.vive.com/us/product/vive-virtual-reality-system/">
+       https://www.vive.com/us/product/vive-virtual-reality-system/
+      </a>
+      , retrieved January 7th, 2019.
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Daniel Vogel and Ravin Balakrishnan. 2005. Distant Freehand Pointing and Clicking on Very Large, High Resolution Displays. In
+      <em>
+       Proceedings of the 18th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’05
+      </em>
+      ). ACM, New York, NY, USA, 33–42.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1095034.1095041" target="_blank">
+       https://doi.org/10.1145/1095034.1095041
+      </a>
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Jacob O. Wobbrock, Leah Findlater, Darren Gergle, and James J. Higgins. 2011. The Aligned Rank Transform for Nonparametric Factorial Analyses Using Only Anova Procedures. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’11
+      </em>
+      ). ACM, New York, NY, USA, 143–146.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1978942.1978963" target="_blank">
+       https://doi.org/10.1145/1978942.1978963
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    Additional material available at
+    <a class="link-inline force-break" href="http://ns.inria.fr/loki/raycursor">
+     ns.inria.fr/loki/raycursor
+    </a>
+   </p>
+   <p id="fn2">
+    <a href="#foot-fn2">
+     <sup>
+      2
+     </sup>
+    </a>
+    All statistical analysis in the 4 experiments were performed using R, using
+    <em>
+     α
+    </em>
+    = 0.05 and Greenhouse-Geisser corrections were applied to DoFs when sphericity was violated. We used Bonferroni corrections, where the p-values are multiplied by the number of comparisons. Detailed statistical analysis are available at
+    <a class="link-inline force-break" href="http://ns.inria.fr/loki/raycursor">
+     ns.inria.fr/loki/raycursor
+    </a>
+    .
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Association for Computing Machinery.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300331" target="_blank">
+      https://doi.org/10.1145/3290605.3300331
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'87577ab94d19367d',t:'MTcxMzMwNTE1My44NTYwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

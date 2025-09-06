@@ -1,0 +1,3987 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Steering Performance with Error-accepting Delays
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300800_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300800_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300800_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300800_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300800_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300800_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300800_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300800_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Steering Performance with Error-accepting Delays
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Shota
+      </span>
+      <span class="surName">
+       Yamanaka
+      </span>
+      , Yahoo Japan Corporation, Japan,
+      <a href="mailto:syamanak@yahoo-corp.jp">
+       syamanak@yahoo-corp.jp
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300800" target="_blank">
+       https://doi.org/10.1145/3290605.3300800
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       In steering law tasks, deviating from the path is immediately considered an error operation. However, in navigating a hierarchical menu item, which is a representative application of the law, a deviation within a short duration is sometimes permitted. We tested the validity of the steering law model with various durations of such
+       <em>
+        error-accepting delays
+       </em>
+       and found that it showed high fits for each delay condition (
+       <em>
+        R
+       </em>
+       <sup>
+        2
+       </sup>
+       &gt; 0.96) but poor fits if the delay values were not separated (
+       <em>
+        R
+       </em>
+       <sup>
+        2
+       </sup>
+       = 0.58). Because the average movement speed linearly increased as the delay increased, we refined the model by taking the delay into account, and the fitness was significantly improved (
+       <em>
+        R
+       </em>
+       <sup>
+        2
+       </sup>
+       = 0.97). Our model will help GUI designers estimate the average operational time on the basis of the menu item length, width, and error-accepting delay.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → HCI theory, concepts and models
+       </strong>
+       ; •
+       <strong>
+        Human-centered computing → Pointing
+       </strong>
+       ; •
+       <strong>
+        Human-centered computing → Empirical studies in HCI
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Graphical user interfaces; indirect pointing; delay; menu design; steering law
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Shota Yamanaka. 2019. Steering Performance with Error-accepting Delays. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 9 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300800" target="_blank">
+         https://doi.org/10.1145/3290605.3300800
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Evaluating the applicability of an existing human performance model in a specific task is an important topic in HCI, in addition to deriving the model. One example is testing the validity of Fitts’ law [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+      19
+     </a>
+     ] in various conditions (e.g., [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+      50
+     </a>
+     ]). Such an applicability evaluation is also important for the model that we investigate: the steering law [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ], which predicts the movement time
+     <em>
+      MT
+     </em>
+     to navigate a constrained path.
+    </p>
+    <p>
+     The steering law has many applications such as car driving [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+      49
+     </a>
+     ], using a sewing machine [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+      32
+     </a>
+     ], and cutting a piece of paper with scissors [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+      22
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+      46
+     </a>
+     ]. A critical application in terms of HCI is navigation in hierarchical menus [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ]. Therefore, researchers have endeavored to more accurately model user behaviors when navigating menus and selecting items, e.g., by combining the steering and Fitts’ laws [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+      38
+     </a>
+     ].
+    </p>
+    <p>
+     In this paper, we measure user performance for steering law tasks in which users can deviate from a path for a short duration. In many implementations of hierarchical menus, a set of child submenus appears shortly after the cursor hovers over the related parent item. Hence, users do not always have to keep the cursor inside the boundaries of the parent item. The duration, which we call
+     <em>
+      error-accepting delay
+     </em>
+     , is typically configured by designers, e.g., using the
+     <tt>
+      setTimeout
+     </tt>
+     (JavaScript) or
+     <tt>
+      delay
+     </tt>
+     (jQuery) functions. Intuitively, as the error-accepting delay increases, users can move the cursor more quickly, as they do not have to carefully steer the cursor through a path. More strictly, (1) users can move so far outside the path as long as they can return to the path within a given duration, thus (2) providing a temporal tolerance outside the path is equivalent to an expanded spatial tolerance because users can stay within the delay constraint, and therefore (3) users can accelerate their speed as if the path width is expanded. However, long error-accepting delays require users to wait a long time for submenus to open after moving the cursor onto the parent item. Thus, the design of error-accepting delay is quite important in terms of usability.
+    </p>
+    <p>
+     To date, we have found no study on such a delay in steering law tasks. Conventionally, hitting the boundaries of a path is immediately considered an error attempt [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+      44
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+      47
+     </a>
+     ]. This is a natural rule for real-world tasks such as car driving [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ], but not necessary for menu navigations. The only exception is a work by Pastel [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+      34
+     </a>
+     ], who determined that the percentage of sampled cursor trajectory points outside the path could reach up to 2%. However, in typical menu implementations, the trigger to display submenus is the duration of cursor hovering, and hence the result by Pastel does not directly answer our question. Investigating the effects of error-accepting delays and refining the steering law to estimate
+     <em>
+      MT
+     </em>
+     under a given delay will help designers determine an appropriate configuration of the delay for displaying menus; this motivated us to conduct this work. Our key contributions include:
+    </p>
+    <ul class="list-no-style">
+     <li id="list1" label="•">
+      We conducted an experiment in mouse-steering tasks with error-accepting delays. To our knowledge, the effects of this condition (i.e., users could deviate from the path for a given duration) have never before been empirically tested.
+      <br/>
+     </li>
+     <li id="list2" label="•">
+      We showed that the conventional steering law showed very high fits (
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      &gt; 0.96) for each delay condition tested in our study (0 to 800 msec). This result provides evidence that the steering law is empirically valid even when the deviation from the path is permitted for a fixed duration.
+      <br/>
+     </li>
+     <li id="list3" label="•">
+      We derived a refined model that showed an excellent fit regardless of delay values (
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      = 0.97 for
+      <em>
+       N
+      </em>
+      = 48 data points), while the baseline model showed a poorer fit (
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      = 0.58). Our model helps GUI designers accurately estimate the average operational time to navigate hierarchical menus on the basis of the menu item length, width, and error-accepting delay.
+      <br/>
+     </li>
+    </ul>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Laws of Steering
+       </h3>
+      </div>
+     </header>
+     <p>
+      Laws of steering through a restricted path have been proposed by Rashevsky [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ] for car driving and by Drury [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ] for pen drawing. For GUI operations, Accot and Zhai [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ] proposed the global model to steer through a given path
+      <em>
+       C
+      </em>
+      :
+     </p>
+     <div class="table-responsive" id="eq1">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} MT = a+b\int _C \dfrac{ds}{W(s)} \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (1)
+       </span>
+      </div>
+     </div>
+     where
+     <em>
+      MT
+     </em>
+     is in msec,
+     <em>
+      s
+     </em>
+     is the cursor position from the path start,
+     <em>
+      W
+     </em>
+     (
+     <em>
+      s
+     </em>
+     ) [mm] is the path width at
+     <em>
+      s
+     </em>
+     , and
+     <em>
+      a
+     </em>
+     and
+     <em>
+      b
+     </em>
+     are empirically determined constants. If the path length is
+     <em>
+      A
+     </em>
+     [mm], and the width is constant (
+     <em>
+      W
+     </em>
+     ), the model can be simplified:
+     <div class="table-responsive" id="eq2">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} MT=a+b(A/W) \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (2)
+       </span>
+      </div>
+     </div>
+     Various studies have demonstrated that the model shows good fits to various input devices [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+      37
+     </a>
+     ], small and large scales [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ], preferred and non-preferred hands [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+      22
+     </a>
+     ], various tracking directions [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+      41
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+      56
+     </a>
+     ], various temporal constraints [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+      54
+     </a>
+     ], and different priority on speed or accuracy [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+      55
+     </a>
+     ].
+     <p>
+     </p>
+     <p>
+      Although the intercept
+      <em>
+       a
+      </em>
+      is usually close to zero but significant [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ], a proportional version of this model is also theoretically valid [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]:
+     </p>
+     <div class="table-responsive" id="eq3">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} MT=b(A/W) \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (3)
+       </span>
+      </div>
+     </div>
+     <p>
+     </p>
+     <p>
+      Accot and Zhai proposed another form called the local law, which shows that the instantaneous speed
+      <em>
+       v
+      </em>
+      [mm/msec] is linearly related to the path width:
+     </p>
+     <div class="table-responsive" id="eq4">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} v = W(s)/\tau \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (4)
+       </span>
+      </div>
+     </div>
+     where
+     <em>
+      τ
+     </em>
+     [msec] is an empirical constant. Although the speed in a path gradually increases while a straight path has a constant width [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+      38
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+      47
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+      48
+     </a>
+     ], this simple relationship between
+     <em>
+      v
+     </em>
+     and
+     <em>
+      W
+     </em>
+     has also been supported by other researchers [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ]. Given that the
+     <em>
+      v
+     </em>
+     is stable in a constant-width path [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+      30
+     </a>
+     ], the time to pass through an entire path is
+     <div class="table-responsive" id="eq5">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} MT=b\dfrac{A}{W} = b\dfrac{A}{\tau v} = b^{\prime }\dfrac{A}{v}\ \ (\mathrm{let} \ b^{\prime }=b/\tau) \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (5)
+       </span>
+      </div>
+     </div>
+     This model was also confirmed by Drury in the following form [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+      23
+     </a>
+     ]:
+     <div class="table-responsive" id="eq6">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{eqnarray} MT=b(A/V) \end{eqnarray}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (6)
+       </span>
+      </div>
+     </div>
+     where
+     <em>
+      V
+     </em>
+     [mm/msec] is the average movement speed throughout the path:
+     <div class="table-responsive" id="eq7">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{eqnarray} V =A/MT \end{eqnarray}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (7)
+       </span>
+      </div>
+     </div>
+     This model assumes that the instantaneous speed
+     <em>
+      v
+     </em>
+     is stable, which means that the average speed
+     <em>
+      V
+     </em>
+     can be replaced by
+     <em>
+      v
+     </em>
+     . Thus, the following form is also valid [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+      23
+     </a>
+     ]:
+     <div class="table-responsive" id="eq8">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} V = bW \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (8)
+       </span>
+      </div>
+     </div>
+     Also, the intercept is usually small but significant [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+      23
+     </a>
+     ]:
+     <div class="table-responsive" id="eq9">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{equation} V = a+bW \end{equation}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (9)
+       </span>
+      </div>
+     </div>
+     <p>
+     </p>
+     <p>
+      In summary, in a constant-width straight path, although there are some variations, such as whether to use an intercept or whether to predict
+      <em>
+       MT
+      </em>
+      ,
+      <em>
+       V
+      </em>
+      , or
+      <em>
+       v
+      </em>
+      on the left side of an equation, we have a consensus that the movement speed (
+      <em>
+       V
+      </em>
+      or
+      <em>
+       v
+      </em>
+      ) linearly increases as the path width
+      <em>
+       W
+      </em>
+      increases, and thus the time required to navigate the path (
+      <em>
+       MT
+      </em>
+      ) linearly decreases. It is suitable for our purpose here to use models that predict
+      <em>
+       MT
+      </em>
+      for estimating an average operational time.
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Modifications of Laws of Steering
+       </h3>
+      </div>
+     </header>
+     <p>
+      Models on path shapes other than constant-width linear paths have been also evaluated, including those on circular paths [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ], curved paths [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ], linearly narrowing paths [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ], widening spiral paths [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ], paths with a corner [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ], successive path segments [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ], and those that calculate the
+      <em>
+       MT
+      </em>
+      difference between narrowing and widening paths [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ]. Because submovement distances change depending on path shape [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ], we are also interested in investigating the effects of error-accepting delays in different path shapes. In this paper, however, we investigate only constant-width linear path segments as a first step to evaluate whether the delay affects user performance in steering motions.
+     </p>
+     <p>
+      When testing model fitness, Kulikov et al. proposed adjusting the
+      <em>
+       W
+      </em>
+      value on the basis of the observed stroke variability, called the
+      <em>
+       effective width method
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. This method, however, is not suitable for designers who want to know the average operation time under a given task [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ]. Hence, we test model fitness with the data of error-free trials.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Facilitating Menu Navigations
+       </h3>
+      </div>
+     </header>
+     <p>
+      There are alternative techniques that enable users to easily navigate hierarchical menus. For example, setting a spatially wider area for a menu item directly eases navigation difficulty [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ]. With regard to the steering law, this technique expands an item tolerance
+      <em>
+       W
+      </em>
+      so that users move the cursor less attentively. Another approach is shortening the distance
+      <em>
+       A
+      </em>
+      of the steering law. Kobayashi and Igarashi used gestures for menu navigation, where moving the cursor a short distance to the right opens submenus [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ]. In Jumping Menu [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ], when a parent menu item is clicked, the cursor jumps to the related child submenus to eliminate any steering operations.
+     </p>
+     <p>
+      Blocking the cursor from deviating an item tolerance is also effective for menu navigation. Using virtual gravity (or
+      <em>
+       force-fields
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ]) and a physical force [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ] pulls the cursor to the path center. This is a kind of error-accepting technique in motor space, similar to expanding the path tolerance.
+     </p>
+     <p>
+      Using the marking menu [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ] and its related methods (e.g., [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ]) or using pie menus [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ] helps users select an item without precise cursor positioning. See Bailly et al.’s recent survey [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ] for a thorough review on visual menu selection techniques. To the best of our knowledge, no work has been conducted to evaluate the effects of temporal support for hierarchical menu navigation, although such a delay is widely used in many applications.
+     </p>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Effects of Delay on GUI Operations
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our concern with adding a delay to display submenus is that users have to wait to view the submenu items, which could have a negative effect on their subjective feelings. In addition, if a system has a
+      <em>
+       latency
+      </em>
+      or
+      <em>
+       lag
+      </em>
+      when reacting to a user's action, it directly increases the task completion time. In mouse-pointing tasks, Hoffmann [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ] and MacKenzie and Ware [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ] proposed models modified from Fitts’ law to capture the negative effect of lag. Similarly, Friston et al. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ] conducted a steering law task with transmission latency. Note that their
+      <em>
+       system lag
+      </em>
+      is added to every loop from mouse movements to cursor positioning, while under our condition, the
+      <em>
+       lag
+      </em>
+      (error-accepting delay) is added only to the final phase of the parent menu item selection to expose the related submenus. While our focus is not on finding the optimal error-accepting delay, our proposed model will be helpful to accurately predict the user performance in terms of
+      <em>
+       MT
+      </em>
+      .
+     </p>
+    </section>
+   </section>
+   <section id="sec-8">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       EXPERIMENT
+      </h2>
+     </div>
+    </header>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Participants
+       </h3>
+      </div>
+     </header>
+     <p>
+      Twelve participants were recruited from a local university (two females and ten males,
+      <em>
+       M
+      </em>
+      = 22.6 and
+      <em>
+       SD
+      </em>
+      = 1.89 years). All had normal or corrected-to-normal vision, were right-handed, and were familiar with mouse operations; six of them were daily mouse users. Each participant received 3,000 JPY (∼ 27 US
+      <font style="normal">
+       $
+      </font>
+      ) for their time.
+     </p>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Apparatus
+       </h3>
+      </div>
+     </header>
+     <p>
+      The PC we used was a Sony Vaio Z (Core i7-5557U, 3.10 GHz, 4 cores; 16-GB RAM; Windows 10). The display was manufactured by Dell (model 2407WFPb; 24 inches diagonal, 1920 × 1200 pixel resolution, 518.4 × 324.0 mm display area, 3.70 pixels/mm; 16-ms response time; connected by an HDMI-to-DVI cable) and its refresh rate was set at 60 Hz. The input device was an iBuffalo optical mouse (model BSMBU05, Blue LED, 81.6 g, 1000 dpi; 1.5-m USB 2.0 cable). As the steering law has shown excellent fits for mouse operations [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ], we assumed a mouse was appropriate to observe the effects of error-accepting delay in steering law tasks. The cursor speed was set to the default, and pointer acceleration, or the
+      <em>
+       Enhance pointer precision
+      </em>
+      setting in Windows 10, was enabled to allow the participants to perform mouse operations with higher ecological validity [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ]. Using the pointer acceleration does not violate the steering law [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ], and it is consistent with consumer OS settings such as Windows and macOS. We used a large mousepad (43 cm × 29 cm). The experimental system was implemented with Hot Soup Processor 3.4 and used in full-screen mode. The system reads and processes input at approximately 1,000 times per second.
+     </p>
+     <p>
+      Latency was measured with a Casio EXILIM EX-ZR4000WE camera at 1,000 FPS. The mouse was hit with a hard object at high speeds, and the number of frames from when the mouse stopped to when the cursor stopped was counted. We repeated this action 30 times, and the average latency was 57.9 msec (
+      <em>
+       SD
+      </em>
+      = 11.2). This is in the range of typical mouse-display latencies of approximately 55 to 82 msec [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ]. Therefore, we assume that the latency of our experimental system would not have a significant negative effect on user performance.
+     </p>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Task
+       </h3>
+      </div>
+     </header>
+     <p>
+      The task was to click on the blue start area, pass through the white path, and then click on the green end area, as shown in Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      a. Between the two clicks, if the cursor entered the gray out-of-path areas and the time was over the error-accepting delay
+      <em>
+       T
+       <sub>
+        dealy
+       </sub>
+      </em>
+      , a beep sounded and the cursor position was marked as a cross (“ × ”) to flag a steering error operation
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      . If the cursor returned to the path within a given
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      ,
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      was not marked. Note: the deviation duration was not summed in a trial; the
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      was given to each deviation. For example, in Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      a, the first deviation was equal to or less than the given
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      , but the second was over the
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      and thus marked as an
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      .
+     </p>
+     <p>
+      Participants were asked to complete the task without restarting even if an
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      occurred or when they clicked outside the start and end areas (
+      <em>
+       ER
+       <sub>
+        click
+       </sub>
+      </em>
+      ). Although a click was needed after steering through the path, the green end area was sufficiently long along the movement direction (x-axis), and thus the motion in the white path was a steering rather than a combination of steering with pointing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ].
+     </p>
+     <p>
+      Participants were instructed to minimize the time between the two clicks and to not make any
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      or
+      <em>
+       ER
+       <sub>
+        click
+       </sub>
+      </em>
+      errors. Although our instructions were designed to motivate participants during the entire trial, the data to be analyzed were only those between the start and end lines, as in conventional steering law studies; i.e., the time after crossing the start line to crossing the end line (judged on the basis of the cursor's x-position) was measured as
+      <em>
+       MT
+      </em>
+      . After each trial, a large circular button labeled “Next” appeared at a random position and participants clicked it to reveal the next path condition. Movement direction was always to the right.
+     </p>
+     <figure id="fig1">
+      <img alt="" class="img-responsive" longdesc="Two images show the experimental systems." src="3300800_files\chi2019570fig1.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 1:
+       </span>
+       <span class="figure-title">
+        (a) Parameter definitions in the experiment. (b) Exercise system.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Design
+       </h3>
+      </div>
+     </header>
+     <p>
+      The experiment was a 6 × 2 × 4 within-subjects design with the following independent variables and levels. Three independent variables were included: error-accepting delay
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      , path length
+      <em>
+       A
+      </em>
+      , and path width
+      <em>
+       W
+      </em>
+      .
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      had six values (0, 100, 200, 400, 600, and 800 msec). Under the
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      = 0 msec condition, deviating from the path immediately caused an
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      , and this was the baseline condition, as in conventional steering law tasks. The other values were selected on the basis of human reaction time. Because the time to correct hand movements based on visual feedback is longer than 200 msec [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ] (approximately 260 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ] or 290 msec [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ]), we assumed that participants could return the cursor to the path in ∼ 300 msec (including system latency) after noticing any deviation from the path. Therefore, we set
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      values ranging from less than to sufficiently longer than human reaction time to observe the effects of error-accepting delay.
+      <em>
+       A
+      </em>
+      had two values (480 and 640 pixels; 130 and 173 mm, respectively) and
+      <em>
+       W
+      </em>
+      had four values (15, 23, 33, and 45 pixels; 4.05, 6.21, 8.91, and 12.2 mm) so that the
+      <em>
+       A
+      </em>
+      /
+      <em>
+       W
+      </em>
+      values (10.7–42.7) were beyond 10, which requires continuous visually controlled steering movements [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ].
+     </p>
+     <p>
+      We measured five dependent variables:
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      rate, temporal ratio of deviation from the path (
+      <em>
+       Ratio
+       <sub>
+        out
+       </sub>
+      </em>
+      ), average count of deviations from the path per trial (
+      <em>
+       Count
+       <sub>
+        out
+       </sub>
+      </em>
+      ),
+      <em>
+       MT
+      </em>
+      , and
+      <em>
+       V
+      </em>
+      . The
+      <em>
+       ER
+       <sub>
+        click
+       </sub>
+      </em>
+      rate was not included as a dependent variable because our main focus was on analyzing steering operations.
+     </p>
+    </section>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Procedure
+       </h3>
+      </div>
+     </header>
+     <p>
+      One
+      <em>
+       block
+      </em>
+      consisted of a random order of 2
+      <em>
+       A
+      </em>
+      × 4
+      <em>
+       W
+      </em>
+      × 7 repetitions = 56 trials with a fixed
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      value. The first repetition was considered practice. Before each block, the participants used an exercise system (described below) to learn an error-accepting delay of the next block, except for the
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      = 0 msec condition. The order of the six
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      values was balanced among the 12 participants. In total, we recorded 2
+      <em>
+       A
+      </em>
+      × 4
+      <em>
+       W
+      </em>
+      × 6 repetitions × 6
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      × 12 participants = 3,456 data points. This task took about 30 min per participant.
+     </p>
+    </section>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Exercise to Learn a Given Error-accepting Delay
+       </h3>
+      </div>
+     </header>
+     <p>
+      As shown in Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      b, participants moved the cursor into the top or bottom pink area, beginning the time measurement. Just before the time surpassed a given
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      , they returned the cursor to the center white area. If the measured time was over
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      , the cursor position was marked as a cross and a beep sound was played, the same as in the main experimental system. Participants repeatedly attempted this task and were expected to learn how to immediately return the cursor after deviating from the path. The session finished when a participant felt that s/he had sufficiently learned the
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      , and the time required was typically 30 sec (∼ 15 or 20 trials). This exercise session enabled us to simulate a situation where a participant was familiar with an error-accepting delay of a certain menu. Omitting this exercise system would simulate participants using a menu for the first time and re-learning the error-accepting delay at every trial. Observing such a learning effect is not part of this study.
+     </p>
+    </section>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Task Revisions based on a Pilot Study
+       </h3>
+      </div>
+     </header>
+     <p>
+      To find issues in task parameters and our experimental system used in the main study, three students who did not participate in the main study joined our pilot study. Apparatus and values of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      ,
+      <em>
+       A
+      </em>
+      , and
+      <em>
+       W
+      </em>
+      were the same as in the main study. The participants performed 8 (= 2
+      <em>
+       A
+      </em>
+      × 4
+      <em>
+       W
+      </em>
+      ) trials for each
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      ; 48 trials per participant. We found three issues. (a) Participants did not know how to immediately return to the path when deviating from it, so we developed the exercise system. (b) The item currently being hovered over (the white path, or the top/bottom out-of-path areas) was immediately highlighted to provide visual feedback, as in typical menu implementations. However, when the cursor moved around the boundaries of the path, the colors of the path and out-of-path areas rapidly switched. This interrupted the operation, therefore, the color changing was not used in the main study. (c) We used an infinite height of start/end areas on the y-axis, as in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ], and we did not require any mouse clicks in the start and end areas. However, the participants found that, even when the
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      was short, they could complete a trial without any precise mouse control simply by moving the cursor from left to right on the screen. This was not appropriate for the purpose of this study (namely, to observe the
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      effects in menu navigation and selection), so we limited the heights and required clicks there.
+     </p>
+    </section>
+   </section>
+   <section id="sec-16">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       RESULTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We analyzed the data via repeated-measures ANOVA. If a main effect was found, we performed pair-wise comparisons with Bonferroni correction as the
+     <em>
+      p
+     </em>
+     -value adjustment method. Note: if a significant main effect of
+     <em>
+      T
+      <sub>
+       delay
+      </sub>
+     </em>
+     is found, it is possible that no significant differences are found for any pair-wise tests of
+     <em>
+      T
+      <sub>
+       delay
+      </sub>
+     </em>
+     values. In Figure 2b and d, “n.s.” represents the results of pair-wise tests.
+    </p>
+    <section id="sec-17">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Error Rate
+       </h3>
+      </div>
+     </header>
+     <p>
+      We observed 92
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      trials and 150
+      <em>
+       ER
+       <sub>
+        click
+       </sub>
+      </em>
+      trials, whose error types were inclusive. The remaining number of valid (error-free) trials was 3,227 (93.4%). We analyze the
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      as the main error result. The overall mean
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      rate was 2.66%, and a longer
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      tended to decrease the
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      rate from 6.60% to 0% (Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      a). We found significant main effects of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       5, 55
+      </sub>
+      = 8.748,
+      <em>
+       p
+      </em>
+      &lt; 0.001) and
+      <em>
+       W
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       3, 33
+      </sub>
+      = 21.491,
+      <em>
+       p
+      </em>
+      &lt; 0.001) on
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      rate, but not for
+      <em>
+       A
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       1, 11
+      </sub>
+      = 0.446,
+      <em>
+       p
+      </em>
+      = 0.518). A significant interaction was found for
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      ×
+      <em>
+       W
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       15, 165
+      </sub>
+      = 2.582,
+      <em>
+       p
+      </em>
+      &lt; 0.01).
+     </p>
+    </section>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Ratio of Deviation from the Path (
+        <strong>
+         Ratio
+         <sub>
+          out
+         </sub>
+        </strong>
+        )
+       </h3>
+      </div>
+     </header>
+     <p>
+      We define
+      <em>
+       Ratio
+       <sub>
+        out
+       </sub>
+      </em>
+      as
+      <span class="inline-equation">
+       <span class="tex">
+        $[({\rm Out\ of\ path\ time})/MT] \times 100\%$
+       </span>
+      </span>
+      . We wanted to determine if a longer error-accepting delay causes users to move the cursor less precisely. Assuming that the system clock is constant,
+      <em>
+       Ratio
+       <sub>
+        out
+       </sub>
+      </em>
+      is equivalent to
+      <em>
+       Out of path movement
+      </em>
+      (
+      <em>
+       OPM
+      </em>
+      ), which is the percentage of sampled cursor points outside the path [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ].
+     </p>
+     <p>
+      The overall mean
+      <em>
+       Ratio
+       <sub>
+        out
+       </sub>
+      </em>
+      was 2.21%, and a longer
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      increased the
+      <em>
+       Ratio
+       <sub>
+        out
+       </sub>
+      </em>
+      from 0.16% to 4.82% (Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      b). We found significant main effects of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       5, 55
+      </sub>
+      = 4.585,
+      <em>
+       p
+      </em>
+      &lt; 0.01) and
+      <em>
+       W
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       3, 33
+      </sub>
+      = 28.893,
+      <em>
+       p
+      </em>
+      &lt; 0.001) on
+      <em>
+       Ratio
+       <sub>
+        out
+       </sub>
+      </em>
+      , but not for
+      <em>
+       A
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       1, 11
+      </sub>
+      = 2.107,
+      <em>
+       p
+      </em>
+      = 0.175). A significant interaction was found for
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      ×
+      <em>
+       W
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       15, 165
+      </sub>
+      = 3.431,
+      <em>
+       p
+      </em>
+      &lt; 0.001).
+     </p>
+    </section>
+    <section id="sec-19">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Average Count of Deviation from the Path (
+        <strong>
+         Count
+         <sub>
+          out
+         </sub>
+        </strong>
+        )
+       </h3>
+      </div>
+     </header>
+     <p>
+      We measured how often the cursor left the path per successful trial as
+      <em>
+       Count
+       <sub>
+        out
+       </sub>
+      </em>
+      . Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      c shows that
+      <em>
+       Count
+       <sub>
+        out
+       </sub>
+      </em>
+      increased from 0 to 0.121 as
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      increased, which means that a longer
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      helped the participants overshoot then return to the path more effectively. The overall mean
+      <em>
+       Count
+       <sub>
+        out
+       </sub>
+      </em>
+      was 0.0482. We found significant main effects of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       5, 55
+      </sub>
+      = 5.996,
+      <em>
+       p
+      </em>
+      &lt; 0.001) and
+      <em>
+       W
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       3, 33
+      </sub>
+      = 29.000,
+      <em>
+       p
+      </em>
+      &lt; 0.001) on
+      <em>
+       Count
+       <sub>
+        out
+       </sub>
+      </em>
+      , but not for
+      <em>
+       A
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       1, 11
+      </sub>
+      = 2.467,
+      <em>
+       p
+      </em>
+      = 0.145). Significant interactions were found for
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      ×
+      <em>
+       W
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       15, 165
+      </sub>
+      = 3.689,
+      <em>
+       p
+      </em>
+      &lt; 0.001) and
+      <em>
+       A
+      </em>
+      ×
+      <em>
+       W
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       3, 33
+      </sub>
+      = 4.267,
+      <em>
+       p
+      </em>
+      &lt; 0.05).
+     </p>
+    </section>
+    <section id="sec-20">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Movement Time (MT)
+       </h3>
+      </div>
+     </header>
+     <p>
+      Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      d shows the effect of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      on
+      <em>
+       MT
+      </em>
+      . The overall mean
+      <em>
+       MT
+      </em>
+      was 528 msec, which is reasonable compared with that of a related study [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ] (mean
+      <em>
+       MT
+      </em>
+      was 768 msec for a linear mouse steering task).
+      <em>
+       MT
+      </em>
+      s for
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      = 0–800 msec were 783, 638, 607, 392, 364, and 384 msec, respectively.
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      reduced
+      <em>
+       MT
+      </em>
+      53% at most, but any pair-wise tests on
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      showed no significant difference (
+      <em>
+       p
+      </em>
+      &gt; 0.05). We found significant main effects of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       5, 55
+      </sub>
+      = 8.050,
+      <em>
+       p
+      </em>
+      &lt; 0.001),
+      <em>
+       A
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       1, 11
+      </sub>
+      = 38.131,
+      <em>
+       p
+      </em>
+      &lt; 0.001), and
+      <em>
+       W
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       3, 33
+      </sub>
+      = 14.852,
+      <em>
+       p
+      </em>
+      &lt; 0.001) on
+      <em>
+       MT
+      </em>
+      . Significant interactions were found for
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      ×
+      <em>
+       A
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       5, 55
+      </sub>
+      = 10.739,
+      <em>
+       p
+      </em>
+      &lt; 0.001),
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      ×
+      <em>
+       W
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       15, 165
+      </sub>
+      = 5.446,
+      <em>
+       p
+      </em>
+      &lt; 0.001), and
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      ×
+      <em>
+       A
+      </em>
+      ×
+      <em>
+       W
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       15, 165
+      </sub>
+      = 2.679,
+      <em>
+       p
+      </em>
+      &lt; 0.01).
+     </p>
+     <figure id="fig2">
+      <img alt="" class="img-responsive" longdesc="Four charts show the effects of temporal delay on steering error rate, ratio out rate, count out value, and movement time." src="3300800_files\chi2019570fig2.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        Main effects of
+        <em>
+         T
+         <sub>
+          delay
+         </sub>
+        </em>
+        on (a)
+        <em>
+         ER
+         <sub>
+          steer
+         </sub>
+        </em>
+        , (b)
+        <em>
+         Ratio
+         <sub>
+          out
+         </sub>
+        </em>
+        , (c)
+        <em>
+         Count
+         <sub>
+          out
+         </sub>
+        </em>
+        , and (d)
+        <em>
+         MT
+        </em>
+        . Error bars show 95% CIs.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-21">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Average Movement Speed (V)
+       </h3>
+      </div>
+     </header>
+     <p>
+      The overall mean
+      <em>
+       V
+      </em>
+      was 0.686 mm/msec. We found significant main effects of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       5, 55
+      </sub>
+      = 6.946,
+      <em>
+       p
+      </em>
+      &lt; 0.001) and
+      <em>
+       W
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       3, 33
+      </sub>
+      = 25.653,
+      <em>
+       p
+      </em>
+      &lt; 0.001) on
+      <em>
+       V
+      </em>
+      , but not for
+      <em>
+       A
+      </em>
+      (
+      <em>
+       F
+      </em>
+      <sub>
+       1, 11
+      </sub>
+      = 0.133,
+      <em>
+       p
+      </em>
+      = 0.722). No significant interaction was found (
+      <em>
+       p
+      </em>
+      &gt; 0.05). The interaction for
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      ×
+      <em>
+       W
+      </em>
+      was not significant (
+      <em>
+       F
+      </em>
+      <sub>
+       15, 165
+      </sub>
+      = 0.805,
+      <em>
+       p
+      </em>
+      = 0.671); this demonstrated the independence of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      from
+      <em>
+       W
+      </em>
+      .
+      <em>
+       V
+      </em>
+      s for
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      = 0–800 msec were 0.466, 0.614, 0.547, 0.806, 0.823, and 0.861 mm/msec, respectively. So
+      <em>
+       V
+      </em>
+      increased 85% at most, but any pair-wise tests on
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      showed no significant difference (
+      <em>
+       p
+      </em>
+      &gt; 0.05).
+     </p>
+     <p>
+      In summary, the results of
+      <em>
+       Ratio
+       <sub>
+        out
+       </sub>
+      </em>
+      and
+      <em>
+       Count
+       <sub>
+        out
+       </sub>
+      </em>
+      show that participants move the cursor less attentively as
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      increased, but the
+      <em>
+       ER
+       <sub>
+        steer
+       </sub>
+      </em>
+      rate decreased due to the long
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      . This resulted in a shorter
+      <em>
+       MT
+      </em>
+      and thus a higher
+      <em>
+       V
+      </em>
+      .
+     </p>
+    </section>
+   </section>
+   <section id="sec-22">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <section id="sec-23">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Model Fitting and Refinement
+       </h3>
+      </div>
+     </header>
+     <p>
+      We test the fitness of the baseline model (Equation
+      <a class="eqn" href="#eq2">
+       2
+      </a>
+      ,
+      <em>
+       MT
+      </em>
+      =
+      <em>
+       a
+      </em>
+      +
+      <em>
+       b
+      </em>
+      (
+      <em>
+       A
+      </em>
+      /
+      <em>
+       W
+      </em>
+      )). Separating the
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      values, each regression line with eight data points (2
+      <em>
+       A
+      </em>
+      × 4
+      <em>
+       W
+      </em>
+      ) shows high fits (
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      &gt; 0.96, Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ). The average movement times for a given
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      can be accurately predicted, which benefits designers. However, if the
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      values are merged, the fitness is strongly degraded (
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      = 0.58, Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      a). Therefore, designers have to conduct a user study to estimate the
+      <em>
+       MT
+      </em>
+      every time they change the
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      value.
+     </p>
+     <p>
+      To integrate the error-accepting delay in the
+      <em>
+       MT
+      </em>
+      model (Equation
+      <a class="eqn" href="#eq2">
+       2
+      </a>
+      ), we first check the effects of the task parameters on the average movement speed
+      <em>
+       V
+      </em>
+      . Again, we found (a) main effects of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      and
+      <em>
+       W
+      </em>
+      , and (b) no significant interaction. In particular, because the interaction factor of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      ×
+      <em>
+       W
+      </em>
+      was not significant,
+      <em>
+       V
+      </em>
+      would be accurately estimated without using interaction factors. Finally, we found that the inclusion of the additive factor
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      significantly improved the fitness of the
+      <em>
+       V
+      </em>
+      −
+      <em>
+       W
+      </em>
+      relationship (Equation
+      <a class="eqn" href="#eq8">
+       8
+      </a>
+      ,
+      <em>
+       V
+      </em>
+      =
+      <em>
+       bW
+      </em>
+      ):
+     </p>
+     <div class="table-responsive" id="eq10">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{align} V&amp;=0.0820W,\ \ \ &amp; \mathrm{adj.}\ R^2 = 0.882 \end{align}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (10)
+       </span>
+      </div>
+     </div>
+     <div class="table-responsive" id="eq11">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{align} V&amp;=0.0597W+0.000574T_{delay},\ \ \ &amp; \mathrm{adj.}\ R^2 = 0.986 \end{align}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (11)
+       </span>
+      </div>
+     </div>
+     where
+     <em>
+      V
+     </em>
+     =
+     <em>
+      A
+     </em>
+     /
+     <em>
+      MT
+     </em>
+     . Here, we use 24 data points (4
+     <em>
+      W
+     </em>
+     × 6
+     <em>
+      T
+      <sub>
+       delay
+      </sub>
+     </em>
+     ) because there was no main effect of
+     <em>
+      A
+     </em>
+     and interactions related to
+     <em>
+      A
+     </em>
+     on
+     <em>
+      V
+     </em>
+     . In Equation
+     <a class="eqn" href="#eq11">
+      11
+     </a>
+     , both
+     <em>
+      W
+     </em>
+     and
+     <em>
+      T
+      <sub>
+       delay
+      </sub>
+     </em>
+     are significant contributors (
+     <em>
+      p
+     </em>
+     &lt; 10
+     <sup>
+      − 10
+     </sup>
+     ). Thus, we empirically obtain the following form, where
+     <em>
+      c
+     </em>
+     and
+     <em>
+      d
+     </em>
+     are constants:
+     <div class="table-responsive" id="eq12">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{align} V=cW+dT_{delay} \end{align}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (12)
+       </span>
+      </div>
+     </div>
+     Applying this result to Equation
+     <a class="eqn" href="#eq6">
+      6
+     </a>
+     (
+     <em>
+      MT
+     </em>
+     =
+     <em>
+      b
+     </em>
+     (
+     <em>
+      A
+     </em>
+     /
+     <em>
+      V
+     </em>
+     )), we obtain:
+     <div class="table-responsive" id="eq13">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{align} MT &amp;= {b\dfrac{A}{cW+dT_{delay}}}&amp;\ \ \nonumber \\ &amp;= {b\dfrac{A}{c(W+d^{\prime }T_{delay})}}&amp;\ \ (\mathrm{let}\ d^{\prime }=d/c) \nonumber \\ &amp;= {b^{\prime }\dfrac{A}{W+d^{\prime }T_{delay}}}&amp;\ \ (\mathrm{let}\ b^{\prime }=b/c) \end{align}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (13)
+       </span>
+      </div>
+     </div>
+     As suggested by Hoffmann [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+      23
+     </a>
+     ], we check this model with an intercept in the following final form:
+     <div class="table-responsive" id="eq14">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{align} MT = a+b\dfrac{A}{W+cT_{delay}} \end{align}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (14)
+       </span>
+      </div>
+     </div>
+     Table
+     <a class="tbl" href="#tab1">
+      1
+     </a>
+     lists the regression expressions for the baseline model and the refined model considering the delay. Model fitness is improved for both the adjusted
+     <em>
+      R
+     </em>
+     <sup>
+      2
+     </sup>
+     and
+     <em>
+      AIC
+     </em>
+     values. Figure
+     <a class="fig" href="#fig4">
+      4
+     </a>
+     b also illustrates the improvement. The only difference between the refined model (Equation
+     <a class="eqn" href="#eq14">
+      14
+     </a>
+     ) and the baseline model (Equation
+     <a class="eqn" href="#eq2">
+      2
+     </a>
+     ) is that the
+     <em>
+      cT
+      <sub>
+       delay
+      </sub>
+     </em>
+     term acts to expand the path width. For example, when
+     <em>
+      T
+      <sub>
+       delay
+      </sub>
+     </em>
+     is 200 msec, the width is essentially expanded by ∼ 1.68 mm (= 0.00839 × 200).
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="Six regression expressions show that the baseline steering model shows good fits for each temporal delay condition." src="3300800_files\chi2019570fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Steering law fitness for each
+        <em>
+         T
+         <sub>
+          delay
+         </sub>
+        </em>
+        .
+       </span>
+      </div>
+     </figure>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="Two regression expressions show that the baseline steering model shows a poor fit when the temporal delay values are not separated, but the new model shows a good fit." src="3300800_files\chi2019570fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Steering law fitness for (a) baseline and (b) refined models for all data points (
+        <em>
+         N
+        </em>
+        = 48).
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <div class="table-responsive" id="tab1">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 1:
+       </span>
+       <span class="table-title">
+        Model fitting results with adjusted
+        <em>
+         R
+        </em>
+        <sup>
+         2
+        </sup>
+        (higher is better) and
+        <em>
+         AIC
+        </em>
+        (lower is better) values for candidate models.
+        <em>
+         a
+        </em>
+        ,
+        <em>
+         b
+        </em>
+        , and
+        <em>
+         c
+        </em>
+        are estimated constants with 95% CIs [lower, upper].
+       </span>
+      </div>
+      <table class="table">
+       <tbody>
+        <tr>
+         <td>
+          <img alt="" class="img-responsive" src="3300800_files\chi2019570img1.svg"/>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      We checked if such an expansion helped steering operations. Because the result of
+      <em>
+       Count
+       <sub>
+        out
+       </sub>
+      </em>
+      was less than 1 on average (Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      c), participants typically left only one side of the path. Thus, the path expansion was essentially
+      <em>
+       cT
+       <sub>
+        delay
+       </sub>
+      </em>
+      /2, resulting in 0, 0.420, 0.840, 1.68, 2.52, and 3.36 mm for
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      = 0 to 800 msec, respectively. The average values of maximum cursor offset from the path in successful trials were 0, 0.439, 1.789, 3.51, 2.94, and 3.85 mm, respectively. The
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      for these values was 0.83, which shows that
+      <em>
+       cT
+       <sub>
+        delay
+       </sub>
+      </em>
+      reasonably represents the path expansion.
+     </p>
+     <p>
+      Even if we use the data with
+      <em>
+       Ratio
+       <sub>
+        out
+       </sub>
+      </em>
+      = 0, the adjusted
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      of our model is 0.957. This shows that our model can be robustly used even if users do not deviate from the path. In contrast, the
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      using only the data with
+      <em>
+       Ratio
+       <sub>
+        out
+       </sub>
+      </em>
+      &gt; 0 cannot be calculated because no deviations from the path occurred in some conditions with large
+      <em>
+       W
+      </em>
+      .
+     </p>
+    </section>
+    <section id="sec-24">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Contribution to HCI and Implication for GUI
+       </h3>
+      </div>
+     </header>
+     <p>
+      Conventionally, the steering law has been used to model menu navigation tasks, but the model itself does not permit deviating from a path. In contrast, in our study, the participants were permitted to deviate from the path as long as the deviation duration was within the given
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      . Although the task requirement was significantly different from the conventional condition, the baseline model of the steering law (Equation
+      <a class="eqn" href="#eq2">
+       2
+      </a>
+      ) showed excellent fits for each given
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ). This is the first evidence to show that the steering law is valid for a condition where users can deviate from the path for a given time. This expands the generality of the steering law for menu navigation in a more realistic implementation where the cursor can deviate from an intended menu item within a short duration. This result demonstrates that, if designers use a fixed error-accepting delay on a Web page or software application, using the conventional steering law is sufficient to accurately predict the
+      <em>
+       MT
+      </em>
+      on the menu.
+     </p>
+     <p>
+      The fitness improvement achieved by the refined model (Equation
+      <a class="eqn" href="#eq14">
+       14
+      </a>
+      ) can help designers accurately estimate
+      <em>
+       MT
+      </em>
+      for other
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      values that have yet to be tested. For example, after conducting a user study involving two values of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      (e.g., 0 and 800 msec) with a set of
+      <em>
+       A
+      </em>
+      and
+      <em>
+       W
+      </em>
+      values, we obtain the constants (
+      <em>
+       a
+      </em>
+      ,
+      <em>
+       b
+      </em>
+      , and
+      <em>
+       c
+      </em>
+      ), and then we can predict
+      <em>
+       MT
+      </em>
+      values for other
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      values such as 200 and 600 msec. To confirm this application, we regressed the
+      <em>
+       MT
+      </em>
+      data for
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      = 0 and 800 msec (
+      <em>
+       N
+      </em>
+      = 16 data points), which showed
+      <em>
+       a
+      </em>
+      = −63.4,
+      <em>
+       b
+      </em>
+      = 37.1, and
+      <em>
+       c
+      </em>
+      = 0.00669 with adjusted
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      = 0.990. Using these constants, we predicted the
+      <em>
+       MT
+      </em>
+      s for
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      = 100, 200, 400, and 600 msec (
+      <em>
+       N
+      </em>
+      = 32 data points). Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      shows the observed versus predicted
+      <em>
+       MT
+      </em>
+      s;
+      <em>
+       R
+      </em>
+      <sup>
+       2
+      </sup>
+      = 0.954 with slope = 0.978 (both are close to 1), which indicates the high prediction accuracy of our model.
+     </p>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="Movement times predicted by the new model and those observed in the experiment show a high correlation." src="3300800_files\chi2019570fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        Observed vs. predicted
+        <em>
+         MT
+        </em>
+        s for
+        <em>
+         T
+         <sub>
+          delay
+         </sub>
+        </em>
+        = 100, 200, 400 and 600 msec by using
+        <em>
+         MT
+        </em>
+        s for
+        <em>
+         T
+         <sub>
+          delay
+         </sub>
+        </em>
+        = 0 and 800 msec.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-25">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Limitations and Future Work
+       </h3>
+      </div>
+     </header>
+     <p>
+      Our results are somewhat limited due to the experimental conditions, such as testing only two values for
+      <em>
+       A
+      </em>
+      . Although a study with 12 participants is common in CHI [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ], further studies with more users in various user pools (e.g., older adults) will strengthen the generality of our model. We used a mouse in this study, but different input devices would result in different user reaction times, so testing the model's validity with other devices such as styli will provide a further contribution. The range of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      (0 to 800 msec) is also a limitation. If
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      is much longer (e.g., 3 sec), users would not have to focus on the path boundaries any more, and thus the task requirement would only be to point and click the end area after clicking on the start area. This condition is called a
+      <em>
+       pointing with directional constraint
+      </em>
+      task tested in the study of the crossing paradigm [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ], in which Fitts’ law was shown to be an appropriate model for this. Hence, our proposed model, which is based on the steering law, is not suitable for such a task. Our future work will include clarifying the valid
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      range of our proposed model.
+     </p>
+     <p>
+      Our proposed model is derived on the empirical result that
+      <em>
+       V
+      </em>
+      linearly increases as
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      increases. However, as mentioned above, we assume that this model is valid in a limited range of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      . If we had tested a wider range of
+      <em>
+       T
+       <sub>
+        delay
+       </sub>
+      </em>
+      values, other relationships such as a logarithmic function might be better. From this viewpoint, in addition to our empirical derivation, a more theoretical development/justification of the model will provide a further contribution to a better understanding of human motor behavior.
+     </p>
+    </section>
+   </section>
+   <section id="sec-26">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We studied human performance in steering tasks with error-accepting delay. Although the steering law has conventionally considered a deviation from the path as an error, we regarded it as a success as long as the duration was within a given time (
+     <em>
+      T
+      <sub>
+       delay
+      </sub>
+     </em>
+     ), as in typical hierarchical menu implementations. The conventional steering law showed excellent fits (
+     <em>
+      R
+     </em>
+     <sup>
+      2
+     </sup>
+     &gt; 0.96) for all
+     <em>
+      T
+      <sub>
+       delay
+      </sub>
+     </em>
+     conditions ranging from 0 to 800 msec, but the fit was poor if the
+     <em>
+      T
+      <sub>
+       delay
+      </sub>
+     </em>
+     values were not separated (
+     <em>
+      R
+     </em>
+     <sup>
+      2
+     </sup>
+     = 0.58). On the basis of the result that the movement speed linearly increased as the
+     <em>
+      T
+      <sub>
+       delay
+      </sub>
+     </em>
+     increased, we showed that our model could accurately estimate the steering time (
+     <em>
+      R
+     </em>
+     <sup>
+      2
+     </sup>
+     = 0.97). This refined model will help GUI designers estimate average user performance under a given delay. We hope this work expands the tolerance of the steering law by showing the wider applicability of the law in more realistic GUI conditions.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Johnny Accot and Shumin Zhai. 1997. Beyond Fitts’ law: models for trajectory-based HCI tasks. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’97)
+      </em>
+      . 295–302.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/258549.258760" target="_blank">
+       https://doi.org/10.1145/258549.258760
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Johnny Accot and Shumin Zhai. 1999. Performance Evaluation of Input Devices in Trajectory-based Tasks: An Application of the Steering Law. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’99
+      </em>
+      ). ACM, New York, NY, USA, 466–472.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/302979.303133" target="_blank">
+       https://doi.org/10.1145/302979.303133
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Johnny Accot and Shumin Zhai. 2001. Scale effects in steering law tasks. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’01)
+      </em>
+      . 1–8.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/365024.365027" target="_blank">
+       https://doi.org/10.1145/365024.365027
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Johnny Accot and Shumin Zhai. 2002. More than dotting the i's — foundations for crossing-based interfaces. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’02)
+      </em>
+      . 73–80.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/503376.50339" target="_blank">
+       https://doi.org/10.1145/503376.50339
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      David Ahlström. 2005. Modeling and Improving Selection in Cascading Pull-down Menus Using Fitts’ Law, the Steering Law and Force Fields. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’05
+      </em>
+      ). ACM, New York, NY, USA, 61–70.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1054972.1054982" target="_blank">
+       https://doi.org/10.1145/1054972.1054982
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      David Ahlstrom, Rainer Alexandrowicz, and Martin Hitz. 2006. Improving Menu Interaction: A Comparison of Standard, Force Enhanced and Jumping Menus. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’06
+      </em>
+      ). ACM, New York, NY, USA, 1067–1076.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1124772.1124932" target="_blank">
+       https://doi.org/10.1145/1124772.1124932
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Georg Apitz, François Guimbretière, and Shumin Zhai. 2008. Foundations for Designing and Evaluating User Interfaces Based on the Crossing Paradigm.
+      <em>
+       <em>
+        ACM Trans. Comput.-Hum. Interact.
+       </em>
+      </em>
+      17, 2, Article 9 (May 2008), 42 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1746259.1746263" target="_blank">
+       https://doi.org/10.1145/1746259.1746263
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Gilles Bailly, Eric Lecolinet, and Laurence Nigay. 2008. Flower Menus: A New Type of Marking Menu with Large Menu Breadth, Within Groups and Efficient Expert Mode Memorization. In
+      <em>
+       Proceedings of the Working Conference on Advanced Visual Interfaces
+      </em>
+      (
+      <em>
+       AVI ’08
+      </em>
+      ). ACM, New York, NY, USA, 15–22.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1385569.1385575" target="_blank">
+       https://doi.org/10.1145/1385569.1385575
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Gilles Bailly, Eric Lecolinet, and Laurence Nigay. 2017. Visual Menu Techniques.
+      <em>
+       <em>
+        Comput. Surveys
+       </em>
+      </em>
+      49, 4, Article 60 (Dec. 2017), 41 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3002171" target="_blank">
+       https://doi.org/10.1145/3002171
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Xiaojun Bi, Yang Li, and Shumin Zhai. 2013. FFitts Law: Modeling Finger Touch with Fitts’ Law. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’13
+      </em>
+      ). ACM, New York, NY, USA, 1363–1372.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2466180" target="_blank">
+       https://doi.org/10.1145/2470654.2466180
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Kelly Caine. 2016. Local Standards for Sample Size at CHI. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 981–992.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858498" target="_blank">
+       https://doi.org/10.1145/2858036.2858498
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      J. Callahan, D. Hopkins, M. Weiser, and B. Shneiderman. 1988. An Empirical Comparison of Pie vs. Linear Menus. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’88
+      </em>
+      ). ACM, New York, NY, USA, 95–100.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/57167.57182" target="_blank">
+       https://doi.org/10.1145/57167.57182
+      </a>
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Géry Casiez, Stéphane Conversy, Matthieu Falce, Stéphane Huot, and Nicolas Roussel. 2015. Looking Through the Eye of the Mouse: A Simple Method for Measuring End-to-end Latency Using an Optical Mouse. In
+      <em>
+       Proceedings of the 28th Annual ACM Symposium on User Interface Software &amp; Technology
+      </em>
+      (
+      <em>
+       UIST ’15
+      </em>
+      ). ACM, New York, NY, USA, 629–636.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2807442.2807454" target="_blank">
+       https://doi.org/10.1145/2807442.2807454
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Géry Casiez and Nicolas Roussel. 2011. No More Bricolage!: Methods and Tools to Characterize, Replicate and Compare Pointing Transfer Functions. In
+      <em>
+       Proceedings of the 24th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’11
+      </em>
+      ). ACM, New York, NY, USA, 603–614.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2047196.2047276" target="_blank">
+       https://doi.org/10.1145/2047196.2047276
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Andy Cockburn and Andrew Gin. 2006. Faster Cascading Menu Selections with Enlarged Activation Areas. In
+      <em>
+       Proceedings of Graphics Interface 2006
+      </em>
+      (
+      <em>
+       GI ’06
+      </em>
+      ). Canadian Information Processing Society, Toronto, Ont., Canada, Canada, 65–71.
+      <a class="link-inline force-break" href="http://dl.acm.org/citation.cfm?id=1143079.1143091">
+       http://dl.acm.org/citation.cfm?id=1143079.1143091
+      </a>
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Jack Tigh Dennerlein, David B. Martin, and Christopher Hasser. 2000. Force-feedback Improves Performance for Steering and Combined Steering-targeting Tasks. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’00
+      </em>
+      ). ACM, New York, NY, USA, 423–429.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/332040.332469" target="_blank">
+       https://doi.org/10.1145/332040.332469
+      </a>
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Colin G. Drury. 1971. Movements with lateral constraint.
+      <em>
+       <em>
+        Ergonomics
+       </em>
+      </em>
+      14, 2 (1971), 293–305.
+      <a class="link-inline force-break" href="https://doi.org/10.1080/00140137108931246" target="_blank">
+       https://doi.org/10.1080/00140137108931246
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Colin G. Drury and P. Dawson. 1974. Human Factors Limitations in Fork-Lift Truck Performance.
+      <em>
+       <em>
+        Ergonomics
+       </em>
+      </em>
+      17, 4 (1974), 447–456.
+      <a class="link-inline force-break" href="https://doi.org/10.1080/00140137408931376" target="_blank">
+       https://doi.org/10.1080/00140137408931376
+      </a>
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Paul M. Fitts. 1954. The information capacity of the human motor system in controlling the amplitude of movement.
+      <em>
+       <em>
+        Journal of Experimental Psychology
+       </em>
+      </em>
+      47, 6 (1954), 381–391.
+      <a class="link-inline force-break" href="https://doi.org/10.1037/h0055392" target="_blank">
+       https://doi.org/10.1037/h0055392
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Sebastian Friston, Per Karlström, and Anthony Steed. 2016. The Effects of Low Latency on Pointing and Steering Tasks.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      22 (2016), 1605–1615.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TVCG.2015.2446467" target="_blank">
+       https://doi.org/10.1109/TVCG.2015.2446467
+      </a>
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Errol R. Hoffmann. 1992. Fitts’ Law with transmission delay.
+      <em>
+       <em>
+        Ergonomics
+       </em>
+      </em>
+      35, 1 (1992), 37–48.
+      <a class="link-inline force-break" href="https://doi.org/10.1080/00140139208967796" target="_blank">
+       https://doi.org/10.1080/00140139208967796
+      </a>
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Errol R. Hoffmann. 1997. Movement time of right- and left-handers using their preferred and non-preferred hands.
+      <em>
+       <em>
+        International Journal of Industrial Ergonomics
+       </em>
+      </em>
+      19, 1(1997), 49 – 57.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/0169-8141(95)00092-5" target="_blank">
+       https://doi.org/10.1016/0169-8141(95)00092-5
+      </a>
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Errol R. Hoffmann. 2009. Review of models for restricted-path movements.
+      <em>
+       <em>
+        International Journal of Industrial Ergonomics
+       </em>
+      </em>
+      39, 4(2009), 578 – 589.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.ergon.2008.02.007" target="_blank">
+       https://doi.org/10.1016/j.ergon.2008.02.007
+      </a>
+      Special issue: Felicitating Colin G. Drury.
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Steven W. Keele and Michael I. Posner. 1968. Processing of visual feedback in rapid movements.
+      <em>
+       <em>
+        Journal of Experimental Psychology
+       </em>
+      </em>
+      77, 1 (1968), 155–158.
+      <a class="link-inline force-break" href="https://doi.org/10.1037/h0025754" target="_blank">
+       https://doi.org/10.1037/h0025754
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Masatomo Kobayashi and Takeo Igarashi. 2003. Considering the Direction of Cursor Movement for Efficient Traversal of Cascading Menus. In
+      <em>
+       Proceedings of the 16th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’03
+      </em>
+      ). ACM, New York, NY, USA, 91–94.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/964696.964706" target="_blank">
+       https://doi.org/10.1145/964696.964706
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Sergey Kulikov, I. Scott MacKenzie, and Wolfgang Stuerzlinger. 2005. Measuring the Effective Parameters of Steering Motions. In
+      <em>
+       CHI ’05 Extended Abstracts on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI EA ’05
+      </em>
+      ). ACM, New York, NY, USA, 1569–1572.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1056808.1056968" target="_blank">
+       https://doi.org/10.1145/1056808.1056968
+      </a>
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Sergey Kulikov and Wolfgang Stuerzlinger. 2006. Targeted Steering Motions. In
+      <em>
+       CHI ’06 Extended Abstracts on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI EA ’06
+      </em>
+      ). ACM, New York, NY, USA, 983–988.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1125451.1125640" target="_blank">
+       https://doi.org/10.1145/1125451.1125640
+      </a>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Gordon Kurtenbach and William Buxton. 1993. The Limits of Expert Performance Using Hierarchic Marking Menus. In
+      <em>
+       Proceedings of the INTERACT ’93 and CHI ’93 Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’93
+      </em>
+      ). ACM, New York, NY, USA, 482–487.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/169059.169426" target="_blank">
+       https://doi.org/10.1145/169059.169426
+      </a>
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      I. Scott MacKenzie and Colin Ware. 1993. Lag As a Determinant of Human Performance in Interactive Systems. In
+      <em>
+       Proceedings of the INTERACT ’93 and CHI ’93 Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’93
+      </em>
+      ). ACM, New York, NY, USA, 488–493.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/169059.169431" target="_blank">
+       https://doi.org/10.1145/169059.169431
+      </a>
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      M. Ali Montazer and Colin G. Drury. 1989. A test of the Beggs’ model for self-paced movements.
+      <em>
+       <em>
+        Ergonomics
+       </em>
+      </em>
+      32, 5 (1989), 497–511.
+      <a class="link-inline force-break" href="https://doi.org/10.1080/00140138908966120" target="_blank">
+       https://doi.org/10.1080/00140138908966120
+      </a>
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      M. A. Montazer, C. G. Drury, and M. H. Karwan. 1988. An optimization model for self-paced tracking on circular courses.
+      <em>
+       <em>
+        IEEE Transactions on Systems, Man, and Cybernetics
+       </em>
+      </em>
+      18, 6 (Nov 1988), 908–916.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/21.23090" target="_blank">
+       https://doi.org/10.1109/21.23090
+      </a>
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      M. Ali Montazer, Suresh K. Vyas, and Ronald N. Wentworth. 1987. A Study of Human Performance in a Sewing Task.
+      <em>
+       <em>
+        Proceedings of the Human Factors Society Annual Meeting
+       </em>
+      </em>
+      31, 5(1987), 590–594.
+      <a class="link-inline force-break" href="https://doi.org/10.1177/154193128703100525" target="_blank">
+       https://doi.org/10.1177/154193128703100525
+      </a>
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Mathieu Nancel and Edward Lank. 2017. Modeling User Performance on Curved Constrained Paths. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 244–254.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025951" target="_blank">
+       https://doi.org/10.1145/3025453.3025951
+      </a>
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Robert Pastel. 2006. Measuring the Difficulty of Steering Through Corners. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’06
+      </em>
+      ). ACM, New York, NY, USA, 1087–1096.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1124772.1124934" target="_blank">
+       https://doi.org/10.1145/1124772.1124934
+      </a>
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Nicolas Rashevsky. 1959. Mathematical biophysics of automobile driving.
+      <em>
+       <em>
+        Bulletin of Mathematical Biophysics
+       </em>
+      </em>
+      21, 4 (1959), 375–385.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/BF02477896" target="_blank">
+       https://doi.org/10.1007/BF02477896
+      </a>
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Richard A. Schmidt, Howard N. Zelaznik, and James S. Frank. 1978. Sources of Inaccuracy in Rapid Movement. In Information Processing in Motor Control and Learning, George E. Stelmach(Ed.). Academic Press, 183–203.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/B978-0-12-665960-3.50014-1">
+       https://doi.org/10.1016/B978-0-12-665960-3.50014-1
+      </a>
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Ransalu Senanayake and Ravindra S. Goonetilleke. 2016. Pointing Device Performance in Steering Tasks.
+      <em>
+       <em>
+        Perceptual and Motor Skills
+       </em>
+      </em>
+      122, 3 (2016), 886–910.
+      <a class="link-inline force-break" href="https://doi.org/10.1177/0031512516649717" target="_blank">
+       https://doi.org/10.1177/0031512516649717
+      </a>
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Ransalu Senanayake, Errol R. Hoffmann, and Ravindra S. Goonetilleke. 2013. A model for combined targeting and tracking tasks in computer applications.
+      <em>
+       <em>
+        Experimental Brain Research
+       </em>
+      </em>
+      231, 3 (01 Nov 2013), 367–379.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/s00221-013-3700-4" target="_blank">
+       https://doi.org/10.1007/s00221-013-3700-4
+      </a>
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Erum Tanvir, Andrea Bunt, Andy Cockburn, and Pourang Irani. 2011. Improving cascading menu selections with adaptive activation areas.
+      <em>
+       <em>
+        International Journal of Human-Computer Studies
+       </em>
+      </em>
+      69, 11 (2011), 769 – 785.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.ijhcs.2011.06.005" target="_blank">
+       https://doi.org/10.1016/j.ijhcs.2011.06.005
+      </a>
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Erum Tanvir, Jonathan Cullen, Pourang Irani, and Andy Cockburn. 2008. AAMU: Adaptive Activation Area Menus for Improving Selection in Cascading Pull-down Menus. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’08
+      </em>
+      ). ACM, New York, NY, USA, 1381–1384.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1357054.1357270" target="_blank">
+       https://doi.org/10.1145/1357054.1357270
+      </a>
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      Namal Thibbotuwawa, Ravindra S. Goonetilleke, and Errol R. Hoffmann. 2012. Constrained Path Tracking at Varying Angles in a Mouse Tracking Task.
+      <em>
+       <em>
+        Human Factors
+       </em>
+      </em>
+      54, 1 (2012), 138–150.
+      <a class="link-inline force-break" href="https://doi.org/10.1177/0018720811424743" target="_blank">
+       https://doi.org/10.1177/0018720811424743
+      </a>
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      Namal Thibbotuwawa, Errol R. Hoffmann, and Ravindra S. Goonetilleke. 2012. Open-loop and feedback-controlled mouse cursor movements in linear paths.
+      <em>
+       <em>
+        Ergonomics
+       </em>
+      </em>
+      55, 4 (2012), 476–488.
+      <a class="link-inline force-break" href="https://doi.org/10.1080/00140139.2011.644587" target="_blank">
+       https://doi.org/10.1080/00140139.2011.644587
+      </a>
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Charles E. Wright and Francis Lee. 2013. Issues Related to HCI Application of Fitts's Law.
+      <em>
+       <em>
+        Human-Computer Interaction
+       </em>
+      </em>
+      28, 6 (2013), 548–578.
+      <a class="link-inline force-break" href="https://doi.org/10.1080/07370024.2013.803873" target="_blank">
+       https://doi.org/10.1080/07370024.2013.803873
+      </a>
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      Shota Yamanaka and Homei Miyashita. 2016. Modeling the Steering Time Difference Between Narrowing and Widening Tunnels. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 1846–1856.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858037" target="_blank">
+       https://doi.org/10.1145/2858036.2858037
+      </a>
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      Shota Yamanaka and Homei Miyashita. 2016. Scale Effects in the Steering Time Difference Between Narrowing and Widening Linear Tunnels. In
+      <em>
+       Proceedings of the 9th Nordic Conference on Human-Computer Interaction
+      </em>
+      (
+      <em>
+       NordiCHI ’16
+      </em>
+      ). ACM, New York, NY, USA, Article 12, 10 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2971485.2971486" target="_blank">
+       https://doi.org/10.1145/2971485.2971486
+      </a>
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      Shota Yamanaka and Homei Miyashita. 2018. Paper-cutting operations using scissors in Drury's law tasks.
+      <em>
+       <em>
+        Applied Ergonomics
+       </em>
+      </em>
+      69(2018), 32–39.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.apergo.2017.12.018" target="_blank">
+       https://doi.org/10.1016/j.apergo.2017.12.018
+      </a>
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      Shota Yamanaka, Wolfgang Stuerzlinger, and Homei Miyashita. 2017. Steering Through Sequential Linear Path Segments. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 232–243.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025836" target="_blank">
+       https://doi.org/10.1145/3025453.3025836
+      </a>
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      Shota Yamanaka, Wolfgang Stuerzlinger, and Homei Miyashita. 2018. Steering Through Successive Objects. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 603, 13 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174177" target="_blank">
+       https://doi.org/10.1145/3173574.3174177
+      </a>
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      Shumin Zhai, Johnny Accot, and Rogier Woltjer. 2004. Human Action Laws in Electronic Virtual Worlds: An Empirical Study of Path Steering Performance in VR.
+      <em>
+       <em>
+        Presence: Teleoper. Virtual Environ.
+       </em>
+      </em>
+      13, 2 (April 2004), 113–127.
+      <a class="link-inline force-break" href="https://doi.org/10.1162/1054746041382393" target="_blank">
+       https://doi.org/10.1162/1054746041382393
+      </a>
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      Shumin Zhai, Stéphane Conversy, Michel Beaudouin-Lafon, and Yves Guiard. 2003. Human On-line Response to Target Expansion. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’03
+      </em>
+      ). ACM, New York, NY, USA, 177–184.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/642611.642644" target="_blank">
+       https://doi.org/10.1145/642611.642644
+      </a>
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      Shumin Zhai, Jing Kong, and Xiangshi Ren. 2004. Speed-accuracy tradeoff in Fitts’ law tasks: on the equivalency of actual and nominal pointing precision.
+      <em>
+       <em>
+        International Journal of Human-Computer Studies
+       </em>
+      </em>
+      61, 6 (2004), 823–856.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.ijhcs.2004.09.007" target="_blank">
+       https://doi.org/10.1016/j.ijhcs.2004.09.007
+      </a>
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Shengdong Zhao, Maneesh Agrawala, and Ken Hinckley. 2006. Zone and Polygon Menus: Using Relative Position to Increase the Breadth of Multi-stroke Marking Menus. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’06
+      </em>
+      ). ACM, New York, NY, USA, 1077–1086.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1124772.1124933" target="_blank">
+       https://doi.org/10.1145/1124772.1124933
+      </a>
+     </li>
+     <li id="BibPLXBIB0053" label="[53]">
+      Shengdong Zhao and Ravin Balakrishnan. 2004. Simple vs. Compound Mark Hierarchical Marking Menus. In
+      <em>
+       Proceedings of the 17th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’04
+      </em>
+      ). ACM, New York, NY, USA, 33–42.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1029632.1029639" target="_blank">
+       https://doi.org/10.1145/1029632.1029639
+      </a>
+     </li>
+     <li id="BibPLXBIB0054" label="[54]">
+      Xiaolei Zhou, Xiang Cao, and Xiangshi Ren. 2009. Speed-Accuracy Tradeoff in Trajectory-Based Tasks with Temporal Constraint. In
+      <em>
+       Human-Computer Interaction – INTERACT 2009
+      </em>
+      . Springer Berlin Heidelberg, Berlin, Heidelberg, 906–919.
+     </li>
+     <li id="BibPLXBIB0055" label="[55]">
+      Xiaolei Zhou and Xiangshi Ren. 2010. An investigation of subjective operational biases in steering tasks evaluation.
+      <em>
+       <em>
+        Behaviour &amp; Information Technology
+       </em>
+      </em>
+      29, 2 (2010), 125–135.
+      <a class="link-inline force-break" href="https://doi.org/10.1080/01449290701773701" target="_blank">
+       https://doi.org/10.1080/01449290701773701
+      </a>
+     </li>
+     <li id="BibPLXBIB0056" label="[56]">
+      Xiaolei Zhou, Xiangshi Ren, and Hue YUi. 2008. Effect of Start Position on Human Performance in Steering Tasks. In
+      <em>
+       2008 International Conference on Computer Science and Software Engineering
+      </em>
+      , Vol. 2. 1098–1101.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/CSSE.2008.1310" target="_blank">
+       https://doi.org/10.1109/CSSE.2008.1310
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300800" target="_blank">
+      https://doi.org/10.1145/3290605.3300800
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'875856b65e472c33',t:'MTcxMzMxNDE2NC41NjMwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

@@ -1,0 +1,2747 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Gamut: A Design Probe to Understand How Data Scientists Understand Machine Learning Models
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300809_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300809_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300809_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300809_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300809_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300809_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300809_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300809_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        <font style="font-variant: small-caps">
+         Gamut
+        </font>
+        : A Design Probe to Understand How Data Scientists Understand Machine Learning Models
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Fred
+      </span>
+      <span class="surName">
+       Hohman
+      </span>
+      , Georgia Institute of Technology, USA,
+      <a href="mailto:fredhohman@gatech.edu">
+       fredhohman@gatech.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Andrew
+      </span>
+      <span class="surName">
+       Head
+      </span>
+      , University of California, Berkeley, USA,
+      <a href="mailto:andrewhead@berkeley.edu">
+       andrewhead@berkeley.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Rich
+      </span>
+      <span class="surName">
+       Caruana
+      </span>
+      , Microsoft Research, USA,
+      <a href="mailto:rcaruana@microsoft.com">
+       rcaruana@microsoft.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Robert
+      </span>
+      <span class="surName">
+       DeLine
+      </span>
+      , Microsoft Research, USA,
+      <a href="mailto:rdeline@microsoft.com">
+       rdeline@microsoft.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Steven
+      </span>
+      <span class="surName">
+       Drucker
+      </span>
+      , Microsoft Research, USA,
+      <a href="mailto:sdrucker@microsoft.com">
+       sdrucker@microsoft.com
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300809" target="_blank">
+       https://doi.org/10.1145/3290605.3300809
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Without good models and the right tools to interpret them, data scientists risk making decisions based on hidden biases, spurious correlations, and false generalizations. This has led to a rallying cry for model interpretability. Yet the concept of interpretability remains nebulous, such that researchers and tool designers lack actionable guidelines for how to incorporate interpretability into models and accompanying tools. Through an iterative design process with expert machine learning researchers and practitioners, we designed a visual analytics system,
+       <font style="font-variant: small-caps">
+        Gamut
+       </font>
+       , to explore how interactive interfaces could better support model interpretation. Using
+       <font style="font-variant: small-caps">
+        Gamut
+       </font>
+       as a probe, we investigated why and how professional data scientists interpret models, and how interface affordances can support data scientists in answering questions about model interpretability. Our investigation showed that interpretability is not a monolithic concept: data scientists have different reasons to interpret models and tailor explanations for specific audiences, often balancing competing concerns of simplicity and completeness. Participants also asked to use
+       <font style="font-variant: small-caps">
+        Gamut
+       </font>
+       in their work, highlighting its potential to help data scientists understand their own data.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Empirical studies in visualization
+       </strong>
+       ;
+       <em>
+        Visualization systems and tools;
+       </em>
+       •
+       <strong>
+        Computing methodologies → Machine learning
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Machine learning interpretability
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        design probe
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        visual analytics
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        data visualization
+       </small>
+       ,
+      </span>
+      <span class="keyword">
+       <small>
+        interactive interfaces
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Fred Hohman, Andrew Head, Rich Caruana, Robert DeLine, and Steven Drucker. 2019.
+        <font style="font-variant: small-caps">
+         Gamut
+        </font>
+        : A Design Probe to Understand How Data Scientists Understand Machine Learning Models. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 13 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300809" target="_blank">
+         https://doi.org/10.1145/3290605.3300809
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     With recent advances in machine learning (ML)  [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+      29
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+      37
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+      58
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+      65
+     </a>
+     ], people are beginning to use ML to address important societal problems like identifying and predicting cancerous cells [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+      32
+     </a>
+     ], predicting poverty from satellite imagery to inform policy decisions [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ], and locating buildings that are susceptible to catching on fire [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+      43
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+      59
+     </a>
+     ]. Unfortunately, the metrics by which models are trained and evaluated often hide biases, spurious correlations, and false generalizations inside complex, internal structure. These pitfalls are nuanced, particularly to novices, and cannot be diagnosed with simple quality metrics, like a single accuracy number [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+      66
+     </a>
+     ]. This is troublesome when ML is misused, with intent or ignorance, in situations where ethics and fairness are paramount. Lacking an explanation for how models perform can lead to biased and ill-informed decisions, like representing gender bias in facial analysis systems [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ], propagating historical cultural stereotypes in text corpora into widely used AI components [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ], and biasing recidivism predictions by race [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ]. This is the problem of
+     <em>
+      model interpretability
+     </em>
+     .
+    </p>
+    <p>
+     Although there is no formal, agreed upon definition of model interpretability  [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+      38
+     </a>
+     ], existing research focuses on human understanding of the model representation [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+      45
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+      48
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+      54
+     </a>
+     ]. Government policy makers are also joining the discussion through the recent General Data Protection Regulation (GDPR) requirements [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+      51
+     </a>
+     ]. Articles 13 and 22 state a “right to explanation” for any algorithm whose decision impacts a person's legal status  [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+      51
+     </a>
+     ].
+    </p>
+    <p>
+     To address model interpretability, a burgeoning research field of explainable artificial intelligence (AI) has emerged, whose general goal is to create and evaluate effective explanations for model decisions to better understand what a model has learned [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+      23
+     </a>
+     ]. Recently, information visualization [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+      9
+     </a>
+     ] has been used as an medium for explanation [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+      41
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+      42
+     </a>
+     ]. This is a natural fit, since visualization and interactive visual analytics [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ] excel at graphical communication for complex ideas and meaningful summarization of information. Model explanations come in many forms (e.g., textual, graphical), and two competing paradigms have emerged: global and local explanations.
+     <em>
+      Global explanations
+     </em>
+     roughly capture the entire space learned by a model in aggregate, favoring simplicity over completeness. Conversely,
+     <em>
+      local explanations
+     </em>
+     accurately describe a single data instance's prediction.
+    </p>
+    <p>
+     In this work, we take a human-centered approach to studying model interpretability. Through an iterative design process with expert machine learning researchers and practitioners at a large technology company, we designed
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     , an interactive visual analytics system for model exploration that combines both global and local explanation paradigms. Using
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     as a probe into interpretability, we conducted a user study to investigate why and how data professional data scientists interpret models and how interface affordances support data scientists in answering question about model interpretability. In designing our probe, we sought a balance between low graphicacy skills needed to learn about the model and a high level of accuracy so that users of the probe would trust its predictions were accurate and realistic. Therefore, we ground our research on a class of models, called generalized additive models (GAMs) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ], that perform competitively to state-of-the-art models yet contain a relatively simple structure [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+      39
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+      40
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+      63
+     </a>
+     ]. The study included 12 professional data scientists with ranging levels of expertise in machine learning. Our investigation shows that interpretability is not a monolithic concept: data scientists have different reasons to interpret models and tailor explanations for specific audiences, often balancing the competing concerns of simplicity and completeness. We also observed that having a tangible, functional interface for data scientists helped ground discussions of machine learning interpretability. Participants also asked to use
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     in their work, highlighting its potential to help data scientists understand their own data. In this work, our contributions include:
+    </p>
+    <ul class="list-no-style">
+     <li id="list1" label="•">
+      <strong>
+       A human-centered operationalization of model interpretability.
+      </strong>
+      We contribute a list of capabilities that explainable machine learning interfaces should support to answer interpretability questions.
+      <br/>
+     </li>
+     <li id="list2" label="•">
+      <strong>
+       An interactive visualization system for generalized additive models (GAMs).
+      </strong>
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      , an interactive visualization system built for exploring and explaining GAMs, iteratively designed with machine learning professionals.
+      <br/>
+     </li>
+     <li id="list3" label="•">
+      <strong>
+       A design probe evaluation with human subjects.
+      </strong>
+      Results from a user study with professional data scientists using
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      as a probe for understanding interpretability.
+      <br/>
+     </li>
+    </ul>
+    <p>
+     We hope the lessons learned from this work help inform the design of future interactive interfaces for explaining more kinds of models, including those with natural global and local explanations (e.g., linear regression, decision trees), as well as more complex models (e.g., neural networks).
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Definitions of Interpretability
+       </h3>
+      </div>
+     </header>
+     <p>
+      While existing definitions of interpretability center on human understanding, they vary in the aspect of the model to be understood: its internals [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ], operations [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ], mapping of data [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ], or representation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ]. Hence, a formal, agreed upon definition remains open [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ]. These discussions make a distinction between
+      <em>
+       interpretability
+      </em>
+      (synonymous with explainability) and an
+      <em>
+       explanation
+      </em>
+      . An explanation is a collection of features from an interpretable domain that relate a data instance to a model's outcome [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ]. An explanation can be truthful or deceptive, accurate or inaccurate, all with varying degrees of success. Therefore, multiple explanations are often used to gain an ultimate interpretation of a model. Miller argues that interpretability research should leverage the literature from philosophy, psychology, and cognitive science for the history of how people define, generate, select, evaluate, and present explanations [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ]. In this work, we build upon existing interpretability literature by using a human-centered approach to understand why data scientists need interpretability, how they use it, and how human-computer interaction (HCI) methods can help design interfaces to explain models.
+     </p>
+     <p>
+      <em>
+       Audience for interpretability.
+      </em>
+      . Recent work argues that the sophistication and completeness of both interpretability and explanations depends on the audience [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ]. Model builders may prefer global, aggregate model explanations; whereas, model users may prefer local, specific decision examples. Both will impact the interpretability of a system. Indeed, rather than considering interpretability as a monolithic concept, it may be more useful to identify properties that AI systems should obey to ensure interpretability, such as simulatabilitiy, decomposability, and algorithmic transparency [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ].
+     </p>
+     <p>
+      <em>
+       Interpretability guidelines.
+      </em>
+      . The GDPR's recent declaration of the “right to explanation” [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ] has sparked discussion for what this means in practice and what impact it will have on industry and research agendas [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ]. While the updated version of the GDPR only requires explanation in limited contexts, AI and policy scholars expect explanations to be important in future regulations of AI systems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ]. Researchers have introduced a framework to turn the vague language of the GDPR into actionable guidelines, which include (1) identifying the factors that went into a decision, (2) knowing how varying a factor impacts a decision, and (3) comparing similar instances with different outcomes [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ]. However, within this framework an AI-system need only satisfy one of the three above guidelines to be considered interpretable. Other useful post-hoc techniques for explaining decisions have also been proposed, such as using counterfactuals (that is, “What if” questions [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ]), textual explanations, visualizations, local explanations, and representative examples of data [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ]. We add to this existing work by contributing a list of capabilities that explainable interfaces should support to help people interpret models.
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Visual Analytics for Explainable Machine Learning
+       </h3>
+      </div>
+     </header>
+     <p>
+      Previous work demonstrates that interaction between users and machine learning systems is a promising direction for collaboratively sharing intelligence [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ]. Since then, interactive visual analytics has succeeded in supporting machine learning tasks [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+       63
+      </a>
+      ]. Example tasks include interactive model debugging and performance analysis [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ], feature ideation and selection [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ], instance subset inspection and comparison [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ], model comparison [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+       67
+      </a>
+      ], and constructing interpretable and trustworthy visual analysis systems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ].
+     </p>
+     <p>
+      Two visual analytics systems in particular are related to our work. Prospector [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ] and Google's What-If Tool [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ] use interactive partial dependence diagnostics and localized inspection techniques to allow data scientists to understand the outcomes for specific instances. These partial dependency charts are similar to the shape functions used in GAMs, explained later [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ]. Both systems support using counterfactuals and modifying feature values on data instances to observe how changes could impact prediction outcome. In preliminary follow-up work, researchers investigated the effectiveness of providing instance explanations in aggregate, similarly identifying the distinction between global and local explanation paradigms [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ]. We contribute to visual analytics literature by developing
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      , an interactive visualization system used as a design probe to investigate how data scientists use global and local explanation paradigms.
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Human Evaluation for Explainable AI
+       </h3>
+      </div>
+     </header>
+     <p>
+      Human-centered machine learning recognizes that ML work is inherently human work and explores the co-adaptation of humans and systems [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ]. Therefore, AI and ML systems should not only be developed with humans, but evaluated by humans. Unfortunately, the intrinsic probabilistic nature of ML models makes evaluation challenging. A taxonomy of evaluation approaches for interpretability includes application-grounded, human-grounded, and functionally grounded evaluations [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ]. Our work falls into a human-grounded evaluation. Other studies have investigated the effectiveness of different explanations, taking initial steps toward identifying what factors are most important for providing human explanations [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ]. Another study uses simulatability as the main task that human subjects perform to compare the trust humans have in white-box and black-box linear regression models [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+       52
+      </a>
+      ]. Using human trust as a metric of evaluation for the effectiveness of explanations has also been studied [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ]. However, simulatability and trust may not be ideal metrics to base evaluation on. An application-grounded evaluation for a pair of explainable ML interfaces deployed in the wild on a fraud detection team found that different explanation techniques yield widely varying results, yet are still considered reasonably valid and useful [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ]. This is troublesome when in the case of incongruency domain experts were unaware of explanation disagreements and were eager to trust any explanation provided to them [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ].
+     </p>
+    </section>
+   </section>
+   <section id="sec-7">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       DESIGN RATIONALE
+      </h2>
+     </div>
+    </header>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        A Technology Probe for Model Interpretability
+       </h3>
+      </div>
+     </header>
+     <p>
+      A technology probe is an “instrument that is deployed to find out about the unknown—returning with useful or interesting data,” and should balance three broad goals:
+      <em>
+       design:
+      </em>
+      inspire reflection on emerging technologies;
+      <em>
+       social science:
+      </em>
+      appreciate needs and desires of users; and
+      <em>
+       engineering:
+      </em>
+      field-testing prototypes [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. Technology probes are a common approach for contextual research in human-computer interaction that invite user participation [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+       22
+      </a>
+      ].
+     </p>
+     <p>
+      While building and deploying ML models is now a standard software practice, interpreting models is not. We therefore use a technology probe to understand this emerging practice, balancing these three goals:
+     </p>
+     <ul class="list-no-style">
+      <li id="list4" label="•">
+       <em>
+        Engineering:
+       </em>
+       we iteratively developed an explainable interface that works on real data and models.
+       <br/>
+      </li>
+      <li id="list5" label="•">
+       <em>
+        Social science:
+       </em>
+       we used qualitative methods for data collection to learn about data scientists’ behavior during an in-lab user study and quantitative measures for a preliminary usability assessment.
+       <br/>
+      </li>
+      <li id="list6" label="•">
+       <em>
+        Design:
+       </em>
+       the visualization prototype inspired participants to reflect on interpretability and how they use it in their own work.
+       <br/>
+      </li>
+     </ul>
+    </section>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Assessing the Probe's Features
+       </h3>
+      </div>
+     </header>
+     <p>
+      We took two approaches to design a visualization system to probe machine learning interpretability. First, we performed a literature survey to compare the many definitions of what makes a machine learning model interpretable. We focused on recent work that postulates interactive explanations will be key for understanding models better, as summarized in Section
+      <a class="sec" href="#sec-3">
+       2
+      </a>
+      . Second, we conducted a formative study through a series of interviews with both machine learning researchers and practitioners to gather questions a user should be able to ask a machine learning model or AI-powered system. The participants included 4 senior ML researchers and 5 ML practitioners (3 female and 6 male), who were recruited based on their expertise in ML and their interest in ML interpretability. Together, we synthesized our findings into the following list of capabilities that an explainable machine learning interface should support. While there is no guarantee of completeness, we, the authors and participants, find this list to be effective for operationalizing interpretability in explainable ML interfaces. Each capability provides an example interpretability question, which all reference a real-estate model that predicts the price of homes given the features of a house.
+     </p>
+     <ul class="list-no-style">
+      <li id="uid12" label="C1.">
+       <strong>
+        Local instance explanations.
+       </strong>
+       <span class="inline-equation">
+        <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img1.svg"/>
+       </span>
+       Given a single data instance, quantify each feature's contribution to the prediction.
+       <br/>
+       <em>
+        Example: Given a house and its predicted price of
+        <font style="normal">
+         $
+        </font>
+        250,000, what features contributed to its price?
+       </em>
+       <br/>
+      </li>
+      <li id="uid13" label="C2.">
+       <strong>
+        Instance explanation comparisons.
+       </strong>
+       <span class="inline-equation">
+        <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img2.svg"/>
+       </span>
+       Given a collection of data instances, compare what factors lead to their predictions.
+       <br/>
+       <em>
+        Example: Given five houses in a neighborhood, what distinguishes them and their prices?
+       </em>
+       <br/>
+      </li>
+      <li id="uid14" label="C3.">
+       <strong>
+        Counterfactuals.
+       </strong>
+       <span class="inline-equation">
+        <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img3.svg"/>
+       </span>
+       Given a single data instance, ask “what-if” questions to observe the effect that modified features have on its prediction.
+       <br/>
+       <em>
+        Example: Given a house and its predicted price of
+        <font style="normal">
+         $
+        </font>
+        250,000, how would the price change if it had an extra bedroom?
+       </em>
+       <br/>
+       <em>
+        Example: Given a house and its predicted price of
+        <font style="normal">
+         $
+        </font>
+        250,000, what would I have to change to increase its predicted price to
+        <font style="normal">
+         $
+        </font>
+        300,000?
+       </em>
+       <br/>
+      </li>
+      <li id="uid15" label="C4.">
+       <strong>
+        Nearest neighbors.
+       </strong>
+       <span class="inline-equation">
+        <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img4.svg"/>
+       </span>
+       Given a single data instance, find data instances with similar features, predictions, or both.
+       <br/>
+       <em>
+        Example: Given a house and its predicted price of
+        <font style="normal">
+         $
+        </font>
+        250,000, what other houses have similar features, price, or both?
+       </em>
+       <br/>
+       <em>
+        Example: Given a house and a binary model prediction that says to “buy”, what is the most similar real home that the model predicts “not to buy”?
+       </em>
+       <br/>
+      </li>
+      <li id="uid16" label="C5.">
+       <strong>
+        Regions of error.
+       </strong>
+       <span class="inline-equation">
+        <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img5.svg"/>
+       </span>
+       Given a model, locate regions of the model where prediction uncertainty is high.
+       <br/>
+       <em>
+        Example: Given a house price prediction model trained mostly on older homes ranging from
+        <font style="normal">
+         $
+        </font>
+        100,000 -
+        <font style="normal">
+         $
+        </font>
+        300,000, can I trust a model's prediction that a newly built house costs
+        <font style="normal">
+         $
+        </font>
+        400,000?
+       </em>
+       <br/>
+      </li>
+      <li id="uid17" label="C6.">
+       <strong>
+        Feature importance.
+       </strong>
+       <span class="inline-equation">
+        <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img6.svg"/>
+       </span>
+       Given a model, rank the features of the data that are most influential to the overall predictions.
+       <br/>
+       <em>
+        Example: Given a house price prediction model, does it make sense that the top three most influential features should be the square footage, year built, and location?
+       </em>
+       <br/>
+      </li>
+     </ul>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Selecting the Probe's Model Class
+       </h3>
+      </div>
+     </header>
+     <p>
+      Given the set of capabilities we uncovered during our formative study, our probe should work with a class of ML models having many ideal characteristics:
+     </p>
+     <ul class="list-no-style">
+      <li id="list7" label="•">
+       The model should have a simple enough structure to allow the user to see the model globally.
+       <br/>
+      </li>
+      <li id="list8" label="•">
+       Understanding the model's computation should require average math skills, to support non-expert users.
+       <br/>
+      </li>
+      <li id="list9" label="•">
+       Similarly, visualizing the model's structure should require average graphicacy, i.e., data visualization literacy.
+       <br/>
+      </li>
+      <li id="list10" label="•">
+       The model should be compositional, so that the effect of features can be understood in isolation.
+       <br/>
+      </li>
+      <li id="list11" label="•">
+       The model should have high accuracy, so that deploying it is realistic.
+       <br/>
+      </li>
+     </ul>
+     <p>
+      Of course, no single class of model can be optimal for all these attributes [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ]. For example, simpler models, like linear regression and decision trees, have simple global structure, but suffer from poor accuracy; more complex models, like deep neural networks, achieve superior performance at the cost of complex structure and lack of clear compositionality [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ]. Our choice of model for the probe therefore represents a compromise among these criteria.
+     </p>
+     <p>
+      In essence, we sought a balance between low graphicacy skills needed to learn about the model and a high level of accuracy so that users of the probe would trust its predictions were accurate and realistic. One particular model class, the
+      <em>
+       generalized additive model
+      </em>
+      (GAM) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ], has recently attracted attention in the ML community. Thanks to modern ML techniques such as boosting [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ], GAM performance on predictive tasks on tabular data competes favorably with more complex, state-of-the-art models, yet GAMs remain intelligible and more expressive than simple linear models [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ]. Understanding a GAM requires only the ability to read a line chart. A GAM has a local explanation similar to linear regression, but also lends itself to a global explanation (shape function charts, described later), which other models lack; this allows us to test the relative value users place on having global understanding versus a purely local understanding of a model.
+     </p>
+     <p>
+      GAMs are a generalization of linear models. To illustrate the difference, consider a dataset
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img7.svg"/>
+      </span>
+      of
+      <em>
+       N
+      </em>
+      data points, where
+      <font color="blue">
+       <strong>
+        x
+        <sub>
+         i
+        </sub>
+       </strong>
+       = (
+       <em>
+        x
+       </em>
+       <sub>
+        <em>
+         i
+        </em>
+        1
+       </sub>
+       ,
+       <em>
+        x
+       </em>
+       <sub>
+        <em>
+         i
+        </em>
+        2
+       </sub>
+       , …,
+       <em>
+        x
+        <sub>
+         iM
+        </sub>
+       </em>
+       ) is a feature vector
+      </font>
+      with
+      <em>
+       M
+      </em>
+      features, and
+      <font color="red">
+       <em>
+        y
+        <sub>
+         i
+        </sub>
+       </em>
+       is the target
+      </font>
+      , i.e., the response, variable. Let
+      <font color="blue">
+       <em>
+        x
+        <sub>
+         j
+        </sub>
+       </em>
+      </font>
+      denote the
+      <em>
+       j
+      </em>
+      th variable in feature space. A typical linear regression model can then be expressed mathematically as:
+     </p>
+     <p>
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img8.svg"/>
+      </span>
+     </p>
+     <p>
+      This model assumes that the relationships between the target variable
+      <font color="red">
+       <em>
+        y
+        <sub>
+         i
+        </sub>
+       </em>
+      </font>
+      and features
+      <font color="blue">
+       <em>
+        x
+        <sub>
+         j
+        </sub>
+       </em>
+      </font>
+      are
+      <em>
+       linear
+      </em>
+      and can be captured in
+      <font color="purple">
+       slope terms
+       <em>
+        β
+       </em>
+       <sub>
+        1
+       </sub>
+       ,
+       <em>
+        β
+       </em>
+       <sub>
+        2
+       </sub>
+       , …,
+       <em>
+        β
+        <sub>
+         N
+        </sub>
+       </em>
+      </font>
+      . If we instead assume that the relationship between the target variable and features is
+      <em>
+       smooth
+      </em>
+      , we can write the equation for a GAM [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ]:
+     </p>
+     <p>
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img9.svg"/>
+      </span>
+     </p>
+     <p>
+      Notice here that the previous slope terms
+      <font color="purple">
+       <em>
+        β
+       </em>
+       <sub>
+        1
+       </sub>
+       ,
+       <em>
+        β
+       </em>
+       <sub>
+        2
+       </sub>
+       , …,
+       <em>
+        β
+        <sub>
+         N
+        </sub>
+       </em>
+      </font>
+      have been replaced by smooth,
+      <font color="orange">
+       shape functions
+       <em>
+        f
+        <sub>
+         j
+        </sub>
+       </em>
+      </font>
+      . In both models
+      <font color="green">
+       <em>
+        β
+       </em>
+       <sub>
+        0
+       </sub>
+       is the model intercept
+      </font>
+      , and the relationship between the target variable and the features is still additive; however, each feature now is described by one shape function
+      <font color="orange">
+       <em>
+        f
+        <sub>
+         j
+        </sub>
+       </em>
+      </font>
+      that can be nonlinear and complex (e.g., concave, convex, or “bendy”) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+       28
+      </a>
+      ].
+     </p>
+     <p>
+      Since each feature's contribution to the final prediction can be understood by inspecting the shape functions
+      <font color="orange">
+       <em>
+        f
+        <sub>
+         j
+        </sub>
+       </em>
+      </font>
+      , GAMs are considered intelligible [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ]. In this paper, we omit the details of how to train GAMs, mean center shape functions, and distinguish their regression and classification versions, which are covered in the literature [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+       57
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+       64
+      </a>
+      ]. We also note that GAM shape function charts differ from partial dependency (PD) [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ] used in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ]. PD assumes that features are uncorrelated, and PD averages over the other features not included in the chart. Therefore, PD only captures the effect of modifying one feature independent of the others, whereas GAM shape function charts, which are trained in parallel, are effectively the entire model—predictions are made by summing values from all charts together and take into account correlation among features to prevent multiple counting of evidence. All together, this makes GAMs uniquely suited as a model that maximizes our previous criteria and ties global and local explanations closely together.
+     </p>
+    </section>
+   </section>
+   <section id="sec-11">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       <font style="font-variant: small-caps">
+        Gamut
+       </font>
+      </h2>
+     </div>
+    </header>
+    <p>
+     Given the capabilities described in Section
+     <a class="sec" href="#sec-7">
+      3
+     </a>
+     , we present
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     , an interactive visualization system that tightly integrates three coordinated views to support exploration of GAMs (Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     ): the Shape Curve View (A); the Instance Explanation View (B); and the Interactive Table (C). To explain these views, we use an example real-estate model that uses a house's features to predict its sale price in US dollars. The three views show different aspects of a user-selected instance, in this case a chosen house. Throughout the description we link features to the capabilities
+     <strong>
+      (C1)
+     </strong>
+     –
+     <strong>
+      (C6)
+     </strong>
+     that the features support.
+    </p>
+    <figure id="fig1">
+     <img alt="" class="img-responsive" longdesc="The Gamut user interface tightly integrates multiple coordinated views, including the Shape Curve View, the Instance Explanation View, and the Interactive Table to facilitate model visualization, exploration, and explanation." src="3300809_files\chi2019579fig1.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       <strong>
+        The
+       </strong>
+       <font style="font-variant: small-caps">
+        <strong>
+         Gamut
+        </strong>
+       </font>
+       <strong>
+        user interface tightly integrates multiple coordinated views.(A) The Shape Curve View
+       </strong>
+       displays GAM shape functions as line charts, and includes histograms of the data density for each feature. The charts can be normalized to better compare the impact each shape function has on the model.
+       <strong>
+        (B) The Instance Explanation View
+       </strong>
+       displays a waterfall chart for two data instances. Each chart encodes the cumulative impact each feature has on the final prediction for one data instance.
+       <strong>
+        (C) The Interactive Table
+       </strong>
+       displays the raw data in an interactive data grid where users can sort, filter, and compute nearest neighbors for data instances.
+      </span>
+     </div>
+    </figure>
+    <figure id="fig2">
+     <img alt="" class="img-responsive" longdesc="Interacting with Gamut's multiple coordinated views together." src="3300809_files\chi2019579fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 2:
+      </span>
+      <span class="figure-title">
+       <strong>
+        Interacting with
+       </strong>
+       <font style="font-variant: small-caps">
+        <strong>
+         Gamut
+        </strong>
+       </font>
+       <strong>
+        ’s multiple coordinated views together.(A)
+       </strong>
+       Selecting the
+       <em>
+        OverallQual
+       </em>
+       feature from the sorted Feature Sidebar displays its shape curve in the Shape Curve View.
+       <strong>
+        (B)
+       </strong>
+       Brushing over either explanation for
+       <em>
+        Instance 550
+       </em>
+       or
+       <em>
+        Instance 798
+       </em>
+       shows the contribution of the
+       <em>
+        OverallQual
+       </em>
+       feature value for both instances.
+       <strong>
+        (C)
+       </strong>
+       Notice these two houses are similarly predicted(
+       <span class="inline-equation">
+        <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579graphic3.jpg"/>
+       </span>
+       and
+       <span class="inline-equation">
+        <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579graphic4.jpg"/>
+       </span>
+       ), but for different reasons!
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Shape Curve View
+       </h3>
+      </div>
+     </header>
+     <p>
+      The Shape Curve View displays each feature's shape function as a line chart (Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      A). The user can choose which features are displayed through the Feature Sidebar (Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      A): an ordered list the features of the data, sorted by importance to the model
+      <strong>
+       (C6)
+      </strong>
+      . We will first describe the encoding for one shape function chart. Consider the
+      <em>
+       OverallQual
+      </em>
+      feature and its shape function chart (Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      B). This chart shows the impact that the
+      <em>
+       OverallQual
+      </em>
+      feature has on the overall model predictions
+      <strong>
+       (C6)
+      </strong>
+      . The x-axis is the dimension of the feature, in this case, a rating of the house's overall material and finish quality, between 2 and 10; the y-axis is the contribution of the feature to the output of a prediction, in this case, US dollars. The chart shows that having a rating of 9 adds
+      <font style="normal">
+       $
+      </font>
+      50,000 to the predicted price, for example. Below the x-axis is a histogram of the data density for the dimension. This is useful for determining how many data points exists in a particular part of feature space
+      <strong>
+       (C5)
+      </strong>
+      , e.g., in Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      B, we see that most houses have a
+      <em>
+       OverallQual
+      </em>
+      of 5 to 8.
+     </p>
+     <p>
+      The selected instance's specific feature values are shown as amber points on the shape function charts
+      <strong>
+       (C1)
+      </strong>
+      . A data instance has one value for every feature, i.e., one amber point on each shape function chart, which shows where the selected instance is located in the global model
+      <strong>
+       (C5)
+      </strong>
+      . The color of the line for each shape function encodes the final predicted value if we were to vary the selected amber point's value to all other possible values. This is reinforced when a user brushes over a line chart: a new point, colored by its final prediction, is shown on the shape function curve, while projected crosshairs track with the mouse cursor, enabling users to ask interactive counterfactuals for any feature
+      <strong>
+       (C3)
+      </strong>
+      .
+     </p>
+     <p>
+      Since the Shape Curve View shows multiple shape function charts at once, we provide a Normalize toggle for accurate comparison. Turning Normalize on plots all the shape functions on a common scale, allowing visual comparison of the features’ different degrees of impact on the predictions. Charts with high slopes indicate more impact on predictions, whereas charts with relatively flat lines contribute only a little
+      <strong>
+       (C6)
+      </strong>
+      . Turning off Normalize plots each chart on its own scale, emphasizing the shape of low-impact (flat) features.
+     </p>
+    </section>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Instance Explanation View
+       </h3>
+      </div>
+     </header>
+     <p>
+      The Instance Explanation View shows a visualization of individual instance predictions (Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      B)
+      <strong>
+       (C1)
+      </strong>
+      . A GAM converts each feature value of a data instance into its direct contribution on the final prediction. Since GAMs are additive models, to obtain a prediction for a single data instance with
+      <em>
+       M
+      </em>
+      features, we compute the amount each feature contributes to the total prediction and add them all up. We also add the intercept (the average predicted value for the dataset), for a total of
+      <em>
+       M
+      </em>
+      + 1 values. The Instance Explanation View shows these
+      <em>
+       M
+      </em>
+      + 1 values as a waterfall chart
+      <strong>
+       (C1)
+      </strong>
+      . The x-axis is a categorical axis of all the features, and the y-axis is the final prediction. These values can be positive or negative, as indicated by the dark and light gray shades of each of piece of the waterfall chart. The x-axis is sorted by the absolute value of each feature's contribution; the leftmost values drive the majority of the overall prediction. For example, consider the waterfall chart in Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      C for Instance 550. From the colored tag, we see this house was predicted as costing
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img10.svg"/>
+      </span>
+      We also see the first three features greatly reduce the price of the house (three dark gray rectangles), but the next four increase the price. Another interesting characteristic is the long tail of features towards the end of the waterfall chart; a single feature value hardly contributes to the over prediction alone, but together the small contributions account for a non-trivial amount of the final prediction.
+     </p>
+     <p>
+      The Instance Explanation View also allows easy comparison of multiple instances (Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      C). The first chart is the selected instance, which is pinned to the interface. This selected instance's values are the same amber dots in the Shape Curve View. The second chart visualizes a different instance that updates as the user brushes over a different data instance from the Interactive Table, described in the next subsection. Since two instance predictions could have a different x-axis ordering, we impose the ordering of the selected instance on the second instance. Combined with automatically normalizing both y-axes for the two waterfall charts, this enables direct comparison of both waterfall charts
+      <strong>
+       (C2)
+      </strong>
+      .
+     </p>
+     <p>
+      Brushing over either waterfall chart provides several cues to aid comparison: a tooltip with the exact feature value and GAM contribution for both waterfall charts (Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      C)
+      <strong>
+       (C1)
+      </strong>
+      ; highlights in the corresponding shape function charts in the Shape Curve View; and plotting both points on the shape function charts (Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      B)
+      <strong>
+       (C2)
+      </strong>
+      . The two instances, i.e., houses, shown in Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      C are close in predicted price,
+     </p>
+     <p>
+      (
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img11.svg"/>
+      </span>
+      and
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img12.svg"/>
+      </span>
+      ), and have similar shapes in their waterfall charts. However, Instance 550 has an
+      <em>
+       OverallQual
+      </em>
+      of 8 which adds
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img13.svg"/>
+      </span>
+      to the prediction cost; whereas, Instance 798 has a
+      <em>
+       OverallQual
+      </em>
+      of 6 which reduces the cost
+      <span class="inline-equation">
+       <img alt="" class="img-responsive" longdesc="" src="3300809_files\chi2019579img14.svg"/>
+      </span>
+      While a few other values must differ to make up for this particular difference, we have found two houses that are predicted with similar prices, but achieve those prices by different means
+      <strong>
+       (C4)
+      </strong>
+      .
+     </p>
+    </section>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Interactive Table
+       </h3>
+      </div>
+     </header>
+     <p>
+      The Interactive Table is a scrollable data grid of the raw data used to train the model (Figure
+      <a class="fig" href="#fig1">
+       1
+      </a>
+      C). The rows of the data grid are individual data instances, and the columns are the features, plus five additional columns on the left: Instance ID; Actual value (or label) of the data instance; Predicted value (or label) of the data instance; Difference between actual and predicted value; and Nearest Neighbor Distance from the selected instance. The column headers provide familiar data grid features, like resizing, sorting, and filtering columns.
+     </p>
+     <p>
+      Brushing over a row in the Interactive Table updates the second waterfall chart in the Instance Explanation View and normalizes both waterfall charts to ensure direct comparison between the two visualized instances is accurate
+      <strong>
+       (C2)
+      </strong>
+      . Brushing over a row also plots that instance's values on the Shape Curve View as gray points to compare against the selected instance's amber points described above
+      <strong>
+       (C2)
+      </strong>
+      .
+     </p>
+    </section>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Implementation
+       </h3>
+      </div>
+     </header>
+     <p>
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      is a client-side web app, using D3 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ] for visualization and ag-Grid
+      <a class="fn" href="#fn1" id="foot-fn1">
+       <sup>
+        1
+       </sup>
+      </a>
+      for the data grid. We pre-train our GAMs in Python using the pyGAM [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+       57
+      </a>
+      ] package. pyGAM uses splines to fit the GAM shape curves; however, more advanced techniques exist for training GAMS as cited in Section
+      <a class="sec" href="#sec-7">
+       3
+      </a>
+      .
+     </p>
+    </section>
+   </section>
+   <section id="sec-16">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       USER STUDY
+      </h2>
+     </div>
+    </header>
+    <p>
+     We used
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     as a design probe during an in-lab study to understand how data scientists understand machine learning models and answer interpretability questions. We aimed to answer the following research questions:
+    </p>
+    <ul class="list-no-style">
+     <li id="uid31" label="RQ1.">
+      Why do data scientists need interpretability and how do they answer interpretability questions?
+      <br/>
+     </li>
+     <li id="uid32" label="RQ2.">
+      How do data scientists use global explanations and local explanations?
+      <br/>
+     </li>
+     <li id="uid33" label="RQ3.">
+      How does interactivity play a role in explainable machine learning interfaces?
+      <br/>
+     </li>
+    </ul>
+    <section id="sec-17">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Participants
+       </h3>
+      </div>
+     </header>
+     <p>
+      We invited 200 randomly selected professional data scientists at a large technology company and received 33 replies (17% response rate). We selected 12 participants (7 female, 5 male), all with bachelor's degrees, 6 with graduate degrees. Half of the participants had only 1 year of experience with ML, while the other half had at least 3 years, with two participants having more than 5 years. One participant uses ML on a daily basis, five on a weekly basis, while the other six use ML less often. Ten of the participants reported they use visualization in their work, mostly dashboard-style analytics. Nine participants reported using tabular data in their own work. Six of participants reported that they have used explanations for models before; five said their explanations were static, with only one reporting their explanation being interactive. We compensated participants with a
+      <font style="normal">
+       $
+      </font>
+      25 Amazon Gift card.
+     </p>
+    </section>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Study Design
+       </h3>
+      </div>
+     </header>
+     <p>
+      The study duration was 112-hours per participant. To start, each participant signed a consent form and filled out a background questionnaire. The session then consisted of a
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      tutorial, with a model that predicts the price of 1,000 diamonds, based on 9 features.
+     </p>
+     <p>
+      Participants thought aloud while using
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      to explore two models, one regression and one binary classification. Participants were free to choose one of three regression models that predict: the price of 506 houses in Boston, Massachusetts, based on 13 features (6 chose this); the price of 1,119 houses in Ames, Iowa, based on 36 features (5 chose this); or the quality of 1,599 wines, based on 11 features (1 chose this). Similarly, participants were free to choose one of three binary classification models that predict: the survival of 712 Titanic passengers, based on 7 features (4 chose this); heart disease in 261 patients, based on 10 features (5 chose this); or diabetes in 392 patients, based on 8 features (2 chose this).
+     </p>
+     <p>
+      Once a participant chose a dataset, we provided them with the feature names and their textual descriptions. We then gave them 5 minutes to brainstorm their own hypotheses about the model, using their own intuition. We then allowed them to use
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      to explore the model, guided by a list of questions we provided (≈ 10 per dataset) that exercise
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      ’s capabilities, ordered so that adjacent questions test different capabilities. All participants completed all the questions for one model in the allotted time, around 15 minutes. If they had not already addressed their initial questions, we returned to them to see if they were able to after. We then repeated this process for the second dataset. Each session ended with a usability questionnaire and an exit interview that asked participants to reflect on their process of explaining ML models in their own work, their process of using
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      , and if
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      could be useful for them.
+     </p>
+    </section>
+   </section>
+   <section id="sec-19">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       RESULTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Every participant was successful at answering both their own and our prepared questions about the different models, despite being new to GAMs and
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     . We also observed that having a tangible, functional interface for data scientists helped ground the discussion of interpretability. In the following sections we summarize the results from our study, both during the participant usage of
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     and the conversations during the exit interviews.
+    </p>
+    <section id="sec-20">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        RQ1: Reasons for Model Interpretability
+       </h3>
+      </div>
+     </header>
+     <p>
+      <em>
+       Hypothesis generation.
+      </em>
+      . As participants used
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      , they constantly generated hypotheses about the data and model while observing different explanations. This was insightful, since after only a brief tutorial, the participants were comfortable answering a variety of questions about the models and started to reason about them in ways they could not before. We also noticed that participants were using the model to confirm prior beliefs about the data, slowly building trust that the model was producing accurate and believable predictions. However, participants were eager to rationalize explanations without first questioning the correctness of the explanation itself. While forming new hypotheses about one's data and model can lead to deeper insight, this could be troublesome when participants trust explanations without healthy skepticism. While these results corroborate existing literature [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ], it suggests further studies to evaluate human trust in model explanations.
+     </p>
+     <p>
+      <em>
+       Data understanding.
+      </em>
+      . Participants also used interpretability as a lens into data, which prompted us to ask participants about this during the exit interviews. While a predictive model has its own uses, e.g., inference and task automation, many participants explained that they use models to gain insight into large datasets, as mentioned in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ]. One participant said,
+      <em>
+       “It's more like a data digging process. So it's finding the important features to help us understand the data better.”
+      </em>
+      While there are many academic and commercial tools for data exploration without statistical models, a model-based approach gave participants a new perspective on the data. About
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      , one participant said,
+      <em>
+       “This would help me and expedite my workflow to get to valuable nuggets of information, which is what [my stakeholders] are ultimately interested in.”
+      </em>
+      Related, another reason that emerged from the interviews was that data scientists use interpretability to understand the feature importance of a dataset. Most of our participants said that computing a metric (for which there are many) for feature importance across all features provides valuable information about what characteristics of a dataset are most important for making predictions. This allows data scientists to focus on accurately representing these features in a model. With regards to learning representations, a few participants said that interpretability also ensures customer privacy is upheld, by discovering what features are correlated with identifiable information so they can be removed.
+     </p>
+     <p>
+      <em>
+       Communication.
+      </em>
+      . Throughout the study, the prepared questions asked participants to communicate their process of discovering the answers. During the exit interviews, nearly every participant described a scenario in which they were using model explanations to communicate what features were predictive to stakeholders who wanted to deploy a model in the wild. One participant noted that
+      <em>
+       “different audiences require different explanations,”
+      </em>
+      describing a common trade-off between explanation simplicity and completeness. This was further supported by a participant who frequently presents reports to stakeholders:
+      <em>
+       “When you're going to craft your story, ...you're going to have to figure out what you want emphasize and what you want to minimize. But you have to always lay out everything. Know your audience and purpose.”
+      </em>
+      She also emphasized that she encourages fellow data scientists on her team to share knowledge about what they have learned to other non-scientists. Lastly, a participant said she uses explainable data analysis to change organizational behavior on her team, by using models to inspect and understand data quality. She described how some analysts claim they can predict a value, but neglect to explain why, which diminishes the impact:
+      <em>
+       “What are the features? How are you getting those features? What are the quality of those features? They're just literally saying, ‘I'm forecasting the number—here's the number you use.’ I'm going, ‘That just is not satisfying.”’
+      </em>
+      By using feature importance metrics, she ensures that the important features of data are accurately collected, recognizing that “clean” data creates better models.
+     </p>
+     <p>
+      <em>
+       Model building.
+      </em>
+      . Participants who have experience in developing models recognize that interpretability is also critical to model builders. Understanding characteristics about one's data and model helps guide model improvement. Regarding the intelligibility versus accuracy trade-off, one participant said that he starts his work using simpler models to become familiar with the data, before moving onto more complex models. Having a solid understanding of one's data is more important than incrementally improving model accuracy:
+      <em>
+       “I want to understand bit by bit how the dataset features work with each other, influence each other. That is my starting point.”
+      </em>
+      Another participant said his team uses two natural language processing models in production: a simpler, rule-based model that performs multiple checks before inference; if the checks pass, the data is passed to the more complex model for a final prediction.
+     </p>
+    </section>
+    <section id="sec-21">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        RQ2: Global versus Local Explanation Paradigms
+       </h3>
+      </div>
+     </header>
+     <p>
+      While using
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      , every participant used both the global and local explanations to answer interpretability questions, often moving between the two. This shows that global and local explanation paradigms are in fact complementary. Participants used the shape function charts of the model to explain a feature of the dataset, but grounded the explanation with local context using the data histogram. Conversely, participants described single-instance explanations using the global context of the shape function charts, i.e., overlaying the amber points of a waterfall chart on shape function charts. One participant said,
+      <em>
+       “If I want to see what the overall ecosystem is doing, [global explanations are] significantly better. If I wanted to find specific use cases that are interesting, then I'm going to use [local explanations] as case studies. So, I see it as having both.”
+      </em>
+     </p>
+     <p>
+      Broadly speaking, we noticed the expertise of a participant correlated with which explanation paradigm they preferred: (1) the ML novices gravitated towards the local explanations, (2) more expert participants used global explanations more frequently, and (3) the most expert participants fluidly used both to reason about a prediction and a model. For example, a common practice in ML is to consider only the top features, since likely those are driving the prediction. However, one participant noticed that the visualizations in the Instance Explanation View argued otherwise—the long tail of a waterfall chart sometimes contributed a non-trivial percentage of a prediction—and observed that the top features were insufficient. This is an interesting example of how a local explanation can inform a global characteristic of a model.
+     </p>
+     <p>
+      The Interactive Table was a critical mechanism for linking global and local explanations. Participants frequently sorted columns (i.e., features) to see how data aggregates along a single feature, but also inspected many single data instances for exact feature values; to our surprise, sorting by nearest neighbors was only used a couple times per participant. Some participants were initially confused about whether a particular visualization was describing global or local model behavior (e.g., mistaking a waterfall chart to describe the global behavior of a model instead of a single data instance), suggesting that either the initial tutorial could be improved, or that the level of graphicacy required for
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      was higher than anticipated; regardless, by the end of every 112-hour session, it was clear all participants understood how
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      ’s representations connected together.
+     </p>
+    </section>
+    <section id="sec-22">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        RQ3: Interactive Explanations
+       </h3>
+      </div>
+     </header>
+     <p>
+      When choosing a model explanation, regardless of the type (e.g., textual, graphical), most explanations are static. Only recently has the notion of
+      <em>
+       interactive explanations
+      </em>
+      attracted attention. In
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      , interactivity refers to instance-based selection, brushing and linking between local and global views, quick comparison of instances and their explanations, sorting and filtering the Interactive Table, hovering over a shape function chart for asking counterfactuals, and computing nearest neighbors for a single instance.
+     </p>
+     <p>
+      Throughout the studies it became clear that interactivity was the primary mechanism for exploring, comparing, and explaining instance predictions and the chosen models by the participants. Interactivity was so fundamental for our participants’ understanding of the models, that when we prompted them to comment on interactivity, people could not conceive non-interactive means to answer both their hypotheses and prepared questions, even though the current best practice for understanding GAMs entails flipping through static print outs of all the shape function charts.
+     </p>
+     <p>
+      Participants liked the interactivity of
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      , but we think there is potential to alleviate redundant interactions by incorporating automated insight discovery techniques in explanation systems. Examples include algorithmically surfacing the most accurate explanations and finding the most relevant data (e.g., similar neighbors, counterfactuals) given interpretability-focused constraints.
+     </p>
+     <p>
+      Participants also suggested several additional features. First, while
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      supports comparing two instance explanations at once, participants wanted to compare multiple groups of instances (e.g., user-defined groups, or a group of nearest neighbors); they also wanted deeper comparison, such as changing the visual representation to a stacked bar chart to more easily compare the contributions of multiple instance by feature. Second, the more expert participants wanted more support for feature selection and importance, such as leaving one feature out of the model and seeing its effect on performance. Lastly, we noticed most participants used counterfactuals often throughout their exploration, both as a direct task and as a sanity check for feature sensitivity; therefore, there could be opportunities to support automatic counterfactual identification in combination with computing nearest neighbors to enable data scientists to understand models faster and more confidently.
+     </p>
+    </section>
+    <section id="sec-23">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Usability
+       </h3>
+      </div>
+     </header>
+     <p>
+      The exit questionnaire included a series of Likert-scale (7 point) questions about the utility and usefulness of the various views in
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      (Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ). From the high ratings, we are confident that
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      ’s role as a design probe was not hampered by usability problems. Similarly, the uniformity of the feature ratings suggests that participants did not disfavor any particular feature because of a usability problem.
+     </p>
+     <p>
+      Even though
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      was designed as a probe, all 12 participants desired to use it to understand their own data. Some participants suggested using the system in its entirety, while others wanted to use specific parts of the interface, such as the Instance Explanation View, to include in reports to their stakeholders. One participant who frequently uses visual analytics tools said,
+      <em>
+       “I really like that it's splitting out each of the individual features into its own chart. ...I can't tell you how useful that is for me. Parameterizing dimensions is just not available with Tableau, Power BI, or anything else.”
+      </em>
+      Another participant wanted to use
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      to not only predict when customers would renew a product subscription, but to understand why and how they renew. A participant who frequently engages with legal discourse suggested a potential user for
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      that we had not considered:
+      <em>
+       “I definitely would use something like this, especially when it comes to privacy issues. I even would show this to lawyers.”
+      </em>
+      Several participants have followed up after the conclusion of the study and actively pursued using
+      <font style="font-variant: small-caps">
+       Gamut
+      </font>
+      in their teams with their own data.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="Gamut subjective ratings gathered from the user study; participants thought Gamut was easy to use and enjoyable, and all views were rated favorably." src="3300809_files\chi2019579fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        <font style="font-variant: small-caps">
+         <strong>
+          Gamut
+         </strong>
+        </font>
+        <strong>
+         subjective ratings.
+        </strong>
+        In a preliminary usability evaluation, participants thought
+        <font style="font-variant: small-caps">
+         Gamut
+        </font>
+        was easy to use and enjoyable. Of
+        <font style="font-variant: small-caps">
+         Gamut
+        </font>
+        ’s multiple coordinated views, all were rated favorably. This also supports our finding that both global and local explanations are valuable for understanding a model's behavior.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+   </section>
+   <section id="sec-24">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       LIMITATIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     only visualizes one class of ML model. While
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     ’s design rationale, visualizations, and interactions were informed by multiple interviews and collaboration with ML researchers and practitioners, there could be an another complementary view that could have elicited better qualitative results during our user study. Regardless, to the best of our knowledge there is no existing interactive interface for GAMs. We think
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     is a useful interface for exploring GAMs, as supported by our usability ratings in Seciton
+     <a class="sec" href="#sec-19">
+      6
+     </a>
+     and participants desire to use
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     for their own work, perhaps by using GAMs to explain more complex models, as discussed in the following section.
+    </p>
+    <p>
+     Understanding a model's domain likely provides an advantage to understanding how a model works. Different participants entered the study with different domain knowledge. To mitigate this risk, we both provided a variety of models about approachable topics and allowed participants to choose the models that fit their own knowledge and expertise.
+    </p>
+    <p>
+     More technically, one participant with a PhD in statistics was concerned about correlated features and suggested that interaction terms should be considered. We discuss this implication in the following section.
+    </p>
+   </section>
+   <section id="sec-25">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       FUTURE RESEARCH DIRECTIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Through
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     and our user study, we suggest the following set of future directions for improving interactive interfaces for understanding machine learning models:
+    </p>
+    <p>
+     <em>
+      Integrating better GAMs.
+     </em>
+     . ML researchers are developing a new GAM extension called GA
+     <sup>
+      2
+     </sup>
+     Ms that includes interaction variables that are showing even better performance [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ]. However, visualizing interaction shape function charts, which are 2D surfaces instead of 1D lines, is an open design challenge, especially when visualizing their error surfaces (analogous to confidence intervals for the 1D case). These interaction shape function surface explanations will also require a higher level of statistics and graph literacy in users.
+    </p>
+    <p>
+     <em>
+      Using GAMs to explain and compare other models.
+     </em>
+     . We have shown the power of intelligibility of GAMs, including the valuable combination of global and local explanations, over other more complex models, such as random forests or deep neural networks. However, more complex models are still used in practice. Using a GAM to model one of these more complex models could be a promising approach for bringing the intelligibility of GAMs to more performance-focused models. Existing work supports this idea by using surrogate models for improved interpretability, for example, employing model distillation [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+      61
+     </a>
+     ] or visualizing extracted rule-based knowledge representations [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+      46
+     </a>
+     ]. GAMs could also help data scientists explore multiple models at once, since multiple shape function charts for the same feature can be overlaid, enabling direction comparison between differing models.
+    </p>
+    <p>
+     <em>
+      Scalability.
+     </em>
+     . The six datasets from our study are considered small by current ML standards. Preliminary work has shown that as scale increases, interpretability and satisfaction decreases [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+      49
+     </a>
+     ]. Therefore, it would be useful to see similar studies to ours use larger datasets to see how interpretability is affected by both the number of data points and the number of features. In
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     ’s current design, the shape function charts scale well with the number of data points, but not with the number of features; the waterfall charts become harder to read as the number of features grows.
+    </p>
+    <p>
+     <em>
+      Supporting both explanation paradigms.
+     </em>
+     . Although different participants favored using different strategies, from our study we found that participants used both global and local explanations fluidly together, showing that these two paradigms are complementary. Therefore, future explainable systems and interactive interfaces should provide both model-level and instance-level explanations to flexibly support people's differing processes.
+    </p>
+   </section>
+   <section id="sec-26">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        9
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this work, through an iterative design process with expert machine learning researchers and practitioners at a large technology company, we identified a list of explainable machine learning interface capabilities, designed and developed an interactive visualization system,
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     , that embodied our capabilities, and used it as a design probe for machine learning interpretability through a human-subjects user study. Our results show that data scientists have many reasons for interpretability, answer interpretability questions using both global and local explanations, and like interactive explanations.
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     ’s tightly interactive coordinated views enabled deeper understanding of both models and predictions. All participants wanted to use
+     <font style="font-variant: small-caps">
+      Gamut
+     </font>
+     on their own data in the course of their every day work. From our study, it is clear there is a pressing need for better explanatory interfaces for machine learning, suggesting that HCI, design, and data visualization all have critical roles to play in a society where machine learning will increasingly impact humans.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-27">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     We thank Sarah Tan, Jina Suh, Chris Meek, Duen Horng (Polo) Chau, and the anonymous reviewers for their constructive feedback. We also thank the data scientists at Microsoft who participated in our interviews and studies. This work was supported by a NASA Space Technology Research Fellowship.
+    </p>
+   </section>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Ashraf Abdul, Jo Vermeulen, Danding Wang, Brian Y Lim, and Mohan Kankanhalli. 2018. Trends and trajectories for explainable, accountable and intelligible systems: an HCI research agenda. In
+      <em>
+       ACM Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 582.
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Saleema Amershi, Max Chickering, Steven M Drucker, Bongshin Lee, Patrice Simard, and Jina Suh. 2015. Modeltracker: redesigning performance analysis tools for machine learning. In
+      <em>
+       ACM Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 337–346.
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Julia Angwin, Jeff Larson, Surya Mattu, and Lauren Kirchner. 2016. Machine bias.
+      <em>
+       <em>
+        ProPublica, May
+       </em>
+      </em>
+      23(2016).
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Or Biran and Courtenay Cotton. 2017. Explanation and justification in machine learning: a survey. In
+      <em>
+       IJCAI Workshop on Explainable AI
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Michael Bostock, Vadim Ogievetsky, and Jeffrey Heer. 2011. D
+      <sup>
+       3
+      </sup>
+      data-driven documents.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      12 (2011), 2301–2309.
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Michael Brooks, Saleema Amershi, Bongshin Lee, Steven M Drucker, Ashish Kapoor, and Patrice Simard. 2015. FeatureInsight: visual support for error-driven feature ideation in text classification. In
+      <em>
+       IEEE Conference on Visual Analytics Science and Technology
+      </em>
+      . IEEE, 105–112.
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Joy Buolamwini and Timnit Gebru. 2018. Gender shades: intersectional accuracy disparities in commercial gender classification. In
+      <em>
+       ACM Conference on Fairness, Accountability and Transparency
+      </em>
+      . 77–91.
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Aylin Caliskan, Joanna J Bryson, and Arvind Narayanan. 2017. Semantics derived automatically from language corpora contain human-like biases.
+      <em>
+       <em>
+        Science
+       </em>
+      </em>
+      356, 6334 (2017), 183–186.
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Mackinlay Card. 1999.
+      <em>
+       Readings in information visualization: using vision to think
+      </em>
+      . Morgan Kaufmann.
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Rich Caruana, Yin Lou, Johannes Gehrke, Paul Koch, Marc Sturm, and Noemie Elhadad. 2015. Intelligible models for healthcare: predicting pneumonia risk and hospital 30-day readmission. In
+      <em>
+       ACM International Conference on Knowledge Discovery and Data Mining
+      </em>
+      . ACM, 1721–1730.
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Jason Chuang, Daniel Ramage, Christopher Manning, and Jeffrey Heer. 2012. Interpretation and trust: designing model-driven visualizations for text analysis. In
+      <em>
+       ACM Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 443–452.
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Dennis Collaris, Leo M Vink, and Jarke J van Wijk. 2018. Instance-level explanations for fraud detection: a case study.
+      <em>
+       <em>
+        ICML Workshop on Human Interpretability in Machine Learning
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Kristin A Cook and James J Thomas. 2005.
+      <em>
+       Illuminating the path: the research and development agenda for visual analytics
+      </em>
+      . Technical Report. Pacific Northwest National Lab. Richland, WA, USA.
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Joseph A Cruz and David S Wishart. 2006. Applications of machine learning in cancer prediction and prognosis.
+      <em>
+       <em>
+        Cancer Informatics
+       </em>
+      </em>
+      2(2006), 117693510600200030.
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Finale Doshi-Velez and Been Kim. 2017. Towards a rigorous science of interpretable machine learning.
+      <em>
+       <em>
+        arXiv preprint arXiv:1702.08608
+       </em>
+      </em>
+      (2017).
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Finale Doshi-Velez, Mason Kortz, Ryan Budish, Chris Bavitz, Sam Gershman, David O'Brien, Stuart Schieber, James Waldo, David Weinberger, and Alexandra Wood. 2017. Accountability of AI under the law: the role of explanation.
+      <em>
+       <em>
+        arXiv preprint arXiv:1711.01134
+       </em>
+      </em>
+      (2017).
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Jerome H Friedman. 2001. Greedy function approximation: a gradient boosting machine.
+      <em>
+       <em>
+        Annals of Statistics
+       </em>
+      </em>
+      (2001), 1189–1232.
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Bill Gaver, Tony Dunne, and Elena Pacenti. 1999. Design: cultural probes.
+      <em>
+       <em>
+        Interactions
+       </em>
+      </em>
+      6, 1 (1999), 21–29.
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Marco Gillies, Rebecca Fiebrink, Atau Tanaka, Jérémie Garcia, Frédéric Bevilacqua, Alexis Heloir, Fabrizio Nunnari, Wendy Mackay, Saleema Amershi, Bongshin Lee,
+      <em>
+       et al.
+      </em>
+      2016. Human-centred machine learning. In
+      <em>
+       ACM Conference Extended Abstracts on Human Factors in Computing Systems
+      </em>
+      . ACM, 3558–3565.
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Leilani H Gilpin, David Bau, Ben Z Yuan, Ayesha Bajwa, Michael Specter, and Lalana Kagal. 2018. Explaining explanations: an approach to evaluating interpretability of machine learning.
+      <em>
+       <em>
+        arXiv preprint arXiv:1806.00069
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Bryce Goodman and Seth Flaxman. 2016. European Union regulations on algorithmic decision-making and a “right to explanation”.
+      <em>
+       <em>
+        ICML Workshop on Human Interpretability in Machine Learning
+       </em>
+      </em>
+      (2016).
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Connor Graham and Mark Rouncefield. 2008. Probes and participation. In
+      <em>
+       Conference on Participatory Design
+      </em>
+      . Indiana University, 194–197.
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      David Gunning. 2017. Explainable artificial intelligence (xai).
+      <em>
+       <em>
+        Defense Advanced Research Projects Agency (DARPA)
+       </em>
+      </em>
+      (2017).
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Trevor J Hastie and Robert Tibshirani. 1990. Generalized additive models. In
+      <em>
+       Chapman &amp; Hall/CRC
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Fred Hohman, Minsuk Kahng, Robert Pienta, and Duen Horng Chau. 2018. Visual analytics in deep learning: an interrogative survey for the next frontiers.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Hilary Hutchinson, Wendy Mackay, Bo Westerlund, Benjamin B Bederson, Allison Druin, Catherine Plaisant, Michel Beaudouin-Lafon, Stéphane Conversy, Helen Evans, Heiko Hansen,
+      <em>
+       et al.
+      </em>
+      2003. Technology probes: inspiring design for and with families. In
+      <em>
+       ACM Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 17–24.
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Neal Jean, Marshall Burke, Michael Xie, W Matthew Davis, David B Lobell, and Stefano Ermon. 2016. Combining satellite imagery and machine learning to predict poverty.
+      <em>
+       <em>
+        Science
+       </em>
+      </em>
+      353, 6301 (2016), 790–794.
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Kelvyn Jones and Simon Almond. 1992. Moving out of the linear rut: the possibilities of generalized additive models.
+      <em>
+       <em>
+        Transactions of the Institute of British Geographers
+       </em>
+      </em>
+      (1992), 434–447.
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Michael I Jordan and Tom M Mitchell. 2015. Machine learning: trends, perspectives, and prospects.
+      <em>
+       <em>
+        Science
+       </em>
+      </em>
+      349, 6245 (2015), 255–260.
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Minsuk Kahng, Pierre Y Andrews, Aditya Kalro, and Duen Horng Polo Chau. 2018. Activis: Visual exploration of industry-scale deep neural network models.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      24, 1(2018), 88–97.
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Minsuk Kahng, Dezhi Fang, and Duen Horng Polo Chau. 2016. Visual exploration of machine learning results using data cube analysis. In Workshop on Human-In-the-Loop Data Analytics. ACM.
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Konstantina Kourou, Themis P Exarchos, Konstantinos P Exarchos, Michalis V Karamouzis, and Dimitrios I Fotiadis. 2015. Machine learning applications in cancer prognosis and prediction.
+      <em>
+       <em>
+        Computational and Structural Biotechnology Journal
+       </em>
+      </em>
+      13 (2015), 8–17.
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Josua Krause, Aritra Dasgupta, Jordan Swartz, Yindalon Aphinyanaphongs, and Enrico Bertini. 2017. A workflow for isual diagnostics of binary classifiers using instance-level explanations.
+      <em>
+       <em>
+        IEEE Conference on Visual Analytics Science and Technology
+       </em>
+      </em>
+      (2017).
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Josua Krause, Adam Perer, and Enrico Bertini. 2014. INFUSE: interactive feature selection for predictive modeling of high dimensional data.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      20, 12(2014), 1614–1623.
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Josua Krause, Adam Perer, and Enrico Bertini. 2018. A user study on the effect of aggregating explanations for interpreting machine learning models.
+      <em>
+       <em>
+        ACM KDD Workshop on Interactive Data Exploration and Analytics
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Josua Krause, Adam Perer, and Kenney Ng. 2016. Interacting with predictions: visual inspection of black-box machine learning models. In
+      <em>
+       ACM Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 5686–5697.
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Alex Krizhevsky, Ilya Sutskever, and Geoffrey E Hinton. 2012. Imagenet classification with deep convolutional neural networks. In
+      <em>
+       Advances in Neural Information Processing Systems
+      </em>
+      . 1097–1105.
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      Zachary C Lipton. 2016. The mythos of model interpretability.
+      <em>
+       <em>
+        ICML Workshop on Human Interpretability in Machine Learning
+       </em>
+      </em>
+      (2016).
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Yin Lou, Rich Caruana, and Johannes Gehrke. 2012. Intelligible models for classification and regression. In
+      <em>
+       ACM International Conference on Knowledge Discovery and Data Mining
+      </em>
+      . ACM, 150–158.
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Yin Lou, Rich Caruana, Johannes Gehrke, and Giles Hooker. 2013. Accurate intelligible models with pairwise interactions. In
+      <em>
+       ACM International Conference on Knowledge Discovery and Data Mining
+      </em>
+      . ACM, 623–631.
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      Junhua Lu, Wei Chen, Yuxin Ma, Junming Ke, Zongzhuang Li, Fan Zhang, and Ross Maciejewski. 2017. Recent progress and trends in predictive visual analytics.
+      <em>
+       <em>
+        Frontiers of Computer Science
+       </em>
+      </em>
+      11, 2 (2017), 192–207.
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      Yafeng Lu, Rolando Garcia, Brett Hansen, Michael Gleicher, and Ross Maciejewski. 2017. The state-of-the-art in predictive visual analytics. In
+      <em>
+       Computer Graphics Forum
+      </em>
+      , Vol. 36. Wiley Online Library, 539–562.
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Michael Madaio, Shang-Tse Chen, Oliver L Haimson, Wenwen Zhang, Xiang Cheng, Matthew Hinds-Aldrich, Duen Horng Chau, and Bistra Dilkina. 2016. Firebird: predicting fire risk and prioritizing fire inspections in atlanta. In
+      <em>
+       ACM International Conference on Knowledge Discovery and Data Mining
+      </em>
+      . ACM, 185–194.
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      Sean McGregor, Hailey Buckingham, Thomas G Dietterich, Rachel Houtman, Claire Montgomery, and Ronald Metoyer. 2017. Interactive visualization for testing markov decision processes: MDPVIS.
+      <em>
+       <em>
+        Journal of Visual Languages &amp; Computing
+       </em>
+      </em>
+      39 (2017), 93–106.
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      Tim Miller. 2017. Explanation in artificial intelligence: insights from the social sciences.
+      <em>
+       <em>
+        arXiv preprint arXiv:1706.07269
+       </em>
+      </em>
+      (2017).
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      Yao Ming, Huamin Qu, and Enrico Bertini. 2019. RuleMatrix: visualizing and understanding classifiers with rules.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      25, 1(2019), 342–352.
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      Christoph Molnar. 2018.
+      <em>
+       Interpretable machine learning
+      </em>
+      . https://christophm.github.io/interpretable-ml-book/.
+      <a class="link-inline force-break" href="https://christophm.github.io/interpretable-ml-book/">
+       https://christophm.github.io/interpretable-ml-book/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      Grégoire Montavon, Wojciech Samek, and Klaus-Robert Müller. 2017. Methods for interpreting and understanding deep neural networks.
+      <em>
+       <em>
+        Digital Signal Processing
+       </em>
+      </em>
+      (2017).
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      Menaka Narayanan, Emily Chen, Jeffrey He, Been Kim, Sam Gershman, and Finale Doshi-Velez. 2018. How do humans understand explanations from machine learning systems? an evaluation of the human-interpretability of explanation.
+      <em>
+       <em>
+        arXiv preprint arXiv:1802.00682
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      Google PAIR. 2018. What-If Tool. (2018).
+      <a class="link-inline force-break" href="https://pair-code.github.io/what-if-tool/">
+       https://pair-code.github.io/what-if-tool/
+      </a>
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      Parliament and Council of the European Union. 2016. General Data Protection Regulation. (2016).
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Forough Poursabzi-Sangdeh, Daniel G Goldstein, Jake M Hofman, Jennifer Wortman Vaughan, and Hanna Wallach. 2017. Manipulating and measuring model interpretability.
+      <em>
+       <em>
+        NIPS Women in Machine Learning Workshop
+       </em>
+      </em>
+      (2017).
+     </li>
+     <li id="BibPLXBIB0053" label="[53]">
+      Donghao Ren, Saleema Amershi, Bongshin Lee, Jina Suh, and Jason D Williams. 2017. Squares: supporting interactive performance analysis for multiclass classifiers.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      23, 1(2017), 61–70.
+     </li>
+     <li id="BibPLXBIB0054" label="[54]">
+      Marco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. 2016. Why should i trust you?: explaining the predictions of any classifier. In
+      <em>
+       ACM International Conference on Knowledge Discovery and Data Mining
+      </em>
+      . ACM, 1135–1144.
+     </li>
+     <li id="BibPLXBIB0055" label="[55]">
+      Dominik Sacha, Michael Sedlmair, Leishi Zhang, John A Lee, Jaakko Peltonen, Daniel Weiskopf, Stephen C North, and Daniel A Keim. 2017. What you see is what you can change: human-centered machine learning by interactive visualization.
+      <em>
+       <em>
+        Neurocomputing
+       </em>
+      </em>
+      268(2017), 164–175.
+     </li>
+     <li id="BibPLXBIB0056" label="[56]">
+      Matthias Schmid and Torsten Hothorn. 2008. Boosting additive models using component-wise P-splines.
+      <em>
+       <em>
+        Computational Statistics &amp; Data Analysis
+       </em>
+      </em>
+      53, 2 (2008), 298–311.
+     </li>
+     <li id="BibPLXBIB0057" label="[57]">
+      Daniel Servén and Charlie Brummitt. 2018. pyGAM: generalized additive models in python.
+      <a class="link-inline force-break" href="https://doi.org/10.5281/zenodo.1208723" target="_blank">
+       https://doi.org/10.5281/zenodo.1208723
+      </a>
+     </li>
+     <li id="BibPLXBIB0058" label="[58]">
+      David Silver, Julian Schrittwieser, Karen Simonyan, Ioannis Antonoglou, Aja Huang, Arthur Guez, Thomas Hubert, Lucas Baker, Matthew Lai, Adrian Bolton,
+      <em>
+       et al.
+      </em>
+      2017. Mastering the game of Go without human knowledge.
+      <em>
+       <em>
+        Nature
+       </em>
+      </em>
+      550, 7676 (2017), 354.
+     </li>
+     <li id="BibPLXBIB0059" label="[59]">
+      Bhavkaran Singh Walia, Qianyi Hu, Jeffrey Chen, Fangyan Chen, Jessica Lee, Nathan Kuo, Palak Narang, Jason Batts, Geoffrey Arnold, and Michael Madaio. 2018. A dynamic pipeline for spatio-temporal fire risk prediction. In
+      <em>
+       ACM International Conference on Knowledge Discovery &amp; Data Mining
+      </em>
+      . ACM, 764–773.
+     </li>
+     <li id="BibPLXBIB0060" label="[60]">
+      Simone Stumpf, Vidya Rajaram, Lida Li, Weng-Keen Wong, Margaret Burnett, Thomas Dietterich, Erin Sullivan, and Jonathan Herlocker. 2009. Interacting meaningfully with machine learning systems: three experiments.
+      <em>
+       <em>
+        International Journal of Human-Computer Studies
+       </em>
+      </em>
+      67, 8 (2009), 639–662.
+     </li>
+     <li id="BibPLXBIB0061" label="[61]">
+      Sarah Tan, Rich Caruana, Giles Hooker, and Yin Lou. 2018. Distill-and-compare: auditing black-box models using transparent model distillation.
+      <em>
+       <em>
+        AAAI/ACM Conference on Artificial Intelligence, Ethics, and Society
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0062" label="[62]">
+      Sandra Wachter, Brent Mittelstadt, and Chris Russell. 2017. Counterfactual explanations without ppening the black box: automated decisions and the GDPR.
+      <em>
+       <em>
+        arXiv preprint arXiv:1711.00399
+       </em>
+      </em>
+      (2017).
+     </li>
+     <li id="BibPLXBIB0063" label="[63]">
+      Daniel S. Weld and Gagan Bansal. 2018. Intelligible artificial intelligence.
+      <em>
+       <em>
+        arXiv preprint arXiv:1803.04263
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0064" label="[64]">
+      Simon N Wood. 2006.
+      <em>
+       Generalized additive models: an introduction with R
+      </em>
+      . Chapman and Hall/CRC.
+     </li>
+     <li id="BibPLXBIB0065" label="[65]">
+      Yonghui Wu, Mike Schuster, Zhifeng Chen, Quoc V Le, Mohammad Norouzi, Wolfgang Macherey, Maxim Krikun, Yuan Cao, Qin Gao, Klaus Macherey,
+      <em>
+       et al.
+      </em>
+      2016. Google's neural machine translation system: bridging the gap between human and machine translation.
+      <em>
+       <em>
+        arXiv preprint arXiv:1609.08144
+       </em>
+      </em>
+      (2016).
+     </li>
+     <li id="BibPLXBIB0066" label="[66]">
+      Qian Yang, Jina Suh, Nan-Chen Chen, and Gonzalo Ramos. 2018. Grounding interactive machine learning tool design in how non-experts actually build models. In
+      <em>
+       Designing Interactive Systems Conference
+      </em>
+      . ACM, 573–584.
+     </li>
+     <li id="BibPLXBIB0067" label="[67]">
+      Jiawei Zhang, Yang Wang, Piero Molino, Lezhi Li, and David S Ebert. 2019. Manifold: a model-agnostic framework for interpretation and diagnosis of machine learning Models.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      25, 1(2019), 364–373.
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    <a class="link-inline force-break" href="https://www.ag-grid.com/">
+     https://www.ag-grid.com/
+    </a>
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300809" target="_blank">
+      https://doi.org/10.1145/3290605.3300809
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'8757bc517f9f4dcc',t:'MTcxMzMwNzg0MC44MTQwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

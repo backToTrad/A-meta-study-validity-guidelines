@@ -1,0 +1,2462 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   MilliSonic: Pushing the Limits of Acoustic Motion Tracking
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300248_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300248_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300248_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300248_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300248_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300248_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300248_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300248_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        MilliSonic: Pushing the Limits of Acoustic Motion Tracking
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Anran
+      </span>
+      <span class="surName">
+       Wang
+      </span>
+      , University of Washington, USA,
+      <a href="mailto:anranw@cs.washington.edu">
+       anranw@cs.washington.edu
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Shyamnath
+      </span>
+      <span class="surName">
+       Gollakota
+      </span>
+      , university of Washington, USA,
+      <a href="mailto:gshyam@cs.washington.edu">
+       gshyam@cs.washington.edu
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300248" target="_blank">
+       https://doi.org/10.1145/3290605.3300248
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Recent years have seen interest in device tracking and localization using acoustic signals. State-of-the-art acoustic motion tracking systems however do not achieve millimeter accuracy and require large separation between microphones and speakers, and as a result, do not meet the requirements for many VR/AR applications. Further, tracking multiple concurrent acoustic transmissions from VR devices today requires sacrificing accuracy or frame rate. We present MilliSonic, a novel system that pushes the limits of acoustic based motion tracking. Our core contribution is a novel localization algorithm that can provably achieve sub-millimeter 1D tracking accuracy in the presence of multipath, while using only a single beacon with a small 4-microphone array. Further, MilliSonic enables concurrent tracking of upto four smartphones without reducing frame rate or accuracy. Our evaluation shows that MilliSonic achieves 0.7mm median 1D accuracy and a 2.6mm median 3D accuracy for smartphones, which is 5x more accurate than state-of-the-art systems. MilliSonic enables two previously infeasible interaction applications: a) 3D tracking of VR headsets using the smartphone as a beacon and b) fine-grained 3D tracking for the Google Cardboard VR system using a small microphone array.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Pointing
+       </strong>
+       ; •
+       <strong>
+        Human-centered computing → Ubiquitous and mobile computing systems and tools
+       </strong>
+       ; •
+       <strong>
+        Computer systems organization → Embedded software
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Anran Wang and Shyamnath Gollakota. 2019. MilliSonic: Pushing the Limits of Acoustic Motion Tracking. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 12 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300248" target="_blank">
+         https://doi.org/10.1145/3290605.3300248
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <figure id="fig1">
+     <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig1.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       Application scenarios: a) tracking a Google cardboard VR using a small microphone array; b) Tracking the 3D position of VR/AR headsets using a smartphone as a beacon. Using the transmissions from the smartwatch to then track it w.r.t. the headset; c) Concurrently tracking multiple devices with a single microphone array at a high per-device frame rate.
+      </span>
+     </div>
+    </figure>
+    <p>
+     Device localization and motion tracking has been a long-standing challenge in the research community. It is a key component in Virtual Reality and Augmented/Mixed Reality applications and enables novel human-computer interactions including gesture and skeletal tracking. Traditionally, specialized optical methods such as lasers and infrared beacons have been used to localize VR headsets and controllers. This includes commercial systems like the HTC Vive VR, Oculus Rift and Sony PlayStation VR [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+      9
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ]. These optical tracking solutions, however, require separate expensive beacons to emit infrared signals and transceivers to receive and process data. Existing devices like smartphones lack these transceivers and hence are unsuitable for such techniques.
+    </p>
+    <p>
+     Acoustic-based localization and tracking methods have recently emerged as an attractive alternative to optical systems [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ]. Speakers and microphones, used for emitting and receiving acoustic signals, are cheap and easy to configure. Furthermore, commodity smartphones and smart watches already have built-in speakers and microphones, which makes acoustic tracking an excellent fit for such devices. As shown in Fig.
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     (a), a simple microphone array could act as a beacon to enable 3D location tracking for the Google cardboard VR system. Conversely, instead of carrying around additional devices (e.g., HTC IR beacons) to enable tracking for VR headsets, one could reuse existing smartphones as beacons to enable 3D localization and motion tracking.
+    </p>
+    <p>
+     State-of-the-art acoustic motion tracking systems [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+      34
+     </a>
+     ] however do not adequately meet the requirements of VR/AR applications for three main reasons.
+    </p>
+    <ul class="list-no-style">
+     <li id="list1" label="•">
+      <em>
+       Tracking accuracy.
+      </em>
+      Acoustic signals suffer from multi-path where the signal reflects off nearby surfaces before arriving at the receiver. Thus, existing 1D acoustic tracking accuracy is 5-10 mm [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ], which is much worse than optical systems and may cause motion sickness with prolonged use [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ].
+      <br/>
+     </li>
+     <li id="list2" label="•">
+      <em>
+       Microphone/speaker separation.
+      </em>
+      3D tracking requires triangulation from multiple microphones/speakers, which when placed close to each other limits accuracy. Prior work that tracks smartphones uses multiple speakers separated by 90 cm [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ], making them difficult to integrate into VR/AR headsets. Conversely, using a 90 cm beacon for Google cardboard VR is unwieldy and limits portability.
+      <br/>
+     </li>
+     <li id="list3" label="•">
+      <em>
+       Concurrency.
+      </em>
+      Tracking multiple headsets remains a challenge with existing designs. A naïve approach is to time multiplex the acoustic signals from each device. This however reduces the frame rate linearly with the number of devices.
+      <br/>
+     </li>
+    </ul>
+    <p>
+     We present MilliSonic, a novel system that pushes the limits of acoustic based motion tracking. Our core contribution is a novel localization algorithm that can achieve sub-millimeter 1D tracking accuracy in the presence of multipath, while using only a single beacon with a 4-microphone array. To achieve this, like prior designs [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ], MilliSonic uses FMCW (frequency modulated continuous wave) acoustic transmissions where the frequency linearly increases with time. Prior designs use FMCW to separate reflections arriving at different times by mapping time differences to frequency shifts. However, given the limited inaudible bandwidth on smartphones, the ability to differentiate between close-by paths using frequency shifts is limited, thus, limiting accuracy. Our algorithm instead leverages the phase of the FMCW reflections to perform tracking. We prove that this allows us to achieve sub-millimeter 1D tracking. These high 1D accuracies allow us to reduce the separation between microphones at the beacon and achieve millimeter-resolution 3D tracking and localization. Finally, we show that by have devices intentionally introduce different time delays to their FMCW signals, we can support concurrent acoustic transmissions from multiple devices, without reducing the accuracy or frame rate for each device.
+    </p>
+    <p>
+     We implement our design using speakers on Android smartphones including Samsung Galaxy S6, S7 and S9. We design 15
+     <em>
+      cm
+     </em>
+     × 15
+     <em>
+      cm
+     </em>
+     and 6
+     <em>
+      cm
+     </em>
+     × 5.35
+     <em>
+      cm
+     </em>
+     4-microphone arrays using commercial microphones and implement our real-time tracking algorithms on a Raspberry Pi 3 Model B+ [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ].
+    </p>
+    <p>
+     This paper makes the following contributions.
+    </p>
+    <ul class="list-no-style">
+     <li id="list4" label="•">
+      We show for the first time how to achieve sub-mm 1D tracking and localization accuracies using acoustic signals on smartphones, in the presence of multipath. To achieve this, we introduce algorithms that use the phase of FMCW signals to disambiguate between multiple paths.
+      <br/>
+     </li>
+     <li id="list5" label="•">
+      We enable multiple smartphones to transmit concurrently using time-shifted FMCW acoustic signals and enable concurrent tracking without sacrificing accuracy or frame rate.
+      <br/>
+     </li>
+     <li id="list6" label="•">
+      We present experimental results that show that MilliSonic can achieve a median 1D accuracy of 0.7 mm up to distances of 1 m from the smartphone. The median 1D accuracy is 1.7 mm for distances between 1 and 2 m. MilliSonic's median 3d accuracy is around 2.6 mm. Further, we can concurrently track up to four smartphones at a per-device frame rate of 40 frames/sec without sacrificing accuracy.
+      <br/>
+     </li>
+     <li id="list7" label="•">
+      Finally, we describe the limitations of our system and outline additional work required to more comprehensively evaluate the system in various use case scenarios.
+      <br/>
+     </li>
+    </ul>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       APPLICATION SCENARIOS
+      </h2>
+     </div>
+    </header>
+    <p>
+     MilliSonic enables three key application scenarios.
+    </p>
+    <ul class="list-no-style">
+     <li id="list8" label="•">
+      Current smartphone-based VR headsets (
+      <em>
+       e.g.
+      </em>
+      , Google Cardboard) do not have 6DoF motion tracking capability. This is because of the lack of optical transceivers, which limits their usage. MilliSonic enables 6DoF motion tracking capability for smartphone-based VR headsets using only a cheap and small microphone array as a beacon, without requiring any hardware modifications at the smartphone.
+      <br/>
+     </li>
+     <li id="list9" label="•">
+      Millisonic can transform the smartphone into a portable beacon for VR tracking. Specifically, instead of requiring the user to carry optical beacons for VR headsets to enable use in different environments, a smartphone can be used as a portable beacon. To do this, manufacturer can integrate a cheap microphone array into the VR/AR headset. Using this microphone array, the VR headset can also track the motion of other acoustic-enabled devices such as smart watches.
+      <br/>
+     </li>
+     <li id="list10" label="•">
+      MilliSonic can support concurrent tracking of an unlimited number of microphone arrays (i.e., VR headsets) in the vicinity of a single speaker (i.e., a smartphone). Furthermore, it can also support up to four speakers (i.e., smartphone VR headsets) in the vicinity of a microphone array without sacrificing accuracy or frame rate.
+      <br/>
+     </li>
+    </ul>
+   </section>
+   <section id="sec-4">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       MilliSonic Design
+      </h2>
+     </div>
+    </header>
+    <p>
+     We first present background on existing FMCW tracking systems and show why they have a limited accuracy for acoustic tracking. We then present our algorithm that uses the FMCW phase to achieve sub-mm 1D tracking. We then describe how to perform 3D tracking using the 1D locations using multiple microphones. Finally, we address various practical issues.
+    </p>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        FMCW Background
+       </h3>
+      </div>
+     </header>
+     <p>
+      Acoustic tracking is traditionally achieved by computing the time-of-arrival of the transmitted signals at the microphones. At its simplest, the transmitted signal is a sine wave,
+      <em>
+       x
+      </em>
+      (
+      <em>
+       t
+      </em>
+      ) =
+      <em>
+       exp
+      </em>
+      (−
+      <em>
+       j
+      </em>
+      2
+      <em>
+       πft
+      </em>
+      ) where
+      <em>
+       f
+      </em>
+      is the wave frequency. A microphone at a distance of
+      <em>
+       d
+      </em>
+      at the transmitter, has a time-of-arrival of
+      <em>
+       d
+      </em>
+      =
+      <em>
+       t
+       <sub>
+        d
+       </sub>
+      </em>
+      ×
+      <em>
+       c
+      </em>
+      where
+      <em>
+       c
+      </em>
+      is the speed of sound. The received signal at this distance can now be written as,
+      <em>
+       y
+      </em>
+      (
+      <em>
+       t
+      </em>
+      ) =
+      <em>
+       exp
+      </em>
+      (−
+      <em>
+       j
+      </em>
+      2
+      <em>
+       πt
+      </em>
+      (
+      <em>
+       t
+      </em>
+      −
+      <em>
+       t
+       <sub>
+        d
+       </sub>
+      </em>
+      ). Dividing by
+      <em>
+       x
+      </em>
+      (
+      <em>
+       t
+      </em>
+      ), we get
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{y}(t)=\exp (j2\pi ft_d)$
+       </span>
+      </span>
+      . Thus, the phase of the received signal can be used to compute the time-of-arrival,
+      <em>
+       t
+       <sub>
+        d
+       </sub>
+      </em>
+      . In practice, however, multipath significantly distorts the received phase limiting accuracy.
+     </p>
+     <p>
+      To combat multipath, prior work [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ] uses Frequency Modulated Continuous Wave (FMCW) chirps where as shown in Fig.
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      the frequency of the signal changes linearly with time. FMCW has good autocorrelation properties that allow the receiver to differentiate between multiple paths that each have a different time-of-arrival. Further compared to OFDM [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ] and other waveforms [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ], FMCW has high spectral efficiency and is ease of demodulate. Mathematically, the FMCW signal in Fig.
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      is,
+      <span class="inline-equation">
+       <span class="tex">
+        $x(t)=exp(-j2\pi (f_0+\frac{B}{2T}t)t) = exp(-j2\pi (f_0t+\frac{B}{2T} t^2))$
+       </span>
+      </span>
+      , where
+      <em>
+       f
+      </em>
+      <sub>
+       0
+      </sub>
+      ,
+      <em>
+       B
+      </em>
+      and
+      <em>
+       T
+      </em>
+      are the initial frequency, bandwidth and duration of the FMCW chirp respectively. In the presence of multipath, the received signal can be written as,
+      <span class="inline-equation">
+       <span class="tex">
+        $y(t)=\sum _{i=1}^M A_iexp(-j2\pi (f_0(t-t_i)+\frac{B}{2T} (t^2+t_i^2-2tt_i)))$
+       </span>
+      </span>
+      , where
+      <em>
+       A
+       <sub>
+        i
+       </sub>
+      </em>
+      and
+      <span class="inline-equation">
+       <span class="tex">
+        $t_i=\frac{d_i(t)}{c}$
+       </span>
+      </span>
+      are the attenuation and time-of-flight of the
+      <em>
+       i
+      </em>
+      th path. Dividing this by
+      <em>
+       x
+      </em>
+      (
+      <em>
+       t
+      </em>
+      ) we get,
+     </p>
+     <div class="table-responsive" id="eq1">
+      <div class="display-equation">
+       <span class="tex mytex">
+        \begin{align} \hat{y}(t)&amp;=\sum _{i=1}^M A_iexp(-j2\pi (\frac{B}{T}t_it+f_0t_i-\frac{B}{2T}t_i^2)) \end{align}
+       </span>
+       <br/>
+       <span class="equation-number">
+        (1)
+       </span>
+      </div>
+     </div>
+     The above equation shows that multipath with different times-of-arrival fall into different frequencies. The receiver uses Discrete Fourier Transform (DFT) to find the first peak frequency bin,
+     <em>
+      f
+      <sub>
+       peak
+      </sub>
+     </em>
+     , that corresponds to the line-of-sight path to the transmitter. It then computes the distance to the receiver as,
+     <span class="inline-equation">
+      <span class="tex">
+       $d(t)=\frac{cf_{peak}}{B}$
+      </span>
+     </span>
+     .
+     <p>
+     </p>
+     <p>
+      While this conventional FMCW processing is effective in disambiguating multiple paths that is separated by large distances, it has a limited accuracy when the multiple paths are close to each other. Specifically, the minimum distance resolution for FMCW is in the order of
+      <span class="inline-equation">
+       <span class="tex">
+        $\frac{c}{B}$
+       </span>
+      </span>
+      when the separation between frequencies is 1 Hz. Given that smartphones have a limited inaudible bandwidth of 7 kHz between 17-24 kHz, prior work cannot distinguish between paths that are close to the direct line-of-sight path and hence have a limited accuracy [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. Further, since DFT operations are performed over a whole chirp duration, it limits the frame rate of the system to
+      <span class="inline-equation">
+       <span class="tex">
+        $\frac{1}{T}$
+       </span>
+      </span>
+      , where
+      <em>
+       T
+      </em>
+      is the FMCW chirp duration.
+     </p>
+     <figure id="fig2">
+      <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig2.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 2:
+       </span>
+       <span class="figure-title">
+        FMCW signal structure.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Sub-mm 1D tracking using FMCW phase
+       </h3>
+      </div>
+     </header>
+     <p>
+      We use phase of the FMCW signals to compute distance. Thus, instead of using the first peak frequency of the FMCW signal in the frequency domain to estimate the time-of-arrival, our algorithms has two key steps: 1) we apply a dynamic narrow band-pass filter in the time-domain to filter out most multipath that has a distant time-of-arrival from the direct path. This leaves us only a small portion of residual indirect paths around the direct path. 2) We then extract the distance information from the instantaneous FMCW phase.
+     </p>
+     <p>
+      <strong>
+       Intuition.
+      </strong>
+      We provide the intuition for why FMCW phase provides a better accuracy than existing FMCW approaches.
+     </p>
+     <p>
+      <em>
+       Traditional FMCW approaches.
+      </em>
+      Let us first understand the error in traditional peak estimation method for FMCW signals. Tracking error occurs when we have two paths that are without a single frequency bin. Let us denote the time-of-arrival of the direct path as
+      <em>
+       t
+      </em>
+      <sub>
+       1
+      </sub>
+      and its frequency in the demodulated FMCW signal as
+      <span class="inline-equation">
+       <span class="tex">
+        $\mathbf {f}_{t_1}$
+       </span>
+      </span>
+      . An indirect path with a time-of-arrival of
+      <em>
+       t
+      </em>
+      <sub>
+       2
+      </sub>
+      lies at frequency
+      <span class="inline-equation">
+       <span class="tex">
+        $\mathbf {f}_{t_2}$
+       </span>
+      </span>
+      in the demodulated signal. When
+      <span class="inline-equation">
+       <span class="tex">
+        $|\mathbf {f}_{t_1}-\mathbf {f}_{t_2}|{&lt;}1$
+       </span>
+      </span>
+      , the two peaks merge together in the frequency domain resulting in a single peak at approximately
+      <span class="inline-equation">
+       <span class="tex">
+        $(A_2\mathbf {f}_{t_2}+A_1\mathbf {f}_{t_1})/(A_2+A_1)$
+       </span>
+      </span>
+      , where
+      <em>
+       A
+      </em>
+      <sub>
+       1
+      </sub>
+      and
+      <em>
+       A
+      </em>
+      <sub>
+       2
+      </sub>
+      are the amplitude of the direct path and the total amplitude of the residual indirect paths. Hence, the frequency error is
+      <span class="inline-equation">
+       <span class="tex">
+        $(A_2\mathbf {f}_{t_2}+A_1\mathbf {f}_{t_1})/(A_2+A_1)-\mathbf {f}_{t_1}$
+       </span>
+      </span>
+      which is equivalent to a distance error given by,
+      <span class="inline-equation">
+       <span class="tex">
+        $ d_e^{(peak)}=(\frac{A_2\mathbf {f}_{t_2}+A_1\mathbf {f}_{t_1}}{A_2+A_1}-\mathbf {f}_{t_1})\frac{c}{B} = {(\mathbf {f}_{t_2}-\mathbf {f}_{t_1})}/{(1+\frac{A_1}{A_2})} \frac{c}{B}$
+       </span>
+      </span>
+      .
+      <em>
+       This error increases linearly with
+      </em>
+      <span class="inline-equation">
+       <span class="tex">
+        $\mathbf {f}_{t_2}-\mathbf {f}_{t_1}$
+       </span>
+      </span>
+      <em>
+       and proportionally increases with
+      </em>
+      <span class="inline-equation">
+       <span class="tex">
+        $\frac{A_2}{A_1}$
+       </span>
+      </span>
+      <em>
+       .
+      </em>
+     </p>
+     <p>
+      <em>
+       Our method.
+      </em>
+      In contrast, the error in the phase of the FMCW signal is significantly smaller. To see this, let us assume that the amplitude of the residual indirect paths after filters have a lower amplitude than the direct path. As shown in Fig.
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      , the complex representation of the direct path is represented by the blue vector while that of the sum of indirect paths is represented by the red vector. The sum of the two vectors is the resulting signal at the receiver which is represented by the green vector. The maximum phase error occurs when the red vector is perpendicular to the green vector and this corresponds to a phase error of
+      <span class="inline-equation">
+       <span class="tex">
+        $sin^{-1}(\frac{A_2}{A_1})$
+       </span>
+      </span>
+      .
+      <em>
+       The key observation is that this error does not depend on
+      </em>
+      <span class="inline-equation">
+       <span class="tex">
+        $\mathbf {f}_{t_2}-\mathbf {f}_{t_1}$
+       </span>
+      </span>
+      <em>
+       and increases much slower at
+      </em>
+      <span class="inline-equation">
+       <span class="tex">
+        $sin^{-1}(\frac{A_2}{A_1})$
+       </span>
+      </span>
+      <em>
+       .
+      </em>
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Phase error when one indirect path (red vector) is combined with the direct path (blue vector).
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      Fig.
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      shows that distance error as a function of
+      <em>
+       A
+      </em>
+      <sub>
+       2
+      </sub>
+      /
+      <em>
+       A
+      </em>
+      <sub>
+       1
+      </sub>
+      and
+      <span class="inline-equation">
+       <span class="tex">
+        $|\mathbf {f}_{t_2}-\mathbf {f}_{t_1}|$
+       </span>
+      </span>
+      for both traditional peak estimation techniques as well as our FMCW phase method. The plots show that the distance errors using peak estimation is severely affected by the time-of-flight of the indirect paths. In contrast, the distance error using our FMCW phase technique is around 10x lower. We describe our algorithm and its theoretical analysis in more detail in the Appendix.
+     </p>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Error comparison of FMCW peak versus our FMCW phase method.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        3D tracking from 1D locations
+       </h3>
+      </div>
+     </header>
+     <p>
+      The above FMCW phase technique allows us to achieve sub-mm resolution in estimating 1D distances. To achieve 3D tracking we use information from multiple microphones to perform triangulation. We use multiple microphones instead of speakers to reduce the power consumption as well as to eliminate the complexity of multiplexing the multiple speakers. Since our 1D resolution is high we can also reduce the separation between the microphones while achieving a good 3D accuracy. Specifically, we place four microphones at four corners of a rectangle. We have two pairs of microphones in the vertical position and the other two pairs in the horizontal position. Thus, by computing the intersection of all the resulting 1D positions, we can compute the 3D location.
+     </p>
+     <p>
+      We note that the accuracy of triangulation is dependent on the distance from the microphone array as well as the separation between the microphones. Specifically, as the distance from the microphone array increases, the resulting 3D accuracy become worse. Similarly, as the separation between microphones increase the 3D accuracy improves, which is why prior work uses a microphone separation of 90 cm [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ]. In our solution, since we already achieve sub-mm 1D resolution, we can reduce the separation between microphones to fit the form-factor of VR headset and still achieve good 3D tracking accuracies upto 2 m. To improve the accuracy and reduce jitters at larger distances, we average the 3D distance measurements within each 10ms duration. Incorporating the 15ms latency of the band-pass filter, we get one distance value every 25ms or a frame rate of 40 frames per second.
+     </p>
+    </section>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Addressing practical issues
+       </h3>
+      </div>
+     </header>
+     <p>
+      We describe the practical issues in designing MilliSonic.
+     </p>
+     <p>
+      <em>
+       1) Phase ambiguity.
+      </em>
+      Any phase tracking algorithm has to address the problem of phase ambiguity. Specifically, we can only extract the phase modulo 2
+      <em>
+       π
+      </em>
+      from the demodulated chirp (
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{\phi }(t)=\mathbf {\phi }(t)\text{ mod }2\pi$
+       </span>
+      </span>
+      ). This leads to two problems: a) how to detect any modulo 2
+      <em>
+       π
+      </em>
+      shifts during a single chirp; and b) how to estimate the initial 2
+      <em>
+       Nπ
+      </em>
+      phase offset,
+      <em>
+       i.e.,
+      </em>
+      <span class="inline-equation">
+       <span class="tex">
+        $\mathbf {\phi }(0)=2N\pi +\hat{\phi }(0)$
+       </span>
+      </span>
+      at the beginning of each chirp.
+     </p>
+     <p>
+      Because of the band-pass filter, adjacent samples does not have a phase difference of more than
+      <em>
+       π
+      </em>
+      . The phase error caused by residual indirect paths is bounded to (−
+      <em>
+       π
+      </em>
+      /2,
+      <em>
+       π
+      </em>
+      /2). Thus, when the phase modulo 2
+      <em>
+       π
+      </em>
+      sees a sudden jump of more than
+      <em>
+       π
+      </em>
+      / −
+      <em>
+       π
+      </em>
+      between adjacent samples at
+      <em>
+       t
+      </em>
+      and
+      <em>
+       t
+      </em>
+      −
+      <em>
+       δt
+      </em>
+      , there is a modulo 2
+      <em>
+       π
+      </em>
+      jump at that time, which we can correct by adding or subtracting 2
+      <em>
+       π
+      </em>
+      to the computed phase.
+     </p>
+     <p>
+      To compute the initial 2
+      <em>
+       Nπ
+      </em>
+      phase offset at the beginning of each chirp, we use the estimated distance and speed from the end of the previous chirp. Instantaneous speed is computed by performing least square linear regression (which is a linear algorithm in 1D domain) over the distance values in a 10 ms window to reduce the effects of noise and residual multipath.
+     </p>
+     <p>
+      Specifically, for the
+      <em>
+       i
+      </em>
+      + 1th received chirp, given the distance
+      <span class="inline-equation">
+       <span class="tex">
+        $d^{(i)}_{end}$
+       </span>
+      </span>
+      and speed
+      <span class="inline-equation">
+       <span class="tex">
+        $v^{(i)}_{end}$
+       </span>
+      </span>
+      estimated from the end of the
+      <em>
+       i
+      </em>
+      th chirp, we can infer the distance of the beginning of the current chirp
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{d}^{(i+1)}_{start}=d^{(i)}_{end}+v^{(i)}_{end}\delta T$
+       </span>
+      </span>
+      where
+      <em>
+       δT
+      </em>
+      is the gap between two chirps. We then find the 2
+      <em>
+       Nπ
+      </em>
+      offset in addition to the ambiguous initial phase
+      <span class="inline-equation">
+       <span class="tex">
+        $\hat{\phi }(0)$
+       </span>
+      </span>
+      that minimize the difference
+      <span class="inline-equation">
+       <span class="tex">
+        $|d^{(i+1)}(0, \hat{\phi }(0)+2N\pi)-\hat{d}^{(i+1)}_{start}|$
+       </span>
+      </span>
+      . Note that this relaxes the constraints on speed imposed by prior work [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ] and instead has a constraint on acceleration. Specifically, prior work [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ] had a constraint on the maximum speed of 1 m/s. In our algorithm, since each 2
+      <em>
+       π
+      </em>
+      difference of the phase corresponds to around 2 cm distance difference, any error smaller than 1cm will not cause an erroneous 2
+      <em>
+       Nπ
+      </em>
+      estimate. The gap between two adjacent chirp is 5 ms and the delay of the band-pass filter is 15 ms. Hence, as long as the acceleration does not exceed
+      <span class="inline-equation">
+       <span class="tex">
+        $\frac{1cm}{20ms \times 20ms}=25m/s^2$
+       </span>
+      </span>
+      , our algorithm does not introduce erroneous phase offsets.
+     </p>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        Supporting concurrent transmissions using virtual time-of-arrival offsets at each VR headset.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      <em>
+       2) Clock synchronization.
+      </em>
+      Clock differences exist in practice which we need to calibrate to achieve tracking. Specifically, we need to calibrate for the initial phase as well as any drift due to clock differences. To achieve this, at the beginning of the session, the user touches the smartphone speaker with a microphone at the receiver. The receiver meanwhile starts recording the chirp for five seconds and runs the above tracking algorithm. Using this setup, we use autocorrelation to determine a starting time for the chirp at the receiver. Because in this setup, at zero distance, the signal has a high SNR, there is no motion and little indirect path, the estimate of the distance from the peak of the FFT result, denoted by
+      <em>
+       D
+      </em>
+      , is accurate. As a result, we can find the initial 2
+      <em>
+       Nπ
+      </em>
+      phase offset from
+      <em>
+       D
+      </em>
+      . Specifically, we find the best 2
+      <em>
+       Nπ
+      </em>
+      which minimizes the differences of the two measurements
+      <span class="inline-equation">
+       <span class="tex">
+        $|D-d(0, \hat{\phi }(0)+2N\pi)|$
+       </span>
+      </span>
+      . Finally, to address the clock drift, the receiver detects a constant drift in the distance measurement within the five seconds which is linear to the clock difference. We then compensate the clock difference by removing this drift for the following measurements at the receiver side.
+     </p>
+     <p>
+      <em>
+       3) Failure detection and recovery.
+      </em>
+      Our algorithms relies on continuous tracking. When tracking failure occurs, the subsequent measurements are also prone to errors. In practice, failures occur due to occlusions and noise.
+     </p>
+     <p>
+      While acoustic signal can penetrate some occlusions like fabrics, for other occlusions like wood and human limbs, refraction between different transmission mediums causes a dense multipath around the direct path which is also greatly attenuated. Therefore, the above algorithm fails because it doesn't satisfy the premise that the direct path dominates the filtered demodulated signal. When such error happens during a chirp, it will cause fluctuations in phase. Thus, there would be multiple 2
+      <em>
+       π
+      </em>
+      phase tracking error during the chirp, leading to a larger than 2
+      <em>
+       cm
+      </em>
+      distance error at the end of the chirp. When the error happens between two chirps, it will lead to wrong 2
+      <em>
+       Nπ
+      </em>
+      estimate that causes larger than
+      <span class="inline-equation">
+       <span class="tex">
+        $\space 2cm$
+       </span>
+      </span>
+      error for the subsequent chirps. Similarly at longer ranges the signal attenuates which results in noisy phase measurements which can also lead to wrong 2
+      <em>
+       Nπ
+      </em>
+      estimates.
+     </p>
+     <p>
+      To detect these failures, we utilize the redundancy across the microphones. It is unlikely that all the four microphone encounter the same extra phase error at the same time because of their different locations. Hence, if the measurements from some of the four microphones are outliers with at least 2
+      <em>
+       cm
+      </em>
+      measurement errors from the others, it indicates an error. When such a failure is detected, if the anomaly is only in one microphone, the receiver compensates the 2
+      <em>
+       π
+      </em>
+      offset until it is in the similar range of the other three microphones. If sustained failures occurs (which rarely happens), our algorithms fall back to the traditional peak estimation method for FMCW signals and notify the user.
+     </p>
+     <figure id="fig6">
+      <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig6.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 6:
+       </span>
+       <span class="figure-title">
+        Prototypes of MilliSonic microphone arrays.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+   </section>
+   <section id="sec-9">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       TRACKING MULTIPLE DEVICES
+      </h2>
+     </div>
+    </header>
+    <p>
+     The algorithm described above is unidirectional in that signals can only propagate from the speaker to the microphones. Because of this, MilliSonic can support tracking of an unlimited number of microphone arrays in the vicinity using a one single smartphone speaker. Thus a single speaker can be used as a beacon to support tracking for multiple VR headsets that integrate our microphone array.
+    </p>
+    <p>
+     On the other hand, tracking multiple smartphone-based VR headsets like the Google cardboard using a single microphone array is challenging since it involves transmissions from multiple smartphones. Traditionally, wireless systems support multiple transmissions using either time-division multiplexing or frequency-division multiplexing. In time-division multiplexing, since each smartphone speaker is only allowed to use a fraction of the time, it translates to a lower refresh rate that is inversely proportional to the number of smartphones. Using frequency-division multiplexing is challenging given the limited inaudible bandwidth on smartphones and since the accuracy depends on the bandwidth.
+    </p>
+    <p>
+     To achieve concurrent transmissions from all the smartphone speakers, we note that from Eq.
+     <a class="eqn" href="#eq1">
+      1
+     </a>
+     , any two received FMCW paths with a time-of-arrival difference of
+     <em>
+      δt
+     </em>
+     , would lie in a different FFT bin. This indicates that two devices that have significantly different time-of-arrivals are at distant FFT bins and hence can be concurrently decoded.
+    </p>
+    <p>
+     We utilize this to support concurrent transmissions from multiple speakers. The challenge is that two devices can have similar time-of-arrivals. To address this issue, we introduce
+     <em>
+      virtual
+     </em>
+     time-of-arrival offsets at each device. Specifically, at the beginning, the
+     <em>
+      N
+     </em>
+     smartphones transmit FMCW chirps using time division. The receiver computes their time-of-arrivals using our algorithm, denoted by
+     <span class="inline-equation">
+      <span class="tex">
+       $t_d^{(i)}$
+      </span>
+     </span>
+     for the
+     <em>
+      i
+     </em>
+     th smartphone and sends back
+     <span class="inline-equation">
+      <span class="tex">
+       $\frac{iT}{2N}-t_d^{(i)}$
+      </span>
+     </span>
+     to each transmitter
+     <em>
+      i
+     </em>
+     , which is the virtual offset for transmitter
+     <em>
+      i
+     </em>
+     , using a Wi-Fi connection. The transmitter
+     <em>
+      i
+     </em>
+     then intentionally delays its transmission by its virtual offset. The receiver picks these offsets to ensure that they are equally separated across all the FFT bins. This allows concurrent speaker transmissions.
+    </p>
+    <p>
+     Now at the receiver, there exist
+     <em>
+      N
+     </em>
+     separate peaks evenly distributed in the frequency domain, which corresponds to
+     <em>
+      N
+     </em>
+     evenly distributed time-of-arrivals, where the
+     <em>
+      i
+     </em>
+     th time-of-arrival is from the
+     <em>
+      i
+     </em>
+     th transmitter. The receiver can regard transmissions from other transmitters as multipath. Because of the orthogonality, they are filtered out by the band-pass filter at the first step. It can then track the phase of each of them using five different band-pass filters without losing accuracy nor frame rate. After calculating the time-of-arrival of the signal from each speaker, it subtracts the virtual offset from it and obtains the final distance computation.
+    </p>
+    <figure id="fig7">
+     <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig7.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 7:
+      </span>
+      <span class="figure-title">
+       1D accuracy compared with CAT and SoundTrak.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     We note that because of motion, over time, the time-of-arrivals for multiple speakers can merge together. This would prevent the receiver from tracking all the devices concurrently. To prevent this, the receiver sends back a new set of virtual delays using Wi-Fi whenever the peaks between any two devices get close to each other in the FFT domain. When the virtual delays get updated, which happens infrequently, there is an additional delay of at most one chirp duration (45 ms), divided by the number of transmitters.
+    </p>
+   </section>
+   <section id="sec-10">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       IMPLEMENTATION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We implement MilliSonic using Android smartphones. We build an app that emits 45 ms 17.5-23.5 kHz FMCW acoustic chirps through the smartphone speaker. We tested it using Samsung Galaxy S6, Samsung Galaxy S9 and Samsung Galaxy S7 smartphones. We build our microphone array using off-the-shelf electronic elements shown in Fig.
+     <a class="fig" href="#fig5">
+      5
+     </a>
+     . We use an Arduino Due connected to four MAX9814 Electret Microphone Amplifiers [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ]. We attach the elements to a 20
+     <em>
+      cm
+     </em>
+     × 20
+     <em>
+      cm
+     </em>
+     × 3
+     <em>
+      cm
+     </em>
+     cardboard and place the four microphone on four corners of a 15
+     <em>
+      cm
+     </em>
+     × 15
+     <em>
+      cm
+     </em>
+     square on one side of the cardboard. We also create a smaller
+     <span class="inline-equation">
+      <span class="tex">
+       $6\space cm\times 5.35\space cm\times 3cm$
+      </span>
+     </span>
+     microphone array. We connect the Arduino to a Raspberry Pi 3 Model B+ [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ] to process the recorded samples. The software is implemented in the Scala programming language so that it can run on both a Raspberry Pi and a laptop without modification. It utilize multithreading to improve the performance. In our test, it requires 40ms and 9ms to process a single 45ms chirp on the Raspberry Pi and PC, respectively. Hence, it support real-time tracking on both platforms.
+    </p>
+    <figure id="fig8">
+     <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig8.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 8:
+      </span>
+      <span class="figure-title">
+       Impact of cloth as an occlusion.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+   </section>
+   <section id="sec-11">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       EVALUATION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We first evaluate the 1D and 3D tracking accuracy in a controlled lab environment. We then recruited ten participants to evaluate the real-world performance of MilliSonic.
+    </p>
+    <figure id="fig9">
+     <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig9.jpg"/>
+    </figure>
+    <p>
+    </p>
+    <p>
+     <strong>
+      1D Localization Accuracy.
+     </strong>
+     To get an accurate ground truth, we use a linear actuator with a PhidgetStepper Bipolar Stepper Motor Controller [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ] which has an movement resolution of 0.4
+     <em>
+      μm
+     </em>
+     to precisely control the location of the platform. We place a Galaxy S6 smartphone on the platform and place our microphone array on one end of the linear actuator. At each distance location, we repeat the algorithm ten times and record the measured distances. We also implement CAT [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ] and SoundTrak [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+      34
+     </a>
+     ]. CAT combines FMCW with Doppler effect that is estimated using an additional carrier wave and SoundTrak uses phase tracking. To achieve a fair comparison, we implement CAT using the same 6
+     <em>
+      kHz
+     </em>
+     bandwidth for FMCW and an additional 16.5
+     <em>
+      kHz
+     </em>
+     carrier. We implement SoundTrak using a 20
+     <em>
+      kHz
+     </em>
+     carrier wave. We do not use IMU data for all three systems.
+    </p>
+    <p>
+     Fig
+     <a class="fig" href="#fig7">
+      7
+     </a>
+     (a) and (b) plot the CDF of the 1D errors for two different distance ranges. We show the results for MilliSonic, CAT as well as SoundTrak. The plots show that our system achieves a median accuracy of 0.7 mm up to distances of 1 m. In comparison, the median accuracy was 4 and 4.8 for CAT and SoundTrak respectively. When the distance between the smartphone and the microphone array is between 1–2 m, the median accuracy was 1.74 mm, 6.89 mm and 5.68 mm for MilliSonic, CAT and SoundTrak respectively. This decrease in accuracy is expected since with increased distance the SNR of the acoustic signals reduces. We also note that at closer distances, the error is dominated by multipath which our algorithm is designed to disambiguate multipath accurately.
+    </p>
+    <figure id="fig10">
+     <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig10.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 10:
+      </span>
+      <span class="figure-title">
+       Effect of environmental motion, noise, and drift.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     <strong>
+      Effect of environmental motion and noise.
+     </strong>
+     We place the smartphone at 40
+     <em>
+      cm
+     </em>
+     on the linear actuator. We invite a participant to randomly move their body at a distance of 0.2
+     <em>
+      m
+     </em>
+     away from linear actuator. We also introduce acoustic noise by randomly pressing a keyboard and playing pop music using another smartphone that is around 1
+     <em>
+      m
+     </em>
+     away from the linear actuator. Fig 10a shows the error. We can see that MilliSonic is resilient to random motion in the environment because of multipath resilience properties. Further, since we filter out the audible frequencies, music playing in the vicinity of our devices, does not affect its accuracy.
+    </p>
+    <p>
+     <strong>
+      Distance drift over time.
+     </strong>
+     Tracking algorithms typically can have a drift in the computed distance over time. We next, measure the drift in the location as measured by our system as a function of time. We also repeat the experiment for both CAT and SoundTrak. Specifically, We place the smartphone at 40
+     <em>
+      cm
+     </em>
+     on the linear actuator for 10 minutes. We place the microphone array at the end of the actuator. We measure the distance as measured by each of these techniques over a duration of 10 minutes which we plot in Fig. 10b . SoundTrak and MilliSonic uses phase to precisely obtain the clock difference of the two devices, while CAT relies on detecting the drift of peak frequencies, which results in a larger drift. With a few millimeter drift at 10 minutes, MilliSonic has better stability than state-of-the-art acoustic tracking systems.
+    </p>
+    <p>
+     <strong>
+      Effect of Environments.
+     </strong>
+     To verify the robustness to different environments, we additionally evaluate the 1D accuracy in a) an anechoic chamber; b) a  200
+     <em>
+      m
+     </em>
+     <sup>
+      2
+     </sup>
+     lobby; and c) an outdoor open balcony; the median error was 0.75mm, 1.11mm and 0.94mm, respectively, at a distance of 0.6m.
+    </p>
+    <p>
+     <strong>
+      Tracking through occlusions.
+     </strong>
+     Unlike optical signals, acoustic signals can traverse through occlusions like cloth. To evaluate this, we place the smartphone on a linear actuator and change its location between 0 to 1 m away from the microphone array. We place a cloth on the smartphone that occludes it from the microphone array. We then run our algorithm and compute the distance at each of the distance values. We repeat the experiments without the cloth covering the smartphone speaker. Fig.
+     <a class="fig" href="#fig8">
+      8
+     </a>
+     plots the CDF of the distance error across all the tested locations both in the presence and absence of the cloth. The plots show that the median accuracy is 0.74 mm and 0.95 mm in the two scenarios, showing that MilliSonic can track devices through cloth. This is beneficial when the phone is in the pocket and the microphone array is tracking its location through the fabric.
+    </p>
+    <p>
+     <strong>
+      3D Localization Accuracy
+     </strong>
+     Next, we measure the 3D localization accuracy of MilliSonic. To do this we create a working area of 0.6
+     <em>
+      m
+     </em>
+     × 0.6
+     <em>
+      m
+     </em>
+     × 0.4
+     <em>
+      m
+     </em>
+     . We then print a grid of fixed points onto a 0.6
+     <em>
+      m
+     </em>
+     × 0.6
+     <em>
+      m
+     </em>
+     wood substrate. We place the receiver on one side of the substrate, and place the smartphone's speaker at each of the points on the substrate. We also change the height of the substrate across the working area to test the accuracy along the axis perpendicular to the substrate. To compare with prior designs, we run the same implementation of CAT as in our 1D experiments. Note that while CAT [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ] uses a separation of 90 cm, we still use 15
+     <em>
+      cm
+     </em>
+     microphone separation for CAT. This allows us to perform a head-to-head comparison as well as evaluate the feasibility of using a small microphone array.
+    </p>
+    <figure id="fig11">
+     <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig11.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 11:
+      </span>
+      <span class="figure-title">
+       Sample drawings by participants. Green and red traces are captured by HTC Lighthouse and MilliSonic respectively.
+      </span>
+     </div>
+    </figure>
+    <figure id="fig12">
+     <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig12.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 12:
+      </span>
+      <span class="figure-title">
+       The CDF of absolute 3D error across participants. The black curve corresponds to the
+       <em>
+        Infinity
+       </em>
+       in Fig.
+       <a class="fig" href="#fig11">
+        11
+       </a>
+       .
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     Fig
+     <a class="fig" href="#fig9">
+      9
+     </a>
+     shows the CDF of 3D location errors for MilliSonic and CAT in a working area across all the tested locations in our working area. The plots show that MilliSonic achieves a median 3D accuracy of 2.6 mm while CAT has a 3D accuracy of 10.6 mm. The larger errors for CAT is expected since it is designed for microphone/speaker separations of 90 cm.
+    </p>
+    <p>
+     To understand the limits of the microphone separation, we further reduce the microphone separation to 5.35
+     <em>
+      cm
+     </em>
+     using a breadboard hardware prototype as shown in Fig
+     <a class="fig" href="#fig5">
+      5
+     </a>
+     . This reduces the dimensions of the microphone array to approximately 6
+     <em>
+      cm
+     </em>
+     × 6
+     <em>
+      cm
+     </em>
+     × 3
+     <em>
+      cm
+     </em>
+     . We show the 3D error results in Fig.
+     <a class="fig" href="#fig9">
+      9
+     </a>
+     labelled as MilliSonic Mini. We can see that there is little accuracy degradation. This shows that MilliSonic can enable a portable beacon design that uses microphone arrays to track smartphone based Google cardboard VR systems. Similarly, given these dimensions, the microphone array can be integrated into a VR headset which can then be tracked in 3D using a commodity smartphone as a beacon.
+    </p>
+    <p>
+     <strong>
+      Free Motion Tracking with Participants.
+     </strong>
+     We build a simple
+     <em>
+      draw-over-the-air
+     </em>
+     interface based on MilliSonic. We put our microphone array hardware on the table to act as the beacon. We implement a software app on Android platforms where participants can move the smartphone and touch the screen to draw 2D images on the
+     <em>
+      y
+     </em>
+     −
+     <em>
+      z
+     </em>
+     plane over the air. Meanwhile, the strokes are rendered on an external screen in real-time. We use a Samsung S6 smartphone for this study. We compare MilliSonic to a HTC Vive Controller which is tracked using the HTC Lighthouse positioning system [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ]. Specifically we put two Lighthouse base stations on two tables with a distance of 2.5m. We attach the HTC Vive controller to the smartphone using tape and use the HTC Lighthouse positioning system to track its motion. Since the Lighthouse positioning system has an accuracy of around 1mm [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ], we still use it as the ground truth.
+    </p>
+    <p>
+     We recruit ten participants (2 female and 8 male) between the ages of 22-29 to draw on the air using MilliSonic. None of them were provided any monetary benefits. The participants were free to draw whatever they like and see the motion on the screen in real-time. We added a
+     <em>
+      draw
+     </em>
+     button on the screen, so that when a user pushes the button, the app uses TCP to send the action to another server which records the traces and renders them on the screen in real-time. Each participant had to draw at least one figure of their choosing but could draw multiple figures if they wanted. The participants in total drew 14 images. Fig.
+     <a class="fig" href="#fig11">
+      11
+     </a>
+     shows five samples and the corresponding ground truth captured by a HTC Lighthouse.
+    </p>
+    <p>
+     We compare MilliSonic's accuracy with the ground truth from the HTC Lighthouse system. Because of frame rate differences, we linearly interpolate the ground truth result, find the point at the ground truth that is nearest to each point in our tracking result, and compute their difference. We show the CDFs of 3D accuracy in Fig.
+     <a class="fig" href="#fig12">
+      12
+     </a>
+     for each of the 14 drawings which show accurate tracking capabilities using acoustic signals. The outlier orange curve corresponds to the
+     <em>
+      infinite
+     </em>
+     drawing in Fig.
+     <a class="fig" href="#fig11">
+      11
+     </a>
+     which shows that the practical accuracies are high. There were a few instances when a wrong 2
+     <em>
+      Nπ
+     </em>
+     phase offset was estimated in the phase ambiguity removal algorithm on one of the microphones. This was however detected and successfully recovered by our failure recovery mechanism and did not affect the following chirp.
+    </p>
+    <p>
+     We also measure the free motion speed distribution, acceleration distribution and distance distribution across the participants, which we plot in a Fig.
+     <a class="fig" href="#fig13">
+      13
+     </a>
+     . We see a range of speeds and distances during this user study. We also note that the maximum acceleration was
+     <span class="inline-equation">
+      <span class="tex">
+       $21\space m/s^2$
+      </span>
+     </span>
+     with only 1 occurrence which was below our 25
+     <em>
+      m
+     </em>
+     /
+     <em>
+      s
+     </em>
+     <sup>
+      2
+     </sup>
+     limit.
+    </p>
+    <figure id="fig13">
+     <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig13.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 13:
+      </span>
+      <span class="figure-title">
+       Speed, acceleration and distance distribution during the user study.
+      </span>
+     </div>
+    </figure>
+    <figure id="fig14">
+     <img alt="" class="img-responsive" longdesc="" src="3300248_files\chi201918fig14.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 14:
+      </span>
+      <span class="figure-title">
+       Tracking error with concurrent smartphones.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     <strong>
+      Enabling concurrent transmissions.
+     </strong>
+     Finally, to evaluate concurrent transmissions with MilliSonic, we use five smartphones (3 Galaxy S6, 1 Galaxy S7, 1 Galaxy S9) as transmitters and one single microphone array to track all of them. We use the same experimental setup as the 1D tracking, but place all five smartphones on the linear actuator platform. We repeat experiments with different number of concurrent smartphones ranging from one to five. Fig.
+     <a class="fig" href="#fig14">
+      14
+     </a>
+     shows the 1D tracking error of each of the smartphones in the range of 0-1m with different number of concurrent smartphones. We see that our system can support up to 4 concurrent transmissions without affecting the accuracy. With five concurrent smartphones, nearby peaks start to interfere with each other, resulting a slightly worse accuracy.
+    </p>
+   </section>
+   <section id="sec-12">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Prior work can be categorized as follows.
+    </p>
+    <p>
+     <em>
+      Tracking using IMUs.
+     </em>
+     Inertial measurement units (IMUs) are a frequently used hardware to enable device tracking. IMUs sense 3D linear acceleration, rotational rate and heading reference which can all be fused together [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ]. Gaming controllers [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ] as well as many low-end VR systems [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ] use IMUs to support motion tracking. However IMUs do not accurately provide absolute positioning information. This is because position requires double integration of acceleration, which introduces a large drift error [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ].
+    </p>
+    <p>
+     <em>
+      Tracking using IR/visible light.
+     </em>
+     The HTC Vive VR [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ] system uses a laser
+     <em>
+      Lighthouse
+     </em>
+     beacon emitting coherent IR signal to localize the headset as well as the controllers. Here, a laser emitter sweeps coherent IR light spatially and the 3D location is computed using the time it takes for the IR signals to hit the photo-diodes on the receivers. Incoherent, infrared and visible light from LEDs can also be used for localization by cameras using specific colors. The Sony PlayStation VR (PSVR) [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ] system uses special visible colors that are tracked by a standalone camera located in a fixed position. Oculus Rift[
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+      9
+     </a>
+     ] VR system employs a separate IR camera. The headset and controller are marked with IR LED markers captured by the IR camera. Despite being accurate enough for VR/AR applications, these techniques work poorly in bright environments [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+      11
+     </a>
+     ]. More importantly, they require a dedicated beacon hardware. In contrast, our design can use a smartphone as a basestation for tracking the VR headset.
+    </p>
+    <p>
+     <em>
+      Tracking using cameras.
+     </em>
+     Unlike previous methods, Simultaneous Localization and Mapping (SLAM) techniques have also been used to enable tracking without relying on any beacon infrastructure. Using SLAM, devices can locate themselves solely based on the environment captured by its camera. AR systems such as Microsoft Hololens[
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ] and Magic Leap One[
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ] headsets use SLAM to achieve such tracking capabilities. SLAM performance however highly depends on the environment including light conditions and variety of visual features [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+      22
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ]. Hence, it is not as robust as outside-in tracking methods. SLAM is also a computational intensive algorithm that often requires specialized hardware accelerators to support real-time tracking. As a result, SLAM is unlikely to be appropriate for tracking tiny controllers.
+    </p>
+    <div class="table-responsive" id="tab1">
+     <div class="table-caption">
+      <span class="table-number">
+       Table 1:
+      </span>
+      <span class="table-title">
+       Prior works on acoustic device tracking.
+      </span>
+     </div>
+     <table class="table">
+      <tbody>
+       <tr>
+        <td>
+         <img alt="" class="img-responsive" src="3300248_files\chi201918img1.svg"/>
+        </td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <p>
+     <em>
+      Device tracking using acoustic signals.
+     </em>
+     Table.
+     <a class="tbl" href="#tab1">
+      1
+     </a>
+     shows recent work on acoustic localization and tracking. BeepBeep [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ] and Swordfight [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+      35
+     </a>
+     ] track 1D distances between phones but do not achieve 3D localization. Sonoloc[
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ] realizes distributed localization and requires 10+ devices to achieve reasonable accuracies. Prior work [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+      33
+     </a>
+     ] also achieves 2D tracking by assuming that there is no significant multipath. ALPS [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ] and Tracko [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+      19
+     </a>
+     ] achieve centimeter-level accuracy using a combination of Bluetooth and ultrasonic. The closest to our work are CAT [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     ] and SoundTrak [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+      34
+     </a>
+     ]. CAT achieves a median 3D error of 9mm using a combination of IMU sensor data and FMCW localization to address multipath. It requires a separation of 0.9m and 0.7m between its horizontal and vertical speaker pairs respectively. As a result, we cannot have a smartphone track the position of a VR headset, since both the devices have much smaller dimensions. SoundTrak[
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+      34
+     </a>
+     ] achieves an average 3D error of 1.3cm between a smart watch and a customized finger ring using phase tracking where the area of movement is limited to a 20
+     <em>
+      cm
+     </em>
+     × 16
+     <em>
+      cm
+     </em>
+     × 11
+     <em>
+      cm
+     </em>
+     space. Our work builds on this foundational work but is the first to 1) achieve sub-millimeter 1D resolution, 2) do so without requiring large separation between microphones/speakers and 3) enable for the first time concurrent transmissions where all the acoustic devices transmit at the same time; thus allowing for high refresh rate in the presence of multiple trackers.
+    </p>
+    <p>
+     <em>
+      Device-free tracking using acoustic signals
+     </em>
+     . VSkin [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ] tracks gestures on the surface of mobile devices with a 2D accuracy of 3mm. Strata [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+      32
+     </a>
+     ], LLAP [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+      29
+     </a>
+     ] and FingerIO [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ] track moving fingers in the proximity of a mobile device with a 2D accuracy of 1cm, 1.9cm and 1.2cm respectively. Toffee [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+      31
+     </a>
+     ] localizes the direction of a touch around a mobile device of an angular error of 4.3°. While device-free finger tracking is challenging because of noisy measurements, it benefits from lack of synchronization issues and relies on more strict multipath assumptions. This line of work however is complimentary to our work on acoustic device tracking.
+    </p>
+   </section>
+   <section id="sec-13">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       CONCLUSION AND DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     We present MilliSonic, a novel system that pushes the limits of acoustic based motion tracking and localization. We show for the first time how to achieve sub-mm 1D tracking and localization accuracies using acoustic signals on smartphones, in the presence of multipath. To achieve this, we introduce algorithms that use the phase of FMCW signals to disambiguate between multiple paths. We also enable multiple smartphones to transmit concurrently using time-shifted FMCW acoustic signals and enable concurrent tracking without sacrificing accuracy or frame rate.
+    </p>
+    <p>
+     While this paper presents multiple benchmarks, user studies and evaluation in indoor and outdoor environments, more extensive evaluation is required to understand its behavior in various edge cases as well as in rooms with significant multipath that can adversely affect accuracy. Here, we discuss the limitations of our current system design.
+    </p>
+    <p>
+     First, we support simple occlusions such as fabric and paper, but do not support human limbs or the device itself. Additional algorithmic development is required to support these practical occlusion scenarios. Second, while our design has better drift characteristics than prior work on acoustic tracking, further work is required to make it comparable to optical based systems. One approach is to perform sensor fusion with IMU data and achieve better accuracy, lower latency and more resilience to clock drifts. This could also enable VR headset tracking while using a mobile beacon (i.e., smartphone) in the hand instead of placing it on a table.
+    </p>
+    <p>
+     Our current range is limited to 2 m. This is because the microphones in our array prototype are not optimized for performance and are not designed to have optimal response in the 17.5–23.5 kHz frequencies. Finally, we support upto 4–5 concurrent smartphone acoustic transmissions without affecting the frame rate per device. One way to increase the number of concurrent devices is to use longer chirps so as to support more time-shifted FMCW chirps that can be allocated to different smartphones. This however comes at the expense of the frame rate per device.
+    </p>
+   </section>
+   <section id="sec-14">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        9
+       </span>
+       APPENDIX: 1D TRACKING DETAILS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Our 1D tracking algorithm has two main components.
+    </p>
+    <p>
+     <em>
+      1) Adaptive band-pass filter to remove distant multipath.
+     </em>
+     For the first FMCW chirp, we extract the first peak of the demodulated signal in the frequency domain using an DFT similar to prior designs from Eq.
+     <a class="eqn" href="#eq1">
+      1
+     </a>
+     . We then apply a Finite Impulse Response (FIR) filter that only leaves a narrow range of frequency bands around the peak. We adaptively set the delay of the FIR filter from the SNR of the acoustic signals. Specifically, when
+     <em>
+      SNR
+     </em>
+     &gt; 10
+     <em>
+      dB
+     </em>
+     , we use a 15ms delay; otherwise, we double the delay to 30
+     <em>
+      ms
+     </em>
+     .
+    </p>
+    <p>
+     For subsequent FMCW chirps we no longer use the DFT to extract the peak frequency. Instead, for the
+     <em>
+      i
+     </em>
+     + 1th FMCW chirp, we infer the new peak from the distance and speed estimated at the end of the
+     <em>
+      i
+     </em>
+     th chirp. We then apply the FIR filter around this new peak. Given the distance
+     <span class="inline-equation">
+      <span class="tex">
+       $d^{(i)}_{end}$
+      </span>
+     </span>
+     and speed
+     <span class="inline-equation">
+      <span class="tex">
+       $v^{(i)}_{end}$
+      </span>
+     </span>
+     estimated from the end of the
+     <em>
+      i
+     </em>
+     th chirp, we can infer the distance of the beginning of the current chirp
+     <span class="inline-equation">
+      <span class="tex">
+       $\hat{d}^{(i+1)}_{start}=d^{(i)}_{end}+v^{(i)}_{end}\delta T$
+      </span>
+     </span>
+     where
+     <em>
+      δT
+     </em>
+     is the gap between two chirps. We do this for two key reasons: a) our distance estimates are far more accurate than the peak of the DFT result; and b) unlike a DFT that is performed over a whole FMCW chirp, we do not require receiving a full FMCW chirp before processing, thus reducing the frame rate.
+    </p>
+    <p>
+     Finally, Doppler effects can blur the peak in the frequency domain. So, we adaptively increase the width of the pass band in the FIR filter when the speed estimate at the end of the previous chirp exceeds a given threshold. In our algorithm, we set the pass band width to 1
+     <em>
+      Hz
+     </em>
+     when the speed does not exceed 1
+     <em>
+      m
+     </em>
+     /
+     <em>
+      s
+     </em>
+     ; otherwise, we set the pass band width to 2
+     <em>
+      Hz
+     </em>
+     .
+    </p>
+    <p>
+     <em>
+      2) Extracting distance from FMCW phase.
+     </em>
+     The above process eliminated all multipaths that have a much larger time-of-flight than the direct path. This leaves us with residual indirect paths around the direct path. Thus, when there is no occlusion, the sum of the residual indirect paths has a lower amplitude than the direct path (confirmed empirically).
+    </p>
+    <p>
+     To extract the distance from the phase value, we approximate the effect of residual multipath after filtering. From Eq.
+     <a class="eqn" href="#eq1">
+      1
+     </a>
+     , we approximate the phase as,
+    </p>
+    <div class="table-responsive" id="eq2">
+     <div class="display-equation">
+      <span class="tex mytex">
+       \begin{equation} \mathbf {\phi }(t) \approx -2\pi (\frac{B}{T}tt_d+f_0t_d-\frac{B}{2T}t_d^2) \end{equation}
+      </span>
+      <br/>
+      <span class="equation-number">
+       (2)
+      </span>
+     </div>
+    </div>
+    Where
+    <em>
+     t
+     <sub>
+      d
+     </sub>
+    </em>
+    is the time of arrival of the direct path. The approximation assumes that we have already applied the dynamic filter to remove most multipath that has a much larger time-of-arrival distance than the direct path. The above quadratic equation in
+    <em>
+     t
+     <sub>
+      d
+     </sub>
+    </em>
+    (
+    <em>
+     t
+    </em>
+    ,
+    <em>
+     ϕ
+    </em>
+    (
+    <em>
+     t
+    </em>
+    )) can be uniquely solved; the equation has two solutions but only one is in the range of the FMCW chirp, [0,
+    <em>
+     T
+    </em>
+    ]. The distance
+    <em>
+     d
+    </em>
+    (
+    <em>
+     t
+    </em>
+    ,
+    <em>
+     ϕ
+    </em>
+    (
+    <em>
+     t
+    </em>
+    )) can then be computed as,
+    <em>
+     ct
+     <sub>
+      d
+     </sub>
+    </em>
+    (
+    <em>
+     t
+    </em>
+    ,
+    <em>
+     ϕ
+    </em>
+    (
+    <em>
+     t
+    </em>
+    )). We note the following about the distance error.
+    <p>
+    </p>
+    <p>
+    </p>
+    <div class="lemma" id="enc1">
+     <p>
+      <label>
+       Lemma 9.1.
+      </label>
+      Given the phase error bound of
+      <span class="inline-equation">
+       <span class="tex">
+        $sin^{-1}(\frac{A_2}{A_1})$
+       </span>
+      </span>
+      from Fig.
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      , the error in our distance estimate,
+      <em>
+       d
+      </em>
+      (
+      <em>
+       t
+      </em>
+      ) is upper bounded by
+      <span class="inline-equation">
+       <span class="tex">
+        $\frac{sin^{-1}(A_2/A_1)c}{2\pi (f_0-B/2)}$
+       </span>
+      </span>
+      , where
+      <em>
+       f
+      </em>
+      <sub>
+       0
+      </sub>
+      and
+      <em>
+       B
+      </em>
+      are the FMCW parameters.
+     </p>
+    </div>
+    <p>
+    </p>
+    <div class="proof" id="proof1">
+     <p>
+      <label>
+       Proof.
+      </label>
+      First we show that the function
+      <em>
+       ϕ
+      </em>
+      (
+      <em>
+       t
+      </em>
+      ,
+      <em>
+       t
+       <sub>
+        d
+       </sub>
+      </em>
+      ) in Eq.
+      <a class="eqn" href="#eq2">
+       2
+      </a>
+      is convex with respect to
+      <em>
+       t
+       <sub>
+        d
+       </sub>
+      </em>
+      , which is the time-of-arrival. This is because the first derivative is given by,
+      <span class="inline-equation">
+       <span class="tex">
+        $\frac{d\phi (t, t_d)}{dt_d}=-2\pi (\frac{B}{T}t+f_0-\frac{B}{T}t_d){&lt;}0$
+       </span>
+      </span>
+      , when
+      <em>
+       t
+       <sub>
+        d
+       </sub>
+      </em>
+      &lt;
+      <em>
+       T
+      </em>
+      . Further its second derivative
+      <span class="inline-equation">
+       <span class="tex">
+        $\frac{d^2\phi (t, t_d)}{dt_d^2}=2\pi \frac{B}{T}{&gt;}0$
+       </span>
+      </span>
+      resulting in a convex function.
+     </p>
+     <p>
+      Suppose an phase error
+      <em>
+       ϕ
+       <sub>
+        e
+       </sub>
+      </em>
+      would introduce a time-of-arrival error of
+      <em>
+       t
+       <sub>
+        e
+       </sub>
+      </em>
+      because of multipath. Without loss of generality, we assume
+      <em>
+       ϕ
+       <sub>
+        e
+       </sub>
+      </em>
+      &gt; 0. we know that for any
+      <em>
+       t
+      </em>
+      for a convex function,
+      <span class="inline-equation">
+       <span class="tex">
+        $\phi (t, t_d){&gt;}\phi (t, t_d+t_e)-\frac{d \phi (t, t_d+t_e)}{d t_d}t_e$
+       </span>
+      </span>
+      . Thus the error in the phase
+      <em>
+       ϕ
+       <sub>
+        e
+       </sub>
+      </em>
+      =
+      <em>
+       ϕ
+      </em>
+      (
+      <em>
+       t
+      </em>
+      ,
+      <em>
+       t
+       <sub>
+        d
+       </sub>
+      </em>
+      ) −
+      <em>
+       ϕ
+      </em>
+      (
+      <em>
+       t
+      </em>
+      ,
+      <em>
+       t
+       <sub>
+        d
+       </sub>
+      </em>
+      +
+      <em>
+       t
+       <sub>
+        e
+       </sub>
+      </em>
+      ) can we written as,
+      <span class="inline-equation">
+       <span class="tex">
+        $ \phi _e{&gt;}-\frac{d\phi (t, t_d+t_e)}{dt_d}t_e$
+       </span>
+      </span>
+      . This can be rewritten as,
+      <span class="inline-equation">
+       <span class="tex">
+        $ t_e{&lt;}\frac{\phi _e}{-\frac{d\phi (t, t_d+t_e)}{dt_d}} =\frac{\phi _e}{2\pi (\frac{B}{T}t+f_0-\frac{B}{T}(t_d+t_e))}$
+       </span>
+      </span>
+      . The upper bound for this equation occurs when
+      <em>
+       t
+      </em>
+      = 0 and
+      <em>
+       t
+       <sub>
+        d
+       </sub>
+      </em>
+      +
+      <em>
+       t
+       <sub>
+        e
+       </sub>
+      </em>
+      is maximum. Since the maximum delay permitted by our FMCW signal is half its duration, this occurs when
+      <span class="inline-equation">
+       <span class="tex">
+        $t_d+t_e=\frac{T}{2}$
+       </span>
+      </span>
+      . First from Lemma 2.1, we know that
+      <span class="inline-equation">
+       <span class="tex">
+        $\phi _e {&lt;} sin^{-1}(\frac{A_2}{A_1})$
+       </span>
+      </span>
+      . Thus the above equation is upper bounded as:
+      <span class="inline-equation">
+       <span class="tex">
+        $t_e {&lt;} \frac{sin^{-1}(\frac{A_2}{A_1})}{2\pi (f_0-\frac{B}{2})}$
+       </span>
+      </span>
+      . Thus,
+      <span class="inline-equation">
+       <span class="tex">
+        $d_e^{(phase)}{&lt;}\frac{sin^{-1}(\frac{A_2}{A_1})c}{2\pi (f_0-\frac{B}{2})}$
+       </span>
+      </span>
+      .□
+     </p>
+    </div>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Electret microphone amplifier - max9814 with auto gain control.
+      <a class="link-inline force-break" href="https://www.adafruit.com/product/1713">
+      </a>
+      <a class="link-inline force-break" href="https://www.adafruit.com/product/1713">
+       https://www.adafruit.com/product/1713
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Google daydream.
+      <a class="link-inline force-break" href="https://vr.google.com/daydream/">
+       https://vr.google.com/daydream/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Htc vive vr system.
+      <a class="link-inline force-break" href="https://www.vive.com/us/product/vive-virtual-reality-system/">
+      </a>
+      <a class="link-inline force-break" href="https://www.vive.com/us/product/vive-virtual-reality-system/">
+       https://www.vive.com/us/product/vive-virtual-reality-system/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Magic leap one.
+      <a class="link-inline force-break" href="https://www.magicleap.com/magic-leap-one">
+      </a>
+      <a class="link-inline force-break" href="https://www.magicleap.com/magic-leap-one">
+       https://www.magicleap.com/magic-leap-one
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Microsoft hololens.
+      <a class="link-inline force-break" href="https://www.microsoft.com/en-us/hololens">
+      </a>
+      <a class="link-inline force-break" href="https://www.microsoft.com/en-us/hololens">
+       https://www.microsoft.com/en-us/hololens
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Nintendo switch.
+      <a class="link-inline force-break" href="https://www.nintendo.com/switch/">
+      </a>
+      <a class="link-inline force-break" href="https://www.nintendo.com/switch/">
+       https://www.nintendo.com/switch/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Nintendo wii.
+      <a class="link-inline force-break" href="http://wii.com/">
+       http://wii.com/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Oculus go.
+      <a class="link-inline force-break" href="https://www.oculus.com/go/">
+      </a>
+      <a class="link-inline force-break" href="https://www.oculus.com/go/">
+       https://www.oculus.com/go/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Oculus rift.
+      <a class="link-inline force-break" href="https://www.oculus.com/rift/">
+      </a>
+      <a class="link-inline force-break" href="https://www.oculus.com/rift/">
+       https://www.oculus.com/rift/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Phidgetstepper bipolar hc.
+      <a class="link-inline force-break" href="https://www.phidgets.com/?tier=3&amp;catid=23&amp;pcid=20&amp;prodid=1029">
+      </a>
+      <a class="link-inline force-break" href="https://www.phidgets.com/?tier=3&amp;catid=23&amp;pcid=20&amp;prodid=1029">
+       https://www.phidgets.com/?tier=3&amp;catid=23&amp;pcid=20&amp;prodid=1029
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Playstation vr: The ultimate faq.
+      <a class="link-inline force-break" href="https://blog.us.playstation.com/2017/10/02/playstation-vr-the-ultimate-faq/">
+       https://blog.us.playstation.com/2017/10/02/playstation-vr-the-ultimate-faq/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Raspberry pi 3 model b+.
+      <a class="link-inline force-break" href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/">
+      </a>
+      <a class="link-inline force-break" href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/">
+       https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Samsung gear vr.
+      <a class="link-inline force-break" href="http://www.samsung.com/global/galaxy/gear-vr/">
+       http://www.samsung.com/global/galaxy/gear-vr/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Sony playstation move controller.
+      <a class="link-inline force-break" href="https://www.playstation.com/en-us/explore/accessories/vr-accessories/playstation-move/">
+      </a>
+      <a class="link-inline force-break" href="https://www.playstation.com/en-us/explore/accessories/vr-accessories/playstation-move/">
+       https://www.playstation.com/en-us/explore/accessories/vr-accessories/playstation-move/
+      </a>
+      .
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Akiduki, H., Nishiike, S., Watanabe, H., Matsuoka, K., Kubo, T., and Takeda, N.Visual-vestibular conflict induced by virtual reality in humans. Neuroscience letters 340 3 (2003), 197–200.
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Erdélyi, V., Le, T.-K., Bhattacharjee, B., Druschel, P., and Ono, N.Sonoloc: Scalable positioning of commodity mobile devices.
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Feliz Alonso, R., Zalama Casanova, E., and Gómez García-Bermejo, J.Pedestrian tracking using inertial sensors.
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Fourati, H.Heterogeneous data fusion algorithm for pedestrian navigation via foot-mounted inertial measurement unit and complementary filter. IEEE Transactions on Instrumentation and Measurement 64, 1 (2015), 221–229.
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Jin, H., Holz, C., and Hornbæk, K.Tracko: Ad-hoc mobile 3d tracking using bluetooth low energy and inaudible signals for cross-device interaction. In Proceedings of the 28th Annual ACM Symposium on User Interface Software &amp; Technology (2015), ACM, pp. 147–156.
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Lazik, P., Rajagopal, N., Shih, O., Sinopoli, B., and Rowe, A.Alps: A bluetooth and ultrasound platform for mapping and localization. In Proceedings of the 13th ACM conference on embedded networked sensor systems (2015), ACM, pp. 73–84.
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Mao, W., He, J., and Qiu, L.Cat: high-precision acoustic motion tracking. In Proceedings of the 22nd Annual International Conference on Mobile Computing and Networking (2016), ACM, pp. 69–81.
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Montemerlo, M., Thrun, S., Koller, D., Wegbreit, B., et al.Fastslam: A factored solution to the simultaneous localization and mapping problem. Aaai/iaai 593598 (2002).
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Nandakumar, R., Gollakota, S., and Watson, N.Contactless sleep apnea detection on smartphones. In Proceedings of the 13th Annual International Conference on Mobile Systems, Applications, and Services (2015), ACM, pp. 45–57.
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Nandakumar, R., Iyer, V., Tan, D., and Gollakota, S.Fingerio: Using active sonar for fine-grained finger tracking. In Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems (2016), ACM, pp. 1515–1525.
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Niehorster, D. C., Li, L., and Lappe, M.The accuracy and precision of position and orientation tracking in the htc vive virtual reality system for scientific research. i-Perception 8, 3 (2017), 2041669517708205.
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Peng, C., Shen, G., Zhang, Y., Li, Y., and Tan, K.Beepbeep: a high accuracy acoustic ranging system using cots mobile devices. In Proceedings of the 5th international conference on Embedded networked sensor systems (2007), ACM, pp. 1–14.
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Sun, K., Zhao, T., Wang, W., and Xie, L.Vskin: Sensing touch gestures on surfaces of mobile devices using acoustic signals. In Proceedings of the 24th Annual International Conference on Mobile Computing and Networking (2018), ACM, pp. 591–605.
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Taketomi, T., Uchiyama, H., and Ikeda, S.Visual slam algorithms: a survey from 2010 to 2016. IPSJ Transactions on Computer Vision and Applications 9, 1 (2017), 16.
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Wang, W., Liu, A. X., and Sun, K.Device-free gesture tracking using acoustic signals. In Proceedings of the 22nd Annual International Conference on Mobile Computing and Networking (2016), ACM, pp. 82–94.
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Wen, Y., Huang, W., and Zhang, Z.Cazac sequence and its application in lte random access. In Information Theory Workshop, 2006. ITW’06 Chengdu. IEEE(2006), IEEE, pp. 544–547.
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Xiao, R., Lew, G., Marsanico, J., Hariharan, D., Hudson, S., and Harrison, C.Toffee: enabling ad hoc, around-device interaction with acoustic time-of-arrival correlation. In Proceedings of the 16th international conference on Human-computer interaction with mobile devices &amp; services (2014), ACM, pp. 67–76.
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Yun, S., Chen, Y.-C., Zheng, H., Qiu, L., and Mao, W.Strata: Fine-grained acoustic-based device-free tracking. In Proceedings of the 15th Annual International Conference on Mobile Systems, Applications, and Services (2017), ACM, pp. 15–28.
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Yunting Zhang, Jiliang Wang, W. W. Z. W. Y. L.Vernier: Accurate and fast acoustic motion tracking using mobile devices. In INFOCOM (2018), IEEE.
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Zhang, C., Xue, Q., Waghmare, A., Jain, S., Pu, Y., Hersek, S., Lyons, K., Cunefare, K. A., Inan, O. T., and Abowd, G. D.Soundtrak: Continuous 3d tracking of a finger using active acoustics. Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies 1, 2 (2017), 30.
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Zhang, Z., Chu, D., Chen, X., and Moscibroda, T.Swordfight: Enabling a new class of phone-to-phone action games on commodity phones. In Proceedings of the 10th international conference on Mobile systems, applications, and services (2012), ACM, pp. 1–14.
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300248" target="_blank">
+      https://doi.org/10.1145/3290605.3300248
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'87584a6bceab9293',t:'MTcxMzMxMzY2MS4zNDQwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

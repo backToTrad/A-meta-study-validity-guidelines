@@ -1,0 +1,2215 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Evaluation of Appearance-Based Methods and Implications for Gaze-Based Applications
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300646_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300646_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300646_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300646_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300646_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300646_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300646_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300646_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Evaluation of Appearance-Based Methods and Implications for Gaze-Based Applications
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       Xucong
+      </span>
+      <span class="surName">
+       Zhang
+      </span>
+      , Saarland Informatics Campus, Germany,
+      <a href="mailto:xczhang@mpi-inf.mpg.de">
+       xczhang@mpi-inf.mpg.de
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Yusuke
+      </span>
+      <span class="surName">
+       Sugano
+      </span>
+      , Osaka University, Japan,
+      <a href="mailto:sugano@ist.osaka-u.ac.jp">
+       sugano@ist.osaka-u.ac.jp
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Andreas
+      </span>
+      <span class="surName">
+       Bulling
+      </span>
+      , University of Stuttgart, Germany,
+      <a href="mailto:andreas.bulling@vis.uni-stuttgart.de">
+       andreas.bulling@vis.uni-stuttgart.de
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300646" target="_blank">
+       https://doi.org/10.1145/3290605.3300646
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Appearance-based gaze estimation methods that only require an off-the-shelf camera have significantly improved but they are still not yet widely used in the human-computer interaction (HCI) community. This is partly because it remains unclear how they perform compared to model-based approaches as well as dominant, special-purpose eye tracking equipment. To address this limitation, we evaluate the performance of state-of-the-art appearance-based gaze estimation for interaction scenarios with and without personal calibration, indoors and outdoors, for different sensing distances, as well as for users with and without glasses. We discuss the obtained findings and their implications for the most important gaze-based applications, namely explicit eye input, attentive user interfaces, gaze-based user modelling, and passive eye monitoring. To democratise the use of appearance-based gaze estimation and interaction in HCI, we finally present
+       <em>
+        OpenGaze
+       </em>
+       (www.opengaze.org), the first software toolkit for appearance-based gaze estimation and interaction.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Computing methodologies → Computer vision
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Appearance-Based Gaze Estimation; Model-Based Gaze Estimation; OpenGaze; Software Toolkit; Tobii EyeX
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        Xucong Zhang, Yusuke Sugano, and Andreas Bulling. 2019. Evaluation of Appearance-Based Methods and Implications for Gaze-Based Applications. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 13 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300646" target="_blank">
+         https://doi.org/10.1145/3290605.3300646
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <figure id="fig1">
+     <img alt="" class="img-responsive" longdesc="Overview of the task. We study the gap between dominant eye tracking using special-purpose equipment and appearance-based gaze estimation using off-the-shelf cameras and machine learning." src="3300646_files\chi2019416fig1.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       We study the gap between dominant eye tracking using special-purpose equipment (right) and appearance-based gaze estimation using off-the-shelf cameras and machine learning (left) in terms of accuracy (gaze estimation accuracy), sensing distance, usability (personal calibration), and robustness (glasses and indoor/outdoor use).
+      </span>
+     </div>
+    </figure>
+    <p>
+     Eye gaze has a long history as a modality in human-computer interaction (HCI), whether for attentive user interfaces [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+      5
+     </a>
+     ], gaze interaction [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+      63
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+      69
+     </a>
+     ], or eye-based user modelling [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+      66
+     </a>
+     ]. A key requirement of gaze-based applications is special-purpose eye tracking equipment, either worn on the body (head-mounted) or placed in the environment (remote). Despite the fact that the costs of hardware and software have decreased, particularly over the last couple of years, this requirement still represents a major hurdle for wider adoption of gaze in HCI research and practical applications. Another hurdle is the need for expert knowledge on how to set up and operate these trackers to obtain accurate gaze estimates, i.e. how to calibrate them properly to each individual user.
+    </p>
+    <p>
+     With the goal to address these limitations, research in computer vision has focused on developing gaze estimation methods that are calibration-free and that only require off-the-shelf RGB cameras, such as those readily integrated in an ever-increasing number of personal devices or ambient displays [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+      22
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+      65
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+      73
+     </a>
+     ]. While model-based methods fit a geometric eye model to the eye image, appearance-based methods directly regress from eye images to gaze directions using machine learning [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+      15
+     </a>
+     ]. For a long time, these methods remained far inferior to special-purpose eye trackers, particularly in terms of gaze estimation error and robustness to head pose variations. However, appearance-based gaze estimation methods have recently improved significantly [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+      73
+     </a>
+     ] and promise a wide range of new applications, for example in attentive user interfaces [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+      57
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+      70
+     </a>
+     ], mobile gaze interaction [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ] or social signal processing [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+      42
+     </a>
+     ].
+    </p>
+    <p>
+     Despite their potential, particularly given expected future improvements and availability of even larger-scale training data, appearance-based gaze estimation methods are still not yet widely used in HCI. We believe this is partly because it currently remains unclear how they perform compared to dominant, special-purpose eye tracking equipment. In the gaze estimation literature, evaluations have been often performed within the category that the proposed method belongs to. We are not aware of a single, principled comparison of model- and appearance-based gaze estimation methods with a common stationary eye tracker. Another likely reason is that using these methods remains challenging for user interface and interaction designers. While source code for some current methods is available [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+      47
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+      73
+     </a>
+     ], the code has been written by computer vision experts for evaluation purposes. The code is typically either not optimised for real-time use, doesn't implement all functionality required for interactive applications in a single pipeline, or cannot be easily extended or integrated into other software or user interface frameworks.
+    </p>
+    <p>
+     This work aims to provide a basis for developers from the HCI community to integrate the appearance-based gaze estimation method into interactive applications. In order to achieve this goal, we make the following contributions: First, we evaluate the accuracy of state-of-the-art appearance-based gaze estimation for interaction scenarios with and without personal calibration, indoors and outdoors, for different interaction distances, as well as for users with and without glasses. We compare accuracy with a state-of-the-art model-based gaze estimation method [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+      47
+     </a>
+     ] and, for the first time, with a commercial eye tracker. Second, we discuss the obtained findings and their implications for the most important gaze-based applications [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+      36
+     </a>
+     ] ranging from explicit eye input, to attentive user interfaces and gaze-based user modelling, to passive eye monitoring. Third, to democratise the use of appearance-based gaze estimation and interaction in HCI, we present
+     <em>
+      OpenGaze
+     </em>
+     , the first software toolkit for appearance-based gaze estimation and interaction that is specifically developed for user interface designers. The framework implements the full gaze estimation pipeline, is easily extensible and integratable, and is usable by non-experts.
+    </p>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     We start with a general introduction of the various gaze-based interactions, followed by pertinent studies on gaze estimation methods.
+    </p>
+    <section id="sec-4">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Gaze-based human-computer interaction
+       </h3>
+      </div>
+     </header>
+     <p>
+      Taking eye gaze from users as a command to computers is the most intuitive gaze-aware application. The typical usage of eye gaze information is as a replacement of the mouse, such as typing words with the eye [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ], indicating user attention [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ], and selecting items [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0076">
+       76
+      </a>
+      ]. Researchers have investigated daily human-computer interactions using different eye movements, such as fixations [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+       16
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0035">
+       35
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ], smooth pursuit [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ], and eye gestures [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0037">
+       37
+      </a>
+      ].
+     </p>
+     <p>
+      In addition, gaze information has also shown significant potential for user understanding. Most intuitively, eye tracking techniques have been used to capture and infer user behaviours, such as eye contact [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+       70
+      </a>
+      ] and daily activities [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+       6
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ]. Eye tracking data has been also used to recognise users’ latent states, including interest and engagement [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0032">
+       32
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0034">
+       34
+      </a>
+      ], affective states [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0041">
+       41
+      </a>
+      ], cognitive states [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+       20
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0038">
+       38
+      </a>
+      ], and attentive states [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+       14
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0062">
+       62
+      </a>
+      ]. It has been pointed out that eye tracking data can even be associated with mental disorders, such as Alzheimer's disease [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+       23
+      </a>
+      ], Parkinson's disease [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0030">
+       30
+      </a>
+      ], and schizophrenia [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+       17
+      </a>
+      ]. Furthermore, eye tracking data holds rich personal information, including personality traits [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+       18
+      </a>
+      ], gender [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0050">
+       50
+      </a>
+      ], and user identity [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+       8
+      </a>
+      ].
+     </p>
+     <p>
+      These gaze-base applications have been studied across different platforms, underlining the significance of gaze as an interaction modality, and a rich source of information on users as well as their mental and physical states, in both stationary and mobile settings. The most prevalent examples include use on personal devices, such as desktops and laptops [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+       19
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+       68
+      </a>
+      ], tablets [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0068">
+       68
+      </a>
+      ], and mobile phones [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ]. More recently, new gaze-aware applications are emerging and eye tracking devices have been integrated in public displays [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+       57
+      </a>
+      ], head-mounted VR devices [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0048">
+       48
+      </a>
+      ], and vehicles [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0046">
+       46
+      </a>
+      ]. However, application scenarios have been still strongly influenced by the technical requirements of, mostly commercial, eye tracking devices. The use of camera-based, in particular appearance-based, gaze estimation in interactive applications has not been fully explored due to the lack of a complete, extensible, and cross-platform software toolkit.
+     </p>
+    </section>
+    <section id="sec-5">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Gaze estimation methods
+       </h3>
+      </div>
+     </header>
+     <p>
+      Gaze estimation methods can be categorised into feature-based, model-based, and appearance-based approaches [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+       15
+      </a>
+      ]. Feature-based methods use eye features for gaze direction regression, such as corneal reflections caused by reflections of an external light source on the cornea [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0078">
+       78
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0079">
+       79
+      </a>
+      ]. Feature-based methods are commonly used in commercial eye trackers, such as the entry-level eye tracker Tobii EyeX.
+     </p>
+     <p>
+      Model-based methods first detect visual features, such as pupil, eyeball centre and eye corners, and then fit a geometric 3D eyeball model to them to estimate gaze [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+       9
+      </a>
+      ]. While early model-based methods required high-resolution cameras and infrared light sources [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+       24
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0067">
+       67
+      </a>
+      ], recent approaches only use input images from a single webcam [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0061">
+       61
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0065">
+       65
+      </a>
+      ]. More recent works leverage machine learning to improve the accuracy of eye feature detection, for example to train eye feature detectors with a large amount of synthetic data [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+       47
+      </a>
+      ].
+     </p>
+     <p>
+      Appearance-based methods also only require images obtained from an off-the-shelf camera, but directly learn a mapping from 2D input images to gaze directions using machine learning [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0058">
+       58
+      </a>
+      ]. Since there is no explicit eye feature detection step involved, this family of methods can typically handle input images with lower resolution and quality than model-based methods. Recent works leveraged both large-scale training data and deep learning to significantly improve the gaze estimation accuracy in more challenging real-world settings [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+       53
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+       73
+      </a>
+      ]. These advances have enabled a range of new applications, such as in eye contact detection [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+       70
+      </a>
+      ] or attention analysis on public displays [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0057">
+       57
+      </a>
+      ]. Further new applications can be expected given the ever-increasing number of camera-equipped devices and displays, particularly mobile devices [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+       25
+      </a>
+      ].
+     </p>
+     <p>
+      Mainly because these three families of gaze estimation methods have different requirements in terms of hardware and deployment setting, they have never been compared with each other in a principled way. Consequently, interaction designers currently lack guidance on which methods they should choose for their particular applications. As discussed above, this prevents the exploration of gaze interaction applications taking the full advantages of these different gaze estimation methods.
+     </p>
+    </section>
+   </section>
+   <section id="sec-6">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       DATASET FOR EVALUATION
+      </h2>
+     </div>
+    </header>
+    <p>
+     In gaze estimation research in computer vision, the primary experiment of interest is typically a performance comparison between different gaze estimation methods [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0053">
+      53
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+      73
+     </a>
+     ]. One likely reason for this is the lack of a suitable dataset that facilitates such a comparison. We therefore collected a dataset specifically geared to study performance of the different methods with respect to core affordances important in gaze interaction research: specifically, the distance between user and camera, number of required calibration samples, use of the method indoors or outdoors, as well as whether the user wears glasses or not.
+    </p>
+    <p>
+     For data recording, we used a Logitech C910 webcam with a resolution of 1920 × 1080 pixels. We chose Tobii EyeX as the representative for feature-based gaze estimation (commercial eye tracking) because it is affordable, has recently become popular and is used in a range of research (e.g. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+      31
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0052">
+      52
+     </a>
+     ]). Data collection was performed with 20 participants (10 female, aged between 21 and 45 years) whom we recruited through university mailing lists and notice boards. Our participants were from six different countries, and four of them wore glasses during the recording. During data collection, we labelled ground-truth gaze locations by showing the target stimuli on the screen as a circle shirking to a dot that the participants were instructed to look at. The screen pose was measured using the mirror-based calibration [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+      49
+     </a>
+     ] beforehand, and ground-truth gaze locations have been recorded in the 3D camera coordinate system.
+    </p>
+    <figure id="fig2">
+     <img alt="" class="img-responsive" longdesc="Our data collection setting. A participant stands in front of a public display and is looking at a dot on the screen." src="3300646_files\chi2019416fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 2:
+      </span>
+      <span class="figure-title">
+       Our data collection setting. Participants stood at a pre-defined distance and were instructed to look at a dot on the screen. Data recording was performed using a Tobii EyeX eye tracker and a Logitech C910 webcam.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     <strong>
+      Distances
+     </strong>
+     . Interaction distance is one of the most important factors to discuss the versatility of gaze estimation methods. Distance can vary even for the same device, such as a mobile phone that is held at different distances, and even more so across different devices, such as a mobile phone or a public display. Most commercial eye trackers, as represented by Tobii EyeX, are made to work optimally when the distance from the user is 50 − 90 cm. In contrast, webcam-based gaze estimation could output estimates for a large range of distances as long as the target faces are detected in the input image. To evaluate the performance of gaze estimation methods at different distances, we collected the sample data with different distances between participants and cameras. The recording setting is illustrated in Figure
+     <a class="fig" href="#fig2">
+      2
+     </a>
+     . We showed the stimuli on a 55-inch public display, and mounted the webcam and Tobii EyeX below it. We chose distances of 30, 50, 75, 110, 140 and 180 cm, where 50 and 75 cm fall inside the operational distance range of Tobii EyeX. In order to make sure the ranges of view angles stay the same for different distances, the stimuli were displayed inside pre-defined regions corresponding to each distance. They roughly correspond to 8.4, 12, 21, 32, 40 and 50 inches for 30, 50, 75, 110, 140 and 180 cm, respectively.
+    </p>
+    <p>
+     <strong>
+      Outdoor settings
+     </strong>
+     . Ideally gaze estimation methods should also yield robust performance independent of whether they will be used for interaction indoors or outdoors. Therefore, we recorded two sessions with a laptop for both indoor and outdoor settings. We mounted the Tobii EyeX below the laptop screen and a webcam above the screen due to the limited space. We first instructed participants to stand or sit at around 50 cm from the cameras to collect the data, and repeated for both indoor and outdoor environments. During recording for the outdoor setting, the participants were free to chose one of three locations outside our lab, and the recordings were done at different times of day.
+    </p>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Procedure
+       </h3>
+      </div>
+     </header>
+     <p>
+      During recording, participants were asked to stand or sit at certain distances, and were instructed to look at a shrinking circle at random locations and click the mouse when the circle became a dot. For each distance, we collected 80 samples: 60 samples were used for personal calibration and the rest for testing. We continuously recorded video stream with a webcam, together with gaze estimates from the Tobii EyeX. The time stamps were logged individually for mouse clicking events, video frames, and outputs of the Tobii EyeX.
+     </p>
+     <p>
+      Since the calibration procedure implemented in the Tobii SDK is black-box and could be different from our implementation, we collected samples both with and without personal calibration from the Tobii SDK for comparison. Specifically, for distances of 50 and 75 cm, we first recorded 20 samples with the calibration profile from another person. These samples were used as a test set for the Tobii EyeX without any personal calibration. Then we performed the personal calibration provided by the Tobii SDK, which includes seven calibration points. Finally, we recorded the 80 samples with Tobii EyeX together with the webcam.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="Data examples from one of our participants, including the samples collected at different distances and environments." src="3300646_files\chi2019416fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        Data samples from one of our participants. Left: samples with recording distances marked at the top of the images. Right: samples under indoor and outdoor conditions, as marked at the top of images. As can be seen, our recorded data includes varying face sizes caused by different distances, and illumination conditions in indoor and outdoor settings.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      shows example images recorded from the webcam at different distances, as well as in indoor and outdoor settings. The recording distances and conditions are marked on top of the samples. As can be seen from these images, the distances lead to different face sizes, which can affect the input quality for gaze estimation methods. The indoor and outdoor settings have very different illumination conditions, which directly affected the appearance of the faces. Besides, the sunlight in the outdoor setting affects the active infrared light of Tobii EyeX, which resulted in as more invalid gaze data compared to the indoor setting.
+     </p>
+    </section>
+   </section>
+   <section id="sec-8">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       EXPERIMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     The main goal of our experiments was to study the accuracy gap of state-of-the-art appearance-based gaze estimation (represented by MPIIFaceGaze [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ]) with a model-based counterpart (represented by GazeML [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0047">
+      47
+     </a>
+     ]) as well as a commercial eye tracker (Tobii EyeX). The GazeML pupil detector was trained on large-scale synthetic eye images [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+      64
+     </a>
+     ] with deep convolutional neural networks. The method takes the vector from the estimated 3D eyeball centre to the detected pupil location as the estimated gaze direction. We therefore deemed GazeML to represent the state of the art in model-based gaze estimation, because it reported (confirmed in our own comparisons) better accuracy than the gaze estimation method [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0064">
+      64
+     </a>
+     ] implemented in the widely used OpenFace toolkit [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ]. We trained the MPIIFaceGaze method using two commonly-used gaze datasets with full-face images, MPIIFaceGaze dataset [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ] and EYEDIAP dataset [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+      39
+     </a>
+     ]. According to the training data distribution, this pre-trained model can handle head poses between [ − 25°, 25°] horizontally and [ − 10°, 25°] vertically under challenging real-world illuminations.
+    </p>
+    <p>
+     Eye tracking accuracy is often measured in terms of 2D gaze estimation error on the screen calculated as the differences between ground-truth and estimated gaze direction. However, since 2D on-screen error measurement also depends on the distance between the screen and user, it cannot be used to compare accuracy on our data with varying distances. Instead, we measured the 3D gaze estimation error in degrees, i.e. the difference between the estimated and the ground-truth 3D gaze vectors. 2D gaze points on the screen can be converted to 3D vectors in the camera coordinate system by using the screen-camera relationship. The on-screen gaze location represents the point end of the gaze vector, while the face centre serves as the starting point [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+      72
+     </a>
+     ]. Given that MPIIFaceGaze can output gaze vectors in the camera coordinate system, those can be directly compared with the ground truth vectors. GazeML outputs two gaze vectors, one for each eye. We first projected them to the screen plane to obtain two intersecting points, and then took the middle point of the two intersection points as the point end of the gaze vector. Tobii EyeX outputs 2D on-screen locations that were used as the point end of the gaze vector.
+    </p>
+    <section id="sec-9">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Distances between user and camera
+       </h3>
+      </div>
+     </header>
+     <figure id="fig4">
+      <img alt="" class="img-responsive" longdesc="Experiment results of different methods across distances between the user and camera." src="3300646_files\chi2019416fig4.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 4:
+       </span>
+       <span class="figure-title">
+        Gaze estimation errors of different methods in degrees across distances between the user and camera. Dots are results averaged across all 20 participants for each distances, and we linked them by lines.
+       </span>
+      </div>
+     </figure>
+     <p>
+      We first evaluated accuracy of the different methods across different distances between user and camera. With our recorded data, we used all of the 60 samples to perform personal calibration for all methods, and tested them on the remaining 20 samples. To show the full ability of Tobii EyeX, we first used its own personal calibration provided by Tobii SDK which requires seven calibration points. We then applied the personal calibration with an additional 53 samples. We conducted this calibration procedure at each distance. The errors were averaged across all participants.
+     </p>
+     <p>
+      The results are summarised in Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      . There are statistically significant differences between the three methods (t-test,
+      <em>
+       p
+      </em>
+      &lt; 0.01). While Tobii EyeX performed the best with 1.2 degree gaze estimation error for distance 50 cm and 0.8 degrees for distance 75 cm, the tracking range of Tobii EyeX is severely limited compared to the other methods. The appearance-based method (MPIIFaceGaze) achieved the second-best result as mean gaze estimation error from 2.3 degrees to 3.1 degrees, and this accuracy is robust across the full distance range from 30 cm to 180 cm with only minor variation. The model-based method (GazeML) achieved the worst accuracy with mean gaze estimation errors ranging from 3.8 degrees to 12.1 degrees. In contrast to MPIIFaceGaze, GazeML's accuracy was also sensitive to the distance: the larger the distance, the worse its accuracy. This is most likely caused by the fact that accurate pupil detection and eyeball centre estimation, on which these types of methods crucially rely, become increasingly difficult with larger distances.
+     </p>
+     <p>
+      In summary, this evaluation shows that while there is still a accuracy gap of around two degrees between the appearance-based method and Tobii EyeX, the former has a much larger operational range. This finding underlines the practical usefulness of appearance-based gaze estimation, in particular for interactive applications where the ability to track robustly across a large interaction space is important and where gaze estimation error can be compensated for, e.g. on interactive public displays using pursuits [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0063">
+       63
+      </a>
+      ].
+     </p>
+    </section>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Number of calibration samples
+       </h3>
+      </div>
+     </header>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="Experiment results of different methods in degrees across the number of personal calibration samples." src="3300646_files\chi2019416fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        Gaze estimation errors of different methods in degrees across numbers of personal calibration samples. Dots are results averaged across all 20 participants, and we linked them with lines.
+       </span>
+      </div>
+     </figure>
+     <p>
+      The number of required calibration samples is an important factor for usability. Calibration with a large number of samples can be time-consuming and prohibitive for certain applications where spontaneous interaction is crucial, e.g. on gaze-enabled public displays [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0074">
+       74
+      </a>
+      ]. Therefore, we evaluated the influence of the number of calibration samples on gaze estimation accuracy. We analysed accuracy while varying the number of samples used for calibration, from zero, to one, two, three, four, five, seven, 10, 15, 20, 30, 40, 50 and 60. For the calibration-free case (zero calibration samples) we directly used the raw gaze estimates as calculated by GazeML and MPIIFaceGaze, while Tobii EyeX was uncalibrated. We opted for a distance of 75 cm because this is exactly within the optimal tracking range for Tobii EyeX.
+     </p>
+     <p>
+      Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      summarises the results and reveals a number of interesting insights. As expected, the calibration-free setting achieves a large gaze estimation error, between 5.5 degrees of visual angle (for Tobii EyeX) and 12.1 degrees (for model-based GazeML). The appearance-based method (MPIIFaceGaze) achieved 6.4 degrees. These differences were statistically significant (t-test,
+      <em>
+       p
+      </em>
+      &lt; 0.01). However, accuracy gets even worse for one-calibration samples, where the third-order polynomial mapping function is underdetermined. With an increasing number of calibration samples, gaze estimation error decreases for all methods, down to 1.1 degrees for Tobii EyeX, and 2.5 degrees for MPIIFaceGaze. These results show that current appearance-based methods (MPIIFaceGaze) can achieve accuracy competitive with Tobii EyeX, even with only four calibration samples. This is exciting given that current appearance-based methods are competitive in terms of accuracy and usability and, hence, seem feasible for a range of everyday gaze interfaces, such as on camera-equipped personal devices.
+     </p>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Indoor and outdoor settings
+       </h3>
+      </div>
+     </header>
+     <figure id="fig6">
+      <img alt="" class="img-responsive" longdesc="Experiment results of different methods in degrees for indoor and outdoor settings." src="3300646_files\chi2019416fig6.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 6:
+       </span>
+       <span class="figure-title">
+        Gaze estimation errors for indoor and outdoor settings. Bars show mean error across all participants; error bars indicate standard deviations. The numbers above the bars indicate accuracy differences from indoor to outdoor setting in percent.
+       </span>
+      </div>
+     </figure>
+     <p>
+      We then evaluated the impact on accuracy of different illumination conditions – a common problem when moving between indoor and outdoor interaction settings. For this evaluation, we used the data collected for indoor and outdoor settings described in Section
+      <a class="sec" href="#sec-6">
+       3
+      </a>
+      . We again used all 60 samples for personal calibration and evaluated the different methods for both settings. The results of this evaluation are summarised in Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      where bars show the gaze estimation error in degrees across all 20 participants, and error bars show standard deviations. The figure also shows the relative accuracy differences between indoors to outdoors in percent.
+     </p>
+     <p>
+      As can be seen from the figure, the best accuracy was again achieved by Tobii EyeX (indoors: 1.1 degrees, outdoors: 1.3 degrees), followed by the appearance-based method (MPIIFaceGaze) (indoors: 2.8 degrees, outdoors: 3.2 degrees), and model-based method (GazeML) (indoors: 4.9 degrees, outdoors: 5.7 degrees). Although the accuracy differences between indoors and outdoors are not statistically significant (t-test,
+      <em>
+       p
+      </em>
+      &gt; 0.05), better accuracy tends to be achieved for the indoor environment, likely as a result of changing illumination conditions.
+     </p>
+    </section>
+    <section id="sec-12">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        With and without glasses
+       </h3>
+      </div>
+     </header>
+     <figure id="fig7">
+      <img alt="" class="img-responsive" longdesc="Experiment results of different methods in degrees for participants wearing glasses or not." src="3300646_files\chi2019416fig7.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        Gaze estimation errors for participants wearing glasses or not. Bars show mean error across all participants; error bars indicate standard deviations. The numbers above the bars indicate accuracy differences between not wearing glasses and wearing glasses in percent.
+       </span>
+      </div>
+     </figure>
+     <p>
+      Glasses can have a significant effect on gaze estimation error due to strong reflections and distortions they may cause. In our dataset, four participants wore glasses while the rest did not. To evaluate the impact of glasses, we analysed the error after personal calibration with 60 samples, distances range ranging 50 and 75 cm, and in both indoor and outdoor settings. The results of this evaluation are shown in Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      , where bars show the gaze estimation error in degrees across participants when wearing or not wearing glasses, and the error bars show standard deviations. These differences were statistically significant (t-test,
+      <em>
+       p
+      </em>
+      &lt; 0.01). The figure also shows the relative accuracy differences between wearing glasses and not wearing glasses in percent.
+     </p>
+     <p>
+      As we can see from the figure, glasses have a stronger effect on gaze estimation accuracy than illumination conditions (see
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      ). The gaze estimation errors were 5.4 (without) and 6.3 (with) degrees for the model-based method (GazeML), 2.8 and 4.5 degrees for the appearance-based method (MPIIFaceGaze), and 1.0 and 1.4 degrees for Tobii EyeX. The estimation results differences between with and without glasses are larger for the appearance-based method (MPIIFaceGaze) than for Tobii EyeX. Similarly, as for the previous evaluation on indoor and outdoor settings, the likely reason for this is the training data that, in this case, does not contain a sufficient number of images of people wearing glasses. As a result, the appearance-based method cannot handle these cases as well. Another reason could be that Tobii EyeX uses infrared light, which filters out most reflections on the glasses.
+     </p>
+    </section>
+   </section>
+   <section id="sec-13">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       IMPLICATIONS FOR GAZE APPLICATIONS
+      </h2>
+     </div>
+    </header>
+    <p>
+     Gaze estimation devices, especially the dominant commercial eye trackers, have facilitated the development of gaze-based interactive systems in past years. In this section, we discuss the implications of our findings for the most important gaze-based applications as well as the potential of appearance-based methods for application scenarios that only require a single off-the-shelf camera.
+    </p>
+    <section id="sec-14">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Gaze applications
+       </h3>
+      </div>
+     </header>
+     <p>
+      Gaze-based interactive applications can be divided into four groups:
+      <em>
+       explicit eye input
+      </em>
+      ,
+      <em>
+       attentive user interfaces
+      </em>
+      ,
+      <em>
+       gaze-based user modelling
+      </em>
+      , and
+      <em>
+       passive eye monitoring
+      </em>
+      [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0036">
+       36
+      </a>
+      ]. The
+      <em>
+       explicit eye input
+      </em>
+      applications take the gaze input to command and control the computer.
+      <em>
+       Attentive user interfaces
+      </em>
+      do not expect explicit commands from the user, while using the natural eye movements subtly in the background.
+      <em>
+       Gaze-based user modelling
+      </em>
+      uses gaze information to understand user behaviour, cognitive processes, and intentions; this usually utilise short-time-period data.
+      <em>
+       Passive eye monitoring
+      </em>
+      stands for off-line analysis with long-term gaze data for diagnostic applications.
+     </p>
+     <p>
+      While all of the above categories take gaze information from users; they have different requirements in terms of properties on the gaze estimation methods. In this section, we summarise the requirements of applications regardless of the technical limitations of existing eye tracking methods. In this way, we clarify how the application scenarios can be extended by using appearance-based gaze estimation beyond the limitation of commonly-used commercial eye trackers. We show the relationships of different gaze-based applications and affordances in Figure
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      , and explain them in the following.
+     </p>
+     <figure id="fig8">
+      <img alt="" class="img-responsive" longdesc="Relationship of different gaze-based applications and affordances. The applications are explicit eye input, attentive user interfaces, gaze-based user modelling, and passive eye monitoring. The affordances are accuracy, usability and robustness." src="3300646_files\chi2019416fig8.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 8:
+       </span>
+       <span class="figure-title">
+        Relationship of different gaze-based applications and affordances. We show three typical gaze-based applications and the different levels of each affordance.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      <strong>
+       Accuracy
+      </strong>
+      . Applications that rely on
+      <em>
+       explicit eye input
+      </em>
+      usually require high-accuracy gaze estimates, such as for eye typing [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0031">
+       31
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0040">
+       40
+      </a>
+      ], authentication [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ], or system control [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0044">
+       44
+      </a>
+      ]. However, the allowed gaze estimation error depends on the sizes of the gaze targets. These gaze targets could be fine-level details on the screen [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+       11
+      </a>
+      ], closely connected [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0077">
+       77
+      </a>
+      ] or separate content on the screen [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ], large physical objects [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ], or rough gaze direction  [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+       69
+      </a>
+      ].
+      <em>
+       Gaze-based user modelling
+      </em>
+      and
+      <em>
+       passive eye monitoring
+      </em>
+      require gaze estimation to detect gaze patterns instead of individual points. These gaze patterns could be large regions on the screen, such as during saliency prediction [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0066">
+       66
+      </a>
+      ]; relative eye movements for inferring everyday activities [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0051">
+       51
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ], cognitive load and processes [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+       7
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0059">
+       59
+      </a>
+      ], or mobile interaction [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0060">
+       60
+      </a>
+      ]; or off-line user behaviour analysis for game play [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0043">
+       43
+      </a>
+      ]. For
+      <em>
+       attentive user interfaces
+      </em>
+      , usually it is sufficient to detect the attention of the user [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+       1
+      </a>
+      ] with binary eye contact detection [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+       12
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+       70
+      </a>
+      ].
+     </p>
+     <p>
+      <strong>
+       Usability
+      </strong>
+      . We rate applications with high usability as it can work with calibration-free fashion and can be used with multi-user simultaneously. Since the
+      <em>
+       explicit eye input
+      </em>
+      usually assumes a single target user, it is relatively straightforward to include personal calibration process. Such a personal calibration is also required from the high accuracy requirement discussed above. While the
+      <em>
+       attentive user interfaces
+      </em>
+      also requires specific object calibration for each different camera-object relationship [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ], the underlying use case scenario demands pervasive multi-user gaze estimation without personal calibration. For
+      <em>
+       gaze-based user modelling
+      </em>
+      and
+      <em>
+       passive eye monitoring
+      </em>
+      , relative eye movement could be sufficient considering that there have been already applications implemented in a calibration-free fashion [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0074">
+       74
+      </a>
+      ]. They can be also naturally extended to multi-user scenarios.
+     </p>
+     <p>
+      <strong>
+       Robustness
+      </strong>
+      . Performance consistency between indoor and outdoor environments becomes more and more important with the popularisation of personal mobile devices. It has impacts on
+      <em>
+       passive eye monitoring
+      </em>
+      since usually long-term recording through daily life is necessary [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0055">
+       55
+      </a>
+      ].
+      <em>
+       Explicit eye input
+      </em>
+      and
+      <em>
+       gaze-based user modelling
+      </em>
+      also require such consistency as users could run these applications anywhere with their mobile devices. In contrast,
+      <em>
+       attentive user interfaces
+      </em>
+      could be conducted within a stable scene if the target object is stationary. In addition, there are large numbers of people wearing glasses nowadays. The glasses could cause problems for gaze-based interaction since thick frames, distortion, and reflection could potentially impair the quality of gaze estimation methods. For all types of gaze-based applications, they must be robust to the user with or without glasses.
+     </p>
+    </section>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Extension of application scenarios
+       </h3>
+      </div>
+     </header>
+     <p>
+      From our experimental results, we can see that current appearance-based gaze estimation can achieve reasonable accuracy. Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      shows that the appearance-based gaze estimation method can achieve around two to three degrees accuracy, which can provide good enough estimates for some applications. Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      and Figure
+      <a class="fig" href="#fig6">
+       6
+      </a>
+      show that appearance-based gaze estimation is comparable to Tobii EyeX in terms of its requirements for calibration samples and robustness to indoor and outdoor environments. Appearance-based gaze estimation could thus be used in applications requiring
+      <em>
+       explicit eye input
+      </em>
+      , such as object selection [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+       2
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+       10
+      </a>
+      ] or gaze pointing  [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0045">
+       45
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+       69
+      </a>
+      ]. Appearance-based methods are already suitable for applications only requiring measurement of relative changes in gaze direction over time, such as
+      <em>
+       gaze-based user modelling
+      </em>
+      ,
+      <em>
+       passive eye monitoring
+      </em>
+      or detection of gaze patterns, such as smooth pursuit eye movements [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+       13
+      </a>
+      ]. Also the latest
+      <em>
+       attentive user interfaces
+      </em>
+      could use appearance-based gaze estimation methods, such as for eye contact detection [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0054">
+       54
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0070">
+       70
+      </a>
+      ] or attention forecasting [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0056">
+       56
+      </a>
+      ]. This suggests webcams could replace commercial eye trackers for some applications, and even enable new application scenarios such as online software-based services.
+     </p>
+     <p>
+      From Figure
+      <a class="fig" href="#fig4">
+       4
+      </a>
+      , we can see the advantage of appearance-based gaze estimation on large operation at distances between users and camera; it also maintains consistent gaze estimation accuracy across the different distances. This method enables gaze-based applications for different devices such as a cellphone with a short distance and a large TV with a long distance. The current gaze-based applications for these short and long distances are limited to rough gaze direction with previous model-based gaze estimation methods [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0069">
+       69
+      </a>
+      ,
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0075">
+       75
+      </a>
+      ]. Appearance-based gaze estimation can achieve gaze estimation error around two to three degrees for these devices, which allows researchers to use the estimated gaze points for fine-level interaction, such as object selection or attention measurement.
+     </p>
+     <p>
+      Another major flaw of current commercial eye trackers is they usually can only work with a single user due to the limited camera angle of view. This is not an issue for gaze estimation with a webcam, which can output multiple-person gaze information. Therefore, it enables new applications where multiple persons are involved, and we can achieve their gaze information with a single webcam. This has been implemented in one previous work that performs the eye contact detection with webcams and there could be more than one user in the input image [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0042">
+       42
+      </a>
+      ].
+     </p>
+     <p>
+      Above all, gaze estimation with a single webcam instead of an additional commercial eye tracker enables new forms of applications. It allows researchers to develop gaze-based applications with common devices, such as cellphones, tablets, laptops and TVs. Participants can stick with their own personal devices and run the gaze-based software to perform the interaction without any additional hardware requirement. This is the key advantage of using a single webcam for gaze estimation instead of the current commercial eye trackers.
+     </p>
+    </section>
+   </section>
+   <section id="sec-16">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       THE OPENGAZE SOFTWARE TOOLKIT
+      </h2>
+     </div>
+    </header>
+    <p>
+     As shown before, appearance-based gaze estimation has significant potential to facilitate gaze-based interactive applications on the millions of camera-equipped devices already used worldwide today, such as mobile phones or laptops. However, most existing methods – if code is available for these at all – were published with research-oriented implementations and there is no easy-to-use software toolkit available that is specifically geared to HCI purposes. It is also challenging for designers to integrate existing computer vision and machine learning pipelines into end-user applications.
+    </p>
+    <p>
+     We therefore extended the MPIIFaceGaze method into a complete open source toolkit for gaze-based applications. The goal of our
+     <em>
+      OpenGaze
+     </em>
+     software toolkit is to provide an easy way for HCI researchers and designers to use appearance-based gaze estimation techniques, and enable a wider range of eye tracking applications using off-the-shelf cameras. We designed
+     <em>
+      OpenGaze
+     </em>
+     with four main objectives in mind: 1) to implement state-of-the-art appearance-based gaze estimation for HCI researchers, 2) to make the functionality easy to use and work out-of-the-box for rapid development, 3) to be extensible to include more functions, and 4) to be flexible as developers can replace any components with their own methods.
+    </p>
+    <p>
+     The overall pipeline of
+     <em>
+      OpenGaze
+     </em>
+     is shown in Figure
+     <a class="fig" href="#fig9">
+      9
+     </a>
+     . Unlike the dominate commercial eye trackers, the input of
+     <em>
+      OpenGaze
+     </em>
+     can be single RGB images, such as the video stream from the camera, recorded videos, a directory of images, or a single image. Given an input frame/image, our
+     <em>
+      OpenGaze
+     </em>
+     first detects faces and facial landmarks, which are used to estimate 3D head pose and data normalization. The data normalization procedure essentially crops the face image with a normalised camera to cancel out some of appearance variations caused by head pose. The cropped face image then will be input to the appearance-based gaze estimation method. The output of the gaze estimation model is the gaze direction in the camera coordinate system, which can be further projected to the screen coordinate system.
+     <em>
+      OpenGaze
+     </em>
+     has user-friendly APIs for developers to perform their desired functions with minimal effort on coding, and also provides easy-to-install packages including pre-compiled libraries to facilitate use of gaze estimation in interactive applications.
+    </p>
+    <figure id="fig9">
+     <img alt="" class="img-responsive" longdesc="Overview of the proposed OpenGaze toolkit including face detection, facial landmark detection, gaze prediction, and projection on the screen." src="3300646_files\chi2019416fig9.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 9:
+      </span>
+      <span class="figure-title">
+       Taking an image as input, our
+       <em>
+        OpenGaze
+       </em>
+       toolkit first detects the faces and facial landmarks (a) and then crops the face image using data normalisation [
+       <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0071">
+        71
+       </a>
+       ]. The appearance-based gaze estimation model predicts the gaze direction in the camera coordinate system from the normalised face image. The direction is finally converted to the screen coordinate system.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <section id="sec-17">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Face and facial landmark detection
+       </h3>
+      </div>
+     </header>
+     <p>
+      Given an input image, the first step is to detect the face as well as facial landmarks of the user.
+      <em>
+       OpenGaze
+      </em>
+      integrates OpenFace 2.0 [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+       3
+      </a>
+      ] for facial landmark detection that, in turn, relies on the widely used dlib computer vision library [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+       27
+      </a>
+      ] to detect the faces in the input image. OpenFace also assigns unique IDs to each detected faces via temporal tracking. The detected facial landmarks (4 eye corners and 2 mouth corners) are mainly used to estimate 3D head pose including head rotation and translation, which is achieved by fitting a pre-defined generic 3D face model to the detected facial landmarks by estimating the initial solution using the EPnP algorithm [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0033">
+       33
+      </a>
+      ]. The estimated 3D head pose is used in data normalisation and the 3D face centre (centroid of the six facial landmarks) is taken as the origin of gaze directions.
+     </p>
+    </section>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Data normalisation
+       </h3>
+      </div>
+     </header>
+     <p>
+      As input for appearance-based gaze estimation, the system then crops and resizes the face image according to the facial landmarks. However, since appearance-based 3D gaze estimation is a geometric task, inappropriate cropping and resizing can significantly affect the estimation accuracy. Data normalization was proposed to efficiently train appearance-based gaze estimators, and it cancels out the geometric variability by warping input images to a normalised space [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0071">
+       71
+      </a>
+      ].
+      <em>
+       OpenGaze
+      </em>
+      implements the data normalization scheme as pre-processing to appearance-based gaze estimation. Specifically,
+      <em>
+       OpenGaze
+      </em>
+      first crops the face image after rotating the camera so that the x-axis of the camera coordinate system is perpendicular to the y-axis of the head coordinate system. Then it scales the image so that the normalised camera is located at a fixed distance away from the face centre. In this way, the input image has only 2 degrees of freedom in head pose for all kinds of cameras with different intrinsic parameters.
+     </p>
+    </section>
+    <section id="sec-19">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Gaze estimation
+       </h3>
+      </div>
+     </header>
+     <p>
+      <em>
+       OpenGaze
+      </em>
+      implements an appearance-based gaze estimation method that reports state-of-the-art accuracy [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ]. In this method, the whole face image is fed into the convolutional neural network to output 3D gaze directions.
+      <em>
+       OpenGaze
+      </em>
+      uses the same neural network architecture as in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ], which is based on the AlexNet architecture [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+       29
+      </a>
+      ]. The toolkit comes with the model used in our experiments, which was pre-trained on two commonly-used gaze datasets with full-face images, MPIIFaceGaze dataset [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0072">
+       72
+      </a>
+      ] and EYEDIAP dataset [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0039">
+       39
+      </a>
+      ]. Therefore, while the toolkit is flexible enough to replace the network with user-trained ones, there is basically no need to train the network from scratch, and developers can directly use the pre-trained model. It is important to note that
+      <em>
+       OpenGaze
+      </em>
+      is fully extensible, e.g. it allows developers to add new network architectures and train models on other datasets.
+     </p>
+    </section>
+    <section id="sec-20">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Projection on screen
+       </h3>
+      </div>
+     </header>
+     <p>
+      The gaze direction is estimated by the appearance-based gaze estimator in the normalised space, and
+      <em>
+       OpenGaze
+      </em>
+      projects it back to the original camera coordinate system.
+      <em>
+       OpenGaze
+      </em>
+      also provides APIs to project the 3D gaze direction from the camera coordinate system to the 2D screen coordinate system, and vice versa. In order to project gaze direction to the 2D screen coordinate system,
+      <em>
+       OpenGaze
+      </em>
+      requires the camera intrinsic parameters and camera-screen relationship, i.e., rotation and translation between the camera and screen coordinate system. The camera intrinsic parameters can be obtained by camera calibration function in OpenCV [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+       4
+      </a>
+      ] by moving a calibration pattern in front of the camera. The camera-screen relationship can be calculated with a mirror-based camera-screen calibration method [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0049">
+       49
+      </a>
+      ]. It requires showing a camera calibration pattern on the screen, and then move a planar mirror in front of the camera to let the camera capture several calibration samples with the full view of the calibration pattern.
+     </p>
+    </section>
+    <section id="sec-21">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Personal calibration
+       </h3>
+      </div>
+     </header>
+     <p>
+      Cross-person gaze estimation is the ultimate goal of data-driven appearance-based gaze estimation, and as described above,
+      <em>
+       OpenGaze
+      </em>
+      comes with a pre-trained generic gaze estimator which works across users, environments, and cameras without any personal calibration [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0073">
+       73
+      </a>
+      ]. However, if the application allows for additional calibration data collection, the gaze estimation accuracy can be significantly improved by personal calibration. To make the estimated gaze usable for interactive applications,
+      <em>
+       OpenGaze
+      </em>
+      further provides a personal calibration scheme to make corrections to raw gaze estimates from the appearance-based gaze estimation model. To collect the ground-truth calibration samples,
+      <em>
+       OpenGaze
+      </em>
+      provides a GUI to collect the personal calibration data from users. During the personal calibration,
+      <em>
+       OpenGaze
+      </em>
+      shows the shrinking circle on the screen and the user has to fixate on the circle until it become a dot, while confirming that he/she is looking at the dot by mouse-clicking within a half second. Meanwhile,
+      <em>
+       OpenGaze
+      </em>
+      also captures the face image from the webcam associated with the dot position on the screen. These samples are used to find a third-order polynomial mapping function between the estimated and ground-truth 2D gaze locations in the screen coordinate system.
+     </p>
+    </section>
+    <section id="sec-22">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Implementation and speed
+       </h3>
+      </div>
+     </header>
+     <p>
+      With extensibility in mind, we implemented each of the above components as separate classes written in C++ with interfaces to communicate between each other. It is feasible for developers to replace and include different components if desired. As far as we tested,
+      <em>
+       OpenGaze
+      </em>
+      achieved 13 fps at running time with a desktop machine which has a 3.50GHz CPU and a GeForce GTX TITAN Black GPU with 6GB memory with stream from a webcam. Note the most time-consuming process is the face and facial landmark detection as they can only reach 17 fps. By replacing these components, which is possible with in our toolkit, it is expected that a much faster speed. In addition, the gaze estimation network can be also replaced with more compact versions to achieve higher speed and memory efficiency.
+     </p>
+    </section>
+   </section>
+   <section id="sec-23">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this work, we compared the appearance-based method with a model-based method and a commercial eye tracker, and we showed that it achieves better performance than the model-based method, and a larger operational range than the commercial eye tracker. Following the result, we further discussed design implications for the most important gaze-based applications. We present the first software toolkit
+     <em>
+      OpenGaze
+     </em>
+     which provides an easy-to-use webcam-based gaze estimation method for interaction designers. The goal of the toolkit is to be applied to a diverse range of interactive systems, and we evaluated the performance of state-of-the-art appearance-based gaze estimation across different affordances. We believe our
+     <em>
+      OpenGaze
+     </em>
+     enables new forms of application scenarios for both HCI designers and researchers.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-24">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This work was supported by the European Research Council (ERC; grant agreement 801708) as well as by a JST CREST research grant (JPMJCR14E1), Japan.
+    </p>
+   </section>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Florian Alt, Andreas Bulling, Lukas Mecke, and Daniel Buschek. 2016. Attention, please! Comparing Features for Measuring Audience Attention Towards Pervasive Displays. In
+      <em>
+       Proc. ACM SIGCHI Conference on Designing Interactive Systems (DIS)
+      </em>
+      . 823–828.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2901790.2901897" target="_blank">
+       https://doi.org/10.1145/2901790.2901897
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Sean Andrist, Michael Gleicher, and Bilge Mutlu. 2017. Looking Coordinated: Bidirectional Gaze Mechanisms for Collaborative Interaction with Virtual Characters. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 2571–2582.
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      Tadas Baltrusaitis, Amir Zadeh, Yao Chong Lim, and Louis-Philippe Morency. 2018. OpenFace 2.0: Facial Behavior Analysis Toolkit. In
+      <em>
+       Automatic Face &amp; Gesture Recognition (FG 2018), 2018 13th IEEE International Conference on
+      </em>
+      . IEEE, 59–66.
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      G. Bradski. 2000. The OpenCV Library.
+      <em>
+       <em>
+        Dr. Dobb's Journal of Software Tools
+       </em>
+      </em>
+      (2000).
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Andreas Bulling. 2016. Pervasive Attentive User Interfaces.
+      <em>
+       <em>
+        IEEE Computer
+       </em>
+      </em>
+      49, 1 (2016), 94–98.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/MC.2016.32" target="_blank">
+       https://doi.org/10.1109/MC.2016.32
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Andreas Bulling, Christian Weichel, and Hans Gellersen. 2013. EyeContext: Recognition of High-level Contextual Cues from Human Visual Behaviour. In
+      <em>
+       Proc. ACM SIGCHI Conference on Human Factors in Computing Systems (CHI)
+      </em>
+      . 305–308.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2470697" target="_blank">
+       https://doi.org/10.1145/2470654.2470697
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Andreas Bulling and Thorsten O. Zander. 2014. Cognition-Aware Computing.
+      <em>
+       <em>
+        IEEE Pervasive Computing
+       </em>
+      </em>
+      13, 3 (2014), 80–83.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/mprv.2014.42" target="_blank">
+       https://doi.org/10.1109/mprv.2014.42
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Virginio Cantoni, Chiara Galdi, Michele Nappi, Marco Porta, and Daniel Riccio. 2015. GANT: Gaze analysis technique for human identification.
+      <em>
+       <em>
+        Pattern Recognition
+       </em>
+      </em>
+      48, 4 (2015), 1027–1038.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.patcog.2014.02.017" target="_blank">
+       https://doi.org/10.1016/j.patcog.2014.02.017
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Jixu Chen and Qiang Ji. 2008. 3D gaze estimation with a single camera without IR illumination. In
+      <em>
+       Pattern Recognition, 2008. ICPR 2008. 19th International Conference on
+      </em>
+      . IEEE, 1–4.
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Sarah D'Angelo and Darren Gergle. 2016. Gazed and confused: Understanding and designing shared gaze for remote collaboration. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 2492–2496.
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Sarah D'Angelo and Darren Gergle. 2018. An Eye For Design: Gaze Visualizations for Remote Collaborative Work. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 349.
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Connor Dickie, Roel Vertegaal, Jeffrey S Shell, Changuk Sohn, Daniel Cheng, and Omar Aoudeh. 2004. Eye contact sensing glasses for attention-sensitive wearable video blogging. In
+      <em>
+       CHI’04 extended abstracts on Human factors in computing systems
+      </em>
+      . ACM, 769–770.
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Augusto Esteves, Eduardo Velloso, Andreas Bulling, and Hans Gellersen. 2015. Orbits: Enabling Gaze Interaction in Smart Watches using Moving Targets. In
+      <em>
+       Proc. ACM Symposium on User Interface Software and Technology (UIST)
+      </em>
+      . 457–466.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2807442.2807499" target="_blank">
+       https://doi.org/10.1145/2807442.2807499
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      Myrthe Faber, Robert Bixler, and Sidney K D'Mello. 2017. An automated behavioral measure of mind wandering during computerized reading.
+      <em>
+       <em>
+        Behavior Research Methods
+       </em>
+      </em>
+      (2017), 1–17.
+      <a class="link-inline force-break" href="https://doi.org/10.3758/s13428-017-0857-y." target="_blank">
+       https://doi.org/10.3758/s13428-017-0857-y.
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      Dan Witzner Hansen and Qiang Ji. 2010. In the eye of the beholder: A survey of models for eyes and gaze.
+      <em>
+       <em>
+        IEEE Transactions on Pattern Analysis and Machine Intelligence
+       </em>
+      </em>
+      32, 3(2010), 478–500.
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Keita Higuch, Ryo Yonetani, and Yoichi Sato. 2016. Can Eye Help You?: Effects of Visualizing Eye Fixations on Remote Collaboration Scenarios for Physical Tasks. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 5180–5190.
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Philip S Holzman, Leonard R Proctor, Deborah L Levy, Nicholas J Yasillo, Herbert Y Meltzer, and Stephen W Hurt. 1974. Eye-tracking dysfunctions in schizophrenic patients and their relatives.
+      <em>
+       <em>
+        Archives of general psychiatry
+       </em>
+      </em>
+      31, 2 (1974), 143–151.
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      Sabrina Hoppe, Tobias Loetscher, Stephanie A Morey, and Andreas Bulling. 2018. Eye movements during everyday behavior predict personality traits.
+      <em>
+       <em>
+        Frontiers in Human Neuroscience
+       </em>
+      </em>
+      12 (2018), 105.
+      <a class="link-inline force-break" href="https://doi.org/10.3389/fnhum.2018.00105" target="_blank">
+       https://doi.org/10.3389/fnhum.2018.00105
+      </a>
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Michael Xuelin Huang, Tiffany CK Kwok, Grace Ngai, Stephen CF Chan, and Hong Va Leong. 2016. Building a personalized, auto-calibrating eye tracker from user interactions. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 5169–5179.
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Michael Xuelin Huang, Jiajia Li, Grace Ngai, and Hong Va Leong. 2016. StressClick: Sensing Stress from Gaze-Click Patterns. In
+      <em>
+       Proceedings of the 2016 ACM on Multimedia Conference
+      </em>
+      . ACM, 1395–1404.
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Michael Xuelin Huang, Jiajia Li, Grace Ngai, and Hong Va Leong. 2017. Screenglint: Practical, in-situ gaze estimation on smartphones. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 2546–2557.
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      Qiong Huang, Ashok Veeraraghavan, and Ashutosh Sabharwal. 2015. TabletGaze: unconstrained appearance-based gaze estimation in mobile tablets.
+      <em>
+       <em>
+        arXiv preprint arXiv:1508.01244
+       </em>
+      </em>
+      (2015).
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      J Thomas Hutton, JA Nagel, and Ruth B Loewenson. 1984. Eye tracking dysfunction in Alzheimer-type dementia.
+      <em>
+       <em>
+        Neurology
+       </em>
+      </em>
+      34, 1 (1984), 99–99.
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Takahiro Ishikawa, Simon Baker, Iain Matthews, and Takeo Kanade. 2004. Passive driver gaze tracking with active appearance models. In
+      <em>
+       Proceedings of the 11th world congress on intelligent transportation systems
+      </em>
+      , Vol. 3. 41–43.
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      Mohamed Khamis, Florian Alt, and Andreas Bulling. 2018. The Past, Present, and Future of Gaze-enabled Handheld Mobile Devices: Survey and Lessons Learned. In
+      <em>
+       Proc. International Conference on Human-Computer Interaction with Mobile Devices and Services (MobileHCI)
+      </em>
+      . 38:1–38:17.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3229434.3229452" target="_blank">
+       https://doi.org/10.1145/3229434.3229452
+      </a>
+      best paper honourable mention award.
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Mohamed Khamis, Florian Alt, Mariam Hassib, Emanuel von Zezschwitz, Regina Hasholzner, and Andreas Bulling. 2016. GazeTouchPass: Multimodal Authentication Using Gaze and Touch on Mobile Devices. In
+      <em>
+       Ext. Abstr. ACM SIGCHI Conference on Human Factors in Computing Systems (CHI)
+      </em>
+      . 2156–2164.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2851581.2892314" target="_blank">
+       https://doi.org/10.1145/2851581.2892314
+      </a>
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Davis E. King. 2009. Dlib-ml: A Machine Learning Toolkit.
+      <em>
+       <em>
+        Journal of Machine Learning Research
+       </em>
+      </em>
+      10 (2009), 1755–1758.
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Thomas Kosch, Mariam Hassib, Pawel W Wozniak, Daniel Buschek, and Florian Alt. 2018. Your Eyes Tell: Leveraging Smooth Pursuit for Assessing Cognitive Workload. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 436.
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Alex Krizhevsky, Ilya Sutskever, and Geoffrey E Hinton. 2012. Imagenet classification with deep convolutional neural networks. In
+      <em>
+       Advances in neural information processing systems
+      </em>
+      . 1097–1105.
+     </li>
+     <li id="BibPLXBIB0030" label="[30]">
+      Craig A Kuechenmeister, Patrick H Linton, Thelma V Mueller, and Hilton B White. 1977. Eye tracking in relation to age, sex, and illness.
+      <em>
+       <em>
+        Archives of General Psychiatry
+       </em>
+      </em>
+      34, 5 (1977), 578–579.
+     </li>
+     <li id="BibPLXBIB0031" label="[31]">
+      Andrew Kurauchi, Wenxin Feng, Ajjen Joshi, Carlos Morimoto, and Margrit Betke. 2016. EyeSwipe: Dwell-free text entry using gaze paths. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 1952–1956.
+     </li>
+     <li id="BibPLXBIB0032" label="[32]">
+      Dmitry Lagun, Chih-Hung Hsieh, Dale Webster, and Vidhya Navalpakkam. 2014. Towards better measurement of attention and satisfaction in mobile search. In
+      <em>
+       Proceedings of the 37th international ACM SIGIR conference on Research &amp; development in information retrieval
+      </em>
+      . ACM, 113–122.
+     </li>
+     <li id="BibPLXBIB0033" label="[33]">
+      Vincent Lepetit, Francesc Moreno-Noguer, and Pascal Fua. 2009. Epnp: An accurate o (n) solution to the pnp problem.
+      <em>
+       <em>
+        International journal of computer vision
+       </em>
+      </em>
+      81, 2 (2009), 155.
+     </li>
+     <li id="BibPLXBIB0034" label="[34]">
+      Yixuan Li, Pingmei Xu, Dmitry Lagun, and Vidhya Navalpakkam. 2017. Towards measuring and inferring user interest from gaze. In
+      <em>
+       Proceedings of the 26th International Conference on World Wide Web Companion
+      </em>
+      . International World Wide Web Conferences Steering Committee, 525–533.
+     </li>
+     <li id="BibPLXBIB0035" label="[35]">
+      Päivi Majaranta, Ulla-Kaija Ahola, and Oleg Špakov. 2009. Fast gaze typing with an adjustable dwell time. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 357–360.
+     </li>
+     <li id="BibPLXBIB0036" label="[36]">
+      Päivi Majaranta and Andreas Bulling. 2014. Eye tracking and eye-based human–computer interaction. In
+      <em>
+       Advances in physiological computing
+      </em>
+      . Springer, 39–65.
+     </li>
+     <li id="BibPLXBIB0037" label="[37]">
+      Diako Mardanbegi, Dan Witzner Hansen, and Thomas Pederson. 2012. Eye-based head gestures. In
+      <em>
+       Proceedings of the symposium on eye tracking research and applications
+      </em>
+      . ACM, 139–146.
+     </li>
+     <li id="BibPLXBIB0038" label="[38]">
+      G Matthews, W Middleton, B Gilmartin, and MA Bullimore. 1991. Pupillary diameter and cognitive load.
+      <em>
+       <em>
+        Journal of Psychophysiology
+       </em>
+      </em>
+      (1991).
+     </li>
+     <li id="BibPLXBIB0039" label="[39]">
+      Kenneth Alberto Funes Mora, Florent Monay, and Jean-Marc Odobez. 2014. Eyediap: A database for the development and evaluation of gaze estimation algorithms from rgb and rgb-d cameras. In
+      <em>
+       Proceedings of the Symposium on Eye Tracking Research and Applications
+      </em>
+      . ACM, 255–258.
+     </li>
+     <li id="BibPLXBIB0040" label="[40]">
+      Martez E Mott, Shane Williams, Jacob O Wobbrock, and Meredith Ringel Morris. 2017. Improving dwell-based gaze typing with dynamic, cascading dwell times. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 2558–2570.
+     </li>
+     <li id="BibPLXBIB0041" label="[41]">
+      Philipp Müller, Michael Xuelin Huang, and Andreas Bulling. 2018. Detecting Low Rapport During Natural Interactions in Small Groups from Non-Verbal Behaviour. In
+      <em>
+       23rd International Conference on Intelligent User Interfaces
+      </em>
+      . ACM, 153–164.
+     </li>
+     <li id="BibPLXBIB0042" label="[42]">
+      Philipp Müller, Michael Xuelin Huang, Xucong Zhang, and Andreas Bulling. 2018. Robust Eye Contact Detection in Natural Multi-Person Interactions Using Gaze and Speaking Behaviour. In
+      <em>
+       Proc. International Symposium on Eye Tracking Research and Applications (ETRA)
+      </em>
+      . 31:1–31:10.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3204493.3204549" target="_blank">
+       https://doi.org/10.1145/3204493.3204549
+      </a>
+     </li>
+     <li id="BibPLXBIB0043" label="[43]">
+      Joshua Newn, Fraser Allison, Eduardo Velloso, and Frank Vetere. 2018. Looks can be deceiving: Using gaze visualisation to predict and mislead opponents in strategic gameplay. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 261.
+     </li>
+     <li id="BibPLXBIB0044" label="[44]">
+      Cuong Nguyen and Feng Liu. 2016. Gaze-based Notetaking for Learning from Lecture Videos. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 2093–2097.
+     </li>
+     <li id="BibPLXBIB0045" label="[45]">
+      Mai Otsuki, Taiki Kawano, Keita Maruyama, Hideaki Kuzuoka, and Yusuke Suzuki. 2017. ThirdEye: Simple Add-on Display to Represent Remote Participant's Gaze Direction in Video Communication. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 5307–5312.
+     </li>
+     <li id="BibPLXBIB0046" label="[46]">
+      Oskar Palinko, Andrew L Kun, Alexander Shyrokov, and Peter Heeman. 2010. Estimating cognitive load using remote eye tracking in a driving simulator. In
+      <em>
+       Proceedings of the 2010 symposium on eye-tracking research &amp; applications
+      </em>
+      . ACM, 141–144.
+     </li>
+     <li id="BibPLXBIB0047" label="[47]">
+      Seonwook Park, Xucong Zhang, Andreas Bulling, and Otmar Hilliges. 2018. Learning to Find Eye Region Landmarks for Remote Gaze Estimation in Unconstrained Settings. In
+      <em>
+       Proc. International Symposium on Eye Tracking Research and Applications (ETRA)
+      </em>
+      . 21:1–21:10.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3204493.3204545" target="_blank">
+       https://doi.org/10.1145/3204493.3204545
+      </a>
+     </li>
+     <li id="BibPLXBIB0048" label="[48]">
+      Thammathip Piumsomboon, Gun Lee, Robert W Lindeman, and Mark Billinghurst. 2017. Exploring natural eye-gaze-based interaction for immersive virtual reality. In
+      <em>
+       3D User Interfaces (3DUI), 2017 IEEE Symposium on
+      </em>
+      . IEEE, 36–39.
+     </li>
+     <li id="BibPLXBIB0049" label="[49]">
+      Rui Rodrigues, Joao P. Barreto, and Urbano Nunes. 2010. Camera pose estimation using images of planar mirror reflections. In
+      <em>
+       Proceedings of the 11th European Conference on Computer Vision
+      </em>
+      . 382–395.
+     </li>
+     <li id="BibPLXBIB0050" label="[50]">
+      Negar Sammaknejad, Hamidreza Pouretemad, Changiz Eslahchi, Alireza Salahirad, and Ashkan Alinejad. 2017. Gender classification based on eye movements: A processing effect during passive face viewing.
+      <em>
+       <em>
+        Advances in cognitive psychology
+       </em>
+      </em>
+      13, 3 (2017), 232.
+     </li>
+     <li id="BibPLXBIB0051" label="[51]">
+      Hosnieh Sattar, Sabine Müller, Mario Fritz, and Andreas Bulling. 2015. Prediction of Search Targets From Fixations in Open-world Settings. In
+      <em>
+       Proc. IEEE Conference on Computer Vision and Pattern Recognition (CVPR)
+      </em>
+      . 981–990.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/CVPR.2015.7298700" target="_blank">
+       https://doi.org/10.1109/CVPR.2015.7298700
+      </a>
+     </li>
+     <li id="BibPLXBIB0052" label="[52]">
+      Simon Schenk, Marc Dreiser, Gerhard Rigoll, and Michael Dorr. 2017. GazeEverywhere: Enabling Gaze-only User Interaction on an Unmodified Desktop PC in Everyday Scenarios. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 3034–3044.
+     </li>
+     <li id="BibPLXBIB0053" label="[53]">
+      Ashish Shrivastava, Tomas Pfister, Oncel Tuzel, Josh Susskind, Wenda Wang, and Russ Webb. 2017. Learning from Simulated and Unsupervised Images through Adversarial Training. In
+      <em>
+       Computer Vision and Pattern Recognition (CVPR), 2017 IEEE Conference on
+      </em>
+      .
+     </li>
+     <li id="BibPLXBIB0054" label="[54]">
+      Brian A Smith, Qi Yin, Steven K Feiner, and Shree K Nayar. 2013. Gaze locking: passive eye contact detection for human-object interaction. In
+      <em>
+       Proceedings of the 26th annual ACM symposium on User interface software and technology
+      </em>
+      . ACM, 271–280.
+     </li>
+     <li id="BibPLXBIB0055" label="[55]">
+      Julian Steil and Andreas Bulling. 2015. Discovery of everyday human activities from long-term visual behaviour using topic models. In
+      <em>
+       Proceedings of the 2015 ACM International Joint Conference on Pervasive and Ubiquitous Computing
+      </em>
+      . ACM, 75–85.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2750858.2807520" target="_blank">
+       https://doi.org/10.1145/2750858.2807520
+      </a>
+     </li>
+     <li id="BibPLXBIB0056" label="[56]">
+      Julian Steil, Philipp Müller, Yusuke Sugano, and Andreas Bulling. 2018. Forecasting User Attention During Everyday Mobile Interactions Using Device-Integrated and Wearable Sensors. In
+      <em>
+       Proc. International Conference on Human-Computer Interaction with Mobile Devices and Services (MobileHCI)
+      </em>
+      (2018-04-16). 1:1–1:13.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3229434.3229439" target="_blank">
+       https://doi.org/10.1145/3229434.3229439
+      </a>
+     </li>
+     <li id="BibPLXBIB0057" label="[57]">
+      Yusuke Sugano, Xucong Zhang, and Andreas Bulling. 2016. Aggregaze: Collective estimation of audience attention on public displays. In
+      <em>
+       Proceedings of the 29th Annual Symposium on User Interface Software and Technology
+      </em>
+      . ACM, 821–831.
+     </li>
+     <li id="BibPLXBIB0058" label="[58]">
+      Kar-Han Tan, David J Kriegman, and Narendra Ahuja. 2002. Appearance-based eye gaze estimation. In
+      <em>
+       Applications of Computer Vision, 2002.(WACV 2002). Proceedings. Sixth IEEE Workshop on
+      </em>
+      . IEEE, 191–195.
+     </li>
+     <li id="BibPLXBIB0059" label="[59]">
+      Bernd Tessendorf, Andreas Bulling, Daniel Roggen, Thomas Stiefmeier, Manuela Feilner, Peter Derleth, and Gerhard Tröster. 2011. Recognition of Hearing Needs From Body and Eye Movements to Improve Hearing Instruments. In
+      <em>
+       Proc. International Conference on Pervasive Computing (Pervasive)
+      </em>
+      . 314–331.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/978-3-642-21726-5_20" target="_blank">
+       https://doi.org/10.1007/978-3-642-21726-5_20
+      </a>
+     </li>
+     <li id="BibPLXBIB0060" label="[60]">
+      Vytautas Vaitukaitis and Andreas Bulling. 2012. Eye Gesture Recognition on Portable Devices. In
+      <em>
+       Proc. International Workshop on Pervasive Eye Tracking and Mobile Gaze-Based Interaction (PETMEI)
+      </em>
+      . 711–714.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2370216.2370370" target="_blank">
+       https://doi.org/10.1145/2370216.2370370
+      </a>
+     </li>
+     <li id="BibPLXBIB0061" label="[61]">
+      Roberto Valenti, Nicu Sebe, and Theo Gevers. 2012. Combining head pose and eye location information for gaze estimation.
+      <em>
+       <em>
+        IEEE Transactions on Image Processing
+       </em>
+      </em>
+      21, 2 (2012), 802–815.
+     </li>
+     <li id="BibPLXBIB0062" label="[62]">
+      Roel Vertegaal
+      <em>
+       et al.
+      </em>
+      2003. Attentive user interfaces.
+      <em>
+       <em>
+        Commun. ACM
+       </em>
+      </em>
+      46, 3 (2003), 30–33.
+     </li>
+     <li id="BibPLXBIB0063" label="[63]">
+      Mélodie Vidal, Andreas Bulling, and Hans Gellersen. 2013. Pursuits: Spontaneous Interaction with Displays based on Smooth Pursuit Eye Movement and Moving Targets. In
+      <em>
+       Proc. ACM International Joint Conference on Pervasive and Ubiquitous Computing (UbiComp)
+      </em>
+      . 439–448.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2468356.2479632" target="_blank">
+       https://doi.org/10.1145/2468356.2479632
+      </a>
+     </li>
+     <li id="BibPLXBIB0064" label="[64]">
+      Erroll Wood, Tadas Baltrusaitis, Xucong Zhang, Yusuke Sugano, Peter Robinson, and Andreas Bulling. 2015. Rendering of eyes for eye-shape registration and gaze estimation. In
+      <em>
+       Proceedings of the IEEE International Conference on Computer Vision
+      </em>
+      . 3756–3764.
+     </li>
+     <li id="BibPLXBIB0065" label="[65]">
+      Erroll Wood and Andreas Bulling. 2014. Eyetab: Model-based gaze estimation on unmodified tablet computers. In
+      <em>
+       Proceedings of the Symposium on Eye Tracking Research and Applications
+      </em>
+      . ACM, 207–210.
+     </li>
+     <li id="BibPLXBIB0066" label="[66]">
+      Pingmei Xu, Yusuke Sugano, and Andreas Bulling. 2016. Spatio-temporal modeling and prediction of visual attention in graphical user interfaces. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 3299–3310.
+     </li>
+     <li id="BibPLXBIB0067" label="[67]">
+      Hirotake Yamazoe, Akira Utsumi, Tomoko Yonezawa, and Shinji Abe. 2008. Remote gaze estimation with a single camera based on facial-feature tracking without special calibration actions. In
+      <em>
+       Proceedings of the 2008 symposium on Eye tracking research &amp; applications
+      </em>
+      . ACM, 245–250.
+     </li>
+     <li id="BibPLXBIB0068" label="[68]">
+      Xucong Zhang, Michael Xuelin Huang, Yusuke Sugano, and Andreas Bulling. 2018. Training Person-Specific Gaze Estimators from Interactions with Multiple Devices. In
+      <em>
+       Proc. ACM SIGCHI Conference on Human Factors in Computing Systems (CHI)
+      </em>
+      . 624:1–624:12.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3174198" target="_blank">
+       https://doi.org/10.1145/3173574.3174198
+      </a>
+     </li>
+     <li id="BibPLXBIB0069" label="[69]">
+      Xiaoyi Zhang, Harish Kulkarni, and Meredith Ringel Morris. 2017. Smartphone-Based Gaze Gesture Communication for People with Motor Disabilities. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      . ACM, 2878–2889.
+     </li>
+     <li id="BibPLXBIB0070" label="[70]">
+      Xucong Zhang, Yusuke Sugano, and Andreas Bulling. 2017. Everyday Eye Contact Detection Using Unsupervised Gaze Target Discovery. In
+      <em>
+       Proc. ACM Symposium on User Interface Software and Technology (UIST)
+      </em>
+      . 193–203.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3126594.3126614" target="_blank">
+       https://doi.org/10.1145/3126594.3126614
+      </a>
+     </li>
+     <li id="BibPLXBIB0071" label="[71]">
+      Xucong Zhang, Yusuke Sugano, and Andreas Bulling. 2018. Revisiting data normalization for appearance-based gaze estimation. In
+      <em>
+       Proceedings of the 2018 ACM Symposium on Eye Tracking Research &amp; Applications
+      </em>
+      . ACM, 12.
+     </li>
+     <li id="BibPLXBIB0072" label="[72]">
+      Xucong Zhang, Yusuke Sugano, Mario Fritz, and Andreas Bulling. 2017. It's written all over your face: Full-face appearance-based gaze estimation. In
+      <em>
+       Computer Vision and Pattern Recognition Workshops (CVPRW), 2017 IEEE Conference on
+      </em>
+      . IEEE, 2299–2308.
+     </li>
+     <li id="BibPLXBIB0073" label="[73]">
+      Xucong Zhang, Yusuke Sugano, Mario Fritz, and Andreas Bulling. 2018. MPIIGaze: Real-world dataset and deep appearance-based gaze estimation.
+      <em>
+       <em>
+        IEEE Transactions on Pattern Analysis and Machine Intelligence
+       </em>
+      </em>
+      (2018).
+     </li>
+     <li id="BibPLXBIB0074" label="[74]">
+      Yanxia Zhang, Andreas Bulling, and Hans Gellersen. 2013. SideWays: A Gaze Interface for Spontaneous Interaction with Situated Displays. In
+      <em>
+       Proc. ACM SIGCHI Conference on Human Factors in Computing Systems (CHI)
+      </em>
+      . 851–860.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2470775" target="_blank">
+       https://doi.org/10.1145/2470654.2470775
+      </a>
+     </li>
+     <li id="BibPLXBIB0075" label="[75]">
+      Yanxia Zhang, Ming Ki Chong, Jörg Müller, Andreas Bulling, and Hans Gellersen. 2015. Eye tracking for public displays in the wild.
+      <em>
+       <em>
+        Springer Personal and Ubiquitous Computing
+       </em>
+      </em>
+      19, 5 (2015), 967–981.
+      <a class="link-inline force-break" href="https://doi.org/10.1007/s00779-015-0866-8" target="_blank">
+       https://doi.org/10.1007/s00779-015-0866-8
+      </a>
+     </li>
+     <li id="BibPLXBIB0076" label="[76]">
+      Yanxia Zhang, Hans Jörg Müller, Ming Ki Chong, Andreas Bulling, and Hans Gellersen. 2014. GazeHorizon: Enabling Passers-by to Interact with Public Displays by Gaze. In
+      <em>
+       Proc. ACM International Joint Conference on Pervasive and Ubiquitous Computing (UbiComp)
+      </em>
+      . 559–563.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2632048.2636071" target="_blank">
+       https://doi.org/10.1145/2632048.2636071
+      </a>
+     </li>
+     <li id="BibPLXBIB0077" label="[77]">
+      Yanxia Zhang, Ken Pfeuffer, Ming Ki Chong, Jason Alexander, Andreas Bulling, and Hans Gellersen. 2017. Look together: using gaze for assisting co-located collaborative search.
+      <em>
+       <em>
+        Personal and Ubiquitous Computing
+       </em>
+      </em>
+      21, 1 (2017), 173–186.
+     </li>
+     <li id="BibPLXBIB0078" label="[78]">
+      Zhiwei Zhu and Qiang Ji. 2005. Eye gaze tracking under natural head movements. In
+      <em>
+       Computer Vision and Pattern Recognition, 2005. CVPR 2005. IEEE Computer Society Conference on
+      </em>
+      , Vol. 1. IEEE, 918–923.
+     </li>
+     <li id="BibPLXBIB0079" label="[79]">
+      Zhiwei Zhu, Qiang Ji, and Kristin P Bennett. 2006. Nonlinear eye gaze mapping function estimation via support vector regression. In
+      <em>
+       Pattern Recognition, 2006. ICPR 2006. 18th International Conference on
+      </em>
+      , Vol. 1. IEEE, 1132–1135.
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300646" target="_blank">
+      https://doi.org/10.1145/3290605.3300646
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'87585da6b8542c21',t:'MTcxMzMxNDQ0OC43MjAwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>

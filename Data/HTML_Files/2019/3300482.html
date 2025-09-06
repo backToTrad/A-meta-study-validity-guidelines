@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   Crowdsourcing Interface Feature Design with Bayesian Optimization
+  </title>
+  <!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width; initial-scale=1.0;" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <link href="3300482_files\bootstrapmin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300482_files\bootstrapthememin.css" media="screen, print" rel="stylesheet"/>
+  <link href="3300482_files\main.css" media="screen, print" rel="stylesheet"/>
+  <script src="3300482_files\jquerymin.js" type="text/javascript">
+  </script>
+  <script src="3300482_files\bootstrapmin.js" type="text/javascript">
+  </script>
+  <script src="3300482_files\bibCit.js" type="text/javascript">
+  </script>
+  <script src="3300482_files\divTab.js" type="text/javascript">
+  </script>
+  <script src="3300482_files\MathJax.js" type="text/javascript">
+  </script>
+  <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+ </head>
+ <body id="main">
+  <section class="front-matter">
+   <section>
+    <header class="title-info">
+     <div class="journal-title">
+      <h1>
+       <span class="title">
+        Crowdsourcing Interface Feature Design with Bayesian Optimization
+       </span>
+       <br/>
+       <span class="subTitle">
+       </span>
+      </h1>
+     </div>
+    </header>
+    <div class="authorGroup">
+     <div class="author">
+      <span class="givenName">
+       John
+      </span>
+      <span class="surName">
+       J. Dudley
+      </span>
+      , University of Cambridge, UK,
+      <a href="mailto:jjd50@cam.ac.uk">
+       jjd50@cam.ac.uk
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Jason
+      </span>
+      <span class="surName">
+       T. Jacques
+      </span>
+      , University of Cambridge, UK,
+      <a href="mailto:jtjacques@gmail.com">
+       jtjacques@gmail.com
+      </a>
+     </div>
+     <div class="author">
+      <span class="givenName">
+       Per Ola
+      </span>
+      <span class="surName">
+       Kristensson
+      </span>
+      , University of Cambridge, UK,
+      <a href="mailto:kristensson@gmail.com">
+       kristensson@gmail.com
+      </a>
+     </div>
+    </div>
+    <br/>
+    <div class="pubInfo">
+     <p>
+      DOI:
+      <a href="https://doi.org/10.1145/3290605.3300482" target="_blank">
+       https://doi.org/10.1145/3290605.3300482
+      </a>
+      <br/>
+      CHI '19:
+      <a href="https://doi.org/10.1145/3290605" target="_blank">
+       Proceedings of CHI Conference on Human Factors in Computing Systems
+      </a>
+      , Glasgow, Scotland UK, May 2019
+     </p>
+    </div>
+    <div class="abstract">
+     <p>
+      <small>
+       Designing novel interfaces is challenging. Designers typically rely on experience or subjective judgment in the absence of analytical or objective means for selecting interface parameters. We demonstrate Bayesian optimization as an efficient tool for objective interface feature refinement. Specifically, we show that crowdsourcing paired with Bayesian optimization can rapidly and effectively assist interface design across diverse deployment environments. Experiment 1 evaluates the approach on a familiar 2D interface design problem: a map search and review use case. Adding a degree of complexity, Experiment 2 extends Experiment 1 by switching the deployment environment to mobile-based virtual reality. The approach is then demonstrated as a case study for a fundamentally new and unfamiliar interaction design problem: web-based augmented reality. Finally, we show how the model generated as an outcome of the refinement process can be used for user simulation and queried to deliver various design insights.
+      </small>
+     </p>
+    </div>
+    <div class="CCSconcepts">
+     <ccs2012>
+      <small>
+       <span style="font-weight:bold;">
+        CCS Concepts:
+       </span>
+       •
+       <strong>
+        Human-centered computing → Systems and tools for interaction design
+       </strong>
+       ;
+      </small>
+     </ccs2012>
+    </div>
+    <br/>
+    <div class="classifications">
+     <div class="author">
+      <span style="font-weight:bold;">
+       <small>
+        Keywords:
+       </small>
+      </span>
+      <span class="keyword">
+       <small>
+        Interface Design; Optimization; Crowdsourcing
+       </small>
+      </span>
+     </div>
+     <br/>
+     <div class="AcmReferenceFormat">
+      <p>
+       <small>
+        <span style="font-weight:bold;">
+         ACM Reference Format:
+        </span>
+        <br/>
+        John J. Dudley, Jason T. Jacques, and Per Ola Kristensson. 2019. Crowdsourcing Interface Feature Design with Bayesian Optimization. In
+        <em>
+         Proceedings of CHI Conference on Human Factors in Computing Systems (CHI '19), May 4–9, 2019, Glasgow, Scotland UK.
+        </em>
+        ACM, New York, NY, USA 12 Pages.
+        <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300482" target="_blank">
+         https://doi.org/10.1145/3290605.3300482
+        </a>
+       </small>
+      </p>
+     </div>
+    </div>
+   </section>
+  </section>
+  <section class="body">
+   <section id="sec-2">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        1
+       </span>
+       INTRODUCTION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Without general guidance or analytical frameworks, user evaluation is critical to informing interface design. Performing this evaluation efficiently and identifying an optimum configuration is a fundamental goal of HCI. However, the process of optimizing the user interface is a non-trivial exercise given the typically noisy behavior of users and variability between users. Allowing the user to play a role in the optimization process is an attractive solution, particularly in instances where each evaluation is inherently user driven and the application is susceptible to user variability.
+    </p>
+    <p>
+     This paper examines Bayesian optimization as a potential tool in performing interface optimization in large scale, noisy user environments. Specifically we evaluate Bayesian optimization as an approach for online refinement of interface features through crowdsourced user participation. We apply Bayesian optimization to refine the parameters that determine the visual features and interaction behavior of a typical interface.
+    </p>
+    <p>
+     We present two illustrative experiments to demonstrate the process and its flexibility: 1) design of a 2D map search and review interface (such as encountered on a hotel booking site); and 2) design of a novel VR based search interface for the same task. We use these tasks and interfaces as a simple and familiar example to demonstrate the approach. Both interfaces are parameterized according to five design dimensions. We recruit users through crowdsourcing to identify ideal values for these parameters. The Bayesian optimization approach informs the selection of new test parameter values based on prior user performance, measured as the time to complete a discrete map search task. The experiment is structured to incorporate prior user data in batches in order to more clearly demonstrate an improvement in interface performance over time. As a baseline comparison we compare the Bayesian optimization approach with designs uniformly sampled from the bounded design space. This approximates arbitrary parameter settings chosen by a naive designer.
+    </p>
+    <p>
+     In addition to the two experiments described, we apply the procedure to an even more challenging mobile based Augmented Reality (AR) case study. This provides a practical demonstration of the approach and highlights its flexibility.
+    </p>
+    <p>
+     The key contributions of this paper are:
+    </p>
+    <ul class="list-no-style">
+     <li id="list1" label="•">
+      An evaluation of Bayesian optimization for interface design refinement in two challenging design spaces.
+      <br/>
+     </li>
+     <li id="list2" label="•">
+      A demonstration of the approach in a highly novel web-based AR design case study.
+      <br/>
+     </li>
+     <li id="list3" label="•">
+      Implementation guidance for crowdsourcing interface design refinement using Bayesian optimization.
+      <br/>
+     </li>
+    </ul>
+   </section>
+   <section id="sec-3">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        2
+       </span>
+       RELATED WORK
+      </h2>
+     </div>
+    </header>
+    <p>
+     The broader challenge of actively supporting interface design refinement has been approached from a variety of perspectives. These efforts largely fall into three categories: model-based optimization, post hoc refinement, and online refinement. Model-based optimization methods support the designer at design time based on predictive models of the user [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0004">
+      4
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0020">
+      20
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0024">
+      24
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ]. Keyboard layout optimization is a popular application of this approach. Applications such as MenuOptimizer [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0001">
+      1
+     </a>
+     ], DesignScape [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0019">
+      19
+     </a>
+     ] and Sketchplore [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0027">
+      27
+     </a>
+     ] demonstrate how these approaches can also be explicitly embedded into design support tools.
+    </p>
+    <p>
+     Post hoc refinement is an offline strategy in which collected data is either used directly or fed to user models to refine the interface. Clearly this encompasses the much broader workflow of making design changes based on feedback and controlled experiments [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0009">
+      9
+     </a>
+     ]. More relevant to the context of this paper, however, are efforts that formalize this approach [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+      23
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ]. Salem [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0023">
+      23
+     </a>
+     ] demonstrates a structured approach to comparing and refining web landing page design alternatives using genetic programming while Liu et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0013">
+      13
+     </a>
+     ] explore optimal representations for mathematics pedagogy.
+    </p>
+    <p>
+     Online interface refinement, the category in which this paper falls, describes methods which actively change the interface based on some objective during or between interactions. This approach is readily applied in games where an optimal performance or engagement level might be achieved through game feature refinement [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0014">
+      14
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0015">
+      15
+     </a>
+     ]. Similarly, BIGnav [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0012">
+      12
+     </a>
+     ] probabilistically fused inputs and prior information about locations on a map to improve navigation performance. Online refinement has also been explored in psychology (e.g. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0017">
+      17
+     </a>
+     ]) to obtain maximally informative experiments.
+    </p>
+    <p>
+     Bayesian optimization has significant potential in supporting this third strategy of interface refinement. Bayesian optimization is a machine learning technique that facilitates efficient exploration of complex or unobservable cost functions. The approach is particularly useful when evaluation of the cost function is expensive: e.g. slow computational models, or evaluations that involve a physical process. A detailed review of the approach and practical applications of Bayesian optimization is provided in [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0025">
+      25
+     </a>
+     ]. Bayesian optimization has been applied in user interfaces for a range of applications. Brochu et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0002">
+      2
+     </a>
+     ] applied the technique within a preference gallery to allow users to evaluate alternate settings for rendering smoke. Other applications have involved maximizing user engagement in games [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ], and optimizing individual user settings for a hearing device [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0018">
+      18
+     </a>
+     ]. Snoek's doctoral thesis [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ] provides a comprehensive investigation of Bayesian optimization for assistive technologies.
+    </p>
+    <p>
+     The incorporation of a Bayesian optimization approach into interface design by exploiting user interaction data is challenging due to typically high noise levels. Running large numbers of users through an interface that may be poorly designed in its first iteration can also be difficult for many designers. Fortunately, crowdsourcing has emerged as a viable source of large volumes of users willing to undertake interface testing in return for compensation. Crowdsourcing can offer large quantities of data at low cost [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0008">
+      8
+     </a>
+     ]. Comparative studies, such as those by Heer and Bostock [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0006">
+      6
+     </a>
+     ], have demonstrated crowdsourcing as a fast and effective method for gathering graphical perception data and provide results consistent with in-lab studies. There is also good precedence in interface research carried out using crowdsourcing [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0028">
+      28
+     </a>
+     ]. Further, work by Komarov et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0010">
+      10
+     </a>
+     ] has shown that performance evaluation of user interfaces, carried out using both crowdworkers and in-lab participants, yields equivalent relative differences between experimental conditions.
+    </p>
+    <p>
+     Crowdsourcing has been employed at the intersection of interface design and Bayesian optimization to efficiently collect large numbers of user interactions. Koyama et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+      11
+     </a>
+     ] demonstrate the potential of Bayesian optimization to assist with visual feature optimization. They decompose the higher-order optimization problem into one-dimensional line searches that can then be allocated to crowdworkers: crowdworkers select the point on the slider that yields the best visual appearance. Koyama et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0011">
+      11
+     </a>
+     ] apply various quality control strategies to address aspects of subjectivity in this assessment. In this paper, we avoid subjectivity in crowdworker input by directly measuring task completion time: a summative reflection of the perceptual and interactive qualities of the interface. Khajah et al. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0007">
+      7
+     </a>
+     ] recruited crowdworkers in their evaluation of Bayesian optimization to find game parameters that maximize user engagement. As an indicator of engagement, they exploit crowdworker estimates of how much additional (unpaid) time others might spend playing the game. In this paper, we focus on utility and efficiency of the interface and target the most closely related performance metric for this purpose: task completion time.
+    </p>
+    <p>
+     The unique contribution of this paper is that we apply a Bayesian optimization approach to deliver refinement of a diverse set of design features directly based on actual user performance. Through demonstration in three different deployment settings, we also highlight the potential that this approach has as a design tool with good objectivity, versatility and comparatively low overhead.
+    </p>
+   </section>
+   <section id="sec-4">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        3
+       </span>
+       APPROACH
+      </h2>
+     </div>
+    </header>
+    <p>
+     The objective of this paper is to provide an accessible introduction to, and demonstration of Bayesian optimization for interface design refinement. Section
+     <a class="sec" href="#sec-5">
+      4
+     </a>
+     describes the technique of Bayesian optimization contextualized by the interface refinement problem. In contrast to prior work, we apply a formulation that is readily understood and applied: directly modeling the relationship between interface feature parameters and task completion time. In two illustrative design problems, we demonstrate that the technique actively refines the interface in very few execution cycles. A further case study serves to show how Bayesian optimization can be efficiently applied in totally unfamiliar applications and settings. Finally, we discuss the broader implications of our findings as they relate to the application of Bayesian optimization and highlight ancillary benefits of the approach.
+    </p>
+   </section>
+   <section id="sec-5">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        4
+       </span>
+       BAYESIAN OPTIMIZATION
+      </h2>
+     </div>
+    </header>
+    <p>
+     In this section we provide a brief overview of the basic principles of Bayesian optimization. For a detailed explanation and formulation see [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+      26
+     </a>
+     ]. At the expense of completeness, we have endeavoured to provide a simple to understand explanation contextualized by the interface design problem.
+    </p>
+    <p>
+     Bayesian optimization works by exploiting a probabilistic model that has been fitted to describe some unknown function. In this study, for example, we seek to model how users perform when certain interface design features are varied. This function is ‘unknown’ as we have no way to reliably predict how user performance will be affected by changes to the interface.
+     <a class="fn" href="#fn1" id="foot-fn1">
+      <sup>
+       1
+      </sup>
+     </a>
+     The conventional approach in Bayesian optimization is to model the unknown function as a Gaussian process (GP). A GP is a distribution over functions and is specified by its mean function,
+     <em>
+      m
+     </em>
+     (
+     <strong>
+      x
+     </strong>
+     ) and covariance function,
+     <em>
+      k
+     </em>
+     (
+     <strong>
+      x
+     </strong>
+     ,
+     <strong>
+      x
+     </strong>
+     ′). These are essentially the function parallels of the mean and variance of a random variable. The function,
+     <em>
+      f
+     </em>
+     (
+     <strong>
+      x
+     </strong>
+     ), however, specifies the random variable at location,
+     <strong>
+      x
+     </strong>
+     .
+    </p>
+    <p>
+     In the interface refinement task, we fit the GP using data obtained through observations of user performance. Throughout this paper we use task completion time as the observation value. An observation instance, representing a particular design configuration of the interface, has parameter values defined by
+     <strong>
+      x
+     </strong>
+     <sub>
+      <em>
+       i
+      </em>
+     </sub>
+     . The crux of Bayesian optimization is to leverage the GP, fitted to a sequence of observations, {
+     <strong>
+      x
+     </strong>
+     <sub>
+      1:
+      <em>
+       t
+      </em>
+     </sub>
+     ,
+     <strong>
+      f
+     </strong>
+     <sub>
+      1:
+      <em>
+       t
+      </em>
+     </sub>
+     }, to probabilistically determine what new point,
+     <strong>
+      x
+     </strong>
+     <sub>
+      <em>
+       t
+      </em>
+      + 1
+     </sub>
+     , should be evaluated next. As part of fitting observation data to the GP, there are a number of subtle assumptions that must be made about the target function. One of these relates to how closely nearby points in the space are correlated. The covariance between two points is typically referred to as a kernel. In this study we employ the automatic relevance determination (ARD) kernel (see [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+      21
+     </a>
+     , pp. 106]). The kernel itself has parameters, typically referred to as hyperparameters, which can be thought of as describing the general shape of the function space independent of the data points. There are many possible choices of kernel but we select the ARD kernal for its simplicity and to demonstrate that the approach can perform effectively even in a rudimentary configuration.
+    </p>
+    <p>
+     Once the GP is fitted to the observation points, the next step is to determine which new point to sample based on some probabilistic guidance. This guidance comes from an acquisition function: a function that reflects the benefit of sampling a given set of parameter values. The literature provides many choices for acquisition function. We use a standard approach based on expected improvement (EI). The EI acquisition function can be thought of as the potential gain that can be obtained, relative to the current best observation, at a given new observation point. This assessment is based on the current model's mean and variance at that point. The concept of the acquisition function is illustrated in a one dimensional example in Figure
+     <a class="fig" href="#fig1">
+      1
+     </a>
+     .
+    </p>
+    <figure id="fig1">
+     <img alt="" class="img-responsive" longdesc="Example of the Bayesian optimization procedure in one dimension." src="3300482_files\chi2019252fig1.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 1:
+      </span>
+      <span class="figure-title">
+       Illustration of Bayesian optimization in 1D. The top plot shows the Gaussian process approximation of the latent function over the design space. Three observations are shown (black circles) and the uncertainty around these points is visibly reduced. Below is the Expected Improvement over the design space: the potential that a new observation point has to improve upon the current best observation.
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <section id="sec-6">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Hyperparameters
+       </h3>
+      </div>
+     </header>
+     <p>
+      As described above, Bayesian optimization is not completely free from the parameter selection problem. There are several hyperparameters in the ARD kernel which dictate the high level function shape. These are:
+      <span class="inline-equation">
+       <span class="tex">
+        $\theta =(\sigma _f^2,\sigma _n^2,l_1,...,l_D)$
+       </span>
+      </span>
+      where
+      <em>
+       D
+      </em>
+      is the dimensionality. The signal variance,
+      <span class="inline-equation">
+       <span class="tex">
+        $\sigma _f^2$
+       </span>
+      </span>
+      , is the variance in the signal without noise, i.e. the degree to which the signal varies over the space as a function of the inputs. If there are no observation points in a portion of the space, the standard deviation of the process is
+      <em>
+       σ
+       <sub>
+        f
+       </sub>
+      </em>
+      . The noise variance,
+      <span class="inline-equation">
+       <span class="tex">
+        $\sigma _n^2$
+       </span>
+      </span>
+      , reflects the characteristics of the noise added to the underlying signal. As described by Rasmussen and Williams [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      , pp. 106], “the
+      <em>
+       l
+      </em>
+      <sub>
+       1
+      </sub>
+      , ...,
+      <em>
+       l
+       <sub>
+        D
+       </sub>
+      </em>
+      hyperparameters play the role of characteristic length-scales; loosely speaking, how far do you need to move (along a particular axis) in input space for the function values to become uncorrelated.”
+     </p>
+     <p>
+      Conveniently, there are effective methods for determining appropriate hyperparameter values. One of the main attractions of Gaussian processes for regression models is that the integrals are analytically tractable [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      ]. As such, it is possible to derive the expression for the marginal likelihood, i.e. the likelihood of the observations given the hyperparamters marginalized over the possible functions. Suitable hyperparameters are found by optimizing the marginal likelihood.
+     </p>
+    </section>
+    <section id="sec-7">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Implementation Specific Details
+       </h3>
+      </div>
+     </header>
+     <p>
+      This section documents several details specific to the implementation of Bayesian optimization used in this study. As suggested in [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0021">
+       21
+      </a>
+      , p. 23], we rescale the observation values to have zero mean and unit variance. To do this in the absence of prior data, we require a coarse approximation of the distribution of typical observation values. In this paper, the observation values are task completion times. Completion time is approximately the product of the number of inspections and time per inspection. Such products approach a log-normal distribution. Based on initial pilot testing and for consistency across the experiments and case study, we assume a mean completion time of approximately 30 s. To normalize for unit variance we expect typical task times might vary between 15 s (half) and 60 s (double) which corresponds very approximately with a log-normal standard deviation of 0.7. These values could be refined through further pilot testing or using prior task data. Our results suggest, however, that coarse approximations yield adequate performance.
+     </p>
+     <p>
+      A further simplification for implementation purposes is the conversion of the continuous design space into a discrete one. This helps avoid the requirement to exhaustively search the space when optimizing the acquisition function. The approach involves evaluating a candidate list of sample points that provide representative coverage of the design space. Appropriate bounds for each parameter are chosen and this sets the limits of the hypercube. The candidate list is then constructed by sampling from the parameter hypercube using a Sobol sequence as described by [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0026">
+       26
+      </a>
+      ]. We use 1000 candidates sampled in this way. While more candidates provides greater search resolution (at the cost of speed), we considered this value sufficient to demonstrate the approach. Unlike many optimization problems, we do not expect that a certain set of parameters will provide universally optimal performance. Far more likely in the case of varied human participants working on different platforms is that we see an ideal parameter region rather than a distinct peak. Therefore, fine-grained optimization of the parameters is not necessary. At this point it is also important to highlight a subtle distinction between advantageous exploration and convergence towards a singular ‘optimal’ design. This paper uses an optimization technique but is distinct from pure optimization. Rather, the expected behavior under the EI acquisition function is an emerging preference for selection from within a region of good designs (advantageous exploration). At some point, however, this advantageous exploratory behavior may be overridden by a preference for unexplored regions of high uncertainty exhibiting some potential for improvement.
+     </p>
+     <p>
+      A further deviation from more typical applications of Bayesian optimization is our batching approach. We hypothesize that the Bayesian optimization approach supports the identification of suitable parameter ranges while also reducing imposition on users. To make performance improvement due to parameter refinement testable, we incorporate prior participant data in separate batches. In other words, we complete a batch of tasks with multiple users and then feed in this performance data to provide prior information in subsequent batches. Note that this approach is not the same as selecting a set of parameter values to explore (e.g. [
+      <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0005">
+       5
+      </a>
+      ]) as each user is allocated sample points independently of other users within the same batch. Within each batch and for each user, however, the standard process of Bayesian optimization also incorporates the individual user's prior performance. The hyperparameters are held constant during a batch and then updated based on all data up to and including the most recent batch. In the first batch with no prior data, the hyperparameters were all set to a nominal value (unity). Again, pilot testing or pre-existing data could inform the selection of appropriate values but we demonstrate that the approach can proceed even when naively initialized.
+     </p>
+    </section>
+    <section id="sec-8">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Fixed Baseline
+       </h3>
+      </div>
+     </header>
+     <p>
+      A fixed baseline was introduced to serve as a common point of reference across the experimental batches that make up Experiments 1 and 2. Over both experiments, the condition was alternated for each subsequent participant. In the baseline condition, design parameters were uniformly sampled from the design candidate list. For a given participant, this sampling was without replacement such that a participant would not experience the same design twice.
+     </p>
+     <p>
+      Recall that the candidate list is constructed after first setting sensible bounds on the design parameters. This choice of baseline can therefore be thought of as testing parameters supplied by naive designers without prior experience or the ability to learn from prior data. This baseline is clearly conservative as even the most naive designer may be unlikely to choose certain design combinations, even if the individual parameter values are sensible. Nevertheless, this baseline serves as a useful reference point and an important check on population sampling effects.
+     </p>
+    </section>
+   </section>
+   <section id="sec-9">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        5
+       </span>
+       EXPERIMENT 1: HOTEL SEARCH TASK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Our intent in this study is to evaluate the optimization approach in the context of a real word interface design problem. As an exploratory venture into this space we sought a relatively simple task that had good external validity but could still be experimentally controlled. We chose a map search interface such as encountered on most online hotel booking sites. Specifically, we refer to an interface in which hotel location
+     <em>
+      pins
+     </em>
+     are visualized on a map and the user reviews additional details (shown in overlaid
+     <em>
+      tooltips
+     </em>
+     ) about each hotel by moving the cursor over the map. The task thus requires the user to find a hotel that meets specified criteria.
+    </p>
+    <p>
+     Given that the actual application is secondary to the demonstration of our approach in this paper, it is convenient that the map search and review task is generally familiar to users. We assume that the basic interface and interaction learning effects are small and we can avoid extensive explanation of the task. This means that the variation in the parameters which define the interface design are more likely to be the dominant factor influencing completion time.
+    </p>
+    <p>
+     The design of a map search interface is a useful demonstration application as it encompasses multiple non-trivial design dimensions. Consider, for example, the timeout period on hiding a tooltip after leaving a pin with the cursor. Setting this value to be too short may prevent the user from making a comparative evaluation while conversely, setting it too long or infinite may cause unnecessary obfuscation of the interface. The timeout period may be chosen by the designer through some self-testing or an informal user study but there is limited objective basis for assuming that value is appropriate for the broader user population. Furthermore, it is easy to imagine non-trivial interactions between this timeout period and other design parameters such as the distance threshold on initially showing the tooltip.
+    </p>
+    <p>
+     While the interface design space is obviously theoretically infinite, for practical purposes it is necessary to finitely parameterize the design space. For the purpose of this experiment, we constrain the parameterization of the design space to five dimensions. Constraining to five dimensions allows us to demonstrate utility in a non-trivial parameter selection problem while also maintaining interpretability of the design implications. The five design dimensions chosen are summarized below:
+    </p>
+    <ul class="list-no-style">
+     <li id="list4" label="•">
+      <em>
+       Distance:
+      </em>
+      threshold distance on cursor-to-pin for raising
+      <em>
+       show tooltip
+      </em>
+      event.
+      <br/>
+     </li>
+     <li id="list5" label="•">
+      <em>
+       Delay
+      </em>
+      : timeout before responding to
+      <em>
+       show tooltip
+      </em>
+      event.
+      <br/>
+     </li>
+     <li id="list6" label="•">
+      <em>
+       Decay
+      </em>
+      : timeout before responding to
+      <em>
+       hide tooltip
+      </em>
+      event after cursor exits distance threshold.
+      <br/>
+     </li>
+     <li id="list7" label="•">
+      <em>
+       Size
+      </em>
+      : size of the hotel tooltip.
+      <br/>
+     </li>
+     <li id="list8" label="•">
+      <em>
+       Opacity
+      </em>
+      : transparency of the hotel tooltip.
+      <br/>
+     </li>
+    </ul>
+    <figure id="fig2">
+     <img alt="" class="img-responsive" longdesc="The hotel search task interface in Experiment 1." src="3300482_files\chi2019252fig2.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 2:
+      </span>
+      <span class="figure-title">
+       Hotel search task interface. The search criteria are displayed at the top of the interface. The tooltip details for four of the hotels are shown to the bottom left.
+      </span>
+     </div>
+    </figure>
+    <p>
+     Clearly there are many other possible interface design features that could have been chosen. To illustrate the advantages of the presented approach, we have selected features that exhibit inherent trade-offs and expose non-trivial interactions with other features. The map search interface as developed for this experiment is illustrated in Figure
+     <a class="fig" href="#fig2">
+      2
+     </a>
+     .
+    </p>
+    <p>
+     Each hotel tooltip lists the name, thumbnail image, price, star rating and bed count. These details were set arbitrarily although effort was made to ensure there was a correlation between star rating and price as well as bed count and price, as per standard hotel room pricing practices. There were always 20 hotels indicated on the map.
+    </p>
+    <section id="sec-10">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Finding Hotels
+       </h3>
+      </div>
+     </header>
+     <p>
+      Participants were instructed to find the hotel on the map meeting specified criteria. For example, the search criteria might say, “Find a hotel that is 3 stars and has 3 beds”. The participant must then search the map and review hotel details until they find the matching hotel. The search criteria were chosen so that there was only one hotel that matched the specified criteria.
+     </p>
+     <p>
+      Upon finding the matching hotel, the participant must click the
+      <em>
+       select
+      </em>
+      button, located on the tooltip, then click the submit button below the map. If an incorrect hotel was selected, the participant is informed of their error and forced to continue their search. A timer recorded the duration of the search task, and the counting timer was displayed on the top left of the map (see Figure
+      <a class="fig" href="#fig2">
+       2
+      </a>
+      ). To avoid circumstances in which the interface parameters are so poor that they prevent the participant from finding the hotel or the participant is otherwise unable to complete the task, the task instance is automatically advanced after 90 s.
+     </p>
+     <figure id="fig3">
+      <img alt="" class="img-responsive" longdesc="The comparative feature rating interface in Experiment 1." src="3300482_files\chi2019252fig3.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 3:
+       </span>
+       <span class="figure-title">
+        The comparative feature rating page. The left thumbnail shows the previous design configuration while the right shows the most recent configuration.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+     <p>
+      After submitting the correct hotel, the participant is presented with a results page. This page lists their completion time and the number of erroneous submissions made. If this was the first search task, no other information was presented and the participant could just click the
+      <em>
+       next
+      </em>
+      button to move to the next iteration of the task. If this was the second or later task, the results page would also show two thumbnail maps with a single hotel (see Figure
+      <a class="fig" href="#fig3">
+       3
+      </a>
+      ). These thumbnail maps presented the interface design as per the most recent parameter settings as well as the immediately previous parameter settings. The participant was then asked to rank their experience with the more recent parameter settings on a five point scale: much worse, worse, about the same, better, much better. After assigning their rating, the user could click the
+      <em>
+       next
+      </em>
+      button to move to the next task.
+     </p>
+     <p>
+      A total of 10 search tasks were presented to each participant, each with a different search criteria. The task order was randomly shuffled for each participant but the same 10 tasks were undertaken by all. Each task had a predefined hotel map layout. This layout was randomly generated originally to provide the distribution of hotels on the map but these layouts were then held constant for all users in the experiment described here.
+     </p>
+    </section>
+    <section id="sec-11">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Crowdsourcing Participants
+       </h3>
+      </div>
+     </header>
+     <p>
+      This experiment was formulated as a Human-Intelligence Task (HIT) and participants were recruited through the Amazon Mechanical Turk service. No restrictions were placed on participant qualifications so any Mechanical Turk user, or
+      <em>
+       worker
+      </em>
+      , was able to complete the HIT. Workers were limited to completing the HIT only once so all participants in this experiment are unique.
+     </p>
+     <p>
+      Recall that the Bayesian optimization procedure demonstrated in this paper was applied in batches. Batch size was set to 20 participants. At 10 tasks per participant there were 200 unique parameter observations per batch. The procedure was executed for five batches in both the baseline and Bayesian optimization condition. Therefore, there were 200 unique participants in the experiment.
+     </p>
+     <p>
+      Participants were compensated US
+      <font style="normal">
+       $
+      </font>
+      1 for their participation. The HIT, including reading the introductory material and instructions, took approximately 10 minutes to complete. After completing all tasks, participants could elect to provide basic demographic information. In total, 79 specified female, 118 male, and three participants did not respond. Participant ages ranged from 21 to 65 with a median of 30.
+     </p>
+    </section>
+   </section>
+   <section id="sec-12">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        6
+       </span>
+       EXPERIMENT 1: RESULTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     The batch results are summarized in Table
+     <a class="tbl" href="#tab1">
+      1
+     </a>
+     and Figure
+     <a class="fig" href="#fig4">
+      4
+     </a>
+     . Note that automatic advances of the task (i.e. where the task was not completed within 90 s) are excluded from these results although they are included as observations in the Bayesian optimization step. Note that discrete task time represents the time to complete a single search task and that each worker was presented with 10 search tasks. Each batch contained 20 workers so the
+     <em>
+      n
+     </em>
+     value reported in Table
+     <a class="tbl" href="#tab1">
+      1
+     </a>
+     indicates how may of the 200 tasks were actually completed.
+    </p>
+    <div class="table-responsive" id="tab1">
+     <div class="table-caption">
+      <span class="table-number">
+       Table 1:
+      </span>
+      <span class="table-title">
+       Median task times and completion counts in Exp. 1.
+      </span>
+     </div>
+     <table class="table">
+      <thead>
+       <tr>
+        <th style="text-align:center;">
+        </th>
+        <th colspan="2" style="text-align:center;;border-bottom: 2pt solid #000000;">
+         <em>
+          Median Task Time (s) [n]
+         </em>
+        </th>
+       </tr>
+       <tr>
+        <th style="text-align:center;">
+         <em>
+          Batch
+         </em>
+        </th>
+        <th style="text-align:center;">
+         <em>
+          Baseline
+         </em>
+        </th>
+        <th style="text-align:center;">
+         <em>
+          BO
+         </em>
+        </th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr>
+        <td style="text-align:center;">
+         B1
+        </td>
+        <td style="text-align:center;">
+         32.9 [165]
+        </td>
+        <td style="text-align:center;">
+         30.8 [166]
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         B2
+        </td>
+        <td style="text-align:center;">
+         34.0 [175]
+        </td>
+        <td style="text-align:center;">
+         21.5 [170]
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         B3
+        </td>
+        <td style="text-align:center;">
+         31.1 [161]
+        </td>
+        <td style="text-align:center;">
+         20.5 [187]
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         B4
+        </td>
+        <td style="text-align:center;">
+         34.1 [172]
+        </td>
+        <td style="text-align:center;">
+         21.3 [183]
+        </td>
+       </tr>
+       <tr>
+        <td style="text-align:center;">
+         B5
+        </td>
+        <td style="text-align:center;">
+         29.6 [165]
+        </td>
+        <td style="text-align:center;">
+         26.1 [191]
+        </td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <figure id="fig4">
+     <img alt="" class="img-responsive" longdesc="Boxplots of task completion time in Experiment 1." src="3300482_files\chi2019252fig4.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 4:
+      </span>
+      <span class="figure-title">
+       Boxplots of task completion time over the five batches for both conditions in Experiment 1. The red crosses indicate outliers based on
+       <em>
+        q
+       </em>
+       <sub>
+        3
+       </sub>
+       + 1.5 × (
+       <em>
+        q
+       </em>
+       3 −
+       <em>
+        q
+       </em>
+       1).
+      </span>
+     </div>
+    </figure>
+    <p>
+     We now review the results as obtained in chronological order of completion. In Batch 1, the boxplots of the baseline and Bayesian optimization conditions indicate very similar performance levels. A two-sample t-test on the log times reveals no significant difference between the samples (
+     <em>
+      p
+     </em>
+     =0.88).
+    </p>
+    <p>
+     This result is intuitive given that at this stage, the Bayesian optimization procedure has limited data upon which to model the parameter space. Given the parameter space is
+     <span class="inline-equation">
+      <img alt="" class="img-responsive" src="3300482_files\chi2019252inline4.svg"/>
+     </span>
+     there are insufficient samples to cover the corners of the hypercube. With insufficient data to make any firm assumptions about the space, the acquisition function typically encourages sampling that covers the space as broadly as possible.
+    </p>
+    <p>
+     Batch 2 yields an improvement both relative to Batch 1 and its paired Baseline condition. The median completion time of 21.5 s represents a 30% reduction in median completion time compared to the same condition in Batch 1. A two-sample t-test reveals a significant difference between the Bayesian optimization and Baseline conditions (
+     <em>
+      p
+     </em>
+     &lt; 0.01). This result suggests that the prior data incorporated from Batch 1 has encouraged the exploration of regions of the parameter space where there are actual performance improvements to be obtained. Batch 3 extends this further but with reduced gains. The median task time of 20.5 s is the lowest achieved and represents a 33% reduction relative to Batch 1.
+    </p>
+    <p>
+     It is interesting to note that Batches 4 and 5 remain significantly faster than the Baseline but are slightly elevated compared with the peak obtained in Batch 3. The interface improvements derived through the Bayesian optimization procedure are also evident in the increased task completion rates (
+     <em>
+      n
+     </em>
+     ) (see Table
+     <a class="tbl" href="#tab1">
+      1
+     </a>
+     ), peaking at 95.5% in Batch 5 compared with 83% in Batch 1.
+    </p>
+    <p>
+     The performance plateau and subsequent increase in completion times can be explained by further exploration of the design space. As more observations are made in the region of good performance, this reduces the uncertainty in that region. The acquisition function used will always seek to maximize the expected improvement. At some point it is possible that although the predicted mean for a largely unvisited region is poor, the uncertainty in this region might promote its investigation. Although ultimately useful for modeling the complete design space, such explorations will manifest as poor batch aggregate performance. This problem is typically referred to as the exploration versus exploitation trade-off. At some point, it is better to ‘exploit’ the known region of good performance by taking finer and finer observations from within that region. As described in Section
+     <a class="sec" href="#sec-5">
+      4
+     </a>
+     , a coarse candidate list was hypothesized to be appropriate for such interface refinement problems as fine parameter variation may not necessarily translate into noticeable difference in the interface. Nevertheless, there are alternative acquisition functions in the literature that better manage this transition between exploration and exploitation.
+    </p>
+    <section id="sec-13">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Interface Variation Ratings
+       </h3>
+      </div>
+     </header>
+     <figure id="fig5">
+      <img alt="" class="img-responsive" longdesc="Comparative feature rating proportions in Experiment 1." src="3300482_files\chi2019252fig5.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 5:
+       </span>
+       <span class="figure-title">
+        Rating proportions in Exp. 1.
+       </span>
+      </div>
+     </figure>
+     <p>
+      An alternative perspective on the interface feature refinement procedure is provided by looking at the participant ratings made after each task (except for the first task where no relative comparison is possible). Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      presents the rating proportions grouped based on three categories: Same (representing ‘about the same’ on the rating scale), Better (representing ‘better’ and ‘much better’) and Worse (representing ‘worse’ and ‘much worse’). This reduction is done to improve the clarity of the observable trends.
+     </p>
+     <p>
+      In the Bayesian optimization condition, we expect that as the refinement process proceeds, the range of plausible parameter settings that offer potential improvements narrows. This trend is observable in Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      where the Same counts steadily increase over batches 1-3. This largely comes at a cost of a smaller proportion of perceived improvements. The final two batches maintain a positive improvement bias but as observed in the median completion data, this does not translate into distinct performance improvement.
+     </p>
+     <p>
+      A further interesting result visible in Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      is the high degree of variability for the Baseline condition. There is no reason that participants should perceive a task-to-task improvement in the interface in the Baseline condition yet there remains a positive bias over the batches. This observation may be due to a recency effect bias, but does suggest that when unconnected to a known model driving change such comparative preference data may be unreliable.
+     </p>
+    </section>
+   </section>
+   <section id="sec-14">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        7
+       </span>
+       EXPERIMENT 2: MOBILE VR SEARCH TASK
+      </h2>
+     </div>
+    </header>
+    <figure id="fig6">
+     <img alt="" class="img-responsive" longdesc="The VR hotel search task interface in Experiment 2." src="3300482_files\chi2019252fig6.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 6:
+      </span>
+      <span class="figure-title">
+       Screenshot of the VR hotel search task in Exp. 2.
+      </span>
+     </div>
+    </figure>
+    <p>
+     The results from Experiment 1 suggest that Bayesian optimization presents a viable approach for refining 2D interface design parameters. As a subsequent test of the versatility of the procedure we investigate a less familiar and arguably more challenging interface design problem.
+    </p>
+    <p>
+     The 2D hotel search task was adapted to run as a mobile based quasi-virtual reality application. Rather than presenting the hotels on a 2D map surface, 3D hotel icons were displayed on an inclined map plane inside a rudimentary virtual environment. A screenshot of the task environment is presented in Figure
+     <a class="fig" href="#fig6">
+      6
+     </a>
+     . The view of the virtual environment is adjusted by using the mobile device as a window into the virtual world. It is important not to misconstrue the investigation of this particular interface as a suggestion for its practical use in a real-world hotel booking application. Rather, it serves as a demonstration of the Bayesian optimization approach in a more challenging interface deployment setting but with common design features.
+    </p>
+    <p>
+     For consistency, this task evaluated the same parameterization of the interface used in Experiment 1 with some minor adjustment for the differing interaction behavior: projected view-center-to-hotel distance threshold, show tooltip delay timeout, hide tooltip delay timeout, tooltip size and tooltip opacity.
+    </p>
+    <p>
+     As in Experiment 1, the participant must find the hotel that matches the specified criteria. Five batches were executed in both the Baseline and Bayesian optimization conditions. Batch size per condition was 20 participants as in Experiment 1. Participants could only complete the experiment once so all participants are unique. Note that participants who completed Experiment 1 were not prevented from completing Experiment 2. Of the 200 participants, 100 specified female, 97 male, one other, and two participants did not respond. Ages ranged from 18 to 64 with a median of 29. Participants were compensated US
+     <font style="normal">
+      $
+     </font>
+     1.20 for completing the HIT.
+    </p>
+    <p>
+     After each task, participants were again presented with the performance summary and rating page. Due to the confined screen space available in the mobile setting, no thumbnail reminders of the interface features were presented.
+    </p>
+    <section id="sec-15">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Performance Results
+       </h3>
+      </div>
+     </header>
+     <div class="table-responsive" id="tab2">
+      <div class="table-caption">
+       <span class="table-number">
+        Table 2:
+       </span>
+       <span class="table-title">
+        Median task times and completion counts in Exp. 2.
+       </span>
+      </div>
+      <table class="table">
+       <thead>
+        <tr>
+         <th style="text-align:center;">
+         </th>
+         <th colspan="2" style="text-align:center;;border-bottom: 2pt solid #000000;">
+          <em>
+           Median Task Time (s) [n]
+          </em>
+         </th>
+        </tr>
+        <tr>
+         <th style="text-align:center;">
+          <em>
+           Batch
+          </em>
+         </th>
+         <th style="text-align:center;">
+          <em>
+           Baseline
+          </em>
+         </th>
+         <th style="text-align:center;">
+          <em>
+           BO
+          </em>
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td style="text-align:center;">
+          B1
+         </td>
+         <td style="text-align:center;">
+          30.7 [170]
+         </td>
+         <td style="text-align:center;">
+          32.6 [164]
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          B2
+         </td>
+         <td style="text-align:center;">
+          34.3 [182]
+         </td>
+         <td style="text-align:center;">
+          25.5 [187]
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          B3
+         </td>
+         <td style="text-align:center;">
+          30.5 [182]
+         </td>
+         <td style="text-align:center;">
+          24.8 [192]
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          B4
+         </td>
+         <td style="text-align:center;">
+          36.3 [180]
+         </td>
+         <td style="text-align:center;">
+          24.5 [188]
+         </td>
+        </tr>
+        <tr>
+         <td style="text-align:center;">
+          B5
+         </td>
+         <td style="text-align:center;">
+          33.4 [181]
+         </td>
+         <td style="text-align:center;">
+          27.1 [186]
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p>
+      The results from Experiment 2 are summarized in Figure
+      <a class="fig" href="#fig7">
+       7
+      </a>
+      and Table
+      <a class="tbl" href="#tab2">
+       2
+      </a>
+      . The distribution of completion times in Batch 1 is broadly consistent between the Baseline and Bayesian optimization conditions. In Batch 2 there is an observable reduction in median completion time in the Bayesian optimization condition. There are further, but more marginal reductions in Batches 3 and 4. As in Experiment 1, there is a subsequent elevation in completion times in Batch 5. Again this is likely a consequence of disadvantageous exploration.
+     </p>
+     <p>
+      The difference in median completion time between Batch 1 and Batch 4 in the Bayesian optimization condition represents a reduction of 24.8%. The difference between conditions in all but the first batch (
+      <em>
+       p
+      </em>
+      = 0.31) are significant (
+      <em>
+       p
+      </em>
+      &lt; 0.01) based on two-sample t-tests applied to the log time.
+     </p>
+     <figure id="fig7">
+      <img alt="" class="img-responsive" longdesc="Boxplots of task completion time in Experiment 2." src="3300482_files\chi2019252fig7.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 7:
+       </span>
+       <span class="figure-title">
+        Boxplots of task completion time over the five batches for both conditions in Experiment 2.
+       </span>
+      </div>
+     </figure>
+     <figure id="fig8">
+      <img alt="" class="img-responsive" longdesc="Comparative feature rating proportions in Experiment 2." src="3300482_files\chi2019252fig8.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 8:
+       </span>
+       <span class="figure-title">
+        Rating proportions in Exp. 2.
+       </span>
+      </div>
+     </figure>
+     <p>
+     </p>
+    </section>
+    <section id="sec-16">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Interface Variation Ratings
+       </h3>
+      </div>
+     </header>
+     <p>
+      The post-task interface ratings are summarized in Figure
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      , grouped into ‘Worse’, ‘Same’ and ‘Better’. A distinct deviation from the results of Experiment 1 is the negative bias visible in the Bayesian optimization condition for Batch 1. Interestingly, this bias is reversed through batches 2 to 4.
+     </p>
+     <p>
+      Recall that, due to the limited screen space in the mobile setting, no thumbnail interface was presented to help participants recall the recent interface designs. It is reasonable to expect that this would make participant comparative judgments even more subjective and prone to error.
+     </p>
+     <p>
+      A consistent feature visible in both Figure
+      <a class="fig" href="#fig5">
+       5
+      </a>
+      and Figure
+      <a class="fig" href="#fig8">
+       8
+      </a>
+      is the peaking of ‘Same’ judgments in Batch 3. In both Experiments, Batch 3 is the batch where ‘Same’ ratings become the majority category. In both Experiments, Batch 3 is also the batch by which the most significant performance improvements have already been achieved.
+     </p>
+    </section>
+   </section>
+   <section id="sec-17">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        8
+       </span>
+       DESIGN CASE STUDY: MOBILE AR TASK
+      </h2>
+     </div>
+    </header>
+    <p>
+     Experiments 1 and 2 highlight the power of Bayesian optimization in delivering refinements to the interface in an objective and probabilistic fashion. As a further test we apply the refinement approach to a radically different and unfamiliar design problem. Furthermore, we remove the requirement to capture the Baseline condition and thus fully enable efficient parallelization of the technique through crowdsourcing. Experiments 1 and 2 serialized the participants in order to ensure strictly alternating test conditions. Free from this constraint, it is theoretically feasible to launch a full batch for crowdworkers to complete in parallel.
+    </p>
+    <p>
+     The novel interface design challenge we tackle is the refinement of an interactive through-the-screen augmented reality (AR) experience. There is very limited research providing guidance on the design of interactive through-the-screen AR, particularly when deployed as a web application.
+    </p>
+    <p>
+     A design challenge particularly relevant to mobile device AR is gaze cueing. More specifically, exploiting the placement and behavior of virtual content to encourage users to look at certain target objects in the scene (whether physical or virtual). We developed a simple web application that constructed an AR experience in which users must review items in the scene then locate a specified item. For the purpose of the case study, this was framed as a task involving an inventory of virtual tools overlaid on the physical environment. To complete the task the participant must sequentially find and review all tools in the scene. After all tools were reviewed, an instruction would appear to find a specific tool. Figure
+     <a class="fig" href="#fig9">
+      9
+     </a>
+     shows a screenshot of the tool finding AR interface.
+    </p>
+    <figure id="fig9">
+     <img alt="" class="img-responsive" longdesc="The AR task interface in the design case study." src="3300482_files\chi2019252fig9.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 9:
+      </span>
+      <span class="figure-title">
+       AR interface (left) and detail of scene (right).
+      </span>
+     </div>
+    </figure>
+    <p>
+    </p>
+    <p>
+     The AR experience was constructed using the device camera feed as the background canvas for the virtual scene (built in A-Frame). To promote a more contextually connected experience, the coloration of each tool description panel would adapt to the physical background. As a rudimentary strategy, the description panel color was set based on the 180° offset from the mean hue of the background immediately behind the description panel. In addition, the text color would correspondingly switch between black or white depending on the perceived brightness of the description panel in order to promote readability [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0022">
+      22
+     </a>
+     ].
+    </p>
+    <p>
+     This interface was parameterized into five design features. Some of these features are familiar with intuitive implications for task performance while others are highly novel with unpredictable influences. The bounds on parameters were set based on preliminary self-testing among the authors. Each of the design features is summarized below:
+    </p>
+    <ul class="list-no-style">
+     <li id="list9" label="•">
+      <em>
+       Background Timeout:
+      </em>
+      focus time required to mark tool as visited.
+      <br/>
+     </li>
+     <li id="list10" label="•">
+      <em>
+       Foreground Timeout
+      </em>
+      : focus time required to return tool to foreground (required to select a specified tool).
+      <br/>
+     </li>
+     <li id="list11" label="•">
+      <em>
+       Lightness Offset
+      </em>
+      : offset applied to panel color to discriminate between the in-focus and backgrounded state.
+      <br/>
+     </li>
+     <li id="list12" label="•">
+      <em>
+       Gaze Guidance Grouping
+      </em>
+      : threshold on grouping the guidance arrows towards unvisited tools.
+      <br/>
+     </li>
+     <li id="list13" label="•">
+      <em>
+       Opacity
+      </em>
+      : transparency of the description panel.
+      <br/>
+     </li>
+    </ul>
+    <p>
+     In Experiments 1 and 2 we observed limited subsequent benefit after two batches. The batch in which participant ratings of ‘Same’ became the dominant rating also appeared to provide a reliable indication of the point of limited subsequent improvement potential. Therefore, in this case study we use this indication as the trigger for terminating the refinement process.
+    </p>
+    <section id="sec-18">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Results
+       </h3>
+      </div>
+     </header>
+     <figure id="fig10">
+      <img alt="" class="img-responsive" longdesc="Boxplots of task completion time in the design case study." src="3300482_files\chi2019252fig10.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 10:
+       </span>
+       <span class="figure-title">
+        Boxplots of task completion time over the three batches run in the mobile AR task design case study.
+       </span>
+      </div>
+     </figure>
+     <figure id="fig11">
+      <img alt="" class="img-responsive" longdesc="Comparative feature rating proportions in the design case study." src="3300482_files\chi2019252fig11.jpg"/>
+      <div class="figure-caption">
+       <span class="figure-number">
+        Figure 11:
+       </span>
+       <span class="figure-title">
+        Comparative feature rating proportions in each batch for the AR case study.
+       </span>
+      </div>
+     </figure>
+     <p>
+      In total 60 participants completed the task (28 female, 30 male, 2 unspecified). Participant ages ranged from 19 to 46 with a median of 30.5. Participants were compensated US
+      <font style="normal">
+       $
+      </font>
+      1.20 for completing the HIT. The case study results are summarized in Figure
+      <a class="fig" href="#fig10">
+       10
+      </a>
+      . The median task completion times and completion counts [
+      <em>
+       n
+      </em>
+      ] over Batches 1 to 3 were: 30.7 s [178], 24.4 s [182], and 26.2 s [156] respectively. Figure
+      <a class="fig" href="#fig11">
+       11
+      </a>
+      plots the participant post-task rating proportions.
+     </p>
+     <p>
+      Based on the participant rating trigger proposed, the observation that the ‘Same’ category became the majority rating in Batch 3 suggested that the refinement procedure be concluded. Between Batch 1 and 2, the median completion time was reduced by 20.7%. There is then a marginal elevation in completion time between Batch 2 and 3. The plateauing of performance is reached earlier than in Experiments 1 and 2 but demonstrates that the proportion of ‘Same’ ratings provides an informative marker.
+     </p>
+    </section>
+   </section>
+   <section id="sec-19">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        9
+       </span>
+       DISCUSSION
+      </h2>
+     </div>
+    </header>
+    <figure id="fig12">
+     <img alt="" class="img-responsive" longdesc="Modeled sensitivity around the optimal design candidate." src="3300482_files\chi2019252fig12.jpg"/>
+     <div class="figure-caption">
+      <span class="figure-number">
+       Figure 12:
+      </span>
+      <span class="figure-title">
+       Sensitivity around optimal design candidate. Red lines show ± 2
+       <em>
+        σ
+       </em>
+       . Note that this is the latent function model prediction which does not reflect the additive signal noise.
+      </span>
+     </div>
+    </figure>
+    <p>
+     The results of this study highlight the value of Bayesian optimization as a method for supporting interface design through online user testing. We observed substantial reductions in task completion times in all three applications of the approach. The method is also able to accommodate the high levels of noise introduced by inter-user performance variability, inter-task variability and task learning effects. Under the rudimentary configuration of Bayesian optimization applied, the simple method for triggering termination based on perceived interface changes may be sufficient. More advanced configurations are available in the literature which help to better transition between exploration and exploitation.
+    </p>
+    <p>
+     A limitation of this work is that it is difficult to distinguish between truly optimizing design parameters and merely eliminating poorly performing regions of the design space. Pruning bad regions of the design space would yield the same result in terms of reduction in median task completion time. We plan to investigate whether this is the case but contend that bad-design rejection may in itself be useful.
+    </p>
+    <p>
+     The approach also has other practical advantages that may help streamline interface refinement exercises. Compared with alternative methods for evaluating the complete design space, Bayesian optimization can help to ensure that subsequent batches of the participant group benefit from the efforts of the previous group. Therefore, a well functioning optimization process of reasonable dimensionality should typically have worst case performance in the first batch. This may be useful in predicting task time or adjusting pay scales as the task becomes faster and easier to complete. It is likely that the variance in inter-user experience is also reduced.
+    </p>
+    <p>
+     There are several open questions we will address in future work. First, in this study we perform optimization based on performance metrics only. We hope to investigate how performance metrics might be complemented by pair-wise user ratings such as those collected. Second, this data driven approach might successfully integrate theory-driven design methods such as those described by [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0016">
+      16
+     </a>
+     ]. In particular, such approaches might provide structured methods for selecting which parameters to refine and appropriate bounds. They may also be helpful in determining appropriate candidate resolution by reference to just noticeable differences. Third, our investigation is constrained to relatively low dimensionality so as to provide a simple demonstration of the method. The scalability of Bayesian optimization has received some attention in the machine learning community (see e.g. [
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0003">
+      3
+     </a>
+     ,
+     <a class="bib" data-placement="top" data-toggle="popover" data-trigger="hover" href="#BibPLXBIB0029">
+      29
+     </a>
+     ]) but the implications of and procedures for dealing with a high dimensional design space remains as future work.
+    </p>
+    <section id="sec-20">
+     <header>
+      <div class="title-info">
+       <h3>
+        <span class="section-number">
+        </span>
+        Querying the Design Model
+       </h3>
+      </div>
+     </header>
+     <p>
+      An ancillary benefit of Bayesian optimization for interface feature refinement is that the procedure yields a model that has other potential uses. As an example, we can query the model to examine the sensitivity around the optimal design candidate identified in Experiment 1. The GP model incorporates all the collected samples and reflects the relationship between the design parameters and task completion time. It inherently accommodates and reflects the uncertainty in the sampling process. Figure
+      <a class="fig" href="#fig12">
+       12
+      </a>
+      plots the variation in estimated task time as the parameter values are varied, one-at-a-time. From this plot we can observe that it may be possible to eek out further improvements by minor parameter tweaks. The plot also suggests that the
+      <em>
+       Decay
+      </em>
+      and
+      <em>
+       Size
+      </em>
+      parameters have the dominant effect on task time.
+     </p>
+     <p>
+      The generated performance model may also be used for simulation. The effect of proposed design changes may be estimated, not only to determine an approximate delta but also to estimate the anticipated distribution of performance. An extension of this idea is the ability to use the same model to identify parameters that minimize performance variation despite elevated average performance. This may indeed be a preferred outcome in some applications and use cases.
+     </p>
+    </section>
+   </section>
+   <section id="sec-21">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+        10
+       </span>
+       CONCLUSION
+      </h2>
+     </div>
+    </header>
+    <p>
+     Bayesian optimization offers a powerful tool to support the objective refinement of interface designs. This has high potential value to designers given the low overhead of the approach and the fact that there is no subjective tuning required. The only real input required to initialize the process in the example presented is the setting of the bounds on the parameter values. We show that a batched approach to incorporating prior user performance data can deliver clearly detectable improvement in the interface with reductions in aggregate task completion time of between 33.3% and 20.7% in the deployments tested. Our results indicate that there is significant potential in this method as a generic means of supporting designers in objective and data driven refinement of their interfaces.
+    </p>
+   </section>
+  </section>
+  <section class="back-matter">
+   <section id="sec-22">
+    <header>
+     <div class="title-info">
+      <h2>
+       <span class="section-number">
+       </span>
+       ACKNOWLEDGMENTS
+      </h2>
+     </div>
+    </header>
+    <p>
+     This work was supported by EPSRC (grant EP/R004471/1) and the Trimble Fund. Supporting data for this paper is available at
+     <a class="link-inline force-break" href="https://doi.org/10.17863/CAM.34781">
+      https://doi.org/10.17863/CAM.34781
+     </a>
+     .
+    </p>
+   </section>
+   <section id="ref-001">
+    <header>
+     <div class="title-info">
+      <h2 class="page-brake-head">
+       REFERENCES
+      </h2>
+     </div>
+    </header>
+    <ul class="bibUl">
+     <li id="BibPLXBIB0001" label="[1]">
+      Gilles Bailly, Antti Oulasvirta, Timo Kötzing, and Sabrina Hoppe. 2013. MenuOptimizer: Interactive Optimization of Menu Systems. In
+      <em>
+       Proceedings of the 26th Annual ACM Symposium on User Interface Software and Technology
+      </em>
+      (
+      <em>
+       UIST ’13
+      </em>
+      ). ACM, New York, NY, USA, 331–342.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2501988.2502024" target="_blank">
+       https://doi.org/10.1145/2501988.2502024
+      </a>
+     </li>
+     <li id="BibPLXBIB0002" label="[2]">
+      Eric Brochu, Tyson Brochu, and Nando de Freitas. 2010. A Bayesian Interactive Optimization Approach to Procedural Animation Design. In
+      <em>
+       Proceedings of the 2010 ACM SIGGRAPH/Eurographics Symposium on Computer Animation
+      </em>
+      (
+      <em>
+       SCA ’10
+      </em>
+      ). Eurographics Association, Goslar, Germany, 103–112.
+      <a class="link-inline force-break" href="http://dl.acm.org/citation.cfm?id=1921427.1921443">
+       http://dl.acm.org/citation.cfm?id=1921427.1921443
+      </a>
+     </li>
+     <li id="BibPLXBIB0003" label="[3]">
+      B. Choffin and N. Ueda. 2018. Scaling Bayesian Optimization up to Higher Dimensions: a Review and Comparison of Recent Algorithms. In
+      <em>
+       2018 IEEE 28th International Workshop on Machine Learning for Signal Processing (MLSP)
+      </em>
+      . 1–6.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/MLSP.2018.8517011" target="_blank">
+       https://doi.org/10.1109/MLSP.2018.8517011
+      </a>
+     </li>
+     <li id="BibPLXBIB0004" label="[4]">
+      Krzysztof Gajos and Daniel S. Weld. 2004. SUPPLE: Automatically Generating User Interfaces. In
+      <em>
+       Proceedings of the 9th International Conference on Intelligent User Interfaces
+      </em>
+      (
+      <em>
+       IUI ’04
+      </em>
+      ). ACM, New York, NY, USA, 93–100.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/964442.964461" target="_blank">
+       https://doi.org/10.1145/964442.964461
+      </a>
+     </li>
+     <li id="BibPLXBIB0005" label="[5]">
+      Javier González, Zhenwen Dai, Philipp Hennig, and Neil Lawrence. 2016. Batch Bayesian Optimization via Local Penalization. In Proceedings of the 19th International Conference on Artificial Intelligence and Statistics(Proceedings of Machine Learning Research), Arthur Gretton and Christian C. Robert (Eds.), Vol. 51. PMLR, Cadiz, Spain, 648–657.
+      <a class="link-inline force-break" href="http://proceedings.mlr.press/v51/gonzalez16a.html">
+       http://proceedings.mlr.press/v51/gonzalez16a.html
+      </a>
+     </li>
+     <li id="BibPLXBIB0006" label="[6]">
+      Jeffrey Heer and Michael Bostock. 2010. Crowdsourcing Graphical Perception: Using Mechanical Turk to Assess Visualization Design. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’10
+      </em>
+      ). ACM, New York, NY, USA, 203–212.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1753326.1753357" target="_blank">
+       https://doi.org/10.1145/1753326.1753357
+      </a>
+     </li>
+     <li id="BibPLXBIB0007" label="[7]">
+      Mohammad M. Khajah, Brett D. Roads, Robert V. Lindsey, Yun-En Liu, and Michael C. Mozer. 2016. Designing Engaging Games Using Bayesian Optimization. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 5571–5582.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858253" target="_blank">
+       https://doi.org/10.1145/2858036.2858253
+      </a>
+     </li>
+     <li id="BibPLXBIB0008" label="[8]">
+      Aniket Kittur, Ed H. Chi, and Bongwon Suh. 2008. Crowdsourcing User Studies with Mechanical Turk. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’08
+      </em>
+      ). ACM, New York, NY, USA, 453–456.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1357054.1357127" target="_blank">
+       https://doi.org/10.1145/1357054.1357127
+      </a>
+     </li>
+     <li id="BibPLXBIB0009" label="[9]">
+      Ron Kohavi, Randal M. Henne, and Dan Sommerfield. 2007. Practical Guide to Controlled Experiments on the Web: Listen to Your Customers Not to the Hippo. In
+      <em>
+       Proceedings of the 13th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining
+      </em>
+      (
+      <em>
+       KDD ’07
+      </em>
+      ). ACM, New York, NY, USA, 959–967.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1281192.1281295" target="_blank">
+       https://doi.org/10.1145/1281192.1281295
+      </a>
+     </li>
+     <li id="BibPLXBIB0010" label="[10]">
+      Steven Komarov, Katharina Reinecke, and Krzysztof Z. Gajos. 2013. Crowdsourcing Performance Evaluations of User Interfaces. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’13
+      </em>
+      ). ACM, New York, NY, USA, 207–216.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2470654.2470684" target="_blank">
+       https://doi.org/10.1145/2470654.2470684
+      </a>
+     </li>
+     <li id="BibPLXBIB0011" label="[11]">
+      Yuki Koyama, Issei Sato, Daisuke Sakamoto, and Takeo Igarashi. 2017. Sequential Line Search for Efficient Visual Design Optimization by Crowds.
+      <em>
+       <em>
+        ACM Trans. Graph.
+       </em>
+      </em>
+      36, 4, Article 48 (July 2017), 11 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3072959.3073598" target="_blank">
+       https://doi.org/10.1145/3072959.3073598
+      </a>
+     </li>
+     <li id="BibPLXBIB0012" label="[12]">
+      Wanyu Liu, Rafael Lucas D'Oliveira, Michel Beaudouin-Lafon, and Olivier Rioul. 2017. BIGnav: Bayesian Information Gain for Guiding Multiscale Navigation. In
+      <em>
+       Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’17
+      </em>
+      ). ACM, New York, NY, USA, 5869–5880.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3025453.3025524" target="_blank">
+       https://doi.org/10.1145/3025453.3025524
+      </a>
+     </li>
+     <li id="BibPLXBIB0013" label="[13]">
+      Yun-En Liu, Travis Mandel, Emma Brunskill, and Zoran Popović. 2014. Towards Automatic Experimentation of Educational Knowledge. In
+      <em>
+       Proceedings of the 32Nd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’14
+      </em>
+      ). ACM, New York, NY, USA, 3349–3358.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2556288.2557392" target="_blank">
+       https://doi.org/10.1145/2556288.2557392
+      </a>
+     </li>
+     <li id="BibPLXBIB0014" label="[14]">
+      J. Derek Lomas, Jodi Forlizzi, Nikhil Poonwala, Nirmal Patel, Sharan Shodhan, Kishan Patel, Ken Koedinger, and Emma Brunskill. 2016. Interface Design Optimization As a Multi-Armed Bandit Problem. In
+      <em>
+       Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’16
+      </em>
+      ). ACM, New York, NY, USA, 4142–4153.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2858036.2858425" target="_blank">
+       https://doi.org/10.1145/2858036.2858425
+      </a>
+     </li>
+     <li id="BibPLXBIB0015" label="[15]">
+      MM Hassan Mahmud, Benjamin Rosman, Subramanian Ramamoorthy, and Pushmeet Kohli. 2014. Adapting Interaction Environments to Diverse Users through Online Action Set Selection. In
+      <em>
+       Workshops at the Twenty-Eighth AAAI Conference on Artificial Intelligence
+      </em>
+      . 1–7.
+      <a class="link-inline force-break" href="https://www.aaai.org/ocs/index.php/WS/AAAIW14/paper/view/8865">
+       https://www.aaai.org/ocs/index.php/WS/AAAIW14/paper/view/8865
+      </a>
+     </li>
+     <li id="BibPLXBIB0016" label="[16]">
+      Luana Micallef, Gregorio Palmas, Antti Oulasvirta, and Tino Weinkauf. 2017. Towards Perceptual Optimization of the Visual Design of Scatterplots.
+      <em>
+       <em>
+        IEEE Transactions on Visualization and Computer Graphics
+       </em>
+      </em>
+      23, 6 (June 2017), 1588–1599.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TVCG.2017.2674978" target="_blank">
+       https://doi.org/10.1109/TVCG.2017.2674978
+      </a>
+     </li>
+     <li id="BibPLXBIB0017" label="[17]">
+      Jay I. Myung, Daniel R. Cavagnaro, and Mark A. Pitt. 2013. A Tutorial on Adaptive Design Optimization.
+      <em>
+       <em>
+        Journal of Mathematical Psychology
+       </em>
+      </em>
+      57, 3 (2013), 53 – 67.
+      <a class="link-inline force-break" href="https://doi.org/10.1016/j.jmp.2013.05.005" target="_blank">
+       https://doi.org/10.1016/j.jmp.2013.05.005
+      </a>
+     </li>
+     <li id="BibPLXBIB0018" label="[18]">
+      J. B. B. Nielsen, J. Nielsen, and J. Larsen. 2015. Perception-Based Personalization of Hearing Aids Using Gaussian Processes and Active Learning.
+      <em>
+       <em>
+        IEEE/ACM Transactions on Audio, Speech, and Language Processing
+       </em>
+      </em>
+      23, 1 (Jan 2015), 162–173.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/TASLP.2014.2377581" target="_blank">
+       https://doi.org/10.1109/TASLP.2014.2377581
+      </a>
+     </li>
+     <li id="BibPLXBIB0019" label="[19]">
+      Peter O'Donovan, Aseem Agarwala, and Aaron Hertzmann. 2015. DesignScape: Design with Interactive Layout Suggestions. In
+      <em>
+       Proceedings of the 33rd Annual ACM Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’15
+      </em>
+      ). ACM, New York, NY, USA, 1221–1224.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2702123.2702149" target="_blank">
+       https://doi.org/10.1145/2702123.2702149
+      </a>
+     </li>
+     <li id="BibPLXBIB0020" label="[20]">
+      Seonwook Park, Christoph Gebhardt, Roman Rädle, Anna Maria Feit, Hana Vrzakova, Niraj Ramesh Dayama, Hui-Shyong Yeo, Clemens N. Klokmose, Aaron Quigley, Antti Oulasvirta, and Otmar Hilliges. 2018. AdaM: Adapting Multi-User Interfaces for Collaborative Environments in Real-Time. In
+      <em>
+       Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’18
+      </em>
+      ). ACM, New York, NY, USA, Article 184, 14 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3173574.3173758" target="_blank">
+       https://doi.org/10.1145/3173574.3173758
+      </a>
+     </li>
+     <li id="BibPLXBIB0021" label="[21]">
+      Carl Edward Rasmussen and Christopher K. I. Williams. 2006.
+      <em>
+       Gaussian Processes for Machine Learning
+      </em>
+      . MIT Press.
+     </li>
+     <li id="BibPLXBIB0022" label="[22]">
+      C. Ridpath and W. Chisholm. 2000. Techniques For Accessibility Evaluation And Repair Tools.
+      <a class="link-inline force-break" href="https://www.w3.org/TR/AERT">
+       https://www.w3.org/TR/AERT
+      </a>
+     </li>
+     <li id="BibPLXBIB0023" label="[23]">
+      Paulo Salem. 2017. User Interface Optimization Using Genetic Programming with an Application to Landing Pages.
+      <em>
+       <em>
+        Proc. ACM Hum.-Comput. Interact.
+       </em>
+      </em>
+      1, EICS, Article 13 (June 2017), 17 pages.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/3099583" target="_blank">
+       https://doi.org/10.1145/3099583
+      </a>
+     </li>
+     <li id="BibPLXBIB0024" label="[24]">
+      Sayan Sarcar, Jussi Joklnen, Antti Oulasvirta, Chaklam Silpasuwanchai, Zhenxin Wang, and Xiangshi Ren. 2016. Towards Ability-Based Optimization for Aging Users. In
+      <em>
+       Proceedings of the International Symposium on Interactive Technology and Ageing Populations
+      </em>
+      (
+      <em>
+       ITAP ’16
+      </em>
+      ). ACM, New York, NY, USA, 77–86.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2996267.2996275" target="_blank">
+       https://doi.org/10.1145/2996267.2996275
+      </a>
+     </li>
+     <li id="BibPLXBIB0025" label="[25]">
+      B. Shahriari, K. Swersky, Z. Wang, R. P. Adams, and N. de Freitas. 2016. Taking the Human Out of the Loop: A Review of Bayesian Optimization.
+      <em>
+       <em>
+        Proc. IEEE
+       </em>
+      </em>
+      104, 1 (Jan 2016), 148–175.
+      <a class="link-inline force-break" href="https://doi.org/10.1109/JPROC.2015.2494218" target="_blank">
+       https://doi.org/10.1109/JPROC.2015.2494218
+      </a>
+     </li>
+     <li id="BibPLXBIB0026" label="[26]">
+      Jasper Snoek. 2013.
+      <em>
+       Bayesian Optimization and Semiparametric Models with Applications to Assistive Technology
+      </em>
+      . Ph.D. Dissertation. University of Toronto, Toronto, Canada.
+     </li>
+     <li id="BibPLXBIB0027" label="[27]">
+      Kashyap Todi, Daryl Weir, and Antti Oulasvirta. 2016. Sketchplore: Sketch and Explore with a Layout Optimiser. In
+      <em>
+       Proceedings of the 2016 ACM Conference on Designing Interactive Systems
+      </em>
+      (
+      <em>
+       DIS ’16
+      </em>
+      ). ACM, New York, NY, USA, 543–555.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/2901790.2901817" target="_blank">
+       https://doi.org/10.1145/2901790.2901817
+      </a>
+     </li>
+     <li id="BibPLXBIB0028" label="[28]">
+      Michael Toomim, Travis Kriplean, Claus Pörtner, and James Landay. 2011. Utility of Human-computer Interactions: Toward a Science of Preference Measurement. In
+      <em>
+       Proceedings of the SIGCHI Conference on Human Factors in Computing Systems
+      </em>
+      (
+      <em>
+       CHI ’11
+      </em>
+      ). ACM, New York, NY, USA, 2275–2284.
+      <a class="link-inline force-break" href="https://doi.org/10.1145/1978942.1979277" target="_blank">
+       https://doi.org/10.1145/1978942.1979277
+      </a>
+     </li>
+     <li id="BibPLXBIB0029" label="[29]">
+      Ziyu Wang, Frank Hutter, Masrour Zoghi, David Matheson, and Nando De Freitas. 2016. Bayesian Optimization in a Billion Dimensions via Random Embeddings.
+      <em>
+       <em>
+        Journal of Artificial Intelligence Research
+       </em>
+      </em>
+      55 (2016), 361–387.
+      <a class="link-inline force-break" href="https://doi.org/10.1613/jair.4806" target="_blank">
+       https://doi.org/10.1613/jair.4806
+      </a>
+     </li>
+    </ul>
+   </section>
+  </section>
+  <section class="footnote" id="foot-001">
+   <header>
+    <div class="title-info">
+     <h2>
+      FOOTNOTE
+     </h2>
+    </div>
+   </header>
+   <p id="fn1">
+    <a href="#foot-fn1">
+     <sup>
+      1
+     </sup>
+    </a>
+    This is not to say that we cannot predict or estimate certain aspects of user performance. Techniques such as KLM and Fitts’ Law might allow one to estimate the effect of changes in element sizes or placement. Such techniques, however, struggle when applied to simultaneous variation of multiple interface design parameters with nuanced factor interactions.
+   </p>
+   <div class="bibStrip">
+    <p>
+     Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from
+     <a href="mailto:permissions@acm.org">
+      permissions@acm.org
+     </a>
+     .
+    </p>
+    <p>
+     <em>
+      CHI '19, May 04–09, 2019, Glasgow, Scotland UK
+     </em>
+    </p>
+    <p>
+     © 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+     <br/>
+     ACM ISBN 978-1-4503-5970-2/19/05…$15.00.
+     <br/>
+     DOI:
+     <a class="link-inline force-break" href="https://doi.org/10.1145/3290605.3300482" target="_blank">
+      https://doi.org/10.1145/3290605.3300482
+     </a>
+    </p>
+   </div>
+  </section>
+  <script>
+   (function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'87579db29ce837cc',t:'MTcxMzMwNjU4Ni4zNjgwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();
+  </script>
+ </body>
+</html>
